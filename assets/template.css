@@ -1,0 +1,77 @@
+@import url("http://jonasjohansson.se/assets/reset.css");
+@import url("http://jonasjohansson.se/assets/style.css");
+
+body {
+	font-size:var(--font-size);
+	line-height:var(--line-height);
+	box-sizing:border-box;
+	padding:0;
+	margin:0;
+}
+
+h1,
+h4 {
+	text-transform:uppercase;
+	font-weight:400;
+}
+
+h1 {
+	font-size:var(--base);
+	line-height:1.2;
+	margin-bottom:var(--base);
+}
+
+h4 {
+	position:absolute;
+	right:0;
+	bottom:0;
+	padding:0 8px;
+	font-size:12px;
+	line-height:var(--base);
+	background-color:white;
+}
+
+p:not(:last-child),
+section:not(:last-child) {
+	margin-bottom:var(--base);
+}
+
+/* sections */
+
+body > div {
+	padding:0 var(--base);
+	box-sizing:border-box;
+}
+
+#intro {
+	padding-top:var(--base);
+}
+
+#work > div {
+	width:100%;
+	float:none;
+}
+
+#work > div:not(:last-of-type) {
+	margin-bottom:calc(var(--base)*0.5);
+}
+
+/* responsive */
+
+@media (min-width:800px) {
+	body > div {
+		width:50%;
+	}
+	#intro,
+	#resume {
+		float:left;
+		clear:left;
+	}
+	#work {
+		position:fixed;
+		right:0;
+		height:100%;
+		overflow:scroll;
+		-webkit-overflow-scrolling:touch;
+	}
+}

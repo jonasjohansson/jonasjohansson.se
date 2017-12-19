@@ -1,0 +1,170 @@
+html {
+	--base:				24px;
+	--gutter:			16px;
+	--white:			#fafafa;
+	--black:			#1f1f1f;
+	--grey:				#aaa;
+	--font-family:		'Helvetica Neue','Helvetica',sans-serif;
+	--font-size-body:	16px;
+	--font-size-p:		32px;
+	--font-size-h3:		11px;
+}
+
+/* typography, color */
+
+body {
+	font-family:var(--font-family)!important;
+	font-size:14px!important;
+	background-color:white;
+}
+
+.book h2 {
+	font-size:14px;
+}
+
+.book p {
+}
+
+.book .markdown-section {
+	line-height:1.5;
+	color:inherit;
+}
+
+.book h1,
+.book h2,
+.book h3 {
+	color:inherit;
+}
+
+.book .book-summary,
+.book .book-body {
+	background-color:transparent;
+}
+
+.book .book-summary {
+	font-family:inherit;
+    font-size:1.1em;
+    letter-spacing:-0.01em;
+}
+
+.book .book-summary ul.summary li.header {
+	xborder-top:1px solid black;
+	color:inherit;
+}
+
+/* */
+
+.book img {
+	width:100%;
+}
+
+@media (min-width: 600px){
+.book.with-summary .book-body {
+    left: 260px;
+}
+}
+.book .book-summary ul.summary li a,
+.book .book-summary ul.summary li span {
+	padding:8px 8px 8px 24px;
+}
+
+.book .book-summary ul.summary li.header ~ li.chapter {
+	xbackground-color:rgba(0,0,0,0.1);
+}
+
+
+.book .book-summary ul.summary li.active > a {
+	color:inherit;
+}
+
+th {
+	text-align:left;
+}
+.book .book-body {
+	max-width:800px;
+}
+.book-summary {
+	width:260px!important;
+	background-color:white;
+}
+
+.page-inner {
+	max-width:100%!important;
+}
+
+.book .book-header,
+.book .navigation {
+	display:none;
+}
+
+/*
+@import url("https://fonts.googleapis.com/css?family=Inconsolata");
+
+body, .book-summary {
+	color:#555;
+	font-family:'inconsolata';
+    font-size:15px;
+    line-height:18px;
+}
+
+a {
+	color:#1184CE;
+}
+
+.markdown-section {
+	h1 {
+		color:#333;
+  		font-size:25px;
+		font-weight:normal;
+		margin-top:10px;
+	}
+	h2, h3 {
+  		color:#4B0;
+  		font-size:18px;
+  		font-weight:normal;
+  		margin-top:40px;
+  	}
+  	p {
+	    font-size:15px;
+	    line-height:18px;
+	}
+}
+
+/*
+
+
+body > h1 {
+color: #333;
+font-size: 25px;
+font-weight: normal;
+margin-top: 10px;
+}
+
+
+body > h2 {
+color: #4B0;
+font-size: 18px;
+font-weight: normal;
+margin-top: 40px;
+}
+
+body > a {
+color: #1184CE;
+}
+
+
+xh1 {
+text-transform:uppercase;
+text-align:center;
+}
+x.markdown-section a {
+color:blue!important;
+}
+
+
+
+.xbook-summary {
+border-right:0!important;
+}*/
+
+

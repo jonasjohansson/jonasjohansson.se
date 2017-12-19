@@ -1,0 +1,115 @@
+@import url("reset.css");
+
+:root {
+	--base:				24px;
+	--gutter:			12px;
+	--font-family:		'Helvetica Neue',Helvetica,Arial,sans-serif;
+	--font-size-body:	21px;
+	--font-size-h3:		13px;
+	--color-primary: 	rgb(160,160,160);
+	--color-secondary: 	rgb(128,128,128);
+}
+
+/* main */
+
+body {
+	padding:0 2.5vw;
+	margin:calc(var(--base)*2) auto 0 auto;
+	font-family:var(--font-family);
+	font-size:var(--font-size-body);
+	line-height:1.333;
+	box-sizing:border-box;
+}
+
+body > div {
+	position:relative;
+	overflow:hidden;
+	margin-bottom:calc(var(--base)*2);
+}
+
+a {
+	color:var(--color-primary);
+}
+
+a:hover {
+	text-decoration:none;
+}
+
+h3 {
+	font-size:var(--font-size-h3);
+	letter-spacing:0.075rem;
+	text-transform:uppercase;
+}
+
+p:not(:last-child),
+section:not(:last-child) {
+	margin-bottom:var(--base);
+}
+
+/* sections */
+
+#intro > * {
+	display:table;
+}
+
+#work {
+	line-height:0;
+}
+
+#work > * {
+	position:relative;
+	display:inline-block;
+	width:100%;
+}
+
+#resume {
+	overflow-x:scroll;
+	overflow-scrolling:touch;
+	white-space:nowrap;
+}
+
+#resume div[date-start]:before {
+	padding-right:calc(var(--base)/4);
+	content:attr(date-start);
+	color:var(--color-secondary);
+}
+
+#resume div[date-end]:before {
+	content:attr(date-start) "-" attr(date-end);
+}
+
+/* special */
+
+.dark {
+	background-color:black;
+	color:white;
+}
+
+.video {
+	position:relative;
+	padding-bottom:56.25%;
+}
+
+/* responsive */
+
+@media (min-width:860px) {
+	#work > * {
+		float:left;
+		width:50%;
+	}
+	#work > *:last-child:after {
+		display:block;
+		clear:both;
+		content:"";
+	}
+	.video {
+		padding-bottom:28.125%;
+	}
+}
+
+@media print {
+	#contact,
+	#work {
+		display:none!important;
+	}
+}
