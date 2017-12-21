@@ -90,6 +90,11 @@ section:not(:last-child) {
 	padding-bottom:56.25%;
 }
 
+::selection {
+    background:blue;
+    color:white;
+}
+
 /* responsive */
 
 @media (min-width:860px) {
