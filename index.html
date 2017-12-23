@@ -132,13 +132,11 @@
 				date.setAttribute('date-start',dateStart.substr(0,4));
 			}
 			if (dateEnd != null){
-				if (dateEnd.length > 4){
-					date.removeAttribute('date-end');
-				} else {
+				if (dateEnd.length <= 4){
 					date.setAttribute('date-end',dateEnd.substr(0,4));
+				} else {
+					date.removeAttribute('date-end');
 				}
-			} else {
-				date.removeAttribute('date-end');
 			}
 		}
 	</script>
