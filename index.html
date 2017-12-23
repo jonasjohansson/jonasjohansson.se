@@ -133,7 +133,7 @@
 			}
 			if (dateEnd != null){
 				if (dateEnd.length > 4){
-					date.setAttribute('date-end','');
+					date.removeAttribute('date-end');
 				} else {
 					date.setAttribute('date-end',dateEnd.substr(0,4));
 				}
