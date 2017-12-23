@@ -124,21 +124,21 @@
 		if (hours > 18 || hours < 8){
 			document.documentElement.classList.add('dark');
 		}
-		let dates = document.querySelectorAll('#resume div');
-		for (let date of dates){
-			let dateStart = date.getAttribute('date-start');
-			let dateEnd = date.getAttribute('date-end');
-			if (dateStart != null){
-				date.setAttribute('date-start',dateStart.substr(0,4));
-			}
-			if (dateEnd != null){
-				if (dateEnd.length <= 4 && dateEnd.length > 0){
-					date.setAttribute('date-end',dateEnd.substr(0,4));
-				} else {
-					date.removeAttribute('date-end');
-				}
-			}
-		}
+		// let dates = document.querySelectorAll('#resume div');
+		// for (let date of dates){
+		// 	let dateStart = date.getAttribute('date-start');
+		// 	let dateEnd = date.getAttribute('date-end');
+		// 	if (dateStart != null){
+		// 		date.setAttribute('date-start',dateStart.substr(0,4));
+		// 	}
+		// 	if (dateEnd != null){
+		// 		if (dateEnd.length <= 4 && dateEnd.length > 0){
+		// 			date.setAttribute('date-end',dateEnd.substr(0,4));
+		// 		} else {
+		// 			date.removeAttribute('date-end');
+		// 		}
+		// 	}
+		// }
 	</script>
 	<script>
 		(function(i,s,o,g,r,a,m){i['GoogleAnalyticsObject']=r;i[r]=i[r]||function(){
