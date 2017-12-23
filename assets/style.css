@@ -74,7 +74,7 @@ section:not(:last-child) {
 	color:var(--color-secondary);
 }
 
-#resume div[date-end]:before {
+#resume div:not([date-end=""]):before {
 	content:attr(date-start) "-" attr(date-end);
 }
 
