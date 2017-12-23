@@ -60,16 +60,16 @@
 	<div id="resume">
 		<section>
 			<h3>Work</h3>
-			<div date-start="2017.11-" date-end=""><a href="http://www.svartljus.se/">Svartljus</a>, Stockholm</div>
-			<div date-start="2017.08-" date-end=""><a href="http://www.beckmans.se/">Beckmans</a>, Stockholm</div>
+			<div date-start="2017.11" date-end=""><a href="http://www.svartljus.se/">Svartljus</a>, Stockholm</div>
+			<div date-start="2017.08" date-end=""><a href="http://www.beckmans.se/">Beckmans</a>, Stockholm</div>
 			<div date-start="2015.12" date-end="2016.06"><a href="http://www.kramweisshaar.com/">Kram/Weisshaar</a>, Stockholm</div>
 			<div date-start="2014.08" date-end="2015.08"><a href="http://field.io/">Field</a>, London</div>
 			<!-- <div date-start="2012.09" date-end="2013.04"><a href="https://vimeo.com/apm300">APM300</a>, Montreal</div> -->
 			<div date-start="2012.01" date-end="2012.10"><a href="https://momentfactory.com/">Moment Factory</a>, Montreal</div>
 			<div date-start="2011.09" date-end="2011.10"><a href="http://ultrasupernew.com/">Ultrasupernew</a>, Tokyo</div>
 			<div date-start="2011.08" date-end="2011.09"><a href="http://wktokyo.jp/">Wieden+Kennedy</a>, Tokyo</div>
-			<div date-start="2009.03" date-end="2009.05">Dragster, Gothenburg</div>
-			<div date-start="2008.01" date-end="2008.03">Essoell, Gothenburg</div>
+			<!-- <div date-start="2009.03" date-end="2009.05">Dragster, Gothenburg</div>
+			<div date-start="2008.01" date-end="2008.03">Essoell, Gothenburg</div> -->
 		</section>
 		<section>
 			<h3>Installations</h3>
@@ -80,10 +80,10 @@
 			<div date-start="2016.02.18" date-end="2016.02.20">Harpa Light Organ. Sónar, Reykjavik</div>
 			<div date-start="2015.07.07" date-end="2015.07.12">Beacon. Nowhere, Castejón de Monegros</div>
 			<div date-start="2015.02.12" date-end="2015.02.14">Harpa Lights. Sónar, Reykjavik</div>
-			<div date-start="2014.03.21" date-end="">Cabezón. Mai, Montreal</div>
+			<!-- <div date-start="2014.03.21" date-end="">Cabezón. Mai, Montreal</div> -->
 			<div date-start="2013.05.21" date-end="2013.05.23">Lyra. C2-MTL, Montreal</div>
 		</section>
-		<section>
+		<!-- <section>
 			<h3>Performances</h3>
 			<div date-start="2017.12.15">Live visuals. Spotify Julfest, Stockholm</div>
 			<div date-start="2017.06.26">Live visuals. Roskilde Festival</div>
@@ -97,17 +97,15 @@
 			<div date-start="2012.10.03">Live visuals. <a href="https://vimeo.com/50801625">MEG Festival</a>, Montreal</div>
 			<div date-start="2011.03.05">Live visuals. Power Plant. Under Bron, Stockholm</div>
 			<div date-start="2010.07.23">Live visuals. Ctrl Alt Dance. Bolsjefabrikken, Köpenhamn</div>
-		</section>
+		</section> -->
 		<section>
 			<h3>Teaching</h3>
-			<div date-start="2017.12.04" date-end="2017.12.22">Teknik och Visuell Kommunikation. Beckmans, Stockholm</div>
 			<div date-start="2017.11.27" date-end="2017.12.22">Experience Design. Hyper Island, Stockholm</div>
 			<div date-start="2017.11.08" date-end="2017.11.09"><a href="http://www.mirafestival.com/en/workshop-mira-2017/">LED mapping and expressive lighting control with ProtoPixel</a>. MIRA, Barcelona</div>
 			<div date-start="2017.09.18" date-end="2017.10.20">Exploring Motion. Hyper Island, Stockholm</div>
 			<div date-start="2017.11.28" date-end="2017.12.23"><a href="https://vimeo.com/226699240">Exploring Technology</a>. Hyper Island, Karlskrona</div>
 			<div date-start="2017.02.17" date-end=""><a href="https://sonarreykjavik.com/en/2017/artists/vj-workshop-with-jonas-johansson">Live visuals</a>. Sónar, Reykjavik</div>
 			<div date-start="2016, 2015, 2014" date-end=""><a href="https://www.youtube.com/watch?v=6htppM1L4Uk">Exploring Technology</a>. Hyper Island, Stockholm</div>
-			<div date-start="2016" date-end=""><a href="https://vimeo.com/209370480">Exploring Technology</a>. Hyper Island, Stockholm</div>
 			<div date-start="2016" date-end="">Tangible Interfaces. Universidad Veritas, San José</div>
 			<div date-start="2016" date-end="">Trojan Gadgets. Royal College of Art, London</div>
 		</section>
@@ -120,6 +118,7 @@
 		</section>
 	</div>
 	<script>
+		let year = new Date().getFullYear();
 		let hours = new Date().getHours();
 		if (hours > 18 || hours < 8){
 			document.documentElement.classList.add('dark');
@@ -138,6 +137,10 @@
 					date.removeAttribute('date-end');
 				}
 			}
+			// let dateYear = parseInt(dateStart.substr(0,4));
+			// if (dateYear < year - 6){
+			// 	date.parentNode.removeChild(date);
+			// }
 		}
 	</script>
 	<script>
