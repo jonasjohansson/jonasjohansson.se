@@ -15,7 +15,7 @@
 		<span>Jonas Johansson 🌹</span>
 		<br>
 		<a href="https://facebook.com/jnsjohansson">Messenger</a>
-		<a href="mailto:j@jonasjohansson.se">Email</a>
+		<a href="mailto:jns.johansson@gmail.com">Email</a>
 		<br>
 		<a href="https://open.spotify.com/user/jns.johansson">Spotify</a>
 		<a href="https://github.com/jonasjohansson/">Github</a>
@@ -55,12 +55,12 @@
 		</div> -->
 	</div>
 	<div id="about">
-		<p>Jonas Johansson (b. 1987) is a Swedish designer exploring art + technology through light, environment and (non)human intervention. Based anywhere.</p>
+		<p>Jonas Johansson (b. 1987) is an anywhere based Swedish designer exploring art + technology through light, environment and (non)human intervention.</p>
 	</div>
 	<div id="resume">
 		<section>
 			<h3>Work</h3>
-			<div date-start="2017.11" date-end=""><a href="http://www.svartljus.se/">Svartljus</a>, Stockholm</div>
+			<!-- <div date-start="2017.11" date-end=""><a href="http://www.svartljus.se/">Svartljus</a>, Stockholm</div> -->
 			<div date-start="2017.08" date-end=""><a href="http://www.beckmans.se/">Beckmans</a>, Stockholm</div>
 			<div date-start="2015.12" date-end="2016.06"><a href="http://www.kramweisshaar.com/">Kram/Weisshaar</a>, Stockholm</div>
 			<div date-start="2014.08" date-end="2015.08"><a href="http://field.io/">Field</a>, London</div>
@@ -123,7 +123,7 @@
 		if (hours > 18 || hours < 8){
 			document.documentElement.classList.add('dark');
 		}
-		let dates = document.querySelectorAll('#resume div');
+		let dates = document.querySelectorAll('div[date-start]');
 		for (let date of dates){
 			let dateStart = date.getAttribute('date-start');
 			let dateEnd = date.getAttribute('date-end');
