@@ -1,83 +1,72 @@
+var body;
+var input; 
+var button;
+var main;
+
+window.onload = ()=>{
+	body = document.body;
+	main = document.createElement('main');
+	input = document.createElement('input');
+	label = document.createElement('label');
+	label.innerHTML = 'https://api.are.na/v2/channels/';
+	input.type = 'text';
+	input.placeholder = 'events-1514642507';
+	button = document.createElement('button');
+	button.addEventListener('click',()=>{
+		if (input.value !== '')
+			read(label.innerHTML+input.value);
+	});
+	body.appendChild(label);
+	body.appendChild(input);
+	body.appendChild(button);
+	body.appendChild(main);
+}
+
 function read(url){
     var request = new XMLHttpRequest();
     request.open('GET', url, true);
     request.onload = function() {
         if (request.status >= 200 && request.status < 400) {
             var data = JSON.parse(request.responseText);
-            displayArchive(data);
+            display(data);
         }
     }
     request.send();
 }
 
-var arr = ["440949","452124","452130","452129","452131","452134","452135","443733"];
-arr.forEach(function(item){
-    read("http://jonasjohansson.dropmark.com/"+item+".json");
-});
+function display(data) {
 
-function displayArchive(data, list) {
+	let channel = document.createElement('div');
+	channel.classList.add('channel');
 
-    if (data.type == "global"){
-        let h2 = document.createElement("h2");
-        let link = createLink(data);
-        var list = document.createElement("ol");
-        h2.appendChild(link);
-        document.body.appendChild(h2);
-        document.body.appendChild(list);
-    }
+	let h2 = document.createElement('h2');
+	h2.innerHTML = data.title;
 
-    data.items.map(item => {
+	channel.appendChild(h2);
 
-        let link = createLink(item);
-        let listitem = document.createElement("li");
-        list.appendChild(listitem);
+	for (content of data.contents){
+		let block = document.createElement('div');
+		block.classList.add('block');
+		let type = content.class.toLowerCase();
+		block.classList.add(type);
+		switch (type){
+			case 'link':
+				let link = document.createElement('a');
+				let img = document.createElement('img');
+				link.href = content.source.url;
+				img.src = content.image.square.url;
+				link.appendChild(img);
+				block.appendChild(link);
+			break;
+			case 'text':
+				block.innerHTML = content.content_html;
+			break;
+		}
+		let span = document.createElement('span');
+		span.innerHTML = content.title;
+		block.appendChild(span);
+		channel.appendChild(block);
+	}
 
-        switch (item.type){
-            case "link":
-            case "audio":
-            case "video":
-            case "image":
-                listitem.appendChild(link);
-                break;
-            case "stack":
-                let h3 = document.createElement("h3");
-                let sublist = document.createElement("ol");
-                h3.appendChild(link);
-                listitem.appendChild(h3);
-                listitem.appendChild(sublist);
-                displayArchive(item, sublist);
-                break;
-        }
-    });
-}
-
-function createLink(item){
-    let link = document.createElement("a");
-    let span = document.createElement("span");
-    link.setAttribute("data-name",item.name);
-    link.setAttribute("data-type",item.type);
-    let name = item.name.replace(/_/g," ");
-    name = name.replace(/%2B/g,"+");
-    name = name.replace(/%26/g,"&");
-    name.toLowerCase();
-    span.textContent = name;
-    link.classList.add(item.type);
-    if (item.type == "stack" || item.type == "global"){
-        link.href = item.short_url;
-    } else {
-        link.href = item.link;
-        if (item.thumbnails){
-            let img = document.createElement("img");
-            img.src = item.thumbnails.small;
-            let tries = 0;
-            img.onerror = function(){
-                if (tries == 0)
-                    img.src = item.thumbnails.cropped;
-                tries++
-            }
-            link.appendChild(img);
-        }
-    }
-    link.appendChild(span);
-    return link;
+	main.appendChild(channel);
 }

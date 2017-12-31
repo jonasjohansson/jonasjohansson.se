@@ -1,38 +1,36 @@
-@import url("http://jonasjohansson.se/assets/reset.css");
+:root {
+	--base:24px;
+	--gutter:6px;
+}
 
 body {
-	padding:1rem;
 	font-size:14px;
 	font-family:'Helvetica',sans-serif;
 	box-sizing:content-box;
-
 }
 
-li, a, span {
+a, span {
 	display:block;
 }
 
-li {
-	width:100%;
-	line-height:24px;
+.channel:after {
+	display:block;
+	content:"";
+	clear:both;
 }
 
-h2 {
-	line-height:48px;
+.block {
+	display:block;
+	float:left;
+	padding:0 var(--gutter);
+	line-height:var(--base);
 }
 
-h2:not(:first-of-type),
-li:not(:first-child) h3 {
-	border-top:1px solid black;
-	padding-top:1rem;
-	margin-top:1rem;
+.block:not(.link){
+	display:none;
 }
 
-p {
-	width:100%;
-}
-
-span {
+.block span {
 	overflow:hidden;
 	white-space:nowrap;
 	position:relative;
@@ -40,48 +38,40 @@ span {
 	overflow-x:hidden;
 }
 
+input {
+	width:200px;
+}
+
 img {
 	width:100%;
-	/*display:none;*/
 }
 
-ol:after {
-	display:block;
-	content:"";
-	clear:both;
-}
-
-li {
-	padding:0 2px;
-}
-
-/* responsive */
-
-@media (min-width:480px) {
-	li {
-		float:left;
-		width:180px;
+@media (min-width:400px) {
+	.block {
+		width:calc( (100%/3) - (var(--gutter)*2));
 	}
 }
 
-@media (max-width:720px) {
-	img {
-		display:none;
+@media (min-width:600px) {
+	.block {
+		width:calc( (100%/4) - (var(--gutter)*2));
 	}
 }
 
-/* links */
-
-a:link {
-	color:black;
-	text-decoration:none;
+@media (min-width:800px) {
+	.block {
+		width:calc( (100%/5) - (var(--gutter)*2));
+	}
 }
 
-a:visited {
-	xcolor:darkslateblue;
+@media (min-width:1000px) {
+	.block {
+		width:calc( (100%/6) - (var(--gutter)*2));
+	}
 }
 
-a:hover {
-	xcolor:pink;
-	text-decoration:underline;
+@media (min-width:1200px) {
+	.block {
+		width:calc( (100%/7) - (var(--gutter)*2));
+	}
 }
