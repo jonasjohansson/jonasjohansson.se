@@ -52,6 +52,10 @@ section:not(:last-child) {
 	display:table;
 }
 
+#about {
+	max-width:600px;
+}
+
 #work {
 	line-height:0;
 }
@@ -97,7 +101,7 @@ section:not(:last-child) {
 
 /* responsive */
 
-@media (min-width:860px) {
+@media (min-width:800px) {
 	#work > * {
 		float:left;
 		width:50%;
