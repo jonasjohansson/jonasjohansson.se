@@ -67,9 +67,12 @@ section:not(:last-child) {
 }
 
 #resume {
+	white-space:nowrap;
+}
+
+#resume div {
 	overflow-x:scroll;
 	overflow-scrolling:touch;
-	white-space:nowrap;
 }
 
 #resume div[date-start]:before {
