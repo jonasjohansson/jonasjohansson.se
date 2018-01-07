@@ -3,7 +3,7 @@
 :root {
 	--base:				24px;
 	--gutter:			12px;
-	--font-family:		'Helvetica Neue',Helvetica,Arial,sans-serif;
+	--font-family:		system-ui,sans-serif;
 	--font-size-body:	21px;
 	--font-size-h3:		13px;
 	--color-primary: 	rgb(160,160,160);
@@ -17,7 +17,7 @@ body {
 	margin:calc(var(--base)*2) auto 0 auto;
 	font-family:var(--font-family);
 	font-size:var(--font-size-body);
-	line-height:1.333;
+	line-height:1.425;
 	box-sizing:border-box;
 }
 
@@ -44,6 +44,17 @@ h3 {
 p:not(:last-child),
 section:not(:last-child) {
 	margin-bottom:var(--base);
+}
+
+nav {
+	float:left;
+	width:50%;
+}
+
+nav a {
+	float:left;
+	clear:left;
+	display:block;
 }
 
 /* sections */
@@ -105,6 +116,9 @@ section:not(:last-child) {
 /* responsive */
 
 @media (min-width:800px) {
+	#intro nav {
+		width:25%;
+	}
 	#work > * {
 		float:left;
 		width:50%;
