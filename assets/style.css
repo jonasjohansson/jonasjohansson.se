@@ -4,7 +4,7 @@
 	--base:				24px;
 	--gutter:			12px;
 	--font-family:		system-ui,sans-serif;
-	--font-size-body:	21px;
+	--font-size-body:	20px;
 	--font-size-h3:		13px;
 	--color-primary: 	rgb(160,160,160);
 	--color-secondary: 	rgb(128,128,128);
@@ -107,11 +107,6 @@ nav a {
 	position:relative;
 	padding-bottom:56.25%;
 }
-
-/*::selection {
-    background:blue;
-    color:white;
-}*/
 
 /* responsive */
 
