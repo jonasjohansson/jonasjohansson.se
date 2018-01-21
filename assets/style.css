@@ -4,8 +4,8 @@
 	--base:				24px;
 	--gutter:			12px;
 	--font-family:		system-ui,sans-serif;
-	--font-size-body:	20px;
-	--font-size-h3:		13px;
+	--font-size-body:	24px;
+	--font-size-h3:		15px;
 	--color-primary: 	rgb(160,160,160);
 	--color-secondary: 	rgb(128,128,128);
 }
@@ -13,11 +13,12 @@
 /* main */
 
 body {
-	padding:0 2.5vw;
+	padding:0 5vw;
 	margin:calc(var(--base)*2) auto 0 auto;
 	font-family:var(--font-family);
 	font-size:var(--font-size-body);
 	line-height:1.425;
+	line-height:1.25;
 	box-sizing:border-box;
 }
 
@@ -39,6 +40,7 @@ h3 {
 	font-size:var(--font-size-h3);
 	letter-spacing:0.075rem;
 	text-transform:uppercase;
+	line-height:var(--base);
 }
 
 p:not(:last-child),
@@ -65,6 +67,7 @@ nav a {
 
 #about {
 	max-width:600px;
+	opacity:0.4;
 }
 
 #work {
