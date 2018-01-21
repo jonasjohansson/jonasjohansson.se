@@ -1,0 +1,101 @@
+@import url("http://jonasjohansson.se/assets/reset.css");
+@import url("http://jonasjohansson.se/assets/style.css");
+
+:root {
+	--font-size:		14px;
+	--gray:				#f9f9f9;
+}
+
+body {
+	font-family:system-ui;
+	font-size:var(--font-size);
+	line-height:var(--base);
+	box-sizing:border-box;
+	padding:0;
+	margin:0;
+}
+
+h1,
+h4 {
+	text-transform:uppercase;
+	font-weight:400;
+}
+
+h1 {
+	font-size:var(--base);
+	line-height:1.2;
+	margin-bottom:var(--base);
+}
+
+h1 a {
+	text-decoration:underline;
+}
+
+h4 {
+	position:absolute;
+	right:0;
+	bottom:0;
+	padding:0 8px;
+	font-size:12px;
+	line-height:var(--base);
+	background-color:var(--gray);
+}
+
+p:not(:last-child),
+section:not(:last-child) {
+	margin-bottom:var(--base);
+}
+
+/* sections */
+
+body > div {
+	padding:var(--base);
+	box-sizing:border-box;
+	margin:0;
+}
+
+#work {
+	background-color:var(--gray);
+}
+
+#work div {
+	position:relative;
+	width:100%;
+	float:none;
+	transition:opacity 600ms ease-in 500ms;
+}
+
+#work div:not(:last-of-type) {
+	margin-bottom:calc(var(--base)*0.5);
+}
+
+/* responsive */
+
+@media (min-width:800px) {
+	body > * {
+		width:50%;
+	}
+	#intro,
+	#resume {
+		float:right;
+		clear:right;
+	}
+	#work {
+		position:fixed;
+		left:0;
+		height:100%;
+		overflow:scroll;
+		-webkit-overflow-scrolling:touch;
+	}
+	#work section {
+		width:100%!important;
+		float:none!important;
+	}
+}
+
+@media (min-width:1200px) {
+	#work section {
+		column-count:2;
+		column-gap:var(--base);
+	}
+}
