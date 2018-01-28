@@ -3,9 +3,9 @@
 :root {
 	--base:				24px;
 	--gutter:			12px;
-	--font-family:		system-ui,sans-serif;
-	--font-size-body:	24px;
-	--font-size-h3:		15px;
+	--font-family:		'standard',system-ui,sans-serif;
+	--font-size-body:	21px;
+	--font-size-h3:		14px;
 	--color-primary: 	rgb(160,160,160);
 	--color-secondary: 	rgb(128,128,128);
 }
@@ -17,8 +17,8 @@ body {
 	margin:calc(var(--base)*2) auto 0 auto;
 	font-family:var(--font-family);
 	font-size:var(--font-size-body);
-	line-height:1.425;
 	line-height:1.25;
+	letter-spacing:0.02em;
 	box-sizing:border-box;
 }
 
@@ -34,6 +34,7 @@ a {
 
 a:hover {
 	text-decoration:none;
+	box-shadow:inset 0 -1px 0 0 var(--color-secondary);
 }
 
 h3 {
@@ -136,4 +137,11 @@ nav a {
 	#work {
 		display:none!important;
 	}
+}
+
+/* import */
+
+@font-face {
+  font-family:'standard';
+  src:url('fonts/Random-Regular.woff2') format('woff2');
 }
