@@ -1,8 +1,8 @@
 @import url("reset.css");
 
 :root {
-	--base:				24px;
-	--gutter:			12px;
+	--base:			24px;
+	--gutter:		12px;
 	--font-family:		'standard',system-ui,sans-serif;
 	--font-size-body:	21px;
 	--font-size-h3:		14px;
@@ -45,13 +45,9 @@ h3 {
 }
 
 p:not(:last-child),
-section:not(:last-child) {
+section:not(:last-child),
+nav:first-of-type {
 	margin-bottom:var(--base);
-}
-
-nav {
-	float:left;
-	width:50%;
 }
 
 nav a {
@@ -82,7 +78,6 @@ nav a {
 
 #resume {
 	white-space:nowrap;
-	column-count:2;
 }
 
 #resume div {
@@ -114,8 +109,18 @@ nav a {
 
 /* responsive */
 
+@media (min-width:600px) {
+	nav {
+		float:left;
+		width:50%;
+	}
+	#resume {
+		column-count:2;
+	}
+}
+
 @media (min-width:800px) {
-	#intro nav {
+	nav {
 		width:25%;
 	}
 	#work > * {
