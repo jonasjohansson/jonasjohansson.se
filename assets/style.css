@@ -114,9 +114,6 @@ nav a {
 		float:left;
 		width:50%;
 	}
-	#resume {
-		column-count:2;
-	}
 }
 
 @media (min-width:800px) {
@@ -147,6 +144,6 @@ nav a {
 /* import */
 
 @font-face {
-  font-family:'standard';
-  src:url('fonts/Random-Regular.woff2') format('woff2');
+	font-family:'standard';
+	src:url('fonts/Random-Regular.woff2') format('woff2');
 }
