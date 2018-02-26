@@ -8,10 +8,9 @@
 	src:url('fonts/Random-Regular.woff2') format('woff2');
 }
 
-
 :root {
-	--base:			24px;
-	--gutter:		12px;
+	--base:				24px;
+	--gutter:			12px;
 	--font-family:		'standard',system-ui,sans-serif;
 	--font-size-body:	21px;
 	--font-size-h3:		14px;
@@ -75,11 +74,14 @@ nav a {
 	max-width:600px;
 }
 
+#work {
+	line-height: 0;
+}
+
 #work > * {
 	position:relative;
 	display:inline-block;
 	width:100%;
-	line-height: 0;
 }
 
 #resume {
@@ -95,18 +97,18 @@ nav a {
 	text-indent:-2px;
 }
 
-#resume div[date-start]:after {
-	float:right;
-	clear:right;
+#resume div[date-start]:before {
+	/*float:right;*/
+	/*clear:right;*/
 	padding-right:var(--gutter);
 	content:attr(date-start);
 	font-family:'Cutive Mono';
 	font-size:var(--base);
-	letter-spacing:-3px;
+	letter-spacing:-4px;
 	color:var(--color-secondary);
 }
 
-#resume div[date-end]:not([date-end=""]):after {
+#resume div[date-end]:not([date-end=""]):before {
 	content:attr(date-start) "-" attr(date-end);
 }
 
