@@ -4,6 +4,10 @@ window.onload = () => {
 	if (hours > 18 || hours < 8){
 		document.documentElement.classList.add('dark');
 	}
+	let divs = document.querySelectorAll('body > div');
+	for (const div of divs){
+		div.style.opacity = 1;
+	}
 	/*let dates = document.querySelectorAll('div[date-start]');
 	for (let date of dates){
 		let dateStart = date.getAttribute('date-start');
