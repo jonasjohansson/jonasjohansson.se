@@ -88,6 +88,7 @@ nav a {
 #resume div[date-start]:before {
 	padding-right:calc(var(--gutter)*2);
 	content:attr(date-start);
+	font-family:'Cutive Mono';
 	font-size:var(--base);
 	letter-spacing:-3px;
 	color:var(--color-secondary);
