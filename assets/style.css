@@ -75,14 +75,11 @@ nav a {
 	max-width:600px;
 }
 
-#work {
-	line-height:0;
-}
-
 #work > * {
 	position:relative;
 	display:inline-block;
 	width:100%;
+	line-height: 0;
 }
 
 #resume {
