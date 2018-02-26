@@ -91,7 +91,7 @@ nav a {
 
 #resume section {
 	overflow-x:scroll;
-	overflow-scrolling:touch;
+	-webkit-overflow-scrolling:touch;
 }
 
 #resume div[date-start]:before {
