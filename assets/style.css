@@ -14,8 +14,8 @@
 	--font-family:		'Source Sans Pro',system-ui,sans-serif;
 	--font-size-body:	21px;
 	--font-size-h3:		14px;
-	--color-primary: 	rgb(160,160,160);
-	--color-secondary: 	rgb(128,128,128);
+	--color-primary: 	rgb(120,120,120);
+	--color-secondary: 	rgb(192,192,192);
 }
 
 /* main */
@@ -64,9 +64,8 @@ nav:first-of-type {
 }
 
 nav a {
-	float:left;
-	clear:left;
-	display:block;
+	display:table;
+	white-space:nowrap;
 }
 
 /* sections */
