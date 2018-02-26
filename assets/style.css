@@ -1,7 +1,7 @@
 
 @import url('reset.css');
 
-@import url('https://fonts.googleapis.com/css?family=Cutive+Mono');
+@import url('https://fonts.googleapis.com/css?family=Source+Code+Pro:300,400|Cutive+Mono');
 
 @font-face {
 	font-family:'standard';
@@ -11,7 +11,7 @@
 :root {
 	--base:				24px;
 	--gutter:			12px;
-	--font-family:		'standard',system-ui,sans-serif;
+	--font-family:		'Source Sans Pro',system-ui,sans-serif;
 	--font-size-body:	21px;
 	--font-size-h3:		14px;
 	--color-primary: 	rgb(160,160,160);
@@ -21,12 +21,13 @@
 /* main */
 
 body {
-	padding:0 5vw;
+	padding:6vw 4vw;
 	margin:calc(var(--base)*2) auto 0 auto;
 	font-family:var(--font-family);
 	font-size:var(--font-size-body);
+	font-weight:300;
 	line-height:1.25;
-	letter-spacing:0.02em;
+	letter-spacing:0.03em;
 	box-sizing:border-box;
 }
 
@@ -47,6 +48,7 @@ a:hover {
 
 h3 {
 	font-size:var(--font-size-h3);
+	font-weight:400;
 	letter-spacing:0.075rem;
 	text-transform:uppercase;
 	line-height:var(--base);
