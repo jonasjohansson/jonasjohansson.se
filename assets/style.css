@@ -144,6 +144,8 @@ nav a {
 
 /* import */
 
+@import url('https://fonts.googleapis.com/css?family=Cutive+Mono');
+
 @font-face {
 	font-family:'standard';
 	src:url('fonts/Random-Regular.woff2') format('woff2');
