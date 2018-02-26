@@ -1,4 +1,13 @@
-@import url("reset.css");
+
+@import url('reset.css');
+
+@import url('https://fonts.googleapis.com/css?family=Cutive+Mono');
+
+@font-face {
+	font-family:'standard';
+	src:url('fonts/Random-Regular.woff2') format('woff2');
+}
+
 
 :root {
 	--base:			24px;
@@ -142,13 +151,4 @@ nav a {
 	#work {
 		display:none!important;
 	}
-}
-
-/* import */
-
-@import url('https://fonts.googleapis.com/css?family=Cutive+Mono');
-
-@font-face {
-	font-family:'standard';
-	src:url('fonts/Random-Regular.woff2') format('woff2');
 }
