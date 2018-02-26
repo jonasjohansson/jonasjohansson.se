@@ -89,7 +89,7 @@ nav a {
 	padding-right:calc(var(--base)/4);
 	content:attr(date-start);
 	color:var(--color-secondary);
-	font-variant-numeric:tabular-nums lining-nums;
+	font-variant-numeric:tabular-nums;
 }
 
 #resume div[date-end]:not([date-end=""]):before {
