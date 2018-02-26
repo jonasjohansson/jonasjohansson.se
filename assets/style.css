@@ -94,8 +94,12 @@ nav a {
 	-webkit-overflow-scrolling:touch;
 }
 
+#resume section div {
+	text-indent:-2px;
+}
+
 #resume div[date-start]:before {
-	padding-right:calc(var(--gutter)*2);
+	padding-right:var(--gutter);
 	content:attr(date-start);
 	font-family:'Cutive Mono';
 	font-size:var(--base);
