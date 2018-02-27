@@ -27,10 +27,6 @@ h1 {
 	margin-bottom:var(--base);
 }
 
-h1 a {
-	text-decoration:underline;
-}
-
 h4 {
 	position:absolute;
 	right:0;
