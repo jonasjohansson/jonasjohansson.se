@@ -1,5 +1,3 @@
-@import url("reset.css");
-
 :root {
 	--base:				24px;
 	--gutter:			12px;
@@ -17,7 +15,6 @@ body {
 	margin:calc(var(--base)*2) auto 0 auto;
 	font-family:var(--font-family);
 	font-size:var(--font-size-body);
-	line-height:1.425;
 	line-height:1.25;
 	box-sizing:border-box;
 }
