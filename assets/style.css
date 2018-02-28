@@ -74,10 +74,6 @@ nav a {
 	display:table;
 }
 
-#intro p {
-	max-width:600px;
-}
-
 #work {
 	line-height: 0;
 }
@@ -138,6 +134,9 @@ nav a {
 @media (min-width:800px) {
 	nav {
 		width:25%;
+	}
+	#intro {
+		width:50%;
 	}
 	#work > * {
 		float:left;
