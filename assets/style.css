@@ -15,8 +15,6 @@
 	--font-size-body:	20px;
 	--font-size-mono: 	23px;
 	--font-size-h3:		14px;
-	--color-primary: 	rgb(120,120,120);
-	--color-secondary: 	rgb(192,192,192);
 }
 
 /* main */
@@ -42,7 +40,7 @@ body > div {
 }
 
 a {
-	color:var(--color-primary);
+	color:rgba(127,127,127,1);
 }
 
 a:hover {
@@ -70,12 +68,18 @@ nav a {
 
 /* sections */
 
+#intro {
+	background-image:-webkit-gradient(linear, left top, right top, color-stop(0, #f22), color-stop(0.15, #f2f), color-stop(0.3, #22f), color-stop(0.45, #2ff), color-stop(0.6, #2f2),color-stop(0.75, #2f2), color-stop(0.9, #ff2), color-stop(1, #f22));
+	color:transparent;
+	-webkit-background-clip:text;
+}
+
 #intro > * {
 	display:table;
 }
 
 #work {
-	line-height: 0;
+	line-height:0;
 }
 
 #work > * {
@@ -94,7 +98,6 @@ nav a {
 	font-family:'Cutive Mono';
 	font-size:var(--font-size-mono);
 	letter-spacing:-0.4rem;
-	color:var(--color-secondary);
 }
 
 #resume div[date-end]:not([date-end=""]):before {
