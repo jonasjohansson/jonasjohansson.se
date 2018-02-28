@@ -12,7 +12,8 @@
 	--base:				24px;
 	--gutter:			12px;
 	--font-family:		'Source Sans Pro',system-ui,sans-serif;
-	--font-size-body:	21px;
+	--font-size-body:	20px;
+	--font-size-mono: 	23px;
 	--font-size-h3:		14px;
 	--color-primary: 	rgb(120,120,120);
 	--color-secondary: 	rgb(192,192,192);
@@ -26,8 +27,8 @@ body {
 	font-family:var(--font-family);
 	font-size:var(--font-size-body);
 	font-weight:300;
-	line-height:1.25;
-	letter-spacing:0.03em;
+	line-height:var(--base);
+	letter-spacing:0.04em;
 	box-sizing:border-box;
 }
 
@@ -46,7 +47,7 @@ a {
 
 a:hover {
 	text-decoration:none;
-	box-shadow:inset 0 -1px 0 0 var(--color-secondary);
+	/*box-shadow:inset 0 -1px 0 0 var(--color-secondary);*/
 }
 
 h3 {
@@ -88,9 +89,6 @@ nav a {
 	width:100%;
 }
 
-#resume {
-}
-
 #resume section {
 	overflow-x:scroll;
 	-webkit-overflow-scrolling:touch;
@@ -101,11 +99,10 @@ nav a {
 }
 
 #resume div[date-start]:before {
-	/*padding-right:var(--gutter);*/
 	content:attr(date-start);
 	font-family:'Cutive Mono';
-	font-size:var(--base);
-	letter-spacing:-4px;
+	font-size:var(--font-size-mono);
+	letter-spacing:-0.4rem;
 	color:var(--color-secondary);
 }
 
@@ -126,6 +123,15 @@ nav a {
 }
 
 /* responsive */
+
+@media (max-width:800px) {
+	#resume {
+		white-space:nowrap;
+	}
+	#resume div[date-start]:before {
+		padding-right:var(--gutter);
+	}
+}
 
 @media (min-width:600px) {
 	nav {
