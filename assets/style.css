@@ -47,7 +47,6 @@ a {
 
 a:hover {
 	text-decoration:none;
-	/*box-shadow:inset 0 -1px 0 0 var(--color-secondary);*/
 }
 
 h3 {
@@ -92,10 +91,6 @@ nav a {
 #resume section {
 	overflow-x:scroll;
 	-webkit-overflow-scrolling:touch;
-}
-
-#resume section div {
-	/*text-indent:-2px;*/
 }
 
 #resume div[date-start]:before {
