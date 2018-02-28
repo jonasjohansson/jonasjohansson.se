@@ -89,7 +89,6 @@ nav a {
 }
 
 #resume {
-	white-space:nowrap;
 }
 
 #resume section {
@@ -98,13 +97,11 @@ nav a {
 }
 
 #resume section div {
-	text-indent:-2px;
+	/*text-indent:-2px;*/
 }
 
 #resume div[date-start]:before {
-	/*float:right;*/
-	/*clear:right;*/
-	padding-right:var(--gutter);
+	/*padding-right:var(--gutter);*/
 	content:attr(date-start);
 	font-family:'Cutive Mono';
 	font-size:var(--base);
@@ -152,6 +149,13 @@ nav a {
 	}
 	.video {
 		padding-bottom:28.125%;
+	}
+	#resume div {
+		clear:right;
+	}
+	#resume div:before {
+		float:right;
+		margin-right:2px;
 	}
 }
 
