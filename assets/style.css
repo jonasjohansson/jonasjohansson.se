@@ -89,7 +89,7 @@ nav a {
 
 #resume section:not(:last-child) {
 	padding-bottom:var(--base);
-	border-bottom:1px solid rgb(127,127,127);
+	border-bottom:1px solid rgba(127,127,127,0.25);
 }
 
 #resume div[date-start]:before {
@@ -137,9 +137,7 @@ nav a {
 	nav {
 		width:25%;
 	}
-	#intro {
-		width:50%;
-	}
+	#intro,
 	#work > * {
 		float:left;
 		width:50%;
