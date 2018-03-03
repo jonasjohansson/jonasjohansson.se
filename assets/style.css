@@ -110,10 +110,6 @@ nav a {
 	color:white;
 }
 
-.dark #resume section:not(:last-child) {
-	border-bottom-color:white;
-}
-
 .video {
 	position:relative;
 	padding-bottom:56.25%;
