@@ -20,7 +20,7 @@
 /* main */
 
 body {
-	padding:6vw 4vw;
+	padding:0 4vw;
 	margin:calc(var(--base)*2) auto 0 auto;
 	font-family:var(--font-family);
 	font-size:var(--font-size-body);
