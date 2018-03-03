@@ -89,7 +89,7 @@ nav a {
 
 #resume section:not(:last-child) {
 	padding-bottom:var(--base);
-	border-bottom:1px solid black;
+	border-bottom:1px solid rgb(127,127,127);
 }
 
 #resume div[date-start]:before {
