@@ -32,7 +32,7 @@ body {
 
 body > div {
 	position:relative;
-	overflow:hidden;
+	/*overflow:hidden;*/
 	margin-bottom:calc(var(--base)*2);
 	opacity:0;
 	will-change:transition;
@@ -68,7 +68,7 @@ nav a {
 
 /* sections */
 
-#intro > * {
+#contact > * {
 	display:table;
 }
 
@@ -126,26 +126,21 @@ nav a {
 	}
 }
 
-@media (min-width:600px) {
-	nav {
-		float:left;
-		width:50%;
-	}
+@media (min-width:600px) and (max-width:799px) {
 }
 
 @media (min-width:800px) {
-	nav {
-		width:25%;
-	}
 	#intro {
-		padding-right:var(--gutter);
-		box-sizing:border:box;
+		padding-right:var(--base);
+		box-sizing:border-box;
 	}
 	#intro,
+	#contact,
 	#work > * {
 		float:left;
 		width:50%;
 	}
+	#contact:after,
 	#work > *:last-child:after {
 		display:block;
 		clear:both;
