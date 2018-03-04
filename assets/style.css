@@ -137,6 +137,10 @@ nav a {
 	nav {
 		width:25%;
 	}
+	#intro {
+		padding-right:var(--gutter);
+		box-sizing:border:box;
+	}
 	#intro,
 	#work > * {
 		float:left;
