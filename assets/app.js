@@ -1,7 +1,7 @@
 window.onload = () => {
 	let year = new Date().getFullYear();
 	let hours = new Date().getHours();
-	if (hours > 18 || hours < 8){
+	if (hours > 20 || hours < 6){
 		document.documentElement.classList.add('dark');
 	}
 	let divs = document.querySelectorAll('body > div');
