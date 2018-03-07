@@ -1,23 +1,22 @@
 
 @import url('reset.css');
-@import url('https://fonts.googleapis.com/css?family=Roboto+Mono:300,400');
 
 :root {
 	--base:				24px;
-	--font-family:		'Helvetica Neue',system-ui,sans-serif;
-	--font-size-body:	20px;
-	--font-size-h3:		14px;
+	--font-family:		'Helvetica Neue','Helvetica',sans-serif;
+	--font-size-body:	18px;
+	--font-size-small:	14px;
 }
 
 /* main */
 
 body {
-	padding:2vw 6.5vw;
-	margin:calc(var(--base)*2) auto 0 auto;
+	padding:10vw 6vw;
+	margin:0 auto;
 	font-family:var(--font-family);
 	font-size:var(--font-size-body);
-	line-height:var(--base);
-	letter-spacing:0.04em;
+	line-height:1.325em;
+	letter-spacing:0.03em;
 	box-sizing:border-box;
 }
 
@@ -38,9 +37,8 @@ a:hover {
 }
 
 h3 {
-	font-size:var(--font-size-h3);
-	font-weight:600;
-	letter-spacing:0.075rem;
+	font-size:var(--font-size-small);
+	font-weight:400;
 	text-transform:uppercase;
 	line-height:var(--base);
 }
@@ -63,6 +61,7 @@ nav a {
 }
 
 #work {
+	display:none;
 	line-height:0;
 }
 
@@ -70,6 +69,10 @@ nav a {
 	position:relative;
 	display:inline-block;
 	width:100%;
+}
+
+#resume {
+	font-size:var(--font-size-small);
 }
 
 #resume section {
@@ -84,8 +87,6 @@ nav a {
 
 #resume div[date-start]:before {
 	content:attr(date-start);
-	font-family:'Roboto Mono';
-	font-size:var(--font-size-body);
 }
 
 #resume div[date-end]:not([date-end=""]):before {
@@ -111,7 +112,7 @@ nav a {
 		white-space:nowrap;
 	}
 	#resume div[date-start]:before {
-		padding-right:calc(var(--base)/2);
+		padding-right:1rem;
 	}
 }
 
