@@ -4,7 +4,6 @@
 
 :root {
 	--base:				24px;
-	--gutter:			12px;
 	--font-family:		'Helvetica Neue',system-ui,sans-serif;
 	--font-size-body:	20px;
 	--font-size-h3:		14px;
@@ -112,7 +111,7 @@ nav a {
 		white-space:nowrap;
 	}
 	#resume div[date-start]:before {
-		padding-right:var(--gutter);
+		padding-right:calc(var(--base)/2);
 	}
 }
 
