@@ -85,6 +85,11 @@ nav a {
 	border-bottom:1px solid rgba(127,127,127,0.25);
 }
 
+#resume section:first-child {
+	padding-top:var(--base);
+	border-top:1px solid rgba(127,127,127,0.25);
+}
+
 #resume div[date-start]:before {
 	content:attr(date-start);
 }
