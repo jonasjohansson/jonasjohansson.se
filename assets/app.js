@@ -1,9 +1,9 @@
 window.onload = () => {
-	let year = new Date().getFullYear();
-	let hours = new Date().getHours();
-	if (hours > 20 || hours < 6){
-		document.documentElement.classList.add('dark');
-	}
+	// let year = new Date().getFullYear();
+	// let hours = new Date().getHours();
+	// if (hours > 20 || hours < 6){
+	// 	document.documentElement.classList.add('dark');
+	// }
 	let divs = document.querySelectorAll('body > div');
 	for (const div of divs){
 		div.style.opacity = 1;

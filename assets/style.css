@@ -18,6 +18,8 @@ body {
 	line-height:1.325em;
 	letter-spacing:0.03em;
 	box-sizing:border-box;
+	background-color:#ccc;
+	color:black;
 }
 
 body > div {
@@ -75,18 +77,20 @@ nav a {
 }
 
 #resume section {
+	border-color:rgba(127,127,127,0.5);
+	border-style:solid;
 	overflow-x:scroll;
 	-webkit-overflow-scrolling:touch;
 }
 
 #resume section:not(:last-child) {
 	padding-bottom:var(--base);
-	border-bottom:1px solid rgba(127,127,127,0.25);
+	border-bottom-width:1px;
 }
 
 #resume section:first-child {
 	padding-top:var(--base);
-	border-top:1px solid rgba(127,127,127,0.25);
+	border-top-width:1px;
 }
 
 #resume div[date-start]:before {
@@ -99,10 +103,10 @@ nav a {
 
 /* special */
 
-.dark {
+/*.dark {
 	background-color:black;
 	color:white;
-}
+}*/
 
 .video {
 	position:relative;
