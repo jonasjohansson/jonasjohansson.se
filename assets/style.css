@@ -2,7 +2,7 @@
 @import url('reset.css');
 
 :root {
-	--base:				22px;
+	--base:			22px;
 	--font-family:		'Helvetica Neue','Helvetica',sans-serif;
 	--font-size-body:	18px;
 	--font-size-small:	15px;
@@ -18,8 +18,8 @@ body {
 	line-height:1.325em;
 	letter-spacing:0.03em;
 	box-sizing:border-box;
-	background-color:#f2f2f2; /* #f2f2f2, #36004f */
-	color:#111;
+	background-color:rgb(242,242,242);
+	color:rgb(4,4,4);
 }
 
 body > div {
@@ -77,7 +77,7 @@ nav a {
 }
 
 #resume section {
-	border-color:#d3d4db; /* #1b1b54, rgba(127,127,127,0.5) */
+	border-color:rgb(212,212,212);
 	border-style:solid;
 	overflow-x:scroll;
 	-webkit-overflow-scrolling:touch;
