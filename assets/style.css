@@ -2,9 +2,9 @@
 @import url('reset.css');
 
 :root {
-	--base:			22px;
+	--base:				22px;
 	--font-family:		'Helvetica Neue','Helvetica',sans-serif;
-	--font-size-body:	18px;
+	--font-size-body:	22px;
 	--font-size-small:	15px;
 }
 
