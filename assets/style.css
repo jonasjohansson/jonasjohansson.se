@@ -4,8 +4,8 @@
 :root {
 	--base:				22px;
 	--font-family:		'Helvetica Neue','Helvetica',sans-serif;
-	--font-size-body:	22px;
-	--font-size-small:	15px;
+	--font-size-body:	20px;
+	--font-size-small:	16px;
 }
 
 /* main */
@@ -16,7 +16,7 @@ body {
 	font-family:var(--font-family);
 	font-size:var(--font-size-body);
 	line-height:1.325em;
-	letter-spacing:0.03em;
+	letter-spacing:0.02em;
 	box-sizing:border-box;
 	background-color:rgb(242,242,242);
 	color:rgb(4,4,4);
@@ -120,7 +120,7 @@ nav a {
 		white-space:nowrap;
 	}
 	#resume div[date-start]:before {
-		padding-right:1rem;
+		padding-right:0.5rem;
 	}
 }
 
