@@ -8,18 +8,18 @@ window.onload = () => {
 	for (const div of divs){
 		div.style.opacity = 1;
 	}
-	let dates = document.querySelectorAll('div[date-start]');
+	let dates = document.querySelectorAll('div[data-date-start]');
 	for (let date of dates){
-		let dateStart = date.getAttribute('date-start');
-		let dateEnd = date.getAttribute('date-end');
+		let dateStart = date.getAttribute('data-date-start');
+		let dateEnd = date.getAttribute('data-date-end');
 		if (dateStart != null){
-			date.setAttribute('date-start',dateStart.substr(0,4));
+			date.setAttribute('data-date-start',dateStart.substr(0,4));
 		}
 		if (dateEnd != null){
 			if (dateEnd.length <= 4 && dateEnd.length > 0){
-				date.setAttribute('date-end',dateEnd.substr(0,4));
+				date.setAttribute('data-date-end',dateEnd.substr(0,4));
 			} else {
-				date.removeAttribute('date-end');
+				date.removeAttribute('data-date-end');
 			}
 		}
 		// let dateYear = parseInt(dateStart.substr(0,4));
