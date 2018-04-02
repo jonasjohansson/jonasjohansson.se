@@ -11,7 +11,7 @@
 /* main */
 
 body {
-	padding:10vw 6vw;
+	padding:10vw 6vw 10vw 2vw;
 	margin:0 auto;
 	font-family:var(--font-family);
 	font-size:var(--font-size-body);
