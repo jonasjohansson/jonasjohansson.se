@@ -47,7 +47,7 @@ h3 {
 
 p:not(:last-child),
 section:not(:last-child),
-nav:first-of-type {
+nav:not(:last-of-type) {
 	margin-bottom:var(--base);
 }
 
@@ -94,11 +94,11 @@ nav a {
 }
 
 #resume div[data-date-start]:before {
-	content:attr(date-start);
+	content:attr(data-date-start);
 }
 
 #resume div[data-date-end]:not([data-date-end=""]):before {
-	content:attr(date-start) "-" attr(date-end);
+	content:attr(data-date-start) "-" attr(data-date-end);
 }
 
 /* special */
