@@ -11,14 +11,14 @@
 /* main */
 
 body {
-	padding:10vw 6vw 10vw 2vw;
+	padding:10vw 6vw 0 6vw;
 	margin:0 auto;
 	font-family:var(--font-family);
 	font-size:var(--font-size-body);
 	line-height:1.325em;
 	letter-spacing:0.02em;
 	box-sizing:border-box;
-	background-color:rgb(246,246,246);
+	background-color:rgb(250,250,250);
 	color:rgb(4,4,4);
 }
 
