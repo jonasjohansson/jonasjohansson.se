@@ -7,14 +7,14 @@
 	/*--font-family:		'Helvetica Neue','Helvetica',sans-serif;*/
 	/*--font-family: 		-apple-system, sans-serif;*/
 	--font-family: 		'Favorit';
-	--font-size-body:	22px;
-	--font-size-small:	16px;
+	--font-size-body:	24px;
+	--font-size-small:	18px;
 }
 
 /* main */
 
 body {
-	padding:20vw 6vw 0 6vw;
+	padding:14vw 6vw 0 6vw;
 	margin:0 auto;
 	font-family:var(--font-family);
 	font-size:var(--font-size-body);
@@ -107,10 +107,10 @@ nav a {
 
 /* special */
 
-/*.dark {
+.dark {
 	background-color:black;
 	color:white;
-}*/
+}
 
 .video {
 	position:relative;
@@ -132,9 +132,10 @@ nav a {
 	#intro {
 		padding-right:calc(var(--base)*2);
 		box-sizing:border-box;
+		max-width:60%;
 	}
-	#intro,
-	#contact,
+	/*#intro,*/
+	/*#contact,*/
 	#work > * {
 		float:left;
 		width:50%;
