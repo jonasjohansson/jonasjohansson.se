@@ -18,10 +18,10 @@ body {
 	margin:0 auto;
 	font-family:var(--font-family);
 	font-size:var(--font-size-body);
-	line-height:1.3rem;
+	line-height:1.3em;
 	/*letter-spacing:0.02em;*/
 	box-sizing:border-box;
-	background-color:rgb(252,252,252);
+	background-color:rgb(251,251,251);
 	color:rgb(4,4,4);
 }
 
