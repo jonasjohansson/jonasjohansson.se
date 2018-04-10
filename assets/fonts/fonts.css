@@ -1,0 +1,10 @@
+@font-face {
+	font-family: 'Favorit';
+	src: url('Favorit-Regular.eot');
+	src: url('Favorit-Regular.eot?#iefix') format('embedded-opentype'),
+		url('Favorit-Regular.woff2') format('woff2'),
+		url('Favorit-Regular.woff') format('woff'),
+		url('Favorit-Regular.ttf') format('truetype');
+	font-weight: normal;
+	font-style: normal;
+}
