@@ -21,7 +21,8 @@ body {
 	line-height:1.3em;
 	/*letter-spacing:0.02em;*/
 	box-sizing:border-box;
-	background-color:rgb(251,251,251);
+	/*background-color:rgb(251,251,251);*/
+	background-color:rgb(195,195,195);
 	color:rgb(4,4,4);
 }
 
