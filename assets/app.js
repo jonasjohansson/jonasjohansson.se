@@ -1,4 +1,4 @@
-window.onload = () => {
+window.addEventListener('load', () => {
 	let year = new Date().getFullYear();
 	let hours = new Date().getHours();
 	if (hours > 22 || hours < 6){
@@ -30,4 +30,4 @@ window.onload = () => {
 	})(window,document,'script','https://www.google-analytics.com/analytics.js','ga');
 	ga('create','UA-4374117-1','auto');
 	ga('send','pageview');
-}
+});
