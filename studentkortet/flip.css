@@ -1,0 +1,44 @@
+body {
+    margin: 0px;
+    -webkit-user-select: none;
+    background-color: #353535;
+}
+
+img {
+	display:block;
+	width:100%;
+}
+ 
+#container {
+	position:relative;
+   	width:100%;
+   	height:100%;
+    -webkit-tap-highlight-color: rgba(0,0,0,0);
+    -webkit-perspective: 600;
+}
+ 
+.card {
+    position: absolute;
+    width:100%;
+    height:100%;
+    -webkit-transform-style: preserve-3d;
+    -webkit-transition-property: -webkit-transform;
+    -webkit-transition-duration: 400ms;
+}
+ 
+.card.flipped {
+    -webkit-transform: rotateY(180deg);
+}
+ 
+.face {
+    position: absolute;
+    width:100%;
+    height:100%;
+    -webkit-border-radius: 10px;
+    -webkit-box-shadow: 0px 2px 6px rgba(0, 0, 0, 0.5);
+    -webkit-backface-visibility: hidden;
+}
+
+.back {
+    -webkit-transform: rotateY(180deg);
+}
