@@ -7,7 +7,6 @@
 	--font-size-small:	18px;
 }
 
-
 /* body */
 
 body {
@@ -24,7 +23,8 @@ body:not(.loaded) > div{
 }
 
 body:not(.dark){
-	background-color:rgb(195,195,195);
+	/*background-color:rgb(195,195,195);*/
+	background-color:rgb(255,255,255);
 	color:rgb(4,4,4);
 }
 
