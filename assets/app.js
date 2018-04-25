@@ -1,9 +1,8 @@
 window.addEventListener('load', () => {
-	// updateBackground();
 	let year = new Date().getFullYear();
 	// let hours = new Date().getHours();
 	// if (hours > 22 || hours < 6){
-	// 	document.body.classList.add('dark');
+	// 	document.documentElement.classList.add('dark');
 	// }
 	document.body.classList.add('loaded');
 	let dates = document.querySelectorAll('div[data-date-start]');
@@ -32,15 +31,3 @@ window.addEventListener('load', () => {
 	ga('create','UA-4374117-1','auto');
 	ga('send','pageview');
 });
-
-window.addEventListener('scroll', () => {
-	// updateBackground();
-});
-
-const updateBackground = () => {
-	let col = 196;
-	let val = window.pageYOffset / document.body.clientHeight;
-	val = col+(val*col);
-	val = Math.round(val);
-	document.body.style.backgroundColor = `rgb(${val},${val},${val})`;
-}
