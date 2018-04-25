@@ -16,6 +16,7 @@ body {
 	font-size:var(--font-size-body);
 	line-height:1.3em;
 	box-sizing:border-box;
+	background: linear-gradient(rgb(196,196,196),rgb(255,255,255));
 }
 
 body:not(.loaded) > div{
