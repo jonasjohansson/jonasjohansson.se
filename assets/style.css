@@ -170,10 +170,10 @@ nav a {
 /* import */
 
 @font-face {
-    font-family:'MaisonNeue-Book';
-    src:url('fonts/MaisonNeue-Book.woff2') format('woff2');
-    font-weight:normal;
-    font-style:normal;
+	font-family:'MaisonNeue-Book';
+	src:url('fonts/MaisonNeue-Book.woff2') format('woff2');
+	font-weight:normal;
+	font-style:normal;
 }
 
 @font-face {
