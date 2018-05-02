@@ -2,7 +2,7 @@
 
 :root {
 	--base:				24px;
-	--font-family: 		'MaisonNeue-Book','InterUI-Regular',sans-serif;
+	--font-family: 		'MaisonNeue-Book',system-ui,-apple-system;
 	--font-size-body:	22px;
 	--font-size-small:	18px;
 }
@@ -172,13 +172,6 @@ nav a {
 @font-face {
 	font-family:'MaisonNeue-Book';
 	src:url('fonts/MaisonNeue-Book.woff2') format('woff2');
-	font-weight:normal;
-	font-style:normal;
-}
-
-@font-face {
-	font-family:'InterUI-Regular';
-	src:url('fonts/InterUI-Regular.woff2') format('woff2');
 	font-weight:normal;
 	font-style:normal;
 }
