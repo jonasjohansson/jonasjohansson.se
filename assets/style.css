@@ -82,6 +82,22 @@ nav a {
 	width:100%;
 }
 
+#work > *:hover:after {
+	position:absolute;
+	top:0;
+	left:0;
+	background-color:var(--color-dark);
+	padding:calc(var(--base)/4) calc(var(--base)/2);
+	box-sizing:border-box;
+	color:var(--color-light);
+	pointer-events:none;
+	content:attr(title) '\a' attr(data-description);
+	display:block;
+	white-space:pre;
+	font-size:11px;
+	line-height:var(--base);
+}
+
 #resume {
 	font-size:var(--font-size-small);
 }
