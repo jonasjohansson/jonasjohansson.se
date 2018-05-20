@@ -1,17 +1,24 @@
 @import url('https://rawgit.com/jonasjohansson/template/master/reset.css');
 
 :root {
-	--base:				24px;
-	--font-family: 		'MaisonNeue-Book',system-ui,-apple-system;
-	--font-size-body:	22px;
-	--font-size-small:	18px;
+	--base:24px;
+	--font-family:'MaisonNeue-Book',system-ui,-apple-system;
+	--font-size-body:22px;
+	--font-size-small:18px;
+	--color-dark:rgb(8,8,8);
+	--color-light:rgb(208,208,208);
 }
 
 /* html */
 
-html {
-	background-color:rgb(208,208,208);
-	color:rgb(8,8,8);
+html:not(.dark) {
+	background-color:var(--color-light);
+	color:var(--color-dark);
+}
+
+html.dark {
+	background-color:var(--color-dark);
+	color:var(--color-light);
 }
 
 /* body */
@@ -101,12 +108,12 @@ nav a {
 	border-top-width:1px;
 }
 
-#resume div[data-date-start]:before {
-	content:attr(data-date-start);
+#resume div[data-start]:before {
+	content:attr(data-start);
 }
 
-#resume div[data-date-end]:not([data-date-end=""]):before {
-	content:attr(data-date-start) "-" attr(data-date-end);
+#resume div[data-end]:not([data-end=""]):before {
+	content:attr(data-start) "-" attr(data-end);
 }
 
 /* special */
@@ -122,7 +129,7 @@ nav a {
 	#resume {
 		white-space:nowrap;
 	}
-	#resume div[data-date-start]:before {
+	#resume div[data-start]:before {
 		padding-right:0.5rem;
 	}
 }

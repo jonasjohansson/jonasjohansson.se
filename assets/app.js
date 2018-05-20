@@ -1,22 +1,22 @@
 window.addEventListener('load', () => {
 	let year = new Date().getFullYear();
-	// let hours = new Date().getHours();
-	// if (hours > 22 || hours < 6){
-	// 	document.documentElement.classList.add('dark');
-	// }
+	let hours = new Date().getHours();
+	if (hours > 22 || hours < 6){
+		document.documentElement.classList.add('dark');
+	}
 	document.body.classList.add('loaded');
-	let dates = document.querySelectorAll('div[data-date-start]');
+	let dates = document.querySelectorAll('div[data-start]');
 	for (let date of dates){
-		let dateStart = date.getAttribute('data-date-start');
-		let dateEnd = date.getAttribute('data-date-end');
+		let dateStart = date.getAttribute('data-start');
+		let dateEnd = date.getAttribute('data-end');
 		if (dateStart != null){
-			date.setAttribute('data-date-start',dateStart.substr(0,4));
+			date.setAttribute('data-start',dateStart.substr(0,4));
 		}
 		if (dateEnd != null){
 			if (dateEnd.length <= 4 && dateEnd.length > 0){
-				date.setAttribute('data-date-end',dateEnd.substr(0,4));
+				date.setAttribute('data-end',dateEnd.substr(0,4));
 			} else {
-				date.removeAttribute('data-date-end');
+				date.removeAttribute('data-end');
 			}
 		}
 		// let dateYear = parseInt(dateStart.substr(0,4));
