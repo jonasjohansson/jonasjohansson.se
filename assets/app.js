@@ -5,7 +5,7 @@ window.addEventListener('load', () => {
 		document.documentElement.classList.add('dark');
 	}
 	document.body.classList.add('loaded');
-	let dates = document.querySelectorAll('div[data-start]');
+	let dates = document.querySelectorAll('[data-start]');
 	for (let date of dates){
 		let dateStart = date.getAttribute('data-start');
 		let dateEnd = date.getAttribute('data-end');
