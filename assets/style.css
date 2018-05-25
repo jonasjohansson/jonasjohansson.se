@@ -6,15 +6,17 @@
 	--font-size-body:22px;
 	--font-size-small:18px;
 	--color-dark:rgb(8,8,8);
+	--color-link:rgb(159,159,159);
 	--color-light:rgb(208,208,208);
-	--video-padding:56.275%;
+	--color-lighter:rgb(247,247,247);
+	--video-padding:56.3%;
 }
 
 html {
 	font-family:var(--font-family);
 	font-size:var(--font-size-body);
 	background-color:var(--color-light);
-	color:var(--color-dark);
+	color:var(--color-lighter);
 }
 
 body {
@@ -29,7 +31,7 @@ body:not(.loaded) > section {
 }
 
 a {
-	color:rgb(96,96,96);
+	color:var(--color-link);
 }
 
 a:hover {
