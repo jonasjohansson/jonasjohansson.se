@@ -85,7 +85,7 @@ section {
 }
 
 #resume > div {
-	border-color:rgba(0,0,0,0.25);
+	border-color:var(--color-link);
 	border-style:solid;
 	overflow-x:scroll;
 	-webkit-overflow-scrolling:touch;
