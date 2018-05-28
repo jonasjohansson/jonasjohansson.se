@@ -20,7 +20,8 @@ html {
 }
 
 body {
-	padding:12vw 6vw 0 6vw;
+	min-width:480px;
+	padding:9vw 6vw 0 6vw;
 	margin:0 auto;
 	line-height:1.3em;
 	box-sizing:border-box;
@@ -129,7 +130,7 @@ section {
 
 @media (min-width:800px) {
 	body {
-		font-size:calc(var(--font-size-body)*2);
+		font-size:calc(var(--font-size-body)*1.25);
 	}
 	#intro {
 		padding-right:calc(var(--base)*2);
