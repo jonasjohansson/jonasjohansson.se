@@ -6,6 +6,7 @@
 	--font-size-body:22px;
 	--font-size-small:18px;
 	--color-dark:rgb(8,8,8);
+	--color-border:rgb(180,180,180);
 	--color-link:rgb(159,159,159);
 	--color-light:rgb(208,208,208);
 	--color-lighter:rgb(247,247,247);
@@ -86,7 +87,7 @@ section {
 }
 
 #resume > div {
-	border-color:var(--color-link);
+	border-color:var(--color-border);
 	border-style:solid;
 	overflow-x:scroll;
 	-webkit-overflow-scrolling:touch;
@@ -129,8 +130,15 @@ section {
 /* on large */
 
 @media (min-width:800px) {
-	body {
-		font-size:calc(var(--font-size-body)*1.25);
+	#intro,
+	#contact {
+		float:left;
+		width:50%;
+	}
+	#contact:after {
+		content:"";
+		display:block;
+		clear:left;
 	}
 	#intro {
 		padding-right:calc(var(--base)*2);
