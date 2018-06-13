@@ -3,10 +3,10 @@
 :root {
 	--base:24px;
 	--font-family:'MaisonNeue-Book',system-ui,-apple-system;
-	--font-size-body:22px;
+	--font-size-body:20px;
 	--font-size-small:18px;
 	--color-dark:rgb(8,8,8);
-	--color-border:rgb(180,180,180);
+	--color-border:rgb(194,194,194);
 	--color-link:rgb(159,159,159);
 	--color-light:rgb(208,208,208);
 	--color-lighter:rgb(247,247,247);
@@ -24,7 +24,7 @@ body {
 	min-width:480px;
 	padding:9vw 6vw 0 6vw;
 	margin:0 auto;
-	line-height:1.3em;
+	line-height:var(--base);
 	box-sizing:border-box;
 }
 
@@ -120,7 +120,7 @@ section {
 		white-space:nowrap;
 	}
 	[data-start]:before {
-		padding-right:0.5rem;
+		padding-right:0.4rem;
 	}
 	.video {
 		padding-bottom:var(--video-padding);
