@@ -4,10 +4,10 @@
 	--base:24px;
 	--font-family:'MaisonNeue-Book',system-ui,-apple-system;
 	--font-size-body:20px;
-	--font-size-small:18px;
-	--color-dark:rgb(8,8,8);
+	--font-size-small:17px;
+	--color-dark:rgb(90,90,90);
 	--color-border:rgb(194,194,194);
-	--color-link:rgb(159,159,159);
+	--color-link:rgb(156,156,156);
 	--color-light:rgb(208,208,208);
 	--color-lighter:rgb(247,247,247);
 	--video-padding:56.3%;
@@ -16,12 +16,12 @@
 html {
 	font-family:var(--font-family);
 	font-size:var(--font-size-body);
-	background-color:var(--color-light);
+	background-color:var(--color-dark);
 	color:var(--color-lighter);
 }
 
 body {
-	min-width:480px;
+	min-width:360px;
 	padding:9vw 6vw 0 6vw;
 	margin:0 auto;
 	line-height:var(--base);
@@ -73,7 +73,7 @@ section {
 
 #work {
 	line-height:0;
-	background-color:var(--color-dark);
+	background-color:inherit;
 }
 
 #work > * {
@@ -168,6 +168,8 @@ section {
 		padding-bottom:calc(var(--video-padding)/2)
 	}
 }
+
+/* on print */
 
 @media print {
 	#contact,
