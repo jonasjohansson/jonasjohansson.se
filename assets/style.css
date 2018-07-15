@@ -47,9 +47,9 @@ h3 {
 	line-height:var(--base);
 }
 
-p:not(:last-child),
-#resume > div:not(:last-child),
-nav:not(:last-of-type) {
+p:not(:last-child),,
+nav:not(:last-of-type)
+#resume > div:not(:last-child) {
 	margin-bottom:var(--base);
 }
 
@@ -73,7 +73,7 @@ section {
 
 #work {
 	line-height:0;
-	background-color:inherit;
+	background-color:black;
 }
 
 #work > * {
