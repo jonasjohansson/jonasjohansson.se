@@ -10,7 +10,7 @@ window.addEventListener('load', () => {
     //  video.pause();
     // })
   }
-}
+});
 document.addEventListener('DOMContentLoaded', () => {
 	let year = new Date().getFullYear();
 	let hours = new Date().getHours();
