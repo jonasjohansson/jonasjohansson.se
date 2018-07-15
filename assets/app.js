@@ -1,5 +1,5 @@
-window.addEventListener('load', () => {
-// document.addEventListener('DOMContentLoaded', () => {
+// window.addEventListener('load', () => {
+document.addEventListener('DOMContentLoaded', () => {
 	let videos = document.querySelectorAll('video');
 	for (let video of videos){
 		video.title = '';
