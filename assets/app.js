@@ -1,4 +1,5 @@
 window.addEventListener('load', () => {
+  document.body.classList.add('loaded');
   let videos = document.querySelectorAll('video');
   for (let video of videos){
     video.title = '';
@@ -17,7 +18,6 @@ document.addEventListener('DOMContentLoaded', () => {
 	if (hours > 22 || hours < 6){
 		document.documentElement.classList.add('dark');
 	}
-	document.body.classList.add('loaded');
 	let dates = document.querySelectorAll('[data-start]');
 	for (let date of dates){
 		let dateStart = date.getAttribute('data-start');
