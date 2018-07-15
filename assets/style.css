@@ -47,8 +47,8 @@ h3 {
 	line-height:var(--base);
 }
 
-p:not(:last-child),,
-nav:not(:last-of-type)
+p:not(:last-child),
+nav:not(:last-of-type),
 #resume > div:not(:last-child) {
 	margin-bottom:var(--base);
 }
