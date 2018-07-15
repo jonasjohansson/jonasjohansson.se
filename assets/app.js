@@ -1,16 +1,17 @@
-// window.addEventListener('load', () => {
+window.addEventListener('load', () => {
+  let videos = document.querySelectorAll('video');
+  for (let video of videos){
+    video.title = '';
+    video.play();
+    // video.addEventListener('mouseover',()=>{
+    //  video.play();
+    // })
+    // video.addEventListener('mouseout',()=>{
+    //  video.pause();
+    // })
+  }
+}
 document.addEventListener('DOMContentLoaded', () => {
-	let videos = document.querySelectorAll('video');
-	for (let video of videos){
-		video.title = '';
-		video.play();
-		// video.addEventListener('mouseover',()=>{
-		// 	video.play();
-		// })
-		// video.addEventListener('mouseout',()=>{
-		// 	video.pause();
-		// })
-	}
 	let year = new Date().getFullYear();
 	let hours = new Date().getHours();
 	if (hours > 22 || hours < 6){
