@@ -3,7 +3,6 @@ window.addEventListener('load', () => {
   let videos = document.querySelectorAll('video');
   for (let video of videos){
     video.title = '';
-    video.play();
     // video.addEventListener('mouseover',()=>{
     //  video.play();
     // })
