@@ -1,3 +1,4 @@
+// document.addEventListener('DOMContentLoaded', () => {
 window.addEventListener('load', () => {
   document.body.classList.add('loaded');
   let videos = document.querySelectorAll('video');
