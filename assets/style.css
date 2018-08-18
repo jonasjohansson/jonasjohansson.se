@@ -6,7 +6,8 @@
 	--font-size-body:20px;
 	--font-size-small:17px;
 	--color-dark:rgb(90,90,90);
-	--color-border:rgb(224,224,224);
+	--color-darker:rgb(36,36,36);
+	--color-border:rgba(127,127,127,0.2);
 	--color-link:rgb(156,156,156);
 	--color-light:rgb(208,208,208);
 	--color-lighter:rgb(247,247,247);
@@ -18,6 +19,11 @@ html {
 	font-size:var(--font-size-body);
 	background-color:var(--color-light);
 	color:black;
+}
+
+html.dark {
+	background-color:var(--color-darker);
+	color:var(--color-lighter);
 }
 
 body {
