@@ -4,6 +4,14 @@ window.addEventListener('load', () => {
   let videos = document.querySelectorAll('video');
   for (let video of videos){
     video.title = '';
+    // video.addEventListener('mousemove',()=>{
+    //     let mx = event.clientX;
+    //     let ol = video.offsetLeft;
+    //     let ow = video.offsetWidth;
+    //     let pos = (mx - ol) / ow; 
+    //     video.currentTime = pos * video.duration;
+    //     video.play();
+    // })
     // video.addEventListener('mouseover',()=>{
     //  video.play();
     // })
