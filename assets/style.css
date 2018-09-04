@@ -43,7 +43,21 @@ a {
 }
 
 a:hover {
-	text-decoration:none;
+    text-decoration:none;
+}
+
+img::selection {
+    background:none;
+}
+
+/*a,
+::selection {
+    transition:background 80ms ease-in-out;
+}*/
+
+a:hover,
+::selection {
+    background:rgba(128,128,128,0.1);
 }
 
 h3 {
@@ -187,16 +201,6 @@ section {
 	}
 }
 
-/* special */
-
-img::selection {
-    background:none;
-}
-
-::selection {
-    background:rgba(255,255,255,0.4);
-}
-
 /* import */
 
 @font-face {
@@ -208,8 +212,7 @@ img::selection {
 
 @font-face {
     font-family: 'AT Osmose';
-    src: url('fonts/ATOsmose-Regular.woff2') format('woff2'),
-        url('fonts/ATOsmose-Regular.woff') format('woff');
+    src:url('fonts/ATOsmose-Regular.woff2') format('woff2');
 	font-weight:normal;
 	font-style:normal;
 }
