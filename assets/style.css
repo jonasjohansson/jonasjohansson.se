@@ -1,36 +1,27 @@
 @import url('https://rawgit.com/jonasjohansson/template/master/reset.css');
 
 :root {
-	--base:26px;
-	--font-family:'MaisonNeue-Book',system-ui,-apple-system;
-	--font-size-body:20px;
-	--font-size-small:18px;
-	--color-dark:rgb(90,90,90);
-	--color-darker:rgb(36,36,36);
-	--color-border:rgba(127,127,127,0.2);
-	--color-link:rgb(156,156,156);
-	--color-light:rgb(208,208,208);
-	--color-lighter:rgb(247,247,247);
+	--base:1.5rem;
+	--font-size-small:82.5%;
 	--video-padding:56.3%;
 }
 
 html {
-	font-family:var(--font-family);
-	font-size:var(--font-size-body);
-	background-color:var(--color-light);
+	font:24px/1.5 'MaisonNeue-Book',system-ui,-apple-system;
+	background-color:white;
 	color:black;
+	letter-spacing:0.007em;
 }
 
 html.dark {
-	background-color:var(--color-darker);
-	color:var(--color-lighter);
+	background-color:black;
+	color:white;
 }
 
 body {
 	min-width:360px;
 	padding:9vw 6vw 0 6vw;
 	margin:0 auto;
-	line-height:var(--base);
 	box-sizing:border-box;
 }
 
@@ -39,7 +30,7 @@ body:not(.loaded) > section {
 }
 
 a {
-	color:var(--color-link);
+	color:rgb(156,156,156);
 }
 
 a:hover {
@@ -50,21 +41,20 @@ img::selection {
     background:none;
 }
 
-/*a,
-::selection {
-    transition:background 80ms ease-in-out;
-}*/
-
 a:hover,
 ::selection {
-    background:rgba(128,128,128,0.1);
+    background:whitesmoke;
 }
 
 h3 {
-	font-size:var(--font-size-small);
 	font-weight:400;
 	text-transform:uppercase;
 	line-height:var(--base);
+}
+
+h3,
+#resume {
+	font-size:var(--font-size-small);
 }
 
 p:not(:last-child),
@@ -102,12 +92,9 @@ section {
 	width:100%;
 }
 
-#resume {
-	font-size:var(--font-size-small);
-}
 
 #resume > div {
-	border-color:var(--color-border);
+	border-color:rgba(127,127,127,0.2);
 	border-style:solid;
 	overflow-x:scroll;
 	-webkit-overflow-scrolling:touch;
