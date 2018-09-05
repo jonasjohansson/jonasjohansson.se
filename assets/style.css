@@ -2,7 +2,7 @@
 
 :root {
 	--base:26px;
-	--font-family:'AT Osmose','MaisonNeue-Book',system-ui,-apple-system;
+	--font-family:'MaisonNeue-Book',system-ui,-apple-system;
 	--font-size-body:20px;
 	--font-size-small:18px;
 	--color-dark:rgb(90,90,90);
@@ -206,13 +206,6 @@ section {
 @font-face {
 	font-family:'MaisonNeue-Book';
 	src:url('fonts/MaisonNeue-Book.woff2') format('woff2');
-	font-weight:normal;
-	font-style:normal;
-}
-
-@font-face {
-    font-family: 'AT Osmose';
-    src:url('fonts/ATOsmose-Regular.woff2') format('woff2');
 	font-weight:normal;
 	font-style:normal;
 }
