@@ -25,6 +25,11 @@ body {
 	box-sizing:border-box;
 }
 
+body:not(.loaded) {
+  height:100%;
+  overflow:hidden;
+}
+
 body:not(.loaded) > section {
 	opacity:0;
 }
