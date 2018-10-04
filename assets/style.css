@@ -13,7 +13,7 @@ html {
 	letter-spacing: 0.007em;
 }
 
-html.dark {
+html.xdark {
 	background-color: black;
 	color: white;
 }
@@ -97,7 +97,7 @@ section {
 }
 
 #resume > div {
-	border-color: rgba(127, 127, 127, 0.3);
+	border-color: rgba(127, 127, 127, 0.35);
 	border-style: solid;
 	overflow-x: scroll;
 	-webkit-overflow-scrolling: touch;
