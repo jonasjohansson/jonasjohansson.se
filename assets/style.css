@@ -13,7 +13,7 @@ html {
 	letter-spacing: 0.007em;
 }
 
-html.xdark {
+html.dark {
 	background-color: black;
 	color: white;
 }
@@ -35,7 +35,7 @@ body.loading > section {
 }
 
 a {
-	color: rgb(156, 156, 156);
+	color: rgb(172, 172, 172);
 }
 
 a:hover {
