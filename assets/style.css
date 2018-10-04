@@ -1,13 +1,13 @@
 @import url('https://rawgit.com/jonasjohansson/template/master/reset.css');
 
 :root {
-	--base: 1.5rem;
-	--font-size-small: 82.5%;
+	--base: 1.4rem;
+	--font-size-small: 75%;
 	--video-padding: 56.3%;
 }
 
 html {
-	font: 28px/1.333 'custom', system-ui, -apple-system;
+	font: 26px/1.25 'custom', system-ui, -apple-system;
 	background-color: white;
 	color: black;
 	letter-spacing: 0.007em;
@@ -51,12 +51,12 @@ img::selection {
 }
 
 h3 {
+	font-size: inherit;
 	font-weight: 400;
 	text-transform: uppercase;
 	line-height: var(--base);
 }
 
-h3,
 #resume {
 	font-size: var(--font-size-small);
 }
@@ -87,6 +87,7 @@ section {
 
 #work {
 	line-height: 0;
+	background-color: black;
 }
 
 #work > * {
