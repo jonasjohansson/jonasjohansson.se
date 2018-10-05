@@ -9,7 +9,7 @@ document.addEventListener('DOMContentLoaded', () => {
 	let theme;
 	if (hours >= 6 || hours < 12) theme = 'dawn';
 	if (hours >= 18 || hours < 6) theme = 'dusk';
-	document.body.setAttribute('data-theme', theme);
+	document.documentElement.setAttribute('data-theme', theme);
 	let dates = document.querySelectorAll('[data-start]');
 	let year = new Date().getFullYear();
 	for (let date of dates) {
