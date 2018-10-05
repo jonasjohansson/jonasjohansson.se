@@ -7,14 +7,14 @@
 }
 
 html {
-	font: 26px/1.25 'custom', system-ui, -apple-system;
+	font: 24px/1.25 'custom', system-ui, -apple-system;
 	letter-spacing: 0.007em;
 	background-color: white;
 	color: black;
 }
 
 html.dawn {
-	background-color: #ddd;
+	background-color: #c7c7c7;
 	color: white;
 }
 
@@ -102,20 +102,20 @@ section {
 }
 
 #resume > div {
-	border-color: rgba(127, 127, 127, 0.3);
-	border-style: solid;
+	/*border-color: rgba(127, 127, 127, 0.25);*/
+	/*border-style: solid;*/
 	overflow-x: scroll;
 	-webkit-overflow-scrolling: touch;
 }
 
 #resume > div:not(:last-child) {
-	padding-bottom: var(--base);
-	border-bottom-width: 1px;
+	/*padding-bottom: var(--base);*/
+	/*border-bottom-width: 1px;*/
 }
 
 #resume > div:first-child {
-	padding-top: var(--base);
-	border-top-width: 1px;
+	/*padding-top: var(--base);*/
+	/*border-top-width: 1px;*/
 }
 
 /* special */
