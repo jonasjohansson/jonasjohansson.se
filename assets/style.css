@@ -19,21 +19,21 @@ html {
 	color: black;
 }
 
-html[data-theme='dawn'] {
-	background-color: #c7c7c7;
-	color: white;
-}
-
-html[data-theme='dusk'] {
-	background-color: black;
-	color: white;
-}
-
 body {
 	min-width: 360px;
 	padding: 8vw 4vw 0 4vw;
 	margin: 0 auto;
 	box-sizing: border-box;
+}
+
+body[data-theme='dawn'] {
+	background-color: #c7c7c7;
+	color: white;
+}
+
+body[data-theme='dusk'] {
+	background-color: black;
+	color: white;
 }
 
 body.loading {
