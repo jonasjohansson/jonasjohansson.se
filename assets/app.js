@@ -5,10 +5,14 @@ window.addEventListener('load', () => {
 });
 
 document.addEventListener('DOMContentLoaded', () => {
-	let year = new Date().getFullYear();
 	let hours = new Date().getHours();
-	if (hours > 22 || hours < 6) document.documentElement.classList.add('dark');
+	let theme;
+	if (hours >= 6 && hours < 12) theme = 'dawn';
+	if (hours >= 12 && hours < 22) theme = 'dusk';
+	document.documentElement.classList.add(theme);
 	let dates = document.querySelectorAll('[data-start]');
+
+	let year = new Date().getFullYear();
 	for (let date of dates) {
 		let dateStart = date.getAttribute('data-start');
 		let dateEnd = date.getAttribute('data-end');
@@ -24,6 +28,7 @@ document.addEventListener('DOMContentLoaded', () => {
 		// 	date.parentNode.removeChild(date);
 		// }
 	}
+
 	(function(i, s, o, g, r, a, m) {
 		i['GoogleAnalyticsObject'] = r;
 		(i[r] =

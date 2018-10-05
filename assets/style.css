@@ -8,12 +8,17 @@
 
 html {
 	font: 26px/1.25 'custom', system-ui, -apple-system;
+	letter-spacing: 0.007em;
 	background-color: white;
 	color: black;
-	letter-spacing: 0.007em;
 }
 
-html.dark {
+html.dawn {
+	background-color: #ddd;
+	color: white;
+}
+
+html.dusk {
 	background-color: black;
 	color: white;
 }
@@ -97,7 +102,7 @@ section {
 }
 
 #resume > div {
-	border-color: rgba(127, 127, 127, 0.35);
+	border-color: rgba(127, 127, 127, 0.3);
 	border-style: solid;
 	overflow-x: scroll;
 	-webkit-overflow-scrolling: touch;
