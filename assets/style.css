@@ -19,12 +19,12 @@ html {
 	color: black;
 }
 
-html[theme='dawn'] {
+html[data-theme='dawn'] {
 	background-color: #c7c7c7;
 	color: white;
 }
 
-html[theme='dusk'] {
+html[data-theme='dusk'] {
 	background-color: black;
 	color: white;
 }
