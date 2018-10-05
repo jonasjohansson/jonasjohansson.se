@@ -7,8 +7,8 @@ window.addEventListener('load', () => {
 document.addEventListener('DOMContentLoaded', () => {
 	let hours = new Date().getHours();
 	let theme;
-	if (hours >= 6 && hours < 12) theme = 'dawn';
-	if (hours >= 12 && hours < 22) theme = 'dusk';
+	if (hours >= 6 || hours < 12) theme = 'dawn';
+	if (hours >= 18 || hours < 6) theme = 'dusk';
 	document.documentElement.classList.add(theme);
 	let dates = document.querySelectorAll('[data-start]');
 	let year = new Date().getFullYear();
