@@ -23,8 +23,7 @@ body {
 }
 
 body.loading {
-    height: 100%;
-    overflow: hidden;
+    position: fixed;
 }
 
 body.loading > section {
