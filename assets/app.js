@@ -8,7 +8,7 @@ document.addEventListener('DOMContentLoaded', () => {
 	let date = new Date();
 	let h = date.getHours();
 	let m = date.getMinutes();
-	setColor(getColorByTime(h, m));
+	// setColor(getColorByTime(h, m));
 	let dates = document.querySelectorAll('[data-start]');
 	for (let date of dates) {
 		let dateStart = date.getAttribute('data-start');
@@ -45,10 +45,17 @@ getColorByTime = (hours, minutes) => {
 
 setColor = c => {
 	console.log(`Color value by time: ${c}`);
-	document.documentElement.style.backgroundColor = `rgb(${c}${c}${c})`;
-	document.documentElement.style.color = `rgb(${255 - c}${255 - c}${255 - c})`;
+	var col = `${c},${c},${c}`;
+	var inv = `${255 - c},${255 - c},${255 - c}`;
+	document.documentElement.style.backgroundColor = `rgba(${col},1)`;
+	document.documentElement.style.color = `rgba(${inv},1)`;
+	for (var hr of document.querySelectorAll('hr')) hr.style.backgroundColor = `rgb(${col})`;
 };
 
 Number.prototype.map = function(in_min, in_max, out_min, out_max) {
 	return ((this - in_min) * (out_max - out_min)) / (in_max - in_min) + out_min;
+};
+
+Number.prototype.constrain = function(min, max) {
+	return Math.min(max, Math.max(min, this));
 };
