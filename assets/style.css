@@ -24,6 +24,8 @@ body {
 
 body.loading {
     position: fixed;
+    height: 100%;
+    overflow: hidden;
 }
 
 body.loading > section {
