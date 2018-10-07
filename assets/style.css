@@ -11,8 +11,8 @@
 html {
     font: 26px/1.3 'ATOsmose-Regular', system-ui, -apple-system;
     letter-spacing: 0.006em;
-    background-color: var(--light);
-    color: var(--dark);
+    background-color: var(--dark);
+    color: var(--light);
 }
 
 body {
@@ -38,6 +38,12 @@ a:hover {
 nav a {
     display: table;
     white-space: nowrap;
+}
+
+nav a,
+div a,
+hr {
+    filter: invert(0.5);
 }
 
 h3 {
@@ -118,7 +124,7 @@ section {
 
 /* on small */
 
-@media (max-width: 799px) {
+@media (max-width: 899px) {
     #resume {
         white-space: nowrap;
     }
@@ -132,7 +138,7 @@ section {
 
 /* on large */
 
-@media (min-width: 800px) {
+@media (min-width: 900px) {
     #intro,
     #contact {
         float: left;
