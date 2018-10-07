@@ -71,7 +71,6 @@ hr {
     height: 1px;
     margin-bottom: var(--base);
     background-color: var(--light);
-    filter: invert(1);
 }
 
 /* sections */
