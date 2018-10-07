@@ -4,8 +4,8 @@
     --base: 1.4rem;
     --font-size-small: 80%;
     --video-padding: 56.3%;
-    --light: rgba(255, 255, 255, 0.9);
-    --dark: rgba(0, 0, 0, 0.9);
+    --light: rgba(255, 255, 255, 0.95);
+    --dark: rgba(0, 0, 0, 0.95);
 }
 
 html {
