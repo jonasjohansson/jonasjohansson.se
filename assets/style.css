@@ -1,5 +1,5 @@
 @import url('https://rawgit.com/jonasjohansson/template/master/reset.css');
-@import url('import.css');
+@import url('type.css');
 
 :root {
     --base: 1.4rem;
