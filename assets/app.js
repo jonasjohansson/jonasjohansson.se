@@ -6,6 +6,9 @@ window.addEventListener('load', () => {
 
 document.addEventListener('DOMContentLoaded', () => {
 	let date = new Date();
+	let h = date.getHours();
+	let m = date.getMinutes();
+	// setColor(getColorByTime(h, m));
 	let dates = document.querySelectorAll('[data-start]');
 	for (let date of dates) {
 		let dateStart = date.getAttribute('data-start');
@@ -32,3 +35,27 @@ document.addEventListener('DOMContentLoaded', () => {
 	ga('create', 'UA-4374117-1', 'auto');
 	ga('send', 'pageview');
 });
+
+getColorByTime = (hours, minutes) => {
+	console.log(`Current time: ${hours}:${minutes}`);
+	hours = 12 - Math.abs(12 - hours);
+	var num = hours * 60 + minutes;
+	return parseInt(num.map(0, 720, 0, 255));
+};
+
+setColor = c => {
+	console.log(`Color value by time: ${c}`);
+	var col = `${c},${c},${c}`;
+	var inv = `${255 - c},${255 - c},${255 - c}`;
+	document.documentElement.style.backgroundColor = `rgba(${col},1)`;
+	document.documentElement.style.color = `rgba(${inv},1)`;
+	for (var hr of document.querySelectorAll('hr')) hr.style.backgroundColor = `rgb(${col})`;
+};
+
+Number.prototype.map = function(in_min, in_max, out_min, out_max) {
+	return ((this - in_min) * (out_max - out_min)) / (in_max - in_min) + out_min;
+};
+
+Number.prototype.constrain = function(min, max) {
+	return Math.min(max, Math.max(min, this));
+};
