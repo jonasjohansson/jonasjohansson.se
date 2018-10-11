@@ -8,7 +8,7 @@ document.addEventListener('DOMContentLoaded', () => {
 	let date = new Date();
 	let h = date.getHours();
 	let m = date.getMinutes();
-	// setColor(getColorByTime(h, m));
+	setColor(getColorByTime(h, m));
 	let dates = document.querySelectorAll('[data-start]');
 	for (let date of dates) {
 		let dateStart = date.getAttribute('data-start');
@@ -46,7 +46,9 @@ getColorByTime = (hours, minutes) => {
 setColor = c => {
 	console.log(`Color value by time: ${c}`);
 	var col = `${c},${c},${c}`;
-	var inv = `${255 - c},${255 - c},${255 - c}`;
+	var inv = c / 255;
+	var pow = Math.pow(1 - inv, 2);
+	var col2 = `${pow * 255},${pow * 255},${pow * 255}`;
 	document.documentElement.style.backgroundColor = `rgba(${col},1)`;
 	document.documentElement.style.color = `rgba(${inv},1)`;
 	for (var hr of document.querySelectorAll('hr')) hr.style.backgroundColor = `rgb(${col})`;
