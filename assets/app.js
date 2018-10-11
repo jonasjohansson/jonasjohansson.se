@@ -49,9 +49,9 @@ setColor = c => {
 	var inv = c / 255;
 	var pow = Math.pow(1 - inv, 2);
 	var col2 = `${pow * 255},${pow * 255},${pow * 255}`;
-	document.documentElement.style.backgroundColor = `rgba(${col},1)`;
-	document.documentElement.style.color = `rgba(${inv},1)`;
-	for (var hr of document.querySelectorAll('hr')) hr.style.backgroundColor = `rgb(${col})`;
+	document.documentElement.style.backgroundColor = `rgb(${col})`;
+	document.documentElement.style.color = `rgb(${col2})`;
+	for (var hr of document.querySelectorAll('hr')) hr.style.backgroundColor = `rgb(${col2})`;
 };
 
 Number.prototype.map = function(in_min, in_max, out_min, out_max) {
