@@ -48,7 +48,7 @@ setColor = c => {
 	var col = `${c},${c},${c}`;
 	var inv = c / 255;
 	var pow = Math.pow(1 - inv, 2);
-var c2 = parseInt(powe * 255);
+var c2 = parseInt(pow * 255);
 	var col2 = `${c2},${c2},${c2}`;
 	document.documentElement.style.backgroundColor = `rgb(${col})`;
 	document.documentElement.style.color = `rgb(${col2})`;
