@@ -44,7 +44,7 @@ nav a {
 nav a,
 div a,
 hr {
-	filter: invert(0.8);
+	filter: invert(0.8) saturate(0);
 }
 
 h3 {

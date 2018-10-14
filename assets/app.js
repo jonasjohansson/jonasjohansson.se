@@ -1,3 +1,7 @@
+let now = new Date();
+let h = now.getHours();
+let m = now.getMinutes();
+
 window.addEventListener('load', () => {
 	document.body.classList.remove('loading');
 	let videos = document.querySelectorAll('video');
@@ -5,10 +9,6 @@ window.addEventListener('load', () => {
 });
 
 document.addEventListener('DOMContentLoaded', () => {
-	let date = new Date();
-	let h = date.getHours();
-	let m = date.getMinutes();
-	setColor(getColorByTime(h, m));
 	let dates = document.querySelectorAll('[data-start]');
 	for (let date of dates) {
 		let dateStart = date.getAttribute('data-start');
@@ -18,6 +18,7 @@ document.addEventListener('DOMContentLoaded', () => {
 			if (dateEnd.length <= 4 && dateEnd.length > 0) date.setAttribute('data-end', dateEnd.substr(0, 4));
 			else date.removeAttribute('data-end');
 		}
+		if (now < new Date(dateStart)) date.innerHTML = `&uarr; ${date.innerHTML}`;
 	}
 	(function(i, s, o, g, r, a, m) {
 		i['GoogleAnalyticsObject'] = r;
@@ -48,7 +49,7 @@ setColor = c => {
 	var col = `${c},${c},${c}`;
 	var inv = c / 255;
 	var pow = Math.pow(1 - inv, 2);
-var c2 = parseInt(pow * 255);
+	var c2 = parseInt(pow * 255);
 	var col2 = `${c2},${c2},${c2}`;
 	document.documentElement.style.backgroundColor = `rgb(${col})`;
 	document.documentElement.style.color = `rgb(${col2})`;
@@ -62,3 +63,5 @@ Number.prototype.map = function(in_min, in_max, out_min, out_max) {
 Number.prototype.constrain = function(min, max) {
 	return Math.min(max, Math.max(min, this));
 };
+
+setColor(getColorByTime(h, m));
