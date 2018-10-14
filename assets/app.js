@@ -1,7 +1,3 @@
-let now = new Date();
-let h = now.getHours();
-let m = now.getMinutes();
-
 window.addEventListener('load', () => {
 	document.body.classList.remove('loading');
 	let videos = document.querySelectorAll('video');
@@ -9,6 +5,10 @@ window.addEventListener('load', () => {
 });
 
 document.addEventListener('DOMContentLoaded', () => {
+	let now = new Date();
+	let h = now.getHours();
+	let m = now.getMinutes();
+	setColor(getColorByTime(h, m));
 	let dates = document.querySelectorAll('[data-start]');
 	for (let date of dates) {
 		let dateStart = date.getAttribute('data-start');
@@ -45,15 +45,17 @@ getColorByTime = (hours, minutes) => {
 };
 
 setColor = c => {
+	var styleNode = document.createElement('style');
+	document.body.appendChild(styleNode);
 	console.log(`Color value by time: ${c}`);
 	var col = `${c},${c},${c}`;
 	var inv = c / 255;
-	var pow = Math.pow(1 - inv, 2);
+	var pow = Math.pow(1 - inv, 3);
 	var c2 = parseInt(pow * 255);
 	var col2 = `${c2},${c2},${c2}`;
-	document.documentElement.style.backgroundColor = `rgb(${col})`;
-	document.documentElement.style.color = `rgb(${col2})`;
-	for (var hr of document.querySelectorAll('hr')) hr.style.backgroundColor = `rgb(${col2})`;
+	styleNode.innerHTML = `
+	html { color: rgb(${col2}); }
+	html, hr { background-color: rgb(${col}); }`;
 };
 
 Number.prototype.map = function(in_min, in_max, out_min, out_max) {
@@ -63,5 +65,3 @@ Number.prototype.map = function(in_min, in_max, out_min, out_max) {
 Number.prototype.constrain = function(min, max) {
 	return Math.min(max, Math.max(min, this));
 };
-
-setColor(getColorByTime(h, m));
