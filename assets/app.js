@@ -18,7 +18,7 @@ document.addEventListener('DOMContentLoaded', () => {
 			if (dateEnd.length <= 4 && dateEnd.length > 0) date.setAttribute('data-end', dateEnd.substr(0, 4));
 			else date.removeAttribute('data-end');
 		}
-		if (now < new Date(dateStart)) date.innerHTML = `&uarr; ${date.innerHTML}`;
+		if (now < new Date(dateStart)) date.innerHTML = `&#9734; ${date.innerHTML}`;
 	}
 	(function(i, s, o, g, r, a, m) {
 		i['GoogleAnalyticsObject'] = r;
