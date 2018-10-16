@@ -13,6 +13,8 @@ html {
 	letter-spacing: 0.006em;
 	background-color: var(--light);
 	color: var(--dark);
+	background: linear-gradient(#191d43, #85767e) !important;
+	color: white !important;
 }
 
 body {
@@ -44,7 +46,8 @@ nav a {
 nav a,
 div a,
 hr {
-	filter: invert(0.5);
+	color: inherit !important;
+	filter: invert(0.25);
 }
 
 h3 {
