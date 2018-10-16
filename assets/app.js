@@ -8,7 +8,7 @@ document.addEventListener('DOMContentLoaded', () => {
 	let now = new Date();
 	let h = now.getHours();
 	let m = now.getMinutes();
-	setColor(getColorByTime(h, m));
+	// setColor(getColorByTime(h, m));
 	let dates = document.querySelectorAll('[data-start]');
 	for (let date of dates) {
 		let dateStart = date.getAttribute('data-start');
