@@ -18,7 +18,7 @@ document.addEventListener('DOMContentLoaded', () => {
 			if (dateEnd.length <= 4 && dateEnd.length > 0) date.setAttribute('data-end', dateEnd.substr(0, 4));
 			else date.removeAttribute('data-end');
 		}
-		if (now < new Date(dateStart)) date.innerHTML = `&#9734;&#xFE0E; ${date.innerHTML}`; // https://stackoverflow.com/questions/32915485/how-to-prevent-unicode-characters-from-rendering-as-emoji-in-html-from-javascrip
+		if (now < new Date(dateStart)) date.innerHTML = `&#x2192;&#xFE0E; ${date.innerHTML}`; // https://stackoverflow.com/questions/32915485/how-to-prevent-unicode-characters-from-rendering-as-emoji-in-html-from-javascrip
 	}
 	(function(i, s, o, g, r, a, m) {
 		i['GoogleAnalyticsObject'] = r;
