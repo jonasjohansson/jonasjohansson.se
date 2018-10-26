@@ -5,6 +5,7 @@ window.addEventListener('load', () => {
 });
 
 document.addEventListener('DOMContentLoaded', () => {
+	for (let a of document.querySelectorAll('a')) a.target = '_blank';
 	let now = new Date();
 	let h = now.getHours();
 	let m = now.getMinutes();
