@@ -6,8 +6,8 @@
 	--video-padding: 56.3%;
 	--light: rgba(255, 255, 255, 0.9);
 	--dark: rgba(0, 0, 0, 0.9);
-	--grad-start: rgb(0, 0, 0);
-	--grad-end: rgb(85, 85, 85);
+	--grad-start: rgb(3, 10, 30);
+	--grad-end: rgb(30, 50, 150);
 }
 
 html {
