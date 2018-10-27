@@ -13,7 +13,7 @@
 html {
 	font: 26px/1.3 'Random', system-ui, -apple-system;
 	letter-spacing: 0.006em;
-	background: var(--grad-start) linear-gradient(rgba(0, 0, 0, 0), var(--grad-end));
+	background: var(--grad-start) linear-gradient(var(--grad-start), var(--grad-end));
 	color: var(--light);
 }
 
