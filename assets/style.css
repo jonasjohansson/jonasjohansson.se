@@ -6,8 +6,8 @@
 	--video-padding: 56.3%;
 	--light: rgba(255, 255, 255, 0.9);
 	--dark: rgba(0, 0, 0, 0.9);
-	--grad-start: rgb(3, 10, 30);
-	--grad-end: rgb(30, 50, 150);
+	--grad-start: rgb(0, 0, 0);
+	--grad-end: rgb(85, 85, 85);
 }
 
 html {
@@ -19,7 +19,7 @@ html {
 
 body {
 	min-width: 360px;
-	padding: 8vw 4vw 0 4vw;
+	padding-top: 8vw;
 	margin: 0 auto;
 	box-sizing: border-box;
 }
@@ -83,6 +83,11 @@ section {
 	margin-bottom: var(--base);
 	will-change: transition;
 	transition: opacity 400ms;
+}
+
+section:not(#work) {
+	padding-left: 4vw;
+	padding-right: 4vw;
 }
 
 #contact {
