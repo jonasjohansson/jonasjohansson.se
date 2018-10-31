@@ -67,7 +67,7 @@ img::selection {
 }
 
 ::selection {
-	background: whitesmoke;
+	color: white;
 }
 
 hr {
