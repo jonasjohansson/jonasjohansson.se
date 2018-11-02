@@ -47,7 +47,7 @@ nav a {
 nav a,
 div a,
 hr {
-	filter: invert(0.5);
+	opacity: 0.5;
 }
 
 h3 {
@@ -68,13 +68,13 @@ img::selection {
 }
 
 ::selection {
-	color: black;
+	background-color: royalblue;
 }
 
 hr {
 	height: 1px;
 	margin-bottom: var(--base);
-	background-color: var(--light);
+	background-color: var(--dark);
 }
 
 /* sections */
