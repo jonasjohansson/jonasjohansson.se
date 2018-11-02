@@ -68,7 +68,7 @@ img::selection {
 }
 
 ::selection {
-	color: white;
+	color: black;
 }
 
 hr {
