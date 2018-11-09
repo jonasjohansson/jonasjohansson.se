@@ -202,12 +202,16 @@ section:not(#work) {
 /* on print */
 
 @media print {
-	#contact,
-	#work {
+	[data-no-print],
+	hr {
 		display: none !important;
 	}
 	* {
 		color: black;
+		filter: none !important;
+	}
+	[data-page-break] {
+		page-break-after: always;
 	}
 }
 
