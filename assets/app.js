@@ -2,6 +2,11 @@ window.addEventListener('load', () => {
     document.body.classList.remove('loading');
     let videos = document.querySelectorAll('video');
     for (let video of videos) video.title = '';
+    let iframes = document.querySelectorAll('iframe');
+    // for (let iframe of iframes) {
+    //     let iframeDocument = iframe.contentDocument || iframe.contentWindow.document;
+    //     console.log(iframeDocument);
+    // }
 });
 
 document.addEventListener('DOMContentLoaded', () => {
