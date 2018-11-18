@@ -55,7 +55,7 @@ nav a {
 nav a,
 div a,
 hr {
-	filter: invert(0.6);
+	filter: invert(0.5);
 }
 
 h3 {
@@ -130,6 +130,9 @@ section:not(#work) {
 
 /* special */
 
+.upcoming {
+}
+
 [data-start]:before {
 	content: attr(data-start);
 }
@@ -187,10 +190,10 @@ section:not(#work) {
 		clear: both;
 		content: '';
 	}
-	#resume div div {
+	[data-start] {
 		clear: right;
 	}
-	#resume div div:before {
+	[data-start]:before {
 		float: right;
 		margin-right: 2px;
 	}

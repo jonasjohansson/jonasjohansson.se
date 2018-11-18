@@ -16,16 +16,16 @@ document.addEventListener('DOMContentLoaded', () => {
 	if (h >= 16 || h <= 6) document.documentElement.className = 'dark';
 	// let m = now.getMinutes();
 	// setColor(getColorByTime(h, m));
-	let dates = document.querySelectorAll('[data-start]');
-	for (let date of dates) {
-		let dateStart = date.getAttribute('data-start');
-		let dateEnd = date.getAttribute('data-end');
-		if (dateStart != null) date.setAttribute('data-start', dateStart.substr(0, 4));
+	let entries = document.querySelectorAll('[data-start]');
+	for (let entry of entries) {
+		let dateStart = entry.getAttribute('data-start');
+		let dateEnd = entry.getAttribute('data-end');
+		if (dateStart != null) entry.setAttribute('data-start', dateStart.substr(0, 4));
 		if (dateEnd != null) {
-			if (dateEnd.length <= 4 && dateEnd.length > 0) date.setAttribute('data-end', dateEnd.substr(0, 4));
-			else date.removeAttribute('data-end');
+			if (dateEnd.length <= 4 && dateEnd.length > 0) entry.setAttribute('data-end', dateEnd.substr(0, 4));
+			else entry.removeAttribute('data-end');
 		}
-		if (now < new Date(dateStart)) date.innerHTML = `&#x2192;&#xFE0E; ${date.innerHTML}`; // https://stackoverflow.com/questions/32915485/how-to-prevent-unicode-characters-from-rendering-as-emoji-in-html-from-javascrip
+		if (now < new Date(dateStart)) entry.classList.add('upcoming');
 	}
 	(function(i, s, o, g, r, a, m) {
 		i['GoogleAnalyticsObject'] = r;
