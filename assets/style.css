@@ -63,7 +63,7 @@ h3 {
 	font-weight: 400;
 	text-transform: uppercase;
 	line-height: var(--base);
-	margin-top: calc(var(--base) * -0.25);
+	margin-top: calc(var(--base) * -0.125);
 }
 
 p:not(:last-child),
@@ -91,14 +91,14 @@ hr {
 
 section {
 	position: relative;
-	margin-bottom: var(--base);
+	margin-bottom: calc(var(--base) * 1.5);
 	will-change: transition;
 	transition: opacity 400ms;
 }
 
 section:not(#work) {
-	padding-left: 4.5vw;
-	padding-right: 4.5vw;
+	padding-left: 4.2vw;
+	padding-right: 4.2vw;
 }
 
 #contact {
