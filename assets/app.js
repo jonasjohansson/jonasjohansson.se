@@ -25,7 +25,7 @@ document.addEventListener('DOMContentLoaded', () => {
 			if (dateEnd.length <= 4 && dateEnd.length > 0) entry.setAttribute('data-end', dateEnd.substr(0, 4));
 			else entry.removeAttribute('data-end');
 		}
-		if (now < new Date(dateStart)) entry.classList.add('upcoming');
+		if (now < new Date(dateStart)) entry.innerHTML = `&#x2192;&#xFE0E; ${entry.innerHTML}`;
 	}
 	(function(i, s, o, g, r, a, m) {
 		i['GoogleAnalyticsObject'] = r;

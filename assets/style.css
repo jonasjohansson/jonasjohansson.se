@@ -1,7 +1,7 @@
 @import url('https://rawgit.com/jonasjohansson/template/master/reset.css');
 
 :root {
-	--base: 1.4rem;
+	--base: 1.5rem;
 	--font-size-small: 80%;
 	--video-padding: 56.3%;
 	--light: rgba(255, 255, 255, 0.95);
@@ -11,7 +11,7 @@
 }
 
 html {
-	font: 28px/1.2 BlinkMacSystemFont, system-ui, -apple-system;
+	font: 26px/1.2 'Random', BlinkMacSystemFont, system-ui, -apple-system;
 	letter-spacing: 0.006em;
 	/*background: var(--grad-start) linear-gradient(var(--grad-start), var(--grad-end));*/
 }
@@ -63,6 +63,7 @@ h3 {
 	font-weight: 400;
 	text-transform: uppercase;
 	line-height: var(--base);
+	margin-top: calc(var(--base) * -0.25);
 }
 
 p:not(:last-child),
@@ -83,6 +84,7 @@ hr {
 	height: 1px;
 	margin-bottom: var(--base);
 	background-color: var(--dark);
+	opacity: 0.5;
 }
 
 /* sections */
@@ -95,8 +97,8 @@ section {
 }
 
 section:not(#work) {
-	padding-left: 4vw;
-	padding-right: 4vw;
+	padding-left: 4.5vw;
+	padding-right: 4.5vw;
 }
 
 #contact {
@@ -130,7 +132,9 @@ section:not(#work) {
 
 /* special */
 
-.upcoming {
+.svartljus:after {
+	display: inline-block;
+	content: '\00a0\2600';
 }
 
 [data-start]:before {
