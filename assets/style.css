@@ -4,7 +4,7 @@
 	--base: 1.4rem;
 	--font-size-small: 80%;
 	--video-padding: 56.3%;
-	--light: rgba(0, 0, 0, 0.1);
+	--light: rgba(0, 0, 0, 0.15);
 	--dark: rgba(0, 0, 0, 0.9);
 	--grad-start: rgb(3, 10, 30);
 	--grad-end: rgb(30, 50, 150);
@@ -91,7 +91,7 @@ hr {
 
 section {
 	position: relative;
-	margin-bottom: calc(var(--base) * 1.5);
+	margin-bottom: var(--base);
 	will-change: transition;
 	transition: opacity 400ms;
 }
