@@ -1,17 +1,17 @@
 @import url('https://rawgit.com/jonasjohansson/template/master/reset.css');
 
 :root {
-	--base: 1.5rem;
+	--base: 1.4rem;
 	--font-size-small: 80%;
 	--video-padding: 56.3%;
-	--light: rgba(255, 255, 255, 0.95);
+	--light: rgba(0, 0, 0, 0.1);
 	--dark: rgba(0, 0, 0, 0.9);
 	--grad-start: rgb(3, 10, 30);
 	--grad-end: rgb(30, 50, 150);
 }
 
 html {
-	font: 26px/1.2 'Random', BlinkMacSystemFont, system-ui, -apple-system;
+	font: 24px/1.2 'Random', BlinkMacSystemFont, system-ui, -apple-system;
 	letter-spacing: 0.006em;
 	/*background: var(--grad-start) linear-gradient(var(--grad-start), var(--grad-end));*/
 }
@@ -97,8 +97,8 @@ section {
 }
 
 section:not(#work) {
-	padding-left: 4.2vw;
-	padding-right: 4.2vw;
+	padding-left: 4vw;
+	padding-right: 4vw;
 }
 
 #contact {
