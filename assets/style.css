@@ -4,7 +4,7 @@
 	--base: 1.4rem;
 	--font-size-small: 80%;
 	--video-padding: 56.3%;
-	--light: rgba(0, 0, 0, 0.15);
+	--light: rgba(64, 64, 64, 0.25);
 	--dark: rgba(0, 0, 0, 0.9);
 	--grad-start: rgb(3, 10, 30);
 	--grad-end: rgb(30, 50, 150);
@@ -76,15 +76,11 @@ img::selection {
 	background: none;
 }
 
-::selection {
-	background-color: royalblue;
-}
-
 hr {
 	height: 1px;
 	margin-bottom: var(--base);
 	background-color: var(--dark);
-	opacity: 0.5;
+	opacity: 0.25;
 }
 
 /* sections */
