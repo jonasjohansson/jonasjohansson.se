@@ -195,7 +195,7 @@ section:not(#work) {
 	}
 	[data-start]:before {
 		float: right;
-		margin-right: 2px;
+		/*margin-right: 2px;*/
 	}
 	.video {
 		padding-bottom: calc(var(--video-padding) / 2);
