@@ -133,23 +133,15 @@ section:not(#work) {
 	content: '\00a0\2600';
 }
 
-[data-start]:before {
-	content: attr(data-start);
-}
-
-[data-end]:not([data-end='']):before {
-	content: attr(data-start) '-' attr(data-end);
-}
-
 /* on small */
 
 @media (max-width: 899px) {
 	#resume {
 		white-space: nowrap;
 	}
-	[data-start]:before {
+	/*[data-start]:before {
 		padding-right: 0.4rem;
-	}
+	}*/
 	.video {
 		padding-bottom: var(--video-padding);
 	}
@@ -196,6 +188,13 @@ section:not(#work) {
 	[data-start]:before {
 		float: right;
 		/*margin-right: 2px;*/
+	}
+	[data-start]:before {
+		content: attr(data-start);
+	}
+
+	[data-end]:not([data-end='']):before {
+		content: attr(data-start) '-' attr(data-end);
 	}
 	.video {
 		padding-bottom: calc(var(--video-padding) / 2);
