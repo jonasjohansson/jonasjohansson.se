@@ -108,6 +108,7 @@ section:not(#work) {
 
 #work {
 	line-height: 0;
+	background-color: black;
 }
 
 #work > * {
