@@ -27,6 +27,10 @@ html.dark {
 	color: var(--light);
 }
 
+html.resizing > body {
+	display: none;
+}
+
 body {
 	min-width: 360px;
 	padding-top: 10vw;
