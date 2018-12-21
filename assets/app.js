@@ -14,13 +14,13 @@ document.addEventListener('DOMContentLoaded', () => {
 	ga();
 });
 
-window.addEventListener('resize', () => {
-	window.clearTimeout(timeout);
-	document.documentElement.classList.add('resizing');
-	timeout = setTimeout(function() {
-		document.documentElement.classList.remove('resizing');
-	}, 300);
-});
+// window.addEventListener('resize', () => {
+// 	window.clearTimeout(timeout);
+// 	document.documentElement.classList.add('resizing');
+// 	timeout = setTimeout(function() {
+// 		document.documentElement.classList.remove('resizing');
+// 	}, 300);
+// });
 
 toggleDarkTheme = () => {
 	let h = now.getHours();
