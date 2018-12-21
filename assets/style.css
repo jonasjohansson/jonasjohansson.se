@@ -197,7 +197,6 @@ section:not(#work) {
 	[data-start]:before {
 		content: attr(data-start);
 	}
-
 	[data-end]:not([data-end='']):before {
 		content: attr(data-start) '-' attr(data-end);
 	}
