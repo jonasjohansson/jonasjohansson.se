@@ -27,11 +27,11 @@ html.dark {
 	color: var(--light);
 }
 
-html:not(.dark) nav a:hover {
+html:not(.dark) a:hover {
 	filter: invert(1);
 }
 
-html.dark nav a:hover {
+html.dark a:hover {
 	filter: invert(0);
 }
 
