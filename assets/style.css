@@ -50,6 +50,7 @@ body.loading > section {
 
 a:hover {
 	text-decoration: none;
+	color: white;
 }
 
 nav a {
