@@ -27,9 +27,13 @@ html.dark {
 	color: var(--light);
 }
 
-/*html.resizing > body {
-	display: none;
-}*/
+html:not(.dark) nav a:hover {
+	filter: invert(1);
+}
+
+html.dark nav a:hover {
+	filter: invert(0);
+}
 
 body {
 	min-width: 360px;
