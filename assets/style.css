@@ -17,24 +17,6 @@ html {
 	/*background: var(--grad-start) linear-gradient(var(--grad-start), var(--grad-end));*/
 }
 
-html:not(.dark) {
-	background: var(--light);
-	color: var(--dark);
-}
-
-html.dark {
-	background: var(--dark);
-	color: var(--light);
-}
-
-html:not(.dark) a:hover {
-	filter: invert(1);
-}
-
-html.dark a:hover {
-	filter: invert(0);
-}
-
 body {
 	min-width: 360px;
 	padding-top: 10vw;
@@ -66,6 +48,13 @@ nav a,
 div a,
 hr {
 	filter: invert(0.5);
+}
+
+h2 {
+	font-size: 150%;
+	font-weight: 400;
+	line-height: var(--base);
+	margin-bottom: var(--base);
 }
 
 h3 {
@@ -136,7 +125,31 @@ section:not(#work) {
 	-webkit-overflow-scrolling: touch;
 }
 
+[data-start]:before {
+	content: attr(data-start);
+}
+
 /* special */
+
+html:not(.dark) {
+	background: var(--light);
+	color: var(--dark);
+}
+
+html.dark {
+	background: var(--dark);
+	color: var(--light);
+}
+
+html:not(.dark) nav a:hover,
+html:not(.dark) div a:hover {
+	filter: invert(1);
+}
+
+html.dark nav a:hover,
+html.dark div a:hover {
+	filter: invert(0);
+}
 
 .svartljus:after {
 	display: inline-block;
@@ -149,9 +162,9 @@ section:not(#work) {
 	#resume {
 		white-space: nowrap;
 	}
-	/*[data-start]:before {
+	[data-start]:before {
 		padding-right: 0.4rem;
-	}*/
+	}
 	.video {
 		padding-bottom: var(--video-padding);
 	}
@@ -197,10 +210,6 @@ section:not(#work) {
 	}
 	[data-start]:before {
 		float: right;
-		/*margin-right: 2px;*/
-	}
-	[data-start]:before {
-		content: attr(data-start);
 	}
 	[data-end]:not([data-end='']):before {
 		content: attr(data-start) '-' attr(data-end);
