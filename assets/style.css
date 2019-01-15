@@ -1,5 +1,5 @@
-@import url('https://cdn.staticaly.com/gh/jonasjohansson/template/master/reset.css');
-@import url('type/type.css');
+@import url("https://cdn.staticaly.com/gh/jonasjohansson/template/master/reset.css");
+@import url("type/type.css");
 
 :root {
 	--base: 1.4rem;
@@ -12,7 +12,7 @@
 }
 
 html {
-	font: 24px/1.2 'FranklinGothicITCW05-Book', BlinkMacSystemFont, system-ui, -apple-system;
+	font: 24px/1.2 "GerstnerProgramm-Regular", BlinkMacSystemFont, system-ui, -apple-system;
 	letter-spacing: 0.006em;
 	/*background: var(--grad-start) linear-gradient(var(--grad-start), var(--grad-end));*/
 }
@@ -153,7 +153,7 @@ html.dark div a:hover {
 
 .svartljus:after {
 	display: inline-block;
-	content: '\00a0\2600';
+	content: "\00a0\2600";
 }
 
 /* on small */
@@ -184,7 +184,7 @@ html.dark div a:hover {
 		box-sizing: border-box;
 	}
 	#contact:after {
-		content: '';
+		content: "";
 		display: block;
 		clear: left;
 	}
@@ -203,7 +203,7 @@ html.dark div a:hover {
 	#work:after {
 		display: block;
 		clear: both;
-		content: '';
+		content: "";
 	}
 	[data-start] {
 		clear: right;
@@ -211,8 +211,8 @@ html.dark div a:hover {
 	[data-start]:before {
 		float: right;
 	}
-	[data-end]:not([data-end='']):before {
-		content: attr(data-start) '-' attr(data-end);
+	[data-end]:not([data-end=""]):before {
+		content: attr(data-start) "-" attr(data-end);
 	}
 	.video {
 		padding-bottom: calc(var(--video-padding) / 2);
