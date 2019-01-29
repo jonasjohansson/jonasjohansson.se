@@ -6,15 +6,22 @@
 }
 
 @font-face {
-    font-family: 'EKA-Absolution-Regular';
-    src: url('EKA-Absolution-Regular.woff2') format('woff2');
+    font-family: "EKA-Absolution-Regular";
+    src: url("EKA-Absolution-Regular.woff2") format("woff2");
     font-weight: normal;
     font-style: normal;
 }
 
 @font-face {
-    font-family: 'Random';
-    src: url('Random-Regular.woff2') format('woff2');
+    font-family: "Random";
+    src: url("Random-Regular.woff2") format("woff2");
+    font-weight: normal;
+    font-style: normal;
+}
+
+@font-face {
+    font-family: "GerstnerProgramm-Regular";
+    src: url("GerstnerProgramm-Regular.woff2") format("woff2");
     font-weight: normal;
     font-style: normal;
 }*/
