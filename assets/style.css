@@ -5,8 +5,8 @@
 	--base: 1.4rem;
 	--font-size-small: 80%;
 	--video-padding: 56.3%;
-	--light: #525252;
-	--dark: #848484;
+	--light: #ffffff;
+	--dark: #1a2e3b;
 	--grad-start: rgb(3, 10, 30);
 	--grad-end: rgb(30, 50, 150);
 }
@@ -18,7 +18,7 @@ html {
 
 body {
 	min-width: 360px;
-	padding-top: 10vw;
+	padding-top: 12vw;
 	margin: 0 auto;
 	box-sizing: border-box;
 }
@@ -46,8 +46,7 @@ nav a {
 nav a,
 div a,
 hr {
-	/*filter: invert(1);*/
-	filter: brightness(0.5);
+	filter: invert(0.5);
 }
 
 h2 {
