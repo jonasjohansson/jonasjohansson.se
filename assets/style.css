@@ -5,10 +5,8 @@
 	--base: 1.4rem;
 	--font-size-small: 80%;
 	--video-padding: 56.3%;
-	--light: #ffffff;
-	--dark: #1a2e3b;
-	--grad-start: rgb(3, 10, 30);
-	--grad-end: rgb(30, 50, 150);
+	--light: #f4f4f4;
+	--dark: #15175d;
 }
 
 html {
@@ -46,7 +44,7 @@ nav a {
 nav a,
 div a,
 hr {
-	filter: invert(0.5);
+	filter: invert(0.4);
 }
 
 h2 {
