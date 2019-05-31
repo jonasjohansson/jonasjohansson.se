@@ -54,6 +54,10 @@ h2 {
     margin-bottom: var(--base);
 }
 
+h2 a {
+    cursor: pointer;
+}
+
 h3 {
     font-size: inherit;
     font-weight: 400;
