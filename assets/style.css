@@ -112,7 +112,7 @@ section:not(#work) {
 
 #work > * {
 	position: relative;
-	display: flex;
+	/*display: flex;*/
 	/*display: inline-block;*/
 	width: 100%;
 	overflow-x: scroll;
