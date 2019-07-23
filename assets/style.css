@@ -175,11 +175,11 @@ html.dark div a:hover {
 	content: '\00a0\2600';
 }
 
-.transition {
+/*.transition {
 	transition: opacity 400ms ease-in-out;
 	opacity: 0;
 	transform: translateY(-10px);
-}
+}*/
 
 body:not(.loading) .transition {
 	opacity: 1;
