@@ -19,7 +19,7 @@ window.addEventListener('load', () => {
 });
 
 document.addEventListener('DOMContentLoaded', () => {
-	toggleDarkTheme();
+	// toggleDarkTheme();
 	parseDates();
 	ga();
 });
