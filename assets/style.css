@@ -6,7 +6,7 @@
 	--font-size-small: 80%;
 	--video-padding: 56.3%;
 	--light: rgba(255, 255, 255, 0.9);
-	--dark: rgba(0, 0, 0, 0.1);
+	--dark: rgba(0, 0, 0, 0.9);
 }
 
 html {
