@@ -1,17 +1,16 @@
 @import url('https://cdn.staticaly.com/gh/jonasjohansson/template/master/reset.css');
-@import url('type/type.css');
 
 :root {
 	--base: 1.4rem;
 	--font-size-small: 80%;
 	--video-padding: 56.3%;
-	--light: rgba(255, 255, 255, 0.9);
-	--dark: rgba(0, 0, 0, 0.9);
 }
 
 html {
 	font: 24px/1.4 'Nimbus', BlinkMacSystemFont, system-ui, -apple-system;
 	letter-spacing: 0.002em;
+	color: #ffaa3a;
+	background-color: #242424;
 }
 
 body {
@@ -27,13 +26,14 @@ body.loading {
 	overflow: hidden;
 }
 
-/*body.loading > section {
-    opacity: 0;
-}*/
-
 a:hover {
 	text-decoration: none;
 	color: white;
+}
+
+nav a:hover,
+div a:hover {
+	filter: invert(1);
 }
 
 nav a {
@@ -111,14 +111,13 @@ section:not(#work) {
 
 #work {
 	line-height: 0;
-	/*background-color: black;*/
+	background-color: black;
 }
 
 #work > * {
 	position: relative;
 	display: flex;
 	align-items: flex-start;
-	/*display: inline-block;*/
 	width: 100%;
 	overflow-x: scroll;
 	scroll-snap-type: x mandatory;
@@ -145,26 +144,6 @@ section:not(#work) {
 
 /* special */
 
-html:not(.dark) {
-	background: var(--light);
-	color: var(--dark);
-}
-
-html {
-	background: var(--dark);
-	color: var(--light);
-}
-
-html:not(.dark) nav a:hover,
-html:not(.dark) div a:hover {
-	filter: invert(1);
-}
-
-html.dark nav a:hover,
-html.dark div a:hover {
-	filter: invert(0);
-}
-
 .upcoming:before {
 	display: inline-block;
 	content: '\2192\00a0';
@@ -175,15 +154,8 @@ html.dark div a:hover {
 	content: '\00a0\2600';
 }
 
-/*.transition {
-	transition: opacity 400ms ease-in-out;
-	opacity: 0;
-	transform: translateY(-10px);
-}*/
-
 body:not(.loading) .transition {
 	opacity: 1;
-	/*transform: translateY(0);*/
 }
 
 /* on small */
@@ -263,4 +235,13 @@ body:not(.loading) .transition {
 	[data-page-break] {
 		page-break-after: always;
 	}
+}
+
+/* import */
+
+@font-face {
+	font-family: 'Nimbus';
+	src: url('type/NimbusSansDOT-ReguExte.woff2') format('woff2');
+	font-weight: normal;
+	font-style: normal;
 }

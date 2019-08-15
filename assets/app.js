@@ -15,27 +15,12 @@ window.addEventListener('load', () => {
 	document.body.classList.remove('loading');
 	let videos = document.querySelectorAll('video');
 	for (let video of videos) video.title = '';
-	for (let a of document.querySelectorAll('a')) a.target = '_blank';
 });
 
 document.addEventListener('DOMContentLoaded', () => {
-	// toggleDarkTheme();
 	parseDates();
 	ga();
 });
-
-// window.addEventListener('resize', () => {
-// 	window.clearTimeout(timeout);
-// 	document.documentElement.classList.add('resizing');
-// 	timeout = setTimeout(function() {
-// 		document.documentElement.classList.remove('resizing');
-// 	}, 300);
-// });
-
-toggleDarkTheme = () => {
-	let h = now.getHours();
-	if (h >= 16 || h <= 6) document.documentElement.className = 'dark';
-};
 
 parseDates = () => {
 	let entries = document.querySelectorAll('[data-start]');
