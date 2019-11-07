@@ -9,6 +9,9 @@ window.addEventListener('DOMContentLoaded', () => {
 		transitionItem.classList.add('transition');
 		transitionItem.style.transitionDelay = `${i * 100}ms`;
 	}
+	for (let a of document.querySelectorAll('a')) {
+		a.setAttribute('target', '_blank');
+	}
 });
 
 window.addEventListener('load', () => {
