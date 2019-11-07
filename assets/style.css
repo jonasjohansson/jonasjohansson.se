@@ -1,247 +1,282 @@
 @import url('https://cdn.staticaly.com/gh/jonasjohansson/template/master/reset.css');
 
 :root {
-	--base: 1.4rem;
-	--font-size-small: 80%;
-	--video-padding: 56.3%;
+    --base: 1.4rem;
+    --font-size-small: 80%;
+    --video-padding: 56.3%;
 }
 
 html {
-	font: 24px/1.4 'Nimbus', BlinkMacSystemFont, system-ui, -apple-system;
-	letter-spacing: 0.002em;
-	color: #ffaa3a;
-	background-color: #242424;
+    font: 24px/1.2 'GT America', 'Nimbus', BlinkMacSystemFont, system-ui, -apple-system;
+    letter-spacing: 0.002em;
+    color: #5a6cc9;
+    background-color: #101010;
 }
 
 body {
-	min-width: 360px;
-	padding-top: 12vw;
-	margin: 0 auto;
-	box-sizing: border-box;
+    min-width: 360px;
+    padding-top: 12vw;
+    margin: 0 auto;
+    box-sizing: border-box;
 }
 
 body.loading {
-	position: fixed;
-	height: 100%;
-	overflow: hidden;
+    position: fixed;
+    height: 100%;
+    overflow: hidden;
 }
 
 a:hover {
-	text-decoration: none;
-	color: white;
+    text-decoration: none;
+    /*color: white;*/
 }
 
 nav a:hover,
 div a:hover {
-	filter: invert(1);
+    filter: invert(1);
 }
 
 nav a {
-	display: table;
-	white-space: nowrap;
+    display: table;
+    white-space: nowrap;
 }
 
 nav a,
 div a:not(:hover),
 hr {
-	filter: invert(0.4);
+    filter: invert(0.4);
 }
 
 h2 {
-	font-size: 150%;
-	font-weight: 400;
-	line-height: var(--base);
-	margin-bottom: var(--base);
+    font-size: 150%;
+    font-weight: 400;
+    line-height: var(--base);
+    margin-bottom: var(--base);
 }
 
 h2 a {
-	cursor: pointer;
+    cursor: pointer;
 }
 
 h3 {
-	font-size: inherit;
-	font-weight: 400;
-	text-transform: uppercase;
-	line-height: var(--base);
-	margin-top: calc(var(--base) * -0.125);
+    font-size: inherit;
+    font-weight: 400;
+    text-transform: uppercase;
+    line-height: var(--base);
+    margin-top: calc(var(--base) * -0.125);
 }
 
 p:not(:last-child),
 nav:not(:last-of-type),
 #resume > div:not(:last-child) {
-	margin-bottom: var(--base);
+    margin-bottom: var(--base);
 }
 
 img::selection {
-	background: none;
+    background: none;
 }
 
 hr {
-	height: 1px;
-	margin-bottom: var(--base);
-	background-color: var(--dark);
-	opacity: 0.2;
+    height: 1px;
+    margin-bottom: var(--base);
+    background-color: var(--dark);
+    opacity: 0.2;
 }
 
 video {
-	object-fit: fill;
+    object-fit: fill;
 }
 
 /* sections */
 
 section {
-	position: relative;
-	margin-bottom: var(--base);
-	will-change: transition;
-	transition: opacity 400ms;
+    position: relative;
+    margin-bottom: var(--base);
+    will-change: transition;
+    transition: opacity 400ms;
 }
 
 section:not(#work) {
-	padding-left: 4vw;
-	padding-right: 4vw;
+    padding-left: 4vw;
+    padding-right: 4vw;
+}
+
+#intro,
+#contact {
 }
 
 #contact {
-	padding-bottom: var(--base);
+    padding-bottom: var(--base);
 }
 
 #contact > * {
-	display: table;
+    display: table;
 }
 
 #work {
-	line-height: 0;
-	background-color: black;
+    line-height: 0;
+    background-color: black;
 }
 
 #work > * {
-	position: relative;
-	display: flex;
-	align-items: flex-start;
-	width: 100%;
-	overflow-x: scroll;
-	scroll-snap-type: x mandatory;
+    position: relative;
+    display: flex;
+    align-items: flex-start;
+    width: 100%;
+    overflow-x: scroll;
+    scroll-snap-type: x mandatory;
 }
 
 #work > * > * {
-	scroll-snap-align: start;
-	vertical-align: top;
+    scroll-snap-align: start;
+    vertical-align: top;
 }
 
 #resume {
-	padding-top: var(--base);
-	font-size: var(--font-size-small);
+    padding-top: var(--base);
+    font-size: var(--font-size-small);
 }
 
 #resume > div {
-	overflow-x: scroll;
-	-webkit-overflow-scrolling: touch;
+    overflow-x: scroll;
+    -webkit-overflow-scrolling: touch;
 }
 
 [data-start]:before {
-	content: attr(data-start);
+    content: attr(data-start);
+    font-family: 'GT America Mono';
 }
 
 /* special */
 
 .upcoming:before {
-	display: inline-block;
-	content: '\2192\00a0';
+    display: inline-block;
+    content: '\2192\00a0';
 }
 
 .svartljus:after {
-	display: inline-block;
-	content: '\00a0\2600';
+    display: inline-block;
+    content: '\00a0\2600';
 }
 
 body:not(.loading) .transition {
-	opacity: 1;
+    opacity: 1;
 }
 
 /* on small */
 
 @media (max-width: 899px) {
-	#resume {
-		white-space: nowrap;
-	}
-	[data-start]:before {
-		padding-right: 0.4rem;
-	}
-	.video {
-		padding-bottom: var(--video-padding);
-	}
+    #resume {
+        white-space: nowrap;
+    }
+    [data-start]:before {
+        padding-right: 0.4rem;
+    }
+    .video {
+        padding-bottom: var(--video-padding);
+    }
 }
 
 /* on large */
 
 @media (min-width: 900px) {
-	html {
-		font-size: 26px;
-	}
-	#intro,
-	#contact {
-		float: left;
-		width: 50%;
-		padding-left: calc(var(--base) / 2);
-		box-sizing: border-box;
-	}
-	#contact:after {
-		content: '';
-		display: block;
-		clear: left;
-	}
-	#intro {
-		padding-right: calc(var(--base) * 2);
-		box-sizing: border-box;
-		max-width: 60%;
-	}
-	#work > * {
-		float: left;
-		width: 50%;
-	}
-	#contact ~ * {
-		clear: left;
-	}
-	#work:after {
-		display: block;
-		clear: both;
-		content: '';
-	}
-	[data-start] {
-		clear: right;
-	}
-	[data-start]:before {
-		float: right;
-	}
-	[data-end]:not([data-end='']):before {
-		content: attr(data-start) '-' attr(data-end);
-	}
-	.video {
-		padding-bottom: calc(var(--video-padding) / 2);
-	}
+    html {
+        font-size: 28px;
+    }
+    #intro,
+    #contact {
+        float: left;
+        width: 50%;
+        padding-left: calc(var(--base) / 2);
+        box-sizing: border-box;
+    }
+    #contact:after {
+        content: '';
+        display: block;
+        clear: left;
+    }
+    #intro {
+        padding-right: calc(var(--base) * 2);
+        box-sizing: border-box;
+        max-width: 60%;
+    }
+    #work {
+        display: grid;
+        grid-template-columns: 1fr 1fr;
+    }
+    /*#work > * {
+        float: left;
+        width: 50%;
+    }*/
+    #contact ~ * {
+        clear: left;
+    }
+    #work:after {
+        display: block;
+        clear: both;
+        content: '';
+    }
+    [data-start] {
+        clear: right;
+    }
+    [data-start]:before {
+        float: right;
+    }
+    [data-end]:not([data-end='']):before {
+        content: attr(data-start) '-' attr(data-end);
+    }
+    .video {
+        padding-bottom: calc(var(--video-padding) / 2);
+    }
 }
 
 /* on print */
 
 @media print {
-	[data-no-print],
-	hr {
-		display: none !important;
-	}
-	* {
-		color: black;
-		filter: none !important;
-	}
-	[data-page-break] {
-		page-break-after: always;
-	}
+    [data-no-print],
+    hr {
+        display: none !important;
+    }
+    * {
+        color: black;
+        filter: none !important;
+    }
+    [data-page-break] {
+        page-break-after: always;
+    }
+    /* #resume {
+        display: grid;
+        grid-template-columns: 1fr 1fr;
+        grid-column-gap: 1rem;
+    }*/
 }
 
 /* import */
 
+/*@font-face {
+    font-family: 'Nimbus';
+    src: url('type/NimbusSansDOT-ReguExte.woff2') format('woff2');
+    font-weight: normal;
+    font-style: normal;
+}*/
+
 @font-face {
-	font-family: 'Nimbus';
-	src: url('type/NimbusSansDOT-ReguExte.woff2') format('woff2');
-	font-weight: normal;
-	font-style: normal;
+    font-family: 'GT America Mono';
+    src: url('type/GTAmericaMono-Light.woff2') format('woff2');
+    font-weight: 300;
+    font-style: normal;
+}
+
+@font-face {
+    font-family: 'GT America';
+    src: url('type/GTAmerica-Light.woff2') format('woff2');
+    font-weight: 300;
+    font-style: normal;
+}
+
+@font-face {
+    font-family: 'GT America Expanded';
+    src: url('type/GTAmerica-ExpandedRegular.woff2') format('woff2');
+    font-weight: normal;
+    font-style: normal;
 }

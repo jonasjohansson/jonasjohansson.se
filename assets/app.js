@@ -33,7 +33,7 @@ parseDates = () => {
 			else entry.removeAttribute('data-end');
 		}
 		let dateCheck = dateEnd != null ? dateEnd : dateStart;
-		if (now < new Date(dateCheck)) entry.innerHTML = `&#x2192;&#xFE0E; ${entry.innerHTML}`;
+		if (now < new Date(dateCheck)) entry.innerHTML = `&#x2934;&#xFE0E; ${entry.innerHTML}`;
 	}
 };
 
