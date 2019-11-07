@@ -181,7 +181,8 @@ body:not(.loading) .transition {
 
 @media (min-width: 900px) {
     html {
-        font-size: 28px;
+        /*font-size: 28px;*/
+        font-size: 1.8vw;
     }
     #intro,
     #contact {
