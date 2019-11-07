@@ -20,11 +20,11 @@ body {
     box-sizing: border-box;
 }
 
-body.loading {
+/*body.loading {
     position: fixed;
     height: 100%;
     overflow: hidden;
-}
+}*/
 
 a:hover {
     text-decoration: none;
