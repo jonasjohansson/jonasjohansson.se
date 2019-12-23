@@ -12,7 +12,7 @@
 }
 
 html {
-  font: 28px/1.2 var(--sans-serif);
+  font: 24px/1.2 var(--sans-serif);
   color: var(--black);
   background-color: var(--white);
 }
