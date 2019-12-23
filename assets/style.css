@@ -12,7 +12,7 @@
 }
 
 html {
-  font: 24px/1.2 var(--sans-serif);
+  font: 26px/1.25 var(--sans-serif);
   color: var(--black);
   background-color: var(--white);
 }
@@ -35,7 +35,7 @@ nav a {
 
 nav a,
 div a {
-  opacity: 0.5;
+  filter: invert(0.5);
 }
 
 h2 {
@@ -65,13 +65,6 @@ nav:not(:last-of-type),
 
 img::selection {
   background: none;
-}
-
-hr {
-  height: 1px;
-  margin-bottom: var(--base);
-  background-color: var(--dark);
-  opacity: 0.2;
 }
 
 video {
@@ -131,11 +124,13 @@ section:not(#work) {
 }
 
 [data-start]:before {
-  content: attr(data-start);
+  content: attr(data-start) " ";
   font-family: var(--monospace);
+  float: left;
+  opacity: 0.2;
+  white-space: pre;
 }
 
-padding-right: 0.4rem;
 /* special */
 
 .upcoming:before {
@@ -155,9 +150,6 @@ body:not(.loading) .transition {
   }
   .video {
     padding-bottom: var(--video-padding);
-  }
-  [data-start]:before {
-    padding-right: 0.4rem;
   }
 }
 
@@ -200,14 +192,6 @@ body:not(.loading) .transition {
     white-space: nowrap;
     text-overflow: ellipsis;
     overflow: hidden;
-  }
-  [data-start] {
-    clear: right;
-  }
-  [data-start]:before {
-    float: right;
-    position: relative;
-    bottom: 2px;
   }
   [data-end]:not([data-end=""]):before {
     content: attr(data-start) "-" attr(data-end);
