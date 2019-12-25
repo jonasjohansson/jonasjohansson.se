@@ -19,7 +19,6 @@ html {
 
 body {
   min-width: 360px;
-  padding-top: 12vw;
   margin: 0 auto;
   box-sizing: border-box;
 }
@@ -85,11 +84,7 @@ section:not(#work) {
 }
 
 #intro {
-  font-size: 115%;
-}
-
-#links {
-  padding-bottom: var(--base);
+  margin: 12vw 0;
 }
 
 #work {
@@ -144,9 +139,14 @@ body:not(.loading) .transition {
 /* on small */
 
 @media (max-width: 959px) {
-  #intro,
-  #links {
+  #intro {
     text-align: center;
+  }
+  #intro > div:first-child {
+    margin-bottom: var(--base);
+  }
+  #intro > div > p {
+    font-size: 115%;
   }
   #resume {
     white-space: nowrap;
@@ -162,23 +162,12 @@ body:not(.loading) .transition {
   html {
     font-size: 28px;
   }
-  #intro,
-  #links {
-    float: left;
-    width: 50%;
-    padding-left: calc(var(--base) / 2);
-    box-sizing: border-box;
-  }
-  #links:after {
-    content: "";
-    display: block;
-    clear: left;
-  }
   #intro {
-    padding-right: calc(var(--base) * 2);
-    box-sizing: border-box;
-    max-width: 60%;
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    grid-column-gap: var(--base);
   }
+
   #work {
     display: grid;
     grid-template-columns: 1fr 1fr;
@@ -187,9 +176,6 @@ body:not(.loading) .transition {
     display: block;
     clear: both;
     content: "";
-  }
-  #links ~ * {
-    clear: left;
   }
   #resume > div > div {
     white-space: nowrap;
