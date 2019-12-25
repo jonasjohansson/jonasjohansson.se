@@ -5,16 +5,16 @@
   --font-size-small: 80%;
   --video-padding: 56.3%;
   --accent: 5, 5, 18;
-  --white: #fff;
-  --black: #050526;
+  --white: rgb(229, 229, 229);
+  --black: rgb(15, 14, 18);
   --sans-serif: ColfaxAI, BlinkMacSystemFont, system-ui, -apple-system;
   --monospace: SFMono, Consolas, Liberation Mono, Menlo, Courier, monospace;
 }
 
 html {
-  font: 24px/1.25 var(--sans-serif);
-  color: var(--black);
-  background-color: var(--white);
+  font: 26px/1.25 var(--sans-serif);
+  color: var(--white);
+  background-color: var(--black);
 }
 
 body {
@@ -29,7 +29,6 @@ a:hover {
 }
 
 nav a {
-  display: table;
   white-space: nowrap;
 }
 
@@ -85,12 +84,12 @@ section:not(#work) {
   padding-right: 4vw;
 }
 
-#contact {
-  padding-bottom: var(--base);
+#intro {
+  font-size: 115%;
 }
 
-#contact > * {
-  display: table;
+#links {
+  padding-bottom: var(--base);
 }
 
 #work {
@@ -145,6 +144,10 @@ body:not(.loading) .transition {
 /* on small */
 
 @media (max-width: 959px) {
+  #intro,
+  #links {
+    text-align: center;
+  }
   #resume {
     white-space: nowrap;
   }
@@ -160,13 +163,13 @@ body:not(.loading) .transition {
     font-size: 28px;
   }
   #intro,
-  #contact {
+  #links {
     float: left;
     width: 50%;
     padding-left: calc(var(--base) / 2);
     box-sizing: border-box;
   }
-  #contact:after {
+  #links:after {
     content: "";
     display: block;
     clear: left;
@@ -185,7 +188,7 @@ body:not(.loading) .transition {
     clear: both;
     content: "";
   }
-  #contact ~ * {
+  #links ~ * {
     clear: left;
   }
   #resume > div > div {
