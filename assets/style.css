@@ -12,14 +12,16 @@
 }
 
 html {
-  font: 26px/1.25 var(--sans-serif);
+  font: 24px/1.25 var(--sans-serif);
   color: var(--white);
   background-color: var(--black);
 }
 
+
 body {
   min-width: 360px;
-  margin: 0 auto;
+https://github.com/jeromeetienne/AR.js/
+https://www.exploring.technology/l/s/a-frame/ar  margin: 0 auto;
   box-sizing: border-box;
 }
 
@@ -33,7 +35,7 @@ nav a {
 
 nav a,
 div a {
-  filter: invert(0.5);
+  filter: invert(0.4);
 }
 
 h2 {
@@ -84,7 +86,7 @@ section:not(#work) {
 }
 
 #intro {
-  margin: 12vw 0;
+  margin: 14vw 0;
 }
 
 #work {
@@ -121,7 +123,7 @@ section:not(#work) {
   content: attr(data-start) " ";
   font-family: var(--monospace);
   float: left;
-  opacity: 0.2;
+  opacity: 0.5;
   white-space: pre;
 }
 
@@ -146,7 +148,7 @@ body:not(.loading) .transition {
     margin-bottom: var(--base);
   }
   #intro > div > p {
-    font-size: 115%;
+    font-size: 110%;
   }
   #resume {
     white-space: nowrap;
@@ -183,7 +185,7 @@ body:not(.loading) .transition {
     overflow: hidden;
   }
   [data-end]:not([data-end=""]):before {
-    content: attr(data-start) "-" attr(data-end);
+    content: attr(data-start) "-" attr(data-end)  " ";;
   }
   .video {
     padding-bottom: calc(var(--video-padding) / 2);
