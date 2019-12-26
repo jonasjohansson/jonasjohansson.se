@@ -6,7 +6,7 @@
   --video-padding: 56.3%;
   --accent: 5, 5, 18;
   --white: rgb(229, 229, 229);
-  --black: rgb(15, 14, 18);
+  --black: rgb(12, 9, 128);
   --sans-serif: ColfaxAI, BlinkMacSystemFont, system-ui, -apple-system;
   --monospace: SFMono, Consolas, Liberation Mono, Menlo, Courier, monospace;
 }
@@ -15,6 +15,8 @@ html {
   font: 24px/1.25 var(--sans-serif);
   color: var(--white);
   background-color: var(--black);
+  background-image: linear-gradient(-45deg, red, #000091);
+  background-size: 300% 300%;
 }
 
 body {
@@ -33,7 +35,7 @@ nav a {
 
 nav a,
 div a {
-  filter: invert(0.4);
+  opacity: 0.5;
 }
 
 h2 {
