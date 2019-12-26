@@ -208,10 +208,26 @@ body:not(.loading) .transition {
   hr {
     display: none !important;
   }
+  #resume {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    grid-column-gap: var(--base);
+  }
+  #resume > div:first-of-type {
+    grid-column-start: 1;
+  }
+  html {
+    font-size: 80%;
+  }
+  #intro {
+    margin: 0;
+  }
   * {
     color: black;
     filter: none !important;
-    text-align: left;
+    text-align: left !important;
+    padding-left: 0 !important;
+    padding-right: 0 !important;
   }
   [data-page-break] {
     page-break-after: always;
