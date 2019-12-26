@@ -17,11 +17,9 @@ html {
   background-color: var(--black);
 }
 
-
 body {
   min-width: 360px;
-https://github.com/jeromeetienne/AR.js/
-https://www.exploring.technology/l/s/a-frame/ar  margin: 0 auto;
+  margin: 0 auto;
   box-sizing: border-box;
 }
 
@@ -81,8 +79,8 @@ section {
 }
 
 section:not(#work) {
-  padding-left: 4vw;
-  padding-right: 4vw;
+  padding-left: 8vw;
+  padding-right: 8vw;
 }
 
 #intro {
@@ -185,7 +183,7 @@ body:not(.loading) .transition {
     overflow: hidden;
   }
   [data-end]:not([data-end=""]):before {
-    content: attr(data-start) "-" attr(data-end)  " ";;
+    content: attr(data-start) "-" attr(data-end) " ";
   }
   .video {
     padding-bottom: calc(var(--video-padding) / 2);
@@ -213,6 +211,7 @@ body:not(.loading) .transition {
   * {
     color: black;
     filter: none !important;
+    text-align: left;
   }
   [data-page-break] {
     page-break-after: always;
