@@ -189,42 +189,37 @@ body:not(.loading) .transition {
   }
 }
 
-@media (min-width: 1280px) {
+/* on print, on largest */
+
+@media print, (min-width: 1280px) {
   #resume {
     display: grid;
     grid-template-columns: 1fr 1fr;
     grid-column-gap: var(--base);
   }
-  /* #resume > div:first-of-type {
-    grid-column-start: 1;
-  } */
 }
-
-/* on print */
 
 @media print {
   [data-no-print],
   hr {
     display: none !important;
   }
-  #resume {
-    display: grid;
-    grid-template-columns: 1fr 1fr;
-    grid-column-gap: var(--base);
-  }
-  #resume > div:first-of-type {
-    grid-column-start: 1;
-  }
   html {
-    font-size: 80%;
+    font-size: 90%;
   }
   #intro {
-    margin: 0;
+    text-align: left !important;
+  }
+  /* #resume > div > div {
+    white-space: pre-wrap;
+  } */
+  #intro,
+  #resume {
+    margin-top: 0 !important;
+    margin-bottom: 0 !important;
   }
   * {
     color: black;
-    filter: none !important;
-    text-align: left !important;
     padding-left: 0 !important;
     padding-right: 0 !important;
   }
