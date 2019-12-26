@@ -2,13 +2,13 @@ const now = new Date();
 var timeout;
 
 window.addEventListener("DOMContentLoaded", () => {
-  let transitionItems = document.querySelectorAll("#intro > *, #contact > *, #work > *, #resume > div");
-  let i = 0;
-  for (let transitionItem of transitionItems) {
-    i++;
-    transitionItem.classList.add("transition");
-    transitionItem.style.transitionDelay = `${i * 100}ms`;
-  }
+  // let transitionItems = document.querySelectorAll("#intro > *, #contact > *, #work > *, #resume > div");
+  // let i = 0;
+  // for (let transitionItem of transitionItems) {
+  //   i++;
+  //   transitionItem.classList.add("transition");
+  //   transitionItem.style.transitionDelay = `${i * 100}ms`;
+  // }
   //   let resumeItems = document.querySelectorAll("#resume > div > div");
   //   for (let item of resumeItems) {
   //     let div = document.createElement("div");
