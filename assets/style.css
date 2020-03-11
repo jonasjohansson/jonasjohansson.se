@@ -5,9 +5,9 @@
   --font-size-small: 80%;
   --video-padding: 56.3%;
   --accent: 5, 5, 18;
-  --white: rgb(229, 229, 229);
+  --white: rgb(244, 244, 244);
   --black: rgb(18, 18, 18);
-  --sans-serif: ColfaxAI, BlinkMacSystemFont, system-ui, -apple-system;
+  --sans-serif: Graphik, ColfaxAI, BlinkMacSystemFont, system-ui, -apple-system;
   --monospace: SFMono, Consolas, Liberation Mono, Menlo, Courier, monospace;
 }
 
@@ -240,4 +240,9 @@ body:not(.loading) .transition {
 @font-face {
   font-family: "ColfaxAI";
   src: url("type/ColfaxAIRegular.woff2") format("woff2");
+}
+
+@font-face {
+  font-family: "Graphik";
+  src: url("type/Graphik-Regular-Web.woff") format("woff2");
 }

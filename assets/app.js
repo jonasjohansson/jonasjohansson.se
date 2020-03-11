@@ -37,7 +37,7 @@ parseDates = () => {
   for (let entry of entries) {
     let dateStart = entry.getAttribute("data-start");
     let dateEnd = entry.getAttribute("data-end");
-    if (dateStart != null) entry.setAttribute("data-start", dateStart.substr(0, 4));
+    if (dateStart != null) entry.setAttribute("data-start", dateStart.substr(2,2));
     if (dateEnd != null) {
       if (dateEnd.length <= 4 && dateEnd.length > 0) entry.setAttribute("data-end", dateEnd.substr(0, 4));
       else entry.removeAttribute("data-end");
