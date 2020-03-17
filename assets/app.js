@@ -37,13 +37,16 @@ parseDates = () => {
   for (let entry of entries) {
     let dateStart = entry.getAttribute("data-start");
     let dateEnd = entry.getAttribute("data-end");
-    if (dateStart != null) entry.setAttribute("data-start", dateStart.substr(2,2));
+    if (dateStart != null)
+      entry.setAttribute("data-start", dateStart.substr(2, 2));
     if (dateEnd != null) {
-      if (dateEnd.length <= 4 && dateEnd.length > 0) entry.setAttribute("data-end", dateEnd.substr(0, 4));
+      if (dateEnd.length <= 4 && dateEnd.length > 0)
+        entry.setAttribute("data-end", dateEnd.substr(2, 2));
       else entry.removeAttribute("data-end");
     }
     let dateCheck = dateEnd != null ? dateEnd : dateStart;
-    if (now < new Date(dateCheck)) entry.innerHTML = `&#x2934;&#xFE0E; ${entry.innerHTML}`;
+    if (now < new Date(dateCheck))
+      entry.innerHTML = `&#x2934;&#xFE0E; ${entry.innerHTML}`;
   }
 };
 
@@ -59,6 +62,12 @@ parseDates = () => {
   a.async = 1;
   a.src = g;
   m.parentNode.insertBefore(a, m);
-})(window, document, "script", "https://www.google-analytics.com/analytics.js", "ga");
+})(
+  window,
+  document,
+  "script",
+  "https://www.google-analytics.com/analytics.js",
+  "ga"
+);
 ga("create", "UA-4374117-1", "auto");
 ga("send", "pageview");
