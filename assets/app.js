@@ -47,6 +47,11 @@ parseDates = () => {
     let dateCheck = dateEnd != null ? dateEnd : dateStart;
     if (now < new Date(dateCheck))
       entry.innerHTML = `&#x2934;&#xFE0E; ${entry.innerHTML}`;
+
+    entry.innerHTML = entry.innerHTML
+      .replace(/(\r\n|\n|\r)/gm, " ") // remove newlines
+      .replace(/\s+/g, " ") // remove multiple spaces
+      .trim(); // remove leading and trailing spaces
   }
 };
 
