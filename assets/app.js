@@ -1,7 +1,9 @@
+/** @format */
+
 const now = new Date();
 var timeout;
 
-window.addEventListener("DOMContentLoaded", () => {
+window.addEventListener('DOMContentLoaded', () => {
   // let transitionItems = document.querySelectorAll("#intro > *, #contact > *, #work > *, #resume > div");
   // let i = 0;
   // for (let transitionItem of transitionItems) {
@@ -16,47 +18,45 @@ window.addEventListener("DOMContentLoaded", () => {
   //     item.innerHTML = "";
   //     item.appendChild(div);
   //   }
-  for (let a of document.querySelectorAll("a")) {
-    a.setAttribute("target", "_blank");
+  for (let a of document.querySelectorAll('a')) {
+    a.setAttribute('target', '_blank');
   }
 });
 
-window.addEventListener("load", () => {
-  document.body.classList.remove("loading");
-  let videos = document.querySelectorAll("video");
-  for (let video of videos) video.title = "";
+window.addEventListener('load', () => {
+  document.body.classList.remove('loading');
+  let videos = document.querySelectorAll('video');
+  for (let video of videos) video.title = '';
 });
 
-document.addEventListener("DOMContentLoaded", () => {
+document.addEventListener('DOMContentLoaded', () => {
   parseDates();
   ga();
 });
 
 parseDates = () => {
-  let entries = document.querySelectorAll("[data-start]");
+  let entries = document.querySelectorAll('[data-start]');
   for (let entry of entries) {
-    let dateStart = entry.getAttribute("data-start");
-    let dateEnd = entry.getAttribute("data-end");
-    if (dateStart != null)
-      entry.setAttribute("data-start", dateStart.substr(2, 2));
+    let dateStart = entry.getAttribute('data-start');
+    let dateEnd = entry.getAttribute('data-end');
+    if (dateStart != null) entry.setAttribute('data-start', dateStart.substr(2, 2));
     if (dateEnd != null) {
-      if (dateEnd.length <= 4 && dateEnd.length > 0)
-        entry.setAttribute("data-end", dateEnd.substr(2, 2));
-      else entry.removeAttribute("data-end");
+      if (dateEnd.length <= 4 && dateEnd.length > 0) entry.setAttribute('data-end', dateEnd.substr(2, 2));
+      else entry.removeAttribute('data-end');
     }
-    let dateCheck = dateEnd != null ? dateEnd : dateStart;
-    if (now < new Date(dateCheck))
-      entry.innerHTML = `&#x2934;&#xFE0E; ${entry.innerHTML}`;
+    //let dateCheck = dateEnd != null ? dateEnd : dateStart;
+    //if (now < new Date(dateCheck))
+    if (now < new Date(dateStart)) entry.innerHTML = `&#x2934;&#xFE0E; ${entry.innerHTML}`;
 
     entry.innerHTML = entry.innerHTML
-      .replace(/(\r\n|\n|\r)/gm, " ") // remove newlines
-      .replace(/\s+/g, " ") // remove multiple spaces
+      .replace(/(\r\n|\n|\r)/gm, ' ') // remove newlines
+      .replace(/\s+/g, ' ') // remove multiple spaces
       .trim(); // remove leading and trailing spaces
   }
 };
 
 (function(i, s, o, g, r, a, m) {
-  i["GoogleAnalyticsObject"] = r;
+  i['GoogleAnalyticsObject'] = r;
   (i[r] =
     i[r] ||
     function() {
@@ -67,12 +67,6 @@ parseDates = () => {
   a.async = 1;
   a.src = g;
   m.parentNode.insertBefore(a, m);
-})(
-  window,
-  document,
-  "script",
-  "https://www.google-analytics.com/analytics.js",
-  "ga"
-);
-ga("create", "UA-4374117-1", "auto");
-ga("send", "pageview");
+})(window, document, 'script', 'https://www.google-analytics.com/analytics.js', 'ga');
+ga('create', 'UA-4374117-1', 'auto');
+ga('send', 'pageview');
