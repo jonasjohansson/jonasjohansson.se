@@ -1,22 +1,24 @@
-@import url("https://cdn.staticaly.com/gh/jonasjohansson/template/master/reset.css");
+@import url('https://cdn.staticaly.com/gh/jonasjohansson/template/master/reset.css');
 
 :root {
   --base: 1.6rem;
   --font-size-small: 80%;
   --video-padding: 56.3%;
   --accent: 5, 5, 18;
-  --white: rgb(244, 244, 244);
+  --white: rgb(240, 240, 240);
   --black: rgb(18, 18, 18);
-  --sans-serif: Graphik, ColfaxAI, BlinkMacSystemFont, system-ui, -apple-system;
-  --monospace: SFMono, Consolas, Liberation Mono, Menlo, Courier, monospace;
+  --sans-serif: Nimbus, system-ui, sans-serif;
+  --monospace: SFMono, monospace;
 }
 
 html {
   font: 24px/1.25 var(--sans-serif);
+}
+
+html,
+body {
   color: var(--black);
   background-color: var(--white);
-  /* background-image: linear-gradient(-45deg, red, #000091); */
-  /* background-size: 300% 300%; */
 }
 
 body {
@@ -87,7 +89,8 @@ section:not(#work) {
 
 #intro,
 #resume {
-  margin: 14vw auto;
+  margin: 0 auto;
+  padding: 14vw 0;
 }
 
 #intro {
@@ -126,7 +129,7 @@ section:not(#work) {
 }
 
 [data-start]:before {
-  content: attr(data-start) " ";
+  content: attr(data-start) ' ';
   font-family: var(--monospace);
   float: left;
   opacity: 0.5;
@@ -137,7 +140,7 @@ section:not(#work) {
 
 .upcoming:before {
   display: inline-block;
-  content: "\2192\00a0";
+  content: '\2192\00a0';
 }
 
 body:not(.loading) .transition {
@@ -161,14 +164,9 @@ body:not(.loading) .transition {
 /* on large */
 
 @media (min-width: 960px) {
-  html {
-    font-size: 28px;
+  body {
+    font-size: 140%;
   }
-  /* #intro {
-    display: grid;
-    grid-template-columns: 1fr 1fr;
-    grid-column-gap: var(--base);
-  } */
   #work {
     display: grid;
     grid-template-columns: 1fr 1fr;
@@ -176,15 +174,15 @@ body:not(.loading) .transition {
   #work:after {
     display: block;
     clear: both;
-    content: "";
+    content: '';
   }
   #resume > div > div {
     white-space: nowrap;
     text-overflow: ellipsis;
     overflow: hidden;
   }
-  [data-end]:not([data-end=""]):before {
-    content: attr(data-start) "-" attr(data-end) " ";
+  [data-end]:not([data-end='']):before {
+    content: attr(data-start) '-' attr(data-end) ' ';
   }
   .video {
     padding-bottom: calc(var(--video-padding) / 2);
@@ -233,16 +231,24 @@ body:not(.loading) .transition {
 /* import */
 
 @font-face {
-  font-family: "SFMono";
-  src: url("type/SFMono-Light.woff2") format("woff2");
+  font-family: 'SFMono';
+  src: url('type/SFMono-Light.woff2') format('woff2');
 }
 
 @font-face {
-  font-family: "ColfaxAI";
-  src: url("type/ColfaxAIRegular.woff2") format("woff2");
+  font-family: 'Nimbus';
+  src: url('type/NimbusSansDOT-ReguExte.woff2') format('woff2');
 }
 
-@font-face {
-  font-family: "Graphik";
-  src: url("type/Graphik-Regular-Web.woff") format("woff2");
+@media (prefers-color-scheme: dark) {
+  body,
+  img,
+  video,
+  .emoji {
+    filter: invert(1);
+  }
+  ::selection {
+    color: var(--white) !important;
+    background-color: var(--black) !important;
+  }
 }
