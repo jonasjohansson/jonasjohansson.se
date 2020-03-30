@@ -5,14 +5,14 @@
   --font-size-small: 80%;
   --video-padding: 56.3%;
   --accent: 5, 5, 18;
-  --white: rgb(240, 240, 240);
-  --black: rgb(18, 18, 18);
-  --sans-serif: Nimbus, system-ui, sans-serif;
-  --monospace: SFMono, monospace;
+  --white: rgb(249, 248, 245);
+  --black: rgb(14, 14, 34);
+  --sans-serif: 'GT America Extended', system-ui, sans-serif;
+  --monospace: 'SFMono', monospace;
 }
 
 html {
-  font: 24px/1.25 var(--sans-serif);
+  font: 22px/1.35 var(--sans-serif);
 }
 
 html,
@@ -165,7 +165,7 @@ body:not(.loading) .transition {
 
 @media (min-width: 960px) {
   body {
-    font-size: 140%;
+    font-size: 110%;
   }
   #work {
     display: grid;
@@ -240,7 +240,14 @@ body:not(.loading) .transition {
   src: url('type/NimbusSansDOT-ReguExte.woff2') format('woff2');
 }
 
-@media (prefers-color-scheme: dark) {
+@font-face {
+  font-family: 'GT America Extended';
+  src: url('type/GTAmerica-ExtendedRegular.woff2') format('woff2');
+  font-weight: normal;
+  font-style: normal;
+}
+
+@media (prefers-color-scheme: light) {
   body,
   img,
   video,
