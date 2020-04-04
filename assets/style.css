@@ -41,7 +41,7 @@ div a {
 }
 
 h2 {
-  font-size: 150%;
+  //font-size: 150%;
   font-weight: 400;
   line-height: var(--base);
   margin-bottom: var(--base);
@@ -151,7 +151,7 @@ body:not(.loading) .transition {
 
 @media (max-width: 959px) {
   #intro > div > p {
-    font-size: 110%;
+    //font-size: 110%;
   }
   #resume {
     white-space: nowrap;
@@ -165,7 +165,7 @@ body:not(.loading) .transition {
 
 @media (min-width: 960px) {
   body {
-    font-size: 110%;
+    font-size: 120%;
   }
   #work {
     display: grid;
@@ -247,7 +247,7 @@ body:not(.loading) .transition {
   font-style: normal;
 }
 
-@media (prefers-color-scheme: light) {
+@media (prefers-color-scheme: dark) {
   body,
   img,
   video,
