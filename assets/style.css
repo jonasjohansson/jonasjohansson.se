@@ -112,6 +112,9 @@ section:not(#work) {
   overflow-x: scroll;
   overflow-y: hidden;
   -webkit-overflow-scrolling: touch;
+}
+
+#resume h3 {
   cursor: crosshair;
 }
 

@@ -27,7 +27,7 @@ window.addEventListener('load', () => {
   for (let video of videos) video.title = '';
   let resumeItems = document.querySelectorAll('#resume > div');
   for (let item of resumeItems) {
-    item.addEventListener('click', () => {
+    item.querySelector('h3').addEventListener('click', () => {
       item.classList.toggle('show-all');
     });
   }
