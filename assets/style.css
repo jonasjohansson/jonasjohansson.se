@@ -103,20 +103,6 @@ section:not(#work) {
   background-color: black;
 }
 
-/* #work > * {
-  position: relative;
-  display: flex;
-  align-items: flex-start;
-  width: 100%;
-  overflow-x: scroll;
-  scroll-snap-type: x mandatory;
-}
-
-#work > * > * {
-  scroll-snap-align: start;
-  vertical-align: top;
-} */
-
 #resume {
   padding-top: var(--base);
   font-size: var(--font-size-small);
@@ -126,6 +112,7 @@ section:not(#work) {
   overflow-x: scroll;
   overflow-y: hidden;
   -webkit-overflow-scrolling: touch;
+  cursor: crosshair;
 }
 
 [data-start]:before {
@@ -196,6 +183,12 @@ body:not(.loading) .transition {
     display: grid;
     grid-template-columns: 1fr 1fr;
     grid-column-gap: var(--base);
+  }
+}
+
+@media screen {
+  #resume > div:not(.show-all) div:nth-child(n + 10) {
+    display: none;
   }
 }
 

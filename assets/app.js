@@ -1,5 +1,3 @@
-/** @format */
-
 const now = new Date();
 var timeout;
 
@@ -27,6 +25,12 @@ window.addEventListener('load', () => {
   document.body.classList.remove('loading');
   let videos = document.querySelectorAll('video');
   for (let video of videos) video.title = '';
+  let resumeItems = document.querySelectorAll('#resume > div');
+  for (let item of resumeItems) {
+    item.addEventListener('click', () => {
+      item.classList.toggle('show-all');
+    });
+  }
 });
 
 document.addEventListener('DOMContentLoaded', () => {
@@ -55,11 +59,11 @@ parseDates = () => {
   }
 };
 
-(function(i, s, o, g, r, a, m) {
+(function (i, s, o, g, r, a, m) {
   i['GoogleAnalyticsObject'] = r;
   (i[r] =
     i[r] ||
-    function() {
+    function () {
       (i[r].q = i[r].q || []).push(arguments);
     }),
     (i[r].l = 1 * new Date());
