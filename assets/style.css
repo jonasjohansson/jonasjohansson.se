@@ -98,6 +98,10 @@ section:not(#work) {
   box-sizing: border-box;
 }
 
+.symbols {
+  display: none;
+}
+
 #work {
   line-height: 0;
   background-color: black;
@@ -154,9 +158,6 @@ body:not(.loading) .transition {
   body {
     font-size: 120%;
   }
-  #intro {
-    max-width: 50%;
-  }
   #work {
     display: grid;
     grid-template-columns: 1fr 1fr;
@@ -182,6 +183,10 @@ body:not(.loading) .transition {
 /* on print, on largest */
 
 @media print, (min-width: 1280px) {
+  .symbols {
+    display: block;
+  }
+  #intro,
   #resume {
     display: grid;
     grid-template-columns: 1fr 1fr;
