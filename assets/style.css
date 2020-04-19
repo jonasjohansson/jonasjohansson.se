@@ -254,7 +254,7 @@ body:not(.loading) .transition {
   font-style: normal;
 }
 
-@media (prefers-color-scheme: dark) {
+@media not print and (prefers-color-scheme: dark) {
   body,
   img,
   video,
