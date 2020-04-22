@@ -200,11 +200,11 @@ body:not(.loading) .transition {
   }
 }
 
-@media screen {
+/* @media screen {
   #resume > div:not(.show-all) div:nth-child(n + 10) {
     display: none;
   }
-}
+} */
 
 @media print {
   [data-no-print],
