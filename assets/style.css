@@ -12,7 +12,7 @@
 }
 
 html {
-  font: 22px/1.35 var(--sans-serif);
+  font: 22px/1.25 var(--sans-serif);
 }
 
 html,
@@ -145,6 +145,11 @@ section:not(#work) {
 
 body:not(.loading) .transition {
   opacity: 1;
+}
+
+.stretch {
+  font-family: 'Nimbus';
+  text-transform: uppercase;
 }
 
 /* on small */

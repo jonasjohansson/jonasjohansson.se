@@ -19,6 +19,13 @@ window.addEventListener('DOMContentLoaded', () => {
   for (let a of document.querySelectorAll('a')) {
     a.setAttribute('target', '_blank');
   }
+  for (let stretch of document.querySelectorAll('.stretch')) {
+    let text = '';
+    for (let char of stretch.innerHTML) {
+      text += '<span>' + char + '</span>';
+    }
+    stretch.innerHTML = text;
+  }
 });
 
 window.addEventListener('load', () => {
