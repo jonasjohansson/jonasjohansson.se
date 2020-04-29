@@ -267,7 +267,7 @@ body:not(.loading) .transition {
     filter: invert(1);
   }
   ::selection {
-    color: var(--white) !important;
-    background-color: var(--black) !important;
+    color: var(--black) !important;
+    background-color: var(--white) !important;
   }
 }
