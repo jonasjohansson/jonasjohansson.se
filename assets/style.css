@@ -5,8 +5,8 @@
   --font-size-small: 80%;
   --video-padding: 56.3%;
   --accent: 5, 5, 18;
-  --white: rgb(249, 248, 245);
-  --black: rgb(14, 14, 34);
+  --white: white; /*rgb(249, 248, 245);*/
+  --black: black; /*rgb(14, 14, 34);*/
   --sans-serif: 'GT America Extended', system-ui, sans-serif;
   --monospace: 'SFMono', monospace;
 }
