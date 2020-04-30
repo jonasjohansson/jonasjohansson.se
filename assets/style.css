@@ -17,8 +17,8 @@ html {
 
 html,
 body {
-  color: var(--white);
-  background-color: var(--black);
+  color: var(--black);
+  background-color: var(--white);
 }
 
 body {
@@ -259,7 +259,7 @@ body:not(.loading) .transition {
   font-style: normal;
 }
 
-@media not print and (prefers-color-scheme: dark) {
+/*@media not print and (prefers-color-scheme: dark) {
   body,
   img,
   video,
@@ -270,4 +270,4 @@ body:not(.loading) .transition {
     color: var(--black) !important;
     background-color: var(--white) !important;
   }
-}
+}*/
