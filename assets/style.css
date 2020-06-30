@@ -115,7 +115,7 @@ body:not(.loading) .transition {
     src: url('type/NotoSans-Light.woff2') format('woff2');
 }
 
-@media not print and (prefers-color-scheme: dark) {
+@media screen and (prefers-color-scheme: dark) {
     body,
     img,
     video,
