@@ -1,0 +1,56 @@
+<!DOCTYPE html>
+<html>
+	<head>
+		<meta charset="utf-8" />
+		<meta name="viewport" content="width=device-width, initial-scale=1.0" />
+		<title>{{ metadata.title }}</title>
+		{% set css %} 
+			{% include "assets/reset.css" %} 
+			{% include "assets/style.css" %} 
+			{% include "assets/gallery.css" %}
+			{% include "assets/resume.css" %}
+		{% endset %}
+		<style>{{ css | cssmin | safe }}</style>
+		{% set js %} 
+			{% include "assets/app.js" %}
+		{% endset %}
+		<script> {{ js | jsmin | safe }}</script>
+	</head>
+	<body>
+		<section id="intro">
+			<p>{{ metadata.introduction }}</p>
+			<div data-no-print>
+				<div>Reach out <span class="emoji">👋🏻</span> <a href="https://facebook.com/jnsjohansson">Messenger</a> or <a href="mailto:jns.johansson@gmail.com">Mail</a></div>
+				{# <div>Connect at <a href="https://glitch.com/@jonasjohansson">Glitch</a> and <a href="https://github.com/jonasjohansson/">Github</a> <span class="emoji">✨</span></div> #}
+			</div>
+		</section>
+		<section id="gallery">
+			<h3 id="info"></h3>
+			{% for galleryItem in gallery %}
+			<div class="group" data-title="{{galleryItem.title}}">
+				{% for mediaItem in galleryItem.media %}
+				<div class="slide">{{ mediaItem | gallery | safe }}</div>
+				{% endfor %}
+			</div>
+			{% endfor %}
+		</section>
+		<section id="resume">
+		{% for heading in ['work','education','projects'] %}
+			<div>
+				<h3>{{ heading }}</h3>
+				{% for entry in resume[heading] %}
+				{% if entry.hidden !== true %}
+				<div data-start="{{ entry['date-start'] }}" data-end="{{ entry['date-end'] }}">
+					{% if entry.link %} <a href="{{ entry.link }}"> {% endif %} 
+					{% if entry.title %} {{ entry.title }}. {% endif %} 
+					{% if entry.location %} {{ entry.location }} {% endif %} 
+					{% if entry.link %} </a> {% endif %} 
+					{# {% if entry.link %} <a href="{{ entry.link }}">⭢</a> {% endif %}  #}
+				</div>
+				{% endif %}
+				{% endfor %}
+			</div>
+		{% endfor %}
+		</section>
+	</body>
+</html>

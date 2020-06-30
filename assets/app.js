@@ -1,83 +1,106 @@
-const now = new Date();
-var timeout;
-
-window.addEventListener('DOMContentLoaded', () => {
-  // let transitionItems = document.querySelectorAll("#intro > *, #contact > *, #work > *, #resume > div");
-  // let i = 0;
-  // for (let transitionItem of transitionItems) {
-  //   i++;
-  //   transitionItem.classList.add("transition");
-  //   transitionItem.style.transitionDelay = `${i * 100}ms`;
-  // }
-  //   let resumeItems = document.querySelectorAll("#resume > div > div");
-  //   for (let item of resumeItems) {
-  //     let div = document.createElement("div");
-  //     div.innerHTML = item.innerHTML;
-  //     item.innerHTML = "";
-  //     item.appendChild(div);
-  //   }
-  for (let a of document.querySelectorAll('a')) {
-    a.setAttribute('target', '_blank');
-  }
-  for (let stretch of document.querySelectorAll('.stretch')) {
-    let text = '';
-    for (let char of stretch.innerHTML) {
-      text += '<span>' + char + '</span>';
-    }
-    stretch.innerHTML = text;
-  }
-});
-
 window.addEventListener('load', () => {
-  document.body.classList.remove('loading');
-  let videos = document.querySelectorAll('video');
-  for (let video of videos) video.title = '';
-  let resumeItems = document.querySelectorAll('#resume > div');
-  for (let item of resumeItems) {
-    item.querySelector('h3').addEventListener('click', () => {
-      item.classList.toggle('show-all');
-    });
-  }
-});
+    document.body.classList.remove('loading')
+})
 
 document.addEventListener('DOMContentLoaded', () => {
-  parseDates();
-  ga();
-});
+    const anchors = document.querySelectorAll('a')
+    anchors.forEach(a => {
+        a.setAttribute('target', '_blank')
+    })
 
-parseDates = () => {
-  let entries = document.querySelectorAll('[data-start]');
-  for (let entry of entries) {
-    let dateStart = entry.getAttribute('data-start');
-    let dateEnd = entry.getAttribute('data-end');
-    if (dateStart != null) entry.setAttribute('data-start', dateStart.substr(2, 2));
-    if (dateEnd != null) {
-      if (dateEnd.length <= 4 && dateEnd.length > 0) entry.setAttribute('data-end', dateEnd.substr(2, 2));
-      else entry.removeAttribute('data-end');
+    const now = new Date()
+    const hours = now.getHours()
+
+    // if (hours > 18 || hours < 6) {
+    // 	document.documentElement.classList.add('dark')
+    // }
+
+    /*
+	Gallery
+	*/
+
+    const groups = document.querySelectorAll('.group')
+
+    const slides = document.querySelectorAll('.slide')
+
+    let currGroup = groups[0]
+    let currSlide = slides[0]
+
+    show(currGroup)
+    show(currSlide)
+
+    const info = document.querySelector('#info')
+
+    slides.forEach(slide => {
+        slide.onclick = e => {
+            hide(slide)
+            if (slide.nextElementSibling === null) {
+                console.log('Last slide!')
+                let group = slide.parentElement
+                hide(group)
+                if (group.nextElementSibling === null) {
+                    console.log('Last group!')
+                    currGroup = groups[0]
+                } else {
+                    currGroup = group.nextElementSibling
+                }
+                currSlide = currGroup.firstElementChild
+            } else {
+                console.log('Next slide!')
+                currSlide = slide.nextElementSibling
+            }
+            show(currGroup)
+            show(currSlide)
+            info.innerHTML = getInfo(currSlide)
+        }
+    })
+
+    info.innerHTML = getInfo(currSlide)
+
+    function getInfo(el) {
+        let slideIndex = getIndex(el) + 1
+        let numSlides = el.parentElement.childElementCount
+        let title = el.parentElement.getAttribute('data-title')
+        let out = `<span class="title">${title}</span>`
+        if (numSlides > 1) {
+            out += `<span class="pagination">${slideIndex}/${numSlides}</span>`
+        }
+        return out
     }
-    //let dateCheck = dateEnd != null ? dateEnd : dateStart;
-    //if (now < new Date(dateCheck))
-    if (now < new Date(dateStart)) entry.innerHTML = `&#x2934;&#xFE0E; ${entry.innerHTML}`;
 
-    entry.innerHTML = entry.innerHTML
-      .replace(/(\r\n|\n|\r)/gm, ' ') // remove newlines
-      .replace(/\s+/g, ' ') // remove multiple spaces
-      .trim(); // remove leading and trailing spaces
-  }
-};
+    function getIndex(child) {
+        return Array.from(child.parentNode.children).indexOf(child)
+    }
 
-(function (i, s, o, g, r, a, m) {
-  i['GoogleAnalyticsObject'] = r;
-  (i[r] =
-    i[r] ||
-    function () {
-      (i[r].q = i[r].q || []).push(arguments);
-    }),
-    (i[r].l = 1 * new Date());
-  (a = s.createElement(o)), (m = s.getElementsByTagName(o)[0]);
-  a.async = 1;
-  a.src = g;
-  m.parentNode.insertBefore(a, m);
-})(window, document, 'script', 'https://www.google-analytics.com/analytics.js', 'ga');
-ga('create', 'UA-4374117-1', 'auto');
-ga('send', 'pageview');
+    function show(el) {
+        el.classList.add('show')
+    }
+
+    function hide(el) {
+        el.classList.remove('show')
+    }
+
+    /*
+	Resume
+	*/
+
+    let entries = document.querySelectorAll('[data-start]')
+
+    for (let entry of entries) {
+        let dateStart = entry.getAttribute('data-start')
+        let dateEnd = entry.getAttribute('data-end')
+        if (dateStart != null) entry.setAttribute('data-start', dateStart.substr(2, 2))
+        if (dateEnd != null) {
+            if (dateEnd.length <= 4 && dateEnd.length > 0) entry.setAttribute('data-end', dateEnd.substr(2, 2))
+            else entry.removeAttribute('data-end')
+        }
+        //let dateCheck = dateEnd != null ? dateEnd : dateStart;
+        //if (now < new Date(dateCheck))
+        if (now < new Date(dateStart)) entry.innerHTML = `&#x2934;&#xFE0E; ${entry.innerHTML}`
+
+        entry.innerHTML = entry.innerHTML
+            .replace(/(\r\n|\n|\r)/gm, ' ') // remove newlines
+            .replace(/\s+/g, ' ') // remove multiple spaces
+            .trim() // remove leading and trailing spaces
+    }
+})

@@ -1,0 +1,146 @@
+{
+  "work": [
+    {
+      "date-start": "2017/12",
+      "location": "Svartljus, Stockholm",
+      "link": "https://svartljus.se/",
+      "hidden": true
+    },
+    {
+      "date-start": "2017/08",
+      "location": "Beckmans, Stockholm",
+      "link": "http://www.beckmans.se/"
+    },
+    {
+      "date-start": "2015/12",
+      "date-end": "2016/06",
+      "location": "Kram/Weisshaar, Stockholm",
+      "link": "https://www.kramweisshaar.com/"
+    },
+    {
+      "date-start": "2014/08",
+      "date-end": "2015/08",
+      "location": "Field, London",
+      "link": "http://field.io/"
+    },
+    {
+      "date-start": "2012/09",
+      "date-end": "2013/04",
+      "location": "APM300, Montreal",
+      "link": "https://vimeo.com/apm300",
+      "hidden": true
+    },
+    {
+      "date-start": "2012/01",
+      "date-end": "2012/10",
+      "location": "Moment Factory, Montreal",
+      "link": "https://momentfactory.com/"
+    },
+    {
+      "date-start": "2009/03",
+      "date-end": "2009/05",
+      "location": "Dragster, Göteborg",
+      "hidden": true
+    },
+    {
+      "date-start": "2008/01",
+      "date-end": "2008/03",
+      "location": "Essoell, Göteborg",
+      "hidden": true
+    }
+  ],
+  "education": [
+    {
+      "date-start": "2013",
+      "title": "Art, Play and Games",
+      "location": "Akademin Valand, Göteborg"
+    },
+    {
+      "date-start": "2010",
+      "date-end": "2011",
+      "title": "Design Lead",
+      "location": "Hyper Island, Stockholm",
+      "link": "https://www.hyperisland.com/programs-and-courses/design-lead"
+    },
+    {
+      "date-start": "2008",
+      "title": "Design Graphique et Multimédia",
+      "location": "École Supérieure d'Art et de Design, Reims"
+    },
+    {
+      "date-start": "2006",
+      "date-end": "2009",
+      "title": "Grafisk Design och Kommunikation",
+      "location": "Tekniska Högskolan, Linköping"
+    }
+  ],
+  "projects": [
+    {
+      "date-start": "2020/05/16",
+      "title": "Mareld",
+      "location": "Avesta Verket"
+    },
+    {
+      "date-start": "2020/03/21",
+      "title": "Glitch & Eye",
+      "location": "Hyper Human, Tekniska Muséet"
+    },
+    {
+      "date-start": "2020/02/14",
+      "date-end": "2020/05/31",
+      "title": "Embodiment",
+      "location": "Art in Fashion, Sven-Harrys konstmuseum"
+    },
+    {
+      "date-start": "2020/01/06",
+      "date-end": "2020/03/27",
+      "title": "Brahman",
+      "location": "Bombay Beach",
+      "link": "https://brahman.ai/"
+    },
+    {
+      "date-start": "2019/09/19",
+      "date-end": "2019/09/22",
+      "title": "Osmos Kosmos",
+      "location": "Open Cell, London Design Festival"
+    },
+    {
+      "date-start": "2019/09/12",
+      "date-end": "2019/09/14",
+      "title": "Radar",
+      "location": "Gather, Stockholm"
+    },
+    {
+      "date-start": "2019/04/25",
+      "date-end": "2019/04/27",
+      "title": "Skaðablót",
+      "location": "Bíó Paradís, Reykjavik",
+      "link": "https://www.facebook.com/events/318340158851910/"
+    },
+    {
+      "date-start": "2019/03/15",
+      "title": "Embed",
+      "location": "Hobo hotel, Stockholm",
+      "link": "https://vimeo.com/431888069"
+    },
+    {
+      "date-start": "2019/02/07",
+      "date-end": "2019/02/10",
+      "title": "Tiny/Massive",
+      "location": "Winter Lights, Reykjavik",
+      "link": "https://nava.community/tiny-massive-2019/"
+    },
+    {
+      "date-start": "2019/02/01",
+      "date-end": "2019/11/01",
+      "location": "International Genetically Engineered Machine, Stockholm"
+    },
+    {
+      "date-start": "2019/01/18",
+      "date-end": "2019/02/01",
+      "title": "Emerging Sensation",
+      "location": "Reaktorhallen, Stockholm",
+      "link": "http://www.emergingsensation.com"
+    }
+  ]
+}
