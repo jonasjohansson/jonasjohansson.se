@@ -33,10 +33,12 @@ a {
     cursor: pointer;
 }
 
+p a,
 div a {
-    opacity: 0.6;
+    opacity: 0.65;
 }
 
+p a:hover,
 div a:hover {
     background-image: linear-gradient(to left, violet, indigo, blue, green, yellow, orange, red);
     -webkit-background-clip: text;
