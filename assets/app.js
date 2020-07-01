@@ -4,13 +4,6 @@ document.addEventListener('DOMContentLoaded', () => {
         a.setAttribute('target', '_blank')
     })
 
-    const now = new Date()
-    const hours = now.getHours()
-
-    // if (hours > 18 || hours < 6) {
-    // 	document.documentElement.classList.add('dark')
-    // }
-
     /*
 	Gallery
 	*/
@@ -94,20 +87,27 @@ document.addEventListener('DOMContentLoaded', () => {
     for (let entry of entries) {
         let dateStart = entry.getAttribute('data-start')
         let dateEnd = entry.getAttribute('data-end')
-        entry.setAttribute('data-start-full', dateStart)
-        if (dateStart !== '') entry.setAttribute('data-start', dateStart.substr(2, 2))
-        if (dateEnd !== '') {
-            entry.setAttribute('data-end-full', dateEnd)
-            if (dateEnd.length <= 4 && dateEnd.length > 0) entry.setAttribute('data-end', dateEnd.substr(2, 2))
-            else entry.removeAttribute('data-end')
-        }
-        //let dateCheck = dateEnd != null ? dateEnd : dateStart;
-        //if (now < new Date(dateCheck))
-        if (now < new Date(dateStart)) entry.innerHTML = `&#x2934;&#xFE0E; ${entry.innerHTML}`
 
-        entry.innerHTML = entry.innerHTML
-            .replace(/(\r\n|\n|\r)/gm, ' ') // remove newlines
-            .replace(/\s+/g, ' ') // remove multiple spaces
-            .trim() // remove leading and trailing spaces
+        if (dateStart) {
+            entry.setAttribute('data-start-year', dateStart.substr(2, 2))
+            entry.setAttribute('data-start-full', dateStart)
+        } else {
+            entry.removeAttribute('data-start')
+        }
+
+        if (dateEnd) {
+            entry.setAttribute('data-end-year', dateEnd.substr(2, 2))
+            entry.setAttribute('data-end-full', dateEnd)
+        } else {
+            entry.removeAttribute('data-end')
+        }
+
+        // const now = new Date()
+        // if (now < new Date(dateStart)) entry.innerHTML = `&#x2934;&#xFE0E; ${entry.innerHTML}`
+
+        // entry.innerHTML = entry.innerHTML
+        //     .replace(/(\r\n|\n|\r)/gm, ' ') // remove newlines
+        //     .replace(/\s+/g, ' ') // remove multiple spaces
+        //     .trim() // remove leading and trailing spaces
     }
 })

@@ -25,7 +25,7 @@
         display: none;
     } */
     [data-start]:before {
-        content: attr(data-start) ' ';
+        content: attr(data-start-year) ' ';
         position: absolute;
         white-space: pre;
         font-size: 40%;

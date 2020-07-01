@@ -1,6 +1,13 @@
 [
     {
         "title": "Vista",
-        "media": ["jonas_johansson-birds.mp4"]
+        "media": [
+            [
+                "jonas_johansson-glommen.mp4",
+                "jonas_johansson-berg.mp4",
+                "jonas_johansson-berg.mp4",
+                "jonas_johansson-glommen.mp4"
+            ]
+        ]
     }
 ]
