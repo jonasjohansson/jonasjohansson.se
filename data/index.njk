@@ -9,6 +9,7 @@
 			{% include "assets/style.css" %} 
 			{% include "assets/gallery.css" %}
 			{% include "assets/resume.css" %}
+			{% include "assets/print.css" %}
 		{% endset %}
 		<style>{{ css | cssmin | safe }}</style>
 		{% set js %} 
@@ -18,13 +19,20 @@
 	</head>
 	<body>
 		<section id="intro">
-			<p>{{ metadata.introduction }}</p>
-			<div data-no-print>
-				<div>Reach out <span class="emoji">👋🏻</span> <a href="https://facebook.com/jnsjohansson">Messenger</a> or <a href="mailto:jns.johansson@gmail.com">Mail</a></div>
-				{# <div>Connect at <a href="https://glitch.com/@jonasjohansson">Glitch</a> and <a href="https://github.com/jonasjohansson/">Github</a> <span class="emoji">✨</span></div> #}
-			</div>
+			<p>
+				Jonas Johansson is an anywhere based artist-activist transforming light ✺ technology through ❋ play, education
+				and (un)human intervention
+			</p>
+			<p data-no-print>
+				Reach out
+				<span class="emoji">👋🏻</span>
+				<a href="https://facebook.com/jnsjohansson">Messenger</a>
+				or
+				<a href="mailto:jns.johansson@gmail.com">Mail</a>
+				<span class="emoji">✨</span>
+			</p>
 		</section>
-		<section id="gallery">
+		<section id="gallery" data-no-print>
 			<h3 id="info"></h3>
 			{% for galleryItem in gallery %}
 			<div class="group" data-title="{{galleryItem.title}}">
@@ -35,22 +43,28 @@
 			{% endfor %}
 		</section>
 		<section id="resume">
-		{% for heading in ['work','education','projects'] %}
-			<div>
-				<h3>{{ heading }}</h3>
-				{% for entry in resume[heading] %}
-				{% if entry.hidden !== true %}
-				<div data-start="{{ entry['date-start'] }}" data-end="{{ entry['date-end'] }}">
-					{% if entry.link %} <a href="{{ entry.link }}"> {% endif %} 
-					{% if entry.title %} {{ entry.title }}. {% endif %} 
-					{% if entry.location %} {{ entry.location }} {% endif %} 
-					{% if entry.link %} </a> {% endif %} 
-					{# {% if entry.link %} <a href="{{ entry.link }}">⭢</a> {% endif %}  #}
-				</div>
-				{% endif %}
-				{% endfor %}
+			<div data-no-print>
+				<a onclick="window.print();return false;">Print</a>
+				for full resumé
 			</div>
-		{% endfor %}
+			{% for heading in ['work','education','projects','teaching','talks'] %}
+			<div>
+				<h3>{{ resume.titles[heading] }}</h3>
+				{% for entry in resume[heading] %} {% if entry.hidden !== true %}
+				<div data-start="{{ entry['date-start'] }}" data-end="{{ entry['date-end'] }}">
+					{% if entry.link %}
+					<a href="{{ entry.link }}">
+						{% endif %} {% if entry.title %} {{ entry.title }}. {% endif %} {# {% if entry.winner === true %}
+						<span class="emoji">🏆</span>
+						{% endif %} #} {% if entry.location %} {{ entry.location }} {% endif %} {% if entry.link %}
+					</a>
+					{% endif %} {# {% if entry.link %}
+					<a href="{{ entry.link }}">⭢</a>
+					{% endif %} #}
+				</div>
+				{% endif %} {% endfor %}
+			</div>
+			{% endfor %}
 		</section>
 	</body>
 </html>

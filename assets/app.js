@@ -1,7 +1,3 @@
-window.addEventListener('load', () => {
-    document.body.classList.remove('loading')
-})
-
 document.addEventListener('DOMContentLoaded', () => {
     const anchors = document.querySelectorAll('a')
     anchors.forEach(a => {
@@ -82,15 +78,26 @@ document.addEventListener('DOMContentLoaded', () => {
 
     /*
 	Resume
-	*/
+    */
+
+    let entryGroups = document.querySelectorAll('#resume > div')
+
+    entryGroups.forEach(group => {
+        console.log(group.childElementCount)
+        if (group.childElementCount > 6) {
+            let fadeEl = document.createElement('div')
+        }
+    })
 
     let entries = document.querySelectorAll('[data-start]')
 
     for (let entry of entries) {
         let dateStart = entry.getAttribute('data-start')
         let dateEnd = entry.getAttribute('data-end')
-        if (dateStart != null) entry.setAttribute('data-start', dateStart.substr(2, 2))
-        if (dateEnd != null) {
+        entry.setAttribute('data-start-full', dateStart)
+        if (dateStart !== '') entry.setAttribute('data-start', dateStart.substr(2, 2))
+        if (dateEnd !== '') {
+            entry.setAttribute('data-end-full', dateEnd)
             if (dateEnd.length <= 4 && dateEnd.length > 0) entry.setAttribute('data-end', dateEnd.substr(2, 2))
             else entry.removeAttribute('data-end')
         }

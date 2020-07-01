@@ -1,5 +1,12 @@
 {
-  "title": "Jonas Johansson",
-  "introduction": "Jonas Johansson is an anywhere based artist-activist transforming light ✺ technology through ❋ play, education and (un)human intervention",
-  "url": "https://jonasjohansson.se/"
+    "title": "Jonas Johansson",
+    "url": "https://jonasjohansson.se/",
+    "currently": [
+        {
+            "title": "Weaving organic augmented reality textiles with Linda Nurk"
+        },
+        {
+            "title": "Building audiovisual interactive stations with Tekniska Muséet"
+        }
+    ]
 }

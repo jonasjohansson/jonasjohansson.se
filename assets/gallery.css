@@ -13,9 +13,9 @@
     height: 100%;
 }
 
-#gallery .group {
+/* #gallery .slide {
     cursor: e-resize;
-}
+} */
 
 #gallery .group:not(.show),
 #gallery .slide:not(.show) {

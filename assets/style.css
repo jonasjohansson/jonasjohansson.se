@@ -10,7 +10,7 @@
 
 html {
     font: clamp(32px, 1.6vw, 64px) / 1.25 var(--sans-serif);
-    scroll-snap-type: y proximity;
+    /* scroll-snap-type: y proximity; */
 }
 
 html,
@@ -29,6 +29,10 @@ a:hover {
     text-decoration: none;
 }
 
+a {
+    cursor: pointer;
+}
+
 div a {
     opacity: 0.6;
 }
@@ -41,18 +45,6 @@ div a:hover {
     animation: rainbow 8s ease infinite;
 }
 
-@keyframes rainbow {
-    0% {
-        background-position: 0% 50%;
-    }
-    50% {
-        background-position: 100% 25%;
-    }
-    100% {
-        background-position: 0% 50%;
-    }
-}
-
 p:not(:last-child) {
     margin-bottom: var(--base);
 }
@@ -61,10 +53,6 @@ h2 {
     font-weight: 400;
     line-height: var(--base);
     margin-bottom: var(--base);
-}
-
-h2 a {
-    cursor: pointer;
 }
 
 h3 {
@@ -99,20 +87,21 @@ img::selection {
     min-height: clamp(20rem, 35vw, 80rem);
 }
 
-/* special */
-
-.upcoming:before {
-    display: inline-block;
-    content: '\2192\00a0';
-}
-
-body:not(.loading) .transition {
-    opacity: 1;
-}
-
 @font-face {
     font-family: 'Noto Sans Light';
     src: url('type/NotoSans-Light.woff2') format('woff2');
+}
+
+@keyframes rainbow {
+    0% {
+        background-position: 0% 50%;
+    }
+    50% {
+        background-position: 100% 25%;
+    }
+    100% {
+        background-position: 0% 50%;
+    }
 }
 
 @media screen and (prefers-color-scheme: dark) {
@@ -124,7 +113,7 @@ body:not(.loading) .transition {
     }
 }
 
-::selection {
+/* ::selection {
     user-select: none;
     -webkit-user-select: none;
-}
+} */
