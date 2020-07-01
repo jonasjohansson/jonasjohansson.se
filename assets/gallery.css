@@ -40,50 +40,52 @@
     width: 100%;
 }
 
-/* two items */
-.slide > *:first-child:nth-last-child(2),
-.slide > *:first-child:nth-last-child(2) ~ * {
-    width: 50%;
-    float: left;
-}
+@media (min-width: 960px) {
+    /* two items */
+    .slide > *:first-child:nth-last-child(2),
+    .slide > *:first-child:nth-last-child(2) ~ * {
+        width: 50%;
+        float: left;
+    }
 
-/* three items */
-.slide > *:first-child:nth-last-child(3),
-.slide > *:first-child:nth-last-child(3) ~ * {
-    width: 33.3333%;
-}
+    /* three items */
+    .slide > *:first-child:nth-last-child(3),
+    .slide > *:first-child:nth-last-child(3) ~ * {
+        width: 33.3333%;
+    }
 
-/* four items */
-.slide > *:first-child:nth-last-child(4),
-.slide > *:first-child:nth-last-child(4) ~ * {
-    width: 50%;
-    float: left;
-}
+    /* four items */
+    .slide > *:first-child:nth-last-child(4),
+    .slide > *:first-child:nth-last-child(4) ~ * {
+        width: 50%;
+        float: left;
+    }
 
-/* items three and four */
-.slide > *:nth-child(3),
-.slide > *:nth-child(4) {
-    position: absolute;
-    top: 50%;
-    transform: perspective(1px) translateY(-50%);
-    /* border: 8rem solid transparent; */
-    box-sizing: border-box;
-    width: 25%;
-    /* object-fit: scale-down; */
-    /* height: auto !important; */
-    height: 65%;
-    margin: 0 7.5%;
-    width: 35% !important;
-}
+    /* items three and four */
+    .slide > *:nth-child(3),
+    .slide > *:nth-child(4) {
+        position: absolute;
+        top: 50%;
+        transform: perspective(1px) translateY(-50%);
+        /* border: 8rem solid transparent; */
+        box-sizing: border-box;
+        width: 25%;
+        /* object-fit: scale-down; */
+        /* height: auto !important; */
+        height: 65%;
+        margin: 0 7.5%;
+        width: 35% !important;
+    }
 
-/* item three */
-.slide > *:nth-child(3) {
-    left: 0;
-}
+    /* item three */
+    .slide > *:nth-child(3) {
+        left: 0;
+    }
 
-/* item four */
-.slide > *:nth-child(4) {
-    right: 0;
+    /* item four */
+    .slide > *:nth-child(4) {
+        right: 0;
+    }
 }
 
 /* info */
@@ -106,6 +108,7 @@
     grid-template-columns: 1fr 1fr 1fr;
     will-change: opacity;
     transition: opacity 200ms ease-in-out;
+    display: none;
 }
 
 #info .pagination {
