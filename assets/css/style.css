@@ -33,10 +33,6 @@ body.loading > * {
 
 /* basic */
 
-a:hover {
-    text-decoration: none;
-}
-
 a {
     cursor: pointer;
 }
@@ -106,6 +102,9 @@ picture {
 /* other */
 
 @media (hover: hover) {
+    a:hover {
+        text-decoration: none;
+    }
     p a:hover,
     div a:hover {
         background-image: linear-gradient(to left, violet, indigo, blue, green, yellow, orange, red);
