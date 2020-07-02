@@ -9,11 +9,11 @@
         <meta property="og:title" content="{{ site.title }}" />
         <meta property="og:image" content="{% img site.cover %}" />
         <meta name="description" property="og:description" content="{{ site.description }}" />
-		<meta name="apple-mobile-web-app-capable" content="yes" />
-		<meta name="apple-mobile-web-app-status-bar-style" content="black-translucent" />
-		<link rel="preload" as="font" href="/fonts/NotoSans-Light.woff2" type="font/woff2" crossorigin="anonymous">
-		<link rel="apple-touch-icon" href="/favicon.png">
-		<link rel="icon"href="/favicon.png">
+        <meta name="apple-mobile-web-app-capable" content="yes" />
+        <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent" />
+        <link rel="preload" as="font" href="/fonts/NotoSans-Light.woff2" type="font/woff2" crossorigin="anonymous" />
+        <link rel="apple-touch-icon" href="/favicon.png" />
+        <link rel="icon" href="/favicon.png" />
 		{% set css %} 
 			{% include "assets/css/reset.css" %} 
 			{% include "assets/css/style.css" %} 
@@ -27,50 +27,66 @@
 			{% include "assets/js/app.js" %}
 		{% endset %}
 		<script> {{ js | jsmin | safe }}</script>
-	</head>
-	<body>
-		<section id="intro">
-			<p>
-				Jonas Johansson is an anywhere based artist transforming light ✺ technology through ❋ play, education
-				and (un)human intervention
-			</p>
-			<p data-no-print>
-				Say hi ❀ <a href="https://facebook.com/jnsjohansson">Messenger</a> or <a href="mailto:jns.johansson@gmail.com">Mail</a>
-			</p>
-		</section>
-		<section id="gallery" data-no-print>
-			<h3 id="info"></h3>
-			{% for galleryItem in gallery %}
-			<div class="group" data-title="{{ galleryItem.title }}">
-				{% for mediaItem in galleryItem.media %}
-				<div class="slide">{% gallery mediaItem %}</div>
-				{% endfor %}
-			</div>
-			{% endfor %}
-		</section>
-		<section id="resume">
-			{# <div data-no-print>
-				<a onclick="window.print();return false;">Print</a>
-				for full resumé
-			</div> #}
-			{% for heading in ['work','education','projects','teaching','talks'] %}
-			<div>
-				<h3>{{ resume.titles[heading] }}</h3>
-				{% for entry in resume[heading] %} {% if entry.hidden !== true %}
-				<div data-start="{{ entry['date-start'] }}" data-end="{{ entry['date-end'] }}">
-					{% if entry.link %}
-					<a href="{{ entry.link }}">
-						{% endif %} {% if entry.title %} {{ entry.title }}. {% endif %} {# {% if entry.winner === true %}
-						<span class="emoji">🏆</span>
-						{% endif %} #} {% if entry.location %} {{ entry.location }} {% endif %} {% if entry.link %}
-					</a>
-					{% endif %} {# {% if entry.link %}
-					<a href="{{ entry.link }}">⭢</a>
-					{% endif %} #}
-				</div>
-				{% endif %} {% endfor %}
-			</div>
-			{% endfor %}
-		</section>
-	</body>
+    </head>
+    <body class="loading">
+        <section id="intro">
+            <p>
+                Jonas Johansson is an anywhere based artist transforming light ✺ technology through ❋ play, education
+                and (un)human intervention
+            </p>
+            <p data-no-print>
+                Say hi ❀
+                <a href="https://facebook.com/jnsjohansson">Messenger</a>
+                or
+                <a href="mailto:jns.johansson@gmail.com">Mail</a>
+            </p>
+            {# <div id="currently">
+                {% for item in site.currently %}
+                <p>
+                    {% if item.link %}
+                    <a href="{{ item.link }}">{{ item.title }}</a>
+                    {% else %}
+                    {{ item.title }}
+                    {% endif %}
+                </p>
+                {% endfor %}
+            </div> #}
+        </section>
+        <section id="gallery" data-no-print>
+            <h3 id="info"></h3>
+            {% for galleryItem in gallery %}
+            <div class="group" data-title="{{ galleryItem.title }}">
+                {% for mediaItem in galleryItem.media %}
+                <div class="slide">{% gallery mediaItem %}</div>
+                {% endfor %}
+            </div>
+            {% endfor %}
+        </section>
+        <section id="resume">
+            {#
+            <div data-no-print>
+                <a onclick="window.print();return false;">Print</a>
+                for full resumé
+            </div>
+            #} {% for heading in ['work','education','projects','teaching','talks'] %}
+            <div>
+                <h3>{{ resume.titles[heading] }}</h3>
+                {% for entry in resume[heading] %} {% if entry.hidden !== true %}
+                <div data-start="{{ entry['date-start'] }}" data-end="{{ entry['date-end'] }}">
+                    {% if entry.link %}
+                    <a href="{{ entry.link }}">
+                        {% endif %} {% if entry.title %} {{ entry.title }}. {% endif %} {# {% if entry.winner === true
+                        %}
+                        <span class="emoji">🏆</span>
+                        {% endif %} #} {% if entry.location %} {{ entry.location }} {% endif %} {% if entry.link %}
+                    </a>
+                    {% endif %} {# {% if entry.link %}
+                    <a href="{{ entry.link }}">⭢</a>
+                    {% endif %} #}
+                </div>
+                {% endif %} {% endfor %}
+            </div>
+            {% endfor %}
+        </section>
+    </body>
 </html>

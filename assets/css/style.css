@@ -22,6 +22,12 @@ body {
     box-sizing: border-box;
 }
 
+body.loading .transition {
+    opacity: 0;
+}
+
+/* basic */
+
 a:hover {
     text-decoration: none;
 }
@@ -83,11 +89,29 @@ img::selection {
 
 #intro {
     box-sizing: border-box;
-    max-width: 30rem;
     min-height: clamp(20rem, 35vw, 80rem);
     padding-top: 6rem;
     padding-bottom: 10rem;
 }
+
+#intro > *:first-child {
+    max-width: 25rem;
+}
+
+/* #currently:before {
+    content: '…currently\a0';
+    float: left;
+}
+
+#currently > p::first-letter {
+    text-transform: lowercase;
+}
+
+#currently p:not(:first-of-type) {
+    display: none;
+} */
+
+/* other */
 
 @keyframes rainbow {
     0% {

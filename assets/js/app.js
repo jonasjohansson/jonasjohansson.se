@@ -1,9 +1,31 @@
+window.addEventListener('load', () => {
+    document.body.classList.remove('loading')
+})
+
 document.addEventListener('DOMContentLoaded', () => {
+    let transitionItems = document.querySelectorAll('body > * > *')
+
+    transitionItems.forEach(function (item, i) {
+        item.classList.add('transition')
+        item.style.transitionDelay = `${++i * 100}ms`
+        item.style.transitionDuration = `400ms`
+    })
+
     const anchors = document.querySelectorAll('a')
     anchors.forEach(a => {
         a.setAttribute('target', '_blank')
         a.setAttribute('rel', 'noreferrer')
     })
+
+    /*
+    Currently
+    */
+
+    // var currently = document.querySelector('#currently')
+    // console.log(currently.childNodes)
+    // for (let i = currently.childElementCount; i >= 0; i--) {
+    //     currently.appendChild(currently.children[(Math.random() * i) | 0])
+    // }
 
     /*
 	Gallery
