@@ -127,6 +127,10 @@ picture {
     img::selection {
         background: none;
     }
+    ::selection {
+        user-select: none;
+        -webkit-user-select: none;
+    }
 }
 
 @media screen and (prefers-color-scheme: dark) {
@@ -137,16 +141,11 @@ picture {
     }
 }
 
-@media only screen and (-webkit-device-pixel-ratio: 2) {
+@media only screen and (-webkit-device-pixel-ratio: 2) and (max-device-width: 896px) {
     html {
         font-size: 24px;
     }
 }
-
-/* ::selection {
-    user-select: none;
-    -webkit-user-select: none;
-} */
 
 @font-face {
     font-family: 'NotoSans-Light';
