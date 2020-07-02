@@ -5,7 +5,8 @@
 }
 
 #gallery {
-    height: clamp(20rem, 40vw, 100vh);
+    /* height: clamp(20rem, 40vw, 100vh); */
+    height: max(20rem, min(40vw, 100vh));
 }
 
 #gallery .group,
