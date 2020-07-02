@@ -30,15 +30,29 @@
     <body class="loading">
         <section id="intro">
             <p>
-                Jonas Johansson is an anywhere based artist transforming light ✺ technology through ❋ play, education
+                <a href="mailto:jns.johansson@gmail.com">Jonas Johansson</a> is an anywhere based artist transforming light ✺ technology through ❋ play, education
                 and (un)human intervention
             </p>
-            <p data-no-print>
+            <p>
+                {# <div>
+                    <a href="http://svartljus.se/">Svartljus</a>
+                </div> #}
+                <div>
+                    <a href="https://nava.community/">Nordic Audiovisual Artists</a>
+                </div>
+                <div>
+                    <a href="https://www.exploring.technology/">Exploring Technology</a>
+                </div>
+                <div>
+                    <a href="https://jonasjohansson.itch.io/homie">Homie</a>, <a href="https://jonasjohansson.itch.io/mio">Mio</a> & <a href="https://jonasjohansson.itch.io/conrad">Conrad</a>
+                </div>
+            </p>
+            {# <p data-no-print>
                 Say hi ❀
                 <a href="https://facebook.com/jnsjohansson">Messenger</a>
                 or
                 <a href="mailto:jns.johansson@gmail.com">Mail</a>
-            </p>
+            </p> #}
             {# <div id="currently">
                 {% for item in site.currently %}
                 <p>
@@ -53,13 +67,18 @@
         </section>
         <section id="gallery" data-no-print>
             <h3 id="info"></h3>
-            {% for galleryItem in gallery %}
+            {# {% for galleryItem in gallery %}
             <div class="group" data-title="{{ galleryItem.title }}">
                 {% for mediaItem in galleryItem.media %}
                 <div class="slide">{% gallery mediaItem %}</div>
                 {% endfor %}
             </div>
-            {% endfor %}
+            {% endfor %} #}
+            <div class="group" data-title="{{ gallery[0].title }}">
+                {% for mediaItem in gallery[0].media %}
+                <div class="slide">{% gallery mediaItem %}</div>
+                {% endfor %}
+            </div>
         </section>
         <section id="resume">
             {#

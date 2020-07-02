@@ -35,6 +35,10 @@ div a {
     opacity: 0.65;
 }
 
+nav a {
+    display: block;
+}
+
 p:not(:last-child) {
     margin-bottom: var(--base);
 }
@@ -70,10 +74,9 @@ picture {
 
 #intro {
     box-sizing: border-box;
-    min-height: clamp(20rem, 35vw, 80rem);
-    padding-top: 6rem;
-    padding-bottom: 10rem;
+    min-height: clamp(4rem, 30vw, 80rem);
 }
+
 /* #currently:before {
     content: '…currently\a0';
     float: left;
@@ -143,7 +146,12 @@ picture {
 
 @media only screen and (-webkit-device-pixel-ratio: 2) and (max-device-width: 896px) {
     html {
-        font-size: 24px;
+        font-size: 22px;
+    }
+    #intro,
+    #resume {
+        padding-top: 6rem;
+        padding-bottom: 4rem;
     }
 }
 

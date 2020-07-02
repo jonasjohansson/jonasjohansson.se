@@ -17,6 +17,11 @@ document.addEventListener('DOMContentLoaded', () => {
         a.setAttribute('rel', 'noreferrer')
     })
 
+    const videos = document.querySelectorAll('video')
+    videos.forEach(video => {
+        video.play()
+    })
+
     /*
     Currently
     */
