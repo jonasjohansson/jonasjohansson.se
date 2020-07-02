@@ -111,6 +111,7 @@ picture {
         -webkit-text-fill-color: transparent;
         background-size: 400% 400%;
         animation: rainbow 8s ease infinite;
+        filter: invert(1);
     }
     @keyframes rainbow {
         0% {
@@ -129,11 +130,10 @@ picture {
 }
 
 @media screen and (prefers-color-scheme: dark) {
-    body,
-    img,
-    video,
-    .emoji {
-        filter: invert(1);
+    html,
+    body {
+        color: white;
+        background-color: black;
     }
 }
 
