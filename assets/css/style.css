@@ -9,7 +9,7 @@
 }
 
 html {
-    font: clamp(32px, 1.6vw, 64px) / 1.25 var(--sans-serif);
+    font: clamp(24px, 1.6vw, 64px) / 1.25 var(--sans-serif);
     /* scroll-snap-type: y proximity; */
 }
 
@@ -88,6 +88,8 @@ img::selection {
     box-sizing: border-box;
     max-width: 30rem;
     min-height: clamp(20rem, 35vw, 80rem);
+    padding-top: 6rem;
+    padding-bottom: 10rem;
 }
 
 @font-face {
