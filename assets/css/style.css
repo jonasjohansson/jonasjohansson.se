@@ -65,10 +65,6 @@ picture {
     height: 100%;
 }
 
-img::selection {
-    background: none;
-}
-
 /* sections */
 
 #intro,
@@ -123,6 +119,9 @@ img::selection {
         100% {
             background-position: 0% 50%;
         }
+    }
+    img::selection {
+        background: none;
     }
 }
 
