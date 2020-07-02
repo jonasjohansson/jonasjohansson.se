@@ -113,14 +113,12 @@ document.addEventListener('DOMContentLoaded', () => {
 
         if (dateStart) {
             entry.setAttribute('data-start-year', dateStart.substr(2, 2))
-            entry.setAttribute('data-start-full', dateStart)
         } else {
             entry.removeAttribute('data-start')
         }
 
         if (dateEnd) {
             entry.setAttribute('data-end-year', dateEnd.substr(2, 2))
-            entry.setAttribute('data-end-full', dateEnd)
         } else {
             entry.removeAttribute('data-end')
         }
