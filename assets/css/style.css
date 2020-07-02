@@ -155,5 +155,5 @@ picture {
     font-style: normal;
     src: url(/fonts/NotoSans-Light.woff2) format('woff2');
     unicode-range: U+000-5FF;
-    font-display: optional;
+    font-display: swap;
 }
