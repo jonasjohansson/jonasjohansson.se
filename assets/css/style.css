@@ -1,7 +1,8 @@
 :root {
     --base: 1.6rem;
     --padding-side: 6vw;
-    --sans-serif: 'NotoSans-Light', system-ui, sans-serif;
+    --sans-serif: 'Noto Sans Light', -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Oxygen-Sans, Ubuntu,
+        Cantarell, 'Helvetica Neue', sans-serif;
 }
 
 html {
