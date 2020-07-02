@@ -1,6 +1,8 @@
 :root {
     --base: 1.6rem;
     --padding-side: 6vw;
+    --black: #0b0b0b;
+    --white: #ebebeb;
     --sans-serif: 'NotoSans-Light', -apple-system, BlinkMacSystemFont, Roboto, sans-serif;
 }
 
@@ -10,8 +12,8 @@ html {
 
 html,
 body {
-    color: black;
-    background-color: white;
+    color: var(--black);
+    background-color: var(--white);
 }
 
 body {
@@ -136,8 +138,8 @@ picture {
 @media screen and (prefers-color-scheme: dark) {
     html,
     body {
-        color: white;
-        background-color: black;
+        color: var(--white);
+        background-color: var(--black);
     }
 }
 
