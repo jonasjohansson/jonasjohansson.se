@@ -65,7 +65,8 @@ h3 {
 }
 
 video,
-img {
+img,
+picture {
     object-fit: cover;
     height: 100%;
 }

@@ -7,6 +7,7 @@
     "doc": "docs"
   },
   "dependencies": {
+    "@11ty/eleventy-img": "^0.2.5",
     "clean-css": "^4.2.3",
     "html-minifier": "^4.0.0",
     "uglify-es": "^3.3.9"
