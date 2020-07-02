@@ -1,8 +1,7 @@
 @font-face {
-    font-family: 'Noto Sans Light';
+    font-family: 'NotoSans-Light';
     font-weight: 400;
     font-style: normal;
-    font-display: swap;
     src: url(/fonts/NotoSans-Light.woff2) format('woff2');
     unicode-range: U+000-5FF;
     font-display: fallback;
