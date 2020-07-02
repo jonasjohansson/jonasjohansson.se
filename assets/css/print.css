@@ -1,25 +1,19 @@
 @media print {
-    .symbols {
-        display: block;
-    }
     @page {
         /* size: landscape; */
-    }
-    [data-no-print] {
-        display: none;
     }
     html {
         font-size: 10pt;
         line-height: 1.5;
     }
     #intro {
-        margin: 0 auto;
         height: 100vh;
         text-align: center;
         font-size: 20pt;
     }
     #intro p {
         position: relative;
+        margin: 0 auto;
         top: 50%;
         transform: translateY(-50%);
     }
@@ -31,11 +25,8 @@
         padding-top: 0 !important;
         padding-bottom: 0 !important;
     }
-    * {
-        color: black !important;
-        padding-left: 0 !important;
-        padding-right: 0 !important;
-        opacity: unset !important;
+    [data-no-print] {
+        display: none;
     }
     [data-page-break] {
         page-break-after: always;
@@ -47,5 +38,11 @@
     }
     [data-end-full]:before {
         content: attr(data-start-full) '-' attr(data-end-full) ' ' !important;
+    }
+    * {
+        color: black !important;
+        padding-left: 0 !important;
+        padding-right: 0 !important;
+        opacity: unset !important;
     }
 }

@@ -10,14 +10,7 @@ html {
     font: max(36px, min(1.6vw, 64px)) / 1.33 var(--sans-serif);
 }
 
-html,
 body {
-    color: var(--black);
-    background-color: var(--white);
-}
-
-body {
-    min-width: 360px;
     margin: 0 auto;
     box-sizing: border-box;
 }
@@ -81,11 +74,6 @@ picture {
     padding-top: 6rem;
     padding-bottom: 10rem;
 }
-
-#intro > *:first-child {
-    max-width: 25rem;
-}
-
 /* #currently:before {
     content: '…currently\a0';
     float: left;
@@ -131,6 +119,17 @@ picture {
     ::selection {
         user-select: none;
         -webkit-user-select: none;
+    }
+}
+
+@media screen {
+    html,
+    body {
+        color: var(--black);
+        background-color: var(--white);
+    }
+    #intro > *:first-child {
+        max-width: 25rem;
     }
 }
 
