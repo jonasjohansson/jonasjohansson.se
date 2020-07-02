@@ -1,12 +1,12 @@
 {
     "titles": {
-        "work": "work",
-        "education": "education",
-        "projects": "projects",
-        "teaching": "teaching",
-        "exhibition": "performance & exhibition",
-        "workshops": "workshops & hackathons",
-        "talks": "talks"
+        "work": "Work",
+        "education": "Education",
+        "projects": "Projects",
+        "teaching": "Teaching",
+        "exhibition": "Performance & Exhibition",
+        "workshops": "Workshops & Hackathons",
+        "talks": "Talks"
     },
     "work": [
         {
