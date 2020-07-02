@@ -88,7 +88,7 @@ module.exports = function (eleventyConfig) {
     }
 
     function getVideo(src) {
-        return `<video src="videos/${src}" autoplay loop muted></video>`
+        return `<video src="videos/${src}" autoplay loop muted playsinline></video>`
     }
 
     eleventyConfig.addFilter('cssmin', function (code) {

@@ -3,13 +3,13 @@ window.addEventListener('load', () => {
 })
 
 document.addEventListener('DOMContentLoaded', () => {
-    let transitionItems = document.querySelectorAll('body > * > *')
+    // let transitionItems = document.querySelectorAll('body > * > *')
 
-    transitionItems.forEach(function (item, i) {
-        item.classList.add('transition')
-        item.style.transitionDelay = `${++i * 100}ms`
-        item.style.transitionDuration = `400ms`
-    })
+    // transitionItems.forEach(function (item, i) {
+    //     item.classList.add('transition')
+    //     item.style.transitionDelay = `${++i * 100}ms`
+    //     item.style.transitionDuration = `400ms`
+    // })
 
     const anchors = document.querySelectorAll('a')
     anchors.forEach(a => {

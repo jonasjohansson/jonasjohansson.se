@@ -5,9 +5,7 @@
 }
 
 html {
-    /* font: clamp(28px, 1.6vw, 64px) / 1.33 var(--sans-serif); */
     font: max(28px, min(1.6vw, 64px)) / 1.33 var(--sans-serif);
-    /* scroll-snap-type: y proximity; */
 }
 
 html,
@@ -22,7 +20,12 @@ body {
     box-sizing: border-box;
 }
 
-body.loading .transition {
+body > * {
+    opacity: 1;
+    transition: opacity 400ms ease-in;
+}
+
+body.loading > * {
     opacity: 0;
 }
 
@@ -134,7 +137,22 @@ picture {
     }
 }
 
+@media only screen and (-webkit-device-pixel-ratio: 2) {
+    html {
+        font-size: 24px;
+    }
+}
+
 /* ::selection {
     user-select: none;
     -webkit-user-select: none;
 } */
+
+@font-face {
+    font-family: 'NotoSans-Light';
+    font-weight: 400;
+    font-style: normal;
+    src: url(/fonts/NotoSans-Light.woff2) format('woff2');
+    unicode-range: U+000-5FF;
+    font-display: optional;
+}
