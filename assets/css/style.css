@@ -5,7 +5,7 @@
 }
 
 html {
-    font: max(28px, min(1.6vw, 64px)) / 1.33 var(--sans-serif);
+    font: max(36px, min(1.6vw, 64px)) / 1.33 var(--sans-serif);
 }
 
 html,
