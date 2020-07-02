@@ -41,15 +41,6 @@ div a {
     opacity: 0.65;
 }
 
-p a:hover,
-div a:hover {
-    background-image: linear-gradient(to left, violet, indigo, blue, green, yellow, orange, red);
-    -webkit-background-clip: text;
-    -webkit-text-fill-color: transparent;
-    background-size: 400% 400%;
-    animation: rainbow 8s ease infinite;
-}
-
 p:not(:last-child) {
     margin-bottom: var(--base);
 }
@@ -113,15 +104,25 @@ img::selection {
 
 /* other */
 
-@keyframes rainbow {
-    0% {
-        background-position: 0% 50%;
+@media (hover: hover) {
+    p a:hover,
+    div a:hover {
+        background-image: linear-gradient(to left, violet, indigo, blue, green, yellow, orange, red);
+        -webkit-background-clip: text;
+        -webkit-text-fill-color: transparent;
+        background-size: 400% 400%;
+        animation: rainbow 8s ease infinite;
     }
-    50% {
-        background-position: 100% 25%;
-    }
-    100% {
-        background-position: 0% 50%;
+    @keyframes rainbow {
+        0% {
+            background-position: 0% 50%;
+        }
+        50% {
+            background-position: 100% 25%;
+        }
+        100% {
+            background-position: 0% 50%;
+        }
     }
 }
 
