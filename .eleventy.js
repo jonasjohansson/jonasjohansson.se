@@ -3,6 +3,8 @@ const CleanCSS = require('clean-css')
 const UglifyJS = require('uglify-es')
 const Image = require('@11ty/eleventy-img')
 
+const imageFolder = 'assets/images/'
+
 module.exports = function (eleventyConfig) {
     eleventyConfig.addTransform('htmlmin', function (content, outputPath) {
         if (outputPath.endsWith('.html')) {
@@ -44,15 +46,24 @@ module.exports = function (eleventyConfig) {
         return html
     })
 
+    eleventyConfig.addNunjucksAsyncShortcode('img', async function (src, outputFormat = 'jpeg') {
+        let stats = await Image(imageFolder + src, {
+            widths: [null],
+            formats: [outputFormat],
+            outputDir: 'docs/img/'
+        })
+        let props = stats[outputFormat].pop()
+        return props.url
+    })
+
     async function getImage(src, outputFormat) {
-        const alt = ''
-        src = 'assets/images/' + src
-        let stats = await Image(src, {
+        let stats = await Image(imageFolder + src, {
             widths: [960, null],
             formats: ['jpeg'],
             outputDir: 'docs/img/'
         })
 
+        const alt = ''
         const lowestSrc = stats.jpeg[0]
         const sizes = '100vw'
         const sources = Object.values(stats)

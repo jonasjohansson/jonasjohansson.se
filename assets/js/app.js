@@ -2,6 +2,7 @@ document.addEventListener('DOMContentLoaded', () => {
     const anchors = document.querySelectorAll('a')
     anchors.forEach(a => {
         a.setAttribute('target', '_blank')
+        a.setAttribute('rel', 'noreferrer')
     })
 
     /*
