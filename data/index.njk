@@ -20,6 +20,7 @@
 			{% include "assets/css/gallery.css" %}
 			{% include "assets/css/resume.css" %}
 			{% include "assets/css/print.css" %}
+			{% include "assets/css/animation.css" %}
 		{% endset %}
 		<style>{{ css | cssmin | safe }}</style>
 		{% set js %} 
@@ -30,7 +31,7 @@
     <body class="loading">
         <section id="intro">
             <p>
-                <a href="mailto:jns.johansson@gmail.com">Jonas Johansson</a> is an anywhere based artist transforming light ✺ technology through ❋ play, education
+                <a href="mailto:jns.johansson@gmail.com">Jonas Johansson</a> is an anywhere based <span data-text-effect="textEffectRbw">designer</span> transforming light ✺ technology through ❋ play, education
                 and (un)human intervention
             </p>
             <p>
@@ -94,7 +95,7 @@
             <div>
                 <h3>{{ resume.titles[heading] }}</h3>
                 {% for entry in resume[heading] %} {% if entry.hidden !== true %}
-                <div data-start="{{ entry['date-start'] }}" data-end="{{ entry['date-end'] }}">
+                <div data-title="{{ entry['title'] }}" data-start="{{ entry['date-start'] }}" data-end="{{ entry['date-end'] }}">
                     {% if entry.link %}
                     <a href="{{ entry.link }}">
                         {% endif %} {% if entry.title %} {{ entry.title }}. {% endif %}
@@ -106,7 +107,7 @@
             </div>
             {% endfor %}
             <div>
-                <h3>Very cool people</h3>
+                <h3>Friends & Collaborators</h3>
                 {% for friend in friends %} 
                 <div>
                     <a href="{{ friend.link }}">

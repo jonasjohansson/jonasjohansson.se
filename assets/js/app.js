@@ -17,10 +17,28 @@ document.addEventListener('DOMContentLoaded', () => {
         a.setAttribute('rel', 'noreferrer')
     })
 
-    const videos = document.querySelectorAll('video')
-    videos.forEach(video => {
-        video.play()
-    })
+    // const videos = document.querySelectorAll('video')
+    // videos.forEach(video => {
+    //     video.play()
+    // })
+
+    /*
+    Text Effects
+    */
+
+    // const textEffects = document.querySelectorAll('[data-text-effect]')
+
+    // textEffects.forEach(text => {
+    //     const arr = text.textContent.split('')
+    //     text.innerHTML = ''
+    //     arr.forEach(function (char, i) {
+    //         let span = document.createElement('span')
+    //         span.textContent = char
+    //         span.className = text.getAttribute('data-text-effect')
+    //         span.style.animationDelay = `${i++ * 100}ms`
+    //         text.appendChild(span)
+    //     })
+    // })
 
     /*
     Currently
@@ -104,7 +122,6 @@ document.addEventListener('DOMContentLoaded', () => {
     let entryGroups = document.querySelectorAll('#resume > div')
 
     entryGroups.forEach(group => {
-        console.log(group.childElementCount)
         if (group.childElementCount > 6) {
             let fadeEl = document.createElement('div')
         }
