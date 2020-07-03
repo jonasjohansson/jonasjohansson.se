@@ -46,6 +46,9 @@
                 <div>
                     <a href="https://jonasjohansson.itch.io/homie">Homie</a>, <a href="https://jonasjohansson.itch.io/mio">Mio</a> & <a href="https://jonasjohansson.itch.io/conrad">Conrad</a>
                 </div>
+                <div>
+                    <a href="https://www.blivande.com/">Blivande</a>
+                </div>
             </p>
             {# <p data-no-print>
                 Say hi ❀
@@ -86,25 +89,32 @@
                 <a onclick="window.print();return false;">Print</a>
                 for full resumé
             </div>
-            #} {% for heading in ['work','education','projects','teaching','talks'] %}
+            #} 
+            {% for heading in ['work','education','projects','teaching','talks'] %}
             <div>
                 <h3>{{ resume.titles[heading] }}</h3>
                 {% for entry in resume[heading] %} {% if entry.hidden !== true %}
                 <div data-start="{{ entry['date-start'] }}" data-end="{{ entry['date-end'] }}">
                     {% if entry.link %}
                     <a href="{{ entry.link }}">
-                        {% endif %} {% if entry.title %} {{ entry.title }}. {% endif %} {# {% if entry.winner === true
-                        %}
-                        <span class="emoji">🏆</span>
-                        {% endif %} #} {% if entry.location %} {{ entry.location }} {% endif %} {% if entry.link %}
+                        {% endif %} {% if entry.title %} {{ entry.title }}. {% endif %}
+                        {% if entry.location %} {{ entry.location }} {% endif %} {% if entry.link %}
                     </a>
-                    {% endif %} {# {% if entry.link %}
-                    <a href="{{ entry.link }}">⭢</a>
-                    {% endif %} #}
+                    {% endif %} 
                 </div>
                 {% endif %} {% endfor %}
             </div>
             {% endfor %}
+            <div>
+                <h3>Very cool people</h3>
+                {% for friend in friends %} 
+                <div>
+                    <a href="{{ friend.link }}">
+                        {% if friend.title %} {{ friend.title }} {% endif %}
+                    </a>
+                </div>
+                {% endfor %}
+            </div>
         </section>
     </body>
 </html>
