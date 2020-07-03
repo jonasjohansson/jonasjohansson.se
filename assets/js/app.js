@@ -26,19 +26,22 @@ document.addEventListener('DOMContentLoaded', () => {
     Text Effects
     */
 
-    // const textEffects = document.querySelectorAll('[data-text-effect]')
+    const effects = document.querySelectorAll('[data-effect]')
 
-    // textEffects.forEach(text => {
-    //     const arr = text.textContent.split('')
-    //     text.innerHTML = ''
-    //     arr.forEach(function (char, i) {
-    //         let span = document.createElement('span')
-    //         span.textContent = char
-    //         span.className = text.getAttribute('data-text-effect')
-    //         span.style.animationDelay = `${i++ * 100}ms`
-    //         text.appendChild(span)
-    //     })
-    // })
+    effects.forEach(text => {
+        if (text.hasAttribute('data-delay')) {
+            const arr = text.textContent.split('')
+            const delay = text.getAttribute('data-delay')
+            text.innerHTML = ''
+            arr.forEach(function (char, i) {
+                let span = document.createElement('span')
+                span.textContent = char
+                // span.className = text.getAttribute('data-effect')
+                span.style.animationDelay = `${i++ * delay}ms`
+                text.appendChild(span)
+            })
+        }
+    })
 
     /*
     Currently

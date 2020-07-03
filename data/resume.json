@@ -328,6 +328,11 @@
             "location": "Hyper Island, Stockholm"
         },
         {
+            "date-start": "2019/09/05",
+            "title": "Artist talk",
+            "location": "KTH, Stockholm"
+        },
+        {
             "date-start": "2019/09/23",
             "date-end": "2019/09/27",
             "title": "Principles of Technology",
@@ -760,6 +765,12 @@
             "title": "A confluence of alternate realities and organic growth",
             "location": "Open Cell, London Design Festival",
             "link": "https://www.opencell.bio/biodesign-here-now-programme"
+        },
+        {
+            "date-start": "2018/11/12",
+            "title": "Lunch lecture",
+            "location": "Arkipelago, Stockholm",
+            "link": "https://www.facebook.com/events/arkipelago-stockholm/lunch-lecture-jonas-johansson/1970964856529698/"
         }
     ]
 }
