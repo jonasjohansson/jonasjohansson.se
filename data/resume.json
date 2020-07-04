@@ -86,6 +86,12 @@
     ],
     "projects": [
         {
+            "date-start": "2020/10/01",
+            "title": "TBD",
+            "location": "Van Eyck Reloaded, Ghent",
+            "link": "https://vaneyckreloaded.be/"
+        },
+        {
             "date-start": "2020/08/06",
             "date-end": "2020/08/09",
             "title": "Sunna",
