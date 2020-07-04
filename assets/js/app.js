@@ -125,8 +125,12 @@ document.addEventListener('DOMContentLoaded', () => {
     let entryGroups = document.querySelectorAll('#resume > div')
 
     entryGroups.forEach(group => {
-        if (group.childElementCount > 6) {
-            let fadeEl = document.createElement('div')
+        if (group.childElementCount > 5) {
+            const heading = group.querySelector('h3')
+            group.classList.add('limit')
+            heading.onclick = () => {
+                group.classList.toggle('show-all')
+            }
         }
     })
 
@@ -148,8 +152,8 @@ document.addEventListener('DOMContentLoaded', () => {
             entry.removeAttribute('data-end')
         }
 
-        // const now = new Date()
-        // if (now < new Date(dateStart)) entry.innerHTML = `&#x2934;&#xFE0E; ${entry.innerHTML}`
+        const now = new Date()
+        if (now < new Date(dateStart)) entry.innerHTML = `&#x2934;&#xFE0E; ${entry.innerHTML}`
 
         // entry.innerHTML = entry.innerHTML
         //     .replace(/(\r\n|\n|\r)/gm, ' ') // remove newlines

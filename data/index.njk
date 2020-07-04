@@ -31,10 +31,10 @@
     <body class="loading">
         <section id="intro">
             <p>
-                <a href="mailto:jns.johansson@gmail.com">Jonas Johansson</a> is an anywhere based <span data-effect="shk" data-delay="5">designer</span> transforming <span data-effect="inv">light</span></a> ✺ technology through ❋ <span data-effect="wvy" data-delay="100">play</span>, education
+                <a href="mailto:jns.johansson@gmail.com">Jonas Johansson</a> is an anywhere based <span data-effect="shk" data-delay="5">designer</span> transforming <span data-effect="inv">light</span></a> ✺ technology through <span data-effect="wvy" data-delay="100">play</span> ❋ education
                 and (un)human intervention
             </p>
-            <p>
+            <nav data-no-print>
                 {# <div>
                     <a href="http://svartljus.se/">Svartljus</a>
                 </div> #}
@@ -50,7 +50,7 @@
                 <div>
                     <a href="https://www.blivande.com/">Blivande</a>
                 </div>
-            </p>
+            </nav>
             {# <p data-no-print>
                 Say hi ❀
                 <a href="https://facebook.com/jnsjohansson">Messenger</a>
@@ -85,13 +85,11 @@
             </div>
         </section>
         <section id="resume">
-            {#
-            <div data-no-print>
+            {# <div data-no-print>
                 <a onclick="window.print();return false;">Print</a>
                 for full resumé
-            </div>
-            #} 
-            {% for heading in ['work','education','projects','teaching','talks'] %}
+            </div> #}
+            {% for heading in ['work','education','projects','teaching','workshops','talks'] %}
             <div>
                 <h3>{{ resume.titles[heading] }}</h3>
                 {% for entry in resume[heading] %} {% if entry.hidden !== true %}

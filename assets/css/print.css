@@ -26,18 +26,18 @@
         padding-bottom: 0 !important;
     }
     [data-no-print] {
-        display: none;
+        display: none !important;
     }
     [data-page-break] {
         page-break-after: always;
     }
-    [data-start-full]:before,
-    [data-end-full]:before {
-        content: attr(data-start-full) ' ';
+    [data-start]:before,
+    [data-end]:before {
+        content: attr(data-start) ' ';
         float: right;
     }
-    [data-end-full]:before {
-        content: attr(data-start-full) '-' attr(data-end-full) ' ' !important;
+    [data-end]:before {
+        content: attr(data-start) '-' attr(data-end) ' ' !important;
     }
     * {
         color: black !important;

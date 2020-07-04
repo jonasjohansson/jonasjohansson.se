@@ -5,7 +5,8 @@
         "projects": "Projects",
         "teaching": "Teaching",
         "exhibition": "Performance & Exhibition",
-        "workshops": "Workshops & Hackathons",
+        "workshops": "Workshops & Residencies",
+        "hackathons": "Hackathons",
         "talks": "Talks"
     },
     "work": [
@@ -99,13 +100,6 @@
             "date-end": "2020/05/31",
             "title": "Embodiment",
             "location": "Art in Fashion, Sven-Harrys konstmuseum"
-        },
-        {
-            "date-start": "2020/01/06",
-            "date-end": "2020/03/27",
-            "title": "Brahman",
-            "location": "Bombay Beach",
-            "link": "https://brahman.ai/"
         },
         {
             "date-start": "2019/09/19",
@@ -251,10 +245,22 @@
     ],
     "teaching": [
         {
+            "date-start": "2021/01/25",
+            "date-end": "2021/02/26",
+            "title": "Rörlig Grafik och Bild",
+            "location": "Beckmans, Stockholm"
+        },
+        {
             "date-start": "2020/11/23",
             "date-end": "2020/12/18",
             "title": "Exploring Tech",
             "location": "Hyper Island, Stockholm"
+        },
+        {
+            "date-start": "2020/10/28",
+            "date-end": "2020/11/02",
+            "title": "Augmented Reality",
+            "location": "Aavistus Festival, Helsinki"
         },
         {
             "date-start": "2020/10/19",
@@ -606,22 +612,18 @@
     ],
     "workshops": [
         {
-            "date-start": "2020/04/24",
-            "date-end": "2020/04/26",
-            "title": "EU vs Virus",
-            "link": "https://euvsvirus.org/"
+            "date-start": "2020/09/21",
+            "date-end": "2020/09/27",
+            "title": "The Palace Collective",
+            "location": "Poland",
+            "link": "https://www.thepalacecollective.org/"
         },
         {
-            "date-start": "2020/04/03",
-            "date-end": "2020/04/06",
-            "title": "Hack the Crisis",
-            "link": "https://www.hackthecrisis.se/"
-        },
-        {
-            "date-start": "2020/03/06",
-            "date-end": "2020/03/07",
-            "title": "Stupid Hackathon",
-            "location": "Goto10, Stockholm"
+            "date-start": "2020/01/06",
+            "date-end": "2020/03/27",
+            "title": "Brahman",
+            "location": "Bombay Beach",
+            "link": "https://brahman.ai/"
         },
         {
             "date-start": "2019/11/15",
@@ -631,17 +633,59 @@
             "link": "https://glimps.bio/biofabrication-weekend-about"
         },
         {
+            "date-start": "2019/07/25",
+            "date-end": "2019/07/27",
+            "title": "Vector Synthesis with Derek Holzer",
+            "location": "Norbergfestival, Norberg"
+        },
+        {
+            "date-start": "2018/02/08",
+            "title": "Smart Tattoos",
+            "location": "Fjord, Stockholm",
+            "link": "https://www.facebook.com/events/fjord-stockholm/smart-tattoos-workshop-ii/"
+        },
+        {
+            "date-start": "2011/06/01",
+            "date-end": "2011/06/10",
+            "title": "Sid Lee Boot camp",
+            "location": "Sid Lee, Montreal",
+            "link": ""
+        },
+        {
+            "date-start": "2010/02/04",
+            "date-end": "2010/02/06",
+            "title": "Audiovisuals",
+            "location": "Pixelvärk, Göteborg",
+            "link": "http://www.adasweden.se/artikel/pixelvark/"
+        }
+    ],
+    "hackathons": [
+        {
+            "date-start": "2020/04/24",
+            "date-end": "2020/04/26",
+            "title": "EU vs Virus",
+            "location": "Online",
+            "link": "https://euvsvirus.org/"
+        },
+        {
+            "date-start": "2020/04/03",
+            "date-end": "2020/04/06",
+            "title": "Hack the Crisis",
+            "location": "Online",
+            "link": "https://www.hackthecrisis.se/"
+        },
+        {
+            "date-start": "2020/03/06",
+            "date-end": "2020/03/07",
+            "title": "Stupid Hackathon",
+            "location": "Goto10, Stockholm"
+        },
+        {
             "date-start": "2019/08/02",
             "date-end": "2019/08/04",
             "title": "Biohackathon",
             "location": "Life Sciences Centre, Vilnius",
             "link": "https://igem.se/projects/biohackathon/"
-        },
-        {
-            "date-start": "2019/07/25",
-            "date-end": "2019/07/27",
-            "title": "Vector Synthesis with Derek Holzer",
-            "location": "Norbergfestival, Norberg"
         },
         {
             "date-start": "2019/04/13",
@@ -720,20 +764,6 @@
             "title": "Spotify Wowhack",
             "location": "Villa Belparc, Göteborg",
             "link": "https://devpost.com/software/stark-industries"
-        },
-        {
-            "date-start": "2011/06/01",
-            "date-end": "2011/06/10",
-            "title": "Sid Lee Boot camp",
-            "location": "Sid Lee, Montreal",
-            "link": ""
-        },
-        {
-            "date-start": "2010/02/04",
-            "date-end": "2010/02/06",
-            "title": "Audiovisuals",
-            "location": "Pixelvärk, Göteborg",
-            "link": "http://www.adasweden.se/artikel/pixelvark/"
         }
     ],
     "talks": [

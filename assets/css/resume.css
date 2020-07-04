@@ -26,10 +26,28 @@
         margin-top: calc(var(--base) * -1.5);
         filter: invert(1);
     }
-
     #resume > div > div:nth-of-type(n + 11) {
         display: none;
     } */
+    /* #resume > div > div:nth-of-type(5):after {
+        content: '';
+        display: block;
+        width: 100%;
+        height: calc(var(--base) * 1.5);
+        pointer-events: none;
+        background: linear-gradient(to bottom, rgba(0, 0, 0, 0) 0%, rgba(0, 0, 0, 1) 50%);
+        margin-top: calc(var(--base) * -1.5);
+        filter: invert(1);
+    } */
+    #resume > div.limit {
+        cursor: n-resize;
+    }
+    #resume > div.limit.show-all {
+        cursor: s-resize;
+    }
+    #resume > div:not(.show-all):not(:last-of-type) > div:nth-of-type(n + 5) {
+        display: none;
+    }
 }
 
 @media screen and (hover: hover) {

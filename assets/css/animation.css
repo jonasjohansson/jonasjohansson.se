@@ -27,15 +27,12 @@
 }
 
 @keyframes textEffectWvy {
-    /*0% { transform:translateY(0px); }*/
     0% {
         transform: translateY(25%);
     }
-    /*50% { transform:translateY(0px); }*/
     50% {
         transform: translateY(-25%);
     }
-    /*100% { transform:translateY(0px); }*/
     100% {
         transform: translateY(25%);
     }
