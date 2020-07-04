@@ -157,9 +157,9 @@ document.addEventListener('DOMContentLoaded', () => {
         const end = new Date(dateEnd)
         // if (now < new Date(dateStart)) entry.innerHTML = `&#x2934;&#xFE0E; ${entry.innerHTML}`
         if (now < start) {
-            entry.innerHTML = `<span data-no-print>&#x2934;&#xFE0E;</span> ${entry.innerHTML}`
+            entry.innerHTML = `<span data-no-print>&#x2934;</span> ${entry.innerHTML}`
         } else if (now > start && now < end) {
-            entry.innerHTML = `<span data-no-print>➦</span> ${entry.innerHTML}`
+            entry.innerHTML = `<span data-no-print>&#x21AA;</span> ${entry.innerHTML}`
         }
 
         // entry.innerHTML = entry.innerHTML
