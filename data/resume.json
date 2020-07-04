@@ -87,17 +87,21 @@
     "projects": [
         {
             "date-start": "2020/05/16",
+            "date-end": "2020/09/01",
             "title": "Mareld",
-            "location": "Avesta Verket"
+            "location": "Avesta Verket",
+            "hidden": true
         },
         {
             "date-start": "2020/03/21",
+            "date-end": "2021/01/01",
             "title": "Glitch & Eye",
-            "location": "Hyper Human, Tekniska Muséet"
+            "location": "Hyper Human, Tekniska Muséet",
+            "link": "https://www.tekniskamuseet.se/en/discover/exhibitions/hyper-human/"
         },
         {
             "date-start": "2020/02/14",
-            "date-end": "2020/05/31",
+            "date-end": "2020/09/27",
             "title": "Embodiment",
             "location": "Art in Fashion, Sven-Harrys konstmuseum"
         },

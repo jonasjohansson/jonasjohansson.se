@@ -153,7 +153,14 @@ document.addEventListener('DOMContentLoaded', () => {
         }
 
         const now = new Date()
-        if (now < new Date(dateStart)) entry.innerHTML = `&#x2934;&#xFE0E; ${entry.innerHTML}`
+        const start = new Date(dateStart)
+        const end = new Date(dateEnd)
+        // if (now < new Date(dateStart)) entry.innerHTML = `&#x2934;&#xFE0E; ${entry.innerHTML}`
+        if (now < start) {
+            entry.innerHTML = `<span data-no-print>&#x2934;&#xFE0E;</span> ${entry.innerHTML}`
+        } else if (now > start && now < end) {
+            entry.innerHTML = `<span data-no-print>➦</span> ${entry.innerHTML}`
+        }
 
         // entry.innerHTML = entry.innerHTML
         //     .replace(/(\r\n|\n|\r)/gm, ' ') // remove newlines
