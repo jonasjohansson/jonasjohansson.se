@@ -8,6 +8,7 @@
 
 html {
     font: max(36px, min(1.6vw, 64px)) / 1.33 var(--sans-serif);
+    letter-spacing: 0.01rem;
 }
 
 body {

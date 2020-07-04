@@ -5,11 +5,11 @@
     -webkit-overflow-scrolling: touch;
 }
 
-#resume > div > div {
+/* #resume > div > div {
     padding: 0.25rem 0;
     box-sizing: border-box;
     line-height: 1;
-}
+} */
 
 #resume > div:not(:last-child) {
     margin-bottom: var(--base);
