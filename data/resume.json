@@ -265,7 +265,8 @@
             "date-start": "2021/01/25",
             "date-end": "2021/02/26",
             "title": "Rörlig Grafik och Bild",
-            "location": "Beckmans, Stockholm"
+            "location": "Beckmans, Stockholm",
+            "hidden": true
         },
         {
             "date-start": "2020/11/23",

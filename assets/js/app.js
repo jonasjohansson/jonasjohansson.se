@@ -125,7 +125,7 @@ document.addEventListener('DOMContentLoaded', () => {
     let entryGroups = document.querySelectorAll('#resume > div')
 
     entryGroups.forEach(group => {
-        if (group.childElementCount > 5) {
+        if (group.childElementCount >= 6) {
             const heading = group.querySelector('h3')
             group.classList.add('limit')
             heading.onclick = () => {

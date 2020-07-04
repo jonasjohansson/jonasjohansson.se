@@ -45,7 +45,7 @@
     #resume > div.limit.show-all {
         cursor: s-resize;
     }
-    #resume > div:not(.show-all):not(:last-of-type) > div:nth-of-type(n + 5) {
+    #resume > div:not(.show-all):not(:last-of-type) > div:nth-of-type(n + 7) {
         display: none;
     }
 }
