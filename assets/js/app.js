@@ -75,7 +75,7 @@ document.addEventListener('DOMContentLoaded', () => {
                 } else {
                     letter.textContent = randNumber.randNumberShow
                 }
-            }, 10)
+            }, 20)
         })
     }
 

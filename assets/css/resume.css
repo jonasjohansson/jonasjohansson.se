@@ -39,11 +39,11 @@
         margin-top: calc(var(--base) * -1.5);
         filter: invert(1);
     } */
-    #resume > div.limit {
-        cursor: n-resize;
-    }
-    #resume > div.limit.show-all {
+    #resume .limit h3 {
         cursor: s-resize;
+    }
+    #resume .limit.show-all h3 {
+        cursor: n-resize;
     }
     #resume > div:not(.show-all):not(:last-of-type) > div:nth-of-type(n + 5) {
         display: none;
