@@ -3,28 +3,28 @@
     display: inline-block;
 }
 
-[data-effect='wvy']:hover > * {
-    animation-name: textEffectWvy;
-    animation-duration: 2s;
-    animation-iteration-count: infinite;
-}
+@media (hover: hover) and (pointer: fine) {
+    [data-effect]:hover > * {
+        animation-iteration-count: infinite;
+    }
+    [data-effect='wvy']:hover > * {
+        animation-name: textEffectWvy;
+        animation-duration: 2s;
+    }
+    [data-effect='shk']:hover > * {
+        animation-name: textEffectShk;
+        animation-duration: 0.2s;
+    }
 
-[data-effect='shk']:hover > * {
-    animation-name: textEffectShk;
-    animation-duration: 0.2s;
-    animation-iteration-count: infinite;
-}
+    [data-effect='rbw']:hover > * {
+        animation-name: textEffectRbw;
+        animation-duration: 1s;
+    }
 
-[data-effect='rbw']:hover > * {
-    animation-name: textEffectRbw;
-    animation-duration: 1s;
-    animation-iteration-count: infinite;
-}
-
-[data-effect='inv']:hover {
-    animation-name: textEffectInv;
-    animation-duration: 0.2s;
-    animation-iteration-count: infinite;
+    [data-effect='inv']:hover {
+        animation-name: textEffectInv;
+        animation-duration: 0.2s;
+    }
 }
 
 @keyframes textEffectWvy {

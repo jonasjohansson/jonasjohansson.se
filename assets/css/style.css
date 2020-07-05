@@ -88,7 +88,7 @@ section:not(#gallery) {
 
 /* other */
 
-@media (hover: hover) {
+@media (hover: hover) and (pointer: fine) {
     a:hover {
         text-decoration: none;
     }
