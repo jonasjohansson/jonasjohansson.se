@@ -18,6 +18,10 @@ module.exports = function (eleventyConfig) {
         return content
     })
 
+    eleventyConfig.addFilter('foo', function (arr) {
+        return arr.sort(() => 0.5 - Math.random())
+    })
+
     // https://github.com/11ty/eleventy-img
     // https://www.11ty.dev/docs/languages/nunjucks/#shortcodes
     eleventyConfig.addNunjucksAsyncShortcode('gallery', async function (filenames) {

@@ -71,18 +71,18 @@
         </section>
         <section id="gallery" data-no-print>
             <h3 id="info"></h3>
-            {# {% for galleryItem in gallery %}
+            {% for galleryItem in gallery %} {% if galleryItem.hidden !== true %}
             <div class="group" data-title="{{ galleryItem.title }}">
                 {% for mediaItem in galleryItem.media %}
                 <div class="slide">{% gallery mediaItem %}</div>
                 {% endfor %}
             </div>
-            {% endfor %} #}
-            <div class="group" data-title="{{ gallery[0].title }}">
+            {% endif %} {% endfor %}
+            {# <div class="group" data-title="{{ gallery[0].title }}">
                 {% for mediaItem in gallery[0].media %}
                 <div class="slide">{% gallery mediaItem %}</div>
                 {% endfor %}
-            </div>
+            </div> #}
         </section>
         <section id="resume">
             {# <div data-no-print>

@@ -99,8 +99,15 @@ document.addEventListener('DOMContentLoaded', () => {
 	Gallery
 	*/
 
-    const groups = document.querySelectorAll('.group')
-    const slides = document.querySelectorAll('.slide')
+    const gallery = document.querySelector('#gallery')
+    const tempGroups = gallery.querySelectorAll('.group')
+
+    for (var i = tempGroups.length; i >= 0; i--) {
+        gallery.appendChild(tempGroups[(Math.random() * i) | 0])
+    }
+
+    const groups = gallery.querySelectorAll('.group')
+    const slides = gallery.querySelectorAll('.slide')
 
     let currGroup = groups[0]
     let currSlide = slides[0]
@@ -110,29 +117,29 @@ document.addEventListener('DOMContentLoaded', () => {
 
     const info = document.querySelector('#info')
 
-    slides.forEach(slide => {
-        slide.onclick = e => {
-            hide(slide)
-            if (slide.nextElementSibling === null) {
-                console.log('Last slide!')
-                let group = slide.parentElement
-                hide(group)
-                if (group.nextElementSibling === null) {
-                    console.log('Last group!')
-                    currGroup = groups[0]
-                } else {
-                    currGroup = group.nextElementSibling
-                }
-                currSlide = currGroup.firstElementChild
-            } else {
-                console.log('Next slide!')
-                currSlide = slide.nextElementSibling
-            }
-            show(currGroup)
-            show(currSlide)
-            info.innerHTML = getInfo(currSlide)
-        }
-    })
+    // slides.forEach(slide => {
+    //     slide.onclick = e => {
+    //         hide(slide)
+    //         if (slide.nextElementSibling === null) {
+    //             console.log('Last slide!')
+    //             let group = slide.parentElement
+    //             hide(group)
+    //             if (group.nextElementSibling === null) {
+    //                 console.log('Last group!')
+    //                 currGroup = groups[0]
+    //             } else {
+    //                 currGroup = group.nextElementSibling
+    //             }
+    //             currSlide = currGroup.firstElementChild
+    //         } else {
+    //             console.log('Next slide!')
+    //             currSlide = slide.nextElementSibling
+    //         }
+    //         show(currGroup)
+    //         show(currSlide)
+    //         info.innerHTML = getInfo(currSlide)
+    //     }
+    // })
 
     info.innerHTML = getInfo(currSlide)
 

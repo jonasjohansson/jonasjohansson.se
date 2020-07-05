@@ -1,5 +1,10 @@
 [
     {
+        "title": "Funyard",
+        "media": ["jonas_johansson-funyard.mp4"],
+        "hidden": true
+    },
+    {
         "title": "Emerging Sensation",
         "media": ["jonas_johansson-emerging_sensation.mp4"]
     },
