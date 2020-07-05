@@ -100,17 +100,20 @@ document.addEventListener('DOMContentLoaded', () => {
 	*/
 
     const gallery = document.querySelector('#gallery')
-    const tempGroups = gallery.querySelectorAll('.group')
+    // const tempGroups = gallery.querySelectorAll('.group')
 
-    for (var i = tempGroups.length; i >= 0; i--) {
-        gallery.appendChild(tempGroups[(Math.random() * i) | 0])
-    }
+    // console.log(tempGroups.length)
+
+    // for (var i = tempGroups.length; i >= 0; i--) {
+    //     gallery.appendChild(tempGroups[(Math.random() * i) | 0])
+    // }
 
     const groups = gallery.querySelectorAll('.group')
     const slides = gallery.querySelectorAll('.slide')
 
-    let currGroup = groups[0]
-    let currSlide = slides[0]
+    let groupIndex = randomNumber(0, groups.length).randNumber
+    let currGroup = groups[groupIndex]
+    let currSlide = currGroup.children[0]
 
     show(currGroup)
     show(currSlide)
