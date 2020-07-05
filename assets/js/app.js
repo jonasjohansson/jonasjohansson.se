@@ -29,19 +29,61 @@ document.addEventListener('DOMContentLoaded', () => {
     const effects = document.querySelectorAll('[data-effect]')
 
     effects.forEach(text => {
-        if (text.hasAttribute('data-delay')) {
-            const arr = text.textContent.split('')
-            const delay = text.getAttribute('data-delay')
+        const effect = text.getAttribute('data-effect')
+        const delay = text.getAttribute('data-delay')
+        const arr = text.textContent.split('')
+
+        if (delay) {
             text.innerHTML = ''
             arr.forEach(function (char, i) {
                 let span = document.createElement('span')
                 span.textContent = char
-                // span.className = text.getAttribute('data-effect')
-                span.style.animationDelay = `${i++ * delay}ms`
+                if (delay > 0) span.style.animationDelay = `${i++ * delay}ms`
                 text.appendChild(span)
             })
         }
+        if (effect === 'shf') {
+            text.addEventListener('mouseenter', e => {
+                if (e.target.dataset.triggered === 'true') return
+                e.target.dataset.triggered = true
+                shuffleText(text, e)
+            })
+            text.addEventListener('mouseout', function () {})
+        }
     })
+
+    const shuffleText = (element, e) => {
+        let letters = Array.from(element.children),
+            keyCode = letters.map(letter => {
+                return letter.textContent.charCodeAt(0)
+            }),
+            min = Math.min(...keyCode) - 10,
+            max = Math.max(...keyCode) + 10,
+            cont = 0
+
+        letters.map((letter, index) => {
+            let interv = setInterval(() => {
+                let randNumber = randomNumber(min, max)
+
+                if (keyCode[index] === randNumber.randNumber) {
+                    letter.textContent = String.fromCharCode(keyCode[index])
+                    cont++
+                    if (cont === letters.length) {
+                        e.target.dataset.triggered = false
+                    }
+                    clearInterval(interv)
+                } else {
+                    letter.textContent = randNumber.randNumberShow
+                }
+            }, 10)
+        })
+    }
+
+    const randomNumber = (min, max) => {
+        let randNumber = Math.floor(Math.random() * (max - min) + min),
+            randNumberShow = Math.floor(Math.random() * 10)
+        return { randNumber, randNumberShow }
+    }
 
     /*
     Currently
@@ -58,7 +100,6 @@ document.addEventListener('DOMContentLoaded', () => {
 	*/
 
     const groups = document.querySelectorAll('.group')
-
     const slides = document.querySelectorAll('.slide')
 
     let currGroup = groups[0]
