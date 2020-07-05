@@ -135,7 +135,7 @@ section:not(#gallery) {
     }
     #intro,
     #resume {
-        padding-top: 2rem !important;
+        padding-top: 4rem !important;
         padding-bottom: 4rem;
     }
 }
