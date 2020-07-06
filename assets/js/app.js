@@ -97,9 +97,19 @@ document.addEventListener('DOMContentLoaded', () => {
 
     /*
 	Gallery
-	*/
+    */
 
     const gallery = document.querySelector('#gallery')
+
+    gallery.onclick = () => {
+        if (document.fullscreenElement) {
+            document.exitFullscreen()
+        } else {
+            gallery.requestFullscreen()
+            // document.documentElement.requestFullscreen()
+        }
+    }
+
     // const tempGroups = gallery.querySelectorAll('.group')
 
     // console.log(tempGroups.length)

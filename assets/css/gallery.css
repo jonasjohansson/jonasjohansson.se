@@ -5,8 +5,13 @@
 }
 
 #gallery {
-    /* height: clamp(20rem, 40vw, 100vh); */
-    height: max(20rem, min(40vw, 100vh));
+    height: clamp(20rem, 45vw, 100vh);
+    cursor: zoom-in;
+}
+
+#gallery:fullscreen {
+    height: 100vh;
+    cursor: zoom-out;
 }
 
 #gallery .group,
@@ -91,8 +96,8 @@
 
 /* info */
 
-#gallery:not(:hover) #info {
-    opacity: 0.1;
+#gallery:not(:fullscreen) #info {
+    opacity: 0;
 }
 
 #info {
@@ -109,7 +114,7 @@
     grid-template-columns: 1fr 1fr 1fr;
     will-change: opacity;
     transition: opacity 200ms ease-in-out;
-    display: none;
+    /* display: none; */
 }
 
 #info .pagination {
