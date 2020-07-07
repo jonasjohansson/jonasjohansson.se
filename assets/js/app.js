@@ -42,14 +42,14 @@ document.addEventListener('DOMContentLoaded', () => {
                 text.appendChild(span)
             })
         }
-        if (effect === 'shf') {
-            text.addEventListener('mouseenter', e => {
-                if (e.target.dataset.triggered === 'true') return
-                e.target.dataset.triggered = true
-                shuffleText(text, e)
-            })
-            text.addEventListener('mouseout', function () {})
-        }
+        // if (effect === 'shf') {
+        //     text.addEventListener('mouseenter', e => {
+        //         if (e.target.dataset.triggered === 'true') return
+        //         e.target.dataset.triggered = true
+        //         shuffleText(text, e)
+        //     })
+        //     text.addEventListener('mouseout', function () {})
+        // }
     })
 
     const shuffleText = (element, e) => {

@@ -148,3 +148,12 @@ section:not(#gallery) {
     unicode-range: U+000-5FF;
     font-display: swap;
 }
+
+@font-face {
+    font-family: 'NeueHaasUnicaW1G-Light';
+    font-weight: 400;
+    font-style: normal;
+    src: url(/fonts/NeueHaasUnicaW1G-Light.woff2) format('woff2');
+    unicode-range: U+000-5FF;
+    font-display: swap;
+}
