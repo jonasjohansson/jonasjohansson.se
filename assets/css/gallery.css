@@ -96,8 +96,8 @@
 
 /* info */
 
-#gallery:not(:fullscreen) #info {
-    opacity: 0;
+#gallery:fullscreen #info {
+    opacity: 1;
 }
 
 #info {
@@ -105,15 +105,16 @@
     position: absolute;
     bottom: 0;
     padding: 0 var(--padding-side);
-    padding-bottom: var(--base);
+    /* padding-bottom: var(--base); */
     box-sizing: border-box;
     color: white;
     mix-blend-mode: difference;
     z-index: 1;
     display: grid;
-    grid-template-columns: 1fr 1fr 1fr;
+    /* grid-template-columns: 1fr 1fr 1fr; */
     will-change: opacity;
     transition: opacity 200ms ease-in-out;
+    opacity: 0;
     /* display: none; */
 }
 
