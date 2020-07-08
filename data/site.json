@@ -3,14 +3,5 @@
     "url": "https://jonasjohansson.se",
     "cover": "jonas_johansson-glommen.jpg",
     "locale": "en_GB",
-    "description": "The role of the artist is to make the revolution irrestistible",
-    "currently": [
-        {
-            "title": "Brewing organic augmented reality textiles with Linda Nurk",
-            "link": "https://www.instagram.com/lindanurk/"
-        },
-        {
-            "title": "Building audiovisual interactive stations with Tekniska Muséet"
-        }
-    ]
+    "description": "The role of the artist is to make the revolution irrestistible"
 }
