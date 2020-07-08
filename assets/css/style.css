@@ -3,7 +3,7 @@
     --padding-side: 6vw;
     --black: #0b0b0b;
     --white: #ebebeb;
-    --sans-serif: 'noto_sanslight', -apple-system, BlinkMacSystemFont, Roboto, sans-serif;
+    --sans-serif: 'Noto Sans', -apple-system, BlinkMacSystemFont, Roboto, sans-serif;
 }
 
 html {
