@@ -139,3 +139,12 @@ section:not(#gallery) {
         padding-bottom: 4rem;
     }
 }
+
+@font-face {
+    font-family: 'Noto Sans';
+    font-weight: 400;
+    font-style: normal;
+    src: url(/fonts/NotoSans-Light.woff2) format('woff2');
+    unicode-range: U+000-5FF;
+    font-display: swap;
+}
