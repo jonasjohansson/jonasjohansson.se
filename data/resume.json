@@ -13,38 +13,38 @@
         {
             "date-start": "2017/12",
             "location": "Svartljus, Stockholm",
-            "link": "https://svartljus.se/",
+            "links": ["https://svartljus.se/"],
             "hidden": true
         },
         {
             "date-start": "2017/08",
             "location": "Beckmans, Stockholm",
-            "link": "http://www.beckmans.se/"
+            "links": ["http://www.beckmans.se/"]
         },
         {
             "date-start": "2015/12",
             "date-end": "2016/06",
             "location": "Kram/Weisshaar, Stockholm",
-            "link": "https://www.kramweisshaar.com/"
+            "links": ["https://www.kramweisshaar.com/"]
         },
         {
             "date-start": "2014/08",
             "date-end": "2015/08",
             "location": "Field, London",
-            "link": "http://field.io/"
+            "links": ["http://field.io/"]
         },
         {
             "date-start": "2012/09",
             "date-end": "2013/04",
             "location": "APM300, Montreal",
-            "link": "https://vimeo.com/apm300",
+            "links": ["https://vimeo.com/apm300"],
             "hidden": true
         },
         {
             "date-start": "2012/01",
             "date-end": "2012/10",
             "location": "Moment Factory, Montreal",
-            "link": "https://momentfactory.com/"
+            "links": ["https://momentfactory.com/"]
         },
         {
             "date-start": "2009/03",
@@ -69,8 +69,7 @@
             "date-start": "2010",
             "date-end": "2011",
             "title": "Design Lead",
-            "location": "Hyper Island, Stockholm",
-            "link": "https://www.hyperisland.com/programs-and-courses/design-lead"
+            "location": "Hyper Island, Stockholm"
         },
         {
             "date-start": "2008",
@@ -89,14 +88,14 @@
             "date-start": "2020/10/01",
             "title": "TBD",
             "location": "Van Eyck Reloaded, Ghent",
-            "link": "https://vaneyckreloaded.be/"
+            "links": ["https://vaneyckreloaded.be/"]
         },
         {
             "date-start": "2020/08/06",
             "date-end": "2020/08/09",
             "title": "Sunna",
             "location": "Into the Woods, Unnaryd",
-            "link": "https://www.intothewoods.se/"
+            "links": ["https://www.intothewoods.se/"]
         },
         {
             "date-start": "2020/05/16",
@@ -110,14 +109,14 @@
             "date-end": "2021/01/01",
             "title": "Glitch & Eye",
             "location": "Hyper Human, Tekniska Muséet",
-            "link": "https://www.tekniskamuseet.se/en/discover/exhibitions/hyper-human/"
+            "links": ["https://www.tekniskamuseet.se/en/discover/exhibitions/hyper-human/"]
         },
         {
             "date-start": "2020/02/14",
             "date-end": "2020/09/27",
             "title": "Embodiment",
             "location": "Art in Fashion, Sven-Harrys konstmuseum",
-            "link": "https://www.lindanurk.com/bio-grown"
+            "links": ["https://www.lindanurk.com/bio-grown"]
         },
         {
             "date-start": "2019/09/19",
@@ -136,20 +135,20 @@
             "date-end": "2019/04/27",
             "title": "Skaðablót",
             "location": "Bíó Paradís, Reykjavik",
-            "link": "https://www.facebook.com/events/318340158851910/"
+            "links": ["https://www.facebook.com/events/318340158851910/"]
         },
         {
             "date-start": "2019/03/15",
             "title": "Embed",
             "location": "Hobo hotel, Stockholm",
-            "link": "https://vimeo.com/431888069"
+            "links": ["https://vimeo.com/431888069"]
         },
         {
             "date-start": "2019/02/07",
             "date-end": "2019/02/10",
             "title": "Tiny/Massive",
             "location": "Winter Lights, Reykjavik",
-            "link": "https://nava.community/tiny-massive-2019/"
+            "links": ["https://nava.community/tiny-massive-2019/"]
         },
         {
             "date-start": "2019/02/01",
@@ -161,91 +160,91 @@
             "date-end": "2019/02/01",
             "title": "Emerging Sensation",
             "location": "Reaktorhallen, Stockholm",
-            "link": "http://www.emergingsensation.com"
+            "links": ["http://www.emergingsensation.com"]
         },
         {
             "date-start": "2018/12/13",
             "date-end": "2019/04/01",
             "title": "Haven",
             "location": "Icehotel, Jukkasjärvi",
-            "link": "https://www.icehotel.com/first-images-icehotel-29-revealed"
+            "links": ["https://www.icehotel.com/first-images-icehotel-29-revealed"]
         },
         {
             "date-start": "2018/07/03",
             "date-end": "2018/07/08",
             "title": "Circled",
             "location": "Nowhere, Castejón de Monegros",
-            "link": "https://vimeo.com/282330002/"
+            "links": ["https://vimeo.com/282330002/"]
         },
         {
             "date-start": "2018/03/16",
             "date-end": "2018/03/17",
             "title": "SónarSpil",
             "location": "Sónar, Reykjavik",
-            "link": "https://vimeo.com/280408012/"
+            "links": ["https://vimeo.com/280408012/"]
         },
         {
             "date-start": "2017/11/04",
             "date-end": "2017/12/31",
             "title": "2.18",
             "location": "Satans Död, Stockholm",
-            "link": "https://vimeo.com/327324118"
+            "links": ["https://vimeo.com/327324118"]
         },
         {
             "date-start": "2017/07/05",
             "date-end": "2017/07/10",
             "title": "Sunna",
             "location": "Nowhere, Castejón de Monegros",
-            "link": ""
+            "links": [""]
         },
         {
             "date-start": "2017/04/12",
             "date-end": "2017/04/15",
             "title": "Transcend",
             "location": "Urban Burn, Stockholm",
-            "link": "https://vimeo.com/217521784"
+            "links": ["https://vimeo.com/217521784"]
         },
         {
             "date-start": "2017/02/16",
             "date-end": "2017/02/18",
             "title": "Harpa Touch",
             "location": "Sónar, Reykjavik",
-            "link": "https://vimeo.com/208312871"
+            "links": ["https://vimeo.com/208312871"]
         },
         {
             "date-start": "2016/04/12",
             "date-end": "2016/04/17",
             "title": "SmartSlab Table",
             "location": "Palazzo Clerici. Salone",
-            "link": "http://www.kramweisshaar.com/projects/smartslab-table"
+            "links": ["http://www.kramweisshaar.com/projects/smartslab-table"]
         },
         {
             "date-start": "2016/02/18",
             "date-end": "2016/02/20",
             "title": "Harpa Light Organ",
             "location": "Sónar, Reykjavik",
-            "link": "https://vimeo.com/169834486"
+            "links": ["https://vimeo.com/169834486"]
         },
         {
             "date-start": "2015/07/07",
             "date-end": "2015/07/12",
             "title": "Beacon",
             "location": "Nowhere, Castejón de Monegros",
-            "link": ""
+            "links": [""]
         },
         {
             "date-start": "2015/05/29",
             "date-end": "2015/05/31",
             "title": "Quasar",
             "location": "The Hospital Club, London",
-            "link": "https://www.field.io/project/quasar/"
+            "links": ["https://www.field.io/project/quasar/"]
         },
         {
             "date-start": "2015/02/12",
             "date-end": "2015/02/14",
             "title": "Harpa Lights",
             "location": "Sónar, Reykjavik",
-            "link": "https://vimeo.com/161909071"
+            "links": ["https://vimeo.com/161909071"]
         },
         {
             "date-start": "2014/03/21",
@@ -258,7 +257,7 @@
             "date-end": "2013/05/23",
             "title": "Lyra",
             "location": "C2-MTL, Montreal",
-            "link": "https://vimeo.com/69187844"
+            "links": ["https://vimeo.com/69187844"]
         }
     ],
     "teaching": [
@@ -292,7 +291,7 @@
             "date-end": "2020/09/12",
             "title": "TBD",
             "location": "VR Sci Fest, Stockholm",
-            "link": "http://vrscifest.com/"
+            "links": ["http://vrscifest.com/"]
         },
         {
             "date-start": "2020/05/11",
@@ -305,7 +304,7 @@
             "date-end": "2020/05/22",
             "title": "Augmented Reality",
             "location": "Gamma Lab XR",
-            "link": "https://gammafestival.ru/lab_en"
+            "links": ["https://gammafestival.ru/lab_en"]
         },
         {
             "date-start": "2020/04/08",
@@ -316,7 +315,7 @@
             "date-start": "2020/04/07",
             "title": "Augmented Reality, Generative Design",
             "location": "Exploring Tech Live",
-            "link": "https://www.facebook.com/events/524433344931172/"
+            "links": ["https://www.facebook.com/events/524433344931172/"]
         },
         {
             "date-start": "2020/03/17",
@@ -327,26 +326,26 @@
             "date-start": "2020/02/26",
             "title": "AV/Meetup",
             "location": "Fotografiska Studio Live, Stockholm",
-            "link": "https://www.facebook.com/events/2719615168268380/"
+            "links": ["https://www.facebook.com/events/2719615168268380/"]
         },
         {
             "date-start": "2020/02/22",
             "title": "Processing Community Day",
             "location": "Blivande, Stockholm",
-            "link": "https://www.facebook.com/events/600287280715693/"
+            "links": ["https://www.facebook.com/events/600287280715693/"]
         },
         {
             "date-start": "2020/02/08",
             "title": "Syntes",
             "location": "Fotografiska Studio Live, Stockholm",
-            "link": "https://www.facebook.com/events/2431572260504661/"
+            "links": ["https://www.facebook.com/events/2431572260504661/"]
         },
         {
             "date-start": "2020/01/27",
             "date-end": "2020/02/28",
             "title": "Rörlig Grafik och Bild",
             "location": "Beckmans, Stockholm",
-            "link": "https://vimeo.com/435501297"
+            "links": ["https://vimeo.com/435501297"]
         },
         {
             "date-start": "2020/01/06",
@@ -391,14 +390,14 @@
             "date-start": "2019/01/26",
             "title": "Processing Community Day",
             "location": "Beckmans, Stockholm",
-            "link": "https://www.facebook.com/events/278378312862091/"
+            "links": ["https://www.facebook.com/events/278378312862091/"]
         },
         {
             "date-start": "2019/01/21",
             "date-end": "2019/02/22",
             "title": "Rörlig Grafik och Bild",
             "location": "Beckmans, Stockholm",
-            "link": "https://vimeo.com/323784865"
+            "links": ["https://vimeo.com/323784865"]
         },
         {
             "date-start": "2018/10/22",
@@ -415,13 +414,15 @@
             "date-start": "2018/03/16",
             "title": "VJing and Visuals for Beginners",
             "location": "Sónar, Reykjavik",
-            "link": "https://sonarreykjavik.com/en/2018/artists/sonarspil-workshop-vjing-and-visuals-for-beginners"
+            "links": ["https://sonarreykjavik.com/en/2018/artists/sonarspil-workshop-vjing-and-visuals-for-beginners"]
         },
         {
             "date-start": "2018/03/15",
             "title": "LED Mapping and Expressive Lighting",
             "location": "Sónar, Reykjavik",
-            "link": "https://sonarreykjavik.com/en/2018/artists/sonarspil-workshop-led-mapping-and-expressive-lighting"
+            "links": [
+                "https://sonarreykjavik.com/en/2018/artists/sonarspil-workshop-led-mapping-and-expressive-lighting"
+            ]
         },
         {
             "date-start": "2018/02/18",
@@ -434,7 +435,7 @@
             "date-end": "2018/02/23",
             "title": "Rörlig Grafik och Bild",
             "location": "Beckmans, Stockholm",
-            "link": "https://vimeo.com/328475901"
+            "links": ["https://vimeo.com/328475901"]
         },
         {
             "date-start": "2017/12/04",
@@ -453,7 +454,7 @@
             "date-end": "2017/11/09",
             "title": "LED Mapping and Expressive Lighting",
             "location": "Mira Festival, Barcelona",
-            "link": "http://www.mirafestival.com/en/workshop-mira-2017/"
+            "links": ["http://www.mirafestival.com/en/workshop-mira-2017/"]
         },
         {
             "date-start": "2017/09/18",
@@ -466,19 +467,19 @@
             "date-end": "2017/03",
             "title": "Exploring Tech",
             "location": "Hyper Island, Karlskrona",
-            "link": "https://vimeo.com/226699240"
+            "links": ["https://vimeo.com/226699240"]
         },
         {
             "date-start": "2017/02/17",
             "title": "VJ Workshop",
             "location": "Sónar, Reykjavik",
-            "link": "https://sonarreykjavik.com/en/2017/artists/vj-workshop-with-jonas-johansson"
+            "links": ["https://sonarreykjavik.com/en/2017/artists/vj-workshop-with-jonas-johansson"]
         },
         {
             "date-start": "2016",
             "title": "Exploring Tech",
             "location": "Hyper Island, Stockholm",
-            "link": "https://vimeo.com/209370480"
+            "links": ["https://vimeo.com/209370480"]
         },
         {
             "date-start": "2016",
@@ -490,7 +491,7 @@
             "date-end": "2015/03/08",
             "title": "Trojan Gadgets",
             "location": "Royal College of Art, London",
-            "link": "http://trojangadgets.tumblr.com/post/111585978044/trojan-gadgets"
+            "links": ["http://trojangadgets.tumblr.com/post/111585978044/trojan-gadgets"]
         },
         {
             "date-start": "2015",
@@ -509,21 +510,21 @@
             "date-end": "2020/09/12",
             "title": "TBD",
             "location": "VR Sci Fest, Stockholm",
-            "link": "http://vrscifest.com/"
+            "links": ["http://vrscifest.com/"]
         },
         {
             "date-start": "2020/11/02",
             "date-end": "2020/11/04",
             "title": "TBD",
             "location": "Aavistus Festival, Helsinki",
-            "link": "https://www.aavistusfestival.fi/"
+            "links": ["https://www.aavistusfestival.fi/"]
         },
         {
             "date-start": "2020/09/05",
             "date-end": "2020/09/06",
             "title": "TBD",
             "location": "St. Petersburg",
-            "link": "https://gammafestival.ru/"
+            "links": ["https://gammafestival.ru/"]
         },
         {
             "date-start": "2019/06/06",
@@ -539,7 +540,7 @@
             "date-start": "2019/05/10",
             "title": "NME-AR",
             "location": "VR Sci Fest, Stockholm",
-            "link": "http://vrscifest.com/"
+            "links": ["http://vrscifest.com/"]
         },
         {
             "date-start": "2019/05/10",
@@ -572,7 +573,7 @@
             "date-end": "2018/09/06",
             "title": "Virtual Dancer",
             "location": "Färgfabriken, Stockholm",
-            "link": "https://vimeo.com/299949427"
+            "links": ["https://vimeo.com/299949427"]
         },
         {
             "date-start": "2018/08/31",
@@ -589,25 +590,25 @@
             "date-start": "2018/02/17",
             "title": "Township Rebellion",
             "location": "Slakthuset, Stockholm",
-            "link": "https://vimeo.com/295008907"
+            "links": ["https://vimeo.com/295008907"]
         },
         {
             "date-start": "2017/12/15",
             "title": "Visuals",
             "location": "Spotify X-mas, Stockholm",
-            "link": "https://vimeo.com/327538825"
+            "links": ["https://vimeo.com/327538825"]
         },
         {
             "date-start": "2017/12/15",
             "title": "LED Tunnel",
             "location": "Spotify X-mas, Stockholm",
-            "link": "https://vimeo.com/295008907"
+            "links": ["https://vimeo.com/295008907"]
         },
         {
             "date-start": "2017/06/26",
             "title": "Kornel Kovacs",
             "location": "Countdown stage, Roskilde",
-            "link": "https://vimeo.com/260916448"
+            "links": ["https://vimeo.com/260916448"]
         },
         {
             "date-start": "2016/09/30",
@@ -635,7 +636,7 @@
             "date-start": "2012/10/28",
             "title": "The Skull",
             "location": "Spasm, Montreal",
-            "link": "https://vimeo.com/52945329"
+            "links": ["https://vimeo.com/52945329"]
         },
         {
             "date-start": "2012/10/11",
@@ -645,13 +646,13 @@
             "date-start": "2012/10/03",
             "title": "Yuksek, Gesaffelstein, Breakbot",
             "location": "Montreal Electronic Groove",
-            "link": "https://vimeo.com/50801625"
+            "links": ["https://vimeo.com/50801625"]
         },
         {
             "date-start": "2011/03/05",
             "title": "La Fleur",
             "location": "Under Bron, Stockholm",
-            "link": "https://vimeo.com/50801625"
+            "links": ["https://vimeo.com/50801625"]
         },
         {
             "date-start": "2010/07/23",
@@ -665,21 +666,21 @@
             "date-end": "2020/09/27",
             "title": "The Palace Collective",
             "location": "Poland",
-            "link": "https://www.thepalacecollective.org/"
+            "links": ["https://www.thepalacecollective.org/"]
         },
         {
             "date-start": "2020/01/06",
             "date-end": "2020/03/27",
             "title": "Brahman",
             "location": "Bombay Beach",
-            "link": "https://brahman.ai/"
+            "links": ["https://brahman.ai/"]
         },
         {
             "date-start": "2019/11/15",
             "date-end": "2019/11/17",
             "title": "Glimps BioFab Weekend",
             "location": "Mont Vireaux Mansion, France",
-            "link": "https://glimps.bio/biofabrication-weekend-about"
+            "links": ["https://glimps.bio/biofabrication-weekend-about"]
         },
         {
             "date-start": "2019/07/25",
@@ -691,21 +692,21 @@
             "date-start": "2018/02/08",
             "title": "Smart Tattoos",
             "location": "Fjord, Stockholm",
-            "link": "https://www.facebook.com/events/fjord-stockholm/smart-tattoos-workshop-ii/"
+            "links": ["https://www.facebook.com/events/fjord-stockholm/smart-tattoos-workshop-ii/"]
         },
         {
             "date-start": "2011/06/01",
             "date-end": "2011/06/10",
             "title": "Sid Lee Boot camp",
             "location": "Sid Lee, Montreal",
-            "link": ""
+            "links": [""]
         },
         {
             "date-start": "2010/02/04",
             "date-end": "2010/02/06",
             "title": "Audiovisuals",
             "location": "Pixelvärk, Göteborg",
-            "link": "http://www.adasweden.se/artikel/pixelvark/"
+            "links": ["http://www.adasweden.se/artikel/pixelvark/"]
         }
     ],
     "hackathons": [
@@ -714,14 +715,14 @@
             "date-end": "2020/04/26",
             "title": "EU vs Virus",
             "location": "Online",
-            "link": "https://euvsvirus.org/"
+            "links": ["https://euvsvirus.org/"]
         },
         {
             "date-start": "2020/04/03",
             "date-end": "2020/04/06",
             "title": "Hack the Crisis",
             "location": "Online",
-            "link": "https://www.hackthecrisis.se/"
+            "links": ["https://www.hackthecrisis.se/"]
         },
         {
             "date-start": "2020/03/06",
@@ -734,25 +735,25 @@
             "date-end": "2019/08/04",
             "title": "Biohackathon",
             "location": "Life Sciences Centre, Vilnius",
-            "link": "https://igem.se/projects/biohackathon/"
+            "links": ["https://igem.se/projects/biohackathon/"]
         },
         {
             "date-start": "2019/04/13",
             "title": "Hackfest",
             "location": "Under Bron, Stockholm",
-            "link": "https://hackfest.lol/"
+            "links": ["https://hackfest.lol/"]
         },
         {
             "date-start": "2018/11/24",
             "title": "Livehacks #6",
             "location": "Embassy House, Stockholm",
-            "link": "https://www.stagecast.io/livehacks/lh6-livehacks-sessions"
+            "links": ["https://www.stagecast.io/livehacks/lh6-livehacks-sessions"]
         },
         {
             "date-start": "2018/11/24",
             "title": "Livehacks #5",
             "location": "Reaktorhallen, Stockholm",
-            "link": "https://www.stagecast.io/livehacks/lh5-lets-game"
+            "links": ["https://www.stagecast.io/livehacks/lh5-lets-game"]
         },
         {
             "date-start": "2018/09/07",
@@ -764,21 +765,21 @@
             "date-start": "2018/05/19",
             "title": "Livehacks #4",
             "location": "Kungliga Musikhögskolan, Stockholm",
-            "link": "https://www.stagecast.io/livehacks/lh4-its-all-about-the-sound"
+            "links": ["https://www.stagecast.io/livehacks/lh4-its-all-about-the-sound"]
         },
         {
             "date-start": "2018/02/09",
             "date-end": "2018/02/10",
             "title": "Stupid Hackathon",
             "location": "Earth People, Stockholm",
-            "link": "https://www.youtube.com/watch?v=jfUVBJgcAuw",
+            "links": ["https://www.youtube.com/watch?v=jfUVBJgcAuw"],
             "winner": true
         },
         {
             "date-start": "2018/02/03",
             "title": "Livehacks #3",
             "location": "Reaktorhallen, Stockholm",
-            "link": "https://www.stagecast.io/livehacks/lh3-hack-the-show-with-stagecast",
+            "links": ["https://www.stagecast.io/livehacks/lh3-hack-the-show-with-stagecast"],
             "winner": true
         },
         {
@@ -792,7 +793,7 @@
             "date-end": "2014/09/27",
             "title": "DreamHackathon",
             "location": "Globen, Stockholm",
-            "link": "https://devpost.com/software/go-high"
+            "links": ["https://devpost.com/software/go-high"]
         },
         {
             "date-start": "2014/05/17",
@@ -805,14 +806,14 @@
             "date-end": "2013/09/16",
             "title": "Protothon Liquid Data",
             "location": "Absolut Atelier, Stockholm",
-            "link": "https://www.youtube.com/watch?v=r_Eae8DnX68"
+            "links": ["https://www.youtube.com/watch?v=r_Eae8DnX68"]
         },
         {
             "date-start": "2013/08/05",
             "date-end": "2013/08/07",
             "title": "Spotify Wowhack",
             "location": "Villa Belparc, Göteborg",
-            "link": "https://devpost.com/software/stark-industries"
+            "links": ["https://devpost.com/software/stark-industries"]
         }
     ],
     "talks": [
@@ -820,7 +821,7 @@
             "date-start": "2020/09/10",
             "title": "Silkesmaskar & AR",
             "location": "Sven-Harrys Konstmuseum, Stockholm",
-            "link": "https://www.facebook.com/events/737691920399289/"
+            "links": ["https://www.facebook.com/events/737691920399289/"]
         },
         {
             "date-start": "2020/05/09",
@@ -831,25 +832,27 @@
             "date-start": "2020/02/15",
             "title": "Catalyst Conference",
             "location": "Spectra Festival, Aberdeen",
-            "link": "https://www.spectrafestival.co.uk/conference-programme/annie-marrs-dundee-unesco-city-of-design"
+            "links": ["https://www.spectrafestival.co.uk/conference-programme/annie-marrs-dundee-unesco-city-of-design"]
         },
         {
             "date-start": "2019/10/05",
             "title": "Art Advocacy with NAVA",
             "location": "Lunchmeat Festival, Prague",
-            "link": "https://www.lunchmeatfestival.cz/2019/program/symposium/"
+            "links": ["https://www.lunchmeatfestival.cz/2019/program/symposium/"]
         },
         {
             "date-start": "2019/09/21",
             "title": "A confluence of alternate realities and organic growth",
             "location": "Open Cell, London Design Festival",
-            "link": "https://www.opencell.bio/biodesign-here-now-programme"
+            "links": ["https://www.opencell.bio/biodesign-here-now-programme"]
         },
         {
             "date-start": "2018/11/12",
             "title": "Lunch lecture",
             "location": "Arkipelago, Stockholm",
-            "link": "https://www.facebook.com/events/arkipelago-stockholm/lunch-lecture-jonas-johansson/1970964856529698/"
+            "links": [
+                "https://www.facebook.com/events/arkipelago-stockholm/lunch-lecture-jonas-johansson/1970964856529698/"
+            ]
         }
     ]
 }

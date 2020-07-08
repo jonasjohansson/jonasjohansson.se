@@ -94,12 +94,17 @@
                 <h3>{{ resume.titles[heading] }}</h3>
                 {% for entry in resume[heading] %} {% if entry.hidden !== true %}
                 <div data-title="{{ entry['title'] }}" data-start="{{ entry['date-start'] }}" data-end="{{ entry['date-end'] }}">
-                    {% if entry.link %}
-                    <a href="{{ entry.link }}">
-                        {% endif %} {% if entry.title %} {{ entry.title }}. {% endif %}
-                        {% if entry.location %} {{ entry.location }} {% endif %} {% if entry.link %}
-                    </a>
-                    {% endif %} 
+                {% if entry.links %} <a href="{{ entry.links[0] }}"> {% endif %}
+                {% if entry.title %} {{ entry.title }}. {% endif %}
+                {% if entry.location %} {{ entry.location }} {% endif %}
+                {% if entry.links %} </a> {% endif %}
+                    {# {% if entry.links %}
+                    <span class="links" data-no-print>
+                        {% for link in entry.links %}
+                        <a href="{{ link }}">1</a>
+                        {% endfor %}
+                    </span>
+                    {% endif %} #}
                 </div>
                 {% endif %} {% endfor %}
             </div>

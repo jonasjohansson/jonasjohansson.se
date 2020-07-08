@@ -1,8 +1,8 @@
 #resume > div {
-    white-space: nowrap;
-    overflow-x: scroll;
-    overflow-y: hidden;
-    -webkit-overflow-scrolling: touch;
+    /* white-space: nowrap; */
+    /* overflow-x: scroll; */
+    /* overflow-y: hidden; */
+    /* -webkit-overflow-scrolling: touch; */
 }
 
 /* #resume > div > div {
@@ -10,6 +10,16 @@
     box-sizing: border-box;
     line-height: 1;
 } */
+
+#resume > div > div {
+    white-space: nowrap;
+    overflow: hidden;
+    text-overflow: ellipsis;
+}
+
+#resume .links {
+    font-variant: diagonal-fractions;
+}
 
 #resume > div:not(:last-child) {
     margin-bottom: var(--base);
