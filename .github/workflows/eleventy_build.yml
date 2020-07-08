@@ -6,8 +6,9 @@ jobs:
         runs-on: ubuntu-18.04
         steps:
             - uses: actions/checkout@master
+            - run: npm install
             - name: Build
-              uses: TartanLlama/actions-eleventy@v1.2
+              uses: TartanLlama/actions-eleventy@v1.1
             - name: Deploy
               uses: peaceiris/actions-gh-pages@v1.1.0
               env:
