@@ -3,7 +3,7 @@
     --padding-side: 6vw;
     --black: #0b0b0b;
     --white: #ebebeb;
-    --sans-serif: 'NotoSans-Light', -apple-system, BlinkMacSystemFont, Roboto, sans-serif;
+    --sans-serif: 'noto_sanslight', -apple-system, BlinkMacSystemFont, Roboto, sans-serif;
 }
 
 html {
@@ -138,22 +138,4 @@ section:not(#gallery) {
         padding-top: 4rem !important;
         padding-bottom: 4rem;
     }
-}
-
-@font-face {
-    font-family: 'NotoSans-Light';
-    font-weight: 400;
-    font-style: normal;
-    src: url(/fonts/NotoSans-Light.woff2) format('woff2');
-    unicode-range: U+000-5FF;
-    font-display: swap;
-}
-
-@font-face {
-    font-family: 'NeueHaasUnicaW1G-Light';
-    font-weight: 400;
-    font-style: normal;
-    src: url(/fonts/NeueHaasUnicaW1G-Light.woff2) format('woff2');
-    unicode-range: U+000-5FF;
-    font-display: swap;
 }
