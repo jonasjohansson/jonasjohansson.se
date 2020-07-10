@@ -51,6 +51,7 @@
     } */
     #resume .limit h3 {
         cursor: s-resize;
+        display: inline-block;
     }
     #resume .limit.show-all h3 {
         cursor: n-resize;
@@ -72,7 +73,7 @@
         transform: translate(-150%, 0);
     }
     [data-start]:hover:before {
-        opacity: 0.8;
+        opacity: 0.5;
         transform: translate(-100%, 0);
     }
 }

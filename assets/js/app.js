@@ -186,7 +186,8 @@ document.addEventListener('DOMContentLoaded', () => {
     let entryGroups = document.querySelectorAll('#resume > div')
 
     entryGroups.forEach(group => {
-        if (group.childElementCount >= 4) {
+        // one more than desired amount as h3 is included
+        if (group.childElementCount >= 5) {
             const heading = group.querySelector('h3')
             group.classList.add('limit')
             heading.onclick = () => {
@@ -217,11 +218,11 @@ document.addEventListener('DOMContentLoaded', () => {
         const start = new Date(dateStart)
         const end = new Date(dateEnd)
         // if (now < new Date(dateStart)) entry.innerHTML = `&#x2934;&#xFE0E; ${entry.innerHTML}`
-        if (now < start) {
-            entry.innerHTML = `<span data-no-print>&#x2191;</span> ${entry.innerHTML}`
-        } else if (now > start && now < end) {
-            entry.innerHTML = `<span data-no-print>&#x2192;</span> ${entry.innerHTML}`
-        }
+        // if (now < start) {
+        //     entry.innerHTML = `<span data-no-print>&#x2191;</span> ${entry.innerHTML}`
+        // } else if (now > start && now < end) {
+        //     entry.innerHTML = `<span data-no-print>&#x2192;</span> ${entry.innerHTML}`
+        // }
 
         // entry.innerHTML = entry.innerHTML
         //     .replace(/(\r\n|\n|\r)/gm, ' ') // remove newlines
