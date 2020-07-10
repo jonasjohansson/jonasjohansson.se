@@ -105,7 +105,7 @@
     position: absolute;
     bottom: 0;
     padding: 0 var(--padding-side);
-    /* padding-bottom: var(--base); */
+    padding-bottom: var(--base);
     box-sizing: border-box;
     color: white;
     mix-blend-mode: difference;
@@ -113,7 +113,7 @@
     display: grid;
     /* grid-template-columns: 1fr 1fr 1fr; */
     will-change: opacity;
-    transition: opacity 200ms ease-in-out;
+    transition: opacity 200ms cubic-bezier(0.25, 1, 0.5, 1) 500ms;
     opacity: 0;
     /* display: none; */
 }

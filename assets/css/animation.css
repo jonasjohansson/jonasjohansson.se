@@ -4,6 +4,7 @@
 }
 
 @media (hover: hover) and (pointer: fine) {
+    [data-effect='inv']:hover,
     [data-effect]:hover > * {
         animation-iteration-count: infinite;
     }
