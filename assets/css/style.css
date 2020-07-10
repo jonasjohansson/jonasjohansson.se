@@ -19,6 +19,8 @@ body {
 body > * {
     opacity: 1;
     transition: opacity 400ms ease-in;
+    position: relative;
+    z-index: 1;
 }
 
 body.loading > * {

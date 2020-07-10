@@ -1,0 +1,29 @@
+svg {
+    position: absolute;
+    /* mix-blend-mode: exclusion; */
+    mix-blend-mode: soft-light;
+    will-change: opacity, filter;
+    transition: all 600ms ease-in;
+}
+
+path {
+    animation: dash 2000ms ease-in-out forwards;
+    cursor: pointer;
+}
+
+svg.fade {
+    opacity: 0;
+    filter: blur(10px);
+}
+
+@media screen and (hover: hover) {
+    svg {
+        z-index: 0;
+    }
+}
+
+@keyframes dash {
+    to {
+        stroke-dashoffset: 0;
+    }
+}
