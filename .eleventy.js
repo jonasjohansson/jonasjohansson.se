@@ -6,26 +6,7 @@ const Image = require('@11ty/eleventy-img')
 const imageFolder = 'assets/images/'
 
 module.exports = function (eleventyConfig) {
-    eleventyConfig.addTransform('htmlmin', function (content, outputPath) {
-        if (outputPath.endsWith('.html')) {
-            let minified = htmlmin.minify(content, {
-                useShortDoctype: true,
-                removeComments: true,
-                collapseWhitespace: true
-            })
-            return minified
-        }
-        return content
-    })
-
-    eleventyConfig.addFilter('foo', function (arr) {
-        return arr.sort(() => 0.5 - Math.random())
-    })
-
-    // https://github.com/11ty/eleventy-img
-    // https://www.11ty.dev/docs/languages/nunjucks/#shortcodes
     eleventyConfig.addNunjucksAsyncShortcode('gallery', async function (filenames) {
-        // turn filename into array of filename(s)
         if (!Array.isArray(filenames)) {
             filenames = new Array(filenames)
         }
@@ -95,17 +76,24 @@ module.exports = function (eleventyConfig) {
         return `<video src="videos/${src}" autoplay loop muted playsinline></video>`
     }
 
+    eleventyConfig.addTransform('htmlmin', function (content, outputPath) {
+        if (outputPath.endsWith('.html')) {
+            let minified = htmlmin.minify(content, {
+                useShortDoctype: true,
+                removeComments: true,
+                collapseWhitespace: true
+            })
+            return minified
+        }
+        return content
+    })
+
     eleventyConfig.addFilter('cssmin', function (code) {
         return new CleanCSS({}).minify(code).styles
     })
 
     eleventyConfig.addFilter('jsmin', function (code) {
-        let minified = UglifyJS.minify(code)
-        if (minified.error) {
-            console.log('UglifyJS error: ', minified.error)
-            return code
-        }
-        return minified.code
+        return UglifyJS.minify(code).code
     })
 
     eleventyConfig.addPassthroughCopy({ 'assets/videos': 'videos' })
