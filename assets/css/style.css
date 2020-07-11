@@ -19,8 +19,8 @@ body {
 body > * {
     opacity: 1;
     transition: opacity 400ms ease-in;
-    position: relative;
-    z-index: 1;
+    /* position: relative; */
+    /* z-index: 1; */
 }
 
 body.loading > * {
@@ -64,7 +64,8 @@ picture {
 
 /* sections */
 
-section:not(#gallery) {
+#intro,
+#resume {
     margin-top: 0;
     margin-bottom: 0;
     padding: 6rem var(--padding-side);

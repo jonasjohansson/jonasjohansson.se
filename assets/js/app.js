@@ -96,33 +96,24 @@ document.addEventListener('DOMContentLoaded', () => {
     // }
 
     /*
-	Gallery
+	Projects
     */
 
-    const gallery = document.querySelector('#gallery')
+    const _projects = document.querySelector('#projects')
 
-    gallery.onclick = () => {
+    _projects.onclick = () => {
         if (document.fullscreenElement) {
             document.exitFullscreen()
         } else {
-            gallery.requestFullscreen()
-            // document.documentElement.requestFullscreen()
+            _projects.requestFullscreen()
         }
     }
 
-    // const tempGroups = gallery.querySelectorAll('.group')
+    const projects = _projects.querySelectorAll('.project')
+    // const slides = projects.querySelectorAll('.slide')
 
-    // console.log(tempGroups.length)
-
-    // for (var i = tempGroups.length; i >= 0; i--) {
-    //     gallery.appendChild(tempGroups[(Math.random() * i) | 0])
-    // }
-
-    const groups = gallery.querySelectorAll('.group')
-    const slides = gallery.querySelectorAll('.slide')
-
-    let groupIndex = randomNumber(0, groups.length).randNumber
-    let currGroup = groups[groupIndex]
+    let groupIndex = randomNumber(0, projects.length).randNumber
+    let currGroup = projects[groupIndex]
     let currSlide = currGroup.children[0]
 
     show(currGroup)

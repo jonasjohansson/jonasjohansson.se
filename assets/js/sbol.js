@@ -62,11 +62,11 @@ var SBOL = {
 }
 
 document.addEventListener('DOMContentLoaded', () => {
-    // var el = document.createElement('div')
-    // el.id = 'svg'
-    // document.body.appendChild(el)
-    // SBOL.wrap = el
-    SBOL.wrap = document.body
+    var el = document.createElement('div')
+    el.id = 'svg'
+    document.body.appendChild(el)
+    SBOL.wrap = el
+    // SBOL.wrap = document.body
     setInterval(() => {
         addShape()
     }, SBOL.wait)

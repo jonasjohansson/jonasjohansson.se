@@ -15,39 +15,33 @@ module.exports = function (eleventyConfig) {
 
         await asyncForEach(filenames, async filename => {
             let ext = filename.split('.').pop()
-
-            switch (ext) {
-                case 'png':
-                case 'jpg':
-                case 'gif':
-                    html += await getImage(filename, ext)
-                    break
-                case 'mp4':
-                    html += getVideo(filename, ext)
-                    break
-            }
+            html += ext === 'mp4' ? await vid(filename) : await img(filename)
         })
 
         return html
     })
 
-    eleventyConfig.addNunjucksAsyncShortcode('img', async function (src, outputFormat = 'jpeg') {
-        let stats = await Image(imageFolder + src, {
-            widths: [null],
-            formats: [outputFormat],
-            outputDir: 'docs/img/'
-        })
-        let props = stats[outputFormat].pop()
+    eleventyConfig.addNunjucksAsyncShortcode('img', async function (path) {
+        const props = await optimImg(path)
         return props.url
     })
 
-    async function getImage(src, outputFormat) {
-        let stats = await Image(imageFolder + src, {
-            widths: [960, null],
-            formats: ['jpeg'],
-            outputDir: 'docs/img/'
-        })
+    async function vid(src) {
+        return `<video src="videos/${src}" autoplay loop muted playsinline></video>`
+    }
 
+    async function img(path) {
+        const props = await optimImg(path)
+        return `<img src="${props.url}">`
+    }
+
+    async function fig(path, caption = '') {
+        const props = await optimImg(path)
+        return `<figure><img src="${props.url}"><figcaption>${caption}</figcaption></figure>`
+    }
+
+    async function pic(path) {
+        const stats = await optimImg(path, { widths: [960, null] })
         const alt = ''
         const lowestSrc = stats.jpeg[0]
         const sizes = '100vw'
@@ -67,13 +61,19 @@ module.exports = function (eleventyConfig) {
                 width="${lowestSrc.width}"
                 height="${lowestSrc.height}">
         </picture>`
-
-        // let props = stats[outputFormat].pop()
-        // return `<img src="${props.url}" width="${props.width}" height="${props.height}">`
     }
 
-    function getVideo(src) {
-        return `<video src="videos/${src}" autoplay loop muted playsinline></video>`
+    async function optimImg(path, opts = {}) {
+        const widths = opts?.widths || [null]
+        const outputFormat = opts?.outputFormat || ['jpeg']
+        const outputDir = opts?.outputDir || 'docs/img/'
+        let stats = await Image('assets/images/' + path, {
+            widths: widths,
+            formats: outputFormat,
+            outputDir: outputDir
+        })
+        if (widths.length > 1) return stats
+        else return stats[outputFormat].pop()
     }
 
     eleventyConfig.addTransform('htmlmin', function (content, outputPath) {

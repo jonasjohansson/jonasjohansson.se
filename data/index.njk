@@ -17,7 +17,7 @@
 		{% set css %} 
 			{% include "assets/css/reset.css" %} 
 			{% include "assets/css/style.css" %} 
-			{% include "assets/css/gallery.css" %}
+			{% include "assets/css/projects.css" %}
 			{% include "assets/css/resume.css" %}
 			{% include "assets/css/animation.css" %}
 			{% include "assets/css/print.css" %}
@@ -71,12 +71,14 @@
                 {% endfor %}
             </div> #}
         </section>
-        <section id="gallery" data-no-print>
+        <section id="projects" data-no-print>
             <h3 id="info"></h3>
-            {% for galleryItem in gallery %} {% if galleryItem.hidden !== true %}
-            <div class="group" data-title="{{ galleryItem.title }}">
-                {% for mediaItem in galleryItem.media %}
-                <div class="slide">{% gallery mediaItem %}</div>
+            {% for project in projects %} {% if project.hidden !== true %}
+            <div class="project" data-title="{{ project.title }}">
+                {% for media in project.media %}
+                <div class="slide">
+                    {% gallery media %}
+                </div>
                 {% endfor %}
             </div>
             {% endif %} {% endfor %}
