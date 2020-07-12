@@ -89,11 +89,10 @@
             </div> #}
         </section>
         <section id="resume">
-            {# <div data-no-print>
-                <a onclick="window.print();return false;">Print</a>
-                for full resumé
-            </div> #}
-            {% for heading in ['work','education','projects','teaching','workshops','talks'] %}
+            <div data-no-print>
+                Print <a onclick="window.print();return false;">full CV</a> 
+            </div>
+            {% for heading in ['work','education','projects','teaching','workshops','exhibition','talks'] %}
             <div>
                 <h3>{{ resume.titles[heading] }}</h3>
                 {% for entry in resume[heading] %} {% if entry.hidden !== true %}
@@ -113,7 +112,7 @@
                 {% endif %} {% endfor %}
             </div>
             {% endfor %}
-            <div>
+            <div data-no-print>
                 <h3>Friends & Collaborators</h3>
                 {% for friend in friends %} 
                 <div>
