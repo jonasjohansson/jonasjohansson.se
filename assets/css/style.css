@@ -3,12 +3,11 @@
     --padding-side: 6vw;
     --black: #0b0b0b;
     --white: #ebebeb;
-    --sans-serif: 'Noto Sans', -apple-system, BlinkMacSystemFont, Roboto, sans-serif;
 }
 
 html {
-    font: max(36px, min(1.6vw, 64px)) / 1.33 var(--sans-serif);
-    letter-spacing: 0.01rem;
+    font: max(36px, min(1.6vw, 64px)) / 1.33 'Noto Sans', -apple-system, BlinkMacSystemFont, Roboto, sans-serif;
+    /* letter-spacing: 0.01rem; */
 }
 
 body {
@@ -52,7 +51,7 @@ h3 {
     font-size: 75%;
     font-weight: 400;
     text-transform: uppercase;
-    line-height: var(--base);
+    /* line-height: var(--base); */
 }
 
 video,

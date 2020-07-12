@@ -65,8 +65,9 @@ module.exports = function (eleventyConfig) {
 
     async function optimImg(path, opts = {}) {
         const widths = opts?.widths || [null]
-        const outputFormat = opts?.outputFormat || ['jpeg']
-        const outputDir = opts?.outputDir || 'docs/img/'
+        const outputFormat = opts?.outputFormat || path.split('.').pop()
+        console.log(outputFormat)
+        const outputDir = opts?.outputDir || 'docs/assets/img/'
         let stats = await Image('assets/images/' + path, {
             widths: widths,
             formats: outputFormat,
