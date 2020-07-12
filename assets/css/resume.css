@@ -1,9 +1,9 @@
-#resume > div {
-    /* white-space: nowrap; */
-    /* overflow-x: scroll; */
-    /* overflow-y: hidden; */
-    /* -webkit-overflow-scrolling: touch; */
-}
+/* #resume > div {
+    white-space: nowrap;
+    overflow-x: scroll;
+    overflow-y: hidden;
+    -webkit-overflow-scrolling: touch;
+} */
 
 /* #resume > div > div {
     padding: 0.25rem 0;
@@ -73,7 +73,7 @@
         transform: translate(-150%, 0);
     }
     [data-start]:hover:before {
-        opacity: 0.5;
+        opacity: 1;
         transform: translate(-100%, 0);
     }
 }
