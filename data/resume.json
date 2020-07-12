@@ -236,8 +236,7 @@
             "date-start": "2015/07/07",
             "date-end": "2015/07/12",
             "title": "Beacon",
-            "location": "Nowhere, Castejón de Monegros",
-            "links": [""]
+            "location": "Nowhere, Castejón de Monegros"
         },
         {
             "date-start": "2015/05/29",
@@ -245,6 +244,12 @@
             "title": "Quasar",
             "location": "The Hospital Club, London",
             "links": ["https://www.field.io/project/quasar/"]
+        },
+        {
+            "date-start": "2015/07/01",
+            "title": "Elicit",
+            "location": "Online",
+            "links": ["https://jonasjohansson.github.io/elicit/"]
         },
         {
             "date-start": "2015/02/12",
@@ -587,7 +592,8 @@
             "date-start": "2018/08/31",
             "date-end": "2018/09/06",
             "title": "NME",
-            "location": "Färgfabriken, Stockholm"
+            "location": "Färgfabriken, Stockholm",
+            "links": ["https://jonasjohansson.github.io/nme/"]
         },
         {
             "date-start": "2018/02/24",
