@@ -9,7 +9,6 @@
 
 svg {
     position: absolute;
-    /* mix-blend-mode: exclusion; */
     mix-blend-mode: soft-light;
     will-change: opacity, filter;
     transition: all 600ms ease-in;
