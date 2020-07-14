@@ -299,6 +299,12 @@
             "location": "Beckmans, Stockholm"
         },
         {
+            "date-start": "2020/10/05",
+            "date-end": "2020/10/16",
+            "title": "Creative Tech",
+            "location": "Berghs, Stockholm"
+        },
+        {
             "date-start": "2020/09/11",
             "date-end": "2020/09/12",
             "title": "TBD",
@@ -681,6 +687,13 @@
             "title": "The Palace Collective",
             "location": "Poland",
             "links": ["https://www.thepalacecollective.org/"]
+        },
+        {
+            "date-start": "2020/08/24",
+            "date-end": "2020/10/16",
+            "title": "Svartljus Lighting",
+            "location": "Ideaction",
+            "links": ["https://ideaction.se/"]
         },
         {
             "date-start": "2020/01/06",
