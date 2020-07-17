@@ -532,6 +532,13 @@
             "links": ["https://www.aavistusfestival.fi/"]
         },
         {
+            "date-start": "2020/10/02",
+            "title": "TBD",
+            "location": "Svenska Kyrkan Digitala Dagar, TBD",
+            "links": ["https://www.svenskakyrkan.se/"],
+            "hidden": true
+        },
+        {
             "date-start": "2020/09/11",
             "date-end": "2020/09/12",
             "title": "TBD",
