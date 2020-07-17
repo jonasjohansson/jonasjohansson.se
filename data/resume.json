@@ -88,7 +88,8 @@
             "date-start": "2020/10/01",
             "title": "TBD",
             "location": "Van Eyck Reloaded, Ghent",
-            "links": ["https://vaneyckreloaded.be/"]
+            "links": ["https://vaneyckreloaded.be/"],
+            "hidden": true
         },
         {
             "date-start": "2020/08/06",
