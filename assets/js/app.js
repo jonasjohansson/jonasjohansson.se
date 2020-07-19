@@ -101,13 +101,13 @@ document.addEventListener('DOMContentLoaded', () => {
 
     const _projects = document.querySelector('#projects')
 
-    _projects.onclick = () => {
-        if (document.fullscreenElement) {
-            document.exitFullscreen()
-        } else {
-            _projects.requestFullscreen()
-        }
-    }
+    // _projects.onclick = () => {
+    //     if (document.fullscreenElement) {
+    //         document.exitFullscreen()
+    //     } else {
+    //         _projects.requestFullscreen()
+    //     }
+    // }
 
     const projects = _projects.querySelectorAll('.project')
     // const slides = projects.querySelectorAll('.slide')
@@ -118,6 +118,17 @@ document.addEventListener('DOMContentLoaded', () => {
 
     show(currGroup)
     show(currSlide)
+
+    const videoElement = currSlide.querySelector('video')
+    videoElement.addEventListener('suspend', () => {
+        function playVid() {
+            if (!videoElement.playing) {
+                videoElement.play()
+                document.body.removeEventListener('touchstart', playVid)
+            }
+        }
+        document.body.addEventListener('touchstart', playVid, true)
+    })
 
     const info = document.querySelector('#info')
 
@@ -220,4 +231,49 @@ document.addEventListener('DOMContentLoaded', () => {
         //     .replace(/\s+/g, ' ') // remove multiple spaces
         //     .trim() // remove leading and trailing spaces
     }
+
+    /* 
+    Custom Cursor 
+    */
+
+    // const svgCursor = document.querySelector('svg')
+    // var svgBox = svgCursor.getBBox()
+    // svgCursor.style.position = 'absolute'
+    // svgCursor.style.zIndex = 9999
+    // svgCursor.style.width = svgBox.width
+    // svgCursor.style.height = svgBox.height
+
+    // var xmouse, ymouse
+    // var x, y, dx, dy
+
+    // window.addEventListener('mousemove', e => {
+    //     xmouse = e.clientX || e.pageX
+    //     ymouse = e.clientY || e.pageY
+    //     xmouse += document.documentElement.scrollLeft - svgBox.width / 2
+    //     ymouse += document.documentElement.scrollTop - svgBox.height / 2
+    // })
+
+    // var followMouse = function followMouse() {
+    //     key = requestAnimationFrame(followMouse)
+
+    //     if (!x || !y) {
+    //         x = xmouse
+    //         y = ymouse
+    //     } else {
+    //         dx = (xmouse - x) * 1
+    //         dy = (ymouse - y) * 1
+
+    //         if (Math.abs(dx) + Math.abs(dy) < 0.1) {
+    //             x = xmouse
+    //             y = ymouse
+    //         } else {
+    //             x += dx
+    //             y += dy
+    //         }
+    //     }
+    //     svgCursor.style.left = x + 'px'
+    //     svgCursor.style.top = y + 'px'
+    // }
+
+    // followMouse()
 })

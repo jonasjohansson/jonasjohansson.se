@@ -22,6 +22,7 @@
 			{% include "assets/css/resume.css" %}
 			{% include "assets/css/animation.css" %}
 			{% include "assets/css/print.css" %}
+			{# {% include "assets/css/cursor.css" %} #}
 			{# {% include "assets/css/sbol.css" %} #}
 		{% endset %}
 		<style>{{ css | cssmin | safe }}</style>
@@ -124,5 +125,14 @@
                 {% endfor %}
             </div>
         </section>
+        {# <svg id="cursor" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 40 40">
+            <defs>
+                <style>line{fill:none;stroke:white;stroke-miterlimit:10;stroke-width:1px;}</style>
+            </defs>
+            <g>
+            <line x1="0" y1="0" x2="40" y2="40"/>
+            <line x1="0" y1="40" x2="40" y2="0"/>
+            </g>
+        </svg> #}
     </body>
 </html>

@@ -6,13 +6,13 @@
 
 #projects {
     height: clamp(20rem, 45vw, 100vh);
-    cursor: zoom-in;
+    /* cursor: zoom-in; */
 }
 
-#projects:fullscreen {
+/* #projects:fullscreen {
     height: 100vh;
     cursor: zoom-out;
-}
+} */
 
 #projects .project,
 #projects .slide {

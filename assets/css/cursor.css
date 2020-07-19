@@ -1,0 +1,16 @@
+body,
+a {
+    cursor: none;
+}
+
+#cursor {
+    position: absolute;
+    z-index: 9999;
+    pointer-events: none;
+}
+
+@media (hover: none) {
+    #cursor {
+        display: none;
+    }
+}

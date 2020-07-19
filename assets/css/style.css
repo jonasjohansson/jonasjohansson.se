@@ -26,8 +26,6 @@ body.loading > * {
     opacity: 0;
 }
 
-/* basic */
-
 a {
     cursor: pointer;
 }
@@ -61,8 +59,6 @@ picture {
     height: 100%;
 }
 
-/* sections */
-
 #intro,
 #resume {
     margin-top: 0;
@@ -87,8 +83,6 @@ picture {
 #currently p:not(:first-of-type) {
     display: none;
 } */
-
-/* other */
 
 @media (hover: hover) and (pointer: fine) {
     a:hover {
@@ -115,8 +109,8 @@ picture {
 @media screen {
     html,
     body {
-        color: var(--black);
-        background-color: var(--white);
+        color: var(--white);
+        background-color: var(--black);
     }
     #intro > *:first-child {
         max-width: 25rem;
@@ -126,8 +120,8 @@ picture {
 @media screen and (prefers-color-scheme: dark) {
     html,
     body {
-        color: var(--white);
-        background-color: var(--black);
+        color: var(--black);
+        background-color: var(--white);
     }
 }
 
