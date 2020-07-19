@@ -109,8 +109,8 @@ picture {
 @media screen {
     html,
     body {
-        color: var(--white);
-        background-color: var(--black);
+        color: var(--black);
+        background-color: var(--white);
     }
     #intro > *:first-child {
         max-width: 25rem;
@@ -120,8 +120,8 @@ picture {
 @media screen and (prefers-color-scheme: dark) {
     html,
     body {
-        color: var(--black);
-        background-color: var(--white);
+        color: var(--white);
+        background-color: var(--black);
     }
 }
 
