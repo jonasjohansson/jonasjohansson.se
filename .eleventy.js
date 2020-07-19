@@ -3,8 +3,6 @@ const CleanCSS = require('clean-css')
 const UglifyJS = require('uglify-es')
 const Image = require('@11ty/eleventy-img')
 
-const imageFolder = 'assets/images/'
-
 module.exports = function (eleventyConfig) {
     eleventyConfig.addNunjucksAsyncShortcode('gallery', async function (filenames) {
         if (!Array.isArray(filenames)) {
@@ -27,7 +25,7 @@ module.exports = function (eleventyConfig) {
     })
 
     async function vid(src) {
-        return `<video src="videos/${src}" autoplay loop muted playsinline></video>`
+        return `<video src="vid/${src}" autoplay loop muted playsinline></video>`
     }
 
     async function img(path) {
