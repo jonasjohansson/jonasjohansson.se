@@ -7,7 +7,7 @@
     {
         "title": "Emerging Sensation",
         "media": ["jonas_johansson-emerging_sensation.mp4"],
-        "hidden": true
+        "hidden": false
     },
     {
         "title": "Vista",
@@ -19,6 +19,6 @@
                 "jonas_johansson-glommen.mp4"
             ]
         ],
-        "hidden": false
+        "hidden": true
     }
 ]
