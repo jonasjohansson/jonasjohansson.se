@@ -11,6 +11,12 @@
     line-height: 1;
 } */
 
+/* #resume > div {
+    background-image: linear-gradient(to right, var(--white), var(--black));
+    -webkit-background-clip: text;
+    -webkit-text-fill-color: transparent;
+} */
+
 #resume > div > div {
     white-space: nowrap;
     overflow: hidden;
