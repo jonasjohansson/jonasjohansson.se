@@ -110,13 +110,13 @@ document.addEventListener('DOMContentLoaded', () => {
     // }
 
     const projects = _projects.querySelectorAll('.project')
-    // const slides = projects.querySelectorAll('.slide')
+    const slides = _projects.querySelectorAll('.slide')
 
     let groupIndex = randomNumber(0, projects.length).randNumber
-    let currGroup = projects[groupIndex]
-    let currSlide = currGroup.children[0]
+    let currProject = projects[groupIndex]
+    let currSlide = currProject.children[0]
 
-    show(currGroup)
+    show(currProject)
     show(currSlide)
 
     const videoElement = currSlide.querySelector('video')
@@ -132,29 +132,30 @@ document.addEventListener('DOMContentLoaded', () => {
 
     const info = document.querySelector('#info')
 
-    // slides.forEach(slide => {
-    //     slide.onclick = e => {
-    //         hide(slide)
-    //         if (slide.nextElementSibling === null) {
-    //             console.log('Last slide!')
-    //             let group = slide.parentElement
-    //             hide(group)
-    //             if (group.nextElementSibling === null) {
-    //                 console.log('Last group!')
-    //                 currGroup = groups[0]
-    //             } else {
-    //                 currGroup = group.nextElementSibling
-    //             }
-    //             currSlide = currGroup.firstElementChild
-    //         } else {
-    //             console.log('Next slide!')
-    //             currSlide = slide.nextElementSibling
-    //         }
-    //         show(currGroup)
-    //         show(currSlide)
-    //         info.innerHTML = getInfo(currSlide)
-    //     }
-    // })
+    slides.forEach(slide => {
+        slide.onclick = e => {
+            hide(slide)
+            if (slide.nextElementSibling === null) {
+                console.log('Last slide!')
+                let project = slide.parentElement
+                hide(project)
+                if (project.nextElementSibling === null) {
+                    console.log('Last group!')
+                    currProject = projects[0]
+                    console.log(currProject)
+                } else {
+                    currProject = project.nextElementSibling
+                }
+                currSlide = currProject.firstElementChild
+            } else {
+                console.log('Next slide!')
+                currSlide = slide.nextElementSibling
+            }
+            show(currProject)
+            show(currSlide)
+            info.innerHTML = getInfo(currSlide)
+        }
+    })
 
     info.innerHTML = getInfo(currSlide)
 
