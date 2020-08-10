@@ -85,16 +85,9 @@
     ],
     "projects": [
         {
-            "date-start": "2020/10/01",
-            "title": "TBD",
-            "location": "Van Eyck Reloaded, Ghent",
-            "links": ["https://vaneyckreloaded.be/"],
-            "hidden": true
-        },
-        {
             "date-start": "2020/08/06",
             "date-end": "2020/08/09",
-            "title": "Wood Wide Web",
+            "title": "Hugsvala",
             "location": "Into the Woods, Unnaryd",
             "links": ["https://www.intothewoods.se/"]
         },
