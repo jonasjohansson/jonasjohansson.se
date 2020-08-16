@@ -99,7 +99,7 @@ document.addEventListener('DOMContentLoaded', () => {
 	Projects
     */
 
-    const _projects = document.querySelector('#projects')
+    // const _projects = document.querySelector('#projects')
 
     // _projects.onclick = () => {
     //     if (document.fullscreenElement) {
@@ -109,55 +109,55 @@ document.addEventListener('DOMContentLoaded', () => {
     //     }
     // }
 
-    const projects = _projects.querySelectorAll('.project')
-    const slides = _projects.querySelectorAll('.slide')
+    // const projects = _projects.querySelectorAll('.project')
+    // const slides = _projects.querySelectorAll('.slide')
 
-    let groupIndex = randomNumber(0, projects.length).randNumber
-    let currProject = projects[groupIndex]
-    let currSlide = currProject.children[0]
+    // let groupIndex = randomNumber(0, projects.length).randNumber
+    // let currProject = projects[groupIndex]
+    // let currSlide = currProject.children[0]
 
-    show(currProject)
-    show(currSlide)
+    // show(currProject)
+    // show(currSlide)
 
-    const videoElement = currSlide.querySelector('video')
-    videoElement.addEventListener('suspend', () => {
-        function playVid() {
-            if (!videoElement.playing) {
-                videoElement.play()
-                document.body.removeEventListener('touchstart', playVid)
-            }
-        }
-        document.body.addEventListener('touchstart', playVid, true)
-    })
+    // const videoElement = currSlide.querySelector('video')
+    // videoElement.addEventListener('suspend', () => {
+    //     function playVid() {
+    //         if (!videoElement.playing) {
+    //             videoElement.play()
+    //             document.body.removeEventListener('touchstart', playVid)
+    //         }
+    //     }
+    //     document.body.addEventListener('touchstart', playVid, true)
+    // })
 
-    const info = document.querySelector('#info')
+    // const info = document.querySelector('#info')
 
-    slides.forEach(slide => {
-        slide.onclick = e => {
-            hide(slide)
-            if (slide.nextElementSibling === null) {
-                console.log('Last slide!')
-                let project = slide.parentElement
-                hide(project)
-                if (project.nextElementSibling === null) {
-                    console.log('Last group!')
-                    currProject = projects[0]
-                    console.log(currProject)
-                } else {
-                    currProject = project.nextElementSibling
-                }
-                currSlide = currProject.firstElementChild
-            } else {
-                console.log('Next slide!')
-                currSlide = slide.nextElementSibling
-            }
-            show(currProject)
-            show(currSlide)
-            info.innerHTML = getInfo(currSlide)
-        }
-    })
+    // slides.forEach(slide => {
+    //     slide.onclick = e => {
+    //         hide(slide)
+    //         if (slide.nextElementSibling === null) {
+    //             console.log('Last slide!')
+    //             let project = slide.parentElement
+    //             hide(project)
+    //             if (project.nextElementSibling === null) {
+    //                 console.log('Last group!')
+    //                 currProject = projects[0]
+    //                 console.log(currProject)
+    //             } else {
+    //                 currProject = project.nextElementSibling
+    //             }
+    //             currSlide = currProject.firstElementChild
+    //         } else {
+    //             console.log('Next slide!')
+    //             currSlide = slide.nextElementSibling
+    //         }
+    //         show(currProject)
+    //         show(currSlide)
+    //         info.innerHTML = getInfo(currSlide)
+    //     }
+    // })
 
-    info.innerHTML = getInfo(currSlide)
+    // info.innerHTML = getInfo(currSlide)
 
     function getInfo(el) {
         let slideIndex = getIndex(el) + 1

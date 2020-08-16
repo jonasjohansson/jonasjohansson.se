@@ -1,24 +1,76 @@
 [
     {
+        "title": "Icehotel Haven",
+        "media": ["jonas_johansson-haven3.jpg"]
+    },
+    {
         "title": "Funyard",
         "media": ["jonas_johansson-funyard.mp4"],
         "hidden": true
     },
     {
-        "title": "Emerging Sensation",
-        "media": ["jonas_johansson-emerging_sensation.mp4"],
-        "hidden": false
+        "title": "Pilgrim",
+        "media": ["jonas_johansson-pilgrim.mp4"],
+        "link": "https://jonasjohansson.github.io/vista/pilgrim/",
+        "hidden": true
     },
     {
-        "title": "Vista",
-        "media": [
-            [
-                "jonas_johansson-glommen.mp4",
-                "jonas_johansson-berg.mp4",
-                "jonas_johansson-berg.mp4",
-                "jonas_johansson-glommen.mp4"
-            ]
-        ],
-        "hidden": false
+        "title": "Berg",
+        "media": ["jonas_johansson-berg.mp4"],
+        "link": "https://jonasjohansson.github.io/vista/berg/",
+        "hidden": true
+    },
+    {
+        "title": "Emerging Sensation",
+        "media": ["jonas_johansson-emerging_sensation.mp4"],
+        "hidden": true
+    },
+    {
+        "title": "Glommen",
+        "media": ["jonas_johansson-glommen.mp4"],
+        "link": "https://jonasjohansson.github.io/vista/glommen/",
+        "hidden": true
+    },
+    {
+        "title": "Grotta",
+        "media": ["jonas_johansson-grotta.mp4"],
+        "link": "https://jonasjohansson.github.io/vista/grotta/",
+        "hidden": true
+    },
+    {
+        "title": "Birds",
+        "media": ["jonas_johansson-birds.mp4"],
+        "link": "https://jonasjohansson.github.io/vista/birds/",
+        "hidden": true
+    },
+    {
+        "title": "Tiny/Massive",
+        "media": ["https://i.vimeocdn.com/video/771854347_1280.web"],
+        "link": "https://vimeo.com/327555616",
+        "hidden": true
+    },
+    {
+        "title": "Satans Demokrati",
+        "media": ["https://i.vimeocdn.com/video/771566393_1280.web"],
+        "link": "https://vimeo.com/327324118",
+        "hidden": true
+    },
+    {
+        "title": "Transcend",
+        "media": ["https://i.vimeocdn.com/video/634755265_1280.web"],
+        "link": "https://vimeo.com/217521784",
+        "hidden": true
+    },
+    {
+        "title": "",
+        "media": ["https://i.vimeocdn.com/video/623598047_1280.web"],
+        "link": "https://vimeo.com/208312871",
+        "hidden": true
+    },
+    {
+        "title": "",
+        "media": ["https://i.vimeocdn.com/video/574680981_1280.web"],
+        "link": "https://vimeo.com/169834486",
+        "hidden": true
     }
 ]

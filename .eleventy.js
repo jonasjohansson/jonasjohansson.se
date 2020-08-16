@@ -25,12 +25,16 @@ module.exports = function (eleventyConfig) {
     })
 
     async function vid(src) {
-        return `<video src="vid/${src}" autoplay loop muted playsinline></video>`
+        return `<video width="960" height="540" src="video/${src}" autoplay loop muted playsinline></video>`
     }
 
     async function img(path) {
-        const props = await optimImg(path)
-        return `<img src="${props.url}">`
+        if (path.includes('http')) {
+            return `<img src="${path}">`
+        } else {
+            const props = await optimImg(path)
+            return `<img src="${props.url}">`
+        }
     }
 
     async function fig(path, caption = '') {
@@ -45,7 +49,7 @@ module.exports = function (eleventyConfig) {
         const sizes = '100vw'
         const sources = Object.values(stats)
             .map(imageFormat => {
-                return `<source type="image/${imageFormat[0].format}" srcset="${imageFormat
+                return `<source type="img/${imageFormat[0].format}" srcset="${imageFormat
                     .map(entry => `${entry.url} ${entry.width}w`)
                     .join(', ')}" sizes="${sizes}">`
             })
@@ -65,8 +69,8 @@ module.exports = function (eleventyConfig) {
         const widths = opts?.widths || [null]
         const outputFormat = opts?.outputFormat || path.split('.').pop()
         console.log(outputFormat)
-        const outputDir = opts?.outputDir || 'docs/assets/img/'
-        let stats = await Image('assets/images/' + path, {
+        const outputDir = opts?.outputDir || 'docs/img/'
+        let stats = await Image('assets/img/' + path, {
             widths: widths,
             formats: outputFormat,
             outputDir: outputDir
