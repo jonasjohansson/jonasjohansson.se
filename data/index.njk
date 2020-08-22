@@ -76,13 +76,13 @@
         <section id="projects" data-no-print>
             <h3 id="info"></h3>
             {% for project in projects %} {% if project.hidden !== true %}
-            <div class="project" data-title="{{ project.title }}">
+            <a class="project" data-title="{{ project.title }}" href="{{ project.link }}">
                 {% for media in project.media %}
                 <div class="slide">
                     {% gallery media %}
                 </div>
                 {% endfor %}
-            </div>
+            </a>
             {% endif %} {% endfor %}
             {# <div class="group" data-title="{{ gallery[0].title }}">
                 {% for mediaItem in gallery[0].media %}
@@ -92,7 +92,7 @@
         </section>
         <section id="resume">
             <div data-no-print>
-                Print <a onclick="window.print();return false;">full CV</a> 
+                Print <a onclick="window.print();return false;">full CV</a> and get <a href="https://drive.google.com/drive/folders/1Z6ymjXLsBMX3HtGQBy6lPGru6fcnISO1?usp=sharing">Press Kit</a>
             </div>
             {% for heading in ['work','education','projects','teaching','workshops','exhibition','talks'] %}
             <div>

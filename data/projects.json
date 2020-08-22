@@ -1,7 +1,8 @@
 [
     {
         "title": "Icehotel Haven",
-        "media": ["jonas_johansson-haven3.jpg"]
+        "media": ["jonas_johansson-haven3.jpg"],
+        "hidden": true
     },
     {
         "title": "Funyard",
@@ -23,7 +24,7 @@
     {
         "title": "Emerging Sensation",
         "media": ["jonas_johansson-emerging_sensation.mp4"],
-        "hidden": true
+        "link": "https://vimeo.com/314458493"
     },
     {
         "title": "Glommen",
