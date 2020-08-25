@@ -290,7 +290,8 @@
             "date-start": "2020/10/28",
             "date-end": "2020/11/02",
             "title": "TBD",
-            "location": "Aavistus Festival, Helsinki"
+            "location": "Aavistus Festival, Helsinki",
+            "links": ["https://www.aavistusfestival.fi/ar-workshop"]
         },
         {
             "date-start": "2020/10/19",
