@@ -3,9 +3,9 @@
 		<script>
 			const url = location.href
 			const id = url ? url.split('?')[1] : location.search.slice(1)
-			switch (id) {
+      switch (id) {
 				case 'vrscifest':
-					location.href = 'hhttps://jonasjohansson.github.io/virtualdancer/ar/'
+					// location.href = 'hhttps://jonasjohansson.github.io/virtualdancer/ar/'
 					break
 			}
 		</script>
