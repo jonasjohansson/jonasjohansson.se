@@ -8,6 +8,9 @@
 				case 'vrscifest':
 					location.href = 'https://jonasjohansson.github.io/virtualdancer/ar/'
 					break
+				case 'vrscifestbeckmans':
+					location.href = 'https://jonasjohansson.se/'
+					break
 			}
 		</script>
 	</head>
