@@ -5,7 +5,10 @@ const redirects = {
 	vrsci: 'https://jonasjohansson.github.io/virtualdancer/ar',
 	vrscifest: 'https://jonasjohansson.github.io/virtualdancer/ar',
 	vrscifestbeckmans: 'https://jonasjohansson.se/'
+
 }
+
 if (id !== undefined) {
-	location.href = redirects[id]
+  alert(redirects[id])
+  // location.href = redirects[id]
 }
