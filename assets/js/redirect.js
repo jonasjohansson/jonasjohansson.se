@@ -9,6 +9,6 @@ const redirects = {
 }
 
 if (id !== undefined) {
-  alert(redirects[id])
-  // location.href = redirects[id]
+  // alert(redirects[id])
+  location.href = redirects[id]
 }
