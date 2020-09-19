@@ -1,12 +1,12 @@
 #projects {
-    position: relative;
-    overflow: hidden;
-    /* scroll-snap-align: start; */
+  position: relative;
+  overflow: hidden;
+  /* scroll-snap-align: start; */
 }
 
 #projects {
-    /* height: clamp(20rem, 45vw, 100vh); */
-    /* cursor: zoom-in; */
+  /* height: clamp(20rem, 45vw, 100vh); */
+  /* cursor: zoom-in; */
 }
 
 /* #projects:fullscreen {
@@ -16,8 +16,8 @@
 
 #projects .project,
 #projects .slide {
-    height: 100%;
-    line-height: 0;
+  height: 100%;
+  line-height: 0;
 }
 
 /* #projects .slide {
@@ -26,99 +26,104 @@
 
 #projects .project:not(.show),
 #projects .slide:not(.show) {
-    /* display: none; */
+  /* display: none; */
 }
 
-.slide:after {
-    content: '';
-    position: absolute;
-    top: 0;
-    left: 0;
-    bottom: 0;
-    right: 0;
-    /* background: radial-gradient(circle, transparent 0%, black 100%); */
-    mix-blend-mode: overlay;
-    filter: invert(1);
-}
+/* .slide:after {
+  content: '';
+  position: absolute;
+  top: 0;
+  left: 0;
+  bottom: 0;
+  right: 0;
+  background: radial-gradient(circle, transparent 0%, black 100%);
+  mix-blend-mode: overlay;
+  filter: invert(1);
+} */
 
 /* one item */
 
 .slide > *:only-child {
-    width: 100%;
+  width: 100%;
 }
 
 @media (min-width: 960px) {
-    /* two items */
-    .slide > *:first-child:nth-last-child(2),
-    .slide > *:first-child:nth-last-child(2) ~ * {
-        width: 50%;
-        float: left;
-    }
+  #projects {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+  }
 
-    /* three items */
-    .slide > *:first-child:nth-last-child(3),
-    .slide > *:first-child:nth-last-child(3) ~ * {
-        width: 33.3333%;
-    }
+  /* two items */
+  .slide > *:first-child:nth-last-child(2),
+  .slide > *:first-child:nth-last-child(2) ~ * {
+    width: 50%;
+    float: left;
+  }
 
-    /* four items */
-    .slide > *:first-child:nth-last-child(4),
-    .slide > *:first-child:nth-last-child(4) ~ * {
-        width: 50%;
-        float: left;
-    }
+  /* three items */
+  .slide > *:first-child:nth-last-child(3),
+  .slide > *:first-child:nth-last-child(3) ~ * {
+    width: 33.3333%;
+  }
 
-    /* items three and four */
-    .slide > *:nth-child(3),
-    .slide > *:nth-child(4) {
-        position: absolute;
-        top: 50%;
-        transform: perspective(1px) translateY(-50%);
-        /* border: 8rem solid transparent; */
-        box-sizing: border-box;
-        width: 25%;
-        /* object-fit: scale-down; */
-        /* height: auto !important; */
-        height: 65%;
-        margin: 0 7.5%;
-        width: 35% !important;
-    }
+  /* four items */
+  .slide > *:first-child:nth-last-child(4),
+  .slide > *:first-child:nth-last-child(4) ~ * {
+    width: 50%;
+    float: left;
+  }
 
-    /* item three */
-    .slide > *:nth-child(3) {
-        left: 0;
-    }
+  /* items three and four */
+  .slide > *:nth-child(3),
+  .slide > *:nth-child(4) {
+    position: absolute;
+    top: 50%;
+    transform: perspective(1px) translateY(-50%);
+    /* border: 8rem solid transparent; */
+    box-sizing: border-box;
+    width: 25%;
+    /* object-fit: scale-down; */
+    /* height: auto !important; */
+    height: 65%;
+    margin: 0 7.5%;
+    width: 35% !important;
+  }
 
-    /* item four */
-    .slide > *:nth-child(4) {
-        right: 0;
-    }
+  /* item three */
+  .slide > *:nth-child(3) {
+    left: 0;
+  }
+
+  /* item four */
+  .slide > *:nth-child(4) {
+    right: 0;
+  }
 }
 
 /* info */
 
 #projects:fullscreen #info {
-    opacity: 1;
+  opacity: 1;
 }
 
 #info {
-    width: 100%;
-    position: absolute;
-    bottom: 0;
-    padding: 0 var(--padding-side);
-    padding-bottom: var(--base);
-    box-sizing: border-box;
-    color: white;
-    mix-blend-mode: difference;
-    z-index: 1;
-    display: grid;
-    /* grid-template-columns: 1fr 1fr 1fr; */
-    will-change: opacity;
-    transition: opacity 200ms cubic-bezier(0.25, 1, 0.5, 1) 500ms;
-    opacity: 0;
-    /* display: none; */
+  width: 100%;
+  position: absolute;
+  bottom: 0;
+  padding: 0 var(--padding-side);
+  padding-bottom: var(--base);
+  box-sizing: border-box;
+  color: white;
+  mix-blend-mode: difference;
+  z-index: 1;
+  display: grid;
+  /* grid-template-columns: 1fr 1fr 1fr; */
+  will-change: opacity;
+  transition: opacity 200ms cubic-bezier(0.25, 1, 0.5, 1) 500ms;
+  opacity: 0;
+  /* display: none; */
 }
 
 #info .pagination {
-    text-align: center;
+  text-align: center;
 }
