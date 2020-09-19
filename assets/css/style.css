@@ -69,6 +69,11 @@ picture {
   height: 100%;
 }
 
+video {
+  height: 80vh;
+  object-position: center center;
+}
+
 #intro,
 #resume {
   margin-top: 0;
