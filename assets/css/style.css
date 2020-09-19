@@ -7,7 +7,7 @@
 }
 
 html {
-  font-size: max(44px, min(1.6vw, 64px));
+  font-size: max(38px, min(1.6vw, 64px));
   line-height: 1.33;
   font-family: 'Labil Grotesk Variable', 'Noto Sans', -apple-system,
     BlinkMacSystemFont, Roboto, sans-serif;
@@ -41,9 +41,12 @@ div a {
   opacity: 0.65;
 }
 
-h1,
 p:not(:last-child) {
   margin-bottom: var(--base);
+}
+
+h1 {
+  margin-bottom: calc(var(--base) * 2);
 }
 
 h2 {
@@ -128,8 +131,12 @@ picture {
     color: var(--black);
     background-color: var(--white);
   }
+  body {
+    text-align: center;
+  }
   #intro > *:first-child {
     max-width: 25rem;
+    display: inline-block;
   }
 }
 
