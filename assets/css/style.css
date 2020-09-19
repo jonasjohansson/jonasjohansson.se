@@ -71,6 +71,7 @@ picture {
 
 video {
   height: 80vh;
+  min-height: 40vw;
   object-position: center center;
 }
 
