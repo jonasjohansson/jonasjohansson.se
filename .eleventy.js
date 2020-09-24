@@ -15,7 +15,7 @@ module.exports = function(eleventyConfig) {
 
     await asyncForEach(filenames, async filename => {
       let ext = filename.split('.').pop()
-      html += ext === 'mp4' ? await vid(filename) : await img(filename)
+      html += ext === 'mp4' ? await video(filename) : await img(filename)
     })
 
     return html
@@ -26,7 +26,7 @@ module.exports = function(eleventyConfig) {
     return props.url
   })
 
-  async function vid(src) {
+  async function video(src) {
     return `<video width="960" height="540" src="video/${src}" autoplay loop muted playsinline></video>`
   }
 
@@ -72,12 +72,11 @@ module.exports = function(eleventyConfig) {
   async function optimImg(path, opts = {}) {
     const widths = opts?.widths || [null]
     const outputFormat = opts?.outputFormat || path.split('.').pop()
-    console.log(outputFormat)
-    const outputDir = opts?.outputDir || 'docs/img/'
-    let stats = await Image('assets/img/' + path, {
+    let stats = await Image(`./assets/img/` + path, {
       widths: widths,
       formats: outputFormat,
-      outputDir: outputDir
+      urlPath: '/assets/img',
+      outputDir: './docs/assets/img'
     })
     if (widths.length > 1) return stats
     else return stats[outputFormat].pop()
@@ -103,8 +102,8 @@ module.exports = function(eleventyConfig) {
     return UglifyJS.minify(code).code
   })
 
-  eleventyConfig.addPassthroughCopy({ 'assets/fonts': 'fonts' })
-  eleventyConfig.addPassthroughCopy({ 'assets/video': 'video' })
+  eleventyConfig.addPassthroughCopy({ 'assets/fonts': 'assets/fonts' })
+  eleventyConfig.addPassthroughCopy({ 'assets/video': 'assets/video' })
 
   return {
     templateFormats: ['css', 'json', 'md', 'njk', 'html', 'liquid'],
