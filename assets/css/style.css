@@ -177,5 +177,6 @@ video {
 @font-face {
   font-family: 'Labil Grotesk Variable';
   font-weight: normal;
-  src: url(/fonts/Labil_Grotesk_Testing_Only.woff2) format('woff2-variations');
+  src: url(/assets/fonts/Labil_Grotesk_Testing_Only.woff2)
+    format('woff2-variations');
 }

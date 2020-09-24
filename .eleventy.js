@@ -27,7 +27,7 @@ module.exports = function(eleventyConfig) {
   })
 
   async function video(src) {
-    return `<video width="960" height="540" src="video/${src}" autoplay loop muted playsinline></video>`
+    return `<video width="960" height="540" src="assets/video/${src}" autoplay loop muted playsinline></video>`
   }
 
   async function img(path) {
