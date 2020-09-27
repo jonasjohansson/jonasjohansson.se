@@ -5,7 +5,8 @@
 }
 
 #projects {
-  /* height: clamp(20rem, 45vw, 100vh); */
+  width: 100%;
+  height: clamp(20rem, 45vw, 100vh);
   /* cursor: zoom-in; */
 }
 
@@ -16,8 +17,11 @@
 
 #projects .project,
 #projects .slide {
+  position: absolute;
+  width: 100%;
   height: 100%;
   line-height: 0;
+  left: 0;
 }
 
 /* #projects .slide {

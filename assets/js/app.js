@@ -99,7 +99,35 @@ document.addEventListener('DOMContentLoaded', () => {
 	Projects
     */
 
-  // const _projects = document.querySelector('#projects')
+  const _projects = document.querySelector('#projects')
+  const projects = _projects.querySelectorAll('.project')
+
+  if (projects.length > 0) {
+    let index = 0,
+      oldIndex = 0
+
+    projects.forEach(project => {
+      project.style.display = 'none'
+    })
+
+    projects[oldIndex].style.display = 'block'
+    _projects.addEventListener('mousemove', e => {
+      for (let i = projects.length; i > 0; i--) {
+        let a = 1 / projects.length
+        if (e.clientX / window.innerWidth > a * i) {
+          index = i
+          break
+        } else {
+          index = 0
+        }
+      }
+      if (index !== oldIndex) {
+        projects[index].style.display = 'block'
+        projects[oldIndex].style.display = 'none'
+        oldIndex = index
+      }
+    })
+  }
 
   // _projects.onclick = () => {
   //     if (document.fullscreenElement) {
