@@ -12,6 +12,9 @@ if (id) {
     case 'vrscifestbeckmans':
       location.href = 'https://jonasjohansson.se/'
       break
+    case '1':
+      location.href = 'https://www.instagram.com/jnsjohansson/'
+      break
     default:
       location.href = location.origin
       break
