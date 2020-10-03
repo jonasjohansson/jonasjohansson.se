@@ -13,7 +13,7 @@ if (id) {
       location.href = 'https://jonasjohansson.se/'
       break
     case '1':
-      location.href = 'https://www.instagram.com/jnsjohansson/'
+      location.href = 'https://www.instagram.com/ar/246383379934365/'
       break
     case '2':
       location.href = 'https://aavistus.glitch.me/'
