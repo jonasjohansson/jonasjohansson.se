@@ -13,6 +13,9 @@ if (id) {
       location.href = 'https://jonasjohansson.se/'
       break
     case '1':
+      alert(
+        'The following experience uses the Instagram app, and requires that it is installed. Functionality and experience may vary depending on your device.'
+      )
       location.href = 'https://www.instagram.com/ar/246383379934365/'
       break
     case '2':
