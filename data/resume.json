@@ -113,12 +113,17 @@
     },
     {
       "date-start": "2020/03/21",
-      "date-end": "2021/01/01",
-      "title": "Glitch & Eye",
+      "title": "Eye",
       "location": "Hyper Human, Tekniska Muséet",
       "links": [
         "https://www.tekniskamuseet.se/en/discover/exhibitions/hyper-human/"
       ]
+    },
+    {
+      "date-start": "2020/03/21",
+      "title": "Glitch",
+      "location": "Hyper Human, Tekniska Muséet",
+      "links": ["https://vimeo.com/389719338"]
     },
     {
       "date-start": "2020/02/14",
@@ -176,7 +181,7 @@
       "date-end": "2019/04/01",
       "title": "Haven",
       "location": "Icehotel, Jukkasjärvi",
-      "links": ["https://www.icehotel.com/first-images-icehotel-29-revealed"]
+      "links": ["https://vimeo.com/307995784"]
     },
     {
       "date-start": "2018/07/03",
