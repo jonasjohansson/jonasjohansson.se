@@ -24,6 +24,9 @@ if (id) {
 		case '3':
 			location.href = 'https://markuskyrkan.glitch.me/'
 			break
+		case '4':
+			location.href = 'https://instagram.com/jnsjohansson/'
+			break
 		default:
 			location.href = location.origin
 			break
