@@ -25,7 +25,10 @@ if (id) {
 			location.href = 'https://markuskyrkan.glitch.me/'
 			break
 		case '4':
-			location.href = 'https://instagram.com/jnsjohansson/'
+			alert(
+				'Du skickas nu till en Augmented Reality-effekt på Instagram. För att effekten ska fungera behöver ditt Instagram vara uppdaterat, och du behöver ställa dig så att hela tyget syns i kameran. Det finns 3 effekter: SKREA, HIDE och UNNA. Börja med SKREA, och kika sedan på de andra. Kram, Jonas Johansson.'
+			)
+			location.href = 'https://www.instagram.com/ar/396483261746904/'
 			break
 		default:
 			location.href = location.origin
