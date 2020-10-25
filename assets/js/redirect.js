@@ -26,9 +26,9 @@ if (id) {
 			break
 		case '4':
 			alert(
-				'Du skickas nu till en Augmented Reality-effekt på Instagram. För att effekten ska fungera behöver ditt Instagram vara uppdaterat, och du behöver ställa dig så att hela tyget syns i kameran. Det finns 3 effekter: SKREA, HIDE och UNNA. Börja med SKREA, och kika sedan på de andra. Kram, Jonas Johansson.'
+				'Information till dig som vill titta på Augmented Reality-textilierna i Markuskyrkan. Du skickas snart till Instagram, där du klickar på smiley-symbolen och väljer en av de tre effekterna: SKREA, HIDE eller UNNA. Varje effekt är kopplad till en textil. För att effekten ska fungera behöver ditt Instagram samt telefon vara uppdaterad, och du behöver ställa dig så att hela tyget syns i kameran. Kram, Jonas Johansson.'
 			)
-			location.href = 'https://www.instagram.com/ar/396483261746904/'
+			location.href = 'https://instagram.com/jnsjohansson/'
 			break
 		default:
 			location.href = location.origin
