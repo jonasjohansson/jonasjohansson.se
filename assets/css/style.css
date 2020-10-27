@@ -1,7 +1,7 @@
 :root {
 	--base: 1.6rem;
 	--padding-side: 6vw;
-	--black: #0b0b0b;
+	--black: #100620;
 	--gray: #aaa;
 	--white: #ebebeb;
 }
@@ -17,7 +17,7 @@ html {
 
 body {
 	margin: 0 auto;
-	box-sizing: border-box;
+  box-sizing: border-box;
 }
 
 body > * {
@@ -29,6 +29,15 @@ body > * {
 
 body.loading > * {
 	opacity: 0;
+}
+
+header {
+  position: sticky;
+  top: 0;
+  margin: 0 auto;
+  padding: calc(var(--base) * 2);
+  z-index: 10;
+  background: linear-gradient(var(--black) 20%, rgba(10, 46, 32, 0) 100%);
 }
 
 a {
