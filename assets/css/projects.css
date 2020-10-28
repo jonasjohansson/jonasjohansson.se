@@ -6,7 +6,7 @@
 
 #projects {
   width: 100%;
-  height: clamp(20rem, 45vw, 100vh);
+  height: clamp(24rem, 45vw, 100vh);
   /* cursor: zoom-in; */
 }
 
