@@ -598,6 +598,13 @@
 	],
 	"exhibition": [
 		{
+			"date-start": "2020/12/05",
+			"date-end": "2020/12/13",
+			"title": "Text Type Light",
+			"location": "Nobel Week Lights, Stockholm",
+			"links": ["https://nobelweeklights.se/installation/text-type-light/"]
+		},
+		{
 			"date-start": "2020/10/02",
 			"date-end": "2020/10/04",
 			"title": "Vista AR",
