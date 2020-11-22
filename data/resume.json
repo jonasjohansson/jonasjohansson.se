@@ -85,6 +85,21 @@
 	],
 	"projects": [
 		{
+			"date-start": "2021/01/01",
+			"title": "Tour de Lux",
+			"location": "Nordics"
+		},
+		{
+			"date-start": "2020/12/07",
+			"title": "TBD",
+			"location": "Sergels Torg, Stockholm"
+		},
+		{
+			"date-start": "2020/11/28",
+			"title": "TBD",
+			"location": "Markuskyrkan, Stockholm"
+		},
+		{
 			"date-start": "2020/09/11",
 			"title": "Visualia",
 			"location": "Reaktorhallen, Stockholm",
@@ -285,11 +300,46 @@
 	],
 	"teaching": [
 		{
+			"date-start": "2021/05/10",
+			"date-end": "2021/06/11",
+			"title": "Exploring Code",
+			"location": "Hyper Island, Stockholm"
+		},
+		{
+			"date-start": "2021/04/19",
+			"date-end": "2021/06/11",
+			"title": "Mixed Reality",
+			"location": "Future Games, Stockholm"
+		},
+		{
+			"date-start": "2021/01/27",
+			"date-end": "2021/05/28",
+			"title": "Augmented Reality",
+			"location": "Beckmans Kvällskola, Stockholm"
+		},
+		{
+			"date-start": "2021/02/01",
+			"date-end": "2021/02/05",
+			"title": "Augmented Reality",
+			"location": "Nyckelviken, Stockholm"
+		},
+		{
+			"date-start": "2021/02/01",
+			"date-end": "2021/02/05",
+			"title": "Augmented Reality",
+			"location": "Nyckelviken, Stockholm"
+		},
+		{
 			"date-start": "2021/01/25",
 			"date-end": "2021/02/26",
 			"title": "Rörlig Grafik och Bild",
-			"location": "Beckmans, Stockholm",
-			"hidden": true
+			"location": "Beckmans, Stockholm"
+		},
+		{
+			"date-start": "2021/01/04",
+			"date-end": "2021/01/28",
+			"title": "Communication Design",
+			"location": "Berghs, Stockholm"
 		},
 		{
 			"date-start": "2020/11/23",
