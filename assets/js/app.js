@@ -1,8 +1,8 @@
-window.addEventListener('load', () => {
-  document.body.classList.remove('loading')
-})
+window.addEventListener("load", () => {
+  document.body.classList.remove("loading");
+});
 
-document.addEventListener('DOMContentLoaded', () => {
+document.addEventListener("DOMContentLoaded", () => {
   // let transitionItems = document.querySelectorAll('body > * > *')
 
   // transitionItems.forEach(function (item, i) {
@@ -11,11 +11,11 @@ document.addEventListener('DOMContentLoaded', () => {
   //     item.style.transitionDuration = `400ms`
   // })
 
-  const anchors = document.querySelectorAll('a')
-  anchors.forEach(a => {
-    a.setAttribute('target', '_blank')
-    a.setAttribute('rel', 'noreferrer')
-  })
+  const anchors = document.querySelectorAll("a");
+  anchors.forEach((a) => {
+    a.setAttribute("target", "_blank");
+    a.setAttribute("rel", "noreferrer");
+  });
 
   // const videos = document.querySelectorAll('video')
   // videos.forEach(video => {
@@ -26,21 +26,21 @@ document.addEventListener('DOMContentLoaded', () => {
     Text Effects
     */
 
-  const effects = document.querySelectorAll('[data-effect]')
+  const effects = document.querySelectorAll("[data-effect]");
 
-  effects.forEach(text => {
-    const effect = text.getAttribute('data-effect')
-    const delay = text.getAttribute('data-delay')
-    const arr = text.textContent.split('')
+  effects.forEach((text) => {
+    const effect = text.getAttribute("data-effect");
+    const delay = text.getAttribute("data-delay");
+    const arr = text.textContent.split("");
 
     if (delay) {
-      text.innerHTML = ''
-      arr.forEach(function(char, i) {
-        let span = document.createElement('span')
-        span.textContent = char
-        if (delay > 0) span.style.animationDelay = `${i++ * delay}ms`
-        text.appendChild(span)
-      })
+      text.innerHTML = "";
+      arr.forEach(function (char, i) {
+        let span = document.createElement("span");
+        span.textContent = char;
+        if (delay > 0) span.style.animationDelay = `${i++ * delay}ms`;
+        text.appendChild(span);
+      });
     }
     // if (effect === 'shf') {
     //     text.addEventListener('mouseenter', e => {
@@ -50,40 +50,40 @@ document.addEventListener('DOMContentLoaded', () => {
     //     })
     //     text.addEventListener('mouseout', function () {})
     // }
-  })
+  });
 
   const shuffleText = (element, e) => {
     let letters = Array.from(element.children),
-      keyCode = letters.map(letter => {
-        return letter.textContent.charCodeAt(0)
+      keyCode = letters.map((letter) => {
+        return letter.textContent.charCodeAt(0);
       }),
       min = Math.min(...keyCode) - 10,
       max = Math.max(...keyCode) + 10,
-      cont = 0
+      cont = 0;
 
     letters.map((letter, index) => {
       let interv = setInterval(() => {
-        let randNumber = randomNumber(min, max)
+        let randNumber = randomNumber(min, max);
 
         if (keyCode[index] === randNumber.randNumber) {
-          letter.textContent = String.fromCharCode(keyCode[index])
-          cont++
+          letter.textContent = String.fromCharCode(keyCode[index]);
+          cont++;
           if (cont === letters.length) {
-            e.target.dataset.triggered = false
+            e.target.dataset.triggered = false;
           }
-          clearInterval(interv)
+          clearInterval(interv);
         } else {
-          letter.textContent = randNumber.randNumberShow
+          letter.textContent = randNumber.randNumberShow;
         }
-      }, 20)
-    })
-  }
+      }, 20);
+    });
+  };
 
   const randomNumber = (min, max) => {
     let randNumber = Math.floor(Math.random() * (max - min) + min),
-      randNumberShow = Math.floor(Math.random() * 10)
-    return { randNumber, randNumberShow }
-  }
+      randNumberShow = Math.floor(Math.random() * 10);
+    return { randNumber, randNumberShow };
+  };
 
   /*
     Currently
@@ -99,34 +99,34 @@ document.addEventListener('DOMContentLoaded', () => {
 	Projects
     */
 
-  const _projects = document.querySelector('#projects')
-  const projects = _projects.querySelectorAll('.project')
+  const _projects = document.querySelector("#projects");
+  const projects = _projects.querySelectorAll(".project");
 
   if (projects.length > 0) {
     let index = 0,
-      oldIndex = 0
+      oldIndex = 0;
 
-    projects.forEach(project => {
-      project.style.display = 'none'
-    })
+    projects.forEach((project) => {
+      project.style.display = "none";
+    });
 
-    projects[oldIndex].style.display = 'block'
-    _projects.addEventListener('mousemove', e => {
+    projects[oldIndex].style.display = "block";
+    _projects.addEventListener("mousemove", (e) => {
       for (let i = projects.length; i > 0; i--) {
-        let a = 1 / projects.length
+        let a = 1 / projects.length;
         if (e.clientX / window.innerWidth > a * i) {
-          index = i
-          break
+          index = i;
+          break;
         } else {
-          index = 0
+          index = 0;
         }
       }
       if (index !== oldIndex) {
-        projects[index].style.display = 'block'
-        projects[oldIndex].style.display = 'none'
-        oldIndex = index
+        projects[index].style.display = "block";
+        projects[oldIndex].style.display = "none";
+        oldIndex = index;
       }
-    })
+    });
   }
 
   // _projects.onclick = () => {
@@ -188,66 +188,66 @@ document.addEventListener('DOMContentLoaded', () => {
   // info.innerHTML = getInfo(currSlide)
 
   function getInfo(el) {
-    let slideIndex = getIndex(el) + 1
-    let numSlides = el.parentElement.childElementCount
-    let title = el.parentElement.getAttribute('data-title')
-    let out = `<span class="title">${title}</span>`
+    let slideIndex = getIndex(el) + 1;
+    let numSlides = el.parentElement.childElementCount;
+    let title = el.parentElement.getAttribute("data-title");
+    let out = `<span class="title">${title}</span>`;
     if (numSlides > 1) {
-      out += `<span class="pagination">${slideIndex}/${numSlides}</span>`
+      out += `<span class="pagination">${slideIndex}/${numSlides}</span>`;
     }
-    return out
+    return out;
   }
 
   function getIndex(child) {
-    return Array.from(child.parentNode.children).indexOf(child)
+    return Array.from(child.parentNode.children).indexOf(child);
   }
 
   function show(el) {
-    el.classList.add('show')
+    el.classList.add("show");
   }
 
   function hide(el) {
-    el.classList.remove('show')
+    el.classList.remove("show");
   }
 
   /*
 	Resume
     */
 
-  let entryGroups = document.querySelectorAll('#resume > div')
+  let entryGroups = document.querySelectorAll("#resume > div");
 
-  entryGroups.forEach(group => {
+  entryGroups.forEach((group) => {
     // one more than desired amount as h3 is included
     if (group.childElementCount >= 5) {
-      const heading = group.querySelector('h3')
-      group.classList.add('limit')
+      const heading = group.querySelector("h3");
+      group.classList.add("limit");
       heading.onclick = () => {
-        group.classList.toggle('show-all')
-      }
+        group.classList.toggle("show-all");
+      };
     }
-  })
+  });
 
-  let entries = document.querySelectorAll('[data-start]')
+  let entries = document.querySelectorAll("[data-start]");
 
   for (let entry of entries) {
-    let dateStart = entry.getAttribute('data-start')
-    let dateEnd = entry.getAttribute('data-end')
+    let dateStart = entry.getAttribute("data-start");
+    let dateEnd = entry.getAttribute("data-end");
 
     if (dateStart) {
-      entry.setAttribute('data-start-year', dateStart.substr(2, 2))
+      entry.setAttribute("data-start-year", dateStart.substr(2, 2));
     } else {
-      entry.removeAttribute('data-start')
+      entry.removeAttribute("data-start");
     }
 
     if (dateEnd) {
-      entry.setAttribute('data-end-year', dateEnd.substr(2, 2))
+      entry.setAttribute("data-end-year", dateEnd.substr(2, 2));
     } else {
-      entry.removeAttribute('data-end')
+      entry.removeAttribute("data-end");
     }
 
-    const now = new Date()
-    const start = new Date(dateStart)
-    const end = new Date(dateEnd)
+    const now = new Date();
+    const start = new Date(dateStart);
+    const end = new Date(dateEnd);
     // if (now < new Date(dateStart)) entry.innerHTML = `&#x2934;&#xFE0E; ${entry.innerHTML}`
     // if (now < start) {
     //     entry.innerHTML = `<span data-no-print>&#x2191;</span> ${entry.innerHTML}`
@@ -305,4 +305,4 @@ document.addEventListener('DOMContentLoaded', () => {
   // }
 
   // followMouse()
-})
+});

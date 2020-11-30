@@ -1,10 +1,12 @@
-var cursor = null;
+var cursor = document.createElement("div");
 var cursorWidth, cursorHeight;
 var cursorTimerStarted = false;
 var cursorUpdateInterval = 10;
+
+cursor.id = "cursor";
+
 window.addEventListener("mousemove", (e) => {
   if (cursor === null) {
-    cursor = document.getElementById("cursor");
     cursorWidth = cursor.offsetWidth;
     cursorHeight = cursor.offsetHeight;
   } else {

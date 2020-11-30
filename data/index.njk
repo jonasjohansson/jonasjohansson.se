@@ -22,20 +22,19 @@
 			{% include "assets/css/resume.css" %}
 			{% include "assets/css/animation.css" %}
 			{% include "assets/css/print.css" %}
-			{% include "assets/css/cursor.css" %}
+			{# {% include "assets/css/cursor.css" %} #}
 			{# {% include "assets/css/sbol.css" %} #}
 		{% endset %}
 		<style>{{ css | cssmin | safe }}</style>
 		{% set js %} 
 			{% include "assets/js/app.js" %}
-			{% include "assets/js/cursor.js" %}
+			{# {% include "assets/js/cursor.js" %} #}
 			{% include "assets/js/redirect.js" %}
 			{# {% include "assets/js/sbol.js" %} #}
 		{% endset %}
 		<script async defer> {{ js | jsmin | safe }}</script>
     </head>
     <body class="loading">
-        <div id="cursor"></div>
       <header>
       </header>
         <section id="intro">

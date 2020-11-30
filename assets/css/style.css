@@ -1,7 +1,7 @@
 :root {
   --base: 1.6rem;
   --padding-side: 6vw;
-  --black: #100620;
+  --black: #26148a;
   --gray: #aaa;
   --white: #ebebeb;
 }
@@ -11,7 +11,7 @@ html {
   line-height: 1.33;
   font-family: "Labil Grotesk Variable", "Noto Sans", -apple-system,
     BlinkMacSystemFont, Roboto, sans-serif;
-  /* letter-spacing: 0.01rem; */
+  letter-spacing: 0.01rem;
   font-feature-settings: "calt", "dlig", "ss03";
   font-variation-settings: "wght" 30, "stbl" 70;
 }
@@ -49,7 +49,7 @@ a {
 
 p a,
 div a {
-  opacity: 0.65;
+  opacity: 0.85;
 }
 
 p:not(:last-child) {
@@ -136,10 +136,10 @@ video {
   img::selection {
     background: none;
   }
-  ::selection {
+  /* ::selection {
     user-select: none;
     -webkit-user-select: none;
-  }
+  } */
 }
 
 @media screen {
@@ -188,6 +188,6 @@ video {
 @font-face {
   font-family: "Labil Grotesk Variable";
   font-weight: normal;
-  src: url(/assets/fonts/Labil_Grotesk_Testing_Only.woff2)
+  src: url("/assets/fonts/Labil_Grotesk_Testing_Only.woff2")
     format("woff2-variations");
 }
