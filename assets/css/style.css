@@ -32,17 +32,6 @@ body.loading > * {
   opacity: 0;
 }
 
-header {
-  position: fixed;
-  width: 100%;
-  top: 0;
-  margin: 0 auto;
-  padding: calc(var(--base) * 2);
-  z-index: 10;
-  background: linear-gradient(var(--black) 20%, rgba(10, 46, 32, 0) 100%);
-  pointer-events: none;
-}
-
 a {
   cursor: pointer;
 }
