@@ -12,8 +12,11 @@
     "html-minifier": "^4.0.0",
     "uglify-es": "^3.3.9"
   },
-  "devDependencies": {},
+  "devDependencies": {
+    "@11ty/eleventy": "^0.11.1"
+  },
   "scripts": {
+    "test2": "node node_modules/@11ty/eleventy/src/Eleventy.js",
     "test": "echo \"Error: no test specified\" && exit 1"
   },
   "author": "",

@@ -1,90 +1,90 @@
 :root {
-  --base: 1.6rem;
-  --padding-side: 6vw;
-  --black: #26148a;
-  --gray: #aaa;
-  --white: #ebebeb;
+	--base: 1.6rem;
+	--padding-side: 6vw;
+	--black: #ebebeb;
+	--gray: #aaa;
+	--white: #26148a;
 }
 
 html {
-  font-size: max(36px, min(1.6vw, 64px));
-  line-height: 1.33;
-  font-family: "Labil Grotesk Variable", "Noto Sans", -apple-system,
-    BlinkMacSystemFont, Roboto, sans-serif;
-  letter-spacing: 0.01rem;
-  font-feature-settings: "calt", "dlig", "ss03";
-  font-variation-settings: "wght" 30, "stbl" 70;
+	font-size: max(36px, min(1.6vw, 64px));
+	line-height: 1.33;
+	font-family: 'Labil Grotesk Variable', 'Noto Sans', -apple-system,
+		BlinkMacSystemFont, Roboto, sans-serif;
+	letter-spacing: 0.01rem;
+	font-feature-settings: 'calt', 'dlig', 'ss03';
+	font-variation-settings: 'wght' 30, 'stbl' 70;
 }
 
 body {
-  margin: 0 auto;
-  box-sizing: border-box;
+	margin: 0 auto;
+	box-sizing: border-box;
 }
 
 body > * {
-  z-index: 1;
-  position: relative;
-  transition: opacity 400ms ease-in;
-  opacity: 1;
+	z-index: 1;
+	position: relative;
+	transition: opacity 400ms ease-in;
+	opacity: 1;
 }
 
 body.loading > * {
-  opacity: 0;
+	opacity: 0;
 }
 
 a {
-  cursor: pointer;
+	cursor: pointer;
 }
 
 p a,
 div a {
-  opacity: 0.85;
+	opacity: 0.65;
 }
 
 p:not(:last-child) {
-  margin-bottom: var(--base);
+	margin-bottom: var(--base);
 }
 
 h1 {
-  margin-bottom: calc(var(--base) * 2);
+	margin-bottom: calc(var(--base) * 2);
 }
 
 h2 {
-  font-weight: 400;
-  line-height: var(--base);
-  margin-bottom: var(--base);
+	font-weight: 400;
+	line-height: var(--base);
+	margin-bottom: var(--base);
 }
 
 h3 {
-  font-size: 75%;
-  font-weight: 400;
-  text-transform: uppercase;
-  /* line-height: var(--base); */
+	font-size: 75%;
+	font-weight: 400;
+	text-transform: uppercase;
+	/* line-height: var(--base); */
 }
 
 video,
 img,
 picture {
-  object-fit: cover;
-  height: 100%;
+	object-fit: cover;
+	height: 100%;
 }
 
 video {
-  /* height: 80vh; */
-  /* min-height: 40vw; */
-  object-position: center center;
+	/* height: 80vh; */
+	/* min-height: 40vw; */
+	object-position: center center;
 }
 
 #intro,
 #resume {
-  margin-top: 0;
-  margin-bottom: 0;
-  padding: 6rem var(--padding-side);
+	margin-top: 0;
+	margin-bottom: 0;
+	padding: 6rem var(--padding-side);
 }
 
 #intro {
-  box-sizing: border-box;
-  min-height: clamp(4rem, 30vw, 80rem);
+	box-sizing: border-box;
+	min-height: clamp(4rem, 30vw, 80rem);
 }
 
 /* #currently:before {
@@ -101,68 +101,68 @@ video {
 } */
 
 @media (hover: hover) and (pointer: fine) {
-  a:hover {
-    text-decoration: none;
-  }
-  p a:hover,
-  div a:hover {
-    background-image: linear-gradient(
-      to left,
-      violet,
-      indigo,
-      blue,
-      green,
-      yellow,
-      orange,
-      red
-    );
-    -webkit-background-clip: text;
-    -webkit-text-fill-color: transparent;
-    background-size: 400% 400%;
-    animation: rainbow 8s ease infinite;
-    filter: invert(1);
-  }
-  img::selection {
-    background: none;
-  }
-  /* ::selection {
-    user-select: none;
-    -webkit-user-select: none;
-  } */
+	a:hover {
+		text-decoration: none;
+	}
+	p a:hover,
+	div a:hover {
+		background-image: linear-gradient(
+			to left,
+			violet,
+			indigo,
+			blue,
+			green,
+			yellow,
+			orange,
+			red
+		);
+		-webkit-background-clip: text;
+		-webkit-text-fill-color: transparent;
+		background-size: 400% 400%;
+		animation: rainbow 8s ease infinite;
+		filter: invert(1);
+	}
+	img::selection {
+		background: none;
+	}
+	::selection {
+		user-select: none;
+		-webkit-user-select: none;
+	}
 }
 
 @media screen {
-  html,
-  body {
-    color: var(--black);
-    background-color: var(--white);
-  }
-  body {
-    /* text-align: center; */
-  }
-  #intro > *:first-child {
-    max-width: 25rem;
-    display: inline-block;
-  }
+	html,
+	body {
+		color: var(--black);
+		background-color: var(--white);
+	}
+	body {
+		/* text-align: center; */
+	}
+	#intro > *:first-child {
+		max-width: 25rem;
+		display: inline-block;
+	}
 }
 
 @media screen and (prefers-color-scheme: dark) {
-  html,
-  body {
-    color: var(--white);
-    background-color: var(--black);
-  }
+	html,
+	body {
+		color: var(--white);
+		background-color: var(--black);
+	}
 }
 
 @media only screen and (-webkit-device-pixel-ratio: 2) and (max-device-width: 896px) {
-  html {
-    font-size: 22px;
-  }
-  #intro,
-  #resume {
-    padding-top: 4rem !important;
-    padding-bottom: 4rem;
-  }
+	html {
+		font-size: 22px;
+	}
+	#intro,
+	#resume {
+		padding-top: 4rem !important;
+		padding-bottom: 4rem;
+	}
 }
 
 /*@font-face {
@@ -175,8 +175,8 @@ video {
 }*/
 
 @font-face {
-  font-family: "Labil Grotesk Variable";
-  font-weight: normal;
-  src: url("/assets/fonts/Labil_Grotesk_Testing_Only.woff2")
-    format("woff2-variations");
+	font-family: 'Labil Grotesk Variable';
+	font-weight: normal;
+	src: url('/assets/fonts/Labil_Grotesk_Testing_Only.woff2')
+		format('woff2-variations');
 }

@@ -90,16 +90,6 @@
 			"location": "Nordics"
 		},
 		{
-			"date-start": "2020/12/07",
-			"title": "TBD",
-			"location": "Sergels Torg, Stockholm"
-		},
-		{
-			"date-start": "2020/11/28",
-			"title": "TBD",
-			"location": "Markuskyrkan, Stockholm"
-		},
-		{
 			"date-start": "2020/09/11",
 			"title": "Visualia",
 			"location": "Reaktorhallen, Stockholm",
@@ -324,12 +314,6 @@
 			"location": "Nyckelviken, Stockholm"
 		},
 		{
-			"date-start": "2021/02/01",
-			"date-end": "2021/02/05",
-			"title": "Augmented Reality",
-			"location": "Nyckelviken, Stockholm"
-		},
-		{
 			"date-start": "2021/01/25",
 			"date-end": "2021/02/26",
 			"title": "Rörlig Grafik och Bild",
@@ -340,6 +324,11 @@
 			"date-end": "2021/01/28",
 			"title": "Communication Design",
 			"location": "Berghs, Stockholm"
+		},
+		{
+			"date-start": "2020/12/16",
+			"title": "Konsten att styra ljus",
+			"links": ["https://www.facebook.com/events/d41d8cd9/konsten-att-styra-ljus/1643871672466649/"]
 		},
 		{
 			"date-start": "2020/11/23",
