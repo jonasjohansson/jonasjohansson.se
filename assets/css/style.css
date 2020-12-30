@@ -1,9 +1,9 @@
 :root {
 	--base: 1.6rem;
 	--padding-side: 6vw;
-	--black: #ebebeb;
+	--black: #131313;
 	--gray: #aaa;
-	--white: #26148a;
+	--white: #dfdaff;
 }
 
 html {
@@ -134,8 +134,10 @@ video {
 @media screen {
 	html,
 	body {
-		color: var(--black);
-		background-color: var(--white);
+		color: var(--white);
+		background-color: var(--black);
+		/* color: var(--black); */
+		/* background-color: var(--white); */
 	}
 	body {
 		/* text-align: center; */
@@ -146,13 +148,13 @@ video {
 	}
 }
 
-@media screen and (prefers-color-scheme: dark) {
+/* @media screen and (prefers-color-scheme: dark) {
 	html,
 	body {
 		color: var(--white);
 		background-color: var(--black);
 	}
-}
+} */
 
 @media only screen and (-webkit-device-pixel-ratio: 2) and (max-device-width: 896px) {
 	html {
