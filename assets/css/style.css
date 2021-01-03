@@ -66,6 +66,7 @@ video,
 img,
 picture {
 	object-fit: cover;
+	object-position: left center;
 	height: 100%;
 }
 

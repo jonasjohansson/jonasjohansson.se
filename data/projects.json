@@ -1,8 +1,14 @@
 [
   {
+    "title": "Hugsvala",
+    "media": ["jonas_johansson-hugsvala.jpg"]
+    
+  },
+  {
     "title": "Emerging Sensation",
     "media": ["jonas_johansson-emerging_sensation.mp4"],
-    "link": "https://vimeo.com/314458493"
+    "link": "https://vimeo.com/314458493",
+    "hidden": 1
   },
   {
     "title": "Tiny/Massive",
