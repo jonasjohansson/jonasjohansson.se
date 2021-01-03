@@ -158,12 +158,17 @@ video {
 
 @media only screen and (-webkit-device-pixel-ratio: 2) and (max-device-width: 896px) {
 	html {
-		font-size: 22px;
+		font-size: 26px;
 	}
 	#intro,
 	#resume {
-		padding-top: 4rem !important;
 		padding-bottom: 4rem;
+	}
+	#intro {
+		padding-top: 2rem !important;
+	}
+	#resume {
+		padding-top: 4rem !important;
 	}
 }
 
