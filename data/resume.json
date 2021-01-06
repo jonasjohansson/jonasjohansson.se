@@ -85,9 +85,23 @@
 	],
 	"projects": [
 		{
+			"date-start": "2021/02/05",
+			"date-end": "2021/02/28",
+			"title": "Dendrolux",
+			"location": "Copenhagen Light Festival",
+			"links": ["https://copenhagenlightfestival.org/"]
+		},
+		{
 			"date-start": "2021/01/01",
 			"title": "Tour de Lux",
-			"location": "Nordics"
+			"location": "Nordics",
+			"links": ["https://nava.community/tour-de-lux/"]
+		},
+		{
+			"date-start": "2021/01/01",
+			"title": "Tour de Lux",
+			"location": "Nordics",
+			"links": ["https://nava.community/tour-de-lux/"]
 		},
 		{
 			"date-start": "2020/09/11",

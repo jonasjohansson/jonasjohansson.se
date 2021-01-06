@@ -105,8 +105,8 @@ video {
 	a:hover {
 		text-decoration: none;
 	}
-	p a:hover,
-	div a:hover {
+	p a,
+	div a {
 		background-image: linear-gradient(
 			to left,
 			violet,
@@ -115,13 +115,26 @@ video {
 			green,
 			yellow,
 			orange,
-			red
+			red,
+			orange,
+			yellow,
+			green,
+			blue,
+			indigo,
+			violet,
+			indigo,
+			blue,
+			green,
+			yellow
 		);
 		-webkit-background-clip: text;
 		-webkit-text-fill-color: transparent;
 		background-size: 400% 400%;
-		animation: rainbow 8s ease infinite;
-		filter: invert(1);
+		animation: rainbow 10s linear infinite;
+	}
+
+	p a:hover,
+	div a:hover {
 	}
 	img::selection {
 		background: none;
