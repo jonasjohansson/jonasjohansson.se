@@ -340,11 +340,6 @@
 			"location": "Berghs, Stockholm"
 		},
 		{
-			"date-start": "2020/12/16",
-			"title": "Konsten att styra ljus",
-			"links": ["https://www.facebook.com/events/d41d8cd9/konsten-att-styra-ljus/1643871672466649/"]
-		},
-		{
 			"date-start": "2020/11/23",
 			"date-end": "2020/12/18",
 			"title": "Exploring Tech",
@@ -919,6 +914,11 @@
 		}
 	],
 	"talks": [
+		{
+			"date-start": "2020/12/16",
+			"title": "Konsten att styra ljus",
+			"links": ["https://www.facebook.com/events/d41d8cd9/konsten-att-styra-ljus/1643871672466649/"]
+		},
 		{
 			"date-start": "2020/10/02",
 			"title": "Digital@idag",
