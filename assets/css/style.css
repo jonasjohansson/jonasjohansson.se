@@ -3,7 +3,7 @@
 	--padding-side: 6vw;
 	--black: #131313;
 	--gray: #aaa;
-	--white: #dfdaff;
+	--white: #ffa3af;
 }
 
 html {
@@ -152,6 +152,11 @@ video {
 		background-color: var(--black);
 		/* color: var(--black); */
 		/* background-color: var(--white); */
+		background-image: linear-gradient(
+			to left,
+			black,
+			rgba(255, 255, 255, 0.05)
+		);
 	}
 	body {
 		/* text-align: center; */
