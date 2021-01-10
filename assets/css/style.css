@@ -132,10 +132,6 @@ video {
 		background-size: 400% 400%;
 		animation: rainbow 10s linear infinite;
 	}
-
-	p a:hover,
-	div a:hover {
-	}
 	img::selection {
 		background: none;
 	}
@@ -152,14 +148,7 @@ video {
 		background-color: var(--black);
 		/* color: var(--black); */
 		/* background-color: var(--white); */
-		background-image: linear-gradient(
-			to left,
-			black,
-			rgba(255, 255, 255, 0.05)
-		);
-	}
-	body {
-		/* text-align: center; */
+		background-image: linear-gradient(to right, black, rgb(32, 32, 32));
 	}
 	#intro > *:first-child {
 		max-width: 25rem;
