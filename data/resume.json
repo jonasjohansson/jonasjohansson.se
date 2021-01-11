@@ -753,13 +753,6 @@
 	],
 	"workshops": [
 		{
-			"date-start": "2020/08/24",
-			"date-end": "2020/10/16",
-			"title": "Svartljus Lighting",
-			"location": "Ideaction",
-			"links": ["https://ideaction.se/"]
-		},
-		{
 			"date-start": "2020/01/06",
 			"date-end": "2020/03/27",
 			"title": "Brahman",
