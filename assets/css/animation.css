@@ -16,12 +16,10 @@
 		animation-name: textEffectShk;
 		animation-duration: 0.2s;
 	}
-
 	[data-effect='rbw']:hover > * {
 		animation-name: textEffectRbw;
 		animation-duration: 1s;
 	}
-
 	[data-effect='inv']:hover {
 		animation-name: textEffectInv;
 		animation-duration: 0.2s;
@@ -30,13 +28,16 @@
 
 @keyframes textEffectWvy {
 	0% {
-		transform: translateY(25%);
+		transform: translateY(0);
 	}
-	50% {
+	33% {
 		transform: translateY(-25%);
 	}
-	100% {
+	66% {
 		transform: translateY(25%);
+	}
+	100% {
+		transform: translateY(0);
 	}
 }
 
