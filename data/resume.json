@@ -753,6 +753,16 @@
 	],
 	"workshops": [
 		{
+			"date-start": "2021/01/20",
+			"title": "Att förvandla med projektion",
+			"links": ["https://www.facebook.com/events/207458770874831?"]
+		},
+		{
+			"date-start": "2020/12/16",
+			"title": "Konsten att styra ljus",
+			"links": ["https://www.facebook.com/events/1643871672466649/"]
+		},
+		{
 			"date-start": "2020/01/06",
 			"date-end": "2020/03/27",
 			"title": "Brahman",
@@ -902,9 +912,10 @@
 	],
 	"talks": [
 		{
-			"date-start": "2020/12/16",
-			"title": "Konsten att styra ljus",
-			"links": ["https://www.facebook.com/events/d41d8cd9/konsten-att-styra-ljus/1643871672466649/"]
+			"date-start": "2021/01/22",
+			"date-end": "2021/01/23",
+			"title": "Learning To Teach Creative Technologies Remotely",
+			"links": ["https://wp.nyu.edu/ltt2021/"]
 		},
 		{
 			"date-start": "2020/10/02",
