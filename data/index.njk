@@ -117,7 +117,8 @@
                 {% for entry in resume[heading] %} {% if entry.hidden !== true %}
                 <div data-title="{{ entry['title'] }}" data-start="{{ entry['date-start'] }}" data-end="{{ entry['date-end'] }}">
                 {% if entry.links %} <a href="{{ entry.links[0] }}"> {% endif %}
-                {% if entry.title %} {{ entry.title }}. {% endif %}
+                {% if entry.title %} {{ entry.title }}{% if entry.location %}.{% endif %}{% endif %}
+                
                 {% if entry.location %} {{ entry.location }} {% endif %}
                 {% if entry.links %} </a> {% endif %}
                     {# {% if entry.links %}
