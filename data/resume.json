@@ -590,6 +590,12 @@
 	],
 	"exhibition": [
 		{
+			"date-start": "2021/03/06",
+			"title": "Carbon Copy",
+			"location": "Stockholm",
+			"links": ["https://nava.community/cctv/"]
+		},
+		{
 			"date-start": "2020/12/05",
 			"date-end": "2020/12/13",
 			"title": "Text Type Light",
