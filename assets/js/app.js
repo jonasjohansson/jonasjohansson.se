@@ -221,7 +221,7 @@ document.addEventListener('DOMContentLoaded', () => {
 
 	entryGroups.forEach((group) => {
 		// one more than desired amount as h3 is included
-		if (group.childElementCount >= 5) {
+		if (group.childElementCount > 5) {
 			const heading = group.querySelector('h3');
 			group.classList.add('limit');
 			heading.onclick = () => {
