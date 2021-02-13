@@ -148,7 +148,7 @@ video {
 		background-color: var(--black);
 		/* color: var(--black); */
 		/* background-color: var(--white); */
-		background-image: linear-gradient(to right, black, rgb(32, 32, 32));
+		/* background-image: linear-gradient(to right, black, rgb(32, 32, 32)); */
 	}
 	#intro > *:first-child {
 		max-width: 25rem;

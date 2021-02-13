@@ -2,6 +2,24 @@ window.addEventListener('load', () => {
 	document.body.classList.remove('loading');
 });
 
+// window.addEventListener('scroll', (e) => {
+// 	let projects = document.querySelector('#projects');
+// 	let project = document.querySelector('#projects > .project');
+// 	let t = projects.offsetTop;
+// 	let h = projects.offsetHeight;
+// 	let s = document.documentElement.scrollTop;
+// 	let d = s - t;
+// 	console.log('delta', d);
+// 	console.log('height', h);
+// 	if (d > 0) {
+// 		let deg = (d / h) * 110;
+// 		deg = Math.round(deg);
+// 		console.log('deg', deg);
+// 		project.style.transform = `rotateX(${-deg}deg)`;
+// 		project.style.top = `${d}px`;
+// 	}
+// });
+
 document.addEventListener('DOMContentLoaded', () => {
 	// let transitionItems = document.querySelectorAll('body > * > *')
 
