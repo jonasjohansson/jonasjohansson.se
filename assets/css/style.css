@@ -1,7 +1,7 @@
 :root {
 	--base: 1.6rem;
 	--padding-side: 6vw;
-	--black: #131313;
+	--black: #000;
 	--gray: #aaa;
 	--white: #fee;
 }
@@ -101,43 +101,45 @@ video {
     display: none;
 } */
 
-@media (hover: hover) and (pointer: fine) {
-	a:hover {
-		text-decoration: none;
-	}
-	p a,
-	div a {
-		background-image: linear-gradient(
-			to left,
-			violet,
-			indigo,
-			blue,
-			green,
-			yellow,
-			orange,
-			red,
-			orange,
-			yellow,
-			green,
-			blue,
-			indigo,
-			violet,
-			indigo,
-			blue,
-			green,
-			yellow
-		);
-		-webkit-background-clip: text;
-		-webkit-text-fill-color: transparent;
-		background-size: 400% 400%;
-		animation: rainbow 10s linear infinite;
-	}
-	img::selection {
-		background: none;
-	}
-	::selection {
-		user-select: none;
-		-webkit-user-select: none;
+@media not print {
+	@media (hover: hover) and (pointer: fine) {
+		a:hover {
+			text-decoration: none;
+		}
+		p a,
+		div a {
+			background-image: linear-gradient(
+				to left,
+				violet,
+				indigo,
+				blue,
+				green,
+				yellow,
+				orange,
+				red,
+				orange,
+				yellow,
+				green,
+				blue,
+				indigo,
+				violet,
+				indigo,
+				blue,
+				green,
+				yellow
+			);
+			-webkit-background-clip: text;
+			-webkit-text-fill-color: transparent;
+			background-size: 400% 400%;
+			animation: rainbow 10s linear infinite;
+		}
+		img::selection {
+			background: none;
+		}
+		/*::selection {
+			user-select: none;
+			-webkit-user-select: none;
+		}*/
 	}
 }
 

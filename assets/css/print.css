@@ -6,11 +6,6 @@
 		font-size: 10pt;
 		line-height: 1.5;
 	}
-	p a,
-	div a {
-		-webkit-background-clip: unset;
-		-webkit-text-fill-color: unset;
-	}
 	#intro {
 		height: 100vh;
 		text-align: center;

@@ -40,7 +40,7 @@
                 <a href="mailto:jns.johansson@gmail.com">Jonas Johansson</a> is an anywhere based <span data-effect="shk" data-delay="5">artist</span> transforming <span data-effect="inv">light</span></a> ✺ <span data-effect="shf" data-delay="10">technology</span> through <span data-effect="wvy" data-delay="100">play</span> ❋ education
                 and (un)human intervention
             </p>
-            <nav data-no-print>
+            <!-- <nav data-no-print>
                 <div>
                     <a href="https://instagram.com/svartljus/">Svartljus</a>
                 </div>
@@ -54,16 +54,16 @@
                 <div>
                     <a href="https://www.exploring.technology/">Exploring Technology</a>
                 </div>
-                <!-- <div>
+                <div>
                     <a href="https://jonasjohansson.itch.io/homie">Homie</a>, <a href="https://jonasjohansson.itch.io/mio">Mio</a> & <a href="https://jonasjohansson.itch.io/conrad">Conrad</a>
-                </div>-->
+                </div>
                 <div>
                     <a href="https://www.blivande.com/">Blivande</a>
                 </div>
                 <div>
                     <a href="https://raindrop.io/collection/14634412">Raindrop</a>
                 </div>
-            </nav>
+            </nav>-->
             {# <p data-no-print>
                 Say hi ❀
                 <a href="https://facebook.com/jnsjohansson">Messenger</a>
@@ -108,9 +108,6 @@
             </div> #}
         </section>
         <section id="resume">
-            <div data-no-print>
-                Print <a onclick="window.print();return false;">full CV</a>{# and get <a href="https://drive.google.com/drive/folders/1Z6ymjXLsBMX3HtGQBy6lPGru6fcnISO1?usp=sharing">Press Kit</a>#}
-            </div>
             {% for heading in ['work','education','projects','teaching','workshops','exhibition','talks'] %}
             <div>
                 <h3>{{ resume.titles[heading] }}</h3>
@@ -142,6 +139,9 @@
                 </div>
                 {% endfor %}
             </div> #}
+            <div data-no-print>
+                Print <a onclick="window.print();return false;">full CV</a>{# and get <a href="https://drive.google.com/drive/folders/1Z6ymjXLsBMX3HtGQBy6lPGru6fcnISO1?usp=sharing">Press Kit</a>#}
+            </div>
         </section>
         {# <svg id="cursor" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 40 40">
             <defs>

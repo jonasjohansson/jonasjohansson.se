@@ -11,19 +11,21 @@
     line-height: 1;
 } */
 
-#resume:after {
-	content: '';
-	background-image: linear-gradient(
-		to right,
-		rgba(255, 255, 255, 0),
-		var(--black)
-	);
-	position: absolute;
-	width: 20rem;
-	top: 0;
-	right: 0;
-	bottom: 0;
-	pointer-events: none;
+@media not print {
+	#resume:after {
+		content: '';
+		background-image: linear-gradient(
+			to right,
+			transparent 80%,
+			var(--black) 95%
+		);
+		position: absolute;
+		width: 20rem;
+		top: 0;
+		right: 0;
+		bottom: 0;
+		pointer-events: none;
+	}
 }
 
 #resume > div > div {
