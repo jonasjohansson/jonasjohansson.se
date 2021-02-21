@@ -7,7 +7,7 @@
 }
 
 html {
-	font-size: max(36px, min(1.6vw, 64px));
+	font-size: max(40px, min(1.6vw, 64px));
 	line-height: 1.33;
 	font-family: 'Labil Grotesk Variable', 'Noto Sans', -apple-system,
 		BlinkMacSystemFont, Roboto, sans-serif;
