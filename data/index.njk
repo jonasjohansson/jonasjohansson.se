@@ -90,15 +90,14 @@
                                 <a href="{{ entry.links[0] }}">
                                 {% endif %}
                                 {% if entry.title %}
-                                    {{ entry.title }}
-                                    {% if entry.location %}.{% endif %}
+                                    <span class="title">{{ entry.title }}.</span>
                                 {% endif %}
 
-                                {% if entry.location %}
-                                    {{ entry.location }}
-                                {% endif %}
                                 {% if entry.links %}
                                 </a>
+                            {% endif %}
+                            {% if entry.location %}
+                                <span class="location">{{ entry.location }}</span>
                             {% endif %}
                         </div>
                     {% endif %}
