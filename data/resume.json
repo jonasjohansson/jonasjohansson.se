@@ -590,9 +590,16 @@
 	],
 	"exhibition": [
 		{
+			"date-start": "2021/03/21",
+			"date-end": "2021/05/23",
+			"title": "Vårsalongen",
+			"location": "Hallands Konstmuseum, Halmstad",
+			"links": ["https://hallandskonstforening.se/varsalong/varsalongen-2021/"]
+		},
+		{
 			"date-start": "2021/03/06",
-			"title": "Carbon Copy",
-			"location": "Stockholm",
+			"title": "DAMM (Joel Mull)",
+			"location": "Carbon Copy, Stockholm",
 			"links": ["https://nava.community/cctv/"]
 		},
 		{

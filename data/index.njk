@@ -2,155 +2,113 @@
 <html lang="en">
     <head>
         <title>{{ site.title }}</title>
-        <meta charset="utf-8" />
-        <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-        <meta property="og:url" content="{{ site.url }}" />
-        <meta property="og:type" content="website" />
-        <meta property="og:title" content="{{ site.title }}" />
-        <meta property="og:image" content="{{ site.url }}{% img site.cover %}" />
-        <meta property="og:description" content="{{ site.description }}" />
-        <meta name="description" content="{{ site.description }}" />
-        <meta name="apple-mobile-web-app-capable" content="yes" />
-        <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent" />
-        <link rel="preload" as="font" href="/assets/fonts/Labil_Grotesk_Testing_Only.woff2" type="font/woff2" crossorigin="anonymous" />
-        <link rel="apple-touch-icon" href="/favicon.png" />
-        <link rel="icon" href="/favicon.png" />
-		{% set css %} 
-			{% include "assets/css/reset.css" %} 
-			{% include "assets/css/style.css" %} 
-			{% include "assets/css/projects.css" %}
-			{% include "assets/css/resume.css" %}
-			{% include "assets/css/animation.css" %}
-			{% include "assets/css/print.css" %}
-			{# {% include "assets/css/cursor.css" %} #}
-			{# {% include "assets/css/sbol.css" %} #}
-		{% endset %}
-		<style>{{ css | cssmin | safe }}</style>
-		{% set js %} 
-			{% include "assets/js/app.js" %}
-			{# {% include "assets/js/cursor.js" %} #}
-			{% include "assets/js/redirect.js" %}
-			{# {% include "assets/js/sbol.js" %} #}
-		{% endset %}
-		<script async defer> {{ js | jsmin | safe }}</script>
+        <meta charset="utf-8"/>
+        <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+        <meta property="og:url" content="{{ site.url }}"/>
+        <meta property="og:type" content="website"/>
+        <meta property="og:title" content="{{ site.title }}"/>
+        <meta property="og:image" content="{{ site.url }}{% img site.cover %}"/>
+        <meta property="og:description" content="{{ site.description }}"/>
+        <meta name="description" content="{{ site.description }}"/>
+        <meta name="apple-mobile-web-app-capable" content="yes"/>
+        <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent"/>
+        <link rel="preload" as="font" href="/assets/fonts/Labil_Grotesk_Testing_Only.woff2" type="font/woff2" crossorigin="anonymous"/>
+        <link rel="apple-touch-icon" href="/favicon.png"/>
+        <link rel="icon" href="/favicon.png"/>
+        {% set css %}
+        {% include "assets/css/reset.css" %}
+        {% include "assets/css/style.css" %}
+        {% include "assets/css/projects.css" %}
+        {% include "assets/css/resume.css" %}
+        {% include "assets/css/animation.css" %}
+        {% include "assets/css/print.css" %}
+        {% endset %}
+        <style>
+            {{css | cssmin | safe}}
+        </style>
+        {% set js %}
+        {% include "assets/js/app.js" %}
+        {% include "assets/js/redirect.js" %}
+        {% endset %}
+        <script async="async" defer="defer">
+            {{ js | jsmin | safe }}
+        </script>
     </head>
     <body class="loading">
         <section id="intro">
             <p>
-                <a href="mailto:jns.johansson@gmail.com">Jonas Johansson</a> is an anywhere based <span data-effect="shk" data-delay="5">artist</span> transforming <span data-effect="inv">light</span></a> ✺ <span data-effect="shf" data-delay="10">technology</span> through <span data-effect="wvy" data-delay="100">play</span> ❋ education
-                and (un)human intervention
-            </p>
-            <!-- <nav data-no-print>
-                <div>
-                    <a href="https://instagram.com/svartljus/">Svartljus</a>
-                </div>
-                <div>
-                    <a href="https://instagram.com/verkligenheten/">Verkligenheten</a>
-                </div>
-                <div>
-                    <a href="https://nava.community/">Nordic Audiovisual Artists</a>
-                </div>
-                <br>
-                <div>
-                    <a href="https://www.exploring.technology/">Exploring Technology</a>
-                </div>
-                <div>
-                    <a href="https://jonasjohansson.itch.io/homie">Homie</a>, <a href="https://jonasjohansson.itch.io/mio">Mio</a> & <a href="https://jonasjohansson.itch.io/conrad">Conrad</a>
-                </div>
-                <div>
-                    <a href="https://www.blivande.com/">Blivande</a>
-                </div>
-                <div>
-                    <a href="https://raindrop.io/collection/14634412">Raindrop</a>
-                </div>
-            </nav>-->
-            {# <p data-no-print>
-                Say hi ❀
-                <a href="https://facebook.com/jnsjohansson">Messenger</a>
-                or
-                <a href="mailto:jns.johansson@gmail.com">Mail</a>
-            </p> #}
-            {# <div id="currently">
-                {% for item in site.currently %}
-                <p>
-                    {% if item.link %}
-                    <a href="{{ item.link }}">{{ item.title }}</a>
+                <a href="mailto:jns.johansson@gmail.com">Jonas Johansson</a>
+                is an anywhere based
+                <span data-effect="shk" data-delay="5">artist</span>
+                transforming
+                <span data-effect="inv">light</span></a>
+            ✺
+            <span data-effect="shf" data-delay="10">technology</span>
+            through
+            <span data-effect="wvy" data-delay="100">play</span>
+            ❋ education and (un)human intervention
+        </p>
+    </section>
+    <section id="projects" data-no-print="data-no-print">
+        <h3 id="info"></h3>
+        {% for project in projects %}
+            {% if project.hidden != true %}
+                {% if project.link %}
+                    <a class="project" data-title="{{ project.title }}" href="{{ project.link }}">
                     {% else %}
-                    {{ item.title }}
-                    {% endif %}
-                </p>
-                {% endfor %}
-            </div> #}
-        </section>
-        <section id="projects" data-no-print>
-            <h3 id="info"></h3>
-            {% for project in projects %} {% if project.hidden != true %}
-            {% if project.link %}
-            <a class="project" data-title="{{ project.title }}" href="{{ project.link }}">
-            {% else %}
-            <div class="project">
+                        <div class="project">
+                        {% endif %}
+                        {% for media in project.media %}
+                            <div class="slide">
+                                {% gallery media %}
+                            </div>
+                        {% endfor %}
+                        {% if project.link %}
+                        </a>
+                    {% else %}
+                    </div>
+                {% endif %}
             {% endif %}
-                {% for media in project.media %}
-                <div class="slide">
-                    {% gallery media %}
-                </div>
-                {% endfor %}
-            {% if project.link %}
-            </a>
-            {% else %}
-            </div>
-            {% endif %}
-            {% endif %} {% endfor %}
-            {# <div class="group" data-title="{{ gallery[0].title }}">
-                {% for mediaItem in gallery[0].media %}
-                <div class="slide">{% gallery mediaItem %}</div>
-                {% endfor %}
-            </div> #}
-        </section>
-        <section id="resume">
-            {% for heading in ['work','education','projects','teaching','workshops','exhibition','talks'] %}
+        {% endfor %}
+    </section>
+    <section id="resume">
+        {% for heading in[
+            'work',
+            'education',
+            'projects',
+            'exhibition',
+            'teaching',
+            'workshops',
+            'talks'
+        ] %}
             <div>
                 <h3>{{ resume.titles[heading] }}</h3>
-                {% for entry in resume[heading] %} {% if entry.hidden !== true %}
-                <div data-title="{{ entry['title'] }}" data-start="{{ entry['date-start'] }}" data-end="{{ entry['date-end'] }}">
-                {% if entry.links %} <a href="{{ entry.links[0] }}"> {% endif %}
-                {% if entry.title %} {{ entry.title }}{% if entry.location %}.{% endif %}{% endif %}
-                
-                {% if entry.location %} {{ entry.location }} {% endif %}
-                {% if entry.links %} </a> {% endif %}
-                    {# {% if entry.links %}
-                    <span class="links" data-no-print>
-                        {% for link in entry.links %}
-                        <a href="{{ link }}">1</a>
-                        {% endfor %}
-                    </span>
-                    {% endif %} #}
-                </div>
-                {% endif %} {% endfor %}
-            </div>
-            {% endfor %}
-            {# <div data-no-print>
-                <h3>Friends & Collaborators</h3>
-                {% for friend in friends %} 
-                <div>
-                    <a href="{{ friend.link }}">
-                        {% if friend.title %} {{ friend.title }} {% endif %}
-                    </a>
-                </div>
+                {% for entry in resume[heading] %}
+                    {% if entry.hidden !== true %}
+                        <div data-title="{{ entry['title'] }}" data-start="{{ entry['date-start'] }}" data-end="{{ entry['date-end'] }}">
+                            {% if entry.links %}
+                                <a href="{{ entry.links[0] }}">
+                                {% endif %}
+                                {% if entry.title %}
+                                    {{ entry.title }}
+                                    {% if entry.location %}.{% endif %}
+                                {% endif %}
+
+                                {% if entry.location %}
+                                    {{ entry.location }}
+                                {% endif %}
+                                {% if entry.links %}
+                                </a>
+                            {% endif %}
+                        </div>
+                    {% endif %}
                 {% endfor %}
-            </div> #}
-            <div data-no-print>
-                Print <a onclick="window.print();return false;">full CV</a>{# and get <a href="https://drive.google.com/drive/folders/1Z6ymjXLsBMX3HtGQBy6lPGru6fcnISO1?usp=sharing">Press Kit</a>#}
             </div>
-        </section>
-        {# <svg id="cursor" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 40 40">
-            <defs>
-                <style>line{fill:none;stroke:white;stroke-miterlimit:10;stroke-width:1px;}</style>
-            </defs>
-            <g>
-            <line x1="0" y1="0" x2="40" y2="40"/>
-            <line x1="0" y1="40" x2="40" y2="0"/>
-            </g>
-        </svg> #}
-    </body>
+        {% endfor %}
+        <div data-no-print="data-no-print">
+            Print
+            <a onclick="window.print();return false;">full CV</a>
+        </div>
+    </section>
+</body>
 </html>
