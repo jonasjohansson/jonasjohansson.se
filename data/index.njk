@@ -86,7 +86,7 @@
                 {% for entry in resume[heading] %}
                     {% if entry.hidden !== true %}
                         <div data-title="{{ entry['title'] }}" data-start="{{ entry['date-start'] }}" data-end="{{ entry['date-end'] }}">
-                            {% if entry.links %}
+                            {% if entry.links and entry.title %}
                                 <a href="{{ entry.links[0] }}">
                                 {% endif %}
                                 {% if entry.title %}

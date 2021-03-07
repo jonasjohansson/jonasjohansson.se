@@ -9,8 +9,8 @@
 html {
 	font-size: max(40px, min(1.6vw, 64px));
 	line-height: 1.33;
-	font-family: 'Labil Grotesk Variable', 'Noto Sans', -apple-system,
-		BlinkMacSystemFont, Roboto, sans-serif;
+	font-family: 'Labil Grotesk Variable', -apple-system, BlinkMacSystemFont,
+		Roboto, sans-serif;
 	letter-spacing: 0.01rem;
 	font-feature-settings: 'calt', 'dlig', 'ss03';
 	font-variation-settings: 'wght' 30, 'stbl' 70;
@@ -36,11 +36,6 @@ a {
 	cursor: pointer;
 }
 
-p a,
-div a {
-	opacity: 0.65;
-}
-
 p:not(:last-child) {
 	margin-bottom: var(--base);
 }
@@ -59,7 +54,6 @@ h3 {
 	font-size: 75%;
 	font-weight: 400;
 	text-transform: uppercase;
-	/* line-height: var(--base); */
 }
 
 video,
@@ -71,8 +65,6 @@ picture {
 }
 
 video {
-	/* height: 80vh; */
-	/* min-height: 40vw; */
 	object-position: center center;
 }
 
@@ -88,18 +80,11 @@ video {
 	min-height: clamp(4rem, 30vw, 80rem);
 }
 
-/* #currently:before {
-    content: '…currently\a0';
-    float: left;
+::selection {
+	background-color: var(--white);
+	color: var(--black) !important;
+	-webkit-text-fill-color: initial !important;
 }
-
-#currently > p::first-letter {
-    text-transform: lowercase;
-}
-
-#currently p:not(:first-of-type) {
-    display: none;
-} */
 
 @media not print {
 	@media (hover: hover) and (pointer: fine) {
@@ -130,9 +115,10 @@ video {
 			);
 			-webkit-background-clip: text;
 			-webkit-text-fill-color: transparent;
-			background-size: 400% 400%;
+			background-size: 400%;
 			animation: rainbow 10s linear infinite;
 		}
+
 		img::selection {
 			background: none;
 		}
@@ -146,11 +132,8 @@ video {
 @media screen {
 	html,
 	body {
-		color: var(--white);
 		background-color: var(--black);
-		/* color: var(--black); */
-		/* background-color: var(--white); */
-		/* background-image: linear-gradient(to right, black, rgb(32, 32, 32)); */
+		color: var(--white);
 	}
 	#intro > *:first-child {
 		max-width: 25rem;
@@ -181,15 +164,6 @@ video {
 		padding-top: 4rem !important;
 	}
 }
-
-/*@font-face {
-  font-family: "Noto Sans";
-  font-weight: 400;
-  font-style: normal;
-  src: url(/assets/fonts/NotoSans-Light.woff2) format("woff2");
-  unicode-range: U+000-5FF;
-  font-display: swap;
-}*/
 
 @font-face {
 	font-family: 'Labil Grotesk Variable';
