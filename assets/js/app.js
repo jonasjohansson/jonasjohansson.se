@@ -236,11 +236,15 @@ document.addEventListener('DOMContentLoaded', () => {
     */
 
 	let entryGroups = document.querySelectorAll('#resume > div');
+	let maxChildren = 4;
 
 	entryGroups.forEach((group) => {
+		const numChildren = group.childElementCount;
 		// one more than desired amount as h3 is included
-		if (group.childElementCount > 5) {
+		if (numChildren > maxChildren + 1) {
 			const heading = group.querySelector('h3');
+			heading.setAttribute('data-num-children', numChildren);
+			heading.setAttribute('data-max-children', maxChildren);
 			group.classList.add('limit');
 			heading.onclick = () => {
 				group.classList.toggle('show-all');

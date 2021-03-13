@@ -42,6 +42,17 @@
 	margin-bottom: var(--base);
 }
 
+#resume .limit h3:after {
+	content: attr(data-max-children) '/' attr(data-num-children);
+	vertical-align: super;
+	font-size: smaller;
+	display: inline-block;
+	margin-left: 0.2rem;
+}
+#resume .limit.show-all h3:after {
+	content: attr(data-num-children) '/' attr(data-num-children);
+}
+
 @media screen {
 	/* #resume > div > div:nth-of-type(10):after {
         content: '';

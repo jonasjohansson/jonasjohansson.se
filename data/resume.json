@@ -6,7 +6,6 @@
 		"teaching": "Teaching",
 		"exhibition": "Performance & Exhibition",
 		"workshops": "Residencies & Workshops",
-		"hackathons": "Hackathons",
 		"talks": "Talks"
 	},
 	"work": [
@@ -329,13 +328,13 @@
 		{
 			"date-start": "2021/01/27",
 			"date-end": "2021/05/28",
-			"title": "Augmented Reality",
+			"title": "Mixed Reality",
 			"location": "Beckmans Kvällskola, Stockholm"
 		},
 		{
 			"date-start": "2021/02/01",
 			"date-end": "2021/02/05",
-			"title": "Augmented Reality",
+			"title": "Mixed Reality",
 			"location": "Nyckelviken, Stockholm"
 		},
 		{
@@ -345,10 +344,22 @@
 			"location": "Beckmans, Stockholm"
 		},
 		{
+			"date-start": "2021/01/20",
+			"title": "Att förvandla med projektion",
+			"location": "VIAkub",
+			"links": ["https://www.facebook.com/events/207458770874831?"]
+		},
+		{
 			"date-start": "2021/01/04",
 			"date-end": "2021/01/28",
 			"title": "Communication Design",
 			"location": "Berghs, Stockholm"
+		},
+		{
+			"date-start": "2020/12/16",
+			"title": "Konsten att styra ljus",
+			"location": "VIAkub",
+			"links": ["https://www.facebook.com/events/1643871672466649/"]
 		},
 		{
 			"date-start": "2020/11/23",
@@ -783,60 +794,6 @@
 	],
 	"workshops": [
 		{
-			"date-start": "2021/01/20",
-			"title": "Att förvandla med projektion",
-			"location": "VIAkub",
-			"links": ["https://www.facebook.com/events/207458770874831?"]
-		},
-		{
-			"date-start": "2020/12/16",
-			"title": "Konsten att styra ljus",
-			"location": "VIAkub",
-			"links": ["https://www.facebook.com/events/1643871672466649/"]
-		},
-		{
-			"date-start": "2020/01/06",
-			"date-end": "2020/03/27",
-			"title": "Brahman",
-			"location": "Bombay Beach",
-			"links": ["https://brahman.ai/"]
-		},
-		{
-			"date-start": "2019/11/15",
-			"date-end": "2019/11/17",
-			"title": "Glimps BioFab Weekend",
-			"location": "Mont Vireaux Mansion, France",
-			"links": ["https://glimps.bio/biofabrication-weekend-about"]
-		},
-		{
-			"date-start": "2019/07/25",
-			"date-end": "2019/07/27",
-			"title": "Vector Synthesis with Derek Holzer",
-			"location": "Norbergfestival, Norberg"
-		},
-		{
-			"date-start": "2018/02/08",
-			"title": "Smart Tattoos",
-			"location": "Fjord, Stockholm",
-			"links": ["https://www.facebook.com/events/fjord-stockholm/smart-tattoos-workshop-ii/"]
-		},
-		{
-			"date-start": "2011/06/01",
-			"date-end": "2011/06/10",
-			"title": "Sid Lee Boot camp",
-			"location": "Sid Lee, Montreal",
-			"links": [""]
-		},
-		{
-			"date-start": "2010/02/04",
-			"date-end": "2010/02/06",
-			"title": "Audiovisuals",
-			"location": "Pixelvärk, Göteborg",
-			"links": ["http://www.adasweden.se/artikel/pixelvark/"]
-		}
-	],
-	"hackathons": [
-		{
 			"date-start": "2020/04/24",
 			"date-end": "2020/04/26",
 			"title": "EU vs Virus",
@@ -857,11 +814,31 @@
 			"location": "Goto10, Stockholm"
 		},
 		{
+			"date-start": "2020/01/06",
+			"date-end": "2020/03/27",
+			"title": "Brahman",
+			"location": "Bombay Beach",
+			"links": ["https://brahman.ai/"]
+		},
+		{
+			"date-start": "2019/11/15",
+			"date-end": "2019/11/17",
+			"title": "Glimps BioFab Weekend",
+			"location": "Mont Vireaux Mansion, France",
+			"links": ["https://glimps.bio/biofabrication-weekend-about"]
+		},
+		{
 			"date-start": "2019/08/02",
 			"date-end": "2019/08/04",
 			"title": "Biohackathon",
 			"location": "Life Sciences Centre, Vilnius",
 			"links": ["https://igem.se/projects/biohackathon/"]
+		},
+		{
+			"date-start": "2019/07/25",
+			"date-end": "2019/07/27",
+			"title": "Vector Synthesis with Derek Holzer",
+			"location": "Norbergfestival, Norberg"
 		},
 		{
 			"date-start": "2019/04/13",
@@ -909,6 +886,12 @@
 			"winner": true
 		},
 		{
+			"date-start": "2018/02/08",
+			"title": "Smart Tattoos",
+			"location": "Fjord, Stockholm",
+			"links": ["https://www.facebook.com/events/fjord-stockholm/smart-tattoos-workshop-ii/"]
+		},
+		{
 			"date-start": "2017/02/11",
 			"date-end": "2018/02/12",
 			"title": "Stupid Hackathon",
@@ -940,6 +923,20 @@
 			"title": "Spotify Wowhack",
 			"location": "Villa Belparc, Göteborg",
 			"links": ["https://devpost.com/software/stark-industries"]
+		},
+		{
+			"date-start": "2011/06/01",
+			"date-end": "2011/06/10",
+			"title": "Sid Lee Boot camp",
+			"location": "Sid Lee, Montreal",
+			"links": [""]
+		},
+		{
+			"date-start": "2010/02/04",
+			"date-end": "2010/02/06",
+			"title": "Audiovisuals",
+			"location": "Pixelvärk, Göteborg",
+			"links": ["http://www.adasweden.se/artikel/pixelvark/"]
 		}
 	],
 	"talks": [
