@@ -72,7 +72,7 @@ video {
 #resume {
 	margin-top: 0;
 	margin-bottom: 0;
-	padding: 6rem var(--padding-side);
+	padding: 4rem var(--padding-side);
 }
 
 #intro {
@@ -112,6 +112,26 @@ video {
 				blue,
 				green,
 				yellow
+			);
+			background-image: linear-gradient(
+				to left,
+				#020302,
+				#4c5d9e,
+				#947e37,
+				#dcdddb,
+				#5a6583,
+				#5c320e,
+				#bc271b,
+				#5c320e,
+				#5a6583,
+				#dcdddb,
+				#947e37,
+				#4c5d9e,
+				#020302,
+				#4c5d9e,
+				#947e37,
+				#dcdddb,
+				#5a6583
 			);
 			-webkit-background-clip: text;
 			-webkit-text-fill-color: transparent;
