@@ -138,7 +138,6 @@ video {
 			background-size: 400%;
 			animation: rainbow 10s linear infinite;
 		}
-
 		img::selection {
 			background: none;
 		}

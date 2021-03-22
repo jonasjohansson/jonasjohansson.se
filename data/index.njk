@@ -24,15 +24,13 @@
         {% include "assets/css/print.css" %}
         {% endset %}
         <style>
-            {{css | cssmin | safe}}
-        </style>
+            {{css | cssmin | safe}}</style>
         {% set js %}
         {% include "assets/js/app.js" %}
         {% include "assets/js/redirect.js" %}
         {% endset %}
         <script async="async" defer="defer">
-            {{ js | jsmin | safe }}
-        </script>
+            {{ js | jsmin | safe }}</script>
     </head>
     <body class="loading">
         <section id="intro">
@@ -41,43 +39,35 @@
                 is an anywhere based
                 <span data-effect="shk" data-delay="5">artist</span>
                 transforming
-                <span data-effect="inv">light</span></a>
-            ✺
-            <span data-effect="shf" data-delay="10">technology</span>
-            through
-            <span data-effect="wvy" data-delay="100">play</span>
-            ❋ education and (un)human intervention
-        </p>
-    </section>
-    <section id="projects" data-no-print="data-no-print">
-        <h3 id="info"></h3>
-        <iframe src="https://player.vimeo.com/video/525684743?muted=1&loop=1&autoplay=1#t=29m14s" allow="autoplay; fullscreen; picture-in-picture" allowfullscreen></iframe>
-        {# {% for project in projects %}
-            {% if project.hidden != true %}
-                {% if project.link %}
-                    <a class="project" data-title="{{ project.title }}" href="{{ project.link }}">
-                    {% else %}
-                        <div class="project">
-                        {% endif %}
-                        {% for media in project.media %}
-                            <div class="slide">
-                                {% gallery media %}
-                            </div>
-                        {% endfor %}
-                        {% if project.link %}
-                        </a>
-                    {% else %}
-                    </div>
-                {% endif %}
-            {% endif %}
-        {% endfor %} #}
-    </section>
-    <section id="resume">
-        <div data-no-print="data-no-print">
-            Print
-            <a onclick="window.print();return false;">full CV</a>
-        </div>
-        {% for heading in[
+                <span data-effect="inv">light</span>
+            </p>
+        </a>
+        ✺
+        <span data-effect="shf" data-delay="10">technology</span>
+        through
+        <span data-effect="wvy" data-delay="100">play</span>
+        ❋ education and (un)human intervention</body>
+</html></p></section><section id="projects" data-no-print="data-no-print"><h3 id="info"></h3><iframe src="https://player.vimeo.com/video/525684743?muted=1&loop=1&autoplay=1#t=29m14s" allow="autoplay; fullscreen; picture-in-picture" allowfullscreen></iframe>{# {% for project in projects %}
+                                {% if project.hidden != true %}
+                                    {% if project.link %}
+                                        <a class="project" data-title="{{ project.title }}" href="{{ project.link }}">
+                                        {% else %}
+                                            <div class="project">
+                                            {% endif %}
+                                            {% for media in project.media %}
+                                                <div class="slide">
+                                                    {% gallery media %}
+                                                </div>
+                                            {% endfor %}
+                                            {% if project.link %}
+                                            </a>
+                                        {% else %}
+                                        </div>
+                                    {% endif %}
+                                {% endif %}
+                            {% endfor %} #}</section><section id="resume"><div data-no-print="data-no-print">
+Print
+<a onclick="window.print();return false;">full CV</a></div>{% for heading in[
             'work',
             'education',
             'projects',
@@ -86,29 +76,24 @@
             'workshops',
             'talks'
         ] %}
-            <div>
-                <h3>{{ resume.titles[heading] }}</h3>
-                {% for entry in resume[heading] %}
-                    {% if entry.hidden !== true %}
-                        <div data-title="{{ entry['title'] }}" data-start="{{ entry['date-start'] }}" data-end="{{ entry['date-end'] }}">
-                            {% if entry.links and entry.title %}
-                                <a href="{{ entry.links[0] }}">
-                                {% endif %}
-                                {% if entry.title %}
-                                    <span class="title">{{ entry.title }}.</span>
-                                {% endif %}
-
-                                {% if entry.links %}
-                                </a>
-                            {% endif %}
-                            {% if entry.location %}
-                                <span class="location">{{ entry.location }}</span>
-                            {% endif %}
-                        </div>
+<div>
+    <h3>{{ resume.titles[heading] }}</h3>
+    {% for entry in resume[heading] %}
+        {% if entry.hidden !== true %}
+            <div data-title="{{ entry['title'] }}" data-start="{{ entry['date-start'] }}" data-end="{{ entry['date-end'] }}">
+                {% if entry.links and entry.title %}
+                    <a href="{{ entry.links[0] }}">
                     {% endif %}
-                {% endfor %}
+                    {% if entry.title %}
+                        <span class="title">{{ entry.title }}.</span>
+                    {% endif %}
+                    {% if entry.links %}
+                    </a>
+                {% endif %}
+                {% if entry.location %}
+                    <span class="location">{{ entry.location }}</span>
+                {% endif %}
             </div>
-        {% endfor %}
-    </section>
-</body>
-</html>
+        {% endif %}
+    {% endfor %}
+</div>{% endfor %}</section></body></html>
