@@ -93,7 +93,7 @@ video {
 		}
 		p a,
 		div a {
-			background-image: linear-gradient(
+			/* background-image: linear-gradient(
 				to left,
 				violet,
 				indigo,
@@ -112,7 +112,7 @@ video {
 				blue,
 				green,
 				yellow
-			);
+			); */
 			background-image: linear-gradient(
 				to left,
 				#020302,

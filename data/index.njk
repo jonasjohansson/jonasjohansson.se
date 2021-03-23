@@ -1,99 +1,97 @@
 <!DOCTYPE html>
 <html lang="en">
-    <head>
-        <title>{{ site.title }}</title>
-        <meta charset="utf-8"/>
-        <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
-        <meta property="og:url" content="{{ site.url }}"/>
-        <meta property="og:type" content="website"/>
-        <meta property="og:title" content="{{ site.title }}"/>
-        <meta property="og:image" content="{{ site.url }}{% img site.cover %}"/>
-        <meta property="og:description" content="{{ site.description }}"/>
-        <meta name="description" content="{{ site.description }}"/>
-        <meta name="apple-mobile-web-app-capable" content="yes"/>
-        <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent"/>
-        <link rel="preload" as="font" href="/assets/fonts/Labil_Grotesk_Testing_Only.woff2" type="font/woff2" crossorigin="anonymous"/>
-        <link rel="apple-touch-icon" href="/favicon.png"/>
-        <link rel="icon" href="/favicon.png"/>
-        {% set css %}
-        {% include "assets/css/reset.css" %}
-        {% include "assets/css/style.css" %}
-        {% include "assets/css/projects.css" %}
-        {% include "assets/css/resume.css" %}
-        {% include "assets/css/animation.css" %}
-        {% include "assets/css/print.css" %}
+	<head>
+		<title>{{ site.title }}</title>
+		<meta charset="utf-8" />
+		<meta name="viewport" content="width=device-width, initial-scale=1.0" />
+		<meta property="og:url" content="{{ site.url }}" />
+		<meta property="og:type" content="website" />
+		<meta property="og:title" content="{{ site.title }}" />
+		<meta property="og:image" content="{{ site.url }}{% img site.cover %}" />
+		<meta property="og:description" content="{{ site.description }}" />
+		<meta name="description" content="{{ site.description }}" />
+		<meta name="apple-mobile-web-app-capable" content="yes" />
+		<meta
+			name="apple-mobile-web-app-status-bar-style"
+			content="black-translucent"
+		/>
+		<link
+			rel="preload"
+			as="font"
+			href="/assets/fonts/Labil_Grotesk_Testing_Only.woff2"
+			type="font/woff2"
+			crossorigin="anonymous"
+		/>
+		<link rel="apple-touch-icon" href="/favicon.png" />
+		<link rel="icon" href="/favicon.png" />
+		{% set css %} 
+            {% include "assets/css/reset.css" %} 
+            {% include "assets/css/style.css" %} 
+            {% include "assets/css/projects.css" %} 
+            {% include "assets/css/resume.css" %} 
+            {% include "assets/css/animation.css" %} 
+            {% include "assets/css/print.css" %}
         {% endset %}
-        <style>
-            {{css | cssmin | safe}}</style>
-        {% set js %}
-        {% include "assets/js/app.js" %}
-        {% include "assets/js/redirect.js" %}
+		<style>
+			{{ css | cssmin | safe }}
+		</style>
+		{% set js %}
+            {% include "assets/js/app.js" %}
+            {% include "assets/js/redirect.js" %}
         {% endset %}
-        <script async="async" defer="defer">
-            {{ js | jsmin | safe }}</script>
-    </head>
-    <body class="loading">
-        <section id="intro">
-            <p>
-                <a href="mailto:jns.johansson@gmail.com">Jonas Johansson</a>
-                is an anywhere based
-                <span data-effect="shk" data-delay="5">artist</span>
-                transforming
-                <span data-effect="inv">light</span>
-            </p>
-        </a>
-        ✺
-        <span data-effect="shf" data-delay="10">technology</span>
-        through
-        <span data-effect="wvy" data-delay="100">play</span>
-        ❋ education and (un)human intervention</body>
-</html></p></section><section id="projects" data-no-print="data-no-print"><h3 id="info"></h3><iframe src="https://player.vimeo.com/video/525684743?muted=1&loop=1&autoplay=1#t=29m14s" allow="autoplay; fullscreen; picture-in-picture" allowfullscreen></iframe>{# {% for project in projects %}
-                                {% if project.hidden != true %}
-                                    {% if project.link %}
-                                        <a class="project" data-title="{{ project.title }}" href="{{ project.link }}">
-                                        {% else %}
-                                            <div class="project">
-                                            {% endif %}
-                                            {% for media in project.media %}
-                                                <div class="slide">
-                                                    {% gallery media %}
-                                                </div>
-                                            {% endfor %}
-                                            {% if project.link %}
-                                            </a>
-                                        {% else %}
-                                        </div>
-                                    {% endif %}
-                                {% endif %}
-                            {% endfor %} #}</section><section id="resume"><div data-no-print="data-no-print">
-Print
-<a onclick="window.print();return false;">full CV</a></div>{% for heading in[
-            'work',
-            'education',
-            'projects',
-            'exhibition',
-            'teaching',
-            'workshops',
-            'talks'
-        ] %}
-<div>
-    <h3>{{ resume.titles[heading] }}</h3>
-    {% for entry in resume[heading] %}
-        {% if entry.hidden !== true %}
-            <div data-title="{{ entry['title'] }}" data-start="{{ entry['date-start'] }}" data-end="{{ entry['date-end'] }}">
-                {% if entry.links and entry.title %}
-                    <a href="{{ entry.links[0] }}">
-                    {% endif %}
-                    {% if entry.title %}
-                        <span class="title">{{ entry.title }}.</span>
-                    {% endif %}
-                    {% if entry.links %}
-                    </a>
-                {% endif %}
-                {% if entry.location %}
-                    <span class="location">{{ entry.location }}</span>
-                {% endif %}
-            </div>
-        {% endif %}
-    {% endfor %}
-</div>{% endfor %}</section></body></html>
+		<script async="async" defer="defer">{{ js | jsmin | safe }}</script>
+	</head>
+	<body class="loading">
+		<section id="intro">
+			<p>
+				<a href="mailto:jns.johansson@gmail.com">Jonas Johansson</a>
+				is an anywhere based
+				<span data-effect="shk" data-delay="5">artist</span>
+				transforming
+				<span data-effect="inv">light</span>
+				✺
+				<span data-effect="shf" data-delay="10">technology</span>
+				through
+				<span data-effect="wvy" data-delay="100">play</span>
+				❋ education and (un)human intervention
+			</p>
+		</section>
+		<section id="projects" data-no-print="data-no-print">
+			<h3 id="info"></h3>
+			<iframe
+				src="https://player.vimeo.com/video/525684743?muted=1&loop=1&autoplay=1#t=29m14s"
+				allow="autoplay; fullscreen; picture-in-picture"
+				allowfullscreen
+			></iframe>
+		</section>
+		<section id="resume">
+			<div data-no-print="data-no-print">
+				Print
+				<a onclick="window.print();return false;">full CV</a>
+			</div>
+			{% for heading in[ 'work', 'education', 'projects', 'exhibition',
+			'teaching', 'workshops', 'talks' ] %}
+			<div>
+				<h3>{{ resume.titles[heading] }}</h3>
+				{% for entry in resume[heading] %} {% if entry.hidden !== true %}
+				<div
+					data-title="{{ entry['title'] }}"
+					data-start="{{ entry['date-start'] }}"
+					data-end="{{ entry['date-end'] }}"
+				>
+					{% if entry.links and entry.title %}
+					<a href="{{ entry.links[0] }}">
+						{% endif %} {% if entry.title %}
+						<span class="title">{{ entry.title }}.</span>
+						{% endif %} {% if entry.links %}
+					</a>
+					{% endif %} {% if entry.location %}
+					<span class="location">{{ entry.location }}</span>
+					{% endif %}
+				</div>
+				{% endif %} {% endfor %}
+			</div>
+			{% endfor %}
+		</section>
+	</body>
+</html>
