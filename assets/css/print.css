@@ -1,3 +1,8 @@
+@media not print {
+	[data-only-print] {
+		display: none;
+	}
+}
 @media print {
 	@page {
 		/* size: landscape; */

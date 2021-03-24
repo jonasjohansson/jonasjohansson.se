@@ -6,7 +6,6 @@
 
 #projects {
 	width: 100%;
-	height: clamp(20rem, 45vw, 100vh);
 	perspective: 1000px;
 	/* cursor: zoom-in; */
 }
@@ -60,10 +59,11 @@
 }
 
 @media (min-width: 960px) {
-	/* #projects {
-    display: grid;
-    grid-template-columns: 1fr 1fr;
-  } */
+	#projects {
+		height: clamp(20rem, 45vw, 100vh);
+		/* display: grid; */
+		/* grid-template-columns: 1fr 1fr; */
+	}
 
 	/* two items */
 	.slide > *:first-child:nth-last-child(2),

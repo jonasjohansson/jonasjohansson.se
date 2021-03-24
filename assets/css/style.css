@@ -6,6 +6,8 @@
 	--white: #fee;
 }
 
+/* html, body */
+
 html {
 	font-size: max(40px, min(1.6vw, 64px));
 	line-height: 1.33;
@@ -85,6 +87,28 @@ video {
 	color: var(--black) !important;
 	-webkit-text-fill-color: initial !important;
 }
+
+/* embed */
+
+.embed-container {
+	position: relative;
+	padding-bottom: 56.25%;
+	height: 0;
+	overflow: hidden;
+	max-width: 100%;
+}
+
+.embed-container iframe,
+.embed-container object,
+.embed-container embed {
+	position: absolute;
+	top: 0;
+	left: 0;
+	width: 100%;
+	height: 100%;
+}
+
+/* queries */
 
 @media not print {
 	@media (hover: hover) and (pointer: fine) {
