@@ -4,7 +4,8 @@
 		"education": "Education",
 		"projects": "Projects",
 		"teaching": "Teaching",
-		"exhibition": "Performance & Exhibition",
+		"exhibition": "Exhibition",
+		"performance": "Performance",
 		"workshops": "Residencies & Workshops",
 		"talks": "Talks"
 	},
@@ -127,7 +128,9 @@
 			"date-start": "2020/03/21",
 			"title": "Eye",
 			"location": "Hyper Human, Tekniska Muséet",
-			"links": ["https://www.tekniskamuseet.se/en/discover/exhibitions/hyper-human/"]
+			"links": [
+				"https://www.tekniskamuseet.se/en/discover/exhibitions/hyper-human/"
+			]
 		},
 		{
 			"date-start": "2020/03/21",
@@ -526,7 +529,9 @@
 			"date-start": "2018/03/16",
 			"title": "VJing and Visuals for Beginners",
 			"location": "Sónar, Reykjavik",
-			"links": ["https://sonarreykjavik.com/en/2018/artists/sonarspil-workshop-vjing-and-visuals-for-beginners"]
+			"links": [
+				"https://sonarreykjavik.com/en/2018/artists/sonarspil-workshop-vjing-and-visuals-for-beginners"
+			]
 		},
 		{
 			"date-start": "2018/03/15",
@@ -585,7 +590,9 @@
 			"date-start": "2017/02/17",
 			"title": "VJ Workshop",
 			"location": "Sónar, Reykjavik",
-			"links": ["https://sonarreykjavik.com/en/2017/artists/vj-workshop-with-jonas-johansson"]
+			"links": [
+				"https://sonarreykjavik.com/en/2017/artists/vj-workshop-with-jonas-johansson"
+			]
 		},
 		{
 			"date-start": "2016",
@@ -603,7 +610,9 @@
 			"date-end": "2015/03/08",
 			"title": "Trojan Gadgets",
 			"location": "Royal College of Art, London",
-			"links": ["http://trojangadgets.tumblr.com/post/111585978044/trojan-gadgets"]
+			"links": [
+				"http://trojangadgets.tumblr.com/post/111585978044/trojan-gadgets"
+			]
 		},
 		{
 			"date-start": "2015",
@@ -623,12 +632,6 @@
 			"title": "Vårsalongen",
 			"location": "Hallands Konstmuseum, Halmstad",
 			"links": ["https://hallandskonstforening.se/varsalong/varsalongen-2021/"]
-		},
-		{
-			"date-start": "2021/03/06",
-			"title": "Damm (Joel Mull)",
-			"location": "CCTV, Stockholm",
-			"links": ["https://nava.community/cctv/"]
 		},
 		{
 			"date-start": "2020/12/05",
@@ -661,6 +664,20 @@
 			"date-start": "2019/06/06",
 			"title": "Vista & NME-AR",
 			"location": "Swedish Embassy, Athens"
+		}
+	],
+	"performance": [
+		{
+			"date-start": "2021/04/24",
+			"title": "Departure (Bella Sarris, Jessie Granqvist, Linda Pistol)",
+			"location": "Reimersholme Hotel, Stockholm",
+			"links": ["https://www.facebook.com/groups/280126499599743"]
+		},
+		{
+			"date-start": "2021/03/06",
+			"title": "Damm (Joel Mull)",
+			"location": "CCTV, Stockholm",
+			"links": ["https://nava.community/cctv/"]
 		},
 		{
 			"date-start": "2019/05/11",
@@ -711,7 +728,10 @@
 			"date-end": "2018/09/06",
 			"title": "NME",
 			"location": "Färgfabriken, Stockholm",
-			"links": ["https://vimeo.com/323202159", "https://jonasjohansson.github.io/nme/"]
+			"links": [
+				"https://vimeo.com/323202159",
+				"https://jonasjohansson.github.io/nme/"
+			]
 		},
 		{
 			"date-start": "2018/02/24",
@@ -868,7 +888,9 @@
 			"date-start": "2018/05/19",
 			"title": "Livehacks #4",
 			"location": "Kungliga Musikhögskolan, Stockholm",
-			"links": ["https://www.stagecast.io/livehacks/lh4-its-all-about-the-sound"]
+			"links": [
+				"https://www.stagecast.io/livehacks/lh4-its-all-about-the-sound"
+			]
 		},
 		{
 			"date-start": "2018/02/09",
@@ -882,14 +904,18 @@
 			"date-start": "2018/02/03",
 			"title": "Livehacks #3",
 			"location": "Reaktorhallen, Stockholm",
-			"links": ["https://www.stagecast.io/livehacks/lh3-hack-the-show-with-stagecast"],
+			"links": [
+				"https://www.stagecast.io/livehacks/lh3-hack-the-show-with-stagecast"
+			],
 			"winner": true
 		},
 		{
 			"date-start": "2018/02/08",
 			"title": "Smart Tattoos",
 			"location": "Fjord, Stockholm",
-			"links": ["https://www.facebook.com/events/fjord-stockholm/smart-tattoos-workshop-ii/"]
+			"links": [
+				"https://www.facebook.com/events/fjord-stockholm/smart-tattoos-workshop-ii/"
+			]
 		},
 		{
 			"date-start": "2017/02/11",
@@ -973,7 +999,9 @@
 			"date-start": "2020/02/15",
 			"title": "Catalyst Conference",
 			"location": "Spectra Festival, Aberdeen",
-			"links": ["https://www.spectrafestival.co.uk/conference-programme/annie-marrs-dundee-unesco-city-of-design"]
+			"links": [
+				"https://www.spectrafestival.co.uk/conference-programme/annie-marrs-dundee-unesco-city-of-design"
+			]
 		},
 		{
 			"date-start": "2019/10/05",
