@@ -48,6 +48,11 @@
 				<span data-effect="wvy" data-delay="100">play</span>
 				❋ collaboration and (un)human intervention
 			</p>
+			<ul>
+				<li><a href="https://cctvsthlm.se/">CCTV</a></li>
+				<li><a href="https://svartljus.se/">Svartljus</a></li>
+				<li><a href="https://nava.community/">Nordic Audiovisual Artists</a></li>
+			</ul>
 			<p data-only-print>
 				<span>jns.johansson@gmail.com</span><br>
 				<span>+46 721 61 50 63</span><br>
@@ -68,7 +73,7 @@
 			<div data-no-print>
 				<a onclick="window.print();return false;">Print full CV</a>
 			</div>
-			{% for heading in[ 'work', 'education', 'projects', 'exhibition', 'performance', 'teaching', 'workshops', 'talks' ] %}
+			{% for heading in[ 'work', 'education', 'projects', 'exhibition', 'teaching', 'workshops', 'talks' ] %}
 			<div>
 				<h3>{{ resume.titles[heading] }}</h3>
 				{% for entry in resume[heading] %} {% if entry.hidden !== true %}

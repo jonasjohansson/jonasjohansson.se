@@ -4,6 +4,11 @@
 	--black: #000;
 	--gray: #aaa;
 	--white: #fee;
+	--gradient-rbw: violet, indigo, blue, green, yellow, orange, red, orange,
+		yellow, green, blue, indigo, violet, indigo, blue, green, yellow;
+	--gradient: #020302, #4c5d9e, #947e37, #dcdddb, #5a6583, #5c320e, #bc271b,
+		#5c320e, #5a6583, #dcdddb, #947e37, #4c5d9e, #020302, #4c5d9e, #947e37,
+		#dcdddb, #5a6583;
 }
 
 /* html, body */
@@ -121,55 +126,9 @@ video {
 		}*/
 	}
 	p a,
-	div a {
-		/* background-image: linear-gradient(
-			to left,
-			violet,
-			indigo,
-			blue,
-			green,
-			yellow,
-			orange,
-			red,
-			orange,
-			yellow,
-			green,
-			blue,
-			indigo,
-			violet,
-			indigo,
-			blue,
-			green,
-			yellow
-		); */
-		background-image: linear-gradient(
-			to left,
-			#020302,
-			#4c5d9e,
-			#947e37,
-			#dcdddb,
-			#5a6583,
-			#5c320e,
-			#bc271b,
-			#5c320e,
-			#5a6583,
-			#dcdddb,
-			#947e37,
-			#4c5d9e,
-			#020302,
-			#4c5d9e,
-			#947e37,
-			#dcdddb,
-			#5a6583
-		);
-		/* background: linear-gradient(
-			147deg,
-			rgba(249, 15, 216, 1) 0%,
-			rgba(245, 67, 119, 1) 26%,
-			rgba(252, 28, 28, 1) 50%,
-			rgba(255, 195, 13, 1) 75%,
-			rgba(114, 251, 89, 1) 100%
-		); */
+	div a,
+	li a {
+		background-image: linear-gradient(to left, var(--gradient));
 		-webkit-text-fill-color: transparent;
 		-webkit-background-clip: text;
 		background-size: 400%;
@@ -191,14 +150,6 @@ video {
 		display: inline-block;
 	}
 }
-
-/* @media screen and (prefers-color-scheme: dark) {
-	html,
-	body {
-		color: var(--white);
-		background-color: var(--black);
-	}
-} */
 
 @media only screen and (-webkit-device-pixel-ratio: 2) and (max-device-width: 896px) {
 	html {

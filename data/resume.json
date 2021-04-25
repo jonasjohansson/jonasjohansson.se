@@ -4,8 +4,7 @@
 		"education": "Education",
 		"projects": "Projects",
 		"teaching": "Teaching",
-		"exhibition": "Exhibition",
-		"performance": "Performance",
+		"exhibition": "Exhibition & Performance",
 		"workshops": "Residencies & Workshops",
 		"talks": "Talks"
 	},
@@ -627,11 +626,23 @@
 	],
 	"exhibition": [
 		{
+			"date-start": "2021/04/24",
+			"title": "Departure",
+			"location": "Reimersholme Hotel, Stockholm",
+			"links": ["https://www.facebook.com/groups/280126499599743"]
+		},
+		{
 			"date-start": "2021/03/21",
 			"date-end": "2021/05/23",
 			"title": "Vårsalongen",
 			"location": "Hallands Konstmuseum, Halmstad",
 			"links": ["https://hallandskonstforening.se/varsalong/varsalongen-2021/"]
+		},
+		{
+			"date-start": "2021/03/06",
+			"title": "Damm (Joel Mull)",
+			"location": "CCTV, Stockholm",
+			"links": ["https://nava.community/cctv/"]
 		},
 		{
 			"date-start": "2020/12/05",
@@ -664,20 +675,6 @@
 			"date-start": "2019/06/06",
 			"title": "Vista & NME-AR",
 			"location": "Swedish Embassy, Athens"
-		}
-	],
-	"performance": [
-		{
-			"date-start": "2021/04/24",
-			"title": "Departure",
-			"location": "Reimersholme Hotel, Stockholm",
-			"links": ["https://www.facebook.com/groups/280126499599743"]
-		},
-		{
-			"date-start": "2021/03/06",
-			"title": "Damm (Joel Mull)",
-			"location": "CCTV, Stockholm",
-			"links": ["https://nava.community/cctv/"]
 		},
 		{
 			"date-start": "2019/05/11",
