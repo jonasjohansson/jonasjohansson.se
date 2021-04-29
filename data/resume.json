@@ -316,6 +316,13 @@
 	],
 	"teaching": [
 		{
+			"date-start": "2021/04/27",
+			"end-start": "2021/04/29",
+			"title": "Skapa inkluderande digitala ytor",
+			"location": "VIAkub",
+			"links": ["https://viakubhalland.se/skapa-inkluderande-digitala-ytor/"]
+		},
+		{
 			"date-start": "2021/05/10",
 			"date-end": "2021/06/11",
 			"title": "Exploring Code",
@@ -349,7 +356,7 @@
 			"date-start": "2021/01/20",
 			"title": "Att förvandla med projektion",
 			"location": "VIAkub",
-			"links": ["https://www.facebook.com/events/207458770874831?"]
+			"links": ["https://www.facebook.com/events/207458770874831"]
 		},
 		{
 			"date-start": "2021/01/04",
