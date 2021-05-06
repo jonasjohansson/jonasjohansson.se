@@ -41,7 +41,7 @@ input::-webkit-color-swatch {
 
 ul {
 	list-style: none;
-	white-space: nowrap;
+	/* white-space: nowrap; */
 }
 
 input:focus {

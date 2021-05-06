@@ -87,6 +87,14 @@ video {
 	min-height: clamp(4rem, 30vw, 80rem);
 }
 
+#intro li {
+	display: inline;
+}
+
+#intro li:not(:last-child):after {
+	content: ' · ';
+}
+
 ::selection {
 	background-color: var(--white);
 	color: var(--black) !important;
