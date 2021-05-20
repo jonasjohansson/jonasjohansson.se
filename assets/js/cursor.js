@@ -19,7 +19,7 @@ window.addEventListener('mousemove', (e) => {
 				cursorTimerStarted = false;
 			}, cursorUpdateInterval);
 		}
-		console.log(cursor.style.top);
+		// console.log(cursor.style.top);
 		cursor.style.left = e.clientX + 'px';
 		cursor.style.top = e.clientY + 'px';
 	}
