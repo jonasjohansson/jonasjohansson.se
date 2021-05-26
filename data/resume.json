@@ -316,6 +316,28 @@
 	],
 	"teaching": [
 		{
+			"date-start": "2021/06/15",
+			"end-start": "2021/06/17",
+			"title": "Förstärkta Verkligheter",
+			"location": "VIAkub"
+		},
+		{
+			"date-start": "2021/06/03",
+			"title": "Machine Learning",
+			"location": "Basement9, NUNC Assembly III"
+		},
+		{
+			"date-start": "2021/06/03",
+			"title": "Augmented Reality",
+			"location": "Basement9, NUNC Assembly III"
+		},
+		{
+			"date-start": "2021/06/15",
+			"end-start": "2021/06/17",
+			"title": "Förstärkta Verkligheter",
+			"location": "VIAkub"
+		},
+		{
 			"date-start": "2021/04/27",
 			"end-start": "2021/04/29",
 			"title": "Skapa inkluderande digitala ytor",
