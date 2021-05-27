@@ -323,13 +323,15 @@
 		},
 		{
 			"date-start": "2021/06/03",
-			"title": "Machine Learning",
-			"location": "Basement9, NUNC Assembly III"
+			"title": "Machine Learning (EGO of LOLA)",
+			"location": "Basement9, NUNC Assembly III",
+			"links": ["https://nuncsociety.github.io/ego/"]
 		},
 		{
 			"date-start": "2021/06/03",
-			"title": "Augmented Reality",
-			"location": "Basement9, NUNC Assembly III"
+			"title": "Augmented Reality (EYE of LOLA)",
+			"location": "Basement9, NUNC Assembly III",
+			"links": ["https://nuncsociety.github.io/eye/"]
 		},
 		{
 			"date-start": "2021/06/15",
