@@ -657,6 +657,12 @@
 	],
 	"exhibition": [
 		{
+			"date-start": "2021/08/07",
+			"title": "Gläntan (Aleatoriska ensemblen)",
+			"location": "Nonagon Festival, Svalön",
+			"links": ["https://nonagonfestival.se/"]
+		},
+		{
 			"date-start": "2021/04/24",
 			"title": "Departure",
 			"location": "Reimersholme Hotel, Stockholm",
