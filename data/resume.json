@@ -657,10 +657,29 @@
 	],
 	"exhibition": [
 		{
+			"date-start": "2021/08/28",
+			"date-end": "2021/08/29",
+			"title": "TBD",
+			"location": "No Waste of Space, Södertälje"
+		},
+		{
+			"date-start": "2021/08/19",
+			"date-end": "2021/08/22",
+			"title": "TBD",
+			"location": "PLX, Tjärö",
+			"links": ["https://plxtjaro.com/"]
+		},
+		{
 			"date-start": "2021/08/07",
 			"title": "Gläntan (Aleatoriska ensemblen)",
 			"location": "Nonagon Festival, Svalön",
 			"links": ["https://nonagonfestival.se/"]
+		},
+		{
+			"date-start": "2021/07/10",
+			"title": "GANnef",
+			"location": "Lek & Bus, Gagnef",
+			"links": ["https://www.instagram.com/lekochbusigagnef.festival/"]
 		},
 		{
 			"date-start": "2021/04/24",
