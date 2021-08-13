@@ -1,84 +1,83 @@
 [
-  {
-    "title": "Hugsvala",
-    "media": ["jonas_johansson-hugsvala.jpg"]
-    
-  },
-  {
-    "title": "Emerging Sensation",
-    "media": ["jonas_johansson-emerging_sensation.mp4"],
-    "link": "https://vimeo.com/314458493",
-    "hidden": 1
-  },
-  {
-    "title": "Tiny/Massive",
-    "media": ["https://i.vimeocdn.com/video/771854347_1280.web"],
-    "link": "https://vimeo.com/327555616",
-    "hidden": 1
-  },
-  {
-    "title": "Berg",
-    "media": ["jonas_johansson-berg.mp4"],
-    "link": "https://jonasjohansson.github.io/vista/berg/",
-    "hidden": 1
-  },
-  {
-    "title": "Birds",
-    "media": ["jonas_johansson-birds.mp4"],
-    "link": "https://jonasjohansson.github.io/vista/birds/",
-    "hidden": 1
-  },
-  {
-    "title": "Transcend",
-    "media": ["https://i.vimeocdn.com/video/634755265_1280.web"],
-    "link": "https://vimeo.com/217521784",
-    "hidden": 1
-  },
-  {
-    "title": "Grotta",
-    "media": ["jonas_johansson-grotta.mp4"],
-    "link": "https://jonasjohansson.github.io/vista/grotta/",
-    "hidden": 1
-  },
-  {
-    "title": "Pilgrim",
-    "media": ["jonas_johansson-pilgrim.mp4"],
-    "link": "https://jonasjohansson.github.io/vista/pilgrim/",
-    "hidden": 1
-  },
-  {
-    "title": "Glommen",
-    "media": ["jonas_johansson-glommen.mp4"],
-    "link": "https://jonasjohansson.github.io/vista/glommen/",
-    "hidden": 1
-  },
-  {
-    "title": "Funyard",
-    "media": ["jonas_johansson-funyard.mp4"],
-    "link": "https://jonasjohansson.github.io/funyard/",
-    "hidden": 1
-  },
-  {
-    "title": "Harpa Lights",
-    "media": ["https://i.vimeocdn.com/video/623598047_1280.web"],
-    "link": "https://vimeo.com/208312871",
-    "hidden": 1
-  },
-  {
-    "title": "Harpa Light Organ",
-    "media": ["https://i.vimeocdn.com/video/574680981_1280.web"],
-    "link": "https://vimeo.com/169834486",
-    "hidden": 1
-  },
-  {
-    "title": "Icehotel Haven",
-    "media": ["jonas_johansson-haven3.jpg"],
-    "hidden": 1
-  },
-  {
-    "title": "Satans Demokrati",
-    "media": ["jonas_johansson-satans_demokrati.mp4"],
-    "link": "https://vimeo.com/327324118",
-    "hidden": 1
-  }
+	{
+		"title": "Hugsvala",
+		"media": ["jonas_johansson-hugsvala.jpg"]
+	},
+	{
+		"title": "Emerging Sensation",
+		"media": ["jonas_johansson-emerging_sensation.mp4"],
+		"link": "https://vimeo.com/314458493",
+		"hidden": 1
+	},
+	{
+		"title": "Tiny/Massive",
+		"media": ["https://i.vimeocdn.com/video/771854347_1280.web"],
+		"link": "https://vimeo.com/327555616",
+		"hidden": 1
+	},
+	{
+		"title": "Berg",
+		"media": ["jonas_johansson-berg.mp4"],
+		"link": "https://jonasjohansson.github.io/vista/berg/",
+		"hidden": 1
+	},
+	{
+		"title": "Birds",
+		"media": ["jonas_johansson-birds.mp4"],
+		"link": "https://jonasjohansson.github.io/vista/birds/",
+		"hidden": 1
+	},
+	{
+		"title": "Transcend",
+		"media": ["https://i.vimeocdn.com/video/634755265_1280.web"],
+		"link": "https://vimeo.com/217521784",
+		"hidden": 1
+	},
+	{
+		"title": "Grotta",
+		"media": ["jonas_johansson-grotta.mp4"],
+		"link": "https://jonasjohansson.github.io/vista/grotta/",
+		"hidden": 1
+	},
+	{
+		"title": "Pilgrim",
+		"media": ["jonas_johansson-pilgrim.mp4"],
+		"link": "https://jonasjohansson.github.io/vista/pilgrim/",
+		"hidden": 1
+	},
+	{
+		"title": "Glommen",
+		"media": ["jonas_johansson-glommen.mp4"],
+		"link": "https://jonasjohansson.github.io/vista/glommen/",
+		"hidden": 1
+	},
+	{
+		"title": "Funyard",
+		"media": ["jonas_johansson-funyard.mp4"],
+		"link": "https://jonasjohansson.github.io/funyard/",
+		"hidden": 1
+	},
+	{
+		"title": "Harpa Lights",
+		"media": ["https://i.vimeocdn.com/video/623598047_1280.web"],
+		"link": "https://vimeo.com/208312871",
+		"hidden": 1
+	},
+	{
+		"title": "Harpa Light Organ",
+		"media": ["https://i.vimeocdn.com/video/574680981_1280.web"],
+		"link": "https://vimeo.com/169834486",
+		"hidden": 1
+	},
+	{
+		"title": "Icehotel Haven",
+		"media": ["jonas_johansson-haven3.jpg"],
+		"hidden": 1
+	},
+	{
+		"title": "Satans Demokrati",
+		"media": ["jonas_johansson-satans_demokrati.mp4"],
+		"link": "https://vimeo.com/327324118",
+		"hidden": 1
+	}
 ]

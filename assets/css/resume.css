@@ -17,7 +17,7 @@
 		background-image: linear-gradient(
 			to right,
 			transparent 80%,
-			var(--black) 95%
+			var(--background-color) 95%
 		);
 		position: absolute;
 		width: 20rem;

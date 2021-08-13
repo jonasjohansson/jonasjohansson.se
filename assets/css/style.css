@@ -4,11 +4,19 @@
 	--black: #000;
 	--gray: #aaa;
 	--white: #fee;
+	--background-color: var(--white);
+	--text-color: var(--black);
 	--gradient-rbw: violet, indigo, blue, green, yellow, orange, red, orange,
 		yellow, green, blue, indigo, violet, indigo, blue, green, yellow;
 	--gradient: #020302, #4c5d9e, #947e37, #dcdddb, #5a6583, #5c320e, #bc271b,
 		#5c320e, #5a6583, #dcdddb, #947e37, #4c5d9e, #020302, #4c5d9e, #947e37,
 		#dcdddb, #5a6583;
+	--gradient: #091312, #1d3e45, #264230, #a6a26c, #789fae, #153134, #faf2e9,
+		#153134, #789fae, #a6a26c, #264230, #1d3e45, #091312, #1d3e45, #264230,
+		#789fae, #153134;
+	--gradient: #204d5c, #1d3ea0, #e5587b, #dcf2f4, #fcaa0e, #68aaa4, #fdcfeb,
+		#68aaa4, #fcaa0e, #dcf2f4, #e5587b, #1d3ea0, #204d5c, #1d3ea0, #e5587b,
+		#dcf2f4, #fcaa0e;
 }
 
 /* html, body */
@@ -96,8 +104,8 @@ video {
 }
 
 ::selection {
-	background-color: var(--white);
-	color: var(--black) !important;
+	background-color: var(--background-color);
+	color: var(--text-color) !important;
 	-webkit-text-fill-color: initial !important;
 }
 
@@ -150,8 +158,8 @@ video {
 @media screen {
 	html,
 	body {
-		background-color: var(--black);
-		color: var(--white);
+		background-color: var(--background-color);
+		color: var(--text-color);
 	}
 	#intro > *:first-child {
 		max-width: 25rem;
