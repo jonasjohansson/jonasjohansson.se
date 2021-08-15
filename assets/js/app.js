@@ -21,6 +21,19 @@ window.addEventListener('load', () => {
 // });
 
 document.addEventListener('DOMContentLoaded', () => {
+	setInterval(function () {
+		html2canvas(document.querySelector('#projects')).then((canvas) => {
+			var myImage = canvas.toDataURL('image/png');
+
+			const colorThief = new ColorThief();
+			var img = document.createElement('img');
+			if (img.complete) {
+				img.src = myImage;
+				rgb = colorThief.getColor(img);
+				console.log(rgb);
+			}
+		});
+	}, 2000);
 	// let transitionItems = document.querySelectorAll('body > * > *')
 
 	// transitionItems.forEach(function (item, i) {

@@ -16,13 +16,13 @@
 		content: '';
 		background-image: linear-gradient(
 			to right,
-			transparent 80%,
+			rgba(0, 0, 0, 0) 80%,
 			var(--background-color) 95%
 		);
 		position: absolute;
 		width: 20rem;
 		top: 0;
-		right: 0;
+		right: var(--padding-side);
 		bottom: 0;
 		pointer-events: none;
 	}

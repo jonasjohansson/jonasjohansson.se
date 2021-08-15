@@ -3,17 +3,11 @@
 	--padding-side: 6vw;
 	--black: #000;
 	--gray: #aaa;
-	--white: #fee;
-	--background-color: var(--white);
-	--text-color: var(--black);
+	--white: #fff;
+	--background-color: var(--black);
+	--text-color: var(--white);
 	--gradient-rbw: violet, indigo, blue, green, yellow, orange, red, orange,
 		yellow, green, blue, indigo, violet, indigo, blue, green, yellow;
-	--gradient: #020302, #4c5d9e, #947e37, #dcdddb, #5a6583, #5c320e, #bc271b,
-		#5c320e, #5a6583, #dcdddb, #947e37, #4c5d9e, #020302, #4c5d9e, #947e37,
-		#dcdddb, #5a6583;
-	--gradient: #091312, #1d3e45, #264230, #a6a26c, #789fae, #153134, #faf2e9,
-		#153134, #789fae, #a6a26c, #264230, #1d3e45, #091312, #1d3e45, #264230,
-		#789fae, #153134;
 	--gradient: #204d5c, #1d3ea0, #e5587b, #dcf2f4, #fcaa0e, #68aaa4, #fdcfeb,
 		#68aaa4, #fcaa0e, #dcf2f4, #e5587b, #1d3ea0, #204d5c, #1d3ea0, #e5587b,
 		#dcf2f4, #fcaa0e;
@@ -96,16 +90,17 @@ video {
 }
 
 #intro li {
-	display: inline;
+	display: block;
 }
 
-#intro li:not(:last-child):after {
+/* #intro li:not(:last-child):after {
 	content: ' · ';
-}
+} */
 
 ::selection {
-	background-color: var(--background-color);
-	color: var(--text-color) !important;
+	filter: invert(1);
+	background-color: var(--text-color);
+	color: var(--background-color) !important;
 	-webkit-text-fill-color: initial !important;
 }
 

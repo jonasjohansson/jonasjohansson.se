@@ -323,6 +323,13 @@
 	],
 	"teaching": [
 		{
+			"date-start": "2021/09/20",
+			"date-end": "2021/10/18",
+			"title": "The Exquisite Machine",
+			"location": "School of Machines",
+			"links": ["https://schoolofma.org/exquisite-machine"]
+		},
+		{
 			"date-start": "2021/06/15",
 			"end-start": "2021/06/17",
 			"title": "Förstärkta Verkligheter",
@@ -672,7 +679,7 @@
 		},
 		{
 			"date-start": "2021/08/07",
-			"title": "Aleatoriska ensemblen (Æ)",
+			"title": "Aleatoriska ensemblen",
 			"location": "Nonagon Festival, Svanön",
 			"links": ["https://vimeo.com/586714575"]
 		},
