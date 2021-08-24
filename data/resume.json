@@ -87,8 +87,8 @@
 			"date-start": "2021/02/05",
 			"date-end": "2021/02/28",
 			"title": "Dendrolux",
-			"location": "Copenhagen Light Festival",
-			"links": ["https://copenhagenlightfestival.org/"]
+			"location": "PLX Tjärö",
+			"links": ["https://plxtjaro.com/"]
 		},
 		{
 			"date-start": "2021/02/05",
@@ -672,7 +672,13 @@
 	"exhibition": [
 		{
 			"date-start": "2021/08/21",
-			"title": "Nene H",
+			"title": "PLX.ai",
+			"location": "PLX Tjärö",
+			"links": ["https://vimeo.com/591716941"]
+		},
+		{
+			"date-start": "2021/08/21",
+			"title": "Nene H, Asagraum",
 			"location": "PLX Tjärö",
 			"links": ["https://plxtjaro.com/"]
 		},
@@ -690,7 +696,7 @@
 		},
 		{
 			"date-start": "2021/07/10",
-			"title": "GANnef",
+			"title": "Gagnef.ai",
 			"location": "Lek & Bus, Gagnef",
 			"links": ["https://vimeo.com/574785040"]
 		},

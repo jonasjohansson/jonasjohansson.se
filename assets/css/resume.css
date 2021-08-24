@@ -28,6 +28,10 @@
 	}
 }
 
+#resume > div {
+	break-inside: avoid;
+}
+
 #resume > div > div {
 	white-space: nowrap;
 	overflow: hidden;

@@ -1,9 +1,9 @@
 :root {
 	--base: 1.6rem;
 	--padding-side: 6vw;
-	--black: #000;
+	--black: #111;
 	--gray: #aaa;
-	--white: #fff;
+	--white: #eee;
 	--background-color: var(--black);
 	--text-color: var(--white);
 	--gradient-rbw: violet, indigo, blue, green, yellow, orange, red, orange,
@@ -86,7 +86,7 @@ video {
 
 #intro {
 	box-sizing: border-box;
-	min-height: clamp(4rem, 30vw, 80rem);
+	min-height: clamp(4rem, 20vw, 80rem);
 }
 
 #intro li {
