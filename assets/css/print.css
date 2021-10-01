@@ -8,8 +8,8 @@
 		size: landscape;
 	} */
 	html {
-		font-size: 9pt;
-		line-height: 1.5;
+		font-size: 6pt;
+		line-height: 1.15;
 	}
 	#intro {
 		padding-bottom: 0 !important;
@@ -28,7 +28,7 @@
 	[data-start]:before,
 	[data-end]:before {
 		content: attr(data-start) ' ';
-		font-size: 7pt;
+		font-size: 4pt;
 		font-variant-position: super;
 		float: right;
 	}
