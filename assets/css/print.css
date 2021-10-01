@@ -28,7 +28,7 @@
 	[data-start]:before,
 	[data-end]:before {
 		content: attr(data-start) ' ';
-		font-size: 4pt;
+		font-size: 3pt;
 		font-variant-position: super;
 		float: right;
 	}
