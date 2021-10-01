@@ -134,9 +134,7 @@
 			"date-start": "2020/03/21",
 			"title": "Eye",
 			"location": "Hyper Human, Tekniska Muséet",
-			"links": [
-				"https://www.tekniskamuseet.se/en/discover/exhibitions/hyper-human/"
-			]
+			"links": ["https://www.tekniskamuseet.se/en/discover/exhibitions/hyper-human/"]
 		},
 		{
 			"date-start": "2020/03/21",
@@ -573,17 +571,13 @@
 			"date-start": "2018/03/16",
 			"title": "VJing and Visuals for Beginners",
 			"location": "Sónar, Reykjavik",
-			"links": [
-				"https://sonarreykjavik.com/en/2018/artists/sonarspil-workshop-vjing-and-visuals-for-beginners"
-			]
+			"links": ["https://sonarreykjavik.com/en/2018/artists/sonarspil-workshop-vjing-and-visuals-for-beginners"]
 		},
 		{
 			"date-start": "2018/03/15",
 			"title": "LED Mapping and Expressive Lighting",
 			"location": "Sónar, Reykjavik",
-			"links": [
-				"https://sonarreykjavik.com/en/2018/artists/sonarspil-workshop-led-mapping-and-expressive-lighting"
-			]
+			"links": ["https://sonarreykjavik.com/en/2018/artists/sonarspil-workshop-led-mapping-and-expressive-lighting"]
 		},
 		{
 			"date-start": "2018/02/18",
@@ -634,9 +628,7 @@
 			"date-start": "2017/02/17",
 			"title": "VJ Workshop",
 			"location": "Sónar, Reykjavik",
-			"links": [
-				"https://sonarreykjavik.com/en/2017/artists/vj-workshop-with-jonas-johansson"
-			]
+			"links": ["https://sonarreykjavik.com/en/2017/artists/vj-workshop-with-jonas-johansson"]
 		},
 		{
 			"date-start": "2016",
@@ -654,9 +646,7 @@
 			"date-end": "2015/03/08",
 			"title": "Trojan Gadgets",
 			"location": "Royal College of Art, London",
-			"links": [
-				"http://trojangadgets.tumblr.com/post/111585978044/trojan-gadgets"
-			]
+			"links": ["http://trojangadgets.tumblr.com/post/111585978044/trojan-gadgets"]
 		},
 		{
 			"date-start": "2015",
@@ -670,6 +660,18 @@
 		}
 	],
 	"exhibition": [
+		{
+			"date-start": "2021/09/25",
+			"title": "TRAPPIST-X",
+			"location": "Space Bar, Tekniska Muséet",
+			"links": ["https://www.facebook.com/events/843081523078578/"]
+		},
+		{
+			"date-start": "2021/09/23",
+			"title": "ishi vu, Francesco Torelli",
+			"location": "Visualia, Kinship Method, Ahouse Ark",
+			"links": ["https://www.facebook.com/events/874229423217079/"]
+		},
 		{
 			"date-start": "2021/08/21",
 			"title": "PLX.ai",
@@ -800,10 +802,7 @@
 			"date-end": "2018/09/06",
 			"title": "NME",
 			"location": "Färgfabriken, Stockholm",
-			"links": [
-				"https://vimeo.com/323202159",
-				"https://jonasjohansson.github.io/nme/"
-			]
+			"links": ["https://vimeo.com/323202159", "https://jonasjohansson.github.io/nme/"]
 		},
 		{
 			"date-start": "2018/02/24",
@@ -960,9 +959,7 @@
 			"date-start": "2018/05/19",
 			"title": "Livehacks #4",
 			"location": "Kungliga Musikhögskolan, Stockholm",
-			"links": [
-				"https://www.stagecast.io/livehacks/lh4-its-all-about-the-sound"
-			]
+			"links": ["https://www.stagecast.io/livehacks/lh4-its-all-about-the-sound"]
 		},
 		{
 			"date-start": "2018/02/09",
@@ -976,18 +973,14 @@
 			"date-start": "2018/02/03",
 			"title": "Livehacks #3",
 			"location": "Reaktorhallen, Stockholm",
-			"links": [
-				"https://www.stagecast.io/livehacks/lh3-hack-the-show-with-stagecast"
-			],
+			"links": ["https://www.stagecast.io/livehacks/lh3-hack-the-show-with-stagecast"],
 			"winner": true
 		},
 		{
 			"date-start": "2018/02/08",
 			"title": "Smart Tattoos",
 			"location": "Fjord, Stockholm",
-			"links": [
-				"https://www.facebook.com/events/fjord-stockholm/smart-tattoos-workshop-ii/"
-			]
+			"links": ["https://www.facebook.com/events/fjord-stockholm/smart-tattoos-workshop-ii/"]
 		},
 		{
 			"date-start": "2017/02/11",
@@ -1071,9 +1064,7 @@
 			"date-start": "2020/02/15",
 			"title": "Catalyst Conference",
 			"location": "Spectra Festival, Aberdeen",
-			"links": [
-				"https://www.spectrafestival.co.uk/conference-programme/annie-marrs-dundee-unesco-city-of-design"
-			]
+			"links": ["https://www.spectrafestival.co.uk/conference-programme/annie-marrs-dundee-unesco-city-of-design"]
 		},
 		{
 			"date-start": "2019/10/05",
@@ -1091,9 +1082,7 @@
 			"date-start": "2018/11/12",
 			"title": "Lunch lecture",
 			"location": "Arkipelago, Stockholm",
-			"links": [
-				"https://www.facebook.com/events/arkipelago-stockholm/lunch-lecture-jonas-johansson/1970964856529698/"
-			]
+			"links": ["https://www.facebook.com/events/arkipelago-stockholm/lunch-lecture-jonas-johansson/1970964856529698/"]
 		}
 	]
 }

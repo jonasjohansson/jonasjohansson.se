@@ -8,7 +8,7 @@
 		size: landscape;
 	} */
 	html {
-		font-size: 10pt;
+		font-size: 9pt;
 		line-height: 1.5;
 	}
 	#intro {
@@ -28,6 +28,8 @@
 	[data-start]:before,
 	[data-end]:before {
 		content: attr(data-start) ' ';
+		font-size: 7pt;
+		font-variant-position: super;
 		float: right;
 	}
 	[data-end]:before {
