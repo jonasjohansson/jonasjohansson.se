@@ -84,9 +84,28 @@
 	],
 	"projects": [
 		{
+			"date-start": "2022/02/04",
+			"date-end": "2022/02/27",
+			"title": "Dendrolux III",
+			"location": "Copenhagen Light Festival",
+			"links": ["https://copenhagenlightfestival.org/"]
+		},
+		{
+			"date-start": "2021/12/01",
+			"date-end": "2022/01/10",
+			"title": "Noneon",
+			"location": "Ellipsen, Sergels Torg"
+		},
+		{
+			"date-start": "2021/11/01",
+			"date-end": "2021/11/30",
+			"title": "Mannaminne",
+			"location": "Ellipsen, Sergels Torg"
+		},
+		{
 			"date-start": "2021/02/05",
 			"date-end": "2021/02/28",
-			"title": "Dendrolux",
+			"title": "Dendrolux II",
 			"location": "PLX Tjärö",
 			"links": ["https://plxtjaro.com/"]
 		},
@@ -320,6 +339,39 @@
 		}
 	],
 	"teaching": [
+		{
+			"date-start": "2022/01/31",
+			"date-end": "2022/02/04",
+			"title": "Mixed Reality",
+			"location": "Nyckelviken, Stockholm"
+		},
+		{
+			"date-start": "2022/01/24",
+			"date-end": "2022/02/25",
+			"title": "Rörlig Grafik och Bild",
+			"location": "Beckmans, Stockholm"
+		},
+		{
+			"date-start": "2021/12/13",
+			"title": "Exploring Technology (Makey Makey)",
+			"location": "Hyper Island, Stockholm"
+		},
+		{
+			"date-start": "2021/12/08",
+			"title": "Mixed Reality",
+			"location": "Inter Art Matrix"
+		},
+		{
+			"date-start": "2021/12/08",
+			"title": "Exploring Technology (Circuit Playground)",
+			"location": "Hyper Island, Stockholm"
+		},
+		{
+			"date-start": "2021/10/18",
+			"date-end": "2021/11/19",
+			"title": "Teknik & Visuell Kommunikation",
+			"location": "Beckmans, Stockholm"
+		},
 		{
 			"date-start": "2021/09/20",
 			"date-end": "2021/10/18",
@@ -661,8 +713,12 @@
 	],
 	"exhibition": [
 		{
+			"date-start": "2021/11/10",
+			"location": "Bio Hack Bar, Tekniska Muséet",
+			"links": ["https://www.facebook.com/events/617205189710571"]
+		},
+		{
 			"date-start": "2021/09/25",
-			"title": "TRAPPIST-X",
 			"location": "Space Bar, Tekniska Muséet",
 			"links": ["https://www.facebook.com/events/843081523078578/"]
 		},
