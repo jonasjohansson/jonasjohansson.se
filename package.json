@@ -16,7 +16,7 @@
 		"@11ty/eleventy": "^0.11.1"
 	},
 	"scripts": {
-		"build": "env NODE_ENV=production npx eleventy --pathprefix 'jonasjohansson.se'",
+		"build": "env NODE_ENV=production npx @11ty/eleventy --pathprefix 'jonasjohansson.se'",
 		"serve": "npx @11ty/eleventy --serve"
 	},
 	"author": "",
