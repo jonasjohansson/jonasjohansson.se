@@ -1,7 +1,7 @@
 <!DOCTYPE html>
 <html lang="en">
 	<head>
-		<title>{{ site.title }}xx</title>
+		<title>{{ site.title }}</title>
 		<meta charset="utf-8" />
 		<meta name="viewport" content="width=device-width, initial-scale=1.0" />
 		<meta property="og:url" content="{{ site.url }}" />
@@ -30,10 +30,8 @@
 		</style>
 		{% set js %}
             {% include "assets/js/app.js" %}
-            {% include "assets/js/redirect.js" %}
         {% endset %}
 		<script async="async" defer="defer">{{ js | jsmin | safe }}</script>
-		<script src="https://jonasjohansson.github.io/help-ukraine/help-ukraine.js"></script>
 	</head>
 	<body class="loading">
 		<section id="intro">
