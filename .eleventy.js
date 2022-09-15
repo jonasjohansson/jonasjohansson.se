@@ -67,13 +67,14 @@ module.exports = function (eleventyConfig) {
 
 	async function optimImg(path, opts = {}) {
 		const widths = opts.hasOwnProperty('widths') ? opts.widths : [null]
-		const outputFormat = opts.hasOwnProperty('outputFormat') ? opts.outputFormat : path.split('.').pop()
+		var outputFormat = opts.hasOwnProperty('outputFormat') ? opts.outputFormat : path.split('.').pop()
 		let stats = await Image(`./assets/img/` + path, {
 			widths: widths,
 			formats: outputFormat,
 			urlPath: '/assets/img',
 			outputDir: './docs/assets/img',
 		})
+		outputFormat = Object.keys(stats)[0]
 		if (widths.length > 1) return stats
 		else return stats[outputFormat].pop()
 	}

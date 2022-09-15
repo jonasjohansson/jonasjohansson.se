@@ -7,13 +7,13 @@
 		"doc": "docs"
 	},
 	"dependencies": {
-		"@11ty/eleventy-img": "^0.2.5",
+		"@11ty/eleventy-img": "^2.0.1",
 		"clean-css": "^4.2.3",
 		"html-minifier": "^4.0.0",
 		"uglify-es": "^3.3.9"
 	},
 	"devDependencies": {
-		"@11ty/eleventy": "^0.11.1"
+		"@11ty/eleventy": "^1.0.2"
 	},
 	"scripts": {
 		"build": "env NODE_ENV=production npx @11ty/eleventy",
@@ -22,4 +22,3 @@
 	"author": "",
 	"license": "ISC"
 }
-
