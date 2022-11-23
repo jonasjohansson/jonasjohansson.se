@@ -6,11 +6,10 @@
 	--white: #eee;
 	--background-color: var(--black);
 	--text-color: var(--white);
-	--gradient-rbw: violet, indigo, blue, green, yellow, orange, red, orange,
-		yellow, green, blue, indigo, violet, indigo, blue, green, yellow;
-	--gradient: #204d5c, #1d3ea0, #e5587b, #dcf2f4, #fcaa0e, #68aaa4, #fdcfeb,
-		#68aaa4, #fcaa0e, #dcf2f4, #e5587b, #1d3ea0, #204d5c, #1d3ea0, #e5587b,
-		#dcf2f4, #fcaa0e;
+	--gradient-rbw: violet, indigo, blue, green, yellow, orange, red, orange, yellow, green, blue, indigo, violet, indigo,
+		blue, green, yellow;
+	--gradient: #204d5c, #1d3ea0, #e5587b, #dcf2f4, #fcaa0e, #68aaa4, #fdcfeb, #68aaa4, #fcaa0e, #dcf2f4, #e5587b, #1d3ea0,
+		#204d5c, #1d3ea0, #e5587b, #dcf2f4, #fcaa0e;
 }
 
 /* html, body */
@@ -18,8 +17,7 @@
 html {
 	font-size: max(40px, min(1.6vw, 64px));
 	line-height: 1.33;
-	font-family: 'Labil Grotesk Variable', -apple-system, BlinkMacSystemFont,
-		Roboto, sans-serif;
+	font-family: 'Visual', 'Labil Grotesk Variable', -apple-system, BlinkMacSystemFont, Roboto, sans-serif;
 	letter-spacing: 0.01rem;
 	font-feature-settings: 'calt', 'dlig', 'ss03';
 	font-variation-settings: 'wght' 30, 'stbl' 70;
@@ -181,6 +179,18 @@ video {
 @font-face {
 	font-family: 'Labil Grotesk Variable';
 	font-weight: normal;
-	src: url('/assets/fonts/Labil_Grotesk_Testing_Only.woff2')
-		format('woff2-variations');
+	src: url('/assets/fonts/Labil_Grotesk_Testing_Only.woff2') format('woff2-variations');
 }
+
+@font-face {
+	font-family: 'Visual';
+	font-weight: normal;
+	src: url('/assets/fonts/Visual-Regular.woff2');
+}
+
+@font-face {
+	font-family: 'Redaction35';
+	font-weight: normal;
+	src: url('/assets/fonts/Redaction35-Regular.woff2');
+}
+
