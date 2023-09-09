@@ -8,16 +8,19 @@
 	},
 	"dependencies": {
 		"@11ty/eleventy-img": "^2.0.1",
+		"@tinacms/cli": "^1.0.5",
 		"clean-css": "^4.2.3",
 		"html-minifier": "^4.0.0",
+		"tinacms": "^1.1.2",
 		"uglify-es": "^3.3.9"
 	},
 	"devDependencies": {
-		"@11ty/eleventy": "^1.0.2"
+		"@11ty/eleventy": "^1.0.2",
+		"slinkity": "^0.8.3"
 	},
 	"scripts": {
 		"build": "env NODE_ENV=production npx @11ty/eleventy",
-		"serve": "npx @11ty/eleventy --serve"
+		"serve": "tinacms build && npx @11ty/eleventy --serve"
 	},
 	"author": "",
 	"license": "ISC"
