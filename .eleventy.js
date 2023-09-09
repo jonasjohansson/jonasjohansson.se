@@ -20,8 +20,8 @@ module.exports = function (eleventyConfig) {
 	})
 
 	eleventyConfig.addNunjucksAsyncShortcode('img', async function (path) {
-		const props = await optimImg(path)
-		return props.url
+		// const props = await optimImg(path)
+		// return props.url
 	})
 
 	async function video(src) {
