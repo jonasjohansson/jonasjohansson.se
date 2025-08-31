@@ -1,0 +1,20 @@
+@font-face {
+    font-family: 'OffBit';
+    src: url('OffBit-Regular.woff2') format('woff2'),
+        url('OffBit-Regular.woff') format('woff'),
+        url('OffBit-Regular.ttf') format('truetype');
+    font-weight: normal;
+    font-style: normal;
+    font-display: swap;
+}
+
+@font-face {
+    font-family: 'OffBit';
+    src: url('OffBit-101Bold.woff2') format('woff2'),
+        url('OffBit-101Bold.woff') format('woff'),
+        url('OffBit-101Bold.ttf') format('truetype');
+    font-weight: bold;
+    font-style: normal;
+    font-display: swap;
+}
+
