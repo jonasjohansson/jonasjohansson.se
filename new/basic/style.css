@@ -1,0 +1,92 @@
+html,
+body {
+  height: 100%;
+  margin: 0;
+  background: #0c0f14;
+  color: #fff;
+  font-family: system-ui, -apple-system, Segoe UI, Roboto, Helvetica, Arial, sans-serif;
+}
+
+#stage {
+  height: 100%;
+  width: 100%;
+  perspective: 1000px;
+  perspective-origin: 50% 50%;
+  overflow: hidden;
+}
+
+#strips {
+  display: flex;
+  height: 100%;
+  width: 100%;
+  transform-style: preserve-3d;
+}
+
+#strips.vertical {
+  flex-direction: row;
+}
+#strips.horizontal {
+  flex-direction: column;
+}
+
+.strip {
+  flex: 0 0 calc(100% / 40);
+  background-size: cover;
+  background-position: 50% 50%;
+  background-repeat: no-repeat;
+  position: relative;
+  height: 100%;
+  will-change: transform, background-position;
+  box-shadow: inset -1px 0 rgba(255, 255, 255, 0.06);
+  transform-origin: 50% 50% 0;
+}
+
+/* Title as SHADOW via ::after — now animates into center on hover */
+.strip::after {
+  content: attr(data-title);
+  position: absolute;
+  left: 50%;
+  top: -20%; /* start above the strip */
+  transform: translate(-50%, 0); /* will move to (-50%, -50%) on hover */
+  padding: 10px;
+  color: #fff;
+  opacity: 0; /* fade in on hover */
+  font-weight: 700;
+  pointer-events: none;
+  mix-blend-mode: screen;
+  text-shadow: 0 1px 2px rgba(0, 0, 0, 0.6), 0 0 18px rgba(0, 0, 0, 0.35);
+
+  /* smooth slide + fade */
+  transition: top 1.8s ease-in, transform 1.8s ease-in, opacity 1.8s ease-in;
+
+  /* layout defaults; overridden per orientation below */
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+/* Vertical pillars: vertical text top→bottom */
+#strips.vertical .strip::after {
+  writing-mode: vertical-rl;
+  text-orientation: mixed;
+}
+
+/* Horizontal bands: keep horizontal text */
+#strips.horizontal .strip::after {
+  writing-mode: horizontal-tb;
+}
+
+/* Animate in on hover — slide to exact center and fade up */
+.strip:hover::after {
+  top: 50%;
+  transform: translate(-50%, -50%);
+  opacity: 0.9;
+
+  transition: top 0.35s ease-out, transform 0.35s ease-out, opacity 0.35s ease-out;
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .strip {
+    will-change: auto;
+  }
+}

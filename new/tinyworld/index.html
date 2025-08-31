@@ -1,0 +1,209 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="utf-8" />
+    <title>Tiny Kitchen World • Peachy Sunset</title>
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+
+    <!-- A-Frame 1.7.1 -->
+    <script src="https://aframe.io/releases/1.7.1/aframe.min.js"></script>
+
+    <!-- Optional SSAO (best-effort; skips if unavailable) -->
+    <script src="https://unpkg.com/three@0.155.0/examples/js/postprocessing/EffectComposer.js"></script>
+    <script src="https://unpkg.com/three@0.155.0/examples/js/postprocessing/RenderPass.js"></script>
+    <script src="https://unpkg.com/three@0.155.0/examples/js/postprocessing/SSAOPass.js"></script>
+
+    <link rel="stylesheet" href="style.css" />
+    <link
+      rel="icon"
+      href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='64' height='64'%3E%3Ctext y='50' font-size='50'%3E🍑%3C/text%3E%3C/svg%3E" />
+  </head>
+  <body>
+    <div id="hud"><b>World builder</b> — Peachy sunset, checkered floor, volumetric rays, and textures from <code>/images/</code>.</div>
+
+    <a-scene
+      id="scene"
+      renderer="antialias: true; colorManagement: true"
+      background="color: #fde9da"
+      fog="type: exponential; color: #ffd9c2; density: 0.015">
+      <a-assets id="assets">
+        <!-- world.js will also inject GLBs and project <img>s if provided -->
+      </a-assets>
+
+      <!-- Camera rig -->
+      <a-entity id="rig" position="0 2.2 12">
+        <a-entity id="cam" camera look-controls wasd-controls="acceleration: 24"></a-entity>
+      </a-entity>
+
+      <!-- Sunset lighting -->
+      <a-entity
+        light="type: directional; color: #ff9a5c; intensity: 1.25; castShadow: true"
+        position="-10 9 -16"
+        rotation="-15 30 0"></a-entity>
+      <a-entity light="type: hemisphere; color: #ffd2ae; groundColor: #5a2f2a; intensity: 0.9" position="0 20 0"></a-entity>
+      <a-entity light="type: ambient; color: #ffc9a8; intensity: 0.28"></a-entity>
+
+      <!-- Floor (checker texture assigned in script) -->
+      <a-entity
+        id="floor"
+        geometry="primitive: plane; width: 120; height: 120"
+        rotation="-90 0 0"
+        material="roughness: 1; metalness: 0"
+        shadow="receive: true"></a-entity>
+
+      <!-- Volumetric light shafts root -->
+      <a-entity id="godrays-root"></a-entity>
+
+      <!-- World root (models appended here) -->
+      <a-entity id="world"></a-entity>
+    </a-scene>
+
+    <script type="module">
+      import { buildWorld, makeCheckerTexture, enableSSAO } from "./world.js";
+
+      const sceneEl = document.querySelector("a-scene");
+      const assetsEl = document.getElementById("assets");
+      const worldEl = document.getElementById("world");
+
+      // ---- 1) Register your /images/ textures into <a-assets> and create a "projects" array from them
+      const textureFiles = [
+        "00095.jpg",
+        "00096.jpg",
+        "00097.jpg",
+        "00098.jpeg",
+        "00099.jpg",
+        "00100.jpg",
+        "00101.jpg",
+        "00102.jpg",
+        "00103.jpeg",
+        "00104.jpg",
+        "00105.jpg",
+        "00106.jpg",
+        "00107.jpg",
+        "00108.jpg",
+        "00109.jpg",
+        "00110.jpg",
+        "00111.jpg",
+        "00112.jpg",
+        "00113.jpg",
+        "00114.jpg",
+        "00115.jpg",
+        "00116.jpg",
+        "00117.jpg",
+        "00118.jpg",
+        "00119.jpg",
+        "00120.jpg",
+        "00121.jpg",
+        "00122.jpg",
+        "00123.jpg",
+        "00124.jpg",
+        "00125.jpg",
+        "00126.jpg",
+        "00127.jpg",
+        "00128.jpg",
+        "00129.jpg",
+        "00130.jpg",
+        "00131.jpg",
+        "00132.jpg",
+        "00133.jpg",
+        "00134.jpg",
+        "00135.jpeg",
+        "00136.jpg",
+        "00137.jpg",
+        "00138.jpg",
+        "00139.jpg",
+        "00140.jpg",
+        "00141.jpg",
+        "00142.jpg",
+        "00143.jpg",
+        "00144.jpg",
+        "00145.jpeg",
+        "00146.jpg",
+        "00147.jpg",
+        "00148.jpeg",
+        "00149.jpg",
+        "00150.jpg",
+      ];
+
+      for (let i = textureFiles.length - 1; i > 0; i--) {
+        const j = Math.floor(Math.random() * (i + 1));
+        [textureFiles[i], textureFiles[j]] = [textureFiles[j], textureFiles[i]];
+      }
+
+      // Prepend <img> tags (helps reuse elsewhere if needed)
+      const imageUrls = textureFiles.map((f, i) => {
+        const id = `imgtex${i}`;
+        const url = `images/${f}`;
+        const img = document.createElement("img");
+        img.setAttribute("id", id);
+        img.setAttribute("src", url);
+        img.setAttribute("crossorigin", "anonymous");
+        assetsEl.appendChild(img);
+        return { id: `#${id}`, url };
+      });
+
+      // Build a "projects" array compatible with world.js (hero field used as texture)
+      const projects = imageUrls.map((it, i) => ({
+        title: `ImageTex ${i + 1}`,
+        description: "Image texture from /images/",
+        hero: it.url,
+        images: [], // not used, but kept for compatibility
+      }));
+
+      // ---- 2) Procedural checker & apply to floor
+      const checkerId = makeCheckerTexture(assetsEl, {
+        size: 64,
+        tiles: 2,
+        a: "#ffffff", // light peach
+        b: "#000000", // slightly darker peach
+      });
+      document.getElementById("floor").setAttribute("material", `src: ${checkerId}; repeat: 40 40; roughness:1; metalness:0`);
+
+      // ---- 3) Build world using the image-based "projects"
+      await buildWorld({
+        scene: sceneEl,
+        assets: assetsEl,
+        root: worldEl,
+        projects, // << textures come from /images/
+        useAllModels: true,
+        ringRadius: 4,
+        innerRadius: 2,
+        yJitter: 0.08,
+        scale: 0.8,
+      });
+
+      // ---- 4) Spawn volumetric rays directly (volumetric-ray is registered in world.js)
+      const raysRoot = document.getElementById("godrays-root");
+      const origin = new window.THREE.Vector3(-8, 6, -14);
+      const lookAt = new window.THREE.Vector3(0, 2, 0);
+
+      const COUNT = 8,
+        SPREAD = 4.0;
+      for (let i = 0; i < COUNT; i++) {
+        const e = document.createElement("a-entity");
+        const ox = origin.x + (Math.random() * 2 - 1) * SPREAD;
+        const oy = origin.y + (Math.random() * 2 - 1) * (SPREAD * 0.5);
+        const oz = origin.z + (Math.random() * 2 - 1) * SPREAD;
+
+        e.setAttribute("position", `${ox.toFixed(3)} ${oy.toFixed(3)} ${oz.toFixed(3)}`);
+        e.setAttribute("volumetric-ray", {
+          length: 34,
+          radius0: 0.12,
+          radius1: 1.9,
+          color: "#ffb67a",
+          opacity: 0.11,
+          timeScale: 0.22,
+          target: `${lookAt.x} ${lookAt.y} ${lookAt.z}`,
+        });
+        raysRoot.appendChild(e);
+      }
+
+      // ---- 5) Best-effort SSAO (silently skips if lib mismatch)
+      enableSSAO(sceneEl, {
+        kernelRadius: 18,
+        minDistance: 0.0004,
+        maxDistance: 0.12,
+      });
+    </script>
+  </body>
+</html>

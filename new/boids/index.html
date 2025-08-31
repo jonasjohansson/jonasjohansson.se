@@ -1,0 +1,71 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="utf-8" />
+    <title>A-Frame • Murmuration (200, no ground bump)</title>
+    <meta name="viewport" content="width=device-width,initial-scale=1" />
+    <link
+      rel="icon"
+      href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='64' height='64'%3E%3Ctext y='50' font-size='50'%3E⭐%3C/text%3E%3C/svg%3E" />
+    <link rel="stylesheet" href="style.css" />
+    <!-- A-Frame 1.7.1 -->
+    <script src="https://aframe.io/releases/1.7.1/aframe.min.js"></script>
+  </head>
+  <body>
+    <div id="hud">Starling-like flock (GPU-free). <b>Space</b>: Ground ↔ Air • Hover (ground): others face it • ←/→: cycle selection</div>
+
+    <a-scene
+      id="scene"
+      renderer="colorManagement: true; physicallyCorrectLights: true; shadowMap: true"
+      background="color: #101823"
+      fog="type: exponential; color: #1a2333; density: 0.018">
+      <a-assets id="assets"></a-assets>
+
+      <!-- Camera -->
+      <a-entity id="rig">
+        <a-entity
+          id="cam"
+          camera
+          look-controls
+          position="0 4 22"
+          cursor="rayOrigin: mouse"
+          raycaster="objects: .pickable; interval: 50"
+          boid-chase-cam="enabled:false; distance:5; height:1.6; stiffness:0.12; lookAhead:1.2"></a-entity>
+      </a-entity>
+
+      <!-- Softer, colored lights (no stark white) -->
+      <a-entity light="type: ambient; intensity: 0.35; color: #89a7ff"></a-entity>
+      <a-entity light="type: hemisphere; intensity: 1.35; color: #8fc6ff; groundColor: #2a3848" position="0 18 0"></a-entity>
+      <a-entity light="type: directional; intensity: 1.35; color: #ffd2a6; castShadow: true" position="16 28 14"></a-entity>
+      <a-entity light="type: directional; intensity: 0.7; color: #8fb3ff" position="-14 20 -18"></a-entity>
+
+      <!-- Ground -->
+      <a-entity
+        geometry="primitive: plane; width: 180; height: 180"
+        rotation="-90 0 0"
+        material="color: #233042; roughness: 0.95; metalness: 0"
+        shadow="receive: true"></a-entity>
+
+      <!-- Root for all boids -->
+      <a-entity id="world"></a-entity>
+    </a-scene>
+
+    <script type="module">
+      import { projects } from "./projects.js";
+      import { registerBoids } from "./boids.js";
+      import { spawnEntities } from "./spawner.js";
+
+      registerBoids();
+
+      await spawnEntities({
+        world: document.getElementById("world"),
+        assets: document.getElementById("assets"),
+        projects,
+        count: 200, // doubled
+        spawnRadiusXZ: 12, // still grouped near center
+        spawnHeightMin: 3,
+        spawnHeightMax: 12,
+      });
+    </script>
+  </body>
+</html>
