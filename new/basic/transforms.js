@@ -14,18 +14,13 @@ export function edgeAmplitude(norm) {
 
 export function transformForVertical(dx, amp, cfg = CONFIG) {
   const maxRot = cfg.MAX_ROT_DEG * amp;
-  const maxSkw = cfg.MAX_SKEW_DEG * amp;
   const angleY = clamp(dx * maxRot, -maxRot, maxRot);
-  const skewY = clamp(dx * maxSkw, -maxSkw, maxSkw);
-  return `rotateY(${angleY.toFixed(2)}deg) skewY(${-skewY.toFixed(2)}deg)`;
+  return `translateZ(0) rotateY(${angleY.toFixed(2)}deg)`; // removed skew
 }
-
 export function transformForHorizontal(dy, amp, cfg = CONFIG) {
   const maxRot = cfg.MAX_ROT_DEG * amp;
-  const maxSkw = cfg.MAX_SKEW_DEG * amp;
   const angleX = clamp(-dy * maxRot, -maxRot, maxRot);
-  const skewX = clamp(dy * maxSkw, -maxSkw, maxSkw);
-  return `rotateX(${angleX.toFixed(2)}deg) skewX(${skewX.toFixed(2)}deg)`;
+  return `translateZ(0) rotateX(${angleX.toFixed(2)}deg)`; // removed skew
 }
 
 export const bgXFrom = (curX) => `${(curX * 100).toFixed(1)}% 50%`;

@@ -17,12 +17,13 @@ header {
   background-color: #313134;
   z-index: 1;
   padding: 0 1rem;
+  font-size: calc(1.6cqh);
 }
 
 #stage {
   height: 100%;
   width: 100%;
-  perspective: 1000px;
+  perspective: 1500px;
   perspective-origin: 50% 50%;
   overflow: hidden;
 }
@@ -48,8 +49,8 @@ header {
   background-repeat: no-repeat;
   position: relative;
   height: 100%;
-  will-change: transform, background-position;
-  box-shadow: inset -1px 0 rgba(255, 255, 255, 0.06);
+  contain: paint; /* big win on iOS */
+
   transform-origin: 50% 50% 0;
 }
 
@@ -58,19 +59,12 @@ header {
   content: attr(data-title);
   position: absolute;
   left: 50%;
-  font-size: 1.2rem;
+  font-size: calc(100vw / 40 * 0.8); /* 30% of div width */
   bottom: 0;
-  xtop: -20%; /* start above the strip */
   transform: translate(-50%, 0); /* will move to (-50%, -50%) on hover */
   padding: 10px;
   color: #fff;
-  xopacity: 0; /* fade in on hover */
-  xfont-weight: 700;
   pointer-events: none;
-  mix-blend-mode: screen;
-
-  /* smooth slide + fade */
-  transition: top 1.8s ease-in, transform 1.8s ease-in, opacity 1.8s ease-in;
 
   /* layout defaults; overridden per orientation below */
   display: flex;
@@ -87,15 +81,6 @@ header {
 /* Horizontal bands: keep horizontal text */
 #strips.horizontal .strip::after {
   writing-mode: horizontal-tb;
-}
-
-/* Animate in on hover — slide to exact center and fade up */
-x.strip:hover::after {
-  top: 50%;
-  transform: translate(-50%, -50%);
-  opacity: 0.9;
-
-  transition: top 0.35s ease-out, transform 0.35s ease-out, opacity 0.35s ease-out;
 }
 
 @media (prefers-reduced-motion: reduce) {
