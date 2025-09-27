@@ -1,10 +1,10 @@
 import { projects } from "./projects.js";
 import { STRIP_COUNT, ensureAudio, playStripNote } from "./music.js";
-import { CONFIG, edgeAmplitude, transformForVertical, transformForHorizontal, bgXFrom, bgYFrom } from "./transforms.js";
+import { CONFIG, edgeAmplitude, transformForVertical, transformForHorizontal, bgXForStrip, bgYForStrip } from "./transforms.js";
 
 // ---------- Build DOM ----------
 const container = document.getElementById("strips");
-container.classList.add("vertical"); // default
+container.classList.add("vertical"); // default orientation
 
 function shuffle(arr) {
   for (let i = arr.length - 1; i > 0; i--) {
@@ -28,89 +28,119 @@ for (let i = 0; i < STRIP_COUNT; i++) {
   strips.push(div);
 }
 
-// Centers along main axis (0..1)
-const centers = Array.from({ length: STRIP_COUNT }, (_, i) => (i + 0.5) / STRIP_COUNT);
-
-// ---------- Pointer tracking ----------
-let targetX = 0.5,
-  targetY = 0.5;
+// ---------- State ----------
+let orientation = "vertical"; // "vertical" or "horizontal"
 let curX = 0.5,
-  curY = 0.5;
+  curY = 0.5; // eased cursor (0..1)
+let targetX = 0.5,
+  targetY = 0.5; // instantaneous cursor (0..1)
 
-function onPointerMove(e) {
-  const vw = window.innerWidth;
-  const vh = window.innerHeight;
-  const pt = e.touches ? e.touches[0] : e;
-  targetX = Math.min(1, Math.max(0, pt.clientX / vw));
-  targetY = Math.min(1, Math.max(0, pt.clientY / vh));
-}
-window.addEventListener("mousemove", onPointerMove, { passive: true });
-window.addEventListener("touchmove", onPointerMove, { passive: true });
-
-// ---------- Orientation toggle (press "1") ----------
-let orientation = "vertical";
-window.addEventListener("keydown", (e) => {
-  if (e.code === "Digit1" || e.key === "1") {
-    orientation = orientation === "vertical" ? "horizontal" : "vertical";
-    container.classList.toggle("vertical", orientation === "vertical");
-    container.classList.toggle("horizontal", orientation === "horizontal");
-  }
-});
-
-// ---------- Start audio context on first gesture ----------
-function startAudio() {
-  ensureAudio();
-}
-window.addEventListener("pointerdown", startAudio, { once: true, passive: true });
-window.addEventListener("keydown", startAudio, { once: true });
-
-// ---------- Note triggering ----------
 let lastIndex = -1;
+let prefersReduced = window.matchMedia("(prefers-reduced-motion: reduce)").matches;
+
+// Centers for each lane (normalized)
+const centers = new Array(STRIP_COUNT).fill(0).map((_, i) => (i + 0.5) / STRIP_COUNT);
+
+// ---------- Helpers ----------
 const clamp = (v, a, b) => (v < a ? a : v > b ? b : v);
 
 function currentIndexFromCursor() {
-  if (orientation === "vertical") {
-    const x = curX * STRIP_COUNT;
-    return Math.max(0, Math.min(STRIP_COUNT - 1, Math.floor(x)));
-  } else {
-    const y = curY * STRIP_COUNT;
-    return Math.max(0, Math.min(STRIP_COUNT - 1, Math.floor(y)));
-  }
+  const n = orientation === "vertical" ? targetX : targetY;
+  return clamp(Math.floor(n * STRIP_COUNT), 0, STRIP_COUNT - 1);
 }
 
-// ---------- Animation loop ----------
-const prefersReduced = window.matchMedia && window.matchMedia("(prefers-reduced-motion: reduce)").matches;
+function setOrientation(next) {
+  if (next === orientation) return;
+  orientation = next;
+  container.classList.toggle("vertical", orientation === "vertical");
+  container.classList.toggle("horizontal", orientation === "horizontal");
+  // Reset motion targets to avoid sudden jumps
+  curX = targetX = 0.5;
+  curY = targetY = 0.5;
+}
 
+// Optional: toggle on key "o"
+window.addEventListener("keydown", (e) => {
+  if (e.key.toLowerCase() === "o") {
+    setOrientation(orientation === "vertical" ? "horizontal" : "vertical");
+  }
+});
+
+// ---------- Input ----------
+function handlePoint(clientX, clientY) {
+  const rect = container.getBoundingClientRect();
+  const nx = clamp((clientX - rect.left) / Math.max(1, rect.width), 0, 1);
+  const ny = clamp((clientY - rect.top) / Math.max(1, rect.height), 0, 1);
+  targetX = nx;
+  targetY = ny;
+}
+
+window.addEventListener("pointermove", (e) => {
+  handlePoint(e.clientX, e.clientY);
+});
+
+window.addEventListener(
+  "pointerdown",
+  () => {
+    ensureAudio();
+  },
+  { once: true }
+);
+
+// Touch support
+window.addEventListener(
+  "touchmove",
+  (e) => {
+    if (e.touches && e.touches.length > 0) {
+      const t = e.touches[0];
+      handlePoint(t.clientX, t.clientY);
+    }
+  },
+  { passive: true }
+);
+
+window.addEventListener("mouseleave", () => {
+  targetX = 0.5;
+  targetY = 0.5;
+});
+
+// ---------- Animation ----------
 function tick() {
   curX += (targetX - curX) * CONFIG.EASE;
   curY += (targetY - curY) * CONFIG.EASE;
-
-  const bgX = bgXFrom(curX);
-  const bgY = bgYFrom(curY);
 
   if (!prefersReduced) {
     if (orientation === "vertical") {
       const amp = edgeAmplitude(curX);
       for (let i = 0; i < STRIP_COUNT; i++) {
         const strip = strips[i];
-        const dx = curX - centers[i];
+        const dx = curX - centers[i]; // distance from strip center
         strip.style.transform = transformForVertical(dx, amp);
-        strip.style.backgroundPosition = bgX;
+        strip.style.backgroundPosition = bgXForStrip(curX, dx);
       }
     } else {
       const amp = edgeAmplitude(curY);
       for (let i = 0; i < STRIP_COUNT; i++) {
         const strip = strips[i];
-        const dy = curY - centers[i];
+        const dy = curY - centers[i]; // distance from strip center
         strip.style.transform = transformForHorizontal(dy, amp);
-        strip.style.backgroundPosition = bgY;
+        strip.style.backgroundPosition = bgYForStrip(curY, dy);
       }
     }
   } else {
-    for (let i = 0; i < STRIP_COUNT; i++) {
-      const strip = strips[i];
-      strip.style.transform = "none";
-      strip.style.backgroundPosition = orientation === "vertical" ? bgX : bgY;
+    // Reduced motion: no rotation; background follows eased cursor uniformly
+    if (orientation === "vertical") {
+      for (let i = 0; i < STRIP_COUNT; i++) {
+        const strip = strips[i];
+        strip.style.transform = "none";
+        strip.style.backgroundPosition = `${(curX * 100).toFixed(1)}% 50%`;
+      }
+    } else {
+      for (let i = 0; i < STRIP_COUNT; i++) {
+        const strip = strips[i];
+        strip.style.transform = "none";
+        strip.style.backgroundPosition = `50% ${(curY * 100).toFixed(1)}%`;
+      }
     }
   }
 
@@ -125,4 +155,5 @@ function tick() {
 
   requestAnimationFrame(tick);
 }
+
 requestAnimationFrame(tick);
