@@ -1,0 +1,229 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="utf-8" />
+    <title>Jonas Johansson</title>
+    <meta
+      name="viewport"
+      content="width=device-width, initial-scale=1" />
+    <link
+      rel="preconnect"
+      href="https://unpkg.com" />
+    <link
+      rel="stylesheet"
+      href="fonts/fonts.css" />
+    <link
+      rel="stylesheet"
+      href="style.css" />
+  </head>
+  <body>
+    <!-- About Curtain -->
+    <div
+      id="about-curtain"
+      class="about-curtain">
+      <div class="about-content">
+        <p>
+          Jonas Johansson (1987–) is a Stockholm-based artist, educator, and designer from Glommen, Halland, working with light, technology,
+          and human interaction.
+        </p>
+        <p>
+          He currently designs courses for Svenska Tecknare and lectured in Visual Communication at
+          <a
+            href="https://beckmans.se"
+            target="_blank"
+            >Beckmans</a
+          >
+          (2017–2025). Jonas has served as an Assessor for Kulturbryggan under the Swedish Arts Grants Committee. His prior industry
+          experience includes creating technology-driven designs at KRAM/WEISSHAAR, producing tactile digital objects at
+          <a
+            href="https://field.io"
+            target="_blank"
+            >FIELD</a
+          >
+          in London, and leading immersive stage experiences as Interactive Art Director at
+          <a
+            href="https://momentfactory.com"
+            target="_blank"
+            >Moment Factory</a
+          >
+          in Montreal.
+        </p>
+        <p>
+          Jonas runs the artist residency
+          <a
+            href="https://visualia.se"
+            target="_blank"
+            >Visualia</a
+          >, is a member of Stockholm-based lighting collective
+          <a
+            href="https://svartljus.se"
+            target="_blank"
+            >Svartljus</a
+          >, and co-founded
+          <a
+            href="https://nava.community"
+            target="_blank"
+            >Nordic Audiovisual Artists</a
+          >, a network for electronic arts and audiovisual production. He runs a studio space in Södermalm together with
+          <a
+            href="https://smash.studio"
+            target="_blank"
+            >SMASH</a
+          >
+          and
+          <a
+            href="https://ivar.studio"
+            target="_blank"
+            >IVAR</a
+          >.
+        </p>
+        <p>
+          Open for commissions, collaborations, and workshops. For full
+          <a
+            href="YOUR_RESUME_LINK"
+            target="_blank"
+            >resume</a
+          >
+          and details:
+          <a
+            href="mailto:j@jonasjohansson.se"
+            target="_blank"
+            >j@jonasjohansson.se</a
+          >
+        </p>
+      </div>
+    </div>
+
+    <header id="header">
+      <div
+        class="header-content"
+        id="island-handle">
+        <div class="header-title">JONAS JOHANSSON</div>
+        <div class="header-subtitle">PROGRESS NOT PERFECTION</div>
+      </div>
+    </header>
+
+    <!-- Project Detail View -->
+    <div
+      id="project-detail"
+      class="project-detail hidden">
+      <div
+        class="project-detail-image"
+        id="project-detail-image"></div>
+      <div class="project-detail-content">
+        <h1
+          id="project-detail-title"
+          class="project-title"></h1>
+        <div
+          id="project-detail-body"
+          class="project-body">
+          <!-- Project content will be loaded here -->
+        </div>
+        <button
+          id="back-button"
+          class="back-button">
+          ← BACK TO PROJECTS
+        </button>
+      </div>
+    </div>
+
+    <div id="stage">
+      <div
+        id="strips"
+        class="vertical"
+        role="list"></div>
+    </div>
+
+    <footer id="footer">
+      <!-- Filter Dropdown -->
+      <div class="filter-dropdown">
+        <button
+          class="filter-dropdown-button"
+          data-dropdown="filter">
+          Filter
+          <span class="dropdown-arrow">▼</span>
+        </button>
+        <div
+          class="filter-dropdown-content"
+          id="filter-dropdown">
+          <label class="filter-option">
+            <input
+              type="checkbox"
+              value="Light"
+              data-type="category" />
+            <span>Light</span>
+          </label>
+          <label class="filter-option">
+            <input
+              type="checkbox"
+              value="Installation"
+              data-type="category" />
+            <span>Installation</span>
+          </label>
+          <label class="filter-option">
+            <input
+              type="checkbox"
+              value="Education"
+              data-type="category" />
+            <span>Education</span>
+          </label>
+          <label class="filter-option">
+            <input
+              type="checkbox"
+              value="AV"
+              data-type="category" />
+            <span>AV</span>
+          </label>
+          <label class="filter-option">
+            <input
+              type="checkbox"
+              value="Mixed Reality"
+              data-type="category" />
+            <span>Mixed Reality</span>
+          </label>
+          <label class="filter-option">
+            <input
+              type="checkbox"
+              value="Stage"
+              data-type="category" />
+            <span>Stage</span>
+          </label>
+        </div>
+      </div>
+    </footer>
+
+    <!-- Application Scripts -->
+    <script
+      type="module"
+      src="projects.js"></script>
+    <script
+      type="module"
+      src="music.js"></script>
+    <script
+      type="module"
+      src="router.js"></script>
+    <script
+      type="module"
+      src="strips.js"></script>
+    <script
+      defer
+      src="curtain.js"></script>
+    <script>
+      // Change title when user looks away
+      const originalTitle = "Jonas Johansson";
+      const awayTitles = ["👀", "...", "🎵", "still here", "come back?", "hello?"];
+      let awayTitleIndex = 0;
+
+      document.addEventListener("visibilitychange", () => {
+        if (document.hidden) {
+          // User switched tabs - cycle through fun titles
+          document.title = awayTitles[awayTitleIndex];
+          awayTitleIndex = (awayTitleIndex + 1) % awayTitles.length;
+        } else {
+          // User came back - restore original title
+          document.title = originalTitle;
+        }
+      });
+    </script>
+  </body>
+</html>

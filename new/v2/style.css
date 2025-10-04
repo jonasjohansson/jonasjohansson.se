@@ -2,8 +2,8 @@ html,
 body {
   height: 100%;
   margin: 0;
-  background: #f8f9fa;
-  color: #333;
+  background: #1a1a1d;
+  color: #ffffff;
   font-family: "OffBit", system-ui, -apple-system, Segoe UI, Roboto, Helvetica, Arial, sans-serif;
   letter-spacing: 0.25rem;
   overflow-x: hidden;
@@ -24,73 +24,146 @@ body {
   -ms-overflow-style: none;
 }
 
+/* Utility classes */
+.hidden {
+  display: none !important;
+}
+
+.transitioning {
+  transition: all 0.6s cubic-bezier(0.4, 0, 0.2, 1);
+}
+
 header {
   position: sticky;
   top: 0;
-  height: 1.8rem;
-  line-height: 1.8rem;
+  height: 2rem;
   width: 100%;
-  background-color: #e9ecef;
-  color: #333;
+  background-color: #313134;
+  color: #ffffff;
   z-index: 10;
-  overflow: hidden;
-  white-space: nowrap;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  padding: 0 1rem;
   text-transform: uppercase;
   transition: background-color 0.3s ease;
+  overflow: hidden;
+  white-space: nowrap;
+  flex-shrink: 0;
 }
 
 header:hover {
-  background-color: #dee2e6;
+  background-color: #404043;
 }
 
-header .marquee {
+.header-content {
+  display: flex;
+  align-items: center;
+  justify-content: flex-start;
   width: 100%;
+}
+
+.header-title {
+  font-size: 1.6rem;
+  letter-spacing: 0.215rem;
+  color: #ffffff;
+  white-space: nowrap;
   overflow: hidden;
+  text-overflow: ellipsis;
+  max-width: 100%;
+  position: relative;
+  top: 3px;
+}
+
+.header-links {
+  display: flex;
+  gap: 2rem;
   white-space: nowrap;
+  flex-shrink: 0;
 }
 
-header .marquee-content {
-  display: inline-block;
-  animation: scroll 60s linear infinite;
-  font-size: 1.2rem;
-  letter-spacing: 0.25rem;
-  white-space: nowrap;
-}
-
-header .marquee:hover .marquee-content {
-  animation-play-state: paused;
-}
-
-header .marquee-content span {
-  display: inline-block;
-  margin-right: 2rem;
-  color: #333;
-}
-
-header .header-link {
-  color: #333;
+.header-link {
+  color: #ffffff;
   text-decoration: none;
   transition: color 0.3s ease;
-  margin-right: 2rem;
+  font-size: 1.2rem;
+  letter-spacing: 0.115rem;
 }
 
-header .header-link:hover {
-  color: #666;
+.header-link:hover {
+  color: #cccccc;
 }
 
 /* Bio Section */
 #bio-section {
   width: 100%;
-  background-color: #ffffff;
+  background-color: #1a1a1d;
+  display: none;
 }
 
-@keyframes scroll {
-  0% {
-    transform: translateX(0%);
-  }
-  100% {
-    transform: translateX(-50%);
-  }
+/* Project Detail View */
+.project-detail {
+  width: 100%;
+  background-color: #2a2a2d;
+  z-index: 5;
+  opacity: 0;
+  transform: translateY(-100%);
+  transition: all 0.6s cubic-bezier(0.4, 0, 0.2, 1);
+  position: relative;
+  min-height: 50vh;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+.project-detail.visible {
+  opacity: 1;
+  transform: translateY(0);
+}
+
+.project-detail-content {
+  max-width: 50rem;
+  padding: 2rem;
+  text-align: center;
+}
+
+.project-title {
+  font-size: 2.5rem;
+  font-weight: bold;
+  margin-bottom: 1.5rem;
+  color: #ffffff;
+  text-transform: uppercase;
+  letter-spacing: 0.1rem;
+}
+
+.project-body {
+  font-size: 1.1rem;
+  line-height: 1.6;
+  color: #ffffff;
+  margin-bottom: 2rem;
+}
+
+.back-button {
+  background: none;
+  border: 2px solid #ffffff;
+  color: #ffffff;
+  padding: 0.8rem 1.5rem;
+  font-size: 0.9rem;
+  text-transform: uppercase;
+  letter-spacing: 0.1rem;
+  cursor: pointer;
+  transition: all 0.3s ease;
+}
+
+.back-button:hover {
+  background-color: #ffffff;
+  color: #1a1a1d;
+}
+
+/* Animation for strips when transitioning */
+#stage.transitioning {
+  transform: translateY(100vh);
+  opacity: 0;
 }
 
 .bio-content {
@@ -110,16 +183,23 @@ header .header-link:hover {
 }
 
 #stage {
-  height: 100vh;
+  height: calc(100vh - 2rem);
   width: 100%;
-  overflow: visible;
+  /* overflow: visible; */
 }
 
 #strips {
   display: flex;
-  height: auto;
-  min-height: 100vh;
+  height: calc(100vh - 2rem);
   width: 100%;
+  overflow-x: auto;
+  overflow-y: hidden;
+  scrollbar-width: none; /* Firefox */
+  -ms-overflow-style: none; /* IE and Edge */
+}
+
+#strips::-webkit-scrollbar {
+  display: none; /* Chrome, Safari, Opera */
 }
 
 #strips.vertical {
@@ -130,12 +210,12 @@ header .header-link:hover {
 }
 
 .strip {
-  flex: 0 0 calc(100vw / var(--strip-count, 40));
+  flex: 0 0 calc(100vw / 24); /* Fixed width (1/24) */
   position: relative;
-  height: 100vh;
+  height: calc(100vh - 2rem);
   contain: paint; /* big win on iOS */
   overflow: visible;
-  transition: transform 0.5s ease;
+  cursor: pointer;
 }
 
 .strip-image {
@@ -153,11 +233,11 @@ header .header-link:hover {
 .strip-text {
   position: absolute;
   left: 50%;
-  bottom: 10px;
+  bottom: 0;
   transform: translate(-50%, 0);
   font-size: 1.2rem;
-  padding: 10px;
-  color: #333;
+  padding: 0.5rem;
+  color: #ffffff;
   pointer-events: none;
   z-index: 3;
   display: flex;
@@ -166,12 +246,11 @@ header .header-link:hover {
   font-weight: normal;
   white-space: nowrap;
   overflow: visible;
-  text-indent: 1rem;
+  text-indent: 0;
   font-family: "OffBit", system-ui, -apple-system, Segoe UI, Roboto, Helvetica, Arial, sans-serif;
-  letter-spacing: 0.25rem;
-  line-height: 1.6;
+  letter-spacing: 0.1rem;
+  line-height: 1.4;
   text-transform: uppercase;
-  mix-blend-mode: difference;
 }
 
 /* Vertical pillars: vertical text top→bottom */

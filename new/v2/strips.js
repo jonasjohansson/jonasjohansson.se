@@ -1,5 +1,6 @@
 import { projects } from "./projects.js";
 import { ensureAudio, playStripNote } from "./music.js";
+import { router } from "./router.js";
 
 // ---------- Build DOM ----------
 const container = document.getElementById("strips");
@@ -47,64 +48,38 @@ function createStrip(project, index) {
 
   // Add hover events to update header text
   div.addEventListener("mouseenter", () => {
-    const marqueeContent = document.querySelector(".marquee-content");
-    if (marqueeContent) {
-      marqueeContent.innerHTML = `
-        <span>JONAS JOHANSSON ${project.title}</span>
-        <span>SVARTLJUS</span>
-        <span>NAVA</span>
-        <span>VISUALIA</span>
-        <a href="mailto:hello@jonasjohansson.se" class="header-link">EMAIL</a>
-        <a href="https://instagram.com/jonasjohansson" class="header-link">INSTAGRAM</a>
-        <a href="https://docs.google.com/document/d/YOUR_DOC_ID/edit?usp=sharing" class="header-link">CV</a>
-        <span>JONAS JOHANSSON ${project.title}</span>
-        <span>SVARTLJUS</span>
-        <span>NAVA</span>
-        <span>VISUALIA</span>
-        <a href="mailto:hello@jonasjohansson.se" class="header-link">EMAIL</a>
-        <a href="https://instagram.com/jonasjohansson" class="header-link">INSTAGRAM</a>
-        <a href="https://docs.google.com/document/d/YOUR_DOC_ID/edit?usp=sharing" class="header-link">CV</a>
-      `;
+    const headerTitle = document.querySelector(".header-title");
+    if (headerTitle) {
+      headerTitle.textContent = `JONAS JOHANSSON ${project.title}`;
     }
   });
 
   div.addEventListener("mouseleave", () => {
-    const marqueeContent = document.querySelector(".marquee-content");
-    if (marqueeContent) {
-      marqueeContent.innerHTML = `
-        <span>JONAS JOHANSSON PROGRESS NOT PERFECTION</span>
-        <span>SVARTLJUS</span>
-        <span>NAVA</span>
-        <span>VISUALIA</span>
-        <a href="mailto:hello@jonasjohansson.se" class="header-link">EMAIL</a>
-        <a href="https://instagram.com/jonasjohansson" class="header-link">INSTAGRAM</a>
-        <a href="https://docs.google.com/document/d/YOUR_DOC_ID/edit?usp=sharing" class="header-link">CV</a>
-        <span>JONAS JOHANSSON PROGRESS NOT PERFECTION</span>
-        <span>SVARTLJUS</span>
-        <span>NAVA</span>
-        <span>VISUALIA</span>
-        <a href="mailto:hello@jonasjohansson.se" class="header-link">EMAIL</a>
-        <a href="https://instagram.com/jonasjohansson" class="header-link">INSTAGRAM</a>
-        <a href="https://docs.google.com/document/d/YOUR_DOC_ID/edit?usp=sharing" class="header-link">CV</a>
-      `;
+    const headerTitle = document.querySelector(".header-title");
+    if (headerTitle) {
+      headerTitle.textContent = "JONAS JOHANSSON PROGRESS NOT PERFECTION";
     }
+  });
+
+  // Add click handler to navigate to project page
+  div.addEventListener("click", () => {
+    const projectId = project.title.toLowerCase().replace(/\s+/g, "-");
+    router.navigate(`/project/${projectId}`, { project });
   });
 
   return { element: div, project: project };
 }
 
-// Initialize strips
-const numStripsToShow = filteredProjects.length;
-
-// Set initial CSS custom property for dynamic strip width
-document.documentElement.style.setProperty("--strip-count", numStripsToShow);
-
-for (let i = 0; i < numStripsToShow; i++) {
+// Initialize strips - show all projects with fixed width
+for (let i = 0; i < filteredProjects.length; i++) {
   const project = filteredProjects[i];
   const strip = createStrip(project, i);
   strips.push(strip.element);
   stripData.push(strip.project);
 }
+
+// Initialize router after strips are created
+router.init();
 
 // ---------- State ----------
 let orientation = "vertical"; // "vertical" or "horizontal"
@@ -246,12 +221,8 @@ function filterProjects() {
   strips.length = 0;
   stripData.length = 0;
 
-  const numStripsToShow = filteredProjects.length;
-
-  // Update CSS custom property for dynamic strip width
-  document.documentElement.style.setProperty("--strip-count", numStripsToShow);
-
-  for (let i = 0; i < numStripsToShow; i++) {
+  // Create strips for all filtered projects with fixed width
+  for (let i = 0; i < filteredProjects.length; i++) {
     const project = filteredProjects[i];
     const strip = createStrip(project, i);
     strips.push(strip.element);

@@ -15,47 +15,8 @@
   </head>
   <body>
     <header id="header">
-      <div class="marquee">
-        <div class="marquee-content">
-          <span>JONAS JOHANSSON PROGRESS NOT PERFECTION</span>
-          <span>SVARTLJUS</span>
-          <span>NAVA</span>
-          <span>VISUALIA</span>
-          <a
-            href="mailto:hello@jonasjohansson.se"
-            class="header-link"
-            >EMAIL</a
-          >
-          <a
-            href="https://instagram.com/jonasjohansson"
-            class="header-link"
-            >INSTAGRAM</a
-          >
-          <a
-            href="https://docs.google.com/document/d/YOUR_DOC_ID/edit?usp=sharing"
-            class="header-link"
-            >CV</a
-          >
-          <span>JONAS JOHANSSON PROGRESS NOT PERFECTION</span>
-          <span>SVARTLJUS</span>
-          <span>NAVA</span>
-          <span>VISUALIA</span>
-          <a
-            href="mailto:hello@jonasjohansson.se"
-            class="header-link"
-            >EMAIL</a
-          >
-          <a
-            href="https://instagram.com/jonasjohansson"
-            class="header-link"
-            >INSTAGRAM</a
-          >
-          <a
-            href="https://docs.google.com/document/d/YOUR_DOC_ID/edit?usp=sharing"
-            class="header-link"
-            >CV</a
-          >
-        </div>
+      <div class="header-content">
+        <span class="header-title">JONAS JOHANSSON PROGRESS NOT PERFECTION</span>
       </div>
     </header>
 
@@ -181,6 +142,27 @@
       </div>
     </div>
 
+    <!-- Project Detail View -->
+    <div
+      id="project-detail"
+      class="project-detail hidden">
+      <div class="project-detail-content">
+        <h1
+          id="project-detail-title"
+          class="project-title"></h1>
+        <div
+          id="project-detail-body"
+          class="project-body">
+          <!-- Project content will be loaded here -->
+        </div>
+        <button
+          id="back-button"
+          class="back-button">
+          ← BACK TO PROJECTS
+        </button>
+      </div>
+    </div>
+
     <div id="stage">
       <div
         id="strips"
@@ -198,6 +180,9 @@
     <script
       type="module"
       src="music.js"></script>
+    <script
+      type="module"
+      src="router.js"></script>
     <script
       type="module"
       src="strips.js"></script>
