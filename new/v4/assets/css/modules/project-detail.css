@@ -1,0 +1,95 @@
+/* Project Detail View */
+
+.project-detail {
+  position: fixed;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100vh;
+  height: 100dvh; /* Dynamic viewport height for mobile */
+  z-index: var(--detail-z-index);
+  opacity: 0;
+  pointer-events: none;
+}
+
+.project-detail.visible {
+  opacity: 1;
+  pointer-events: auto;
+}
+
+.project-detail-image {
+  position: absolute;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100vh;
+  height: 100dvh; /* Dynamic viewport height for mobile */
+  background-size: contain;
+  background-position: center;
+  background-repeat: no-repeat;
+  z-index: 1;
+}
+
+.project-detail-content {
+  position: absolute;
+  bottom: 0;
+  left: 0;
+  right: 0;
+  background: rgba(26, 26, 29, 0.95);
+  backdrop-filter: blur(20px);
+  padding: var(--spacing-xl);
+  padding-bottom: calc(var(--spacing-xl) + env(safe-area-inset-bottom)); /* iOS safe area */
+  text-align: center;
+  z-index: 2;
+  max-height: 40vh;
+  max-height: 40dvh; /* Dynamic viewport for mobile */
+  overflow-y: auto;
+}
+
+.project-title {
+  font-size: var(--font-size-base);
+  font-weight: bold;
+  margin-bottom: var(--spacing-md);
+  color: var(--text-primary);
+  text-transform: uppercase;
+  letter-spacing: 0.1rem;
+}
+
+.project-body {
+  font-size: var(--font-size-base);
+  line-height: 1.425;
+  color: var(--text-primary);
+  margin-bottom: var(--spacing-lg);
+}
+
+.back-button {
+  background: rgba(255, 255, 255, 0.1);
+  border: 2px solid var(--text-primary);
+  color: var(--text-primary);
+  padding: 0.8rem var(--spacing-lg);
+  font-size: var(--font-size-base);
+  text-transform: uppercase;
+  letter-spacing: 0.1rem;
+  cursor: pointer;
+}
+
+.back-button:hover {
+  background-color: var(--text-primary);
+  color: #1a1a1d;
+}
+
+.bio-content {
+  max-width: 600px;
+  margin: 0;
+  padding: var(--spacing-xl) var(--spacing-md);
+  text-align: left;
+}
+
+.bio-content p {
+  color: #666;
+  line-height: 1.425;
+  margin-bottom: var(--spacing-md);
+  font-size: var(--font-size-base);
+  letter-spacing: var(--letter-spacing-wider);
+  font-family: var(--font-family);
+}

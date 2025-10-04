@@ -8,8 +8,8 @@ import { fileURLToPath } from "url";
 const __filename = fileURLToPath(import.meta.url);
 const __dirname = path.dirname(__filename);
 
-const imagesDir = path.join(__dirname, "images");
-const backupDir = path.join(__dirname, "images-backup");
+const imagesDir = path.join(__dirname, "assets/images");
+const backupDir = path.join(__dirname, "assets/images-backup");
 
 // Create backup directory
 if (!fs.existsSync(backupDir)) {

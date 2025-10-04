@@ -1,13 +1,13 @@
-import sharp from 'sharp';
-import fs from 'fs';
-import path from 'path';
-import { fileURLToPath } from 'url';
+import sharp from "sharp";
+import fs from "fs";
+import path from "path";
+import { fileURLToPath } from "url";
 
 const __filename = fileURLToPath(import.meta.url);
 const __dirname = path.dirname(__filename);
 
-const inputDir = path.join(__dirname, 'images-backup');
-const outputDir = path.join(__dirname, 'images');
+const inputDir = path.join(__dirname, "assets/images-backup");
+const outputDir = path.join(__dirname, "assets/images");
 
 // Create output directory if it doesn't exist
 if (!fs.existsSync(outputDir)) {
@@ -33,7 +33,7 @@ async function convertToWebP() {
 
     // Process image files
     const ext = path.extname(file).toLowerCase();
-    if (['.jpg', '.jpeg', '.png'].includes(ext)) {
+    if ([".jpg", ".jpeg", ".png"].includes(ext)) {
       const baseName = path.basename(file, ext);
       const outputPath = path.join(outputDir, `${baseName}.webp`);
 
@@ -49,7 +49,9 @@ async function convertToWebP() {
         const outputSize = fs.statSync(outputPath).size;
         const savings = ((1 - outputSize / inputSize) * 100).toFixed(1);
 
-        console.log(`✓ ${file} → ${baseName}.webp (${(inputSize / 1024).toFixed(0)}KB → ${(outputSize / 1024).toFixed(0)}KB, saved ${savings}%)`);
+        console.log(
+          `✓ ${file} → ${baseName}.webp (${(inputSize / 1024).toFixed(0)}KB → ${(outputSize / 1024).toFixed(0)}KB, saved ${savings}%)`
+        );
         converted++;
       } catch (error) {
         console.error(`✗ Error converting ${file}:`, error.message);
@@ -65,4 +67,3 @@ async function convertToWebP() {
 }
 
 convertToWebP().catch(console.error);
-

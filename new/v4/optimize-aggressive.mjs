@@ -8,7 +8,7 @@ import { fileURLToPath } from "url";
 const __filename = fileURLToPath(import.meta.url);
 const __dirname = path.dirname(__filename);
 
-const imagesDir = path.join(__dirname, "images");
+const imagesDir = path.join(__dirname, "assets/images");
 
 // Get all image files
 const files = fs.readdirSync(imagesDir).filter((file) => {
