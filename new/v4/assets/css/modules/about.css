@@ -2,7 +2,7 @@
 
 .about-curtain {
   width: 80vw;
-  max-width: 300px;
+  max-width: 800px;
   background: var(--bg-primary);
   pointer-events: none;
 }
@@ -16,6 +16,7 @@
 @media (max-width: 768px) {
   .about-curtain {
     width: 100%;
+    max-width: 300px;
   }
 
   .about-content {

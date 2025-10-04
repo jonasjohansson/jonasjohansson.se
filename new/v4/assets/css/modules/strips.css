@@ -109,10 +109,11 @@
 .strip-text {
   position: absolute;
   left: calc(50% + 2px);
-  bottom: env(safe-area-inset-bottom, 0px); /* Position above safe area */
+  bottom: 0;
   transform: translate(-50%, 0);
   font-size: var(--font-size-base);
   padding: var(--spacing-sm);
+  padding-bottom: calc(var(--spacing-sm) + env(safe-area-inset-bottom, 0px)); /* Extra padding for safe area */
   color: var(--text-primary);
   pointer-events: none;
   z-index: 4;
