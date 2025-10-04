@@ -115,62 +115,6 @@
       </div>
     </header>
 
-    <!-- Filter Dropdown (Fixed at bottom) -->
-    <div class="filter-dropdown">
-      <button
-        class="filter-dropdown-button"
-        data-dropdown="filter">
-        Filter
-        <span class="dropdown-arrow">▼</span>
-      </button>
-      <div
-        class="filter-dropdown-content"
-        id="filter-dropdown">
-        <label class="filter-option">
-          <input
-            type="checkbox"
-            value="Light"
-            data-type="category" />
-          <span>Light</span>
-        </label>
-        <label class="filter-option">
-          <input
-            type="checkbox"
-            value="Installation"
-            data-type="category" />
-          <span>Installation</span>
-        </label>
-        <label class="filter-option">
-          <input
-            type="checkbox"
-            value="Education"
-            data-type="category" />
-          <span>Education</span>
-        </label>
-        <label class="filter-option">
-          <input
-            type="checkbox"
-            value="AV"
-            data-type="category" />
-          <span>AV</span>
-        </label>
-        <label class="filter-option">
-          <input
-            type="checkbox"
-            value="Mixed Reality"
-            data-type="category" />
-          <span>Mixed Reality</span>
-        </label>
-        <label class="filter-option">
-          <input
-            type="checkbox"
-            value="Stage"
-            data-type="category" />
-          <span>Stage</span>
-        </label>
-      </div>
-    </div>
-
     <!-- Project Detail View -->
     <div
       id="project-detail"
@@ -201,6 +145,73 @@
         class="vertical"
         role="list"></div>
     </div>
+
+    <footer>
+      <!-- Filter Dropdown (Fixed at bottom) -->
+      <div class="filter-dropdown">
+        <!-- Left Options -->
+        <div
+          class="filter-dropdown-content filter-dropdown-left"
+          id="filter-dropdown-left">
+          <label class="filter-option">
+            <input
+              type="checkbox"
+              value="Light"
+              data-type="category" />
+            <span>Light</span>
+          </label>
+          <label class="filter-option">
+            <input
+              type="checkbox"
+              value="Installation"
+              data-type="category" />
+            <span>Installation</span>
+          </label>
+          <label class="filter-option">
+            <input
+              type="checkbox"
+              value="Education"
+              data-type="category" />
+            <span>Education</span>
+          </label>
+        </div>
+
+        <!-- Filter Button (Center) -->
+        <button
+          class="filter-dropdown-button"
+          data-dropdown="filter">
+          Filter
+          <span class="dropdown-arrow">▼</span>
+        </button>
+
+        <!-- Right Options -->
+        <div
+          class="filter-dropdown-content filter-dropdown-right"
+          id="filter-dropdown-right">
+          <label class="filter-option">
+            <input
+              type="checkbox"
+              value="AV"
+              data-type="category" />
+            <span>AV</span>
+          </label>
+          <label class="filter-option">
+            <input
+              type="checkbox"
+              value="Mixed Reality"
+              data-type="category" />
+            <span>Mixed Reality</span>
+          </label>
+          <label class="filter-option">
+            <input
+              type="checkbox"
+              value="Stage"
+              data-type="category" />
+            <span>Stage</span>
+          </label>
+        </div>
+      </div>
+    </footer>
 
     <!-- Application Scripts -->
     <script

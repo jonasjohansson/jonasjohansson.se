@@ -342,7 +342,7 @@ requestAnimationFrame(tick);
 function getSelectedFilters() {
   const selectedTags = [];
 
-  document.querySelectorAll('#filter-dropdown input[type="checkbox"]:checked').forEach((checkbox) => {
+  document.querySelectorAll('.filter-dropdown-content input[type="checkbox"]:checked').forEach((checkbox) => {
     const value = checkbox.value;
     if (FILTER_CATEGORIES.includes(value)) {
       selectedTags.push(value);
@@ -385,7 +385,7 @@ function filterProjects() {
 // Add filter event listeners
 document.addEventListener("DOMContentLoaded", () => {
   // Add event listeners to all filter checkboxes
-  const filterInputs = document.querySelectorAll('#filter-dropdown input[type="checkbox"]');
+  const filterInputs = document.querySelectorAll('.filter-dropdown-content input[type="checkbox"]');
 
   filterInputs.forEach((input) => {
     input.addEventListener("change", () => {
