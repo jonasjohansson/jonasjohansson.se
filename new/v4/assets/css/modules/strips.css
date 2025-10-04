@@ -117,7 +117,7 @@
   color: var(--text-primary);
   pointer-events: none;
   z-index: 4;
-  display: flex;
+  display: none; /* Hidden by default */
   align-items: center;
   justify-content: center;
   font-weight: normal;
@@ -130,6 +130,10 @@
   text-transform: uppercase;
   writing-mode: sideways-lr;
   text-orientation: mixed;
+}
+
+.strip:hover .strip-text {
+  display: flex; /* Show on hover */
 }
 
 .strip.wide .strip-text {
