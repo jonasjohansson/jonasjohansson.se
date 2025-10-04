@@ -13,8 +13,24 @@ document.addEventListener("DOMContentLoaded", () => {
   const curtainHeight = curtain.offsetHeight;
   const maxDrag = curtainHeight; // pixels
 
+  // Calculate the offset for the filter dropdown below the island
+  const headerHeight = header.offsetHeight;
+  const islandHeight = island.offsetHeight;
+  const filterOffset = headerHeight - islandHeight;
+
   // Set initial position (hidden above viewport)
   curtain.style.top = `-${curtainHeight}px`;
+
+  // Add hover effect to show curtain preview
+  island.addEventListener("mouseenter", () => {
+    if (!isDragging) {
+      curtain.classList.add("hover-preview");
+    }
+  });
+
+  island.addEventListener("mouseleave", () => {
+    curtain.classList.remove("hover-preview");
+  });
 
   island.addEventListener("pointerdown", (e) => {
     isDragging = true;
@@ -41,7 +57,7 @@ document.addEventListener("DOMContentLoaded", () => {
     // Move curtain and header (island + links + filter) together
     curtain.style.top = `${-curtainHeight + currentPosition}px`;
     curtain.style.transform = `translateX(-50%)`;
-    header.style.transform = `translate(-50%, ${currentPosition}px)`;
+    header.style.transform = `translate(-50%, ${currentPosition - filterOffset}px)`;
 
     // Enable pointer events on curtain when visible
     if (currentPosition > 0) {
@@ -84,7 +100,7 @@ document.addEventListener("DOMContentLoaded", () => {
       // Move curtain and header (island + links + filter) together
       curtain.style.top = `${-curtainHeight + currentPosition}px`;
       curtain.style.transform = `translateX(-50%)`;
-      header.style.transform = `translate(-50%, ${currentPosition}px)`;
+      header.style.transform = `translate(-50%, ${currentPosition - filterOffset}px)`;
 
       // Enable/disable pointer events
       if (currentPosition > 0) {

@@ -347,7 +347,7 @@ requestAnimationFrame(tick);
 function getSelectedFilters() {
   const selectedTags = [];
 
-  document.querySelectorAll('#filter-section input[type="checkbox"]:checked').forEach((checkbox) => {
+  document.querySelectorAll('#filter-dropdown input[type="checkbox"]:checked').forEach((checkbox) => {
     const value = checkbox.value;
     if (["Light", "Installation", "Education", "AV", "Mixed Reality", "Stage"].includes(value)) {
       selectedTags.push(value);
@@ -406,7 +406,7 @@ function filterProjects() {
 // Add filter event listeners
 document.addEventListener("DOMContentLoaded", () => {
   // Add event listeners to all filter checkboxes
-  const filterInputs = document.querySelectorAll('#filter-section input[type="checkbox"]');
+  const filterInputs = document.querySelectorAll('#filter-dropdown input[type="checkbox"]');
 
   filterInputs.forEach((input) => {
     input.addEventListener("change", () => {
@@ -431,15 +431,6 @@ document.addEventListener("DOMContentLoaded", () => {
       // Toggle current dropdown
       if (!isOpen) {
         dropdown.classList.add("open");
-        
-        // Calculate and set filter height
-        requestAnimationFrame(() => {
-          const filterHeight = dropdown.offsetHeight;
-          document.documentElement.style.setProperty('--filter-height', `${filterHeight}px`);
-          document.getElementById('stage').classList.add('filter-open');
-        });
-      } else {
-        document.getElementById('stage').classList.remove('filter-open');
       }
     });
   });
@@ -450,7 +441,6 @@ document.addEventListener("DOMContentLoaded", () => {
       document.querySelectorAll(".filter-dropdown").forEach((d) => {
         d.classList.remove("open");
       });
-      document.getElementById('stage').classList.remove('filter-open');
     }
   });
 });
