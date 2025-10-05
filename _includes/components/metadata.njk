@@ -1,0 +1,131 @@
+<!-- Basic Meta Tags -->
+<meta charset="utf-8" />
+<title>{{ title or site.title }}</title>
+<meta
+  name="description"
+  content="{{ description or site.description }}" />
+
+<!-- Viewport and Mobile Optimization -->
+<meta
+  name="viewport"
+  content="width=device-width, initial-scale=1, maximum-scale=1, user-scalable=no, viewport-fit=cover" />
+<meta
+  name="apple-mobile-web-app-capable"
+  content="yes" />
+<meta
+  name="apple-mobile-web-app-status-bar-style"
+  content="black" />
+<meta
+  name="theme-color"
+  content="#1a1a1a" />
+
+<!-- SEO and Performance -->
+<meta
+  name="robots"
+  content="index, follow" />
+<meta
+  name="author"
+  content="Jonas Johansson" />
+<meta
+  name="keywords"
+  content="artist, light art, interactive art, digital art, technology, installation, Sweden" />
+
+<!-- Project-specific metadata -->
+{% if project %} {% set firstImage = projectContent[project.slug].content | findFirstImage %} {% set projectTitle =
+projectContent[project.slug].title %} {% set projectDescription = projectContent[project.slug].content | findFirstText | truncate(160) %} {%
+set projectUrl = site.url ~ page.url %} {% set projectImage = firstImage and (site.url ~ firstImage) or (site.url ~ site.meta.ogImage) %}
+
+<!-- Open Graph / Facebook -->
+<meta
+  property="og:type"
+  content="article" />
+<meta
+  property="og:title"
+  content="{{ projectTitle }}" />
+<meta
+  property="og:description"
+  content="{{ projectDescription }}" />
+<meta
+  property="og:url"
+  content="{{ projectUrl }}" />
+<meta
+  property="og:image"
+  content="{{ projectImage }}" />
+<meta
+  property="og:site_name"
+  content="{{ site.title }}" />
+<meta
+  property="og:locale"
+  content="en_US" />
+
+<!-- Twitter -->
+<meta
+  name="twitter:card"
+  content="summary_large_image" />
+<meta
+  name="twitter:title"
+  content="{{ projectTitle }}" />
+<meta
+  name="twitter:description"
+  content="{{ projectDescription }}" />
+<meta
+  name="twitter:image"
+  content="{{ projectImage }}" />
+{% else %}
+<!-- Default site metadata -->
+<meta
+  property="og:type"
+  content="website" />
+<meta
+  property="og:title"
+  content="{{ title or site.title }}" />
+<meta
+  property="og:description"
+  content="{{ description or site.description }}" />
+<meta
+  property="og:url"
+  content="{{ site.url }}{{ page.url }}" />
+<meta
+  property="og:image"
+  content="{{ site.url }}{{ site.meta.ogImage }}" />
+<meta
+  property="og:site_name"
+  content="{{ site.title }}" />
+<meta
+  property="og:locale"
+  content="en_US" />
+
+<!-- Twitter -->
+<meta
+  name="twitter:card"
+  content="summary_large_image" />
+<meta
+  name="twitter:title"
+  content="{{ title or site.title }}" />
+<meta
+  name="twitter:description"
+  content="{{ description or site.description }}" />
+<meta
+  name="twitter:image"
+  content="{{ site.url }}{{ site.meta.ogImage }}" />
+{% endif %}
+
+<!-- Performance and Security -->
+<meta
+  http-equiv="X-Content-Type-Options"
+  content="nosniff" />
+<meta
+  http-equiv="X-Frame-Options"
+  content="DENY" />
+<meta
+  http-equiv="X-XSS-Protection"
+  content="1; mode=block" />
+
+<!-- Preconnect to external domains for performance -->
+<link
+  rel="preconnect"
+  href="https://fonts.googleapis.com" />
+<link
+  rel="preconnect"
+  href="https://fonts.gstatic.com"
+  crossorigin />

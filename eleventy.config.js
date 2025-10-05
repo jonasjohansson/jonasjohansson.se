@@ -408,6 +408,24 @@ export default function (eleventyConfig) {
     return projectContent;
   });
 
+  /** Custom filters for project metadata */
+  eleventyConfig.addFilter("findFirstImage", function (projectContent) {
+    if (!projectContent || !Array.isArray(projectContent)) return null;
+    const firstImage = projectContent.find((block) => block.type === "image");
+    return firstImage ? firstImage.src : null;
+  });
+
+  eleventyConfig.addFilter("findFirstText", function (projectContent) {
+    if (!projectContent || !Array.isArray(projectContent)) return null;
+    const firstText = projectContent.find((block) => block.type === "text");
+    return firstText ? firstText.content : null;
+  });
+
+  eleventyConfig.addFilter("truncate", function (str, length = 160) {
+    if (!str) return "";
+    return str.length > length ? str.substring(0, length) + "..." : str;
+  });
+
   /** Disable caching during watch mode for immediate rebuilds */
   eleventyConfig.setWatchThrottleWaitTime(0); // No throttling
 

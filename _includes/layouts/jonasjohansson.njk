@@ -1,24 +1,8 @@
 <!DOCTYPE html>
 <html lang="en">
   <head>
-    <meta charset="utf-8" />
-    <title>{{ site.title }}</title>
-    <meta
-      name="description"
-      content="{{ site.description }}" />
-    <meta
-      name="viewport"
-      content="width=device-width, initial-scale=1, maximum-scale=1, user-scalable=no, viewport-fit=cover" />
-    <meta
-      name="apple-mobile-web-app-capable"
-      content="yes" />
-    <meta
-      name="apple-mobile-web-app-status-bar-style"
-      content="black" />
-    <link
-      rel="icon"
-      type="image/svg+xml"
-      href="{{ '/favicon.svg' | url }}" />
+    {% include "../components/metadata.njk" %}
+
     <script>
       window.__PATH_PREFIX__ = "{{ '/' | url }}".replace(/\/$/, '');
       window.__PROJECTS_DATA__ = {{ projectsForJS | dump | safe }};

@@ -5,8 +5,24 @@ export default defineConfig({
   build: {
     emptyOutDir: false,
     outDir: "dist/assets",
+    minify: "terser",
+    terserOptions: {
+      compress: {
+        drop_console: true,
+        drop_debugger: true,
+      },
+    },
+    cssMinify: true,
     rollupOptions: {
       input: "/src/js/main.js",
+      output: {
+        manualChunks: {
+          vendor: ["src/js/router-simple.js", "src/js/strips.js"],
+        },
+      },
     },
+  },
+  css: {
+    devSourcemap: false,
   },
 });
