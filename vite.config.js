@@ -14,7 +14,10 @@ export default defineConfig({
     },
     cssMinify: true,
     rollupOptions: {
-      input: "/src/js/main.js",
+      input: {
+        main: "/src/js/main.js",
+        styles: "/src/css/main.css",
+      },
       output: {
         manualChunks: {
           vendor: ["src/js/router-simple.js", "src/js/strips.js"],

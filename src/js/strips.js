@@ -302,6 +302,15 @@ function initializeStrips() {
   const headerSubtitle = document.querySelector(".header-subtitle");
   const defaultSubtitle = headerSubtitle?.textContent || "PROGRESS NOT PERFECTION";
 
+  // Function to get current project title dynamically
+  function getCurrentProjectTitle() {
+    const currentPath = window.location.pathname;
+    const isInProject = currentPath.includes("/work/");
+    const currentProjectSlug = isInProject ? currentPath.replace("/work/", "").replace("/", "") : null;
+    const currentProject = currentProjectSlug ? projects.find((p) => p.slug === currentProjectSlug) : null;
+    return currentProject ? currentProject.title : defaultSubtitle;
+  }
+
   allStrips.forEach((strip) => {
     const projectSlug = strip.getAttribute("data-project");
     const project = projects.find((p) => p.slug === projectSlug);
@@ -323,7 +332,7 @@ function initializeStrips() {
 
       strip.addEventListener("mouseleave", () => {
         if (headerSubtitle) {
-          headerSubtitle.textContent = defaultSubtitle;
+          headerSubtitle.textContent = getCurrentProjectTitle();
         }
       });
     }
@@ -411,7 +420,7 @@ function initializeStrips() {
       currentlyTouchedStrip = null;
     }
     if (headerSubtitle) {
-      headerSubtitle.textContent = defaultSubtitle;
+      headerSubtitle.textContent = getCurrentProjectTitle();
     }
 
     touchStartStrip = null;

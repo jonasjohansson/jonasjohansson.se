@@ -45,6 +45,9 @@ class SPARouter {
       projectsContainer.classList.remove("visible");
     }
 
+    // Reset header title to default
+    this.updateHeaderTitle(null);
+
     this.updateStripVisibility(null);
     window.scrollTo(0, 0);
   }
@@ -56,6 +59,9 @@ class SPARouter {
       console.warn("Project not found:", slug);
       return;
     }
+
+    // Update header title immediately when clicking strip
+    this.updateHeaderTitle(project.title);
 
     // Reset any active filters when entering a project
     resetFilters();
@@ -129,6 +135,18 @@ class SPARouter {
       window.scrollTo(0, 0);
     } catch (error) {
       console.error("Error loading project:", error);
+    }
+  }
+
+  updateHeaderTitle(projectTitle) {
+    const headerSubtitle = document.querySelector(".header-subtitle");
+
+    if (headerSubtitle) {
+      if (projectTitle) {
+        headerSubtitle.textContent = projectTitle;
+      } else {
+        headerSubtitle.textContent = "Progress not Perfection";
+      }
     }
   }
 

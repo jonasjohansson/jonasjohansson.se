@@ -5,7 +5,8 @@
   "scripts": {
     "dev": "eleventy --serve",
     "watch": "nodemon --watch projects --watch src --ext md,json,jpg,jpeg,png,gif,webp,css,js --exec 'eleventy --serve' --delay 500ms",
-    "build": "eleventy"
+    "build": "npx vite build && eleventy",
+    "build:assets": "npx vite build"
   },
   "devDependencies": {
     "@11ty/eleventy": "3.1.0",

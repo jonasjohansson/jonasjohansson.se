@@ -6,7 +6,13 @@
     id="island-handle">
     <div class="header-text">
       <div class="header-title">{{ site.title | upper }}</div>
-      <div class="header-subtitle">{{ site.subtitle }}</div>
+      <div class="header-subtitle">
+        {% if project %}
+        {{ project.title }}
+        {% else %}
+        {{ site.subtitle }}
+        {% endif %}
+      </div>
     </div>
   </div>
 </header>
