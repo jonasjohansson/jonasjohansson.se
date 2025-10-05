@@ -15,6 +15,12 @@
   transition: opacity 0.3s ease;
 }
 
+/* On project pages, position footer at the end of content */
+#projects ~ footer .filter-dropdown {
+  position: absolute;
+  bottom: 2rem;
+}
+
 /* Fade out when about is visible */
 .filter-dropdown.fade-out {
   opacity: 0;
