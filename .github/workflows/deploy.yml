@@ -1,0 +1,90 @@
+name: Build and Deploy (Eleventy → GitHub Pages)
+
+on:
+  push:
+    branches: [main]
+    paths:
+      - "index.njk"
+      - "_includes/**"
+      - "_data/**"
+      - "projects/**"
+      - "robots.njk"
+      - "sitemap.njk"
+      - "404.njk"
+      - "eleventy.config.js"
+      - "package.json"
+      - "package-lock.json"
+      - "src/**"
+      - "CNAME"
+      - ".eleventyignore"
+      - ".gitignore"
+      - ".github/workflows/**"
+  workflow_dispatch:
+
+permissions:
+  contents: read
+  pages: write
+  id-token: write
+
+concurrency:
+  group: "pages"
+  cancel-in-progress: true
+
+jobs:
+  build:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v4
+
+      - name: Setup Node (22)
+        uses: actions/setup-node@v4
+        with:
+          node-version: 22
+          cache: npm
+
+      # Optional cache to speed up repeated builds; harmless if empty
+      - name: Cache build caches
+        uses: actions/cache@v4
+        with:
+          path: |
+            .cache
+            .11ty-vite
+            node_modules/.vite
+          key: ${{ runner.os }}-eleventy-${{ hashFiles('package-lock.json') }}-${{ hashFiles('projects/**') }}
+          restore-keys: |
+            ${{ runner.os }}-eleventy-${{ hashFiles('package-lock.json') }}-
+
+      - name: Install
+        run: npm ci
+
+      - name: Configure Pages
+        uses: actions/configure-pages@v5
+
+      - name: Detect PATH_PREFIX (CNAME → "/" else "/<repo>")
+        run: |
+          if [ -f CNAME ]; then
+            echo "PATH_PREFIX=/" >> "$GITHUB_ENV"
+          else
+            echo "PATH_PREFIX=/${{ github.event.repository.name }}" >> "$GITHUB_ENV"
+          fi
+
+      - name: Build (Eleventy)
+        env:
+          PATH_PREFIX: ${{ env.PATH_PREFIX }}
+        run: npm run build
+
+      - name: Upload artifact
+        uses: actions/upload-pages-artifact@v3
+        with:
+          path: dist
+
+  deploy:
+    needs: build
+    environment:
+      name: github-pages
+      url: ${{ steps.deployment.outputs.page_url }}
+    runs-on: ubuntu-latest
+    steps:
+      - id: deployment
+        uses: actions/deploy-pages@v4

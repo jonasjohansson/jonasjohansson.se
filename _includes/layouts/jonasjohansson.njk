@@ -1,0 +1,65 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="utf-8" />
+    <title>{{ site.title }}</title>
+    <meta
+      name="description"
+      content="{{ site.description }}" />
+    <meta
+      name="viewport"
+      content="width=device-width, initial-scale=1, maximum-scale=1, user-scalable=no, viewport-fit=cover" />
+    <meta
+      name="apple-mobile-web-app-capable"
+      content="yes" />
+    <meta
+      name="apple-mobile-web-app-status-bar-style"
+      content="black" />
+    <link
+      rel="icon"
+      type="image/svg+xml"
+      href="{{ '/favicon.svg' | url }}" />
+    <script>
+      window.__PATH_PREFIX__ = "{{ '/' | url }}".replace(/\/$/, '');
+      window.__PROJECTS_DATA__ = {{ projectsForJS | dump | safe }};
+      {% if project %}
+      window.__INITIAL_PROJECT__ = {{ project | dump | safe }};
+      {% endif %}
+    </script>
+  </head>
+  <body>
+    {% include "../components/header.njk" %}
+
+    {{ content | safe }}
+
+    {% include "../components/strips.njk" %} {% include "../components/footer.njk" %}
+
+    <link
+      rel="stylesheet"
+      href="{{ '/assets/fonts.css' | url }}" />
+    <link
+      rel="stylesheet"
+      href="{{ '/assets/modules/variables.css' | url }}" />
+    <link
+      rel="stylesheet"
+      href="{{ '/assets/modules/base.css' | url }}" />
+    <link
+      rel="stylesheet"
+      href="{{ '/assets/modules/header.css' | url }}" />
+    <link
+      rel="stylesheet"
+      href="{{ '/assets/modules/about.css' | url }}" />
+    <link
+      rel="stylesheet"
+      href="{{ '/assets/modules/filter.css' | url }}" />
+    <link
+      rel="stylesheet"
+      href="{{ '/assets/modules/strips.css' | url }}" />
+    <link
+      rel="stylesheet"
+      href="{{ '/assets/modules/project.css' | url }}" />
+    <script
+      type="module"
+      src="{{ '/assets/main.js' | url }}"></script>
+  </body>
+</html>
