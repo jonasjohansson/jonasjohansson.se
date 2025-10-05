@@ -7,8 +7,6 @@ import { CONFIG, FILTER_CATEGORIES } from "./config/constants.js";
 const container = document.getElementById("strips");
 container.classList.add("vertical"); // default orientation
 
-// Using shuffle from utils
-
 // Update strip widths based on current count
 function updateStripWidths() {
   // Only count visible strips
@@ -20,8 +18,6 @@ function updateStripWidths() {
   // Otherwise use MIN_STRIP_COUNT as the divisor for minimum width
   const divisor = count < CONFIG.MIN_STRIP_COUNT ? count : CONFIG.MIN_STRIP_COUNT;
   const widthPercent = 100 / divisor;
-
-  console.log(`[strips] ${count} visible strips, width: ${widthPercent}vw each`);
 
   visibleStrips.forEach((strip) => {
     strip.style.flex = `0 0 ${widthPercent}vw`;
@@ -63,17 +59,12 @@ function createStrip(project, index) {
   }
   img.setAttribute("data-bg-image", imageUrl);
 
-  // Create gradient overlay
-  const gradient = document.createElement("div");
-  gradient.className = "strip-gradient";
-
   // Create text element
   const text = document.createElement("div");
   text.className = "strip-text";
   text.textContent = project.title;
 
   div.appendChild(img);
-  div.appendChild(gradient);
   div.appendChild(text);
   container.appendChild(div);
 
@@ -116,19 +107,6 @@ const imageObserver = new IntersectionObserver(
         if (bgImage && !img.style.backgroundImage) {
           img.style.backgroundImage = `url('${bgImage}')`;
           img.classList.add("loaded");
-
-          // Gradient extraction disabled
-          // const strip = img.parentElement;
-          // const gradient = strip.querySelector(".strip-gradient");
-          // if (gradient) {
-          //   extractColorFromImage(bgImage, (topColor, bottomColor) => {
-          //     gradient.style.background = `linear-gradient(to bottom,
-          //       rgba(${topColor.r}, ${topColor.g}, ${topColor.b}, 1) 0%,
-          //       rgba(${topColor.r}, ${topColor.g}, ${topColor.b}, 0) 10%,
-          //       rgba(${bottomColor.r}, ${bottomColor.g}, ${bottomColor.b}, 0) 90%,
-          //       rgba(${bottomColor.r}, ${bottomColor.g}, ${bottomColor.b}, 1) 100%)`;
-          //   });
-          // }
         }
       }
     });
@@ -158,11 +136,7 @@ let curX = 0.5,
 let targetX = 0.5,
   targetY = 0.5; // instantaneous cursor (0..1)
 
-let lastIndex = -1;
-
 // ---------- Helpers ----------
-// Using clamp from utils
-
 function currentIndexFromCursor() {
   const n = orientation === "vertical" ? targetX : targetY;
   const visibleStrips = strips.filter((strip) => !strip.classList.contains("hidden"));
@@ -211,15 +185,6 @@ function throttledHandlePoint(e) {
 
 // Only listen for mouse events over the strips container
 container.addEventListener("pointermove", throttledHandlePoint);
-
-// Audio removed for now
-// container.addEventListener(
-//   "pointerdown",
-//   () => {
-//     ensureAudio();
-//   },
-//   { once: true }
-// );
 
 // Touch support
 container.addEventListener(
@@ -284,13 +249,11 @@ function tick() {
     // Stop animating after idle threshold to save CPU
     if (idleFrames > CONFIG.IDLE_THRESHOLD_FRAMES && isAnimating) {
       isAnimating = false;
-      console.log("[perf] Animation paused (idle)");
     }
   } else {
     idleFrames = 0;
     if (!isAnimating) {
       isAnimating = true;
-      console.log("[perf] Animation resumed");
     }
   }
 
@@ -322,15 +285,6 @@ function tick() {
         lastPosY = posY;
       }
     }
-  }
-
-  // Fire a note when entering a new lane (audio removed for now)
-  const idx = currentIndexFromCursor();
-  if (idx !== lastIndex) {
-    // const vAxis = orientation === "vertical" ? Math.abs(targetX - curX) : Math.abs(targetY - curY);
-    // const vel = clamp(0.35 + vAxis * 2.5, 0.35, 1.0);
-    // playStripNote(idx, vel, strips.length);
-    lastIndex = idx;
   }
 
   requestAnimationFrame(tick);
@@ -402,14 +356,17 @@ document.addEventListener("DOMContentLoaded", () => {
       const dropdown = button.closest(".filter-dropdown");
       const isOpen = dropdown.classList.contains("open");
 
-      // Close all dropdowns
+      // Close all dropdowns and reset button text
       document.querySelectorAll(".filter-dropdown").forEach((d) => {
         d.classList.remove("open");
+        const btn = d.querySelector(".filter-dropdown-button");
+        if (btn) btn.textContent = "Filter";
       });
 
-      // Toggle current dropdown
+      // Toggle current dropdown and update button text
       if (!isOpen) {
         dropdown.classList.add("open");
+        button.textContent = "×";
       }
     });
   });
@@ -419,6 +376,8 @@ document.addEventListener("DOMContentLoaded", () => {
     if (!e.target.closest(".filter-dropdown")) {
       document.querySelectorAll(".filter-dropdown").forEach((d) => {
         d.classList.remove("open");
+        const btn = d.querySelector(".filter-dropdown-button");
+        if (btn) btn.textContent = "Filter";
       });
     }
   });

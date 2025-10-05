@@ -6,6 +6,7 @@ export function initCurtain() {
   const header = document.getElementById("header");
   const curtain = document.getElementById("about-curtain");
   const strips = document.getElementById("strips");
+  const filterDropdown = document.getElementById("filter-dropdown-container");
 
   let isDragging = false;
   let hasMoved = false;
@@ -19,20 +20,52 @@ export function initCurtain() {
   // Disable transition initially
   header.style.transition = "none";
 
+  // Function to calculate and update about height
+  function updateAboutHeight() {
+    const oldHeight = aboutHeight;
+    aboutHeight = curtain.offsetHeight;
+    maxDrag = aboutHeight;
+
+    // Update header position based on current state
+    if (currentPosition === 0) {
+      // Closed state - hide about content above
+      header.style.transform = `translateY(-${aboutHeight}px)`;
+    } else if (currentPosition === oldHeight) {
+      // Was fully open - keep fully open with new height
+      currentPosition = aboutHeight;
+      header.style.transform = `translateY(0px)`;
+    } else {
+      // Partially open - maintain relative position
+      const openRatio = oldHeight > 0 ? currentPosition / oldHeight : 0;
+      currentPosition = openRatio * aboutHeight;
+      header.style.transform = `translateY(${currentPosition - aboutHeight}px)`;
+    }
+  }
+
   // Use requestAnimationFrame to ensure DOM is fully rendered
   requestAnimationFrame(() => {
     requestAnimationFrame(() => {
-      // Calculate about content height
-      aboutHeight = curtain.offsetHeight;
-      maxDrag = aboutHeight;
-
-      console.log("About curtain height:", aboutHeight);
-
-      // Set initial position (about content hidden above)
-      if (aboutHeight > 0) {
-        header.style.transform = `translateY(-${aboutHeight}px)`;
-      }
+      updateAboutHeight();
     });
+  });
+
+  // Handle window resize
+  let resizeTimeout;
+  window.addEventListener("resize", () => {
+    // Debounce resize events
+    clearTimeout(resizeTimeout);
+    resizeTimeout = setTimeout(() => {
+      // Temporarily disable transitions during resize
+      const currentTransition = header.style.transition;
+      header.style.transition = "none";
+
+      updateAboutHeight();
+
+      // Restore transition after a frame
+      requestAnimationFrame(() => {
+        header.style.transition = currentTransition;
+      });
+    }, 100);
   });
 
   // Add hover effect
@@ -55,9 +88,8 @@ export function initCurtain() {
     isDragging = true;
     hasMoved = false;
     startY = e.clientY - currentPosition;
-    header.classList.remove("hover-preview");
 
-    // Enable transitions on first interaction, then disable during drag
+    // Disable transitions during drag
     header.style.transition = "none";
     island.style.cursor = "grabbing";
 
@@ -126,13 +158,15 @@ export function initCurtain() {
     }
   });
 
-  // Update strips opacity based on curtain position
+  // Update strips opacity and filter visibility based on curtain position
   function updateStripsOpacity() {
     const openProgress = currentPosition / maxDrag;
     if (openProgress > 0.5) {
       strips.classList.add("dimmed");
+      filterDropdown.classList.add("fade-out");
     } else {
       strips.classList.remove("dimmed");
+      filterDropdown.classList.remove("fade-out");
     }
   }
 

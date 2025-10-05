@@ -57,12 +57,3 @@
 .about-content p:last-child {
   margin-bottom: 0;
 }
-
-.bio-links {
-  text-align: center;
-  margin-top: var(--spacing-xl) !important;
-}
-
-.bio-links a {
-  letter-spacing: var(--letter-spacing-base);
-}

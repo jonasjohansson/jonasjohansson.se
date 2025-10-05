@@ -148,11 +148,16 @@
 
     <footer>
       <!-- Filter Dropdown (Fixed at bottom) -->
-      <div class="filter-dropdown">
-        <!-- Left Options -->
+      <div
+        class="filter-dropdown"
+        id="filter-dropdown-container">
+        <!-- Filter Button (Below options visually, but first in DOM) -->
+        <button class="filter-dropdown-button">Filter</button>
+
+        <!-- Filter Options (Above button visually) -->
         <div
-          class="filter-dropdown-content filter-dropdown-left"
-          id="filter-dropdown-left">
+          class="filter-dropdown-content"
+          id="filter-dropdown">
           <label class="filter-option">
             <input
               type="checkbox"
@@ -174,20 +179,6 @@
               data-type="category" />
             <span>Education</span>
           </label>
-        </div>
-
-        <!-- Filter Button (Center) -->
-        <button
-          class="filter-dropdown-button"
-          data-dropdown="filter">
-          Filter
-          <span class="dropdown-arrow">▼</span>
-        </button>
-
-        <!-- Right Options -->
-        <div
-          class="filter-dropdown-content filter-dropdown-right"
-          id="filter-dropdown-right">
           <label class="filter-option">
             <input
               type="checkbox"

@@ -76,9 +76,6 @@ class SPARouter {
       // Default to home if route not found - but avoid recursion
       if (path !== "/") {
         this.navigate("/");
-      } else {
-        // If we're already at home and no handler exists, just show the default view
-        console.warn("No route handler found for:", path);
       }
     }
   }

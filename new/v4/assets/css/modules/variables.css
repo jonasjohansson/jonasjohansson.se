@@ -5,14 +5,11 @@
   --bg-card: rgba(50, 51, 58, 0.95);
   --bg-card-hover: rgba(255, 255, 255, 1);
   --text-primary: #ffffff;
-  --text-secondary: #ffffff;
   --border-color: rgba(255, 255, 255, 0.3);
 
   /* Header */
   --header-bg: #32333a;
   --header-text: #ffffff;
-  --header-text-secondary: #ffffff;
-  --header-hover-bg: #32333a;
 
   /* Transitions */
   --transition-fast: 0.2s ease;
@@ -34,7 +31,6 @@
 
   /* Layout */
   --header-z-index: 60;
-  --curtain-z-index: 9;
   --detail-z-index: 100;
   --expand-z-index: 50;
 

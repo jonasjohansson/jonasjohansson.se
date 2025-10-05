@@ -53,7 +53,7 @@ header {
 .header-subtitle {
   font-size: var(--font-size-base);
   letter-spacing: var(--letter-spacing-wide);
-  color: var(--header-text-secondary);
+  color: var(--header-text);
   text-transform: uppercase;
   font-weight: normal;
   line-height: 1;
