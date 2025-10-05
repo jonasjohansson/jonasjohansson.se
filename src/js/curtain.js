@@ -147,11 +147,19 @@ export function initCurtain() {
   // Update strips opacity and filter visibility based on curtain position
   function updateStripsOpacity() {
     const openProgress = currentPosition / maxDrag;
+    const projectsContainer = document.getElementById("projects");
+    
     if (openProgress > 0.5) {
       strips.classList.add("dimmed");
+      if (projectsContainer) {
+        projectsContainer.classList.add("dimmed");
+      }
       filterDropdown.classList.add("fade-out");
     } else {
       strips.classList.remove("dimmed");
+      if (projectsContainer) {
+        projectsContainer.classList.remove("dimmed");
+      }
       filterDropdown.classList.remove("fade-out");
     }
   }

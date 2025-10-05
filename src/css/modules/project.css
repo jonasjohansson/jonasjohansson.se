@@ -10,6 +10,11 @@
   display: block;
 }
 
+#projects.dimmed {
+  opacity: 0.3;
+  pointer-events: none;
+}
+
 .project-title {
   position: fixed;
   left: var(--spacing-md);
