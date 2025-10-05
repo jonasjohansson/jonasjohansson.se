@@ -72,26 +72,65 @@ export function initXylophone() {
   if (!stripsContainer) return;
 
   const strips = Array.from(stripsContainer.querySelectorAll(".strip"));
+  let currentTouchStrip = -1; // Track which strip the touch is currently over
+  let isTouching = false;
 
+  // Mouse events for desktop
   strips.forEach((strip, index) => {
     strip.addEventListener("mouseenter", () => {
       const frequency = getFrequencyForStrip(index, strips.length);
       playNote(frequency, 0.4);
     });
-
-    // Also play on touch for mobile
-    strip.addEventListener(
-      "touchstart",
-      (e) => {
-        e.preventDefault();
-        const frequency = getFrequencyForStrip(index, strips.length);
-        playNote(frequency, 0.4);
-      },
-      { passive: false }
-    );
   });
 
-  console.log("🎵 Xylophone initialized - hover over strips to play notes!");
+  // Global touch handler for mobile
+  stripsContainer.addEventListener(
+    "touchstart",
+    (e) => {
+      isTouching = true;
+      const touch = e.touches[0];
+      const element = document.elementFromPoint(touch.clientX, touch.clientY);
+      const strip = element?.closest(".strip");
+      if (strip) {
+        const index = strips.indexOf(strip);
+        if (index !== -1 && currentTouchStrip !== index) {
+          currentTouchStrip = index;
+          const frequency = getFrequencyForStrip(index, strips.length);
+          playNote(frequency, 0.4);
+        }
+      }
+    },
+    { passive: false }
+  );
+
+  stripsContainer.addEventListener(
+    "touchmove",
+    (e) => {
+      if (!isTouching) return;
+      e.preventDefault();
+      const touch = e.touches[0];
+      const element = document.elementFromPoint(touch.clientX, touch.clientY);
+      const strip = element?.closest(".strip");
+      if (strip) {
+        const index = strips.indexOf(strip);
+        if (index !== -1 && currentTouchStrip !== index) {
+          currentTouchStrip = index;
+          const frequency = getFrequencyForStrip(index, strips.length);
+          playNote(frequency, 0.3);
+        }
+      }
+    },
+    { passive: false }
+  );
+
+  stripsContainer.addEventListener(
+    "touchend",
+    (e) => {
+      isTouching = false;
+      currentTouchStrip = -1;
+    },
+    { passive: false }
+  );
 }
 
 // Initialize when DOM is ready

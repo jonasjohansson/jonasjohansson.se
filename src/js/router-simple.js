@@ -23,6 +23,11 @@ class SPARouter {
   }
 
   navigate(path, pushState = true) {
+    // Prevent re-navigation to the same route
+    if (this.currentRoute === path) {
+      return;
+    }
+
     if (pushState) {
       window.history.pushState({ route: path }, "", path);
     }
@@ -47,6 +52,23 @@ class SPARouter {
 
     // Reset header title to default
     this.updateHeaderTitle(null);
+
+    // Reset all strip inline styles and classes (from expanded state)
+    const allStrips = document.querySelectorAll(".strip");
+    allStrips.forEach((strip) => {
+      const computedFlexGrow = window.getComputedStyle(strip).flexGrow;
+
+      strip.style.flexGrow = "";
+      strip.style.zIndex = "";
+      strip.style.opacity = "";
+      strip.style.transition = "";
+      strip.classList.remove("touch-hover");
+
+      // Force override if computed flex-grow is still high (from lingering CSS)
+      if (computedFlexGrow !== "1" && computedFlexGrow !== "0") {
+        strip.style.flexGrow = "1";
+      }
+    });
 
     this.updateStripVisibility(null);
     window.scrollTo(0, 0);

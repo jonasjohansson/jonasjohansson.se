@@ -26,6 +26,9 @@ export default function (eleventyConfig) {
   /** Ignore jonasjohansson.se folder (it's a separate standalone site) */
   eleventyConfig.ignores.add("jonasjohansson.se/**");
 
+  /** Ignore data.md files from being rendered as pages */
+  eleventyConfig.ignores.add("projects/**/data.md");
+
   /** Force full rebuild on any file change - no caching */
   eleventyConfig.setServerOptions({
     domdiff: false, // Disable DOM diffing for faster full page reloads

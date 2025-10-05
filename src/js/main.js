@@ -1,5 +1,4 @@
 // Main JS Entry Point - Minimal Setup
-console.log("Jonas Johansson Portfolio - Loaded");
 
 // Import functionality (router and strips initialize themselves)
 import "./strips.js";

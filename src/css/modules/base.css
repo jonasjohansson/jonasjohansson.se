@@ -2,13 +2,11 @@
 
 html {
   /* Support for iOS dynamic viewport height */
-  min-height: 100vh;
   min-height: 100dvh; /* Dynamic viewport height - accounts for address bar */
   overflow-y: auto;
 }
 
 body {
-  min-height: 100vh;
   min-height: 100dvh;
   width: 100%;
   margin: 0;
@@ -26,7 +24,8 @@ body {
 }
 
 /* Project-visible class no longer needed for scroll, but keep for hooks */
-body.project-visible {}
+body.project-visible {
+}
 
 /* Hide scrollbars */
 ::-webkit-scrollbar {

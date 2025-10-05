@@ -185,7 +185,6 @@ function resetFilters() {
 
 function filterProjects() {
   const { tags } = getSelectedFilters();
-  console.log("🔍 Filter activated with tags:", tags);
 
   // Use CSS-based filtering with JavaScript to add classes
   if (tags.length === 0) {
@@ -197,7 +196,6 @@ function filterProjects() {
     allStrips.forEach((strip) => {
       strip.classList.remove("filter-match");
     });
-    console.log("✅ All filters cleared, showing all strips");
   } else {
     // Filters active - add filter-active class to body
     document.body.classList.add("filter-active");
@@ -227,7 +225,6 @@ function filterProjects() {
         strip.classList.remove("filter-match");
       }
     });
-    console.log(`✅ Filter applied: ${matchCount} strips match`);
   }
 
   // Update strip count for dynamic grid sizing
@@ -253,8 +250,6 @@ function updateStripCount() {
 
   // Update CSS custom property for dynamic calculations
   document.documentElement.style.setProperty("--visible-strip-count", visibleCount);
-
-  console.log(`📊 Visible strips: ${visibleCount}`);
 }
 
 // ---------- Initialize Strips ----------
@@ -320,7 +315,7 @@ function initializeStrips() {
       strip.addEventListener("click", () => {
         const projectId = project.slug || project.title.toLowerCase().replace(/\s+/g, "-");
         const projectPath = pathPrefix ? `${pathPrefix}/work/${projectId}` : `/work/${projectId}`;
-        router.navigate(projectPath, { project });
+        router.navigate(projectPath);
       });
 
       // Hover handlers - update subtitle
@@ -346,15 +341,22 @@ function initializeStrips() {
   let touchStartStrip = null;
   let hasMoved = false;
 
-  // Track touch start for tap detection
+  // Track touch start for tap detection and scroll direction
+  let touchStartX = 0;
+  let touchStartY = 0;
+  let isHorizontalScroll = false;
+
   stripsContainer.addEventListener(
     "touchstart",
     (e) => {
       if (e.touches && e.touches.length > 0) {
         const t = e.touches[0];
+        touchStartX = t.clientX;
+        touchStartY = t.clientY;
         const element = document.elementFromPoint(t.clientX, t.clientY);
         touchStartStrip = element?.closest(".strip");
         hasMoved = false;
+        isHorizontalScroll = false;
       }
     },
     { passive: true }
@@ -363,10 +365,30 @@ function initializeStrips() {
   stripsContainer.addEventListener(
     "touchmove",
     (e) => {
-      hasMoved = true; // Mark that user is sliding, not tapping
-
       if (e.touches && e.touches.length > 0) {
         const t = e.touches[0];
+
+        // Determine scroll direction on first move
+        if (!hasMoved) {
+          const deltaX = Math.abs(t.clientX - touchStartX);
+          const deltaY = Math.abs(t.clientY - touchStartY);
+
+          // Only handle horizontal scrolling (across strips)
+          if (deltaX > deltaY && deltaX > 10) {
+            isHorizontalScroll = true;
+            hasMoved = true;
+          } else if (deltaY > deltaX && deltaY > 10) {
+            // Vertical scroll - let browser handle it
+            hasMoved = true;
+            return;
+          }
+        }
+
+        // Only handle horizontal strip sliding, not vertical scrolling
+        if (!isHorizontalScroll) {
+          return;
+        }
+
         handlePoint(t.clientX, t.clientY);
 
         // Find which strip is under the touch point
@@ -410,7 +432,7 @@ function initializeStrips() {
       if (project) {
         const projectId = project.slug || project.title.toLowerCase().replace(/\s+/g, "-");
         const projectPath = pathPrefix ? `${pathPrefix}/work/${projectId}` : `/work/${projectId}`;
-        router.navigate(projectPath, { project });
+        router.navigate(projectPath);
       }
     }
 
