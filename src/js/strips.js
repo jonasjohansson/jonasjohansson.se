@@ -1,10 +1,30 @@
 import { router } from "./router-simple.js";
 import { shuffle, clamp } from "./utils/helpers.js";
 import { CONFIG, FILTER_CATEGORIES } from "./config/constants.js";
+import { ColorExtractor } from "./utils/colorExtractor.js";
 
 // Get projects from window global (injected by 11ty)
 const projects = window.__PROJECTS_DATA__ || [];
 const pathPrefix = window.__PATH_PREFIX__ || "";
+
+// Simple color extraction and application
+const colorExtractor = new ColorExtractor();
+
+async function applyProjectColor(project) {
+  if (!project || !project.images || !project.images[0]) return;
+
+  try {
+    const heroImageUrl = typeof project.images[0] === "string" ? project.images[0] : project.images[0].src;
+    const dominantColor = await colorExtractor.extractDominantColor(heroImageUrl);
+
+    // Apply color as CSS custom property
+    document.documentElement.style.setProperty("--project-accent-color", dominantColor);
+    document.documentElement.style.setProperty("--project-accent-color-light", colorExtractor.adjustBrightness(dominantColor, 1.3));
+    document.documentElement.style.setProperty("--project-accent-color-dark", colorExtractor.adjustBrightness(dominantColor, 0.7));
+  } catch (error) {
+    console.warn("Failed to extract color:", error);
+  }
+}
 
 // ---------- DOM Elements ----------
 // These will be populated when DOM is ready
@@ -19,6 +39,11 @@ let curX = 0.5,
 let targetX = 0.5,
   targetY = 0.5; // instantaneous cursor (0..1)
 
+// Snap-to-strip functionality
+let snapObserver = null;
+let isInProjectView = false;
+let snapThreshold = 0.8; // 80% coverage threshold
+
 // ---------- Helpers ----------
 // Width calculation removed - now handled by CSS
 
@@ -30,6 +55,82 @@ function setOrientation(next) {
   // Reset motion targets to avoid sudden jumps
   curX = targetX = 0.5;
   curY = targetY = 0.5;
+}
+
+// ---------- Snap-to-Strip Functionality ----------
+function initSnapToStrip() {
+  if (!stripsContainer || !isInProjectView) return;
+
+  // Clean up existing observer
+  if (snapObserver) {
+    snapObserver.disconnect();
+  }
+
+  // Create intersection observer to detect strip visibility
+  snapObserver = new IntersectionObserver(
+    (entries) => {
+      entries.forEach((entry) => {
+        if (entry.isIntersecting) {
+          const strip = entry.target;
+          const intersectionRatio = entry.intersectionRatio;
+
+          // If strip covers more than 80% of viewport, snap to it
+          if (intersectionRatio >= snapThreshold) {
+            snapToStrip(strip);
+          }
+        }
+      });
+    },
+    {
+      threshold: [0, 0.1, 0.2, 0.3, 0.4, 0.5, 0.6, 0.7, 0.8, 0.9, 1.0],
+      rootMargin: "0px",
+    }
+  );
+
+  // Observe all strips
+  allStrips.forEach((strip) => {
+    snapObserver.observe(strip);
+  });
+}
+
+function snapToStrip(targetStrip) {
+  if (!targetStrip || !stripsContainer) return;
+
+  // Calculate the position to center the strip
+  const containerRect = stripsContainer.getBoundingClientRect();
+  const stripRect = targetStrip.getBoundingClientRect();
+
+  // Calculate how much we need to scroll to center this strip
+  const stripCenter = stripRect.left + stripRect.width / 2;
+  const containerCenter = containerRect.width / 2;
+  const scrollOffset = stripCenter - containerCenter;
+
+  // Smooth scroll to center the strip
+  stripsContainer.scrollTo({
+    left: stripsContainer.scrollLeft + scrollOffset,
+    behavior: "smooth",
+  });
+
+  // Add visual feedback
+  targetStrip.classList.add("snapped");
+  setTimeout(() => {
+    targetStrip.classList.remove("snapped");
+  }, 1000);
+}
+
+function updateProjectViewState() {
+  const currentPath = window.location.pathname;
+  isInProjectView = currentPath.includes("/work/");
+
+  if (isInProjectView) {
+    initSnapToStrip();
+  } else {
+    // Clean up observer when not in project view
+    if (snapObserver) {
+      snapObserver.disconnect();
+      snapObserver = null;
+    }
+  }
 }
 
 // Optional: toggle on key "o"
@@ -311,6 +412,9 @@ function initializeStrips() {
     const project = projects.find((p) => p.slug === projectSlug);
 
     if (project) {
+      let hoverTimeout = null;
+      let isHovering = false;
+
       // Click handler
       strip.addEventListener("click", () => {
         const projectId = project.slug || project.title.toLowerCase().replace(/\s+/g, "-");
@@ -318,7 +422,7 @@ function initializeStrips() {
         router.navigate(projectPath);
       });
 
-      // Hover handlers - update subtitle
+      // Hover handlers - update subtitle only
       strip.addEventListener("mouseenter", () => {
         if (headerSubtitle) {
           headerSubtitle.textContent = project.title.toUpperCase();
@@ -507,7 +611,7 @@ function initFilters() {
 }
 
 // Export functions for use by router
-export { resetFilters };
+export { resetFilters, updateProjectViewState, applyProjectColor };
 
 // Initialize when DOM is ready or immediately if already ready
 if (document.readyState === "loading") {

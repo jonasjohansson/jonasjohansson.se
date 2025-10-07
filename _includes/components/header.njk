@@ -8,7 +8,7 @@
       <div class="header-title">{{ site.title | upper }}</div>
       <div class="header-subtitle">
         {% if project %}
-        {{ project.title }}
+        {{ projectContent[project.slug].title }}
         {% else %}
         {{ site.subtitle }}
         {% endif %}

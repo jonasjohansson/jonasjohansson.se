@@ -4,7 +4,7 @@ export default defineConfig({
   clearScreen: false,
   build: {
     emptyOutDir: false,
-    outDir: "dist/assets",
+    outDir: "dist",
     minify: "terser",
     terserOptions: {
       compress: {
@@ -15,10 +15,13 @@ export default defineConfig({
     cssMinify: true,
     rollupOptions: {
       input: {
-        main: "/src/js/main.js",
-        styles: "/src/css/main.css",
+        main: "src/js/main.js",
+        styles: "src/css/main.css",
       },
       output: {
+        assetFileNames: "assets/css/[name].[hash].css",
+        chunkFileNames: "assets/js/[name].[hash].js",
+        entryFileNames: "assets/js/[name].[hash].js",
         manualChunks: {
           vendor: ["src/js/router-simple.js", "src/js/strips.js"],
         },

@@ -11,6 +11,11 @@
   --header-bg: #ffffff;
   --header-text: #000000;
 
+  /* Links */
+  --link-color: #000000;
+  --link-color-hover: #333333;
+  --link-color-active: #666666;
+
   /* Transitions */
   --transition-fast: 0.4s ease;
   --transition-normal: 0.6s ease;

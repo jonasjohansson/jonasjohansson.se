@@ -1,7 +1,15 @@
-import { resetFilters } from "./strips.js";
+import { resetFilters, updateProjectViewState, applyProjectColor } from "./strips.js";
+import { reinitializeCurtain } from "./curtain.js";
 
 const projects = window.__PROJECTS_DATA__ || [];
 const pathPrefix = window.__PATH_PREFIX__ || "";
+
+// Reset project colors to default
+function resetProjectColors() {
+  document.documentElement.style.removeProperty("--project-accent-color");
+  document.documentElement.style.removeProperty("--project-accent-color-light");
+  document.documentElement.style.removeProperty("--project-accent-color-dark");
+}
 
 class SPARouter {
   constructor() {
@@ -72,6 +80,14 @@ class SPARouter {
 
     this.updateStripVisibility(null);
     window.scrollTo(0, 0);
+
+    // Update snap-to-strip state
+    if (updateProjectViewState) {
+      updateProjectViewState();
+    }
+
+    // Reset project colors when returning to home
+    resetProjectColors();
   }
 
   async showProject(slug) {
@@ -83,7 +99,10 @@ class SPARouter {
     }
 
     // Update header title immediately when clicking strip
-    this.updateHeaderTitle(project.title);
+    // Use the strip title (shorter version) instead of full project title
+    const stripElement = document.querySelector(`.strip[data-project="${slug}"]`);
+    const stripTitle = stripElement ? stripElement.querySelector(".strip-text").textContent : project.title;
+    this.updateHeaderTitle(stripTitle);
 
     // Reset any active filters when entering a project
     resetFilters();
@@ -155,6 +174,17 @@ class SPARouter {
       }
 
       window.scrollTo(0, 0);
+
+      // Update snap-to-strip state
+      if (updateProjectViewState) {
+        updateProjectViewState();
+      }
+
+      // Re-initialize curtain to pick up the new project container
+      reinitializeCurtain();
+
+      // Apply project color
+      await applyProjectColor(project);
     } catch (error) {
       console.error("Error loading project:", error);
     }

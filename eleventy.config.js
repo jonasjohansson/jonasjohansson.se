@@ -34,14 +34,15 @@ export default function (eleventyConfig) {
     domdiff: false, // Disable DOM diffing for faster full page reloads
   });
 
-  /** Passthroughs (do NOT passthrough "src" when using Vite) */
+  /** Passthroughs (Vite handles CSS/JS assets) */
   eleventyConfig.addWatchTarget("projects/**/*"); // Watch for ALL changes in projects folder
   eleventyConfig.addWatchTarget("src/**/*"); // Watch for ALL changes in src folder
   eleventyConfig.setWatchJavaScriptDependencies(false); // Force rebuild on any change
   eleventyConfig.addPassthroughCopy({ "src/fonts": "fonts" }); // Copy fonts to dist/fonts
-  eleventyConfig.addPassthroughCopy({ "src/css": "assets" }); // Copy CSS to dist/assets
-  eleventyConfig.addPassthroughCopy({ "src/js": "assets" }); // Copy JS to dist/assets
-  eleventyConfig.addPassthroughCopy("favicon.svg"); // Copy favicon
+  eleventyConfig.addPassthroughCopy("site.webmanifest"); // Copy web app manifest
+  eleventyConfig.addPassthroughCopy("favicon.*"); // Copy all favicon files
+  eleventyConfig.addPassthroughCopy("apple-touch-icon.png"); // Copy apple touch icon
+  eleventyConfig.addPassthroughCopy("web-app-manifest-*.png"); // Copy web app manifest icons
   // eleventyConfig.addPassthroughCopy("projects"); // Don't copy raw projects - use optimized images only
   eleventyConfig.addPassthroughCopy("CNAME"); // if present
 
@@ -119,6 +120,29 @@ export default function (eleventyConfig) {
     if (!d) return "";
     const dt = new Date(d);
     return isNaN(dt) ? "" : dt.toISOString().slice(0, 10);
+  });
+
+  // Filter to get latest Vite build files
+  eleventyConfig.addFilter("viteAsset", (filename) => {
+    const isJS = filename.endsWith(".js");
+    const isCSS = filename.endsWith(".css");
+    const subdir = isJS ? "js" : isCSS ? "css" : "";
+    const distPath = path.join(projectRoot, "dist", "assets", subdir);
+
+    if (!existsSync(distPath)) return `/assets/${filename}`;
+
+    const files = readdirSync(distPath);
+    const pattern = new RegExp(`^${filename.replace(/\.(js|css)$/, "")}\\.[a-zA-Z0-9]+\\.(js|css)$`);
+    const matches = files.filter((file) => pattern.test(file));
+
+    // Sort by modification time to get the latest file
+    const match = matches.sort((a, b) => {
+      const statA = statSync(path.join(distPath, a));
+      const statB = statSync(path.join(distPath, b));
+      return statB.mtime.getTime() - statA.mtime.getTime();
+    })[0];
+
+    return match ? `/assets/${subdir}/${match}` : `/assets/${filename}`;
   });
 
   eleventyConfig.addFilter("markdown", (str) => {

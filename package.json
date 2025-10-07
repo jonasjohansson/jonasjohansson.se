@@ -3,18 +3,17 @@
   "private": true,
   "type": "module",
   "scripts": {
-    "dev": "eleventy --serve",
-    "watch": "nodemon --watch projects --watch src --ext md,json,jpg,jpeg,png,gif,webp,css,js --exec 'eleventy --serve' --delay 500ms",
-    "build": "npx vite build && eleventy",
-    "build:assets": "npx vite build"
+    "dev": "concurrently \"vite build --watch\" \"eleventy --serve\"",
+    "start": "eleventy --serve",
+    "build": "npx vite build && eleventy"
   },
   "devDependencies": {
     "@11ty/eleventy": "3.1.0",
     "@11ty/eleventy-img": "^6.0.4",
     "@11ty/eleventy-plugin-vite": "^7.1.0-alpha.2",
+    "concurrently": "^9.2.1",
     "fast-average-color-node": "^3.1.0",
     "markdown-it": "^14.1.0",
-    "nodemon": "^3.1.9",
     "nunjucks": "^3.2.4",
     "sharp": "^0.34.3",
     "terser": "^5.44.0",

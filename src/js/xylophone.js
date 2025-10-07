@@ -1,4 +1,5 @@
 // Xylophone sound generator using Web Audio API
+import { melodyPlayer } from "./melody.js";
 
 let audioContext = null;
 
@@ -10,7 +11,7 @@ function initAudio() {
   return audioContext;
 }
 
-// Generate a wooden xylophone-like tone
+// Generate a clear, melodic tone for Mario
 function playNote(frequency, duration = 0.3) {
   const ctx = initAudio();
 
@@ -18,7 +19,7 @@ function playNote(frequency, duration = 0.3) {
   const oscillator = ctx.createOscillator();
   const gainNode = ctx.createGain();
 
-  // Use triangle wave for a more wooden sound
+  // Use triangle wave for a clear, melodic sound
   oscillator.type = "triangle";
   oscillator.frequency.setValueAtTime(frequency, ctx.currentTime);
 
@@ -27,16 +28,16 @@ function playNote(frequency, duration = 0.3) {
   oscillator2.type = "triangle";
   oscillator2.frequency.setValueAtTime(frequency * 1.01, ctx.currentTime);
 
-  // Envelope for natural decay - softer volume
+  // Envelope for clear attack and decay
   gainNode.gain.setValueAtTime(0, ctx.currentTime);
-  gainNode.gain.linearRampToValueAtTime(0.15, ctx.currentTime + 0.02); // Softer, slower attack
-  gainNode.gain.exponentialRampToValueAtTime(0.001, ctx.currentTime + duration); // Gentle decay
+  gainNode.gain.linearRampToValueAtTime(0.2, ctx.currentTime + 0.02); // Clear attack
+  gainNode.gain.exponentialRampToValueAtTime(0.001, ctx.currentTime + duration); // Clear decay
 
-  // Add a filter for warmth - more mellow
+  // Add a gentle filter for warmth
   const filter = ctx.createBiquadFilter();
   filter.type = "lowpass";
-  filter.frequency.setValueAtTime(1200, ctx.currentTime); // Lower cutoff for softer sound
-  filter.Q.setValueAtTime(0.5, ctx.currentTime); // Less resonance for smoother tone
+  filter.frequency.setValueAtTime(2000, ctx.currentTime); // Higher cutoff for clarity
+  filter.Q.setValueAtTime(0.5, ctx.currentTime); // Gentle resonance
 
   // Connect the audio graph
   oscillator.connect(filter);
@@ -78,8 +79,17 @@ export function initXylophone() {
   // Mouse events for desktop
   strips.forEach((strip, index) => {
     strip.addEventListener("mouseenter", () => {
-      const frequency = getFrequencyForStrip(index, strips.length);
-      playNote(frequency, 0.4);
+      if (melodyPlayer.isMelodyMode) {
+        // Play next note in melody
+        const playedNote = melodyPlayer.playCurrentNote(playNote);
+        if (playedNote) {
+          console.log(`Playing melody note: ${playedNote.note}`);
+        }
+      } else {
+        // Play individual strip note
+        const frequency = getFrequencyForStrip(index, strips.length);
+        playNote(frequency, 0.4);
+      }
     });
   });
 
@@ -95,8 +105,17 @@ export function initXylophone() {
         const index = strips.indexOf(strip);
         if (index !== -1 && currentTouchStrip !== index) {
           currentTouchStrip = index;
-          const frequency = getFrequencyForStrip(index, strips.length);
-          playNote(frequency, 0.4);
+          if (melodyPlayer.isMelodyMode) {
+            // Play next note in melody
+            const playedNote = melodyPlayer.playCurrentNote(playNote);
+            if (playedNote) {
+              console.log(`Playing melody note: ${playedNote.note}`);
+            }
+          } else {
+            // Play individual strip note
+            const frequency = getFrequencyForStrip(index, strips.length);
+            playNote(frequency, 0.4);
+          }
         }
       }
     },
@@ -115,8 +134,17 @@ export function initXylophone() {
         const index = strips.indexOf(strip);
         if (index !== -1 && currentTouchStrip !== index) {
           currentTouchStrip = index;
-          const frequency = getFrequencyForStrip(index, strips.length);
-          playNote(frequency, 0.3);
+          if (melodyPlayer.isMelodyMode) {
+            // Play next note in melody
+            const playedNote = melodyPlayer.playCurrentNote(playNote);
+            if (playedNote) {
+              console.log(`Playing melody note: ${playedNote.note}`);
+            }
+          } else {
+            // Play individual strip note
+            const frequency = getFrequencyForStrip(index, strips.length);
+            playNote(frequency, 0.3);
+          }
         }
       }
     },
@@ -132,6 +160,9 @@ export function initXylophone() {
     { passive: false }
   );
 }
+
+// Export melody player for external control
+export { melodyPlayer };
 
 // Initialize when DOM is ready
 if (document.readyState === "loading") {

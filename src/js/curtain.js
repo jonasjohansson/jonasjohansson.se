@@ -148,17 +148,23 @@ export function initCurtain() {
   function updateStripsOpacity() {
     const openProgress = currentPosition / maxDrag;
     const projectsContainer = document.getElementById("projects");
-    
+
+    console.log("🎭 Curtain progress:", openProgress, "Projects container:", projectsContainer);
+
     if (openProgress > 0.5) {
       strips.classList.add("dimmed");
       if (projectsContainer) {
         projectsContainer.classList.add("dimmed");
+        console.log("✅ Applied dimmed class to projects container");
+      } else {
+        console.log("❌ No projects container found");
       }
       filterDropdown.classList.add("fade-out");
     } else {
       strips.classList.remove("dimmed");
       if (projectsContainer) {
         projectsContainer.classList.remove("dimmed");
+        console.log("✅ Removed dimmed class from projects container");
       }
       filterDropdown.classList.remove("fade-out");
     }
@@ -178,6 +184,12 @@ export function initCurtain() {
     // Update strips opacity
     updateStripsOpacity();
   }
+}
+
+// Export function to re-initialize curtain after project load
+export function reinitializeCurtain() {
+  // Re-run the curtain initialization to pick up any new DOM elements
+  initCurtain();
 }
 
 // Auto-initialize
