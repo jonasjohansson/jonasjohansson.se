@@ -380,7 +380,20 @@ export default function (eleventyConfig) {
         // Process blocks from frontmatter
         const content = blocks
           .map((block) => {
+            // Default values for all blocks
             const { type, src, content: textContent, colStart = 1, colSpan = 12, fontSize, textAlign, credits } = block;
+
+            // Convert fontSize to CSS class
+            let fontSizeClass = "text-large"; // Default to large for text blocks
+            if (fontSize) {
+              if (fontSize.includes("small") || fontSize.includes("1.2")) {
+                fontSizeClass = "text-small";
+              } else if (fontSize.includes("large") || fontSize.includes("2.5") || fontSize.includes("3")) {
+                fontSizeClass = "text-large";
+              } else if (fontSize.includes("medium") || fontSize.includes("1.8")) {
+                fontSizeClass = "text-medium";
+              }
+            }
 
             if (type === "image") {
               return {
@@ -402,17 +415,17 @@ export default function (eleventyConfig) {
               return {
                 type: "text",
                 content: md.render(textContent || ""),
-                colStart,
-                colSpan,
-                fontSize: fontSize || "3rem", // Default to 3x size
-                textAlign: textAlign || "left", // Default to left
+                colStart: colStart || 3, // Default to 3 for text
+                colSpan: colSpan || 8, // Default to 8 for text
+                fontSizeClass,
+                textAlign: textAlign || "center", // Default to center for text
               };
             } else if (type === "credits") {
               return {
                 type: "credits",
                 credits: (credits || []).map((credit) => md.render(credit)),
-                colStart: colStart || 2,
-                colSpan: colSpan || 10,
+                colStart,
+                colSpan,
               };
             }
 

@@ -11,19 +11,21 @@ header {
   align-items: center;
   z-index: var(--header-z-index);
   pointer-events: none;
+  background: #ffffff;
   /* Transition controlled by JavaScript to avoid initial animation */
 }
 
 /* Hover preview is now handled by JavaScript for smoother control */
 
 .header-content {
-  background: #ffffff;
-  border-radius: 0 0 var(--radius-sm) var(--radius-sm);
-  padding: var(--spacing-sm) var(--spacing-lg);
+  box-sizing: border-box;
+  padding: 0 calc(100vw / 24);
+  height: calc(100vw / 24);
   display: flex;
   flex-direction: row;
   align-items: center;
-  gap: var(--spacing-lg);
+  justify-content: space-between;
+  width: 100%;
   pointer-events: auto;
   overflow: hidden;
   cursor: grab;
@@ -39,10 +41,17 @@ header {
   cursor: grabbing;
 }
 
-.header-text {
+.header-text-left {
   display: flex;
   flex-direction: column;
-  align-items: center;
+  align-items: flex-start;
+  gap: var(--spacing-xs);
+}
+
+.header-text-right {
+  display: flex;
+  flex-direction: column;
+  align-items: flex-end;
   gap: var(--spacing-xs);
 }
 

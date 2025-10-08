@@ -1,5 +1,5 @@
 ---
-title: Emerging Sensation
+title: Embed
 date: '2019-01-01'
 tags:
   - light
@@ -7,9 +7,5 @@ tags:
 blocks:
   - type: image
     src: 01.jpg
-  - type: image
-    src: 02.jpg
-  - type: image
-    src: 03.jpg
 ---
 

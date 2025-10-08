@@ -36,7 +36,7 @@
   --letter-spacing-wider: 0.2rem;
 
   /* Layout */
-  --header-z-index: 60;
+  --header-z-index: 1000;
   --detail-z-index: 100;
   --expand-z-index: 50;
 

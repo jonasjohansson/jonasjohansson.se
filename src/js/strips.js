@@ -616,10 +616,10 @@ export { resetFilters, updateProjectViewState, applyProjectColor };
 // Initialize when DOM is ready or immediately if already ready
 if (document.readyState === "loading") {
   document.addEventListener("DOMContentLoaded", () => {
-    initFilters();
     initializeStrips();
+    initFilters();
   });
 } else {
-  initFilters();
   initializeStrips();
+  initFilters();
 }

@@ -4,8 +4,10 @@
   <div
     class="header-content"
     id="island-handle">
-    <div class="header-text">
+    <div class="header-text-left">
       <div class="header-title">{{ site.title | upper }}</div>
+    </div>
+    <div class="header-text-right">
       <div class="header-subtitle">
         {% if project %}
         {{ projectContent[project.slug].title }}

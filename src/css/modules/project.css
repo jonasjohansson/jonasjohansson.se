@@ -49,6 +49,22 @@
   }
 }
 
+/* Font size classes for project content */
+.text-small {
+  font-size: 1.2rem;
+  line-height: 1.4;
+}
+
+.text-medium {
+  font-size: 1.8rem;
+  line-height: 1.3;
+}
+
+.text-large {
+  font-size: 2.5rem;
+  line-height: 1.2;
+}
+
 #projects {
   display: block;
   width: 100%;
@@ -133,6 +149,9 @@ figure {
 
 .text-block {
   padding-bottom: var(--spacing-xl);
+  max-width: 65ch; /* Optimal reading width */
+  margin: 0 auto; /* Center the text block */
+  line-height: 1.6;
 }
 
 .credits-block {

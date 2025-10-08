@@ -36,10 +36,8 @@ eleventyComputed:
       </figure>
       {% elif block.type == 'text' %}
       <article
-        class="text-block col-start-{{ block.colStart }} col-span-{{ block.colSpan }}"
-        style="{% if block.fontSize %}font-size: {{ block.fontSize }};{% endif %} {% if block.textAlign %}text-align: {{
-          block.textAlign
-        }};{% endif %}">
+        class="text-block {{ block.fontSizeClass or 'text-medium' }} col-start-{{ block.colStart }} col-span-{{ block.colSpan }}"
+        style="{% if block.textAlign %}text-align: {{ block.textAlign }};{% endif %}">
         {{ block.content | safe }}
       </article>
       {% elif block.type == 'credits' %}

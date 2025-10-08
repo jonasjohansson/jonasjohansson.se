@@ -1,27 +1,28 @@
 /* About Curtain - Updated */
 
 .about-curtain {
-  width: 80vw;
-  max-width: 800px;
-  background: #ffffff;
+  width: 100vw;
   pointer-events: none;
-  border-radius: 0 0 var(--radius-sm) var(--radius-sm);
+  border-radius: 0;
+  background: transparent;
 }
 
 .about-content {
-  padding: var(--spacing-lg) var(--spacing-xl);
+  padding: var(--spacing-lg) 3rem;
   color: var(--text-primary);
   pointer-events: auto;
+  max-width: 800px;
+  margin: 0 auto;
 }
 
 @media (max-width: 768px) {
   .about-curtain {
     width: 100%;
-    max-width: 340px;
   }
 
   .about-content {
-    padding: var(--spacing-xl) var(--spacing-lg);
+    padding: calc(100vw / 24);
+    padding-bottom: 0;
   }
 }
 

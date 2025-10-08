@@ -1,6 +1,6 @@
 ---
-title: Emerging Sensation
-date: '2019-01-01'
+title: Dendrolux
+date: '2020-01-01'
 tags:
   - light
   - installation
@@ -9,7 +9,5 @@ blocks:
     src: 01.jpg
   - type: image
     src: 02.jpg
-  - type: image
-    src: 03.jpg
 ---
 

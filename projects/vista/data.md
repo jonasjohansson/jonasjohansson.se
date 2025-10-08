@@ -1,23 +1,16 @@
 ---
-title: "Vista"
-date: "2018-01-01"
+title: Vista
+date: '2018-01-01'
 tags:
   - mixed reality
 blocks:
   - type: image
-    src: 00001.jpg
-    colStart: 1
-    colSpan: 12
+    src: 01.jpg
   - type: image
-    src: 00002.jpg
-    colStart: 1
-    colSpan: 12
+    src: 02.jpg
   - type: image
-    src: 00003.jpg
-    colStart: 1
-    colSpan: 12
+    src: 03.jpg
   - type: image
-    src: 00004.jpg
-    colStart: 1
-    colSpan: 12
+    src: 04.jpg
 ---
+
