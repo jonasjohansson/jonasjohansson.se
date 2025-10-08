@@ -8,6 +8,13 @@ export function initCurtain() {
   const strips = document.getElementById("strips");
   const filterDropdown = document.getElementById("filter-dropdown-container");
 
+  // Check if all required elements exist
+  if (!island || !header || !curtain || !strips || !filterDropdown) {
+    console.warn("Curtain: Missing required elements, retrying in 100ms");
+    setTimeout(initCurtain, 100);
+    return;
+  }
+
   let isDragging = false;
   let hasMoved = false;
   let startY = 0;
@@ -26,6 +33,13 @@ export function initCurtain() {
     aboutHeight = curtain.offsetHeight;
     maxDrag = aboutHeight;
 
+    // Ensure we have a valid height
+    if (aboutHeight <= 0) {
+      console.warn("Curtain: Invalid height, retrying in 50ms");
+      setTimeout(updateAboutHeight, 50);
+      return;
+    }
+
     // Update header position based on current state
     if (currentPosition === 0) {
       // Closed state - hide about content above
@@ -42,12 +56,23 @@ export function initCurtain() {
     }
   }
 
-  // Use requestAnimationFrame to ensure DOM is fully rendered
-  requestAnimationFrame(() => {
-    requestAnimationFrame(() => {
-      updateAboutHeight();
-    });
-  });
+  // Wait for all content to be fully rendered with multiple delays
+  function initializeWithDelay() {
+    // First delay - let initial render complete
+    setTimeout(() => {
+      // Second delay - let any dynamic content load
+      setTimeout(() => {
+        // Use requestAnimationFrame to ensure DOM is fully rendered
+        requestAnimationFrame(() => {
+          requestAnimationFrame(() => {
+            updateAboutHeight();
+          });
+        });
+      }, 100);
+    }, 50);
+  }
+
+  initializeWithDelay();
 
   // Handle window resize
   let resizeTimeout;
@@ -192,7 +217,17 @@ export function reinitializeCurtain() {
   initCurtain();
 }
 
-// Auto-initialize
-document.addEventListener("DOMContentLoaded", () => {
-  initCurtain();
-});
+// Auto-initialize with proper timing
+function initializeCurtainWhenReady() {
+  if (document.readyState === "loading") {
+    document.addEventListener("DOMContentLoaded", () => {
+      // Additional delay to ensure all content is rendered
+      setTimeout(initCurtain, 100);
+    });
+  } else {
+    // DOM is already ready
+    setTimeout(initCurtain, 100);
+  }
+}
+
+initializeCurtainWhenReady();
