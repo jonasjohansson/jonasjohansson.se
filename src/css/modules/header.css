@@ -21,6 +21,8 @@ header {
   box-sizing: border-box;
   padding: 0 calc(100vw / 24);
   height: calc(100vw / 24);
+  max-height: 60px;
+  min-height: 40px;
   display: flex;
   flex-direction: row;
   align-items: center;
