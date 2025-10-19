@@ -96,3 +96,16 @@ select {
 .hidden {
   display: none !important;
 }
+
+/* 45-degree cut corner utility classes */
+.cut-corner-sm {
+  clip-path: var(--cut-corner-sm);
+}
+
+.cut-corner-md {
+  clip-path: var(--cut-corner-md);
+}
+
+.cut-corner-lg {
+  clip-path: var(--cut-corner-lg);
+}

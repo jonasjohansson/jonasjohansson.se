@@ -46,17 +46,17 @@
 
 /* Font size classes for project content */
 .text-small {
-  font-size: 1.2rem;
+  font-size: var(--font-size-small);
   line-height: var(--line-height-base);
 }
 
 .text-medium {
-  font-size: 1.8rem;
+  font-size: var(--font-size-medium);
   line-height: var(--line-height-base);
 }
 
 .text-large {
-  font-size: 2.5rem;
+  font-size: var(--font-size-large);
   line-height: var(--line-height-tight);
 }
 

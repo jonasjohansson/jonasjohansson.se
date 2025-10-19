@@ -39,3 +39,11 @@
   font-style: normal;
   font-display: swap;
 }
+
+@font-face {
+  font-family: "Copyright General Type Studio";
+  src: url("../fonts/Copyright-General-Type-Studio_7.woff2") format("woff2");
+  font-weight: normal;
+  font-style: normal;
+  font-display: swap;
+}

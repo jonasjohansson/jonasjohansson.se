@@ -1,4 +1,4 @@
-I’m Jonas Johansson <span id="age-placeholder"></span>, an artist, educator, and designer from Glommen, Halland. My work explores light and technology through play, community, and (un)human intervention.
+I'm Jonas Johansson <span id="age-placeholder"></span>, an artist, educator, and designer from Glommen, Halland. My work explores light and technology through play, community, and (un)human intervention.
 
 As an artist and designer, I create installations, products, experiences, sculptures, and games. My approach is ludic and exploratory, often hybrid and interdisciplinary, moving between art, technology, and collective experimentation.
 

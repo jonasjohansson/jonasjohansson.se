@@ -1,9 +1,9 @@
 /* CSS Variables */
 :root {
   /* Colors - Dark Gray and White */
-  --color-white: #ffffff;
+  --color-white: white; /* #f35624 */
   --color-black: #222222;
-  --color-dark: #222222;
+  --color-dark: #1c1b23;
   --color-gray: #555555;
   --color-light-gray: #cccccc;
   --color-border-light: #222222;
@@ -38,7 +38,12 @@
   /* Typography */
   --font-family: "OffBit", system-ui, -apple-system, Segoe UI, Roboto, Helvetica, Arial, sans-serif;
   --font-family-offbit: "OffBit", system-ui, -apple-system, Segoe UI, Roboto, Helvetica, Arial, sans-serif;
-  --font-size-base: 18px;
+  --font-family-copyright: "Copyright General Type Studio", "OffBit", system-ui, -apple-system, Segoe UI, Roboto, Helvetica, Arial,
+    sans-serif;
+  --font-size-base: 16px;
+  --font-size-small: 1.2rem;
+  --font-size-medium: 1.8rem;
+  --font-size-large: 2.5rem;
   --letter-spacing-base: 0.12rem;
   --letter-spacing-wide: 0.172rem;
   --letter-spacing-wider: 0.2rem;
@@ -47,16 +52,48 @@
   --line-height-relaxed: 1.6;
 
   /* Layout */
-  --header-z-index: 40;
+  --header-z-index: 300;
   --detail-z-index: 100;
   --expand-z-index: 50;
   --grid-columns: 24; /* Default fallback, will be overridden by JavaScript */
   --content-max-width: 800px;
   --breakpoint-mobile: 768px;
 
-  /* Border radius */
-  --radius-sm: 6px;
-  --radius-md: 8px;
+  /* Border radius - 45 degree corners */
+  --radius-sm: 0px;
+  --radius-md: 0px;
+
+  /* 45-degree cut corner styles - all four corners */
+  --cut-corner-sm: polygon(
+    8px 0,
+    calc(100% - 8px) 0,
+    100% 8px,
+    100% calc(100% - 8px),
+    calc(100% - 8px) 100%,
+    8px 100%,
+    0 calc(100% - 8px),
+    0 8px
+  );
+  --cut-corner-md: polygon(
+    12px 0,
+    calc(100% - 12px) 0,
+    100% 12px,
+    100% calc(100% - 12px),
+    calc(100% - 12px) 100%,
+    12px 100%,
+    0 calc(100% - 12px),
+    0 12px
+  );
+  --cut-corner-lg: polygon(
+    16px 0,
+    calc(100% - 16px) 0,
+    100% 16px,
+    100% calc(100% - 16px),
+    calc(100% - 16px) 100%,
+    16px 100%,
+    0 calc(100% - 16px),
+    0 16px
+  );
 }
 
 /* Mobile responsive typography and spacing */

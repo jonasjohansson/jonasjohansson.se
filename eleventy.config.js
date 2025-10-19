@@ -72,6 +72,10 @@ export default function (eleventyConfig) {
     return rendered.replace(/<a href="(https?:\/\/[^"]*)">/g, '<a href="$1" target="_blank">');
   });
 
+  eleventyConfig.addFilter("split", (str, separator) => {
+    return str.split(separator);
+  });
+
   const urlPathBase = process.env.PATH_PREFIX ? `${process.env.PATH_PREFIX}/img` : "/img";
 
   eleventyConfig.addNunjucksAsyncShortcode(

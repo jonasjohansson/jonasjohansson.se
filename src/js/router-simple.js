@@ -60,6 +60,9 @@ class SPARouter {
     // Reset header title to default
     this.updateHeaderTitle(null);
 
+    // Reset document title to default
+    document.title = "Jonas Johansson";
+
     // Reset all strip inline styles and classes (from expanded state)
     const allStrips = document.querySelectorAll(".strip");
     allStrips.forEach((strip) => {
@@ -102,6 +105,9 @@ class SPARouter {
       return;
     }
 
+    // Update document title to project name
+    document.title = `${project.title} - Jonas Johansson`;
+
     // Reset any active filters when entering a project
     resetFilters();
 
@@ -142,9 +148,16 @@ class SPARouter {
 
       let currentProjects = document.getElementById("projects");
       if (currentProjects) {
+        // Clear any existing content and reset
+        currentProjects.innerHTML = "";
         currentProjects.style.opacity = "0";
-        currentProjects.innerHTML = projectContentHTML;
-        currentProjects.classList.add("visible");
+        currentProjects.classList.remove("visible");
+
+        // Small delay to ensure DOM is cleared
+        setTimeout(() => {
+          currentProjects.innerHTML = projectContentHTML;
+          currentProjects.classList.add("visible");
+        }, 50);
       } else {
         const stripsElement = document.getElementById("strips");
         if (stripsElement && stripsElement.parentNode) {
@@ -157,10 +170,12 @@ class SPARouter {
         }
       }
 
-      // Faster transition - show content immediately
+      // Show content after DOM update
       if (currentProjects) {
-        currentProjects.style.opacity = "1";
-        currentProjects.style.transition = "opacity 0.2s ease";
+        setTimeout(() => {
+          currentProjects.style.opacity = "1";
+          currentProjects.style.transition = "opacity 0.2s ease";
+        }, 100);
 
         // Preload hero image immediately
         const heroImage = currentProjects.querySelector(".project-hero img, .project-hero-image img, img[data-hero]");

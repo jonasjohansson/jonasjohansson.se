@@ -4,12 +4,8 @@ header {
   top: calc(var(--spacing-lg) + env(safe-area-inset-top));
   left: 50%;
   transform: translateX(-50%);
-  z-index: 120;
+  z-index: 300;
   pointer-events: auto;
-}
-
-body:has(#intro-section) header {
-  display: none;
 }
 
 .header-content {
@@ -22,6 +18,7 @@ body:has(#intro-section) header {
   justify-content: center;
   background: var(--color-black);
   border-radius: var(--radius-sm);
+  clip-path: var(--cut-corner-sm);
   cursor: pointer;
   user-select: none;
   text-decoration: none;

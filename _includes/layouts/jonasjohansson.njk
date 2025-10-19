@@ -17,20 +17,22 @@
   </head>
   <body>
     <section id="intro-section">
-      <canvas id="asteroids-canvas"></canvas>
       <div class="intro-content">
-        <div class="about-content">
-          {{ about | markdown | safe }}
+        <!-- About text with auto-flow across columns -->
+        <div class="about-text">
+          {{ (about | split('---'))[0] | markdown | safe }}
         </div>
+
         <button id="start-button">Välkommen</button>
       </div>
     </section>
 
     {% include "../components/header.njk" %}
 
-    {{ content | safe }}
-
-    {% include "../components/strips.njk" %}
+    <div id="strips-wrapper">
+      {{ content | safe }}
+      {% include "../components/strips.njk" %}
+    </div>
 
     <script
       type="module"
