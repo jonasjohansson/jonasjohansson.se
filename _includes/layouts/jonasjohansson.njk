@@ -16,11 +16,20 @@
     </script>
   </head>
   <body>
+    <section id="intro-section">
+      <div class="intro-content">
+        <div class="about-content">
+          {{ about | markdown | safe }}
+        </div>
+        <button id="start-button">Welcome</button>
+      </div>
+    </section>
+
     {% include "../components/header.njk" %}
 
     {{ content | safe }}
 
-    {% include "../components/strips.njk" %} {% include "../components/footer.njk" %}
+    {% include "../components/strips.njk" %}
 
     <script
       type="module"

@@ -2,6 +2,7 @@ import { router } from "./router-simple.js";
 import { shuffle, clamp } from "./utils/helpers.js";
 import { CONFIG, FILTER_CATEGORIES } from "./config/constants.js";
 import { ColorExtractor } from "./utils/colorExtractor.js";
+import { createScrambler } from "./utils/scrambleText.js";
 
 // Get projects from window global (injected by 11ty)
 const projects = window.__PROJECTS_DATA__ || [];
@@ -33,112 +34,15 @@ let allStrips = [];
 let stripImages = [];
 
 // ---------- State ----------
-let orientation = "vertical"; // "vertical" or "horizontal"
 let curX = 0.5,
   curY = 0.5; // eased cursor (0..1)
 let targetX = 0.5,
   targetY = 0.5; // instantaneous cursor (0..1)
 
-// Snap-to-strip functionality
-let snapObserver = null;
-let isInProjectView = false;
-let snapThreshold = 0.8; // 80% coverage threshold
-
 // ---------- Helpers ----------
-// Width calculation removed - now handled by CSS
-
-function setOrientation(next) {
-  if (next === orientation) return;
-  orientation = next;
-  stripsContainer.classList.toggle("vertical", orientation === "vertical");
-  stripsContainer.classList.toggle("horizontal", orientation === "horizontal");
-  // Reset motion targets to avoid sudden jumps
-  curX = targetX = 0.5;
-  curY = targetY = 0.5;
-}
-
-// ---------- Snap-to-Strip Functionality ----------
-function initSnapToStrip() {
-  if (!stripsContainer || !isInProjectView) return;
-
-  // Clean up existing observer
-  if (snapObserver) {
-    snapObserver.disconnect();
-  }
-
-  // Create intersection observer to detect strip visibility
-  snapObserver = new IntersectionObserver(
-    (entries) => {
-      entries.forEach((entry) => {
-        if (entry.isIntersecting) {
-          const strip = entry.target;
-          const intersectionRatio = entry.intersectionRatio;
-
-          // If strip covers more than 80% of viewport, snap to it
-          if (intersectionRatio >= snapThreshold) {
-            snapToStrip(strip);
-          }
-        }
-      });
-    },
-    {
-      threshold: [0, 0.1, 0.2, 0.3, 0.4, 0.5, 0.6, 0.7, 0.8, 0.9, 1.0],
-      rootMargin: "0px",
-    }
-  );
-
-  // Observe all strips
-  allStrips.forEach((strip) => {
-    snapObserver.observe(strip);
-  });
-}
-
-function snapToStrip(targetStrip) {
-  if (!targetStrip || !stripsContainer) return;
-
-  // Calculate the position to center the strip
-  const containerRect = stripsContainer.getBoundingClientRect();
-  const stripRect = targetStrip.getBoundingClientRect();
-
-  // Calculate how much we need to scroll to center this strip
-  const stripCenter = stripRect.left + stripRect.width / 2;
-  const containerCenter = containerRect.width / 2;
-  const scrollOffset = stripCenter - containerCenter;
-
-  // Smooth scroll to center the strip
-  stripsContainer.scrollTo({
-    left: stripsContainer.scrollLeft + scrollOffset,
-    behavior: "smooth",
-  });
-
-  // Add visual feedback
-  targetStrip.classList.add("snapped");
-  setTimeout(() => {
-    targetStrip.classList.remove("snapped");
-  }, 1000);
-}
-
 function updateProjectViewState() {
-  const currentPath = window.location.pathname;
-  isInProjectView = currentPath.includes("/work/");
-
-  if (isInProjectView) {
-    initSnapToStrip();
-  } else {
-    // Clean up observer when not in project view
-    if (snapObserver) {
-      snapObserver.disconnect();
-      snapObserver = null;
-    }
-  }
+  // Legacy function kept for router compatibility
 }
-
-// Optional: toggle on key "o"
-window.addEventListener("keydown", (e) => {
-  if (e.key.toLowerCase() === "o") {
-    setOrientation(orientation === "vertical" ? "horizontal" : "vertical");
-  }
-});
 
 // ---------- Input ----------
 function handlePoint(clientX, clientY) {
@@ -219,29 +123,19 @@ function tick() {
     }
   }
 
-  // Only update DOM if there's actual movement and animation is active
+  // Update cursor position as CSS custom properties
   if (hasMovement && isAnimating) {
     const posX = (curX * 100).toFixed(1);
     const posY = (curY * 100).toFixed(1);
 
     // Only update if position actually changed
     if (posX !== lastPosX || posY !== lastPosY) {
-      if (orientation === "vertical" && posX !== lastPosX) {
-        // Use cached image elements instead of querying - update ALL strips, not just visible
-        for (let i = 0; i < stripImages.length; i++) {
-          const img = stripImages[i];
-          if (img && img.style.backgroundImage) {
-            img.style.backgroundPosition = `${posX}% 50%`;
-          }
-        }
+      if (posX !== lastPosX) {
+        stripsContainer.style.setProperty("--cursor-x", `${posX}%`);
         lastPosX = posX;
-      } else if (orientation === "horizontal" && posY !== lastPosY) {
-        for (let i = 0; i < stripImages.length; i++) {
-          const img = stripImages[i];
-          if (img && img.style.backgroundImage) {
-            img.style.backgroundPosition = `50% ${posY}%`;
-          }
-        }
+      }
+      if (posY !== lastPosY) {
+        stripsContainer.style.setProperty("--cursor-y", `${posY}%`);
         lastPosY = posY;
       }
     }
@@ -381,24 +275,22 @@ function initializeStrips() {
     }
   });
 
-  // Trigger initial animation only on first page load
-  // Set animation delays AFTER shuffling for correct order
-  allStrips.forEach((strip, index) => {
-    strip.style.animationDelay = `${index * 0.03}s`;
-    strip.classList.add("initial-load");
+  // Don't trigger animation automatically - wait for intro button click
+  // Strips will be animated when intro.js triggers them
 
-    // After animation completes, mark as loaded for instant visibility on filter changes
-    setTimeout(() => {
-      strip.classList.remove("initial-load");
-      strip.classList.add("loaded");
-    }, 150 + index * 30); // Match animation duration + stagger delay
-  });
-
-  // Add click and hover handlers to strips
   const headerSubtitle = document.querySelector(".header-subtitle");
-  const defaultSubtitle = headerSubtitle?.textContent || "PROGRESS NOT PERFECTION";
+  const defaultSubtitle = "PROGRESS NOT PERFECTION";
+  let subtitleScrambler = null;
 
-  // Function to get current project title dynamically
+  if (headerSubtitle) {
+    subtitleScrambler = createScrambler(headerSubtitle, {
+      duration: 400,
+      frameDelay: 30,
+    });
+    // Make it globally available for router
+    window.subtitleScrambler = subtitleScrambler;
+  }
+
   function getCurrentProjectTitle() {
     const currentPath = window.location.pathname;
     const isInProject = currentPath.includes("/work/");
@@ -412,27 +304,33 @@ function initializeStrips() {
     const project = projects.find((p) => p.slug === projectSlug);
 
     if (project) {
-      let hoverTimeout = null;
-      let isHovering = false;
-
-      // Click handler
-      strip.addEventListener("click", () => {
-        const projectId = project.slug || project.title.toLowerCase().replace(/\s+/g, "-");
-        const projectPath = pathPrefix ? `${pathPrefix}/work/${projectId}` : `/work/${projectId}`;
-        router.navigate(projectPath);
-      });
-
-      // Hover handlers - update subtitle only
+      // Mouse hover events for scramble text
       strip.addEventListener("mouseenter", () => {
-        if (headerSubtitle) {
-          headerSubtitle.textContent = project.title.toUpperCase();
+        if (subtitleScrambler && headerSubtitle) {
+          subtitleScrambler.scramble(project.title.toUpperCase());
         }
       });
 
       strip.addEventListener("mouseleave", () => {
-        if (headerSubtitle) {
-          headerSubtitle.textContent = getCurrentProjectTitle();
+        // Don't scramble back to default if we're on a project page
+        const isOnProjectPage = window.location.pathname.includes("/work/");
+        if (subtitleScrambler && headerSubtitle && !isOnProjectPage) {
+          subtitleScrambler.scramble(defaultSubtitle);
         }
+      });
+
+      strip.addEventListener("click", () => {
+        const projectId = project.slug || project.title.toLowerCase().replace(/\s+/g, "-");
+        const projectPath = pathPrefix ? `${pathPrefix}/work/${projectId}` : `/work/${projectId}`;
+        strip.classList.add("selected");
+        allStrips.forEach((otherStrip) => {
+          if (otherStrip !== strip) {
+            otherStrip.classList.add("not-selected");
+          }
+        });
+        setTimeout(() => {
+          router.navigate(projectPath);
+        }, 600);
       });
     }
   });
@@ -512,11 +410,7 @@ function initializeStrips() {
             // Update subtitle for touch
             const projectSlug = strip.getAttribute("data-project");
             const project = projects.find((p) => p.slug === projectSlug);
-            if (project && headerSubtitle) {
-              headerSubtitle.textContent = project.title.toUpperCase();
-            }
-          } else if (headerSubtitle) {
-            headerSubtitle.textContent = defaultSubtitle;
+            // Don't update header title on touch - keep as default
           }
 
           currentlyTouchedStrip = strip;
@@ -545,9 +439,7 @@ function initializeStrips() {
       currentlyTouchedStrip.classList.remove("touch-hover");
       currentlyTouchedStrip = null;
     }
-    if (headerSubtitle) {
-      headerSubtitle.textContent = getCurrentProjectTitle();
-    }
+    // Don't update header title - keep as default
 
     touchStartStrip = null;
     hasMoved = false;

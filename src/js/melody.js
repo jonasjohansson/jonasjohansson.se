@@ -2,7 +2,6 @@
 
 // Note frequencies for common notes (in Hz)
 const NOTE_FREQUENCIES = {
-  // Bass notes for Billie Jean
   F2: 87.31,
   "F#2": 92.5,
   G2: 98.0,
@@ -49,26 +48,24 @@ const NOTE_FREQUENCIES = {
   C6: 1046.5,
 };
 
-// Super Mario Bros. - Main Theme melody
-// The iconic opening phrase that everyone knows
 const MARIO_MELODY = [
-  { note: "E5", duration: 0.2 },
-  { note: "E5", duration: 0.2 },
-  { note: "E5", duration: 0.2 },
-  { note: "C5", duration: 0.2 },
-  { note: "E5", duration: 0.2 },
-  { note: "G5", duration: 0.4 },
-  { note: "G4", duration: 0.4 },
-  { note: "C5", duration: 0.3 },
+  { note: "E5", duration: 0.15 },
+  { note: "E5", duration: 0.15 },
+  { note: "E5", duration: 0.15 },
+  { note: "C5", duration: 0.15 },
+  { note: "E5", duration: 0.15 },
+  { note: "G5", duration: 0.3 },
   { note: "G4", duration: 0.3 },
-  { note: "E4", duration: 0.3 },
+  { note: "C5", duration: 0.25 },
+  { note: "G4", duration: 0.25 },
+  { note: "E4", duration: 0.25 },
   { note: "A4", duration: 0.2 },
   { note: "B4", duration: 0.2 },
-  { note: "A#4", duration: 0.2 },
+  { note: "A#4", duration: 0.15 },
   { note: "A4", duration: 0.2 },
-  { note: "G4", duration: 0.3 },
-  { note: "E5", duration: 0.3 },
-  { note: "G5", duration: 0.3 },
+  { note: "G4", duration: 0.25 },
+  { note: "E5", duration: 0.25 },
+  { note: "G5", duration: 0.25 },
   { note: "A5", duration: 0.2 },
   { note: "F5", duration: 0.2 },
   { note: "G5", duration: 0.2 },
@@ -76,25 +73,10 @@ const MARIO_MELODY = [
   { note: "C5", duration: 0.2 },
   { note: "D5", duration: 0.2 },
   { note: "B4", duration: 0.2 },
-  { note: "C5", duration: 0.3 },
-  { note: "G4", duration: 0.3 },
-  { note: "E4", duration: 0.3 },
-  { note: "G4", duration: 0.3 },
-  { note: "A4", duration: 0.2 },
-  { note: "F4", duration: 0.2 },
-  { note: "G4", duration: 0.2 },
-  { note: "E4", duration: 0.2 },
-  { note: "C4", duration: 0.2 },
-  { note: "D4", duration: 0.2 },
-  { note: "B3", duration: 0.2 },
 ];
 
-// Available melodies
 const MELODIES = {
-  mario: {
-    name: "Super Mario Bros. Theme",
-    notes: MARIO_MELODY,
-  },
+  mario: { name: "Super Mario Bros.", notes: MARIO_MELODY },
 };
 
 class MelodyPlayer {
@@ -160,17 +142,19 @@ class MelodyPlayer {
     return null;
   }
 
-  // Get available melodies
   getAvailableMelodies() {
     return Object.keys(MELODIES).map((key) => ({
       key,
       name: MELODIES[key].name,
     }));
   }
+
+  selectRandomMelody() {
+    const keys = Object.keys(MELODIES);
+    const randomKey = keys[Math.floor(Math.random() * keys.length)];
+    return randomKey;
+  }
 }
 
-// Create global melody player instance
 export const melodyPlayer = new MelodyPlayer();
-
-// Export melody data for external use
 export { MELODIES, NOTE_FREQUENCIES };

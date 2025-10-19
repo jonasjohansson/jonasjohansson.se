@@ -1,20 +1,27 @@
 /* CSS Variables */
 :root {
-  /* Colors - Light Mode */
-  --bg-primary: #ffffff;
-  --bg-card: rgba(255, 255, 255, 0.95);
-  --bg-card-hover: rgba(0, 0, 0, 0.05);
-  --text-primary: #000000;
-  --border-color: rgba(0, 0, 0, 0.1);
+  /* Colors - Black and White */
+  --color-white: #ffffff;
+  --color-black: #000000;
+  --color-dark: #000000;
+  --color-gray: #000000;
+  --color-light-gray: #ffffff;
+  --color-border-light: #000000;
+  --color-overlay-light: #000000;
+  --bg-primary: var(--color-white);
+  --bg-card: var(--color-white);
+  --bg-card-hover: var(--color-white);
+  --text-primary: var(--color-black);
+  --border-color: var(--color-black);
 
   /* Header */
-  --header-bg: #ffffff;
-  --header-text: #000000;
+  --header-bg: var(--color-black);
+  --header-text: var(--color-white);
 
   /* Links */
-  --link-color: #000000;
-  --link-color-hover: #333333;
-  --link-color-active: #666666;
+  --link-color: var(--color-black);
+  --link-color-hover: var(--color-dark);
+  --link-color-active: var(--color-gray);
 
   /* Transitions */
   --transition-fast: 0.4s ease;
@@ -30,15 +37,22 @@
 
   /* Typography */
   --font-family: "OffBit", system-ui, -apple-system, Segoe UI, Roboto, Helvetica, Arial, sans-serif;
-  --font-size-base: 14.4px;
+  --font-family-offbit: "OffBit", system-ui, -apple-system, Segoe UI, Roboto, Helvetica, Arial, sans-serif;
+  --font-size-base: 21px;
   --letter-spacing-base: 0.12rem;
   --letter-spacing-wide: 0.172rem;
   --letter-spacing-wider: 0.2rem;
+  --line-height-tight: 1.2;
+  --line-height-base: 1.425;
+  --line-height-relaxed: 1.6;
 
   /* Layout */
-  --header-z-index: 1000;
+  --header-z-index: 40;
   --detail-z-index: 100;
   --expand-z-index: 50;
+  --grid-columns: 24;
+  --content-max-width: 800px;
+  --breakpoint-mobile: 768px;
 
   /* Border radius */
   --radius-sm: 6px;
@@ -46,7 +60,7 @@
 }
 
 /* Mobile responsive typography and spacing */
-@media (max-width: 768px) {
+@media (max-width: var(--breakpoint-mobile)) {
   :root {
     --font-size-base: 12px;
     --letter-spacing-base: 0.09rem;

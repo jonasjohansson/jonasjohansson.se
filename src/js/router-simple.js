@@ -1,5 +1,4 @@
 import { resetFilters, updateProjectViewState, applyProjectColor } from "./strips.js";
-import { reinitializeCurtain } from "./curtain.js";
 
 const projects = window.__PROJECTS_DATA__ || [];
 const pathPrefix = window.__PATH_PREFIX__ || "";
@@ -70,7 +69,7 @@ class SPARouter {
       strip.style.zIndex = "";
       strip.style.opacity = "";
       strip.style.transition = "";
-      strip.classList.remove("touch-hover");
+      strip.classList.remove("touch-hover", "selected", "not-selected");
 
       // Force override if computed flex-grow is still high (from lingering CSS)
       if (computedFlexGrow !== "1" && computedFlexGrow !== "0") {
@@ -81,7 +80,6 @@ class SPARouter {
     this.updateStripVisibility(null);
     window.scrollTo(0, 0);
 
-    // Update snap-to-strip state
     if (updateProjectViewState) {
       updateProjectViewState();
     }
@@ -98,11 +96,7 @@ class SPARouter {
       return;
     }
 
-    // Update header title immediately when clicking strip
-    // Use the strip title (shorter version) instead of full project title
-    const stripElement = document.querySelector(`.strip[data-project="${slug}"]`);
-    const stripTitle = stripElement ? stripElement.querySelector(".strip-text").textContent : project.title;
-    this.updateHeaderTitle(stripTitle);
+    // Keep header title as "PROGRESS NOT PERFECTION" - don't update
 
     // Reset any active filters when entering a project
     resetFilters();
@@ -140,9 +134,11 @@ class SPARouter {
       }
 
       if (clickedStrip) {
+        // Keep the selected strip visible and expanded
         clickedStrip.style.transition = "flex-grow 1.2s ease-out";
         clickedStrip.style.flexGrow = "100";
         clickedStrip.style.zIndex = "300";
+        clickedStrip.classList.add("selected");
 
         const waitForProjectReady = () => {
           return new Promise((resolve) => {
@@ -161,6 +157,12 @@ class SPARouter {
                 clickedStrip.style.zIndex = "";
                 clickedStrip.style.flexGrow = "";
 
+                // Remove selection classes from all strips
+                const allStrips = document.querySelectorAll(".strip");
+                allStrips.forEach((strip) => {
+                  strip.classList.remove("selected", "not-selected");
+                });
+
                 this.updateStripVisibility(slug);
                 resolve();
               }, 300);
@@ -175,15 +177,10 @@ class SPARouter {
 
       window.scrollTo(0, 0);
 
-      // Update snap-to-strip state
       if (updateProjectViewState) {
         updateProjectViewState();
       }
 
-      // Re-initialize curtain to pick up the new project container
-      reinitializeCurtain();
-
-      // Apply project color
       await applyProjectColor(project);
     } catch (error) {
       console.error("Error loading project:", error);
@@ -191,15 +188,8 @@ class SPARouter {
   }
 
   updateHeaderTitle(projectTitle) {
-    const headerSubtitle = document.querySelector(".header-subtitle");
-
-    if (headerSubtitle) {
-      if (projectTitle) {
-        headerSubtitle.textContent = projectTitle;
-      } else {
-        headerSubtitle.textContent = "Progress not Perfection";
-      }
-    }
+    // Don't update header title - keep as "PROGRESS NOT PERFECTION"
+    // This function is kept for compatibility but does nothing
   }
 
   updateStripVisibility(currentProjectSlug) {

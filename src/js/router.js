@@ -170,10 +170,7 @@ function showProjectView(projectId) {
     // Set hero background image
     projectHero.style.backgroundImage = `url('${imageUrl}')`;
 
-    // Update header subtitle with project title
-    if (headerSubtitle) {
-      headerSubtitle.textContent = project.title.toUpperCase();
-    }
+    // Keep header subtitle as default - don't update
 
     // Hide the title in the content area
     projectTitle.style.display = "none";

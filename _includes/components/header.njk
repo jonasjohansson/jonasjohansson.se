@@ -1,13 +1,9 @@
 <header id="header">
-  {% include "../components/about-curtain.njk" %}
-
-  <div
-    class="header-content"
-    id="island-handle">
-    <div class="header-text-left">
+  <a
+    href="/"
+    class="header-content">
+    <div class="header-text">
       <div class="header-title">{{ site.title | upper }}</div>
-    </div>
-    <div class="header-text-right">
       <div class="header-subtitle">
         {% if project %}
         {{ projectContent[project.slug].title }}
@@ -16,5 +12,5 @@
         {% endif %}
       </div>
     </div>
-  </div>
+  </a>
 </header>

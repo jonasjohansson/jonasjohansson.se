@@ -23,3 +23,19 @@
   font-style: normal;
   font-display: swap;
 }
+
+@font-face {
+  font-family: "Cerial";
+  src: url("../fonts/Cerial.woff2") format("woff2"), url("../fonts/Cerial.woff") format("woff");
+  font-weight: normal;
+  font-style: normal;
+  font-display: swap;
+}
+
+@font-face {
+  font-family: "AnselmTen";
+  src: url("../fonts/AnselmTen-Normal.woff2") format("woff2"), url("../fonts/AnselmTen-Normal.woff") format("woff");
+  font-weight: normal;
+  font-style: normal;
+  font-display: swap;
+}

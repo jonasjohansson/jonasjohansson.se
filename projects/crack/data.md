@@ -1,6 +1,7 @@
 ---
 title: "Crack"
 date: "2022-01-01"
+printable: true
 tags:
   - mixed reality
   - installation

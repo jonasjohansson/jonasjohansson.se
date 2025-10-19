@@ -1,207 +1,114 @@
-console.log("✅ Loading eleventy.config.js");
-
-// @ts-nocheck
 import { readdirSync, readFileSync, statSync, existsSync } from "node:fs";
 import path from "node:path";
 import { fileURLToPath } from "node:url";
 import markdownIt from "markdown-it";
 import Image from "@11ty/eleventy-img";
 import nunjucks from "nunjucks";
-import EleventyVitePlugin from "@11ty/eleventy-plugin-vite";
 import matter from "gray-matter";
-import { getAverageColor } from "fast-average-color-node";
 
 const md = markdownIt({ html: true, breaks: false, linkify: true });
 const projectRoot = path.dirname(fileURLToPath(import.meta.url));
-
-// tiny slug helper for nice filenames
 const slug = (s) =>
   String(s)
     .trim()
     .toLowerCase()
+    .replace(/å/g, "a")
+    .replace(/ä/g, "a")
+    .replace(/ö/g, "o")
     .replace(/[^a-z0-9]+/g, "-")
     .replace(/(^-|-$)/g, "");
 
 export default function (eleventyConfig) {
-  /** Ignore jonasjohansson.se folder (it's a separate standalone site) */
   eleventyConfig.ignores.add("jonasjohansson.se/**");
-
-  /** Ignore data.md files from being rendered as pages */
   eleventyConfig.ignores.add("projects/**/data.md");
-
-  /** Force full rebuild on any file change - no caching */
   eleventyConfig.setServerOptions({
-    domdiff: false, // Disable DOM diffing for faster full page reloads
+    domdiff: false,
+    headers: {
+      "Cache-Control": "no-store, no-cache, must-revalidate",
+    },
   });
+  eleventyConfig.addWatchTarget("projects/**/*");
+  eleventyConfig.addWatchTarget("src/**/*");
+  eleventyConfig.setWatchJavaScriptDependencies(false);
+  eleventyConfig.addPassthroughCopy("site.webmanifest");
+  eleventyConfig.addPassthroughCopy("favicon.*");
+  eleventyConfig.addPassthroughCopy("apple-touch-icon.png");
+  eleventyConfig.addPassthroughCopy("web-app-manifest-*.png");
+  eleventyConfig.addPassthroughCopy("CNAME");
 
-  /** Passthroughs (Vite handles CSS/JS assets) */
-  eleventyConfig.addWatchTarget("projects/**/*"); // Watch for ALL changes in projects folder
-  eleventyConfig.addWatchTarget("src/**/*"); // Watch for ALL changes in src folder
-  eleventyConfig.setWatchJavaScriptDependencies(false); // Force rebuild on any change
-  eleventyConfig.addPassthroughCopy({ "src/fonts": "fonts" }); // Copy fonts to dist/fonts
-  eleventyConfig.addPassthroughCopy("site.webmanifest"); // Copy web app manifest
-  eleventyConfig.addPassthroughCopy("favicon.*"); // Copy all favicon files
-  eleventyConfig.addPassthroughCopy("apple-touch-icon.png"); // Copy apple touch icon
-  eleventyConfig.addPassthroughCopy("web-app-manifest-*.png"); // Copy web app manifest icons
-  // eleventyConfig.addPassthroughCopy("projects"); // Don't copy raw projects - use optimized images only
-  eleventyConfig.addPassthroughCopy("CNAME"); // if present
-
-  /** Globals */
   eleventyConfig.addGlobalData("isDev", process.env.ELEVENTY_RUN_MODE !== "build");
   eleventyConfig.addGlobalData("buildYear", new Date().getFullYear());
-
-  // Load about content from markdown file
   eleventyConfig.addGlobalData("about", () => {
     const aboutPath = path.join(process.cwd(), "_data/about.md");
-    if (existsSync(aboutPath)) {
-      return readFileSync(aboutPath, "utf8");
-    }
-    return "";
+    return existsSync(aboutPath) ? readFileSync(aboutPath, "utf8") : "";
   });
 
-  /** Control the Nunjucks env */
-  eleventyConfig.setLibrary(
-    "njk",
-    nunjucks.configure({
-      autoescape: true,
-      throwOnUndefined: false,
-      trimBlocks: true,
-      lstripBlocks: true,
-    })
-  );
+  eleventyConfig.setLibrary("njk", nunjucks.configure({ autoescape: true, throwOnUndefined: false, trimBlocks: true, lstripBlocks: true }));
 
-  /** Shortcodes */
-  eleventyConfig.addShortcode("responsiveImage", async (src, alt, widths = [480, 800, 1200]) => {
-    const Image = (await import("@11ty/eleventy-img")).default;
-    const metadata = await Image(src, {
-      widths,
-      formats: ["webp", "jpeg"],
-      outputDir: "./dist/assets/",
-      urlPath: "/assets/",
-      filenameFormat: (id, src, width, format, options) => {
-        const ext = path.extname(src);
-        const name = path.basename(src, ext);
-        return `${name}-${width}w-${id}.${format}`;
-      },
-    });
-    return Image.generateHTML(metadata, {
-      alt,
-      loading: "lazy",
-      decoding: "async",
-    });
-  });
-
-  /** Strip image shortcode - processes first image for strips */
-  eleventyConfig.addShortcode("stripImage", async (src, alt) => {
-    const Image = (await import("@11ty/eleventy-img")).default;
-    const metadata = await Image(src, {
-      widths: [400, 600, 800],
-      formats: ["webp", "jpeg"],
-      outputDir: "./dist/assets/",
-      urlPath: "/assets/",
-      filenameFormat: (id, src, width, format, options) => {
-        const ext = path.extname(src);
-        const name = path.basename(src, ext);
-        return `${name}-${width}w-${id}.${format}`;
-      },
-    });
-    return Image.generateHTML(metadata, {
-      alt,
-      loading: "lazy",
-      decoding: "async",
-    });
-  });
-
-  // Skip Vite plugin - build assets separately
-  // eleventyConfig.addPlugin(EleventyVitePlugin);
-
-  /** Filters */
   eleventyConfig.addFilter("isoDate", (d) => {
     if (!d) return "";
     const dt = new Date(d);
     return isNaN(dt) ? "" : dt.toISOString().slice(0, 10);
   });
 
-  // Filter to get latest Vite build files
   eleventyConfig.addFilter("viteAsset", (filename) => {
     const isJS = filename.endsWith(".js");
     const isCSS = filename.endsWith(".css");
     const subdir = isJS ? "js" : isCSS ? "css" : "";
     const distPath = path.join(projectRoot, "dist", "assets", subdir);
-
     if (!existsSync(distPath)) return `/assets/${filename}`;
-
     const files = readdirSync(distPath);
     const pattern = new RegExp(`^${filename.replace(/\.(js|css)$/, "")}\\.[a-zA-Z0-9]+\\.(js|css)$`);
     const matches = files.filter((file) => pattern.test(file));
-
-    // Sort by modification time to get the latest file
-    const match = matches.sort((a, b) => {
-      const statA = statSync(path.join(distPath, a));
-      const statB = statSync(path.join(distPath, b));
-      return statB.mtime.getTime() - statA.mtime.getTime();
-    })[0];
-
+    const match = matches.sort(
+      (a, b) => statSync(path.join(distPath, b)).mtime.getTime() - statSync(path.join(distPath, a)).mtime.getTime()
+    )[0];
     return match ? `/assets/${subdir}/${match}` : `/assets/${filename}`;
   });
 
   eleventyConfig.addFilter("markdown", (str) => {
-    return md.render(str);
+    const rendered = md.render(str);
+    // Add target="_blank" to external links
+    return rendered.replace(/<a href="(https?:\/\/[^"]*)">/g, '<a href="$1" target="_blank">');
   });
 
-  /** Responsive image shortcode — preserves original name + width + short hash */
   const urlPathBase = process.env.PATH_PREFIX ? `${process.env.PATH_PREFIX}/img` : "/img";
 
   eleventyConfig.addNunjucksAsyncShortcode(
     "responsiveImage",
     async (src, alt, className = "media-img", sizes = "(min-width: 800px) 980px, 100vw") => {
       try {
-        // src is a filesystem path like "projects/my-piece/Jonas_johansson_image-01.jpg"
         const srcPath = path.join(process.cwd(), src);
-        console.log(`🖼️  Processing image: ${src} -> ${srcPath}`);
-
         const metadata = await Image(srcPath, {
-          widths: [1920, 2400], // High resolution for portfolio
-          formats: ["jpeg"], // Just JPEG for simplicity and speed
+          widths: [1920, 2400],
+          formats: ["jpeg"],
           urlPath: urlPathBase,
           outputDir: "dist/img",
-          sharpJpegOptions: { quality: 90, progressive: true }, // High quality for portfolio
+          sharpJpegOptions: { quality: 90, progressive: true },
           sharpOptions: { animated: true },
           filenameFormat(id, fileSrc, width, format) {
-            const dirSlug = slug(path.basename(path.dirname(fileSrc))); // project folder
-            const baseName = path.basename(fileSrc, path.extname(fileSrc)); // original name (no ext)
-            const baseSlug = slug(baseName);
-            const shortHash = String(id).slice(0, 8);
-            return `${dirSlug}-${baseSlug}-${width}w-${shortHash}.${format}`;
+            const dirSlug = slug(path.basename(path.dirname(fileSrc)));
+            const baseSlug = slug(path.basename(fileSrc, path.extname(fileSrc)));
+            return `${dirSlug}-${baseSlug}-${width}w-${String(id).slice(0, 8)}.${format}`;
           },
         });
-
-        // Add width/height from largest JPEG to avoid CLS
         const largestJpeg = metadata.jpeg?.[metadata.jpeg.length - 1];
-        const width = largestJpeg?.width;
-        const height = largestJpeg?.height;
-
         const attrs = {
           alt,
           sizes,
           class: className,
           loading: "lazy",
           decoding: "async",
-          ...(width && height ? { width, height } : {}),
+          ...(largestJpeg?.width && largestJpeg?.height ? { width: largestJpeg.width, height: largestJpeg.height } : {}),
         };
-
-        // Optional: treat hero images as LCP if you pass class "lcp"
         if (className?.includes("lcp")) attrs.fetchpriority = "high";
-
         return Image.generateHTML(metadata, attrs, { whitespaceMode: "inline" });
       } catch (err) {
-        console.error(`❌ Error processing image ${src}:`, err.message);
         return `<img src="${src}" alt="${alt}" class="${className}" />`;
       }
     }
   );
 
-  /** Projects scanner → used on index.njk */
   eleventyConfig.addGlobalData("projects", () => {
     const root = "projects";
     if (!existsSync(root)) return [];
@@ -235,21 +142,16 @@ export default function (eleventyConfig) {
         }
       });
 
-      // Fallback date: newest file mtime
       if (!date) {
         const mtimes = files.map((f) => statSync(path.join(dirPath, f.name)).mtimeMs);
         date = new Date(mtimes.length ? Math.max(...mtimes) : Date.now()).toISOString();
       }
-
       return { slug: dir, title, date, images, videos, texts };
     });
-
-    // newest first
     projects.sort((a, b) => new Date(b.date) - new Date(a.date));
     return projects;
   });
 
-  /** Transform projects for JavaScript consumption */
   eleventyConfig.addGlobalData("projectsForJS", async () => {
     const root = "projects";
     if (!existsSync(root)) return [];
@@ -285,12 +187,8 @@ export default function (eleventyConfig) {
             if (firstImageBlock && firstImageBlock.src) {
               firstImageSrc = `${root}/${dir}/${firstImageBlock.src}`;
             }
-          } catch (err) {
-            console.warn(`⚠️  Could not read ${dataMdPath}:`, err.message);
-          }
+          } catch (err) {}
         }
-
-        // Fallback: scan for first image if not found in data.md
         if (!firstImageSrc) {
           const files = readdirSync(dirPath, { withFileTypes: true }).filter((f) => f.isFile());
           for (const f of files) {
@@ -302,18 +200,15 @@ export default function (eleventyConfig) {
           }
         }
 
-        // Generate high-quality strip image
         if (firstImageSrc) {
           try {
             const srcPath = path.join(process.cwd(), firstImageSrc);
-            const urlPathBase = process.env.PATH_PREFIX ? `${process.env.PATH_PREFIX}/img` : "/img";
-
             const metadata = await Image(srcPath, {
-              widths: [1920], // High resolution for strips
-              formats: ["jpeg"], // Just JPEG for strips - faster processing
+              widths: [1920],
+              formats: ["jpeg"],
               urlPath: urlPathBase,
               outputDir: "dist/img",
-              sharpJpegOptions: { quality: 90, progressive: true }, // High quality for portfolio
+              sharpJpegOptions: { quality: 90, progressive: true },
               filenameFormat(id, fileSrc, width, format) {
                 const dirSlug = slug(path.basename(path.dirname(fileSrc)));
                 const baseName = path.basename(fileSrc, path.extname(fileSrc));
@@ -323,23 +218,12 @@ export default function (eleventyConfig) {
               },
             });
 
-            const jpeg = metadata.jpeg?.[0];
-            firstImageOptimized = jpeg?.url;
-          } catch (err) {
-            console.warn(`⚠️  Could not process strip image ${firstImageSrc}:`, err.message);
-          }
+            firstImageOptimized = metadata.jpeg?.[0]?.url;
+          } catch (err) {}
         }
-
-        return {
-          title,
-          images: firstImageOptimized ? [firstImageOptimized] : [],
-          tags,
-          year,
-          slug: dir,
-        };
+        return { title, images: firstImageOptimized ? [firstImageOptimized] : [], tags, year, slug: dir };
       })
     );
-
     return projects;
   });
 
@@ -357,17 +241,11 @@ export default function (eleventyConfig) {
     for (const dir of dirs) {
       const dirPath = path.join(root, dir);
       const dataMdPath = path.join(dirPath, "data.md");
-
-      // If no data.md exists, skip this project
-      if (!existsSync(dataMdPath)) {
-        console.log(`⚠️  ${dir} has no data.md, skipping...`);
-        continue;
-      }
-
+      if (!existsSync(dataMdPath)) continue;
       try {
         const fileContent = readFileSync(dataMdPath, "utf8");
         const parsed = matter(fileContent);
-        const { title, date, tags = [], blocks = [] } = parsed.data;
+        const { title, date, tags = [], blocks = [], printable = true } = parsed.data;
 
         let year = new Date().getFullYear();
         let isoDate = null;
@@ -380,104 +258,39 @@ export default function (eleventyConfig) {
         // Process blocks from frontmatter
         const content = blocks
           .map((block) => {
-            // Default values for all blocks
             const { type, src, content: textContent, colStart = 1, colSpan = 12, fontSize, textAlign, credits } = block;
-
-            // Convert fontSize to CSS class
-            let fontSizeClass = "text-large"; // Default to large for text blocks
+            let fontSizeClass = "text-large";
             if (fontSize) {
-              if (fontSize.includes("small") || fontSize.includes("1.2")) {
-                fontSizeClass = "text-small";
-              } else if (fontSize.includes("large") || fontSize.includes("2.5") || fontSize.includes("3")) {
-                fontSizeClass = "text-large";
-              } else if (fontSize.includes("medium") || fontSize.includes("1.8")) {
-                fontSizeClass = "text-medium";
-              }
+              if (fontSize.includes("small") || fontSize.includes("1.2")) fontSizeClass = "text-small";
+              else if (fontSize.includes("medium") || fontSize.includes("1.8")) fontSizeClass = "text-medium";
             }
-
-            if (type === "image") {
-              return {
-                type: "image",
-                src: `${root}/${dir}/${src}`,
-                alt: title || dir,
-                colStart,
-                colSpan,
-              };
-            } else if (type === "video") {
-              return {
-                type: "video",
-                src: `${root}/${dir}/${src}`,
-                alt: title || dir,
-                colStart,
-                colSpan,
-              };
-            } else if (type === "text") {
+            if (type === "image") return { type: "image", src: `${root}/${dir}/${src}`, alt: title || dir, colStart, colSpan };
+            if (type === "video") return { type: "video", src: `${root}/${dir}/${src}`, alt: title || dir, colStart, colSpan };
+            if (type === "text")
               return {
                 type: "text",
                 content: md.render(textContent || ""),
-                colStart: colStart || 3, // Default to 3 for text
-                colSpan: colSpan || 8, // Default to 8 for text
+                colStart: colStart || 3,
+                colSpan: colSpan || 8,
                 fontSizeClass,
-                textAlign: textAlign || "center", // Default to center for text
+                textAlign: textAlign || "center",
               };
-            } else if (type === "credits") {
-              return {
-                type: "credits",
-                credits: (credits || []).map((credit) => md.render(credit)),
-                colStart,
-                colSpan,
-              };
-            }
-
+            if (type === "credits")
+              return { type: "credits", credits: (credits || []).map((credit) => md.render(credit)), colStart, colSpan };
             return null;
           })
           .filter(Boolean);
-
-        projectContent[dir] = {
-          title: title || dir.replace(/[._-]+/g, " ").trim(),
-          tags,
-          year,
-          date: isoDate,
-          content,
-        };
-      } catch (err) {
-        console.error(`❌ Error processing data.md in ${dir}:`, err.message);
-      }
+        projectContent[dir] = { title: title || dir.replace(/[._-]+/g, " ").trim(), tags, year, date: isoDate, content, printable };
+      } catch (err) {}
     }
-
     return projectContent;
   });
 
-  /** Custom filters for project metadata */
-  eleventyConfig.addFilter("findFirstImage", function (projectContent) {
-    if (!projectContent || !Array.isArray(projectContent)) return null;
-    const firstImage = projectContent.find((block) => block.type === "image");
-    return firstImage ? firstImage.src : null;
-  });
+  eleventyConfig.addFilter("findFirstImage", (content) => content?.find?.((b) => b.type === "image")?.src || null);
+  eleventyConfig.addFilter("findFirstText", (content) => content?.find?.((b) => b.type === "text")?.content || null);
+  eleventyConfig.addFilter("truncate", (str, length = 160) => (str && str.length > length ? str.substring(0, length) + "..." : str || ""));
+  eleventyConfig.setWatchThrottleWaitTime(0);
 
-  eleventyConfig.addFilter("findFirstText", function (projectContent) {
-    if (!projectContent || !Array.isArray(projectContent)) return null;
-    const firstText = projectContent.find((block) => block.type === "text");
-    return firstText ? firstText.content : null;
-  });
-
-  eleventyConfig.addFilter("truncate", function (str, length = 160) {
-    if (!str) return "";
-    return str.length > length ? str.substring(0, length) + "..." : str;
-  });
-
-  /** Disable caching during watch mode for immediate rebuilds */
-  eleventyConfig.setWatchThrottleWaitTime(0); // No throttling
-
-  /** Force rebuild when project data files change */
-  eleventyConfig.on("eleventy.before", ({ runMode }) => {
-    // Clear the global data cache on watch mode to force re-evaluation
-    if (runMode === "watch" || runMode === "serve") {
-      console.log("🔄 Reloading project data...");
-    }
-  });
-
-  /** Eleventy return object */
   return {
     dir: { input: ".", includes: "_includes", layouts: "_includes/layouts", output: "dist" },
     pathPrefix: process.env.PATH_PREFIX || "/",

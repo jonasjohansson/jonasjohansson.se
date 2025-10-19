@@ -19,7 +19,15 @@ export default defineConfig({
         styles: "src/css/main.css",
       },
       output: {
-        assetFileNames: "assets/css/[name].[hash].css",
+        assetFileNames: (assetInfo) => {
+          if (assetInfo.name && assetInfo.name.match(/\.(woff2?|ttf|eot)$/)) {
+            return "assets/fonts/[name].[hash][extname]";
+          }
+          if (assetInfo.name && assetInfo.name.endsWith(".css")) {
+            return "assets/css/[name].[hash].css";
+          }
+          return "assets/[name].[hash][extname]";
+        },
         chunkFileNames: "assets/js/[name].[hash].js",
         entryFileNames: "assets/js/[name].[hash].js",
         manualChunks: {
