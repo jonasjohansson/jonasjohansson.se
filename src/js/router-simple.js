@@ -80,6 +80,12 @@ class SPARouter {
     this.updateStripVisibility(null);
     window.scrollTo(0, 0);
 
+    // Trigger strips animation
+    const stripsContainer = document.getElementById("strips");
+    if (stripsContainer) {
+      stripsContainer.classList.add("animate-in");
+    }
+
     if (updateProjectViewState) {
       updateProjectViewState();
     }
@@ -96,81 +102,98 @@ class SPARouter {
       return;
     }
 
-    // Keep header title as "PROGRESS NOT PERFECTION" - don't update
-
     // Reset any active filters when entering a project
     resetFilters();
 
     const clickedStrip = document.querySelector(`.strip[data-project="${slug}"]`);
 
+    // Start strip animation immediately
+    if (clickedStrip) {
+      clickedStrip.style.transition = "flex-grow 0.8s ease-out";
+      clickedStrip.style.flexGrow = "100";
+      clickedStrip.style.zIndex = "300";
+      clickedStrip.classList.add("selected");
+    }
+
     try {
-      const fetchPath = pathPrefix ? `${pathPrefix}/work/${slug}/` : `/work/${slug}/`;
-      const response = await fetch(fetchPath);
-      if (!response.ok) throw new Error(`Failed to fetch project: ${response.status}`);
+      let projectContentHTML;
 
-      const html = await response.text();
-      const parser = new DOMParser();
-      const doc = parser.parseFromString(html, "text/html");
+      // Check if content is preloaded
+      if (window.preloadCache && window.preloadCache.has(slug)) {
+        projectContentHTML = window.preloadCache.get(slug);
+      } else {
+        // Fetch if not preloaded
+        const fetchPath = pathPrefix ? `${pathPrefix}/work/${slug}/` : `/work/${slug}/`;
+        const response = await fetch(fetchPath);
+        if (!response.ok) throw new Error(`Failed to fetch project: ${response.status}`);
 
-      const projectContent = doc.querySelector("#projects");
+        const html = await response.text();
+        const parser = new DOMParser();
+        const doc = parser.parseFromString(html, "text/html");
+        const projectContent = doc.querySelector("#projects");
 
-      if (!projectContent) {
-        console.warn("Project content not found in response");
-        return;
+        if (!projectContent) {
+          console.warn("Project content not found in response");
+          return;
+        }
+
+        projectContentHTML = projectContent.innerHTML;
       }
 
       let currentProjects = document.getElementById("projects");
       if (currentProjects) {
         currentProjects.style.opacity = "0";
-        currentProjects.innerHTML = projectContent.innerHTML;
+        currentProjects.innerHTML = projectContentHTML;
         currentProjects.classList.add("visible");
       } else {
         const stripsElement = document.getElementById("strips");
         if (stripsElement && stripsElement.parentNode) {
+          const tempDiv = document.createElement("div");
+          tempDiv.innerHTML = projectContentHTML;
+          const projectContent = tempDiv.firstElementChild;
           projectContent.style.opacity = "0";
           stripsElement.parentNode.insertBefore(projectContent, stripsElement);
           currentProjects = projectContent;
         }
       }
 
+      // Faster transition - show content immediately
+      if (currentProjects) {
+        currentProjects.style.opacity = "1";
+        currentProjects.style.transition = "opacity 0.2s ease";
+
+        // Preload hero image immediately
+        const heroImage = currentProjects.querySelector(".project-hero img, .project-hero-image img, img[data-hero]");
+        if (heroImage) {
+          const img = new Image();
+          img.src = heroImage.src || heroImage.getAttribute("data-src");
+          img.onload = () => {
+            heroImage.style.opacity = "1";
+          };
+        }
+      }
+
       if (clickedStrip) {
-        // Keep the selected strip visible and expanded
-        clickedStrip.style.transition = "flex-grow 1.2s ease-out";
-        clickedStrip.style.flexGrow = "100";
-        clickedStrip.style.zIndex = "300";
-        clickedStrip.classList.add("selected");
+        // Faster strip transition
+        setTimeout(() => {
+          clickedStrip.style.opacity = "0";
+          clickedStrip.style.transition = "opacity 0.2s ease";
 
-        const waitForProjectReady = () => {
-          return new Promise((resolve) => {
-            if (currentProjects) {
-              currentProjects.style.opacity = "1";
-              currentProjects.style.transition = "opacity 0.4s ease";
-            }
+          setTimeout(() => {
+            clickedStrip.style.opacity = "";
+            clickedStrip.style.transition = "";
+            clickedStrip.style.zIndex = "";
+            clickedStrip.style.flexGrow = "";
 
-            setTimeout(() => {
-              clickedStrip.style.opacity = "0";
-              clickedStrip.style.transition = "opacity 0.3s ease";
+            // Remove selection classes from all strips
+            const allStrips = document.querySelectorAll(".strip");
+            allStrips.forEach((strip) => {
+              strip.classList.remove("selected", "not-selected");
+            });
 
-              setTimeout(() => {
-                clickedStrip.style.opacity = "";
-                clickedStrip.style.transition = "";
-                clickedStrip.style.zIndex = "";
-                clickedStrip.style.flexGrow = "";
-
-                // Remove selection classes from all strips
-                const allStrips = document.querySelectorAll(".strip");
-                allStrips.forEach((strip) => {
-                  strip.classList.remove("selected", "not-selected");
-                });
-
-                this.updateStripVisibility(slug);
-                resolve();
-              }, 300);
-            }, 400);
-          });
-        };
-
-        setTimeout(waitForProjectReady, 300);
+            this.updateStripVisibility(slug);
+          }, 200);
+        }, 200);
       } else {
         this.updateStripVisibility(slug);
       }

@@ -17,6 +17,12 @@ export function initIntro() {
   startButton.addEventListener("click", () => {
     const stripsContainer = document.getElementById("strips");
     if (stripsContainer) stripsContainer.style.pointerEvents = "auto";
+
+    // Stop asteroids game
+    if (window.asteroidsGame) {
+      window.asteroidsGame.stop();
+    }
+
     introSection.remove();
   });
 }

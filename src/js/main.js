@@ -5,6 +5,7 @@ import { applyProjectColor } from "./strips.js";
 import { melodyPlayer } from "./xylophone.js";
 import { startAgeUpdater } from "./utils/ageCalculator.js";
 import { initIntro } from "./intro.js";
+import { initAsteroids } from "./asteroids.js";
 
 if (document.readyState === "loading") {
   document.addEventListener("DOMContentLoaded", () => {
@@ -12,12 +13,14 @@ if (document.readyState === "loading") {
     startAgeUpdater();
     if (window.__INITIAL_PROJECT__) applyProjectColor(window.__INITIAL_PROJECT__);
     initMelodyControls();
+    initAsteroids();
   });
 } else {
   initIntro();
   startAgeUpdater();
   if (window.__INITIAL_PROJECT__) applyProjectColor(window.__INITIAL_PROJECT__);
   initMelodyControls();
+  initAsteroids();
 }
 
 function initMelodyControls() {

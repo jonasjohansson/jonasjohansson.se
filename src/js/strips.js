@@ -11,6 +11,28 @@ const pathPrefix = window.__PATH_PREFIX__ || "";
 // Simple color extraction and application
 const colorExtractor = new ColorExtractor();
 
+// Preload cache for faster navigation
+const preloadCache = new Map();
+window.preloadCache = preloadCache;
+
+// Preload project content on hover
+function preloadProject(slug) {
+  if (preloadCache.has(slug)) return; // Already preloaded
+
+  const fetchPath = pathPrefix ? `${pathPrefix}/work/${slug}/` : `/work/${slug}/`;
+  fetch(fetchPath)
+    .then((response) => response.text())
+    .then((html) => {
+      const parser = new DOMParser();
+      const doc = parser.parseFromString(html, "text/html");
+      const projectContent = doc.querySelector("#projects");
+      if (projectContent) {
+        preloadCache.set(slug, projectContent.innerHTML);
+      }
+    })
+    .catch((error) => console.warn("Preload failed for", slug, error));
+}
+
 async function applyProjectColor(project) {
   if (!project || !project.images || !project.images[0]) return;
 
@@ -239,12 +261,14 @@ function updateStripCount() {
   });
 
   const visibleCount = visibleStrips.length;
+  const totalProjects = projects.length;
 
   // Set data attribute for CSS to use
   stripsContainer.setAttribute("data-visible-count", visibleCount);
 
-  // Update CSS custom property for dynamic calculations
+  // Update CSS custom properties for dynamic calculations
   document.documentElement.style.setProperty("--visible-strip-count", visibleCount);
+  document.documentElement.style.setProperty("--grid-columns", totalProjects);
 }
 
 // ---------- Initialize Strips ----------
@@ -265,6 +289,14 @@ function initializeStrips() {
   // Update references after shuffle
   allStrips = shuffledStrips;
   stripImages = Array.from(stripsContainer?.querySelectorAll(".strip-image") || []);
+
+  // Trigger animation on initial load with a small delay
+  if (stripsContainer) {
+    setTimeout(() => {
+      stripsContainer.classList.add("animate-in");
+      console.log("Added animate-in class to strips");
+    }, 100);
+  }
 
   // Load strip images immediately
   stripImages.forEach((img) => {
@@ -309,13 +341,25 @@ function initializeStrips() {
         if (subtitleScrambler && headerSubtitle) {
           subtitleScrambler.scramble(project.title.toUpperCase());
         }
+
+        // Preload project content on hover for faster navigation
+        preloadProject(projectSlug);
       });
 
       strip.addEventListener("mouseleave", () => {
-        // Don't scramble back to default if we're on a project page
-        const isOnProjectPage = window.location.pathname.includes("/work/");
-        if (subtitleScrambler && headerSubtitle && !isOnProjectPage) {
-          subtitleScrambler.scramble(defaultSubtitle);
+        if (subtitleScrambler && headerSubtitle) {
+          const isOnProjectPage = window.location.pathname.includes("/work/");
+          if (isOnProjectPage) {
+            // If on a project page, return to the current project's title
+            const currentProjectSlug = window.location.pathname.split("/").pop();
+            const currentProject = projects.find((p) => p.slug === currentProjectSlug);
+            if (currentProject) {
+              subtitleScrambler.scramble(currentProject.title.toUpperCase());
+            }
+          } else {
+            // If on home page, return to default subtitle
+            subtitleScrambler.scramble(defaultSubtitle);
+          }
         }
       });
 
