@@ -1,4 +1,4 @@
-import { resetFilters, updateProjectViewState, applyProjectColor } from "./strips.js";
+import { resetFilters, updateProjectViewState, applyProjectColor, updateCurrentPageTitle } from "./strips.js";
 
 const projects = window.__PROJECTS_DATA__ || [];
 const pathPrefix = window.__PATH_PREFIX__ || "";
@@ -56,6 +56,13 @@ class SPARouter {
       projectsContainer.innerHTML = "";
       projectsContainer.classList.remove("visible");
     }
+
+    // Remove project-visible class
+    document.body.classList.remove("project-visible");
+    document.documentElement.classList.remove("project-visible");
+
+    // Reset page title to default
+    updateCurrentPageTitle("PROGRESS NOT PERFECTION");
 
     // Reset header title to default
     this.updateHeaderTitle(null);
@@ -146,32 +153,48 @@ class SPARouter {
         projectContentHTML = projectContent.innerHTML;
       }
 
-      let currentProjects = document.getElementById("projects");
-      if (currentProjects) {
-        // Clear any existing content and reset
-        currentProjects.innerHTML = "";
-        currentProjects.style.opacity = "0";
-        currentProjects.classList.remove("visible");
-
-        // Small delay to ensure DOM is cleared
-        setTimeout(() => {
-          currentProjects.innerHTML = projectContentHTML;
-          currentProjects.classList.add("visible");
-        }, 50);
-      } else {
-        const stripsElement = document.getElementById("strips");
-        if (stripsElement && stripsElement.parentNode) {
-          const tempDiv = document.createElement("div");
-          tempDiv.innerHTML = projectContentHTML;
-          const projectContent = tempDiv.firstElementChild;
-          projectContent.style.opacity = "0";
-          stripsElement.parentNode.insertBefore(projectContent, stripsElement);
-          currentProjects = projectContent;
+      // Remove any existing project containers first
+      const existingProjects = document.querySelectorAll("#projects");
+      console.log("Found existing projects:", existingProjects.length);
+      existingProjects.forEach((project) => {
+        console.log("Removing project:", project);
+        if (project.parentNode) {
+          project.parentNode.removeChild(project);
         }
+      });
+
+      // Also remove any individual project sections that might exist
+      const existingProjectSections = document.querySelectorAll("section[data-project], .project.visible");
+      console.log("Found existing project sections:", existingProjectSections.length);
+      existingProjectSections.forEach((section) => {
+        console.log("Removing project section:", section);
+        if (section.parentNode) {
+          section.parentNode.removeChild(section);
+        }
+      });
+
+      // Create new project container
+      let currentProjects;
+      const stripsElement = document.getElementById("strips");
+      if (stripsElement && stripsElement.parentNode) {
+        const tempDiv = document.createElement("div");
+        tempDiv.innerHTML = projectContentHTML;
+        const projectContent = tempDiv.firstElementChild;
+        projectContent.style.opacity = "0";
+        stripsElement.parentNode.insertBefore(projectContent, stripsElement);
+        currentProjects = projectContent;
+        console.log("Created new project container:", currentProjects);
       }
 
       // Show content after DOM update
       if (currentProjects) {
+        // Add project-visible class to body for styling
+        document.body.classList.add("project-visible");
+        document.documentElement.classList.add("project-visible");
+
+        // Update the current page title to the project title
+        updateCurrentPageTitle(project.title);
+
         setTimeout(() => {
           currentProjects.style.opacity = "1";
           currentProjects.style.transition = "opacity 0.2s ease";

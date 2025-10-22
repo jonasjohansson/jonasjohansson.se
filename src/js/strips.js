@@ -38,14 +38,64 @@ async function applyProjectColor(project) {
 
   try {
     const heroImageUrl = typeof project.images[0] === "string" ? project.images[0] : project.images[0].src;
-    const dominantColor = await colorExtractor.extractDominantColor(heroImageUrl);
+    console.log("Hero image URL:", heroImageUrl);
+
+    // Ensure the URL is absolute
+    let absoluteImageUrl = heroImageUrl;
+    if (!heroImageUrl.startsWith("http") && !heroImageUrl.startsWith("/")) {
+      absoluteImageUrl = `/${heroImageUrl}`;
+    }
+
+    // If we're on a project page, we need to resolve relative to the root
+    if (window.location.pathname.includes("/work/") && absoluteImageUrl.startsWith("/img/")) {
+      // URL is already absolute, keep as is
+    } else if (absoluteImageUrl.startsWith("/img/")) {
+      // URL is already absolute, keep as is
+    }
+
+    console.log("Absolute image URL:", absoluteImageUrl);
+    const dominantColor = await colorExtractor.extractDominantColor(absoluteImageUrl);
+    console.log("Extracted dominant color:", dominantColor);
 
     // Apply color as CSS custom property
+    const lightColor = colorExtractor.adjustBrightness(dominantColor, 1.3);
+    const darkColor = colorExtractor.adjustBrightness(dominantColor, 0.7);
+
     document.documentElement.style.setProperty("--project-accent-color", dominantColor);
-    document.documentElement.style.setProperty("--project-accent-color-light", colorExtractor.adjustBrightness(dominantColor, 1.3));
-    document.documentElement.style.setProperty("--project-accent-color-dark", colorExtractor.adjustBrightness(dominantColor, 0.7));
+    document.documentElement.style.setProperty("--project-accent-color-light", lightColor);
+    document.documentElement.style.setProperty("--project-accent-color-dark", darkColor);
+
+    console.log("Applied accent color:", dominantColor);
+    console.log("Applied light color:", lightColor);
+    console.log("Applied dark color:", darkColor);
+
+    // Check if the CSS variable is actually set
+    const computedStyle = getComputedStyle(document.documentElement);
+    console.log("CSS variable value:", computedStyle.getPropertyValue("--project-accent-color-dark"));
   } catch (error) {
     console.warn("Failed to extract color:", error);
+  }
+}
+
+// Apply accent color given a direct image URL (useful on SSR project pages)
+async function applyProjectColorFromImageUrl(imageUrl) {
+  try {
+    if (!imageUrl) return;
+
+    let absoluteImageUrl = imageUrl;
+    if (!absoluteImageUrl.startsWith("http") && !absoluteImageUrl.startsWith("/")) {
+      absoluteImageUrl = `/${absoluteImageUrl}`;
+    }
+
+    const dominantColor = await colorExtractor.extractDominantColor(absoluteImageUrl);
+    const lightColor = colorExtractor.adjustBrightness(dominantColor, 1.3);
+    const darkColor = colorExtractor.adjustBrightness(dominantColor, 0.7);
+
+    document.documentElement.style.setProperty("--project-accent-color", dominantColor);
+    document.documentElement.style.setProperty("--project-accent-color-light", lightColor);
+    document.documentElement.style.setProperty("--project-accent-color-dark", darkColor);
+  } catch (err) {
+    console.warn("applyProjectColorFromImageUrl failed", err);
   }
 }
 
@@ -268,7 +318,6 @@ function updateStripCount() {
 
   // Update CSS custom properties for dynamic calculations
   document.documentElement.style.setProperty("--visible-strip-count", visibleCount);
-  document.documentElement.style.setProperty("--grid-columns", totalProjects);
 }
 
 // ---------- Initialize Strips ----------
@@ -281,21 +330,25 @@ function initializeStrips() {
   // Shuffle strips on page load for variety
   const shuffledStrips = shuffle([...allStrips]);
 
-  // Re-append strips in shuffled order
-  shuffledStrips.forEach((strip) => {
+  // Re-append strips in shuffled order and add index for staggered animation
+  shuffledStrips.forEach((strip, index) => {
     stripsContainer.appendChild(strip);
+    // Add index as data attribute for CSS animation delay calculation
+    strip.setAttribute("data-index", index);
+    // Set CSS custom property for animation delay calculation
+    strip.style.setProperty("--strip-index", index);
   });
 
   // Update references after shuffle
   allStrips = shuffledStrips;
   stripImages = Array.from(stripsContainer?.querySelectorAll(".strip-image") || []);
 
-  // Trigger animation on initial load with a small delay
+  // Trigger animation on initial load with a delay to ensure strips are ready
   if (stripsContainer) {
     setTimeout(() => {
       stripsContainer.classList.add("animate-in");
       console.log("Added animate-in class to strips");
-    }, 100);
+    }, 300);
   }
 
   // Load strip images immediately
@@ -313,6 +366,7 @@ function initializeStrips() {
   const headerSubtitle = document.querySelector(".header-subtitle");
   const defaultSubtitle = "PROGRESS NOT PERFECTION";
   let subtitleScrambler = null;
+  let currentPageTitle = defaultSubtitle; // Store the current page title
 
   if (headerSubtitle) {
     subtitleScrambler = createScrambler(headerSubtitle, {
@@ -323,7 +377,35 @@ function initializeStrips() {
     window.subtitleScrambler = subtitleScrambler;
   }
 
+  // Header hover behavior: show friendly prompt unless About is open
+  const headerEl = document.getElementById("header");
+  const introSectionEl = document.getElementById("intro-section");
+  if (headerEl && headerSubtitle) {
+    headerEl.addEventListener("mouseenter", () => {
+      const aboutOpen = !!introSectionEl && introSectionEl.classList.contains("visible");
+      if (!aboutOpen && subtitleScrambler) {
+        subtitleScrambler.scramble("STAY A WHILE AND LISTEN");
+      }
+    });
+
+    headerEl.addEventListener("mouseleave", () => {
+      const aboutOpen = !!introSectionEl && introSectionEl.classList.contains("visible");
+      if (!aboutOpen && subtitleScrambler) {
+        const title = getCurrentProjectTitle();
+        subtitleScrambler.scramble(title.toUpperCase());
+      }
+    });
+  }
+
   function getCurrentProjectTitle() {
+    // Prefer explicit global/dataset value if present
+    const fromDataset = document.documentElement?.dataset?.currentProjectTitle;
+    if (fromDataset && fromDataset.trim()) return fromDataset;
+
+    const fromWindow = window.__CURRENT_PROJECT_TITLE__;
+    if (typeof fromWindow === "string" && fromWindow.trim()) return fromWindow;
+
+    // Fallback: infer from URL
     const currentPath = window.location.pathname;
     const isInProject = currentPath.includes("/work/");
     const currentProjectSlug = isInProject ? currentPath.replace("/work/", "").replace("/", "") : null;
@@ -348,24 +430,43 @@ function initializeStrips() {
 
       strip.addEventListener("mouseleave", () => {
         if (subtitleScrambler && headerSubtitle) {
-          const isOnProjectPage = window.location.pathname.includes("/work/");
-          if (isOnProjectPage) {
-            // If on a project page, return to the current project's title
-            const currentProjectSlug = window.location.pathname.split("/").pop();
-            const currentProject = projects.find((p) => p.slug === currentProjectSlug);
-            if (currentProject) {
-              subtitleScrambler.scramble(currentProject.title.toUpperCase());
-            }
-          } else {
-            // If on home page, return to default subtitle
-            subtitleScrambler.scramble(defaultSubtitle);
-          }
+          // Always return to the stored current page title
+          subtitleScrambler.scramble(currentPageTitle.toUpperCase());
         }
       });
 
       strip.addEventListener("click", () => {
-        const projectId = project.slug || project.title.toLowerCase().replace(/\s+/g, "-");
-        const projectPath = pathPrefix ? `${pathPrefix}/work/${projectId}` : `/work/${projectId}`;
+        // Robust slugify: normalize diacritics and map locale specifics like å/ä/ö
+        const slugify = (text) => {
+          if (!text) return "";
+          return (
+            text
+              .toString()
+              .trim()
+              .toLowerCase()
+              // Normalize diacritics
+              .normalize("NFD")
+              .replace(/[\u0300-\u036f]/g, "")
+              // Swedish specifics
+              .replace(/å/g, "a")
+              .replace(/ä/g, "a")
+              .replace(/ö/g, "o")
+              // Remove any remaining invalid chars
+              .replace(/[^a-z0-9\s-]/g, "")
+              // Collapse whitespace and dashes
+              .replace(/\s+/g, "-")
+              .replace(/-+/g, "-")
+          );
+        };
+
+        const computedId = project.slug || slugify(project.title);
+        const projectPath = pathPrefix ? `${pathPrefix}/work/${computedId}` : `/work/${computedId}`;
+
+        // Immediately reflect selected project title in header while navigating
+        try {
+          updateCurrentPageTitle(project.title);
+        } catch (e) {}
+
         strip.classList.add("selected");
         allStrips.forEach((otherStrip) => {
           if (otherStrip !== strip) {
@@ -546,8 +647,35 @@ function initFilters() {
   });
 }
 
+// Function to update the current page title (called when entering a project page)
+function updateCurrentPageTitle(title) {
+  try {
+    currentPageTitle = title || defaultSubtitle;
+    console.log("Updated current page title to:", currentPageTitle);
+
+    // Persist globally for other modules and future lookups
+    document.documentElement.dataset.currentProjectTitle = currentPageTitle;
+    window.__CURRENT_PROJECT_TITLE__ = currentPageTitle;
+
+    // Update the header immediately if we're on a project page
+    if (window.location.pathname.includes("/work/")) {
+      // Try to update the header directly if subtitleScrambler is available
+      if (subtitleScrambler && headerSubtitle) {
+        subtitleScrambler.scramble(currentPageTitle.toUpperCase());
+      } else {
+        // Fallback: update the header text directly
+        if (headerSubtitle) {
+          headerSubtitle.textContent = currentPageTitle.toUpperCase();
+        }
+      }
+    }
+  } catch (error) {
+    console.warn("Error updating current page title:", error);
+  }
+}
+
 // Export functions for use by router
-export { resetFilters, updateProjectViewState, applyProjectColor };
+export { resetFilters, updateProjectViewState, applyProjectColor, updateCurrentPageTitle };
 
 // Initialize when DOM is ready or immediately if already ready
 if (document.readyState === "loading") {

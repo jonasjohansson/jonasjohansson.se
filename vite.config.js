@@ -39,4 +39,9 @@ export default defineConfig({
   css: {
     devSourcemap: false,
   },
+  server: {
+    headers: {
+      "Cache-Control": "no-cache, no-store, must-revalidate",
+    },
+  },
 });

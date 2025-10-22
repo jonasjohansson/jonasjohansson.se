@@ -48,7 +48,7 @@
   transform-origin: center center;
   transition: flex-grow 0.3s ease;
   opacity: 0;
-  filter: saturate(0);
+  /* filter: saturate(0); */
 }
 
 .strip:not(:first-child) {
@@ -98,40 +98,22 @@
   opacity: 1;
 }
 
+/* Initial state - strips start hidden */
+.strip {
+  opacity: 0 !important;
+  transform: translateX(-100px) scale(0.8);
+  animation-delay: calc(var(--strip-index, 0) * 0.05s + 0.1s);
+}
+
 /* Animation classes for strips */
 #strips.animate-in .strip {
   animation: slideInFromLeft 0.8s cubic-bezier(0.4, 0, 0.2, 1) both;
+  animation-delay: calc(var(--strip-index, 0) * 0.05s + 0.1s);
 }
 
-#strips.animate-in .strip:nth-child(1) {
-  animation-delay: 0.1s;
-}
-#strips.animate-in .strip:nth-child(2) {
-  animation-delay: 0.15s;
-}
-#strips.animate-in .strip:nth-child(3) {
-  animation-delay: 0.2s;
-}
-#strips.animate-in .strip:nth-child(4) {
-  animation-delay: 0.25s;
-}
-#strips.animate-in .strip:nth-child(5) {
-  animation-delay: 0.3s;
-}
-#strips.animate-in .strip:nth-child(6) {
-  animation-delay: 0.35s;
-}
-#strips.animate-in .strip:nth-child(7) {
-  animation-delay: 0.4s;
-}
-#strips.animate-in .strip:nth-child(8) {
-  animation-delay: 0.45s;
-}
-#strips.animate-in .strip:nth-child(9) {
-  animation-delay: 0.5s;
-}
-#strips.animate-in .strip:nth-child(10) {
-  animation-delay: 0.55s;
+/* Override loaded state during animation */
+#strips.animate-in .strip.loaded {
+  opacity: 0;
 }
 
 @keyframes slideInFromLeft {

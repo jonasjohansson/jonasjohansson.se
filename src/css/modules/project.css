@@ -55,9 +55,10 @@
   line-height: var(--line-height-base);
 }
 
+.text-block .text-large,
 .text-large {
   font-size: var(--font-size-large);
-  line-height: var(--line-height-tight);
+  line-height: 1.25 !important;
 }
 
 #projects {
@@ -67,7 +68,17 @@
   min-height: 100dvh;
   position: relative;
   z-index: 10;
-  background: #1a1a1a;
+  background: var(--project-accent-color-dark, var(--color-black));
+}
+
+/* Apply project accent color to body when project is visible */
+body:has(#projects) {
+  background: var(--project-accent-color-dark, var(--color-black));
+}
+
+/* Fallback for browsers that don't support :has() */
+body.project-visible {
+  background: var(--project-accent-color-dark, var(--color-black));
 }
 
 #projects:not(:has(.project)) {
