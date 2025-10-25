@@ -105,6 +105,12 @@ let stripsContainer;
 let allStrips = [];
 let stripImages = [];
 
+// ---------- Global State ----------
+let headerSubtitle;
+let defaultSubtitle = "PROGRESS NOT PERFECTION";
+let currentPageTitle = defaultSubtitle;
+let subtitleScrambler = null;
+
 // ---------- State ----------
 let curX = 0.5,
   curY = 0.5; // eased cursor (0..1)
@@ -363,10 +369,7 @@ function initializeStrips() {
   // Don't trigger animation automatically - wait for intro button click
   // Strips will be animated when intro.js triggers them
 
-  const headerSubtitle = document.querySelector(".header-subtitle");
-  const defaultSubtitle = "PROGRESS NOT PERFECTION";
-  let subtitleScrambler = null;
-  let currentPageTitle = defaultSubtitle; // Store the current page title
+  headerSubtitle = document.querySelector(".header-subtitle");
 
   if (headerSubtitle) {
     subtitleScrambler = createScrambler(headerSubtitle, {

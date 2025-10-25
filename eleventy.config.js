@@ -61,7 +61,7 @@ export default function (eleventyConfig) {
     const distPath = path.join(projectRoot, "dist", "assets", subdir);
     if (!existsSync(distPath)) return `/assets/${filename}`;
     const files = readdirSync(distPath);
-    const pattern = new RegExp(`^${filename.replace(/\.(js|css)$/, "")}\\.[a-zA-Z0-9]+\\.(js|css)$`);
+    const pattern = new RegExp(`^${filename.replace(/\.(js|css)$/, "")}\\.[a-zA-Z0-9_-]+\\.(js|css)$`);
     const matches = files.filter((file) => pattern.test(file));
     const match = matches.sort(
       (a, b) => statSync(path.join(distPath, b)).mtime.getTime() - statSync(path.join(distPath, a)).mtime.getTime()
