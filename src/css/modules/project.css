@@ -74,11 +74,13 @@
 /* Apply project accent color to body when project is visible */
 body:has(#projects) {
   background: var(--project-accent-color-dark, var(--color-black));
+  scroll-snap-type: y proximity;
 }
 
 /* Fallback for browsers that don't support :has() */
 body.project-visible {
   background: var(--project-accent-color-dark, var(--color-black));
+  scroll-snap-type: y proximity;
 }
 
 #projects:not(:has(.project)) {

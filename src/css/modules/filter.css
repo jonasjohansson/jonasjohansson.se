@@ -12,6 +12,7 @@
   align-items: center;
   gap: var(--spacing-sm);
   transition: none;
+  scroll-snap-align: end;
 }
 
 .filter-dropdown-button {
