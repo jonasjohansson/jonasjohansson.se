@@ -109,28 +109,33 @@
   border-radius: 50%;
 }
 
-/* About text styling with fixed 4-column layout */
+/* About text styling with fixed 4-column layout and horizontal scroll */
 .about-text {
   font-size: 14px;
   letter-spacing: var(--letter-spacing-wide);
   line-height: var(--line-height-base);
   color: var(--color-white); /* Always use white for good contrast */
-  column-count: 4;
+  column-count: 2;
   column-gap: var(--spacing-xl);
   column-fill: auto;
-  height: calc(100vh - 80px - var(--spacing-xl) - var(--spacing-xl)); /* Account for header button space and padding */
-  overflow: hidden;
+  /* Remove fixed height to allow cyberfunk text to show */
+  max-height: calc(
+    100vh - 80px - var(--spacing-xl) - var(--spacing-xl) - 100px
+  ); /* Account for header button space, padding, and cyberfunk text space */
+  overflow-x: hidden;
+  overflow-y: auto;
   margin-top: 80px; /* Space for header button */
   margin-bottom: var(--spacing-lg);
-  /* Disable scrolling completely */
-  overscroll-behavior: none;
+  /* Enable vertical scrolling when content overflows */
+  overscroll-behavior-x: none;
+  overscroll-behavior-y: auto;
   -webkit-overflow-scrolling: touch;
   /* Prevent any scrolling within columns */
   -webkit-column-break-inside: avoid;
   page-break-inside: avoid;
   break-inside: avoid;
-  /* Additional scroll prevention */
-  touch-action: none;
+  /* Allow vertical scrolling */
+  touch-action: pan-y;
   user-select: none;
 }
 
@@ -143,6 +148,29 @@
 
 .about-text p:first-child {
   text-indent: 0;
+}
+
+/* Cyberfunk text styling - no indent */
+.about-text .cyberfunk-text {
+  margin-top: var(--spacing-lg);
+  padding-top: var(--spacing-lg);
+  font-size: 14px;
+  letter-spacing: var(--letter-spacing-wide);
+  line-height: var(--line-height-base);
+  color: var(--color-white);
+  column-count: 1; /* Force single column for cyberfunk text */
+  column-gap: 0;
+  break-inside: avoid;
+  display: block; /* Ensure it's visible */
+}
+
+.about-text .cyberfunk-text p {
+  margin: 0 0 var(--spacing-sm) 0;
+  text-indent: 0; /* No indent for cyberfunk section */
+}
+
+.about-text .cyberfunk-text em {
+  font-style: italic;
 }
 
 /* Force "Progress Not Perfection" section to start in a new column */
@@ -225,11 +253,13 @@
 }
 
 #about-section .about-content h2 {
-  font-size: var(--font-size-base);
-  font-weight: bold;
-  text-transform: uppercase;
+  font-size: 14px;
+  font-weight: normal;
+  text-transform: none;
   letter-spacing: var(--letter-spacing-wide);
-  margin-bottom: var(--spacing-xl);
+  margin-bottom: var(--spacing-sm);
+  margin-top: var(--spacing-md);
+  color: var(--color-white);
 }
 
 #about-section .about-content p {
@@ -273,6 +303,27 @@
 
   .intro-content {
     padding: var(--spacing-md);
+  }
+}
+
+/* Large desktop - increase font size */
+@media (min-width: 1200px) {
+  .about-text {
+    font-size: 16px;
+  }
+}
+
+/* Extra large desktop - even larger font size */
+@media (min-width: 1600px) {
+  .about-text {
+    font-size: 18px;
+  }
+}
+
+/* Mobile responsive - 1 column */
+@media (max-width: 480px) {
+  .about-text {
+    column-count: 1;
   }
 }
 

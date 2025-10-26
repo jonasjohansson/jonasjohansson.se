@@ -1,6 +1,7 @@
 import "./strips.js";
 import "./router-simple.js";
 import "./xylophone.js";
+// Remove resume import since we're using static content
 import { applyProjectColor } from "./strips.js";
 import { melodyPlayer } from "./xylophone.js";
 import { startAgeUpdater } from "./utils/ageCalculator.js";

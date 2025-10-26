@@ -20,10 +20,8 @@
       <div class="intro-content">
         <!-- About text with auto-flow across columns -->
         <div class="about-text">
-          {{ (about | split('---'))[0] | markdown | safe }}
+          {{ about | markdown | safe }}
         </div>
-
-        <button id="start-button">Välkommen</button>
       </div>
     </section>
 

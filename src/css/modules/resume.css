@@ -1,0 +1,140 @@
+/* Resume Styles - Definition list layout */
+#resume-container {
+  /* Inherit styles from about text */
+  margin: 0;
+  padding: 0;
+  /* Use same font as about text, not monospace */
+}
+
+#resume-container p {
+  /* Match about text styling */
+  margin: 0;
+  font-size: inherit;
+  line-height: inherit;
+  color: inherit;
+}
+
+#resume-container strong {
+  /* Category headings - same font size as about text */
+  font-size: inherit;
+  font-weight: normal;
+  color: inherit;
+}
+
+/* Definition list layout for resume entries */
+#resume-container dl {
+  margin: 0;
+  padding: 0;
+}
+
+#resume-container dt {
+  display: block;
+  margin: 0;
+  padding: 0;
+  width: auto; /* Allow variable width for years */
+  min-width: 4ch; /* Minimum width for single years */
+  margin-right: 2ch; /* Space between year and text */
+  float: left; /* Float to create the two-column effect */
+}
+
+#resume-container dd {
+  display: block;
+  margin: 0;
+  padding: 0;
+  margin-left: 0; /* Remove fixed margin */
+  overflow: hidden; /* Clear the float */
+}
+
+.resume-error {
+  text-align: center;
+  padding: var(--spacing-xl);
+  color: rgba(255, 255, 255, 0.7);
+}
+
+.resume-error p {
+  margin: 0;
+  font-size: var(--font-size-base);
+}
+
+/* Filter controls for resume */
+.resume-filters {
+  display: flex;
+  gap: var(--spacing-sm);
+  margin-bottom: var(--spacing-lg);
+  flex-wrap: wrap;
+  justify-content: center;
+}
+
+.resume-filter-button {
+  background: rgba(255, 255, 255, 0.1);
+  border: 1px solid rgba(255, 255, 255, 0.3);
+  border-radius: var(--radius-sm);
+  color: var(--color-white);
+  padding: var(--spacing-sm) var(--spacing-md);
+  cursor: pointer;
+  transition: all 0.3s ease;
+  font-size: var(--font-size-small);
+  text-transform: uppercase;
+  letter-spacing: var(--letter-spacing-base);
+}
+
+.resume-filter-button:hover {
+  background: rgba(255, 255, 255, 0.2);
+  border-color: rgba(255, 255, 255, 0.5);
+}
+
+.resume-filter-button.active {
+  background: var(--color-white);
+  color: var(--color-black);
+  border-color: var(--color-white);
+}
+
+/* Responsive design */
+@media (max-width: 768px) {
+  .resume-content {
+    padding: var(--spacing-md);
+  }
+
+  .resume-entry-header {
+    flex-direction: column;
+    align-items: flex-start;
+    gap: var(--spacing-xs);
+  }
+
+  .resume-entry-date {
+    white-space: normal;
+  }
+
+  .resume-filters {
+    justify-content: flex-start;
+  }
+}
+
+/* Animation for loading */
+.resume-loading {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  padding: var(--spacing-xl);
+  color: rgba(255, 255, 255, 0.7);
+}
+
+.resume-loading::after {
+  content: "";
+  width: 20px;
+  height: 20px;
+  border: 2px solid rgba(255, 255, 255, 0.3);
+  border-top: 2px solid var(--color-white);
+  border-radius: 50%;
+  animation: spin 1s linear infinite;
+  margin-left: var(--spacing-sm);
+}
+
+@keyframes spin {
+  0% {
+    transform: rotate(0deg);
+  }
+  100% {
+    transform: rotate(360deg);
+  }
+}

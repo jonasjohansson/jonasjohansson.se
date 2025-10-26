@@ -1,18 +1,37 @@
-// Intro section with start button and text flow
+// Intro section with scroll handling
 export function initIntro() {
   const introSection = document.getElementById("intro-section");
-  const startButton = document.getElementById("start-button");
   const stripsContainer = document.getElementById("strips");
 
   if (!introSection) return;
 
-  // Make strips interactive from start on all pages
+  // Check if we're on a project page
+  const isProjectPage = window.location.pathname.includes("/work/");
+
+  if (isProjectPage) {
+    // Hide intro section on project pages
+    introSection.remove();
+    if (stripsContainer) stripsContainer.style.pointerEvents = "auto";
+    return;
+  }
+
+  // Make strips interactive from start on home page
   if (stripsContainer) stripsContainer.style.pointerEvents = "auto";
 
-  // Remove start button functionality since header now controls the toggle
-  if (startButton) {
-    startButton.style.display = "none";
-  }
+  // Hide intro when scrolling past it
+  let hasScrolled = false;
+
+  window.addEventListener("scroll", () => {
+    if (!hasScrolled && window.scrollY > 100) {
+      hasScrolled = true;
+      introSection.style.display = "none";
+
+      // Stop asteroids game if running
+      if (window.asteroidsGame) {
+        window.asteroidsGame.stop();
+      }
+    }
+  });
 
   // Initialize text flow for about section
   initTextFlow();
