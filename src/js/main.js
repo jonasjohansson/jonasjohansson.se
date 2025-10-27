@@ -81,6 +81,7 @@ function initHeaderToggle() {
         isAboutVisible = false;
       } else {
         // Show about, hide strips
+        introSection.style.display = ""; // Clear any display: none
         introSection.classList.add("visible");
         stripsWrapper.classList.add("shifted");
         isAboutVisible = true;
