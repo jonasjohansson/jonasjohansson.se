@@ -18,9 +18,11 @@
   <body>
     <section id="intro-section">
       <div class="intro-content">
-        <!-- About text with auto-flow across columns -->
+        <!-- About text with split layout -->
         <div class="about-text">
-          {{ about | markdown | safe }}
+          <div class="about-text-content">
+            {{ about | markdown | safe }}
+          </div>
         </div>
       </div>
     </section>

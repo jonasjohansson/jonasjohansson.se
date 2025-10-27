@@ -18,11 +18,15 @@ export function initIntro() {
   // Make strips interactive from start on home page
   if (stripsContainer) stripsContainer.style.pointerEvents = "auto";
 
-  // Hide intro when scrolling past it
+  // Hide intro when user scrolls down (but not on initial page load)
   let hasScrolled = false;
+  let initialScrollY = window.scrollY;
 
   window.addEventListener("scroll", () => {
-    if (!hasScrolled && window.scrollY > 100) {
+    const currentScrollY = window.scrollY;
+
+    // Only hide if user has scrolled down from initial position
+    if (!hasScrolled && currentScrollY > initialScrollY + 100) {
       hasScrolled = true;
       introSection.style.display = "none";
 
@@ -31,6 +35,9 @@ export function initIntro() {
         window.asteroidsGame.stop();
       }
     }
+
+    // Update initial scroll position to prevent false triggers
+    initialScrollY = currentScrollY;
   });
 
   // Initialize text flow for about section
