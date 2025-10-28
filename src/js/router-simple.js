@@ -51,11 +51,21 @@ class SPARouter {
   }
 
   showHome() {
-    const projectsContainer = document.getElementById("projects");
-    if (projectsContainer) {
-      projectsContainer.innerHTML = "";
-      projectsContainer.classList.remove("visible");
-    }
+    // Remove any existing project containers first
+    const existingProjects = document.querySelectorAll("#projects");
+    existingProjects.forEach((proj) => {
+      if (proj && proj.parentNode) {
+        proj.parentNode.removeChild(proj);
+      }
+    });
+
+    // Also remove any individual project sections that might exist
+    const existingProjectSections = document.querySelectorAll("section[data-project], .project.visible");
+    existingProjectSections.forEach((section) => {
+      if (section && section.parentNode) {
+        section.parentNode.removeChild(section);
+      }
+    });
 
     // Remove project-visible class
     document.body.classList.remove("project-visible");
@@ -90,7 +100,7 @@ class SPARouter {
     this.updateStripVisibility(null);
     window.scrollTo(0, 0);
 
-    // Trigger strips animation
+    // Trigger strips animation on return
     const stripsContainer = document.getElementById("strips");
     if (stripsContainer) {
       stripsContainer.classList.add("animate-in");
@@ -155,9 +165,7 @@ class SPARouter {
 
       // Remove any existing project containers first
       const existingProjects = document.querySelectorAll("#projects");
-      console.log("Found existing projects:", existingProjects.length);
       existingProjects.forEach((project) => {
-        console.log("Removing project:", project);
         if (project.parentNode) {
           project.parentNode.removeChild(project);
         }
@@ -165,9 +173,7 @@ class SPARouter {
 
       // Also remove any individual project sections that might exist
       const existingProjectSections = document.querySelectorAll("section[data-project], .project.visible");
-      console.log("Found existing project sections:", existingProjectSections.length);
       existingProjectSections.forEach((section) => {
-        console.log("Removing project section:", section);
         if (section.parentNode) {
           section.parentNode.removeChild(section);
         }
@@ -183,7 +189,6 @@ class SPARouter {
         projectContent.style.opacity = "0";
         stripsElement.parentNode.insertBefore(projectContent, stripsElement);
         currentProjects = projectContent;
-        console.log("Created new project container:", currentProjects);
       }
 
       // Show content after DOM update

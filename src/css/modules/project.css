@@ -61,6 +61,22 @@
   line-height: 1.25 !important;
 }
 
+/* Mobile responsive font sizes for project text */
+@media (max-width: 768px) {
+  .text-small {
+    font-size: 1rem;
+  }
+
+  .text-medium {
+    font-size: 1.4rem;
+  }
+
+  .text-block .text-large,
+  .text-large {
+    font-size: 1.8rem;
+  }
+}
+
 #projects {
   display: block;
   width: 100%;
@@ -72,12 +88,7 @@
 }
 
 /* Apply project accent color to body when project is visible */
-body:has(#projects) {
-  background: var(--project-accent-color-dark, var(--color-black));
-  scroll-snap-type: y proximity;
-}
-
-/* Fallback for browsers that don't support :has() */
+body:has(#projects),
 body.project-visible {
   background: var(--project-accent-color-dark, var(--color-black));
   scroll-snap-type: y proximity;
@@ -110,6 +121,7 @@ figure {
   box-sizing: border-box;
 }
 
+/* Hero media items */
 .project-grid > .media-item:first-child,
 .project-grid > .media-item.hero {
   overflow: hidden;
@@ -142,12 +154,12 @@ figure {
   width: 100%;
   height: auto;
   display: block;
-  border-radius: 5px;
+  clip-path: var(--cut-corner-sm);
 }
 
 .media-item:first-child img,
 .media-item.hero img {
-  border-radius: 0;
+  clip-path: none;
 }
 
 .text-block {
@@ -174,6 +186,7 @@ figure {
   margin-bottom: 0.5rem;
 }
 
+/* Grid column utilities */
 .col-start-1 {
   grid-column-start: 1 !important;
 }

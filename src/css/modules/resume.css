@@ -1,36 +1,29 @@
 /* Resume Styles - Definition list layout */
-#resume-container {
-  /* Inherit styles from about text */
+/* Resume container styles */
+#resume-container,
+#resume-container p,
+#resume-container strong {
   margin: 0;
   padding: 0;
-  /* Use same font as about text, not monospace */
-}
-
-#resume-container p {
-  /* Match about text styling */
-  margin: 0;
   font-size: inherit;
   line-height: inherit;
   color: inherit;
 }
 
 #resume-container strong {
-  /* Category headings - same font size as about text */
-  font-size: inherit;
   font-weight: normal;
-  color: inherit;
 }
 
 /* Definition list layout for resume entries */
-#resume-container dl {
+#resume-container dl,
+#resume-container dt,
+#resume-container dd {
   margin: 0;
   padding: 0;
 }
 
 #resume-container dt {
   display: block;
-  margin: 0;
-  padding: 0;
   width: auto; /* Allow variable width for years */
   min-width: 4ch; /* Minimum width for single years */
   margin-right: 2ch; /* Space between year and text */
@@ -39,13 +32,12 @@
 
 #resume-container dd {
   display: block;
-  margin: 0;
-  padding: 0;
   margin-left: 0; /* Remove fixed margin */
   overflow: hidden; /* Clear the float */
 }
 
-.resume-error {
+.resume-error,
+.resume-loading {
   text-align: center;
   padding: var(--spacing-xl);
   color: rgba(255, 255, 255, 0.7);

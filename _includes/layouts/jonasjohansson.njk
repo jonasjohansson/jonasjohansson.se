@@ -16,23 +16,13 @@
     </script>
   </head>
   <body>
-    <section id="intro-section">
-      <div class="intro-content">
-        <!-- About text with split layout -->
-        <div class="about-text">
-          <div class="about-text-content">
-            {{ about | markdown | safe }}
-          </div>
-        </div>
-      </div>
-    </section>
-
     {% include "../components/header.njk" %}
 
-    <div id="strips-wrapper">
+    <main id="main">
       {{ content | safe }}
-      {% include "../components/strips.njk" %}
-    </div>
+    </main>
+
+    {% include "../components/strips.njk" %}
 
     <script
       type="module"

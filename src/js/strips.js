@@ -349,21 +349,26 @@ function initializeStrips() {
   allStrips = shuffledStrips;
   stripImages = Array.from(stripsContainer?.querySelectorAll(".strip-image") || []);
 
-  // Trigger animation on initial load with a delay to ensure strips are ready
-  if (stripsContainer) {
-    setTimeout(() => {
-      stripsContainer.classList.add("animate-in");
-      console.log("Added animate-in class to strips");
-    }, 300);
-  }
-
-  // Load strip images immediately
+  // Load strip images immediately but keep them invisible initially
   stripImages.forEach((img) => {
     const bgImage = img.getAttribute("data-bg-image");
     if (bgImage && !img.style.backgroundImage) {
       img.style.backgroundImage = `url('${bgImage}')`;
-      img.classList.add("loaded");
     }
+  });
+
+  // Add initial-load class to strips with staggered delays for animation
+  allStrips.forEach((strip, index) => {
+    setTimeout(() => {
+      strip.classList.add("initial-load");
+      // Add loaded class to make images visible after a short delay
+      setTimeout(() => {
+        strip.classList.add("loaded");
+        // Also add loaded class to images
+        const img = strip.querySelector(".strip-image");
+        if (img) img.classList.add("loaded");
+      }, 200); // Wait for animation to complete
+    }, index * 50); // Stagger by 50ms per strip
   });
 
   // Don't trigger animation automatically - wait for intro button click

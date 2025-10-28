@@ -1,4 +1,4 @@
-<div
+<nav
   id="strips"
   role="list">
   {% for project in projectsForJS %}
@@ -21,7 +21,7 @@
     <div
       class="filter-dropdown-content"
       id="filter-dropdown">
-      {% for tag in site.tags %}
+      {% for tag in site.tags | sortByLength %}
       <label class="filter-option">
         <input
           type="checkbox"
@@ -32,4 +32,4 @@
       {% endfor %}
     </div>
   </div>
-</div>
+</nav>

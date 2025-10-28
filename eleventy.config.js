@@ -79,6 +79,12 @@ export default function (eleventyConfig) {
     return str.split(separator);
   });
 
+  // Sort array of strings by length descending
+  eleventyConfig.addFilter("sortByLength", (arr) => {
+    if (!Array.isArray(arr)) return arr;
+    return [...arr].sort((a, b) => String(b).length - String(a).length);
+  });
+
   const urlPathBase = process.env.PATH_PREFIX ? `${process.env.PATH_PREFIX}/img` : "/img";
 
   eleventyConfig.addNunjucksAsyncShortcode(

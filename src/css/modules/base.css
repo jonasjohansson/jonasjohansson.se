@@ -21,8 +21,6 @@ body {
 }
 
 /* Project-visible class no longer needed for scroll, but keep for hooks */
-body.project-visible {
-}
 
 /* Hide scrollbars */
 ::-webkit-scrollbar {
@@ -47,7 +45,30 @@ a:hover {
   color: var(--project-accent-color, var(--link-color, inherit));
 }
 
-/* Disable text selection on images, figures, and media elements */
+/* Disable text selection on everything by default */
+* {
+  user-select: none;
+  -webkit-user-select: none;
+  -moz-user-select: none;
+  -ms-user-select: none;
+}
+
+/* Allow text selection only on project content */
+#projects,
+#projects *,
+.project,
+.project *,
+.media-item,
+.media-item *,
+.project-grid,
+.project-grid * {
+  user-select: text;
+  -webkit-user-select: text;
+  -moz-user-select: text;
+  -ms-user-select: text;
+}
+
+/* Disable drag on media elements */
 img,
 figure,
 video,
@@ -55,41 +76,10 @@ canvas,
 svg,
 picture,
 figcaption {
-  user-select: none;
-  -webkit-user-select: none;
-  -moz-user-select: none;
-  -ms-user-select: none;
   -webkit-user-drag: none;
   -khtml-user-drag: none;
   -moz-user-drag: none;
   -o-user-drag: none;
-  user-drag: none;
-}
-
-/* Allow text selection on text elements */
-p,
-h1,
-h2,
-h3,
-h4,
-h5,
-h6,
-span,
-div,
-a,
-li,
-td,
-th,
-label,
-input[type="text"],
-input[type="email"],
-input[type="password"],
-textarea,
-select {
-  user-select: text;
-  -webkit-user-select: text;
-  -moz-user-select: text;
-  -ms-user-select: text;
 }
 
 /* Utility classes */
