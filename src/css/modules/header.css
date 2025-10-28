@@ -4,13 +4,12 @@ header {
   top: calc(var(--spacing-lg) + env(safe-area-inset-top));
   left: 50%;
   transform: translateX(-50%);
-  z-index: 300;
+  z-index: 200;
   pointer-events: auto;
   background: var(--color-white);
   color: var(--color-black);
   border-radius: var(--radius-sm);
   clip-path: var(--cut-corner-sm);
-  cursor: pointer;
   user-select: none;
   mix-blend-mode: luminosity;
   padding: var(--spacing-sm) var(--spacing-lg);
@@ -21,7 +20,6 @@ header {
   align-items: center;
   gap: var(--spacing-xs);
   text-align: center;
-  transition: all 0.3s ease;
 }
 
 .header-content {
@@ -29,9 +27,18 @@ header {
   flex-direction: column;
   align-items: center;
   gap: var(--spacing-xs);
+  cursor: pointer;
 }
 
-header:hover {
+header a {
+  color: inherit;
+  text-decoration: none;
+}
+
+header:hover,
+header:hover .header-content,
+header:hover .header-title,
+header:hover .header-subtitle {
   background: var(--color-black);
   color: var(--color-white);
   mix-blend-mode: luminosity;

@@ -243,12 +243,21 @@ function resetFilters() {
     checkbox.checked = false;
   });
 
-  document.body.classList.remove("filter-active");
-  stripsContainer.classList.remove("filtered");
+  if (document.body) {
+    document.body.classList.remove("filter-active");
+  }
 
-  allStrips.forEach((strip) => {
-    strip.classList.remove("filter-match");
-  });
+  if (stripsContainer) {
+    stripsContainer.classList.remove("filtered");
+  }
+
+  if (allStrips && allStrips.length > 0) {
+    allStrips.forEach((strip) => {
+      if (strip) {
+        strip.classList.remove("filter-match");
+      }
+    });
+  }
 
   updateStripCount();
   lastPosX = -1;
@@ -262,42 +271,58 @@ function filterProjects() {
   // Use CSS-based filtering with JavaScript to add classes
   if (tags.length === 0) {
     // No filters active - show all strips
-    document.body.classList.remove("filter-active");
-    stripsContainer.classList.remove("filtered");
+    if (document.body) {
+      document.body.classList.remove("filter-active");
+    }
+    if (stripsContainer) {
+      stripsContainer.classList.remove("filtered");
+    }
 
     // Remove all filter-match classes
-    allStrips.forEach((strip) => {
-      strip.classList.remove("filter-match");
-    });
+    if (allStrips && allStrips.length > 0) {
+      allStrips.forEach((strip) => {
+        if (strip) {
+          strip.classList.remove("filter-match");
+        }
+      });
+    }
   } else {
     // Filters active - add filter-active class to body
-    document.body.classList.add("filter-active");
-    stripsContainer.classList.add("filtered");
+    if (document.body) {
+      document.body.classList.add("filter-active");
+    }
+    if (stripsContainer) {
+      stripsContainer.classList.add("filtered");
+    }
 
     let matchCount = 0;
     // Add filter-match class to strips that match selected tags (case-insensitive)
-    allStrips.forEach((strip) => {
-      const stripTags = strip.getAttribute("data-tags");
+    if (allStrips && allStrips.length > 0) {
+      allStrips.forEach((strip) => {
+        if (strip) {
+          const stripTags = strip.getAttribute("data-tags");
 
-      if (stripTags) {
-        // Split tags and normalize to lowercase for comparison
-        const stripTagsArray = stripTags.split(",").map((t) => t.trim().toLowerCase());
-        const selectedTagsLower = tags.map((t) => t.toLowerCase());
+          if (stripTags) {
+            // Split tags and normalize to lowercase for comparison
+            const stripTagsArray = stripTags.split(",").map((t) => t.trim().toLowerCase());
+            const selectedTagsLower = tags.map((t) => t.toLowerCase());
 
-        // Check if any selected tag matches any strip tag
-        const hasMatchingTag = selectedTagsLower.some((tag) => stripTagsArray.some((stripTag) => stripTag === tag));
+            // Check if any selected tag matches any strip tag
+            const hasMatchingTag = selectedTagsLower.some((tag) => stripTagsArray.some((stripTag) => stripTag === tag));
 
-        if (hasMatchingTag) {
-          strip.classList.add("filter-match");
-          matchCount++;
-        } else {
-          strip.classList.remove("filter-match");
+            if (hasMatchingTag) {
+              strip.classList.add("filter-match");
+              matchCount++;
+            } else {
+              strip.classList.remove("filter-match");
+            }
+          } else {
+            // No tags on strip, hide it when filtering
+            strip.classList.remove("filter-match");
+          }
         }
-      } else {
-        // No tags on strip, hide it when filtering
-        strip.classList.remove("filter-match");
-      }
-    });
+      });
+    }
   }
 
   // Update strip count for dynamic grid sizing
@@ -327,7 +352,7 @@ function updateStripCount() {
 }
 
 // ---------- Initialize Strips ----------
-function initializeStrips() {
+export function initializeStrips() {
   // Populate DOM references
   stripsContainer = document.getElementById("strips");
   allStrips = Array.from(stripsContainer?.querySelectorAll(".strip") || []);
@@ -357,21 +382,8 @@ function initializeStrips() {
     }
   });
 
-  // Add initial-load class to strips with staggered delays for animation
-  allStrips.forEach((strip, index) => {
-    setTimeout(() => {
-      strip.classList.add("initial-load");
-      // Add loaded class to make images visible after a short delay
-      setTimeout(() => {
-        strip.classList.add("loaded");
-        // Also add loaded class to images
-        const img = strip.querySelector(".strip-image");
-        if (img) img.classList.add("loaded");
-      }, 200); // Wait for animation to complete
-    }, index * 50); // Stagger by 50ms per strip
-  });
-
-  // Don't trigger animation automatically - wait for intro button click
+  // CSS animations handle strip entrance automatically
+  // No JavaScript animation needed
   // Strips will be animated when intro.js triggers them
 
   headerSubtitle = document.querySelector(".header-subtitle");
@@ -613,43 +625,58 @@ function initFilters() {
   // Add event listeners to all filter checkboxes
   const filterInputs = document.querySelectorAll('.filter-dropdown-content input[type="checkbox"]');
 
+  if (filterInputs.length === 0) {
+    console.warn("No filter inputs found");
+    return;
+  }
+
   filterInputs.forEach((input) => {
-    input.addEventListener("change", () => {
-      filterProjects();
-    });
+    if (input) {
+      input.addEventListener("change", () => {
+        filterProjects();
+      });
+    }
   });
 
   // Handle dropdown toggles
   const dropdownButtons = document.querySelectorAll(".filter-dropdown-button");
 
   dropdownButtons.forEach((button) => {
-    button.addEventListener("click", (e) => {
-      e.stopPropagation();
-      const dropdown = button.closest(".filter-dropdown");
-      const isOpen = dropdown.classList.contains("open");
+    if (button) {
+      button.addEventListener("click", (e) => {
+        e.stopPropagation();
+        const dropdown = button.closest(".filter-dropdown");
+        if (dropdown) {
+          const isOpen = dropdown.classList.contains("open");
 
-      // Close all dropdowns and reset button text
-      document.querySelectorAll(".filter-dropdown").forEach((d) => {
-        d.classList.remove("open");
-        const btn = d.querySelector(".filter-dropdown-button");
-        if (btn) btn.textContent = "Filter";
+          // Close all dropdowns and reset button text
+          document.querySelectorAll(".filter-dropdown").forEach((d) => {
+            if (d) {
+              d.classList.remove("open");
+              const btn = d.querySelector(".filter-dropdown-button");
+              if (btn) btn.textContent = "Filter";
+            }
+          });
+
+          // Toggle current dropdown and update button text
+          if (!isOpen) {
+            dropdown.classList.add("open");
+            button.textContent = "×";
+          }
+        }
       });
-
-      // Toggle current dropdown and update button text
-      if (!isOpen) {
-        dropdown.classList.add("open");
-        button.textContent = "×";
-      }
-    });
+    }
   });
 
   // Close dropdowns when clicking outside
   document.addEventListener("click", (e) => {
     if (!e.target.closest(".filter-dropdown")) {
       document.querySelectorAll(".filter-dropdown").forEach((d) => {
-        d.classList.remove("open");
-        const btn = d.querySelector(".filter-dropdown-button");
-        if (btn) btn.textContent = "Filter";
+        if (d) {
+          d.classList.remove("open");
+          const btn = d.querySelector(".filter-dropdown-button");
+          if (btn) btn.textContent = "Filter";
+        }
       });
     }
   });
@@ -685,13 +712,11 @@ function updateCurrentPageTitle(title) {
 // Export functions for use by router
 export { resetFilters, updateProjectViewState, applyProjectColor, updateCurrentPageTitle };
 
-// Initialize when DOM is ready or immediately if already ready
+// Initialize filters when DOM is ready
 if (document.readyState === "loading") {
   document.addEventListener("DOMContentLoaded", () => {
-    initializeStrips();
     initFilters();
   });
 } else {
-  initializeStrips();
   initFilters();
 }

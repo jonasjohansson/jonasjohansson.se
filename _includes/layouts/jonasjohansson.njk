@@ -16,6 +16,29 @@
     </script>
   </head>
   <body>
+    <!-- Loading screen -->
+    <div id="loading-screen">
+      <div id="loading-intro">
+        <div class="about-columns">
+          <div class="about-column">
+            {{ about | markdown | safe }}
+          </div>
+        </div>
+      </div>
+      <div class="button-group">
+        <button
+          id="start-button"
+          disabled>
+          EASY
+        </button>
+        <button
+          id="difficult-button"
+          disabled>
+          DIFFICULT
+        </button>
+      </div>
+    </div>
+
     {% include "../components/header.njk" %}
 
     <main id="main">

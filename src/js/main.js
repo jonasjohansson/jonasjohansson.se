@@ -6,9 +6,13 @@ import { applyProjectColor } from "./strips.js";
 import { melodyPlayer } from "./xylophone.js";
 import { startAgeUpdater } from "./utils/ageCalculator.js";
 import { initAsteroids } from "./asteroids.js";
+import { loadingManager } from "./utils/loadingManager.js";
 
 if (document.readyState === "loading") {
-  document.addEventListener("DOMContentLoaded", () => {
+  document.addEventListener("DOMContentLoaded", async () => {
+    // Start loading process
+    await loadingManager.preloadStripImages();
+
     startAgeUpdater();
     if (window.__INITIAL_PROJECT__) {
       console.log("Initial project found:", window.__INITIAL_PROJECT__);
@@ -30,32 +34,37 @@ if (document.readyState === "loading") {
     initAsteroids();
   });
 } else {
-  startAgeUpdater();
-  if (window.__INITIAL_PROJECT__) {
-    console.log("Initial project found:", window.__INITIAL_PROJECT__);
-    // Add a small delay to ensure DOM is fully ready
-    setTimeout(() => {
-      applyProjectColor(window.__INITIAL_PROJECT__);
-    }, 100);
+  // If DOM is already loaded, start loading immediately
+  (async () => {
+    await loadingManager.preloadStripImages();
 
-    // Also try again after a longer delay as a fallback
-    setTimeout(() => {
-      const currentColor = getComputedStyle(document.documentElement).getPropertyValue("--project-accent-color");
-      if (!currentColor || currentColor.trim() === "") {
-        console.log("Retrying color extraction...");
+    startAgeUpdater();
+    if (window.__INITIAL_PROJECT__) {
+      console.log("Initial project found:", window.__INITIAL_PROJECT__);
+      // Add a small delay to ensure DOM is fully ready
+      setTimeout(() => {
         applyProjectColor(window.__INITIAL_PROJECT__);
-        // Final fallback: sample first image on page
-        try {
-          const firstImg = document.querySelector("#projects img, .project-grid img, .media-item img");
-          if (firstImg && firstImg.src) {
-            import("./strips.js").then((m) => m.applyProjectColorFromImageUrl && m.applyProjectColorFromImageUrl(firstImg.src));
-          }
-        } catch {}
-      }
-    }, 1000);
-  }
-  initMelodyControls();
-  initAsteroids();
+      }, 100);
+
+      // Also try again after a longer delay as a fallback
+      setTimeout(() => {
+        const currentColor = getComputedStyle(document.documentElement).getPropertyValue("--project-accent-color");
+        if (!currentColor || currentColor.trim() === "") {
+          console.log("Retrying color extraction...");
+          applyProjectColor(window.__INITIAL_PROJECT__);
+          // Final fallback: sample first image on page
+          try {
+            const firstImg = document.querySelector("#projects img, .project-grid img, .media-item img");
+            if (firstImg && firstImg.src) {
+              import("./strips.js").then((m) => m.applyProjectColorFromImageUrl && m.applyProjectColorFromImageUrl(firstImg.src));
+            }
+          } catch {}
+        }
+      }, 1000);
+    }
+    initMelodyControls();
+    initAsteroids();
+  })();
 }
 
 function initMelodyControls() {
