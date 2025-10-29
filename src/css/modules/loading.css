@@ -27,6 +27,13 @@
 #loading-intro {
   width: 100%;
   max-width: 600px;
+  opacity: 0;
+  transition: opacity 0.3s ease;
+  transition-delay: 0.1s;
+}
+
+#loading-screen.show #loading-intro {
+  opacity: 1;
 }
 
 /* Single-column layout for about text */
