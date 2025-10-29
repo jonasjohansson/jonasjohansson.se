@@ -200,14 +200,21 @@ class SPARouter {
         currentProjects = projectContent;
       }
 
+      // Scroll to content-wrapper immediately after inserting content
+      import("./utils/scrollPosition.js").then(({ getProjectScrollPosition }) => {
+        window.scrollTo({
+          top: getProjectScrollPosition(),
+          behavior: "auto", // Instant scroll to prevent skip
+        });
+      });
+
       // Show content after DOM update
       if (currentProjects) {
         // Add project-visible class to body for styling
         document.body.classList.add("project-visible");
         document.documentElement.classList.add("project-visible");
 
-        // Update the current page title to the project title
-        updateCurrentPageTitle(project.title);
+        // Project title already set when clicking the project, no need to update here
 
         // Create overlay copy of strip image to prevent flash
         let stripOverlay = null;
@@ -264,14 +271,6 @@ class SPARouter {
           currentProjects.style.opacity = "1";
           currentProjects.style.transition = "opacity 0.2s ease";
           fadeOutClickedStrip();
-
-          // Scroll to content-wrapper to show project content
-          import("./utils/scrollPosition.js").then(({ getProjectScrollPosition }) => {
-            window.scrollTo({
-              top: getProjectScrollPosition(),
-              behavior: "smooth",
-            });
-          });
 
           // Keep overlay briefly to blend, then remove
           setTimeout(() => {

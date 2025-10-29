@@ -6,4 +6,4 @@ Jonas's professional experience includes KRAM/WEISSHAAR (SE/DE), [FIELD](https:/
 
 Today Jonas runs the artist residency [Visualia](https://visualia.se), collaborates with the lighting collective [Svartljus](https://svartljus.se), and co-founded [Nordic Audiovisual Artists](https://nava.community). He shares a studio in Stockholm with [SMASH](https://smash.studio), [IVAR](https://ivar.studio), and [Rose Hallgren](https://rosehallgren.se).
 
-Write me an [email](mailto:j@jonasjohansson.se), follow me on [Instagram](https://instagram.com/jonasjohansson) or [view my CV](https://docs.google.com/spreadsheets/u/1/d/e/2PACX-1vSdECybrvqdFRdXdglDL9pYuygE9NiSIRDz7A-GzvuHMOh0-fRfZWww_Wj4SSNk_vtsreDhrGrstGkM/pubhtml).
+[Say hi](mailto:j@jonasjohansson.se).

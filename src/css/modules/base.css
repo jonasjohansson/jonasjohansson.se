@@ -225,19 +225,4 @@ img[data-hero] {
   justify-content: center;
 }
 
-/* Grain overlay */
-#grain-overlay {
-  position: fixed;
-  top: 0;
-  left: 0;
-  width: 100vw;
-  height: 100vh;
-  background-image: url("/assets/img/grain.png");
-  background-size: cover;
-  background-position: center;
-  background-repeat: no-repeat;
-  opacity: 0.3;
-  mix-blend-mode: multiply;
-  z-index: 1000;
-  pointer-events: none;
-}
+/* Grain overlay removed */
