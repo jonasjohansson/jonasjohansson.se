@@ -16,48 +16,53 @@
   flex-direction: column;
   justify-content: center;
   align-items: center;
+  opacity: 0;
+  transition: opacity 0.2s ease;
+}
+
+#loading-screen.show {
+  opacity: 1;
 }
 
 #loading-intro {
   width: 100%;
-  max-width: 1200px;
-  margin-bottom: var(--spacing-xl);
+  max-width: 600px;
 }
 
-/* 2-column layout for about text */
+/* Single-column layout for about text */
 .about-columns {
   width: 100%;
-  column-count: 2;
+  column-count: 1;
   column-gap: var(--spacing-md);
 }
 
-.about-column {
-  /* Remove flex-direction to allow natural text flow */
-}
-
-/* About text styling */
-#loading-intro .about-column p {
+/* About text styling - consolidated */
+#loading-intro .about-columns p,
+#intro-section .about-columns p {
   margin: 0 0 var(--spacing-xs) 0 !important;
   padding: 0 0 var(--spacing-xs) 0 !important;
-  font-size: 12px;
+  font-size: var(--font-size-base) !important;
   letter-spacing: var(--letter-spacing-wide);
   line-height: 1.4;
   color: var(--color-white);
-  text-align: left;
+  text-align: center;
 }
 
-#loading-intro .about-column p:first-child {
+#loading-intro .about-columns p:first-child,
+#intro-section .about-columns p:first-child {
   margin-top: 0 !important;
   padding-top: 0 !important;
 }
 
-.about-column a {
+#loading-intro .about-columns a,
+#intro-section .about-columns a {
   color: var(--color-white);
   text-decoration: none;
   border-bottom: 1px solid currentColor;
 }
 
-.about-column a:hover {
+#loading-intro .about-columns a:hover,
+#intro-section .about-columns a:hover {
   color: var(--color-gray);
 }
 
@@ -66,6 +71,7 @@
   display: flex;
   gap: var(--spacing-md);
   align-items: center;
+  margin-top: var(--spacing-md);
 }
 
 /* Start button */
@@ -86,7 +92,6 @@
   line-height: var(--line-height-tight);
   text-transform: uppercase;
   font-family: var(--font-family-offbit);
-  transition: all 0.2s ease;
 }
 
 #start-button:disabled {
@@ -120,14 +125,58 @@
   pointer-events: none;
 }
 
+/* Intro section (slides in from top) */
+#intro-section {
+  position: fixed;
+  top: 0;
+  left: 0;
+  width: 100vw;
+  height: 100vh;
+  background: var(--color-black);
+  color: var(--color-white);
+  z-index: 200;
+  transform: translateY(-100%);
+  transition: transform 0.6s cubic-bezier(0.4, 0, 0.2, 1);
+  overflow-y: auto;
+  padding: var(--spacing-xl);
+  box-sizing: border-box;
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+}
+
+#intro-section.visible {
+  transform: translateY(0);
+}
+
+.about-grid {
+  width: 100%;
+  max-width: 600px;
+}
+
+/* Intro section about text styling - consolidated above */
+#intro-section .about-columns {
+  width: 100%;
+  column-count: 1;
+  column-gap: var(--spacing-md);
+}
+
 /* Mobile responsive */
 @media (max-width: var(--breakpoint-mobile)) {
   .about-columns {
-    grid-template-columns: 1fr;
-    gap: var(--spacing-lg);
+    column-count: 1;
+  }
+
+  #intro-section .about-columns {
+    column-count: 1;
   }
 
   #loading-screen {
+    padding: var(--spacing-md);
+  }
+
+  #intro-section {
     padding: var(--spacing-md);
   }
 }

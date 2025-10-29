@@ -11,15 +11,13 @@
   flex-direction: column;
   align-items: center;
   gap: var(--spacing-sm);
-  transition: none;
-  scroll-snap-align: end;
+  transition: all 0.3s ease;
   mix-blend-mode: luminosity;
-  scroll-snap-type: y mandatory;
   max-height: 50vh;
   overflow-y: auto;
 }
 
-/* Shared button styles */
+/* Shared button styles - consolidated */
 .filter-dropdown-button,
 .filter-option {
   background: var(--color-dark);
@@ -44,7 +42,6 @@
   line-height: var(--line-height-tight);
   transition: none;
   transform: none;
-  scroll-snap-align: center;
 }
 
 .filter-dropdown-button {
@@ -67,11 +64,16 @@
   pointer-events: none;
   order: 1;
   width: auto;
+  transition: all 0.3s ease;
+  opacity: 0;
+  transform: translateY(10px);
 }
 
 .filter-dropdown.open .filter-dropdown-content {
   display: flex;
   pointer-events: auto;
+  opacity: 1;
+  transform: translateY(0);
 }
 
 .filter-separator {

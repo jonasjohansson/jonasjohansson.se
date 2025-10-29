@@ -19,6 +19,20 @@
   name="theme-color"
   content="#1a1a1a" />
 
+<!-- Preload critical fonts to avoid FOUT -->
+<link
+  rel="preload"
+  as="font"
+  type="font/woff2"
+  href="/assets/fonts/OffBit-Regular.BUl2rdng.woff2"
+  crossorigin />
+<link
+  rel="preload"
+  as="font"
+  type="font/woff2"
+  href="/assets/fonts/OffBit-101Bold.JQCzxZZ0.woff2"
+  crossorigin />
+
 {# Preload first strip/hero image to improve LCP #} {% if projectsForJS and projectsForJS[0] and projectsForJS[0].images and
 projectsForJS[0].images[0] %}
 <link
@@ -159,3 +173,11 @@ set projectUrl = site.url ~ page.url %} {% set projectImage = firstImage and (si
   rel="preconnect"
   href="https://fonts.gstatic.com"
   crossorigin />
+
+<!-- Font Awesome -->
+<link
+  rel="stylesheet"
+  href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css"
+  integrity="sha512-iecdLmaskl7CVkqkXNQ/ZH/XLlvWZOJyj7Yy7tcenmpD1ypASozpmT/E0iPtmFIB46ZmdtAc9eNBvH0H/ZpiBw=="
+  crossorigin="anonymous"
+  referrerpolicy="no-referrer" />

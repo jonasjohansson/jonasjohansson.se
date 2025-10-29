@@ -16,13 +16,12 @@
     </script>
   </head>
   <body>
-    <!-- Loading screen -->
+    {% if not project %}
+    <!-- Loading screen - only on root page -->
     <div id="loading-screen">
       <div id="loading-intro">
         <div class="about-columns">
-          <div class="about-column">
-            {{ about | markdown | safe }}
-          </div>
+          {{ about | markdown | safe }}
         </div>
       </div>
       <div class="button-group">
@@ -38,6 +37,16 @@
         </button>
       </div>
     </div>
+
+    <!-- Intro section that slides in from top - only on root page -->
+    <div id="intro-section">
+      <div class="about-grid">
+        <div class="about-columns">
+          {{ about | markdown | safe }}
+        </div>
+      </div>
+    </div>
+    {% endif %}
 
     {% include "../components/header.njk" %}
 

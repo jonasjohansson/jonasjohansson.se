@@ -83,76 +83,6 @@ figcaption {
 }
 
 /* Loading screen */
-#loading-screen {
-  position: fixed;
-  top: 0;
-  left: 0;
-  width: 100vw;
-  height: 100vh;
-  display: flex;
-  flex-direction: column;
-  align-items: center;
-  justify-content: center;
-  z-index: 1000;
-  background: var(--color-dark);
-  color: var(--color-white);
-  text-align: center;
-  gap: var(--spacing-lg);
-}
-
-#loading-screen.fade-out {
-  opacity: 0;
-  pointer-events: none;
-}
-
-#loading-percentage {
-  font-size: var(--font-size-base);
-  color: var(--color-white);
-  font-family: var(--font-family-offbit);
-  letter-spacing: var(--letter-spacing-wide);
-  text-align: center;
-}
-
-#loading-intro {
-  max-width: 600px;
-  font-size: var(--font-size-base);
-  line-height: var(--line-height-base);
-  opacity: 0.8;
-}
-
-#loading-intro p {
-  margin: var(--spacing-sm) 0;
-}
-
-#loading-intro a {
-  color: var(--color-white);
-  text-decoration: underline;
-}
-
-#start-button {
-  background: var(--color-white);
-  color: var(--color-black);
-  border: none;
-  border-radius: var(--radius-sm);
-  clip-path: var(--cut-corner-sm);
-  padding: var(--spacing-md) var(--spacing-xl);
-  font-size: var(--font-size-base);
-  font-family: var(--font-family-offbit);
-  letter-spacing: var(--letter-spacing-wide);
-  text-transform: uppercase;
-  cursor: pointer;
-  transition: all 0.3s ease;
-}
-
-#start-button:hover:not(:disabled) {
-  background: var(--color-black);
-  color: var(--color-white);
-}
-
-#start-button:disabled {
-  opacity: 0.5;
-  cursor: not-allowed;
-}
 
 /* Hide elements during loading */
 body.loading #main {
@@ -183,4 +113,98 @@ body.loaded #main {
 
 .cut-corner-lg {
   clip-path: var(--cut-corner-lg);
+}
+
+/* Common button utility class */
+.btn-base {
+  background: var(--color-white);
+  border: none;
+  border-radius: var(--radius-sm);
+  clip-path: var(--cut-corner-sm);
+  color: var(--color-black);
+  font-size: var(--font-size-base);
+  padding: var(--spacing-sm) var(--spacing-lg);
+  padding-top: calc(var(--spacing-sm) + 2px);
+  cursor: pointer;
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  letter-spacing: var(--letter-spacing-base);
+  line-height: var(--line-height-tight);
+  text-transform: uppercase;
+  font-family: var(--font-family-offbit);
+  transition: all 0.2s ease;
+}
+
+.btn-base:hover:not(:disabled) {
+  background: var(--color-gray);
+}
+
+.btn-base:disabled {
+  opacity: 0.5;
+  cursor: not-allowed;
+}
+
+/* Full-screen layout utility class */
+.fullscreen-layout {
+  position: fixed;
+  top: 0;
+  left: 0;
+  width: 100vw;
+  height: 100vh;
+  overflow-y: auto;
+  padding: var(--spacing-xl);
+  box-sizing: border-box;
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+}
+
+/* About text utility class */
+.about-text-base {
+  margin: 0 0 var(--spacing-xs) 0 !important;
+  padding: 0 0 var(--spacing-xs) 0 !important;
+  font-size: var(--font-size-base) !important;
+  letter-spacing: var(--letter-spacing-wide);
+  line-height: 1.4;
+  text-align: center;
+}
+
+.about-text-base:first-child {
+  margin-top: 0 !important;
+  padding-top: 0 !important;
+}
+
+.about-text-base a {
+  color: inherit;
+  text-decoration: none;
+  border-bottom: 1px solid currentColor;
+}
+
+.about-text-base a:hover {
+  color: var(--color-gray);
+}
+
+/* Common text utility classes */
+.text-base {
+  font-size: var(--font-size-base);
+  letter-spacing: var(--letter-spacing-wide);
+  text-transform: uppercase;
+  line-height: var(--line-height-tight);
+  font-family: var(--font-family-offbit);
+}
+
+/* Common flexbox utility classes */
+.flex-center {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+.flex-column-center {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
 }

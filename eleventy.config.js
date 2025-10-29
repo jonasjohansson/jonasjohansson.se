@@ -35,6 +35,7 @@ export default function (eleventyConfig) {
   eleventyConfig.addPassthroughCopy("apple-touch-icon.png");
   eleventyConfig.addPassthroughCopy("web-app-manifest-*.png");
   eleventyConfig.addPassthroughCopy("CNAME");
+  eleventyConfig.addPassthroughCopy({ "src/img": "assets/img" });
   // Serve original project assets during dev/build as a fallback
   // (Responsive images still emit to /img via the shortcode; this avoids 404s if processing falls back)
   eleventyConfig.addPassthroughCopy({ projects: "projects" });

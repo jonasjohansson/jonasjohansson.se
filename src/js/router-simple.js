@@ -200,28 +200,33 @@ class SPARouter {
         // Update the current page title to the project title
         updateCurrentPageTitle(project.title);
 
-        setTimeout(() => {
-          currentProjects.style.opacity = "1";
-          currentProjects.style.transition = "opacity 0.2s ease";
-        }, 100);
-
-        // Preload hero image immediately
-        const heroImage = currentProjects.querySelector(".project-hero img, .project-hero-image img, img[data-hero]");
-        if (heroImage) {
-          const img = new Image();
-          img.src = heroImage.src || heroImage.getAttribute("data-src");
-          img.onload = () => {
-            heroImage.style.opacity = "1";
-          };
+        // Create overlay copy of strip image to prevent flash
+        let stripOverlay = null;
+        if (clickedStrip) {
+          const stripImage = clickedStrip.querySelector(".strip-image");
+          if (stripImage) {
+            const bgImage = window.getComputedStyle(stripImage).backgroundImage;
+            stripOverlay = document.createElement("div");
+            stripOverlay.style.position = "fixed";
+            stripOverlay.style.top = "0";
+            stripOverlay.style.left = "0";
+            stripOverlay.style.width = "100vw";
+            stripOverlay.style.height = "100vh";
+            stripOverlay.style.backgroundImage = bgImage;
+            stripOverlay.style.backgroundSize = "cover";
+            stripOverlay.style.backgroundPosition = "center";
+            stripOverlay.style.backgroundRepeat = "no-repeat";
+            stripOverlay.style.zIndex = "10000";
+            stripOverlay.style.pointerEvents = "none";
+            document.body.appendChild(stripOverlay);
+          }
         }
-      }
 
-      if (clickedStrip) {
-        // Faster strip transition
-        setTimeout(() => {
-          clickedStrip.style.opacity = "0";
+        // Helper to fade out the expanded strip after content is ready
+        const fadeOutClickedStrip = () => {
+          if (!clickedStrip) return;
           clickedStrip.style.transition = "opacity 0.2s ease";
-
+          clickedStrip.style.opacity = "0";
           setTimeout(() => {
             clickedStrip.style.opacity = "";
             clickedStrip.style.transition = "";
@@ -236,9 +241,67 @@ class SPARouter {
 
             this.updateStripVisibility(slug);
           }, 200);
-        }, 200);
+        };
+
+        // Remove overlay after delay
+        const removeOverlay = () => {
+          if (stripOverlay && stripOverlay.parentNode) {
+            stripOverlay.parentNode.removeChild(stripOverlay);
+          }
+        };
+
+        // Reveal project content only after hero is ready, to avoid gaps
+        const revealProject = () => {
+          currentProjects.style.opacity = "1";
+          currentProjects.style.transition = "opacity 0.2s ease";
+          fadeOutClickedStrip();
+
+          // Keep overlay visible for 1 second after project reveals, then remove
+          setTimeout(() => {
+            removeOverlay();
+          }, 1000);
+        };
+
+        // Start with hidden content until ready
+        currentProjects.style.opacity = "0";
+
+        // Find hero image and wait for it if possible
+        const heroImage = currentProjects.querySelector(".project-hero img, .project-hero-image img, img[data-hero]");
+        if (heroImage) {
+          const src = heroImage.src || heroImage.getAttribute("data-src");
+          const img = new Image();
+          img.onload = revealProject;
+          img.onerror = () => setTimeout(revealProject, 50);
+          if (src) {
+            img.src = src;
+          } else if (heroImage.complete && heroImage.naturalWidth > 0) {
+            // Already loaded
+            revealProject();
+          } else {
+            // Fallback small delay
+            setTimeout(revealProject, 100);
+          }
+        } else {
+          // No hero image — reveal immediately
+          revealProject();
+        }
       } else {
-        this.updateStripVisibility(slug);
+        // No currentProjects, proceed with strip visibility update
+        if (clickedStrip) {
+          clickedStrip.style.transition = "opacity 0.2s ease";
+          clickedStrip.style.opacity = "0";
+          setTimeout(() => {
+            clickedStrip.style.opacity = "";
+            clickedStrip.style.transition = "";
+            clickedStrip.style.zIndex = "";
+            clickedStrip.style.flexGrow = "";
+            const allStrips = document.querySelectorAll(".strip");
+            allStrips.forEach((strip) => strip.classList.remove("selected", "not-selected"));
+            this.updateStripVisibility(slug);
+          }, 200);
+        } else {
+          this.updateStripVisibility(slug);
+        }
       }
 
       window.scrollTo(0, 0);
