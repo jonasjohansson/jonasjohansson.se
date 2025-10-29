@@ -98,7 +98,14 @@ class SPARouter {
     });
 
     this.updateStripVisibility(null);
-    window.scrollTo(0, 0);
+
+    // Auto-scroll to strips position when returning home
+    import("./utils/scrollPosition.js").then(({ getStripsScrollPosition }) => {
+      window.scrollTo({
+        top: getStripsScrollPosition(),
+        behavior: "auto", // Instant for navigation
+      });
+    });
 
     // Trigger strips animation on return
     const stripsContainer = document.getElementById("strips");
@@ -122,15 +129,7 @@ class SPARouter {
       return;
     }
 
-    // Close about section if open
-    const aboutSection = document.getElementById("about-section");
-    const contentWrapper = document.getElementById("content-wrapper");
-    if (aboutSection && aboutSection.classList.contains("visible")) {
-      aboutSection.classList.remove("visible");
-      if (contentWrapper) {
-        contentWrapper.classList.remove("shifted");
-      }
-    }
+    // Will scroll after content is loaded - see end of showProject function
 
     // Update document title to project name
     document.title = `${project.title} - Jonas Johansson`;
@@ -265,6 +264,14 @@ class SPARouter {
           currentProjects.style.opacity = "1";
           currentProjects.style.transition = "opacity 0.2s ease";
           fadeOutClickedStrip();
+
+          // Scroll to content-wrapper to show project content
+          import("./utils/scrollPosition.js").then(({ getProjectScrollPosition }) => {
+            window.scrollTo({
+              top: getProjectScrollPosition(),
+              behavior: "smooth",
+            });
+          });
 
           // Keep overlay briefly to blend, then remove
           setTimeout(() => {

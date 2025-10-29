@@ -3,6 +3,7 @@ import { shuffle, clamp } from "./utils/helpers.js";
 import { CONFIG, FILTER_CATEGORIES } from "./config/constants.js";
 import { ColorExtractor } from "./utils/colorExtractor.js";
 import { createScrambler } from "./utils/scrambleText.js";
+import { getStripsScrollPosition } from "./utils/scrollPosition.js";
 
 // Get projects from window global (injected by 11ty)
 const projects = window.__PROJECTS_DATA__ || [];
@@ -482,16 +483,7 @@ export function initializeStrips() {
         const computedId = project.slug || slugify(project.title);
         const projectPath = pathPrefix ? `${pathPrefix}/work/${computedId}` : `/work/${computedId}`;
 
-        // Close about section immediately if open
-        const aboutSection = document.getElementById("about-section");
-        const contentWrapper = document.getElementById("content-wrapper");
-        if (aboutSection && aboutSection.classList.contains("visible")) {
-          aboutSection.classList.remove("visible");
-          if (contentWrapper) {
-            contentWrapper.classList.remove("shifted");
-          }
-        }
-
+        // Don't scroll here - let router handle scrolling after content loads
         // Immediately reflect selected project title in header while navigating
         try {
           updateCurrentPageTitle(project.title);
@@ -606,16 +598,7 @@ export function initializeStrips() {
         const projectId = project.slug || project.title.toLowerCase().replace(/\s+/g, "-");
         const projectPath = pathPrefix ? `${pathPrefix}/work/${projectId}` : `/work/${projectId}`;
 
-        // Close about section immediately if open
-        const aboutSection = document.getElementById("about-section");
-        const contentWrapper = document.getElementById("content-wrapper");
-        if (aboutSection && aboutSection.classList.contains("visible")) {
-          aboutSection.classList.remove("visible");
-          if (contentWrapper) {
-            contentWrapper.classList.remove("shifted");
-          }
-        }
-
+        // Don't scroll here - let router handle scrolling after content loads
         router.navigate(projectPath);
       }
     }

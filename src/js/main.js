@@ -6,6 +6,7 @@ import { applyProjectColor } from "./strips.js";
 import { melodyPlayer } from "./xylophone.js";
 import { initAsteroids } from "./asteroids.js";
 import { loadingManager } from "./utils/loadingManager.js";
+import { getStripsScrollPosition } from "./utils/scrollPosition.js";
 
 // Consolidated initialization function
 async function initializeApp() {
@@ -50,6 +51,28 @@ async function initializeApp() {
   initMelodyControls();
   initAsteroids();
   initHeaderButtons();
+
+  // Auto-scroll to strips/projects after a short delay to ensure layout is ready
+  setTimeout(() => {
+    autoScrollToContent();
+  }, 200);
+}
+
+// Auto-scroll to appropriate section based on page type
+function autoScrollToContent() {
+  // Check if we're on a project page
+  const isProjectPage = window.location.pathname.includes("/work/") || window.__INITIAL_PROJECT__;
+
+  // Always scroll directly to content-wrapper
+  const contentWrapper = document.getElementById("content-wrapper");
+  if (contentWrapper) {
+    const aboutHeight = window.innerHeight * 0.8; // 80vh about section height
+    // Scroll to position content-wrapper at the top of viewport (right after about section)
+    window.scrollTo({
+      top: aboutHeight,
+      behavior: "auto", // Instant scroll
+    });
+  }
 }
 
 // Single initialization handler
@@ -81,21 +104,54 @@ function initMelodyControls() {
 function initHeaderButtons() {
   const headerToggle = document.getElementById("header-toggle");
   const aboutSection = document.getElementById("about-section");
-  const contentWrapper = document.getElementById("content-wrapper");
 
-  if (!headerToggle || !aboutSection || !contentWrapper) return;
+  if (!headerToggle || !aboutSection) return;
+
+  // Get content-wrapper scroll position
+  const getContentWrapperPosition = () => {
+    const aboutHeight = window.innerHeight * 0.8; // 80vh about section height
+    return aboutHeight;
+  };
 
   headerToggle.addEventListener("click", () => {
-    const isVisible = aboutSection.classList.contains("visible");
+    const currentScrollY = window.scrollY;
+    const contentWrapperPosition = getContentWrapperPosition();
+    const threshold = 100; // Threshold to determine if we're "at top" or "at content"
 
-    if (isVisible) {
-      // Close about section
+    if (currentScrollY < threshold) {
+      // Currently near top, scroll to content-wrapper
+      window.scrollTo({
+        top: contentWrapperPosition,
+        behavior: "smooth",
+      });
       aboutSection.classList.remove("visible");
-      contentWrapper.classList.remove("shifted");
     } else {
-      // Open about section
+      // Currently scrolled down, scroll to top
+      window.scrollTo({
+        top: 0,
+        behavior: "smooth",
+      });
       aboutSection.classList.add("visible");
-      contentWrapper.classList.add("shifted");
     }
+  });
+
+  // Track scroll position to update about section visibility
+  window.addEventListener("scroll", () => {
+    const currentScrollY = window.scrollY;
+
+    // Show about when near top, hide when scrolled down
+    if (currentScrollY < 50) {
+      aboutSection.classList.add("visible");
+    } else {
+      aboutSection.classList.remove("visible");
+    }
+  });
+}
+
+// Set default scroll position to show 30vh of strips at bottom
+function setDefaultScrollPosition() {
+  window.scrollTo({
+    top: getStripsScrollPosition(),
+    behavior: "auto", // Instant, no animation
   });
 }
