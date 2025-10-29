@@ -2,7 +2,7 @@ import "./strips.js";
 import "./router-simple.js";
 import "./xylophone.js";
 // Remove resume import since we're using static content
-import { applyProjectColor } from "./strips.js";
+import { applyProjectColor, initializeStrips } from "./strips.js";
 import { melodyPlayer } from "./xylophone.js";
 import { initAsteroids } from "./asteroids.js";
 import { loadingManager } from "./utils/loadingManager.js";
@@ -16,12 +16,24 @@ async function initializeApp() {
     await document.fonts.ready;
   } catch {}
 
-  // Reveal loading screen after font is ready
-  const loadingScreen = document.getElementById("loading-screen");
-  if (loadingScreen) loadingScreen.classList.add("show");
-
-  // Start loading process
+  // Start loading process - no loading screen, just load and animate in
   await loadingManager.preloadStripImages();
+
+  // Initialize strips with click handlers after loading
+  initializeStrips();
+
+  // Show header and filter after loading
+  const header = document.getElementById("header");
+  const filterContainer = document.getElementById("filter-dropdown-container");
+  if (header) header.style.display = "";
+  if (filterContainer) filterContainer.style.display = "";
+
+  // Show about section after loading is complete
+  const aboutSection = document.getElementById("about-section");
+  if (aboutSection) {
+    aboutSection.style.opacity = "1";
+    aboutSection.style.transition = "opacity 0.3s ease";
+  }
 
   // Handle initial project if present
   if (window.__INITIAL_PROJECT__) {

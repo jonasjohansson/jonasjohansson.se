@@ -4,6 +4,8 @@ html {
   /* Support for iOS dynamic viewport height */
   min-height: 100dvh; /* Dynamic viewport height - accounts for address bar */
   overflow-y: auto;
+  margin: 0;
+  padding: 0;
 }
 
 body {
@@ -18,6 +20,9 @@ body {
   overflow-y: auto;
   overflow-x: hidden;
   position: relative;
+  /* Ensure content goes to top edge on mobile */
+  padding-top: 0;
+  margin-top: 0;
 }
 
 /* Project-visible class no longer needed for scroll, but keep for hooks */
@@ -96,10 +101,30 @@ body.loading #strips {
   pointer-events: none;
 }
 
+/* Hide header and filter during loading */
+body.loading #header,
+body.loading #filter-dropdown-container {
+  opacity: 0;
+  pointer-events: none;
+}
+
 /* Show elements after loading */
 body.loaded #main {
   opacity: 1;
   pointer-events: auto;
+}
+
+body.loaded #strips {
+  opacity: 1;
+  pointer-events: auto;
+  transition: opacity 0.3s ease;
+}
+
+body.loaded #header,
+body.loaded #filter-dropdown-container {
+  opacity: 1;
+  pointer-events: auto;
+  transition: opacity 0.3s ease;
 }
 
 /* 45-degree cut corner utility classes */
