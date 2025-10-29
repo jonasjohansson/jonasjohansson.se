@@ -1,17 +1,76 @@
-/* Dim main content when header is expanded */
-#main {
-  transition: opacity 0.3s ease;
-  position: relative;
-  z-index: 50;
+/* About section (aside) */
+.about-section {
+  position: fixed;
+  top: 0;
+  left: 0;
+  width: 100vw;
+  height: 100vh;
+  background: var(--color-dark);
+  color: var(--color-white);
+  z-index: 150;
+  overflow-y: auto;
+  transform: translateY(-100%);
+  transition: transform 0.6s cubic-bezier(0.4, 0, 0.2, 1);
+  padding: var(--spacing-xl);
+  box-sizing: border-box;
 }
 
-#main.shifted {
-  opacity: 0.3;
-  pointer-events: none;
+.about-section.visible {
+  transform: translateY(-20%);
 }
 
-/* Don't dim on project pages */
-body:has(#projects) #main.shifted {
-  opacity: 1;
-  pointer-events: auto;
+.about-section .about-content {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  min-height: 80vh;
+  padding-top: 10vh;
+}
+
+.about-content {
+  width: 100%;
+  max-width: 800px;
+  margin: 0 auto;
+}
+
+/* About text styling */
+.about-section .about-columns {
+  width: 100%;
+  column-count: 1;
+  column-gap: var(--spacing-md);
+}
+
+.about-section .about-columns p {
+  margin: 0 0 var(--spacing-xs) 0 !important;
+  padding: 0 0 var(--spacing-xs) 0 !important;
+  font-size: var(--font-size-base) !important;
+  letter-spacing: var(--letter-spacing-wide);
+  line-height: 1.4;
+  color: var(--color-white);
+  text-align: center;
+}
+
+.about-section .about-columns p:first-child {
+  margin-top: 0 !important;
+  padding-top: 0 !important;
+}
+
+.about-section .about-columns a {
+  color: var(--color-white);
+  text-decoration: none;
+  border-bottom: 1px solid currentColor;
+}
+
+.about-section .about-columns a:hover {
+  color: var(--color-light-gray);
+}
+
+/* Content wrapper that gets pushed down */
+#content-wrapper {
+  transition: transform 0.6s cubic-bezier(0.4, 0, 0.2, 1);
+  transform: translateY(0);
+}
+
+#content-wrapper.shifted {
+  transform: translateY(80vh);
 }

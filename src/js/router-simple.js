@@ -122,6 +122,16 @@ class SPARouter {
       return;
     }
 
+    // Close about section if open
+    const aboutSection = document.getElementById("about-section");
+    const contentWrapper = document.getElementById("content-wrapper");
+    if (aboutSection && aboutSection.classList.contains("visible")) {
+      aboutSection.classList.remove("visible");
+      if (contentWrapper) {
+        contentWrapper.classList.remove("shifted");
+      }
+    }
+
     // Update document title to project name
     document.title = `${project.title} - Jonas Johansson`;
 
@@ -256,10 +266,10 @@ class SPARouter {
           currentProjects.style.transition = "opacity 0.2s ease";
           fadeOutClickedStrip();
 
-          // Keep overlay visible for 1 second after project reveals, then remove
+          // Keep overlay briefly to blend, then remove
           setTimeout(() => {
             removeOverlay();
-          }, 1000);
+          }, 300);
         };
 
         // Start with hidden content until ready

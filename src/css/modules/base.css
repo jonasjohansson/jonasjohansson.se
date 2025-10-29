@@ -115,6 +115,22 @@ body.loaded #main {
   clip-path: var(--cut-corner-lg);
 }
 
+/* Project hero positioning to match strip images */
+.project-hero {
+  background-size: cover;
+  background-position: center;
+  background-repeat: no-repeat;
+}
+
+.project-hero-image img,
+img[data-hero] {
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+  object-position: center;
+  display: block;
+}
+
 /* Common button utility class */
 .btn-base {
   background: var(--color-white);
@@ -207,4 +223,21 @@ body.loaded #main {
   flex-direction: column;
   align-items: center;
   justify-content: center;
+}
+
+/* Grain overlay */
+#grain-overlay {
+  position: fixed;
+  top: 0;
+  left: 0;
+  width: 100vw;
+  height: 100vh;
+  background-image: url("/assets/img/grain.png");
+  background-size: cover;
+  background-position: center;
+  background-repeat: no-repeat;
+  opacity: 0.3;
+  mix-blend-mode: multiply;
+  z-index: 1000;
+  pointer-events: none;
 }

@@ -17,44 +17,34 @@
   </head>
   <body>
     {% if not project %}
-    <!-- Loading screen - only on root page -->
+    <!-- Loading screen - only percentage -->
     <div id="loading-screen">
-      <div id="loading-intro">
+      <div id="loading-percentage">0%</div>
+    </div>
+    {% endif %} {% include "../components/header.njk" %}
+
+    <!-- About section (aside) -->
+    <aside
+      id="about-section"
+      class="about-section">
+      <div class="about-content">
         <div class="about-columns">
           {{ about | markdown | safe }}
         </div>
       </div>
-      <div class="button-group">
-        <button
-          id="start-button"
-          disabled>
-          EASY
-        </button>
-        <button
-          id="difficult-button"
-          disabled>
-          DIFFICULT
-        </button>
-      </div>
+    </aside>
+
+    <!-- Wrapper for main content that gets pushed down -->
+    <div id="content-wrapper">
+      <main id="main">
+        {{ content | safe }}
+      </main>
+
+      {% include "../components/strips.njk" %}
     </div>
 
-    <!-- Intro section that slides in from top - only on root page -->
-    <div id="intro-section">
-      <div class="about-grid">
-        <div class="about-columns">
-          {{ about | markdown | safe }}
-        </div>
-      </div>
-    </div>
-    {% endif %}
-
-    {% include "../components/header.njk" %}
-
-    <main id="main">
-      {{ content | safe }}
-    </main>
-
-    {% include "../components/strips.njk" %}
+    <!-- Grain overlay -->
+    <div id="grain-overlay"></div>
 
     <script
       type="module"

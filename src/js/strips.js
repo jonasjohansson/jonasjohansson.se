@@ -482,6 +482,16 @@ export function initializeStrips() {
         const computedId = project.slug || slugify(project.title);
         const projectPath = pathPrefix ? `${pathPrefix}/work/${computedId}` : `/work/${computedId}`;
 
+        // Close about section immediately if open
+        const aboutSection = document.getElementById("about-section");
+        const contentWrapper = document.getElementById("content-wrapper");
+        if (aboutSection && aboutSection.classList.contains("visible")) {
+          aboutSection.classList.remove("visible");
+          if (contentWrapper) {
+            contentWrapper.classList.remove("shifted");
+          }
+        }
+
         // Immediately reflect selected project title in header while navigating
         try {
           updateCurrentPageTitle(project.title);
@@ -595,6 +605,17 @@ export function initializeStrips() {
       if (project) {
         const projectId = project.slug || project.title.toLowerCase().replace(/\s+/g, "-");
         const projectPath = pathPrefix ? `${pathPrefix}/work/${projectId}` : `/work/${projectId}`;
+
+        // Close about section immediately if open
+        const aboutSection = document.getElementById("about-section");
+        const contentWrapper = document.getElementById("content-wrapper");
+        if (aboutSection && aboutSection.classList.contains("visible")) {
+          aboutSection.classList.remove("visible");
+          if (contentWrapper) {
+            contentWrapper.classList.remove("shifted");
+          }
+        }
+
         router.navigate(projectPath);
       }
     }

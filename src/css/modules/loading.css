@@ -1,4 +1,4 @@
-/* Loading Screen */
+/* Loading Screen - minimal, just percentage and buttons */
 #loading-screen {
   position: fixed;
   top: 0;
@@ -6,22 +6,27 @@
   width: 100vw;
   height: 100vh;
   z-index: 300;
-  background: var(--color-black);
-  color: var(--color-white);
-  overflow-y: auto;
+  background: transparent;
+  color: var(--color-black);
   font-family: var(--font-family-offbit);
-  padding: var(--spacing-xl);
-  box-sizing: border-box;
   display: flex;
   flex-direction: column;
   justify-content: center;
   align-items: center;
+  gap: var(--spacing-lg);
   opacity: 0;
   transition: opacity 0.2s ease;
 }
 
 #loading-screen.show {
   opacity: 1;
+}
+
+#loading-percentage {
+  font-size: var(--font-size-large);
+  letter-spacing: var(--letter-spacing-wide);
+  text-transform: uppercase;
+  text-align: center;
 }
 
 #loading-intro {

@@ -2,26 +2,19 @@
 export class LoadingManager {
   constructor() {
     this.loadingScreen = document.getElementById("loading-screen");
-    this.startButton = document.getElementById("start-button");
+    this.loadingPercentage = document.getElementById("loading-percentage");
     this.loadedImages = 0;
     this.totalImages = 0;
     this.isLoading = true;
     this.originalTitle = document.title;
+    this.hasStarted = false;
 
     console.log("LoadingManager initialized", {
       loadingScreen: this.loadingScreen,
-      startButton: this.startButton,
     });
 
     // Add loading class to body
     document.body.classList.add("loading");
-
-    // Set up start button click handler
-    if (this.startButton) {
-      this.startButton.addEventListener("click", () => {
-        this.startExperience();
-      });
-    }
   }
 
   async preloadStripImages() {
@@ -113,6 +106,12 @@ export class LoadingManager {
   updatePercentage() {
     const percentage = Math.round((this.loadedImages / this.totalImages) * 100);
     document.title = `${percentage}% - ${this.originalTitle}`;
+
+    // Update percentage display
+    if (this.loadingPercentage) {
+      this.loadingPercentage.textContent = `${percentage}%`;
+    }
+
     console.log(`Loading progress: ${percentage}% (${this.loadedImages}/${this.totalImages})`);
 
     // Check if we've reached 100%
@@ -123,24 +122,25 @@ export class LoadingManager {
   }
 
   enableStartButton() {
-    if (this.startButton) {
-      this.startButton.disabled = false;
-      this.startButton.textContent = "EASY";
-    }
-
     // Restore original title when loading is complete
     document.title = this.originalTitle;
+    
+    // Automatically start experience when loaded (no button needed)
+    if (!this.hasStarted) {
+      this.hasStarted = true;
+      // Small delay to allow audio context initialization
+      setTimeout(() => {
+        this.startExperience();
+      }, 100);
+    }
   }
 
   startExperience() {
     console.log("Starting experience");
 
-    // Remove loading screen
+    // Remove loading screen immediately - no fade-out delay
     if (this.loadingScreen) {
-      this.loadingScreen.classList.add("fade-out");
-      setTimeout(() => {
-        this.loadingScreen.remove();
-      }, 500);
+      this.loadingScreen.remove();
     }
 
     // Add loaded class to body

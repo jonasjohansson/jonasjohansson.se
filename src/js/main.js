@@ -79,6 +79,23 @@ function initMelodyControls() {
 }
 
 function initHeaderButtons() {
-  // Buttons are now always visible, no click functionality needed
-  console.log("Header buttons are always visible");
+  const headerToggle = document.getElementById("header-toggle");
+  const aboutSection = document.getElementById("about-section");
+  const contentWrapper = document.getElementById("content-wrapper");
+
+  if (!headerToggle || !aboutSection || !contentWrapper) return;
+
+  headerToggle.addEventListener("click", () => {
+    const isVisible = aboutSection.classList.contains("visible");
+
+    if (isVisible) {
+      // Close about section
+      aboutSection.classList.remove("visible");
+      contentWrapper.classList.remove("shifted");
+    } else {
+      // Open about section
+      aboutSection.classList.add("visible");
+      contentWrapper.classList.add("shifted");
+    }
+  });
 }

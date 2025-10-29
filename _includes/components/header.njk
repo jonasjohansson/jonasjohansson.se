@@ -2,18 +2,11 @@
   id="header"
   style="display: none">
   <div class="header-center">
-    <!-- Center content clickable to root -->
-    <div class="header-content">
+    <div
+      class="header-content"
+      id="header-toggle">
       <div class="header-title">
         {{ site.title | upper }}
-        <a href="mailto:jns.johansson@gmail.com">
-          <div class="header-icon">✉️</div>
-        </a>
-        <a
-          href="https://docs.google.com/spreadsheets/u/1/d/e/2PACX-1vSdECybrvqdFRdXdglDL9pYuygE9NiSIRDz7A-GzvuHMOh0-fRfZWww_Wj4SSNk_vtsreDhrGrstGkM/pubhtml"
-          target="_blank">
-          <div class="header-icon">📄</div>
-        </a>
       </div>
       <div class="header-subtitle">
         {% if project %}
