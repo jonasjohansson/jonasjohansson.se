@@ -1,7 +1,6 @@
 @font-face {
   font-family: "OffBit";
-  src: url("../fonts/OffBit-Regular.woff2") format("woff2"), url("../fonts/OffBit-Regular.woff") format("woff"),
-    url("../fonts/OffBit-Regular.ttf") format("truetype");
+  src: url("../fonts/OffBit-Regular.woff2") format("woff2"), url("../fonts/OffBit-Regular.woff") format("woff");
   font-weight: normal;
   font-style: normal;
   font-display: swap;
@@ -9,41 +8,10 @@
 
 @font-face {
   font-family: "OffBit";
-  src: url("../fonts/OffBit-101Bold.woff2") format("woff2"), url("../fonts/OffBit-101Bold.woff") format("woff"),
-    url("../fonts/OffBit-101Bold.ttf") format("truetype");
+  src: url("../fonts/OffBit-101Bold.woff2") format("woff2"), url("../fonts/OffBit-101Bold.woff") format("woff");
   font-weight: bold;
   font-style: normal;
   font-display: swap;
 }
 
-@font-face {
-  font-family: "Signifier";
-  src: url("../fonts/signifier-light.woff2") format("woff2");
-  font-weight: 300;
-  font-style: normal;
-  font-display: swap;
-}
-
-@font-face {
-  font-family: "Cerial";
-  src: url("../fonts/Cerial.woff2") format("woff2"), url("../fonts/Cerial.woff") format("woff");
-  font-weight: normal;
-  font-style: normal;
-  font-display: swap;
-}
-
-@font-face {
-  font-family: "AnselmTen";
-  src: url("../fonts/AnselmTen-Normal.woff2") format("woff2"), url("../fonts/AnselmTen-Normal.woff") format("woff");
-  font-weight: normal;
-  font-style: normal;
-  font-display: swap;
-}
-
-@font-face {
-  font-family: "Copyright General Type Studio";
-  src: url("../fonts/Copyright-General-Type-Studio_7.woff2") format("woff2");
-  font-weight: normal;
-  font-style: normal;
-  font-display: swap;
-}
+/* Removed unused font families (Signifier, Cerial, AnselmTen, Copyright) */

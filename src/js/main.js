@@ -1,10 +1,7 @@
 import "./strips.js";
 import "./router-simple.js";
-import "./xylophone.js";
 // Remove resume import since we're using static content
 import { applyProjectColor, initializeStrips } from "./strips.js";
-import { melodyPlayer } from "./xylophone.js";
-import { initAsteroids } from "./asteroids.js";
 import { loadingManager } from "./utils/loadingManager.js";
 import { getStripsScrollPosition } from "./utils/scrollPosition.js";
 
@@ -21,6 +18,18 @@ async function initializeApp() {
 
   // Initialize strips with click handlers after loading
   initializeStrips();
+
+  // Lazy-load optional features to keep initial bundle small
+  try {
+    const stripsEl = document.getElementById("strips");
+    if (stripsEl) {
+      import("./xylophone.js");
+    }
+    const canvas = document.getElementById("asteroids-canvas");
+    if (canvas) {
+      import("./asteroids.js").then((m) => m.initAsteroids && m.initAsteroids());
+    }
+  } catch {}
 
   // Show header and filter after loading
   const header = document.getElementById("header");
@@ -60,8 +69,6 @@ async function initializeApp() {
     }, 1000);
   }
 
-  initMelodyControls();
-  initAsteroids();
   initHeaderButtons();
 
   // Auto-scroll to strips/projects after a short delay to ensure layout is ready
@@ -95,23 +102,7 @@ if (document.readyState === "loading") {
   initializeApp();
 }
 
-function initMelodyControls() {
-  const randomMelody = melodyPlayer.selectRandomMelody();
-  melodyPlayer.enableMelodyMode(randomMelody);
-
-  document.addEventListener("keydown", (e) => {
-    if (e.key.toLowerCase() === "m") {
-      if (melodyPlayer.isMelodyMode) {
-        melodyPlayer.disableMelodyMode();
-      } else {
-        const newRandomMelody = melodyPlayer.selectRandomMelody();
-        melodyPlayer.enableMelodyMode(newRandomMelody);
-      }
-    }
-  });
-
-  window.melodyPlayer = melodyPlayer;
-}
+// Melody controls removed from boot; xylophone loads lazily if strips exist
 
 function initHeaderButtons() {
   const headerToggle = document.getElementById("header-toggle");
