@@ -25,6 +25,13 @@ body {
   margin-top: 0;
 }
 
+/* Site container wrapper so the whole site can be embedded/mocked up later */
+#site-container {
+  position: relative;
+  width: 100%;
+  min-height: 100%;
+}
+
 /* Project-visible class no longer needed for scroll, but keep for hooks */
 
 /* Hide scrollbars */

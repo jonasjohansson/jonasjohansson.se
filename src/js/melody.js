@@ -48,6 +48,7 @@ const NOTE_FREQUENCIES = {
   C6: 1046.5,
 };
 
+// Mario theme - corrected to be in C major, starting at the right octave
 const MARIO_MELODY = [
   { note: "E5", duration: 0.15 },
   { note: "E5", duration: 0.15 },
@@ -158,3 +159,6 @@ class MelodyPlayer {
 
 export const melodyPlayer = new MelodyPlayer();
 export { MELODIES, NOTE_FREQUENCIES };
+
+// Expose globally for console access
+window.melodyPlayer = melodyPlayer;

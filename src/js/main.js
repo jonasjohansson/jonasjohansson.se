@@ -4,31 +4,32 @@ import "./router-simple.js";
 import { applyProjectColor, initializeStrips } from "./strips.js";
 import { loadingManager } from "./utils/loadingManager.js";
 import { getStripsScrollPosition } from "./utils/scrollPosition.js";
+// Import melody to expose melodyPlayer globally for console access
+import "./melody.js";
 
 // Consolidated initialization function
 async function initializeApp() {
-  // Wait for fonts to be ready to avoid FOUT
-  try {
-    await document.fonts.load("14px OffBit");
-    await document.fonts.ready;
-  } catch {}
+  // Don't block on fonts - let FOUT happen if needed for faster LCP
+  // Fonts will load asynchronously
+  if (document.fonts && document.fonts.load) {
+    document.fonts.load("14px OffBit").catch(() => {});
+  }
 
-  // Start loading process - no loading screen, just load and animate in
-  await loadingManager.preloadStripImages();
-
-  // Initialize strips with click handlers after loading
+  // Initialize strips immediately for interactivity (images will load progressively)
   initializeStrips();
+
+  // Start loading process in background - don't block on it
+  loadingManager.preloadStripImages().catch(() => {});
 
   // Lazy-load optional features to keep initial bundle small
   try {
     const stripsEl = document.getElementById("strips");
     if (stripsEl) {
-      import("./xylophone.js");
+      import("./xylophone.js").then(() => {
+        // melodyPlayer will be exposed on window by xylophone.js
+      });
     }
-    const canvas = document.getElementById("asteroids-canvas");
-    if (canvas) {
-      import("./asteroids.js").then((m) => m.initAsteroids && m.initAsteroids());
-    }
+    // Asteroids feature removed
   } catch {}
 
   // Show header and filter after loading
@@ -46,7 +47,6 @@ async function initializeApp() {
 
   // Handle initial project if present
   if (window.__INITIAL_PROJECT__) {
-    console.log("Initial project found:", window.__INITIAL_PROJECT__);
     // Add a small delay to ensure DOM is fully ready
     setTimeout(() => {
       applyProjectColor(window.__INITIAL_PROJECT__);
@@ -56,7 +56,6 @@ async function initializeApp() {
     setTimeout(() => {
       const currentColor = getComputedStyle(document.documentElement).getPropertyValue("--project-accent-color");
       if (!currentColor || currentColor.trim() === "") {
-        console.log("Retrying color extraction...");
         applyProjectColor(window.__INITIAL_PROJECT__);
         // Final fallback: sample first image on page
         try {
@@ -79,9 +78,6 @@ async function initializeApp() {
 
 // Auto-scroll to appropriate section based on page type
 function autoScrollToContent() {
-  // Check if we're on a project page
-  const isProjectPage = window.location.pathname.includes("/work/") || window.__INITIAL_PROJECT__;
-
   // Always scroll directly to content-wrapper
   const contentWrapper = document.getElementById("content-wrapper");
   if (contentWrapper) {
@@ -151,10 +147,4 @@ function initHeaderButtons() {
   });
 }
 
-// Set default scroll position to show 30vh of strips at bottom
-function setDefaultScrollPosition() {
-  window.scrollTo({
-    top: getStripsScrollPosition(),
-    behavior: "auto", // Instant, no animation
-  });
-}
+// removed legacy setDefaultScrollPosition (now handled by autoScrollToContent)

@@ -94,11 +94,12 @@ export default function (eleventyConfig) {
       try {
         const srcPath = path.join(process.cwd(), src);
         const metadata = await Image(srcPath, {
-          widths: [1920, 2400],
-          formats: ["jpeg"],
+          widths: [640, 960, 1280, 1920, 2400],
+          formats: ["webp", "jpeg"],
           urlPath: urlPathBase,
           outputDir: "dist/img",
-          sharpJpegOptions: { quality: 90, progressive: true },
+          sharpJpegOptions: { quality: 75, progressive: true, mozjpeg: true },
+          sharpWebpOptions: { quality: 75, effort: 4 },
           sharpOptions: { animated: true },
           filenameFormat(id, fileSrc, width, format) {
             const dirSlug = slug(path.basename(path.dirname(fileSrc)));
@@ -218,11 +219,12 @@ export default function (eleventyConfig) {
           try {
             const srcPath = path.join(process.cwd(), firstImageSrc);
             const metadata = await Image(srcPath, {
-              widths: [1920],
-              formats: ["jpeg"],
+              widths: [640, 960, 1280, 1920],
+              formats: ["webp", "jpeg"],
               urlPath: urlPathBase,
               outputDir: "dist/img",
-              sharpJpegOptions: { quality: 90, progressive: true },
+              sharpJpegOptions: { quality: 75, progressive: true, mozjpeg: true },
+              sharpWebpOptions: { quality: 75, effort: 4 },
               filenameFormat(id, fileSrc, width, format) {
                 const dirSlug = slug(path.basename(path.dirname(fileSrc)));
                 const baseName = path.basename(fileSrc, path.extname(fileSrc));
@@ -232,7 +234,8 @@ export default function (eleventyConfig) {
               },
             });
 
-            firstImageOptimized = metadata.jpeg?.[0]?.url;
+            // Prefer WebP, fallback to JPEG (use largest size for strips)
+            firstImageOptimized = metadata.webp?.[metadata.webp.length - 1]?.url || metadata.jpeg?.[metadata.jpeg.length - 1]?.url;
           } catch (err) {}
         }
         return { title, images: firstImageOptimized ? [firstImageOptimized] : [], tags, year, slug: dir };

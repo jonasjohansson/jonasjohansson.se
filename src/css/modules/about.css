@@ -24,7 +24,7 @@
 
 .about-section .about-content {
   width: 100%;
-  max-width: 800px;
+  max-width: 600px;
   display: flex;
   flex-direction: column;
   align-items: center;
@@ -33,7 +33,7 @@
 
 .about-content {
   width: 100%;
-  max-width: 800px;
+  max-width: 600px;
   margin: 0 auto;
 }
 

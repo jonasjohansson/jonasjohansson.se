@@ -12,72 +12,37 @@ export class LoadingManager {
 
   async preloadStripImages() {
     const strips = document.querySelectorAll(".strip");
-    const imageUrls = [];
-
-    // Initialize strips first (shuffle, etc.)
-    this.initializeStrips();
-
-    // Collect all strip image URLs
-    strips.forEach((strip) => {
-      const stripImage = strip.querySelector(".strip-image");
-      if (stripImage) {
-        const bgImage = stripImage.getAttribute("data-bg-image");
-        if (bgImage) {
-          imageUrls.push(bgImage);
-        }
-      }
-    });
-
-    this.totalImages = imageUrls.length;
-
-    if (this.totalImages === 0) {
+    
+    // Don't preload all images - let lazy loading handle it
+    // Only mark loading complete immediately to avoid blocking
+    if (strips.length === 0) {
       this.completeLoading();
       return;
     }
 
-    // Preload images
-    const loadPromises = imageUrls.map((url) => this.loadImage(url));
-    await Promise.all(loadPromises);
+    // Only preload first 2-3 visible strips for faster LCP
+    const eagerCount = Math.min(3, strips.length);
+    const eagerImages = [];
+    
+    for (let i = 0; i < eagerCount; i++) {
+      const stripImage = strips[i]?.querySelector(".strip-image");
+      if (stripImage) {
+        const bgImage = stripImage.getAttribute("data-bg-image");
+        if (bgImage) {
+          eagerImages.push(this.loadImage(bgImage));
+        }
+      }
+    }
 
-    // Ensure loading is marked complete after all images load
+    // Wait only for eager images, then mark complete (don't block on rest)
+    if (eagerImages.length > 0) {
+      await Promise.all(eagerImages);
+    }
+    
     this.completeLoading();
   }
 
-  initializeStrips() {
-    const stripsContainer = document.getElementById("strips");
-    if (!stripsContainer) return;
-
-    const strips = Array.from(stripsContainer.querySelectorAll(".strip"));
-    if (strips.length === 0) return;
-
-    // Shuffle strips for variety
-    const shuffledStrips = this.shuffle([...strips]);
-
-    // Re-append strips in shuffled order
-    shuffledStrips.forEach((strip, index) => {
-      stripsContainer.appendChild(strip);
-      strip.setAttribute("data-index", index);
-      strip.style.setProperty("--strip-index", index);
-    });
-
-    // Load strip images immediately but keep them invisible
-    const stripImages = Array.from(stripsContainer.querySelectorAll(".strip-image"));
-    stripImages.forEach((img) => {
-      const bgImage = img.getAttribute("data-bg-image");
-      if (bgImage && !img.style.backgroundImage) {
-        img.style.backgroundImage = `url('${bgImage}')`;
-      }
-    });
-  }
-
-  shuffle(array) {
-    const shuffled = [...array];
-    for (let i = shuffled.length - 1; i > 0; i--) {
-      const j = Math.floor(Math.random() * (i + 1));
-      [shuffled[i], shuffled[j]] = [shuffled[j], shuffled[i]];
-    }
-    return shuffled;
-  }
+  // initializeStrips removed - handled by strips.js now
 
   loadImage(url) {
     return new Promise((resolve, reject) => {
@@ -100,12 +65,7 @@ export class LoadingManager {
   }
 
   updatePercentage() {
-    const percentage = Math.round((this.loadedImages / this.totalImages) * 100);
-
-    // Check if we've reached 100%
-    if (percentage >= 100) {
-      this.completeLoading();
-    }
+    // Removed - no longer tracking percentage during preload
   }
 
   completeLoading() {

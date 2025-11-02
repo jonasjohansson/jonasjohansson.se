@@ -29,11 +29,6 @@ export function initIntro() {
     if (!hasScrolled && currentScrollY > initialScrollY + 100) {
       hasScrolled = true;
       introSection.style.display = "none";
-
-      // Stop asteroids game if running
-      if (window.asteroidsGame) {
-        window.asteroidsGame.stop();
-      }
     }
 
     // Update initial scroll position to prevent false triggers

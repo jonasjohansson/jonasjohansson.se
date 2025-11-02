@@ -8,8 +8,12 @@ export default defineConfig({
     minify: "terser",
     terserOptions: {
       compress: {
-        drop_console: false, // Temporarily disabled for debugging
+        drop_console: true, // Remove console.log in production
         drop_debugger: true,
+        passes: 2, // Multiple passes for better minification
+      },
+      mangle: {
+        safari10: true, // Fix Safari 10 compatibility
       },
     },
     cssMinify: true,

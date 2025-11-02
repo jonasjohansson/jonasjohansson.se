@@ -39,7 +39,6 @@ async function applyProjectColor(project) {
 
   try {
     const heroImageUrl = typeof project.images[0] === "string" ? project.images[0] : project.images[0].src;
-    console.log("Hero image URL:", heroImageUrl);
 
     // Ensure the URL is absolute
     let absoluteImageUrl = heroImageUrl;
@@ -47,16 +46,7 @@ async function applyProjectColor(project) {
       absoluteImageUrl = `/${heroImageUrl}`;
     }
 
-    // If we're on a project page, we need to resolve relative to the root
-    if (window.location.pathname.includes("/work/") && absoluteImageUrl.startsWith("/img/")) {
-      // URL is already absolute, keep as is
-    } else if (absoluteImageUrl.startsWith("/img/")) {
-      // URL is already absolute, keep as is
-    }
-
-    console.log("Absolute image URL:", absoluteImageUrl);
     const dominantColor = await colorExtractor.extractDominantColor(absoluteImageUrl);
-    console.log("Extracted dominant color:", dominantColor);
 
     // Apply color as CSS custom property
     const lightColor = colorExtractor.adjustBrightness(dominantColor, 1.3);
@@ -65,14 +55,6 @@ async function applyProjectColor(project) {
     document.documentElement.style.setProperty("--project-accent-color", dominantColor);
     document.documentElement.style.setProperty("--project-accent-color-light", lightColor);
     document.documentElement.style.setProperty("--project-accent-color-dark", darkColor);
-
-    console.log("Applied accent color:", dominantColor);
-    console.log("Applied light color:", lightColor);
-    console.log("Applied dark color:", darkColor);
-
-    // Check if the CSS variable is actually set
-    const computedStyle = getComputedStyle(document.documentElement);
-    console.log("CSS variable value:", computedStyle.getPropertyValue("--project-accent-color-dark"));
   } catch (error) {
     console.warn("Failed to extract color:", error);
   }
@@ -375,12 +357,21 @@ export function initializeStrips() {
   allStrips = shuffledStrips;
   stripImages = Array.from(stripsContainer?.querySelectorAll(".strip-image") || []);
 
-  // Load strip images immediately but keep them invisible initially
-  stripImages.forEach((img) => {
+  // Progressive image loading to reduce LCP/network payload
+  // 1) Eager-load only the first few visible strips
+  const eagerCount = Math.min(4, stripImages.length);
+  for (let i = 0; i < eagerCount; i++) {
+    const img = stripImages[i];
     const bgImage = img.getAttribute("data-bg-image");
     if (bgImage && !img.style.backgroundImage) {
       img.style.backgroundImage = `url('${bgImage}')`;
+      img.classList.add("loaded");
     }
+  }
+
+  // 2) Defer the rest with IntersectionObserver
+  stripImages.slice(eagerCount).forEach((img) => {
+    imageObserver.observe(img);
   });
 
   // CSS animations handle strip entrance automatically
@@ -690,7 +681,6 @@ function initFilters() {
 function updateCurrentPageTitle(title) {
   try {
     currentPageTitle = title || defaultSubtitle;
-    console.log("Updated current page title to:", currentPageTitle);
 
     // Persist globally for other modules and future lookups
     document.documentElement.dataset.currentProjectTitle = currentPageTitle;

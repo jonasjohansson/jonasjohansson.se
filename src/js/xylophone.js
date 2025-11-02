@@ -164,9 +164,18 @@ export function initXylophone() {
 // Export melody player for external control
 export { melodyPlayer };
 
+// Expose globally for console access
+window.melodyPlayer = melodyPlayer;
+
 // Initialize when DOM is ready
-if (document.readyState === "loading") {
-  document.addEventListener("DOMContentLoaded", initXylophone);
-} else {
+function init() {
   initXylophone();
+  // Enable Mario melody by default
+  melodyPlayer.enableMelodyMode("mario");
+}
+
+if (document.readyState === "loading") {
+  document.addEventListener("DOMContentLoaded", init);
+} else {
+  init();
 }
