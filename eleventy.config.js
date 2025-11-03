@@ -5,6 +5,7 @@ import markdownIt from "markdown-it";
 import Image from "@11ty/eleventy-img";
 import nunjucks from "nunjucks";
 import matter from "gray-matter";
+import htmlMinifier from "html-minifier-terser";
 
 const md = markdownIt({ html: true, breaks: false, linkify: true });
 const projectRoot = path.dirname(fileURLToPath(import.meta.url));
@@ -326,6 +327,29 @@ export default function (eleventyConfig) {
   eleventyConfig.addFilter("findFirstImage", (content) => content?.find?.((b) => b.type === "image")?.src || null);
   eleventyConfig.addFilter("findFirstText", (content) => content?.find?.((b) => b.type === "text")?.content || null);
   eleventyConfig.addFilter("truncate", (str, length = 160) => (str && str.length > length ? str.substring(0, length) + "..." : str || ""));
+  
+  // Minify HTML in production builds only
+  if (process.env.ELEVENTY_RUN_MODE === "build") {
+    eleventyConfig.addTransform("htmlmin", async (content, outputPath) => {
+      if (outputPath && outputPath.endsWith(".html")) {
+        return await htmlMinifier.minify(content, {
+          useShortDoctype: true,
+          removeComments: true,
+          collapseWhitespace: true,
+          minifyCSS: true,
+          minifyJS: false, // JS is already minified by Vite
+          removeEmptyAttributes: true,
+          removeRedundantAttributes: true,
+          removeScriptTypeAttributes: true,
+          removeStyleLinkTypeAttributes: true,
+          sortAttributes: true,
+          sortClassName: true,
+        });
+      }
+      return content;
+    });
+  }
+  
   eleventyConfig.setWatchThrottleWaitTime(0);
 
   return {

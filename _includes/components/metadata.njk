@@ -166,4 +166,109 @@ set projectUrl = site.url ~ page.url %} {% set projectImage = firstImage and (si
   rel="manifest"
   href="/site.webmanifest" />
 
+<!-- Structured Data (JSON-LD) for Rich Snippets -->
+<script type="application/ld+json">
+{
+  "@context": "https://schema.org",
+  "@type": "Person",
+  "name": "{{ site.author }}",
+  "alternateName": "{{ site.title }}",
+  "url": "{{ site.url }}",
+  "jobTitle": "{{ site.jobTitle or 'Artist, Educator, Designer' }}",
+  "description": "{{ site.description }}",
+  "email": "{{ site.contact.email or site.email }}",
+  "image": "{{ site.url }}{{ site.meta.ogImage }}",
+  "sameAs": [
+    {% if site.contact.sameAs %}{% for link in site.contact.sameAs %}"{{ link }}"{% if not loop.last %},{% endif %}{% endfor %}{% else %}
+    "https://twitter.com/jonasjohansson",
+    "https://instagram.com/jonasjohansson"
+    {% endif %}
+  ]{% if site.location %},
+  "address": {
+    "@type": "PostalAddress",
+    "addressCountry": "{{ site.location.addressCountry or 'SE' }}",
+    "addressRegion": "{{ site.location.addressRegion or '' }}",
+    "addressLocality": "{{ site.location.addressLocality or 'Stockholm' }}"
+  }{% endif %},
+  "knowsAbout": [
+    {% for tag in site.tags %}"{{ tag }}"{% if not loop.last %},{% endif %}{% endfor %}
+  ],
+  "worksFor": {
+    "@type": "Organization",
+    "name": "Visualia",
+    "url": "https://visualia.se"
+  },
+  "alumniOf": [
+    {
+      "@type": "Organization",
+      "name": "Svenska Tecknare"
+    },
+    {
+      "@type": "EducationalOrganization",
+      "name": "Beckmans"
+    },
+    {
+      "@type": "EducationalOrganization",
+      "name": "Hyper Island"
+    }
+  ],
+  "memberOf": [
+    {
+      "@type": "Organization",
+      "name": "Nordic Audiovisual Artists",
+      "url": "https://nava.community"
+    },
+    {
+      "@type": "Organization",
+      "name": "Svartljus",
+      "url": "https://svartljus.se"
+    }
+  ]
+}
+</script>
+
+<!-- WebSite Schema for Sitelinks -->
+<script type="application/ld+json">
+{
+  "@context": "https://schema.org",
+  "@type": "WebSite",
+  "name": "{{ site.title }}",
+  "url": "{{ site.url }}",
+  "description": "{{ site.description }}",
+  "author": {
+    "@type": "Person",
+    "name": "{{ site.author }}"
+  },
+  "potentialAction": {
+    "@type": "SearchAction",
+    "target": {
+      "@type": "EntryPoint",
+      "urlTemplate": "{{ site.url }}/?s={search_term_string}"
+    },
+    "query-input": "required name=search_term_string"
+  }
+}
+</script>
+
+{% if project %}
+<!-- CreativeWork Schema for Project Pages -->
+<script type="application/ld+json">
+{
+  "@context": "https://schema.org",
+  "@type": "CreativeWork",
+  "name": "{{ projectContent[project.slug].title }}",
+  "description": "{{ projectContent[project.slug].content | findFirstText | truncate(160) }}",
+  "url": "{{ site.url }}{{ page.url }}",
+  "image": "{{ projectImage }}",
+  "creator": {
+    "@type": "Person",
+    "name": "{{ site.author }}",
+    "url": "{{ site.url }}"
+  },
+  "datePublished": "{{ projectContent[project.slug].date or project.date }}",
+  "keywords": "{{ projectContent[project.slug].tags | join(', ') }}"
+}
+</script>
+{% endif %}
+
 <!-- External preconnects removed - not using external fonts -->

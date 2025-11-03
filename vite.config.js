@@ -35,7 +35,7 @@ export default defineConfig({
         chunkFileNames: "assets/js/[name].[hash].js",
         entryFileNames: "assets/js/[name].[hash].js",
         manualChunks: {
-          vendor: ["src/js/router-simple.js", "src/js/strips.js"],
+          vendor: ["src/js/router.js", "src/js/strips.js"],
         },
       },
     },

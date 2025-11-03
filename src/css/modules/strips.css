@@ -15,7 +15,6 @@
   -webkit-overflow-scrolling: touch;
   position: relative;
   z-index: 100;
-  scroll-snap-type: none;
   /* Ensure strips go to top edge on mobile */
   margin: 0;
   padding: 0;

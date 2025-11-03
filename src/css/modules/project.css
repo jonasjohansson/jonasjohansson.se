@@ -91,7 +91,6 @@
 body:has(#projects),
 body.project-visible {
   background: var(--project-accent-color-dark, var(--color-black));
-  scroll-snap-type: y proximity;
 }
 
 #projects:not(:has(.project)) {

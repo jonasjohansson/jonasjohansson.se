@@ -1,4 +1,4 @@
-import { router } from "./router-simple.js";
+import { router } from "./router.js";
 import { shuffle, clamp } from "./utils/helpers.js";
 import { CONFIG, FILTER_CATEGORIES } from "./config/constants.js";
 import { ColorExtractor } from "./utils/colorExtractor.js";
@@ -644,132 +644,155 @@ export function initializeStrips() {
 
 // Initialize filters
 function initFilters() {
-  // Flag to prevent scroll handler from running during filter operations
   let isFiltering = false;
+  
+  const buttons = document.querySelectorAll(".filter-dropdown-button");
+  
+  if (buttons.length === 0) {
+    setTimeout(() => {
+      const retryButtons = document.querySelectorAll(".filter-dropdown-button");
+      if (retryButtons.length > 0) {
+        initFilters();
+      }
+    }, 100);
+    return;
+  }
+  
+  // Helper function to handle filter clicks - preserves scroll position
+  const handleFilterClick = (e, checkbox) => {
+    e.preventDefault();
+    e.stopPropagation();
+    
+    isFiltering = true;
+    window.__PROGRAMMATIC_SCROLL__ = true;
+    
+    // Save scroll position
+    const scrollY = window.scrollY;
+    const scrollX = window.scrollX;
+    
+    // Toggle checkbox
+    checkbox.checked = !checkbox.checked;
+    
+    // Apply filters (may cause layout shift)
+    filterProjects();
+    
+    // Restore scroll position after layout stabilizes
+    requestAnimationFrame(() => {
+      requestAnimationFrame(() => {
+        window.scrollTo({ top: scrollY, left: scrollX, behavior: 'auto' });
+        // Clear flags
+        setTimeout(() => {
+          window.__PROGRAMMATIC_SCROLL__ = false;
+          isFiltering = false;
+        }, 50);
+      });
+    });
+  };
 
-  // Handle clicks on filter-option labels (which contain the checkbox)
-  const filterOptions = document.querySelectorAll('.filter-option');
-  filterOptions.forEach((option) => {
-    if (option) {
-      // Prevent default label behavior that might cause scrolling
-      option.addEventListener("click", (e) => {
-        e.preventDefault();
-        e.stopPropagation();
-        
-        // Prevent scroll handler from interfering
-        isFiltering = true;
-        
-        // Save current scroll position before any DOM changes
-        const scrollY = window.scrollY;
-        const scrollX = window.scrollX;
-        
-        const checkbox = option.querySelector('input[type="checkbox"]');
-        if (checkbox) {
-          checkbox.checked = !checkbox.checked;
-          filterProjects();
-          
-          // Scroll to strips container so filtered results are visible
-          if (stripsContainer) {
-            const stripsRect = stripsContainer.getBoundingClientRect();
-            const stripsTop = window.scrollY + stripsRect.top;
-            window.scrollTo({
-              top: stripsTop,
-              left: 0,
-              behavior: 'smooth'
-            });
-          }
-          // Clear flag after scroll completes
-          setTimeout(() => {
-            isFiltering = false;
-          }, 500);
-        }
-      }, true); // Use capture phase
-    }
+  // Handle filter option clicks (labels containing checkboxes)
+  document.querySelectorAll('.filter-option').forEach((option) => {
+    option?.addEventListener("click", (e) => {
+      const checkbox = option.querySelector('input[type="checkbox"]');
+      if (checkbox) {
+        handleFilterClick(e, checkbox);
+      }
+    }, true);
   });
 
-  // Also handle checkboxes directly as backup
-  const filterInputs = document.querySelectorAll('.filter-dropdown-content input[type="checkbox"]');
-  filterInputs.forEach((input) => {
-    if (input) {
-      input.addEventListener("click", (e) => {
-        e.preventDefault();
-        e.stopPropagation();
-        
-        isFiltering = true;
-        
-        const scrollY = window.scrollY;
-        const scrollX = window.scrollX;
-        
-        input.checked = !input.checked;
-        filterProjects();
-        
-        // Scroll to strips container so filtered results are visible
-        if (stripsContainer) {
-          const stripsRect = stripsContainer.getBoundingClientRect();
-          const stripsTop = window.scrollY + stripsRect.top;
-          window.scrollTo({
-            top: stripsTop,
-            left: 0,
-            behavior: 'smooth'
-          });
-        }
-        // Clear flag after scroll completes
-        setTimeout(() => {
-          isFiltering = false;
-        }, 500);
-      }, true);
-      
-      input.addEventListener("focus", (e) => {
-        e.preventDefault();
-      });
-    }
+  // Handle checkbox clicks directly
+  document.querySelectorAll('.filter-dropdown-content input[type="checkbox"]').forEach((input) => {
+    input?.addEventListener("click", (e) => {
+      handleFilterClick(e, input);
+    }, true);
+    
+    input?.addEventListener("focus", (e) => {
+      e.preventDefault();
+    });
   });
   
-  // Expose flag globally so scroll handler can check it
+  // Expose flag for scroll handler
   window.__IS_FILTERING__ = () => isFiltering;
 
-  // Handle dropdown toggles
-  const dropdownButtons = document.querySelectorAll(".filter-dropdown-button");
+  // Handle dropdown button clicks - preserve scroll position
+  buttons.forEach((button) => {
+    // Prevent focus from causing scroll
+    button.addEventListener("focus", (e) => {
+      e.preventDefault();
+      button.blur();
+    }, true);
+    
+    // Prevent mousedown from causing scroll
+    button.addEventListener("mousedown", (e) => {
+      const scrollY = window.scrollY;
+      const scrollX = window.scrollX;
+      window.__PROGRAMMATIC_SCROLL__ = true;
+      window.scrollTo({ top: scrollY, left: scrollX, behavior: 'auto' });
+      button._savedScrollY = scrollY;
+      button._savedScrollX = scrollX;
+    }, true);
+    
+    button.addEventListener("click", (e) => {
+      e.preventDefault();
+      e.stopImmediatePropagation();
+      
+      const savedScrollY = button._savedScrollY ?? window.scrollY;
+      const savedScrollX = button._savedScrollX ?? window.scrollX;
+      
+      window.scrollTo({ top: savedScrollY, left: savedScrollX, behavior: 'auto' });
+      window.__PROGRAMMATIC_SCROLL__ = true;
+      button.blur();
+      
+      const dropdown = button.closest(".filter-dropdown");
+      if (!dropdown) return;
 
-  dropdownButtons.forEach((button) => {
-    if (button) {
-      button.addEventListener("click", (e) => {
-        e.stopPropagation();
-        const dropdown = button.closest(".filter-dropdown");
-        if (dropdown) {
-          const isOpen = dropdown.classList.contains("open");
+      const isOpen = dropdown.classList.contains("open");
 
-          // Close all dropdowns and reset button text
-          document.querySelectorAll(".filter-dropdown").forEach((d) => {
-            if (d) {
-              d.classList.remove("open");
-              const btn = d.querySelector(".filter-dropdown-button");
-              if (btn) btn.textContent = "Filter";
-            }
-          });
-
-          // Toggle current dropdown and update button text
-          if (!isOpen) {
-            dropdown.classList.add("open");
-            button.textContent = "×";
-          }
-        }
+      // Close all dropdowns
+      document.querySelectorAll(".filter-dropdown").forEach((d) => {
+        d.classList.remove("open");
+        const btn = d.querySelector(".filter-dropdown-button");
+        if (btn) btn.textContent = "Filter";
       });
-    }
+
+      // Toggle current dropdown
+      if (!isOpen) {
+        dropdown.classList.add("open");
+        button.textContent = "×";
+      }
+      
+      // Aggressively restore scroll position
+      const restoreScroll = () => window.scrollTo({ top: savedScrollY, left: savedScrollX, behavior: 'auto' });
+      
+      restoreScroll();
+      requestAnimationFrame(() => {
+        restoreScroll();
+        requestAnimationFrame(() => {
+          restoreScroll();
+          setTimeout(() => {
+            restoreScroll();
+            window.__PROGRAMMATIC_SCROLL__ = false;
+            delete button._savedScrollY;
+            delete button._savedScrollX;
+          }, 100);
+        });
+      });
+    }, true);
   });
 
-  // Close dropdowns when clicking outside
+  // Close dropdowns when clicking outside (but not when clicking the button itself)
   document.addEventListener("click", (e) => {
+    // Don't close if clicking the button (its handler already manages state)
+    if (e.target.closest(".filter-dropdown-button")) {
+      return;
+    }
     if (!e.target.closest(".filter-dropdown")) {
       document.querySelectorAll(".filter-dropdown").forEach((d) => {
-        if (d) {
-          d.classList.remove("open");
-          const btn = d.querySelector(".filter-dropdown-button");
-          if (btn) btn.textContent = "Filter";
-        }
+        d.classList.remove("open");
+        const btn = d.querySelector(".filter-dropdown-button");
+        if (btn) btn.textContent = "Filter";
       });
     }
-  });
+  }, true); // Use capture phase
 }
 
 // Function to update the current page title (called when entering a project page)
