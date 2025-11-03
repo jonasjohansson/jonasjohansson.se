@@ -5,7 +5,8 @@
   "scripts": {
     "dev": "concurrently \"vite build --watch\" \"eleventy --serve\"",
     "start": "eleventy --serve",
-    "build": "ELEVENTY_RUN_MODE=build npx vite build && ELEVENTY_RUN_MODE=build eleventy"
+    "clean:img": "node scripts/clean-img.js",
+    "build": "npm run clean:img && ELEVENTY_RUN_MODE=build npx vite build && ELEVENTY_RUN_MODE=build npx eleventy && echo '✓ Build complete - HTML files generated in dist/'"
   },
   "devDependencies": {
     "@11ty/eleventy": "3.1.0",

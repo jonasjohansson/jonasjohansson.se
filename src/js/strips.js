@@ -3,7 +3,6 @@ import { shuffle, clamp } from "./utils/helpers.js";
 import { CONFIG, FILTER_CATEGORIES } from "./config/constants.js";
 import { ColorExtractor } from "./utils/colorExtractor.js";
 import { createScrambler } from "./utils/scrambleText.js";
-import { getStripsScrollPosition } from "./utils/scrollPosition.js";
 
 // Get projects from window global (injected by 11ty)
 const projects = window.__PROJECTS_DATA__ || [];

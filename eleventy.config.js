@@ -22,6 +22,10 @@ const slug = (s) =>
 export default function (eleventyConfig) {
   eleventyConfig.ignores.add("jonasjohansson.se/**");
   eleventyConfig.ignores.add("projects/**/data.md");
+  // Ignore root-level .md files (documentation files, not templates)
+  eleventyConfig.ignores.add("SEO.md");
+  eleventyConfig.ignores.add("RESUME_SETUP.md");
+  eleventyConfig.ignores.add("README.md");
   eleventyConfig.setServerOptions({
     domdiff: false,
     headers: {
@@ -329,22 +333,31 @@ export default function (eleventyConfig) {
   eleventyConfig.addFilter("truncate", (str, length = 160) => (str && str.length > length ? str.substring(0, length) + "..." : str || ""));
   
   // Minify HTML in production builds only
-  if (process.env.ELEVENTY_RUN_MODE === "build") {
+  const isBuild = process.env.ELEVENTY_RUN_MODE === "build";
+  if (isBuild) {
     eleventyConfig.addTransform("htmlmin", async (content, outputPath) => {
-      if (outputPath && outputPath.endsWith(".html")) {
-        return await htmlMinifier.minify(content, {
-          useShortDoctype: true,
-          removeComments: true,
-          collapseWhitespace: true,
-          minifyCSS: true,
-          minifyJS: false, // JS is already minified by Vite
-          removeEmptyAttributes: true,
-          removeRedundantAttributes: true,
-          removeScriptTypeAttributes: true,
-          removeStyleLinkTypeAttributes: true,
-          sortAttributes: true,
-          sortClassName: true,
-        });
+      // outputPath is relative to output directory (dist) or absolute path
+      const isHtmlFile = outputPath && (outputPath.endsWith(".html") || outputPath.includes("/index.html"));
+      if (isHtmlFile) {
+        try {
+          const minified = await htmlMinifier.minify(content, {
+            useShortDoctype: true,
+            removeComments: true,
+            collapseWhitespace: true,
+            minifyCSS: true,
+            minifyJS: false, // JS is already minified by Vite
+            removeEmptyAttributes: true,
+            removeRedundantAttributes: true,
+            removeScriptTypeAttributes: true,
+            removeStyleLinkTypeAttributes: true,
+            sortAttributes: true,
+            sortClassName: true,
+          });
+          return minified;
+        } catch (err) {
+          console.warn(`HTML minification failed for ${outputPath}:`, err.message);
+          return content;
+        }
       }
       return content;
     });
