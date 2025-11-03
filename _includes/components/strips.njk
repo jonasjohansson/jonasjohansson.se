@@ -2,13 +2,17 @@
   id="strips"
   role="list">
   {% for project in projectsForJS %}
+  {% set stripImage = project.images[0] %}
+  {% if stripImage and not stripImage.startsWith('/') %}
+    {% set stripImage = '/' ~ stripImage %}
+  {% endif %}
   <div
     class="strip"
     data-project="{{ project.slug }}"
     data-tags="{{ project.tags | join(',') }}">
     <div
       class="strip-image"
-      data-bg-image="{{ project.images[0] }}"></div>
+      data-bg-image="{{ stripImage }}"></div>
   </div>
   {% endfor %}
 

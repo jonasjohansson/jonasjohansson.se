@@ -41,13 +41,21 @@
   opacity: 0;
   transform: translateX(-120%) scale(0.95) rotate(-2deg);
   transform-origin: center center;
-  animation: slideInFromLeft 0.4s cubic-bezier(0.4, 0, 0.2, 1) forwards;
-  animation-delay: calc(var(--strip-index, 0) * 25ms);
   transition: flex-grow 0.8s cubic-bezier(0.34, 1.56, 0.64, 1), 
               z-index 0.1s ease-out, 
-              transform 0.8s cubic-bezier(0.34, 1.56, 0.64, 1),
-              filter 0.6s ease-out;
+              transform 0.8s cubic-bezier(0.34, 1.56, 0.64, 1);
   will-change: flex-grow, transform;
+}
+
+/* Only animate strips on initial page load, not on filter operations */
+#strips.strips-initialized .strip {
+  opacity: 1;
+  transform: translateX(0) scale(1) rotate(0deg);
+}
+
+#strips:not(.strips-initialized) .strip {
+  animation: slideInFromLeft 0.4s cubic-bezier(0.4, 0, 0.2, 1) forwards;
+  animation-delay: calc(var(--strip-index, 0) * 25ms);
 }
 
 /* First strip animates immediately */
@@ -63,8 +71,16 @@
   background-position: center;
   background-repeat: no-repeat;
   opacity: 0;
+}
+
+/* Only animate strip images on initial page load */
+#strips:not(.strips-initialized) .strip-image {
   animation: fadeIn 0.2s ease forwards;
   animation-delay: calc(var(--strip-index, 0) * 50ms + 100ms);
+}
+
+#strips.strips-initialized .strip-image {
+  opacity: 1;
 }
 
 /* First strip image shows immediately (or near-immediately) */
@@ -80,8 +96,9 @@
 .strip.touch-hover {
   flex-grow: 10;
   z-index: 15;
-  transform: scale(1.02) translateZ(0);
-  filter: brightness(1.08) contrast(1.05);
+  /* Removed scale to prevent background image from scaling up */
+  transform: translateZ(0);
+  /* Removed filter to keep images looking natural */
   transition-delay: 0.2s;
 }
 
@@ -104,15 +121,14 @@
   z-index: 1;
   transform: translateZ(0);
   backface-visibility: hidden;
-  transition: transform 0.8s cubic-bezier(0.34, 1.56, 0.64, 1),
-              filter 0.6s ease-out;
+  transition: transform 0.8s cubic-bezier(0.34, 1.56, 0.64, 1);
   will-change: transform;
 }
 
 .strip:hover .strip-image,
 .strip.touch-hover .strip-image {
-  transform: scale(1.03) translateZ(0);
-  filter: brightness(1.1) saturate(1.15);
+  transform: translateZ(0);
+  /* Removed filter to keep images looking natural */
 }
 
 .strip.hidden {

@@ -341,38 +341,65 @@ export function initializeStrips() {
   allStrips = Array.from(stripsContainer?.querySelectorAll(".strip") || []);
   stripImages = Array.from(stripsContainer?.querySelectorAll(".strip-image") || []);
 
-  // Shuffle strips on page load for variety
-  const shuffledStrips = shuffle([...allStrips]);
+  // Track if strips have been initialized (to prevent animations on filter)
+  const hasInitialized = stripsContainer.classList.contains("strips-initialized");
+  
+  // Shuffle strips on page load for variety (only on initial load)
+  let shuffledStrips;
+  if (!hasInitialized) {
+    shuffledStrips = shuffle([...allStrips]);
 
-  // Re-append strips in shuffled order and add index for staggered animation
-  shuffledStrips.forEach((strip, index) => {
-    stripsContainer.appendChild(strip);
-    // Add index as data attribute for CSS animation delay calculation
-    strip.setAttribute("data-index", index);
-    // Set CSS custom property for animation delay calculation
-    strip.style.setProperty("--strip-index", index);
-  });
+    // Re-append strips in shuffled order and add index for staggered animation
+    shuffledStrips.forEach((strip, index) => {
+      stripsContainer.appendChild(strip);
+      // Add index as data attribute for CSS animation delay calculation
+      strip.setAttribute("data-index", index);
+      // Set CSS custom property for animation delay calculation
+      strip.style.setProperty("--strip-index", index);
+    });
+    
+    // Mark as initialized to prevent animations on subsequent operations
+    stripsContainer.classList.add("strips-initialized");
+  } else {
+    // On subsequent operations (like filtering), keep strips in current order
+    shuffledStrips = allStrips;
+  }
 
   // Update references after shuffle
   allStrips = shuffledStrips;
   stripImages = Array.from(stripsContainer?.querySelectorAll(".strip-image") || []);
 
   // Progressive image loading to reduce LCP/network payload
-  // 1) Eager-load only the first few visible strips
-  const eagerCount = Math.min(4, stripImages.length);
-  for (let i = 0; i < eagerCount; i++) {
-    const img = stripImages[i];
-    const bgImage = img.getAttribute("data-bg-image");
-    if (bgImage && !img.style.backgroundImage) {
-      img.style.backgroundImage = `url('${bgImage}')`;
-      img.classList.add("loaded");
+  // Check if we're on a project page - on project pages, load all images immediately
+  const isProjectPage = window.location.pathname.includes("/work/");
+  
+  if (isProjectPage) {
+    // On project pages, load all strip images immediately
+    stripImages.forEach((img) => {
+      const bgImage = img.getAttribute("data-bg-image");
+      if (bgImage && !img.style.backgroundImage) {
+        img.style.backgroundImage = `url('${bgImage}')`;
+        img.classList.add("loaded");
+      }
+    });
+  } else {
+    // On home page, progressive loading
+    // 1) Eager-load only the first few visible strips
+    const eagerCount = Math.min(4, stripImages.length);
+    for (let i = 0; i < eagerCount; i++) {
+      const img = stripImages[i];
+      const bgImage = img.getAttribute("data-bg-image");
+      if (bgImage && !img.style.backgroundImage) {
+        img.style.backgroundImage = `url('${bgImage}')`;
+        img.classList.add("loaded");
+      }
     }
-  }
 
-  // 2) Defer the rest with IntersectionObserver
-  stripImages.slice(eagerCount).forEach((img) => {
-    imageObserver.observe(img);
-  });
+    // 2) Defer the rest with IntersectionObserver
+    stripImages.slice(eagerCount).forEach((img) => {
+      imageObserver.observe(img);
+    });
+  }
 
   // CSS animations handle strip entrance automatically
   // No JavaScript animation needed
@@ -617,21 +644,89 @@ export function initializeStrips() {
 
 // Initialize filters
 function initFilters() {
-  // Add event listeners to all filter checkboxes
+  // Flag to prevent scroll handler from running during filter operations
+  let isFiltering = false;
+
+  // Handle clicks on filter-option labels (which contain the checkbox)
+  const filterOptions = document.querySelectorAll('.filter-option');
+  filterOptions.forEach((option) => {
+    if (option) {
+      // Prevent default label behavior that might cause scrolling
+      option.addEventListener("click", (e) => {
+        e.preventDefault();
+        e.stopPropagation();
+        
+        // Prevent scroll handler from interfering
+        isFiltering = true;
+        
+        // Save current scroll position before any DOM changes
+        const scrollY = window.scrollY;
+        const scrollX = window.scrollX;
+        
+        const checkbox = option.querySelector('input[type="checkbox"]');
+        if (checkbox) {
+          checkbox.checked = !checkbox.checked;
+          filterProjects();
+          
+          // Scroll to strips container so filtered results are visible
+          if (stripsContainer) {
+            const stripsRect = stripsContainer.getBoundingClientRect();
+            const stripsTop = window.scrollY + stripsRect.top;
+            window.scrollTo({
+              top: stripsTop,
+              left: 0,
+              behavior: 'smooth'
+            });
+          }
+          // Clear flag after scroll completes
+          setTimeout(() => {
+            isFiltering = false;
+          }, 500);
+        }
+      }, true); // Use capture phase
+    }
+  });
+
+  // Also handle checkboxes directly as backup
   const filterInputs = document.querySelectorAll('.filter-dropdown-content input[type="checkbox"]');
-
-  if (filterInputs.length === 0) {
-    console.warn("No filter inputs found");
-    return;
-  }
-
   filterInputs.forEach((input) => {
     if (input) {
-      input.addEventListener("change", () => {
+      input.addEventListener("click", (e) => {
+        e.preventDefault();
+        e.stopPropagation();
+        
+        isFiltering = true;
+        
+        const scrollY = window.scrollY;
+        const scrollX = window.scrollX;
+        
+        input.checked = !input.checked;
         filterProjects();
+        
+        // Scroll to strips container so filtered results are visible
+        if (stripsContainer) {
+          const stripsRect = stripsContainer.getBoundingClientRect();
+          const stripsTop = window.scrollY + stripsRect.top;
+          window.scrollTo({
+            top: stripsTop,
+            left: 0,
+            behavior: 'smooth'
+          });
+        }
+        // Clear flag after scroll completes
+        setTimeout(() => {
+          isFiltering = false;
+        }, 500);
+      }, true);
+      
+      input.addEventListener("focus", (e) => {
+        e.preventDefault();
       });
     }
   });
+  
+  // Expose flag globally so scroll handler can check it
+  window.__IS_FILTERING__ = () => isFiltering;
 
   // Handle dropdown toggles
   const dropdownButtons = document.querySelectorAll(".filter-dropdown-button");

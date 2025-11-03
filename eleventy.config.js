@@ -88,6 +88,38 @@ export default function (eleventyConfig) {
 
   const urlPathBase = process.env.PATH_PREFIX ? `${process.env.PATH_PREFIX}/img` : "/img";
 
+  // Shared image processing function to ensure strips and hero use same images
+  async function processImageForStrips(src) {
+    try {
+      const srcPath = path.join(process.cwd(), src);
+      const metadata = await Image(srcPath, {
+        widths: [640, 960, 1280, 1920, 2400],
+        formats: ["webp", "jpeg"],
+        urlPath: urlPathBase,
+        outputDir: "dist/img",
+        // Use quality 90 to match strip images and avoid visible compression
+        sharpJpegOptions: { quality: 90, progressive: true, mozjpeg: true },
+        sharpWebpOptions: { quality: 90, effort: 4 },
+        sharpOptions: { animated: true },
+        filenameFormat(id, fileSrc, width, format) {
+          const dirSlug = slug(path.basename(path.dirname(fileSrc)));
+          const baseSlug = slug(path.basename(fileSrc, path.extname(fileSrc)));
+          return `${dirSlug}-${baseSlug}-${width}w-${String(id).slice(0, 8)}.${format}`;
+        },
+      });
+      // Use largest JPEG - this matches the fallback 'src' attribute that Image.generateHTML uses
+      // This ensures strips use the exact same image as the <picture> element's fallback
+      const largestJpeg = metadata.jpeg?.[metadata.jpeg.length - 1];
+      // Ensure URL is absolute (starts with /) so it works on all pages
+      if (largestJpeg?.url) {
+        return largestJpeg.url.startsWith('/') ? largestJpeg.url : `/${largestJpeg.url}`;
+      }
+      return null;
+    } catch (err) {
+      return null;
+    }
+  }
+
   eleventyConfig.addNunjucksAsyncShortcode(
     "responsiveImage",
     async (src, alt, className = "media-img", sizes = "(min-width: 800px) 980px, 100vw") => {
@@ -98,8 +130,9 @@ export default function (eleventyConfig) {
           formats: ["webp", "jpeg"],
           urlPath: urlPathBase,
           outputDir: "dist/img",
-          sharpJpegOptions: { quality: 75, progressive: true, mozjpeg: true },
-          sharpWebpOptions: { quality: 75, effort: 4 },
+          // Use quality 90 to match strip images and avoid visible compression
+          sharpJpegOptions: { quality: 90, progressive: true, mozjpeg: true },
+          sharpWebpOptions: { quality: 90, effort: 4 },
           sharpOptions: { animated: true },
           filenameFormat(id, fileSrc, width, format) {
             const dirSlug = slug(path.basename(path.dirname(fileSrc)));
@@ -186,7 +219,7 @@ export default function (eleventyConfig) {
         let firstImageSrc = null;
         let firstImageOptimized = null;
 
-        // Read data.md for metadata and first image
+        // Read data.md for metadata and first image - MUST match projectContent logic
         if (existsSync(dataMdPath)) {
           try {
             const fileContent = readFileSync(dataMdPath, "utf8");
@@ -197,13 +230,15 @@ export default function (eleventyConfig) {
             if (mdTags) tags = mdTags;
             if (date) year = new Date(date).getFullYear();
 
-            // Find first image block
+            // Find first image block - EXACT same logic as projectContent
             const firstImageBlock = blocks.find((b) => b.type === "image");
             if (firstImageBlock && firstImageBlock.src) {
+              // Use EXACT same path format as projectContent: `${root}/${dir}/${src}`
               firstImageSrc = `${root}/${dir}/${firstImageBlock.src}`;
             }
           } catch (err) {}
         }
+        // Fallback to first image file if no data.md blocks
         if (!firstImageSrc) {
           const files = readdirSync(dirPath, { withFileTypes: true }).filter((f) => f.isFile());
           for (const f of files) {
@@ -216,29 +251,14 @@ export default function (eleventyConfig) {
         }
 
         if (firstImageSrc) {
-          try {
-            const srcPath = path.join(process.cwd(), firstImageSrc);
-            const metadata = await Image(srcPath, {
-              widths: [640, 960, 1280, 1920],
-              formats: ["webp", "jpeg"],
-              urlPath: urlPathBase,
-              outputDir: "dist/img",
-              sharpJpegOptions: { quality: 75, progressive: true, mozjpeg: true },
-              sharpWebpOptions: { quality: 75, effort: 4 },
-              filenameFormat(id, fileSrc, width, format) {
-                const dirSlug = slug(path.basename(path.dirname(fileSrc)));
-                const baseName = path.basename(fileSrc, path.extname(fileSrc));
-                const baseSlug = slug(baseName);
-                const shortHash = String(id).slice(0, 8);
-                return `${dirSlug}-${baseSlug}-${width}w-${shortHash}.${format}`;
-              },
-            });
-
-            // Prefer WebP, fallback to JPEG (use largest size for strips)
-            firstImageOptimized = metadata.webp?.[metadata.webp.length - 1]?.url || metadata.jpeg?.[metadata.jpeg.length - 1]?.url;
-          } catch (err) {}
+          // Use the same processing function as responsiveImage to ensure identical output
+          firstImageOptimized = await processImageForStrips(firstImageSrc);
+          // Ensure we got a valid absolute URL
+          if (firstImageOptimized && !firstImageOptimized.startsWith('/')) {
+            firstImageOptimized = `/${firstImageOptimized}`;
+          }
         }
-        return { title, images: firstImageOptimized ? [firstImageOptimized] : [], tags, year, slug: dir };
+        return { title, images: firstImageOptimized && firstImageOptimized.startsWith('/') ? [firstImageOptimized] : [], tags, year, slug: dir };
       })
     );
     return projects;

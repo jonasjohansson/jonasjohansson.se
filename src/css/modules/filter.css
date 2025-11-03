@@ -15,6 +15,9 @@
   mix-blend-mode: luminosity;
   max-height: 50vh;
   overflow-y: auto;
+  /* Prevent scroll jumping when interacting */
+  scroll-margin: 0;
+  scroll-padding: 0;
 }
 
 /* Shared button styles - consolidated */
@@ -86,6 +89,15 @@
   border-radius: var(--radius-md);
   flex-shrink: 0;
   user-select: none;
+  /* Prevent scroll jumping on click */
+  scroll-margin: 0;
+  scroll-padding: 0;
+}
+
+.filter-option:focus,
+.filter-option:focus-visible {
+  outline: none;
+  scroll-margin: 0;
 }
 
 .filter-option:hover span {
@@ -94,6 +106,10 @@
 
 .filter-option input[type="checkbox"] {
   display: none;
+  /* Prevent focus scrolling */
+  position: absolute;
+  opacity: 0;
+  pointer-events: none;
 }
 
 .filter-option span {

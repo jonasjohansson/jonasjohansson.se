@@ -136,6 +136,11 @@ function initHeaderButtons() {
 
   // Track scroll position to update about section visibility
   window.addEventListener("scroll", () => {
+    // Don't update about section visibility during filter operations
+    if (window.__IS_FILTERING__ && window.__IS_FILTERING__()) {
+      return;
+    }
+    
     const currentScrollY = window.scrollY;
 
     // Show about when near top, hide when scrolled down
