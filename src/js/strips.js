@@ -34,51 +34,37 @@ function preloadProject(slug) {
     .catch((error) => console.warn("Preload failed for", slug, error));
 }
 
+// Helper to normalize image URL to absolute
+const normalizeImageUrl = (url) => {
+  if (!url) return null;
+  if (url.startsWith("http") || url.startsWith("/")) return url;
+  return `/${url}`;
+};
+
+// Helper to apply colors to CSS
+const applyColorsToCSS = (dominantColor) => {
+  const lightColor = colorExtractor.adjustBrightness(dominantColor, 1.3);
+  const darkColor = colorExtractor.adjustBrightness(dominantColor, 0.7);
+  document.documentElement.style.setProperty("--project-accent-color", dominantColor);
+  document.documentElement.style.setProperty("--project-accent-color-light", lightColor);
+  document.documentElement.style.setProperty("--project-accent-color-dark", darkColor);
+};
+
 async function applyProjectColor(project) {
-  if (!project || !project.images || !project.images[0]) return;
-
-  try {
-    const heroImageUrl = typeof project.images[0] === "string" ? project.images[0] : project.images[0].src;
-
-    // Ensure the URL is absolute
-    let absoluteImageUrl = heroImageUrl;
-    if (!heroImageUrl.startsWith("http") && !heroImageUrl.startsWith("/")) {
-      absoluteImageUrl = `/${heroImageUrl}`;
-    }
-
-    const dominantColor = await colorExtractor.extractDominantColor(absoluteImageUrl);
-
-    // Apply color as CSS custom property
-    const lightColor = colorExtractor.adjustBrightness(dominantColor, 1.3);
-    const darkColor = colorExtractor.adjustBrightness(dominantColor, 0.7);
-
-    document.documentElement.style.setProperty("--project-accent-color", dominantColor);
-    document.documentElement.style.setProperty("--project-accent-color-light", lightColor);
-    document.documentElement.style.setProperty("--project-accent-color-dark", darkColor);
-  } catch (error) {
-    console.warn("Failed to extract color:", error);
-  }
+  if (!project?.images?.[0]) return;
+  const imageUrl = typeof project.images[0] === "string" ? project.images[0] : project.images[0].src;
+  await applyProjectColorFromImageUrl(imageUrl);
 }
 
 // Apply accent color given a direct image URL (useful on SSR project pages)
 async function applyProjectColorFromImageUrl(imageUrl) {
   try {
-    if (!imageUrl) return;
-
-    let absoluteImageUrl = imageUrl;
-    if (!absoluteImageUrl.startsWith("http") && !absoluteImageUrl.startsWith("/")) {
-      absoluteImageUrl = `/${absoluteImageUrl}`;
-    }
-
-    const dominantColor = await colorExtractor.extractDominantColor(absoluteImageUrl);
-    const lightColor = colorExtractor.adjustBrightness(dominantColor, 1.3);
-    const darkColor = colorExtractor.adjustBrightness(dominantColor, 0.7);
-
-    document.documentElement.style.setProperty("--project-accent-color", dominantColor);
-    document.documentElement.style.setProperty("--project-accent-color-light", lightColor);
-    document.documentElement.style.setProperty("--project-accent-color-dark", darkColor);
+    const absoluteUrl = normalizeImageUrl(imageUrl);
+    if (!absoluteUrl) return;
+    const dominantColor = await colorExtractor.extractDominantColor(absoluteUrl);
+    applyColorsToCSS(dominantColor);
   } catch (err) {
-    console.warn("applyProjectColorFromImageUrl failed", err);
+    console.warn("Failed to extract color:", err);
   }
 }
 
@@ -209,111 +195,51 @@ requestAnimationFrame(tick);
 
 // ---------- Filtering Logic ----------
 function getSelectedFilters() {
-  const selectedTags = [];
-
-  document.querySelectorAll('.filter-dropdown-content input[type="checkbox"]:checked').forEach((checkbox) => {
-    const value = checkbox.value;
-    if (FILTER_CATEGORIES.includes(value)) {
-      selectedTags.push(value);
-    }
-  });
-
-  return { tags: selectedTags };
+  const tags = Array.from(document.querySelectorAll('.filter-dropdown-content input[type="checkbox"]:checked'))
+    .map((cb) => cb.value)
+    .filter((value) => FILTER_CATEGORIES.includes(value));
+  return { tags };
 }
 
 function resetFilters() {
-  document.querySelectorAll('.filter-dropdown-content input[type="checkbox"]:checked').forEach((checkbox) => {
-    checkbox.checked = false;
+  document.querySelectorAll('.filter-dropdown-content input[type="checkbox"]:checked').forEach((cb) => {
+    cb.checked = false;
   });
-
-  if (document.body) {
-    document.body.classList.remove("filter-active");
-  }
-
-  if (stripsContainer) {
-    stripsContainer.classList.remove("filtered");
-  }
-
-  if (allStrips && allStrips.length > 0) {
-    allStrips.forEach((strip) => {
-      if (strip) {
-        strip.classList.remove("filter-match");
-      }
-    });
-  }
-
-  updateStripCount();
-  lastPosX = -1;
-  lastPosY = -1;
-  isAnimating = true;
+  filterProjects(); // Reuse filterProjects to reset state
 }
 
 function filterProjects() {
   const { tags } = getSelectedFilters();
+  const hasFilters = tags.length > 0;
 
-  // Use CSS-based filtering with JavaScript to add classes
-  if (tags.length === 0) {
-    // No filters active - show all strips
-    if (document.body) {
-      document.body.classList.remove("filter-active");
-    }
-    if (stripsContainer) {
-      stripsContainer.classList.remove("filtered");
-    }
+  // Toggle filter state
+  document.body?.classList.toggle("filter-active", hasFilters);
+  stripsContainer?.classList.toggle("filtered", hasFilters);
 
-    // Remove all filter-match classes
-    if (allStrips && allStrips.length > 0) {
-      allStrips.forEach((strip) => {
-        if (strip) {
-          strip.classList.remove("filter-match");
-        }
-      });
-    }
-  } else {
-    // Filters active - add filter-active class to body
-    if (document.body) {
-      document.body.classList.add("filter-active");
-    }
-    if (stripsContainer) {
-      stripsContainer.classList.add("filtered");
+  // Process strips
+  allStrips?.forEach((strip) => {
+    if (!strip) return;
+    
+    if (!hasFilters) {
+      strip.classList.remove("filter-match");
+      return;
     }
 
-    let matchCount = 0;
-    // Add filter-match class to strips that match selected tags (case-insensitive)
-    if (allStrips && allStrips.length > 0) {
-      allStrips.forEach((strip) => {
-        if (strip) {
-          const stripTags = strip.getAttribute("data-tags");
-
-          if (stripTags) {
-            // Split tags and normalize to lowercase for comparison
-            const stripTagsArray = stripTags.split(",").map((t) => t.trim().toLowerCase());
-            const selectedTagsLower = tags.map((t) => t.toLowerCase());
-
-            // Check if any selected tag matches any strip tag
-            const hasMatchingTag = selectedTagsLower.some((tag) => stripTagsArray.some((stripTag) => stripTag === tag));
-
-            if (hasMatchingTag) {
-              strip.classList.add("filter-match");
-              matchCount++;
-            } else {
-              strip.classList.remove("filter-match");
-            }
-          } else {
-            // No tags on strip, hide it when filtering
-            strip.classList.remove("filter-match");
-          }
-        }
-      });
+    const stripTags = strip.getAttribute("data-tags");
+    if (!stripTags) {
+      strip.classList.remove("filter-match");
+      return;
     }
-  }
 
-  // Update strip count for dynamic grid sizing
+    const stripTagsLower = stripTags.split(",").map((t) => t.trim().toLowerCase());
+    const selectedTagsLower = tags.map((t) => t.toLowerCase());
+    const hasMatch = selectedTagsLower.some((tag) => stripTagsLower.includes(tag));
+    
+    strip.classList.toggle("filter-match", hasMatch);
+  });
+
   updateStripCount();
-
-  // Reset animation state
-  lastPosX = -1;
-  lastPosY = -1;
+  lastPosX = lastPosY = -1;
   isAnimating = true;
 }
 
@@ -369,36 +295,21 @@ export function initializeStrips() {
   allStrips = shuffledStrips;
   stripImages = Array.from(stripsContainer?.querySelectorAll(".strip-image") || []);
 
-  // Progressive image loading to reduce LCP/network payload
-  // Check if we're on a project page - on project pages, load all images immediately
+  // Progressive image loading - load all on project pages, eager-load first 4 on home
   const isProjectPage = window.location.pathname.includes("/work/");
+  const loadImage = (img) => {
+    const bgImage = img.getAttribute("data-bg-image");
+    if (bgImage && !img.style.backgroundImage) {
+      img.style.backgroundImage = `url('${bgImage}')`;
+      img.classList.add("loaded");
+    }
+  };
   
   if (isProjectPage) {
-    // On project pages, load all strip images immediately
-    stripImages.forEach((img) => {
-      const bgImage = img.getAttribute("data-bg-image");
-      if (bgImage && !img.style.backgroundImage) {
-        img.style.backgroundImage = `url('${bgImage}')`;
-        img.classList.add("loaded");
-      }
-    });
+    stripImages.forEach(loadImage);
   } else {
-    // On home page, progressive loading
-    // 1) Eager-load only the first few visible strips
-    const eagerCount = Math.min(4, stripImages.length);
-    for (let i = 0; i < eagerCount; i++) {
-      const img = stripImages[i];
-      const bgImage = img.getAttribute("data-bg-image");
-      if (bgImage && !img.style.backgroundImage) {
-        img.style.backgroundImage = `url('${bgImage}')`;
-        img.classList.add("loaded");
-      }
-    }
-
-    // 2) Defer the rest with IntersectionObserver
-    stripImages.slice(eagerCount).forEach((img) => {
-      imageObserver.observe(img);
-    });
+    stripImages.slice(0, 4).forEach(loadImage);
+    stripImages.slice(4).forEach((img) => imageObserver.observe(img));
   }
 
   // CSS animations handle strip entrance automatically
@@ -437,19 +348,16 @@ export function initializeStrips() {
   }
 
   function getCurrentProjectTitle() {
-    // Prefer explicit global/dataset value if present
-    const fromDataset = document.documentElement?.dataset?.currentProjectTitle;
-    if (fromDataset && fromDataset.trim()) return fromDataset;
+    const fromDataset = document.documentElement?.dataset?.currentProjectTitle?.trim();
+    if (fromDataset) return fromDataset;
 
-    const fromWindow = window.__CURRENT_PROJECT_TITLE__;
-    if (typeof fromWindow === "string" && fromWindow.trim()) return fromWindow;
+    const fromWindow = window.__CURRENT_PROJECT_TITLE__?.trim();
+    if (fromWindow) return fromWindow;
 
     // Fallback: infer from URL
-    const currentPath = window.location.pathname;
-    const isInProject = currentPath.includes("/work/");
-    const currentProjectSlug = isInProject ? currentPath.replace("/work/", "").replace("/", "") : null;
-    const currentProject = currentProjectSlug ? projects.find((p) => p.slug === currentProjectSlug) : null;
-    return currentProject ? currentProject.title : defaultSubtitle;
+    const slug = window.location.pathname.match(/\/work\/([^\/]+)/)?.[1];
+    const project = slug ? projects.find((p) => p.slug === slug) : null;
+    return project?.title || defaultSubtitle;
   }
 
   allStrips.forEach((strip) => {
@@ -475,47 +383,13 @@ export function initializeStrips() {
       });
 
       strip.addEventListener("click", () => {
-        // Robust slugify: normalize diacritics and map locale specifics like å/ä/ö
-        const slugify = (text) => {
-          if (!text) return "";
-          return (
-            text
-              .toString()
-              .trim()
-              .toLowerCase()
-              // Normalize diacritics
-              .normalize("NFD")
-              .replace(/[\u0300-\u036f]/g, "")
-              // Swedish specifics
-              .replace(/å/g, "a")
-              .replace(/ä/g, "a")
-              .replace(/ö/g, "o")
-              // Remove any remaining invalid chars
-              .replace(/[^a-z0-9\s-]/g, "")
-              // Collapse whitespace and dashes
-              .replace(/\s+/g, "-")
-              .replace(/-+/g, "-")
-          );
-        };
-
-        const computedId = project.slug || slugify(project.title);
+        const computedId = project.slug || project.title.toLowerCase().replace(/\s+/g, "-");
         const projectPath = pathPrefix ? `${pathPrefix}/work/${computedId}` : `/work/${computedId}`;
 
-        // Don't scroll here - let router handle scrolling after content loads
-        // Immediately reflect selected project title in header while navigating
-        try {
-          updateCurrentPageTitle(project.title);
-        } catch (e) {}
-
+        updateCurrentPageTitle(project.title);
         strip.classList.add("selected");
-        allStrips.forEach((otherStrip) => {
-          if (otherStrip !== strip) {
-            otherStrip.classList.add("not-selected");
-          }
-        });
-        setTimeout(() => {
-          router.navigate(projectPath);
-        }, 600);
+        allStrips.forEach((s) => s !== strip && s.classList.add("not-selected"));
+        setTimeout(() => router.navigate(projectPath), 600);
       });
     }
   });
@@ -658,29 +532,18 @@ function initFilters() {
     return;
   }
   
-  // Helper function to handle filter clicks - preserves scroll position
-  const handleFilterClick = (e, checkbox) => {
-    e.preventDefault();
-    e.stopPropagation();
-    
+  // Helper to preserve scroll position
+  const preserveScroll = (callback) => {
+    const scrollY = window.scrollY;
+    const scrollX = window.scrollX;
     isFiltering = true;
     window.__PROGRAMMATIC_SCROLL__ = true;
     
-    // Save scroll position
-    const scrollY = window.scrollY;
-    const scrollX = window.scrollX;
+    callback();
     
-    // Toggle checkbox
-    checkbox.checked = !checkbox.checked;
-    
-    // Apply filters (may cause layout shift)
-    filterProjects();
-    
-    // Restore scroll position after layout stabilizes
     requestAnimationFrame(() => {
       requestAnimationFrame(() => {
         window.scrollTo({ top: scrollY, left: scrollX, behavior: 'auto' });
-        // Clear flags
         setTimeout(() => {
           window.__PROGRAMMATIC_SCROLL__ = false;
           isFiltering = false;
@@ -689,39 +552,48 @@ function initFilters() {
     });
   };
 
-  // Handle filter option clicks (labels containing checkboxes)
-  document.querySelectorAll('.filter-option').forEach((option) => {
-    option?.addEventListener("click", (e) => {
-      const checkbox = option.querySelector('input[type="checkbox"]');
-      if (checkbox) {
-        handleFilterClick(e, checkbox);
-      }
-    }, true);
-  });
-
-  // Handle checkbox clicks directly
-  document.querySelectorAll('.filter-dropdown-content input[type="checkbox"]').forEach((input) => {
-    input?.addEventListener("click", (e) => {
-      handleFilterClick(e, input);
-    }, true);
-    
-    input?.addEventListener("focus", (e) => {
-      e.preventDefault();
+  // Handle filter clicks (both labels and checkboxes)
+  const handleFilterClick = (e, checkbox) => {
+    e.preventDefault();
+    e.stopPropagation();
+    preserveScroll(() => {
+      checkbox.checked = !checkbox.checked;
+      filterProjects();
     });
+  };
+
+  // Attach listeners to filter options and checkboxes
+  document.querySelectorAll('.filter-option, .filter-dropdown-content input[type="checkbox"]').forEach((el) => {
+    if (el.classList.contains('filter-option')) {
+      el.addEventListener("click", (e) => {
+        const checkbox = el.querySelector('input[type="checkbox"]');
+        if (checkbox) handleFilterClick(e, checkbox);
+      }, true);
+    } else {
+      el.addEventListener("click", (e) => handleFilterClick(e, el), true);
+      el.addEventListener("focus", (e) => e.preventDefault());
+    }
   });
   
   // Expose flag for scroll handler
   window.__IS_FILTERING__ = () => isFiltering;
 
+  // Shared function to close all dropdowns
+  const closeAllDropdowns = () => {
+    document.querySelectorAll(".filter-dropdown").forEach((d) => {
+      d.classList.remove("open");
+      const btn = d.querySelector(".filter-dropdown-button");
+      if (btn) btn.textContent = "Filter";
+    });
+  };
+
   // Handle dropdown button clicks - preserve scroll position
   buttons.forEach((button) => {
-    // Prevent focus from causing scroll
     button.addEventListener("focus", (e) => {
       e.preventDefault();
       button.blur();
     }, true);
     
-    // Prevent mousedown from causing scroll
     button.addEventListener("mousedown", (e) => {
       const scrollY = window.scrollY;
       const scrollX = window.scrollX;
@@ -746,23 +618,15 @@ function initFilters() {
       if (!dropdown) return;
 
       const isOpen = dropdown.classList.contains("open");
-
-      // Close all dropdowns
-      document.querySelectorAll(".filter-dropdown").forEach((d) => {
-        d.classList.remove("open");
-        const btn = d.querySelector(".filter-dropdown-button");
-        if (btn) btn.textContent = "Filter";
-      });
-
-      // Toggle current dropdown
+      closeAllDropdowns();
+      
       if (!isOpen) {
         dropdown.classList.add("open");
         button.textContent = "×";
       }
       
-      // Aggressively restore scroll position
+      // Restore scroll position
       const restoreScroll = () => window.scrollTo({ top: savedScrollY, left: savedScrollX, behavior: 'auto' });
-      
       restoreScroll();
       requestAnimationFrame(() => {
         restoreScroll();
@@ -779,20 +643,13 @@ function initFilters() {
     }, true);
   });
 
-  // Close dropdowns when clicking outside (but not when clicking the button itself)
+  // Close dropdowns when clicking outside
   document.addEventListener("click", (e) => {
-    // Don't close if clicking the button (its handler already manages state)
-    if (e.target.closest(".filter-dropdown-button")) {
-      return;
-    }
+    if (e.target.closest(".filter-dropdown-button")) return;
     if (!e.target.closest(".filter-dropdown")) {
-      document.querySelectorAll(".filter-dropdown").forEach((d) => {
-        d.classList.remove("open");
-        const btn = d.querySelector(".filter-dropdown-button");
-        if (btn) btn.textContent = "Filter";
-      });
+      closeAllDropdowns();
     }
-  }, true); // Use capture phase
+  }, true);
 }
 
 // Function to update the current page title (called when entering a project page)

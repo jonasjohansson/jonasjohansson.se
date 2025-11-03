@@ -5,30 +5,28 @@ import { loadingManager } from "./utils/loadingManager.js";
 import "./melody.js";
 
 async function initializeApp() {
-  // Load fonts asynchronously (non-blocking)
+  // Non-blocking initializations
   document.fonts?.load("14px OffBit").catch(() => {});
-
-  // Initialize strips immediately
-  initializeStrips();
-
-  // Preload images in background
   loadingManager.preloadStripImages().catch(() => {});
-
-  // Lazy-load xylophone if strips exist
   if (document.getElementById("strips")) {
     import("./xylophone.js").catch(() => {});
   }
 
-  // Show UI elements
-  const header = document.getElementById("header");
-  const filterContainer = document.getElementById("filter-dropdown-container");
-  const aboutSection = document.getElementById("about-section");
+  // Initialize strips
+  initializeStrips();
 
-  if (header) header.style.display = "";
-  if (filterContainer) filterContainer.style.display = "";
-  if (aboutSection) {
-    aboutSection.style.opacity = "1";
-    aboutSection.style.transition = "opacity 0.3s ease";
+  // Show UI elements
+  const elements = {
+    header: document.getElementById("header"),
+    filterContainer: document.getElementById("filter-dropdown-container"),
+    aboutSection: document.getElementById("about-section"),
+  };
+
+  if (elements.header) elements.header.style.display = "";
+  if (elements.filterContainer) elements.filterContainer.style.display = "";
+  if (elements.aboutSection) {
+    elements.aboutSection.style.opacity = "1";
+    elements.aboutSection.style.transition = "opacity 0.3s ease";
   }
 
   // Apply project color if on project page

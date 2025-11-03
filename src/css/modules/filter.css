@@ -1,6 +1,6 @@
 /* Filter Dropdown */
 .filter-dropdown {
-  position: fixed;
+  position: absolute;
   bottom: var(--spacing-xl);
   bottom: calc(var(--spacing-xl) + env(safe-area-inset-bottom, 0px));
   left: 50%;
@@ -52,19 +52,13 @@
 .filter-dropdown-button {
   order: 2;
   pointer-events: auto;
+  scroll-margin: 0 !important;
+  scroll-padding: 0 !important;
 }
 
 .filter-dropdown-button:focus,
 .filter-dropdown-button:focus-visible {
   outline: none;
-  scroll-margin: 0;
-  scroll-padding: 0;
-}
-
-/* Prevent scroll-into-view behavior */
-.filter-dropdown-button {
-  scroll-margin: 0 !important;
-  scroll-padding: 0 !important;
 }
 
 .filter-dropdown-button:hover,
@@ -104,7 +98,6 @@
   border-radius: var(--radius-md);
   flex-shrink: 0;
   user-select: none;
-  /* Prevent scroll jumping on click */
   scroll-margin: 0;
   scroll-padding: 0;
 }
@@ -112,7 +105,6 @@
 .filter-option:focus,
 .filter-option:focus-visible {
   outline: none;
-  scroll-margin: 0;
 }
 
 .filter-option:hover span {
