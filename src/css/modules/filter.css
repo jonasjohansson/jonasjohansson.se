@@ -11,7 +11,7 @@
   flex-direction: column;
   align-items: center;
   gap: var(--spacing-sm);
-  transition: all 0.3s ease;
+  /* No transition on container - prevents weird movement on resize */
   mix-blend-mode: luminosity;
   max-height: 50vh;
   overflow-y: auto;
@@ -76,7 +76,8 @@
   pointer-events: none;
   order: 1;
   width: auto;
-  transition: all 0.3s ease;
+  /* Only transition opacity and transform for dropdown animation */
+  transition: opacity 0.3s ease, transform 0.3s ease;
   opacity: 0;
   transform: translateY(10px);
 }
