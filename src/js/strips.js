@@ -218,7 +218,7 @@ function filterProjects() {
   // Process strips
   allStrips?.forEach((strip) => {
     if (!strip) return;
-    
+
     if (!hasFilters) {
       strip.classList.remove("filter-match");
       return;
@@ -233,7 +233,7 @@ function filterProjects() {
     const stripTagsLower = stripTags.split(",").map((t) => t.trim().toLowerCase());
     const selectedTagsLower = tags.map((t) => t.toLowerCase());
     const hasMatch = selectedTagsLower.some((tag) => stripTagsLower.includes(tag));
-    
+
     strip.classList.toggle("filter-match", hasMatch);
   });
 
@@ -268,7 +268,7 @@ export function initializeStrips() {
 
   // Track if strips have been initialized (to prevent animations on filter)
   const hasInitialized = stripsContainer.classList.contains("strips-initialized");
-  
+
   // Shuffle strips on page load for variety (only on initial load)
   let shuffledStrips;
   if (!hasInitialized) {
@@ -282,7 +282,7 @@ export function initializeStrips() {
       // Set CSS custom property for animation delay calculation
       strip.style.setProperty("--strip-index", index);
     });
-    
+
     // Mark as initialized to prevent animations on subsequent operations
     stripsContainer.classList.add("strips-initialized");
   } else {
@@ -303,7 +303,7 @@ export function initializeStrips() {
       img.classList.add("loaded");
     }
   };
-  
+
   if (isProjectPage) {
     stripImages.forEach(loadImage);
   } else {
@@ -325,6 +325,12 @@ export function initializeStrips() {
     // Make it globally available for router
     window.subtitleScrambler = subtitleScrambler;
   }
+
+  // Get base name from site.json
+  const baseName = window.__SITE_TITLE__ || "Jonas Johansson";
+
+  // Set title to just the name
+  document.title = baseName;
 
   // Header hover behavior: show friendly prompt unless About is open
   const headerEl = document.getElementById("header");
@@ -385,7 +391,6 @@ export function initializeStrips() {
         const computedId = project.slug || project.title.toLowerCase().replace(/\s+/g, "-");
         const projectPath = pathPrefix ? `${pathPrefix}/work/${computedId}` : `/work/${computedId}`;
 
-        updateCurrentPageTitle(project.title);
         strip.classList.add("selected");
         allStrips.forEach((s) => s !== strip && s.classList.add("not-selected"));
         setTimeout(() => router.navigate(projectPath), 600);
@@ -530,9 +535,9 @@ export function initializeStrips() {
 // Initialize filters
 function initFilters() {
   let isFiltering = false;
-  
+
   const buttons = document.querySelectorAll(".filter-dropdown-button");
-  
+
   if (buttons.length === 0) {
     setTimeout(() => {
       const retryButtons = document.querySelectorAll(".filter-dropdown-button");
@@ -542,19 +547,19 @@ function initFilters() {
     }, 100);
     return;
   }
-  
+
   // Helper to preserve scroll position
   const preserveScroll = (callback) => {
     const scrollY = window.scrollY;
     const scrollX = window.scrollX;
     isFiltering = true;
     window.__PROGRAMMATIC_SCROLL__ = true;
-    
+
     callback();
-    
+
     requestAnimationFrame(() => {
       requestAnimationFrame(() => {
-        window.scrollTo({ top: scrollY, left: scrollX, behavior: 'auto' });
+        window.scrollTo({ top: scrollY, left: scrollX, behavior: "auto" });
         setTimeout(() => {
           window.__PROGRAMMATIC_SCROLL__ = false;
           isFiltering = false;
@@ -575,17 +580,21 @@ function initFilters() {
 
   // Attach listeners to filter options and checkboxes
   document.querySelectorAll('.filter-option, .filter-dropdown-content input[type="checkbox"]').forEach((el) => {
-    if (el.classList.contains('filter-option')) {
-      el.addEventListener("click", (e) => {
-        const checkbox = el.querySelector('input[type="checkbox"]');
-        if (checkbox) handleFilterClick(e, checkbox);
-      }, true);
+    if (el.classList.contains("filter-option")) {
+      el.addEventListener(
+        "click",
+        (e) => {
+          const checkbox = el.querySelector('input[type="checkbox"]');
+          if (checkbox) handleFilterClick(e, checkbox);
+        },
+        true
+      );
     } else {
       el.addEventListener("click", (e) => handleFilterClick(e, el), true);
       el.addEventListener("focus", (e) => e.preventDefault());
     }
   });
-  
+
   // Expose flag for scroll handler
   window.__IS_FILTERING__ = () => isFiltering;
 
@@ -600,79 +609,108 @@ function initFilters() {
 
   // Handle dropdown button clicks - preserve scroll position
   buttons.forEach((button) => {
-    button.addEventListener("focus", (e) => {
-      e.preventDefault();
-      button.blur();
-    }, true);
-    
-    button.addEventListener("mousedown", (e) => {
-      const scrollY = window.scrollY;
-      const scrollX = window.scrollX;
-      window.__PROGRAMMATIC_SCROLL__ = true;
-      window.scrollTo({ top: scrollY, left: scrollX, behavior: 'auto' });
-      button._savedScrollY = scrollY;
-      button._savedScrollX = scrollX;
-    }, true);
-    
-    button.addEventListener("click", (e) => {
-      e.preventDefault();
-      e.stopImmediatePropagation();
-      
-      const savedScrollY = button._savedScrollY ?? window.scrollY;
-      const savedScrollX = button._savedScrollX ?? window.scrollX;
-      
-      window.scrollTo({ top: savedScrollY, left: savedScrollX, behavior: 'auto' });
-      window.__PROGRAMMATIC_SCROLL__ = true;
-      button.blur();
-      
-      const dropdown = button.closest(".filter-dropdown");
-      if (!dropdown) return;
+    button.addEventListener(
+      "focus",
+      (e) => {
+        e.preventDefault();
+        button.blur();
+      },
+      true
+    );
 
-      const isOpen = dropdown.classList.contains("open");
-      closeAllDropdowns();
-      
-      if (!isOpen) {
-        dropdown.classList.add("open");
-        button.textContent = "×";
-      }
-      
-      // Restore scroll position
-      const restoreScroll = () => window.scrollTo({ top: savedScrollY, left: savedScrollX, behavior: 'auto' });
-      restoreScroll();
-      requestAnimationFrame(() => {
+    button.addEventListener(
+      "mousedown",
+      (e) => {
+        const scrollY = window.scrollY;
+        const scrollX = window.scrollX;
+        window.__PROGRAMMATIC_SCROLL__ = true;
+        window.scrollTo({ top: scrollY, left: scrollX, behavior: "auto" });
+        button._savedScrollY = scrollY;
+        button._savedScrollX = scrollX;
+      },
+      true
+    );
+
+    button.addEventListener(
+      "click",
+      (e) => {
+        e.preventDefault();
+        e.stopImmediatePropagation();
+
+        const savedScrollY = button._savedScrollY ?? window.scrollY;
+        const savedScrollX = button._savedScrollX ?? window.scrollX;
+
+        window.scrollTo({ top: savedScrollY, left: savedScrollX, behavior: "auto" });
+        window.__PROGRAMMATIC_SCROLL__ = true;
+        button.blur();
+
+        const dropdown = button.closest(".filter-dropdown");
+        if (!dropdown) return;
+
+        const isOpen = dropdown.classList.contains("open");
+        closeAllDropdowns();
+
+        if (!isOpen) {
+          dropdown.classList.add("open");
+          button.textContent = "×";
+        }
+
+        // Restore scroll position
+        const restoreScroll = () => window.scrollTo({ top: savedScrollY, left: savedScrollX, behavior: "auto" });
         restoreScroll();
         requestAnimationFrame(() => {
           restoreScroll();
-          setTimeout(() => {
+          requestAnimationFrame(() => {
             restoreScroll();
-            window.__PROGRAMMATIC_SCROLL__ = false;
-            delete button._savedScrollY;
-            delete button._savedScrollX;
-          }, 100);
+            setTimeout(() => {
+              restoreScroll();
+              window.__PROGRAMMATIC_SCROLL__ = false;
+              delete button._savedScrollY;
+              delete button._savedScrollX;
+            }, 100);
+          });
         });
-      });
-    }, true);
+      },
+      true
+    );
   });
 
   // Close dropdowns when clicking outside
-  document.addEventListener("click", (e) => {
-    if (e.target.closest(".filter-dropdown-button")) return;
-    if (!e.target.closest(".filter-dropdown")) {
-      closeAllDropdowns();
-    }
-  }, true);
+  document.addEventListener(
+    "click",
+    (e) => {
+      if (e.target.closest(".filter-dropdown-button")) return;
+      if (!e.target.closest(".filter-dropdown")) {
+        closeAllDropdowns();
+      }
+    },
+    true
+  );
 }
 
-// Function to update the current page title (called when entering a project page)
+// Function to update the header subtitle (document title always stays as name)
 function updateCurrentPageTitle(title) {
   try {
+    // Always keep document title as just the name
+    const baseName = window.__SITE_TITLE__ || "Jonas Johansson";
+    document.title = baseName;
+
+    // If title is null, reset to homepage
+    if (title === null) {
+      currentPageTitle = defaultSubtitle;
+      if (subtitleScrambler && headerSubtitle) {
+        subtitleScrambler.scramble(defaultSubtitle.toUpperCase());
+      }
+      return;
+    }
+
     currentPageTitle = title || defaultSubtitle;
 
     // Persist globally for other modules and future lookups
     document.documentElement.dataset.currentProjectTitle = currentPageTitle;
     window.__CURRENT_PROJECT_TITLE__ = currentPageTitle;
 
-    // Update the header immediately if we're on a project page
+    // Update the header subtitle if we're on a project page
     if (window.location.pathname.includes("/work/")) {
       // Try to update the header directly if subtitleScrambler is available
       if (subtitleScrambler && headerSubtitle) {
@@ -685,7 +723,7 @@ function updateCurrentPageTitle(title) {
       }
     }
   } catch (error) {
-    console.warn("Error updating current page title:", error);
+    // Silently handle errors
   }
 }
 

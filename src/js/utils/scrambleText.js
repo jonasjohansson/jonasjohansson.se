@@ -73,3 +73,76 @@ export class ScrambleText {
 export function createScrambler(element, options) {
   return new ScrambleText(element, options);
 }
+
+// Document title scrambler - updates document.title with scramble effect
+export class ScrambleTitle {
+  constructor(options = {}) {
+    this.options = {
+      duration: options.duration || 200,
+      frameDelay: options.frameDelay || 15,
+      ...options,
+    };
+    this.isAnimating = false;
+    this.animationFrame = null;
+    this.originalTitle = document.title;
+  }
+
+  scramble(targetText) {
+    if (this.animationFrame) {
+      clearTimeout(this.animationFrame);
+      this.animationFrame = null;
+    }
+
+    this.isAnimating = true;
+    const finalText = targetText || this.originalTitle;
+    const textLength = finalText.length;
+    let currentIteration = 0;
+    const totalIterations = Math.ceil(this.options.duration / this.options.frameDelay);
+
+    const animate = () => {
+      if (currentIteration >= totalIterations) {
+        document.title = finalText;
+        this.isAnimating = false;
+        this.originalTitle = finalText;
+        return;
+      }
+
+      const progress = currentIteration / totalIterations;
+      const revealedChars = Math.floor(progress * textLength);
+
+      let scrambledText = "";
+      for (let i = 0; i < textLength; i++) {
+        if (i < revealedChars) {
+          scrambledText += finalText[i];
+        } else {
+          const randomChar = ASCII_CHARS[Math.floor(Math.random() * ASCII_CHARS.length)];
+          scrambledText += randomChar;
+        }
+      }
+
+      document.title = scrambledText;
+      currentIteration++;
+
+      this.animationFrame = setTimeout(animate, this.options.frameDelay);
+    };
+
+    animate();
+  }
+
+  stop() {
+    if (this.animationFrame) {
+      clearTimeout(this.animationFrame);
+      this.animationFrame = null;
+    }
+    this.isAnimating = false;
+    document.title = this.originalTitle;
+  }
+
+  reset() {
+    this.stop();
+  }
+}
+
+export function createTitleScrambler(options) {
+  return new ScrambleTitle(options);
+}

@@ -71,14 +71,12 @@ class SPARouter {
     document.body.classList.remove("project-visible");
     document.documentElement.classList.remove("project-visible");
 
-    // Reset page title to default
-    updateCurrentPageTitle("PROGRESS NOT PERFECTION");
-
     // Reset header title to default
     this.updateHeaderTitle(null);
 
-    // Reset document title to default
-    document.title = "Jonas Johansson";
+    // Reset document title to just the name
+    const baseName = window.__SITE_TITLE__ || "Jonas Johansson";
+    document.title = baseName;
 
     // Reset all strip inline styles and classes (from expanded state)
     const allStrips = document.querySelectorAll(".strip");
@@ -131,8 +129,8 @@ class SPARouter {
 
     // Will scroll after content is loaded - see end of showProject function
 
-    // Update document title to project name
-    document.title = `${project.title} - Jonas Johansson`;
+    // Update header subtitle (document title stays as name)
+    updateCurrentPageTitle(project.title);
 
     // Reset any active filters when entering a project
     resetFilters();
