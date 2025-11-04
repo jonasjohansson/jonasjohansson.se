@@ -4,6 +4,6 @@ Since 2024 Jonas plans courses for [Svenska Tecknare](https://svenskatecknare.se
 
 Jonas's professional experience includes KRAM/WEISSHAAR (SE/DE), [FIELD](https://field.io) (UK) and [Moment Factory](https://momentfactory.com) (CA). He interned at [W+K Tokyo](https://www.wktokyo.com/en/) (JP) and [UltraSuperNew](https://ultrasupernew.com/) (JP).
 
-Today Jonas runs the artist residency [Visualia](https://visualia.se), co-creates festivals and events with PLX, collaborates with the lighting collective [Svartljus](https://svartljus.se), and co-founded [Nordic Audiovisual Artists](https://nava.community). He shares a studio in Stockholm with [SMASH](https://smash.studio), [IVAR](https://ivar.studio), and [Rose Hallgren](https://rosehallgren.se).
+Today Jonas runs the artist residency [Visualia](https://visualia.se), co-creates events with PLX, collaborates with the lighting collective [Svartljus](https://svartljus.se), and co-founded [Nordic Audiovisual Artists](https://nava.community). He shares a studio in Stockholm with [SMASH](https://smash.studio), [IVAR](https://ivar.studio), and [Rose Hallgren](https://rosehallgren.se).
 
 [j@jonasjohansson.se](mailto:j@jonasjohansson.se).
