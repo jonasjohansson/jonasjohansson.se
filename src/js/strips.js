@@ -513,6 +513,18 @@ export function initializeStrips() {
 
   // Update strip count for dynamic grid sizing
   updateStripCount();
+
+  // Disable transitions during window resize to prevent weird animations
+  let resizeTimeout;
+  window.addEventListener("resize", () => {
+    if (stripsContainer) {
+      stripsContainer.classList.add("resizing");
+      clearTimeout(resizeTimeout);
+      resizeTimeout = setTimeout(() => {
+        stripsContainer.classList.remove("resizing");
+      }, 100);
+    }
+  });
 }
 
 // Initialize filters
