@@ -18,6 +18,14 @@
   margin: 0;
 }
 
+/* Responsive padding for about section */
+@media (max-width: 375px) {
+  .about-section {
+    padding-left: var(--spacing-md);
+    padding-right: var(--spacing-md);
+  }
+}
+
 .about-section.visible {
   /* No transform needed - scroll handles visibility */
 }
@@ -53,6 +61,13 @@
   line-height: 1.4;
   color: var(--color-white);
   text-align: center;
+}
+
+/* Additional responsive adjustments for very small screens */
+@media (max-width: 375px) {
+  .about-section .about-columns p {
+    line-height: 1.35;
+  }
 }
 
 .about-section .about-columns p:first-child {

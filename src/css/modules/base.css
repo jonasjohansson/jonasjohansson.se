@@ -215,6 +215,13 @@ img[data-hero] {
   color: var(--color-gray);
 }
 
+/* Responsive adjustments for very small screens */
+@media (max-width: 375px) {
+  .about-text-base {
+    line-height: 1.35;
+  }
+}
+
 /* Common text utility classes */
 .text-base {
   font-size: var(--font-size-base);

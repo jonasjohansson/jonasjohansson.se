@@ -58,13 +58,19 @@ if (document.readyState === "loading") {
 function initHeaderButtons() {
   const headerToggle = document.getElementById("header-toggle");
   const aboutSection = document.getElementById("about-section");
-  if (!headerToggle || !aboutSection) return;
+  const contentWrapper = document.getElementById("content-wrapper");
+  if (!headerToggle || !aboutSection || !contentWrapper) return;
 
-  const contentPosition = window.innerHeight * 0.8;
   const threshold = 100;
+
+  const getContentWrapperPosition = () => {
+    const rect = contentWrapper.getBoundingClientRect();
+    return rect.top + window.scrollY;
+  };
 
   headerToggle.addEventListener("click", () => {
     const scrollY = window.scrollY;
+    const contentPosition = getContentWrapperPosition();
     const targetTop = scrollY < threshold ? contentPosition : 0;
 
     window.scrollTo({ top: targetTop, behavior: "smooth" });

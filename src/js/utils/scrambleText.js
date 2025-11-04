@@ -20,8 +20,15 @@ export class ScrambleText {
       this.animationFrame = null;
     }
 
-    this.isAnimating = true;
     const finalText = targetText || this.originalText;
+    
+    // Skip animation if the new text is the same as the current text
+    const currentText = this.element.textContent.trim();
+    if (currentText === finalText.trim()) {
+      return;
+    }
+
+    this.isAnimating = true;
     const textLength = finalText.length;
     let currentIteration = 0;
     const totalIterations = Math.ceil(this.options.duration / this.options.frameDelay);
@@ -93,8 +100,15 @@ export class ScrambleTitle {
       this.animationFrame = null;
     }
 
-    this.isAnimating = true;
     const finalText = targetText || this.originalTitle;
+    
+    // Skip animation if the new text is the same as the current title
+    const currentTitle = document.title.trim();
+    if (currentTitle === finalText.trim()) {
+      return;
+    }
+
+    this.isAnimating = true;
     const textLength = finalText.length;
     let currentIteration = 0;
     const totalIterations = Math.ceil(this.options.duration / this.options.frameDelay);

@@ -199,3 +199,19 @@
     padding: var(--spacing-md);
   }
 }
+
+/* Very small screens - additional adjustments */
+@media (max-width: 375px) {
+  #loading-intro .about-columns p,
+  #intro-section .about-columns p {
+    line-height: 1.35;
+  }
+
+  #loading-screen {
+    padding: var(--spacing-md);
+  }
+
+  #intro-section {
+    padding: var(--spacing-md);
+  }
+}
