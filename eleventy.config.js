@@ -77,8 +77,8 @@ export default function (eleventyConfig) {
 
   eleventyConfig.addFilter("markdown", (str) => {
     const rendered = md.render(str);
-    // Add target="_blank" to external links
-    return rendered.replace(/<a href="(https?:\/\/[^"]*)">/g, '<a href="$1" target="_blank">');
+    // Add target="_blank" and rel="noopener" to external links for security
+    return rendered.replace(/<a href="(https?:\/\/[^"]*)">/g, '<a href="$1" target="_blank" rel="noopener noreferrer">');
   });
 
   eleventyConfig.addFilter("split", (str, separator) => {

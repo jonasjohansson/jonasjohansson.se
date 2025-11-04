@@ -210,7 +210,7 @@ class ResumeManager {
     console.log("Rendering resume link");
 
     // Just show a simple link to the CV
-    const resumeLink = `<p><strong>Selected resume</strong> • <a href="${this.config.PUBLISHED_URL}" target="_blank" style="color: inherit; text-decoration: underline;">View full resume</a></p>`;
+    const resumeLink = `<p><strong>Selected resume</strong> • <a href="${this.config.PUBLISHED_URL}" target="_blank" rel="noopener noreferrer" style="color: inherit; text-decoration: underline;">View full resume</a></p>`;
 
     console.log("Resume link:", resumeLink);
 

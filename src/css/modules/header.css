@@ -126,6 +126,7 @@ header {
   text-transform: uppercase;
   line-height: var(--line-height-tight);
   font-weight: bold;
+  margin: 0; /* Reset default h1 margin */
 }
 
 .header-title a {

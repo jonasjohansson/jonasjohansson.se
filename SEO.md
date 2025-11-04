@@ -8,7 +8,6 @@ This document provides SEO tips, validation tools, and information about the cur
 
 - ✅ Basic meta tags (title, description, keywords)
 - ✅ Open Graph tags for Facebook/social sharing
-- ✅ Twitter Card tags
 - ✅ Robots meta tags
 - ✅ Author and copyright information
 
@@ -47,12 +46,6 @@ This document provides SEO tips, validation tools, and information about the cur
 - **Facebook Sharing Debugger**: https://developers.facebook.com/tools/debug/
   - Enter your URL to see how it appears when shared on Facebook
   - Shows Open Graph tags and allows you to refresh the cache
-
-#### Twitter / X
-
-- **Twitter Card Validator**: https://cards-dev.twitter.com/validator (deprecated, use X's tools)
-- **X Card Validator**: https://developer.twitter.com/en/docs/twitter-for-websites/cards/overview/abouts-cards
-  - Check how your site appears when shared on Twitter/X
 
 #### LinkedIn
 
@@ -126,13 +119,6 @@ This document provides SEO tips, validation tools, and information about the cur
 - ✅ `og:type` - "website" for homepage, "article" for project pages
 - ✅ `og:locale` - Language/locale (currently "en_US")
 
-### Twitter Cards
-
-- ✅ `twitter:card` - Use "summary_large_image" for better visual impact
-- ✅ `twitter:title` - Same as og:title
-- ✅ `twitter:description` - Same as og:description
-- ✅ `twitter:image` - Same as og:image (minimum 1200x630px)
-
 ### Image Best Practices
 
 - ✅ Use high-quality images for social sharing (1200x630px minimum)
@@ -172,7 +158,7 @@ The site now includes comprehensive JSON-LD structured data:
 - Name, job title, description
 - Contact information (email)
 - Location (address, country, region, city)
-- Social profiles (Twitter, Instagram)
+- Social profiles (Instagram)
 - Affiliations (worksFor: Visualia, memberOf: NAVA, Svartljus)
 - Educational background (alumniOf: Beckmans, Hyper Island)
 - Skills/interests (knowsAbout tags)
@@ -285,7 +271,6 @@ The Person schema helps Google create a Knowledge Panel when people search for y
 Before launching or after changes:
 
 - [ ] Test Open Graph tags with Facebook Debugger
-- [ ] Test Twitter Cards with Twitter/X validator
 - [ ] Check mobile-friendliness with Google's tool
 - [ ] Run Lighthouse audit (aim for 90+ SEO score)
 - [ ] Validate all meta tags with metatags.io
@@ -318,7 +303,6 @@ Before launching or after changes:
 
 - **Google Search Central**: https://developers.google.com/search/docs
 - **Open Graph Protocol**: https://ogp.me/
-- **Twitter Cards Documentation**: https://developer.twitter.com/en/docs/twitter-for-websites/cards/overview/abouts-cards
 - **Schema.org**: https://schema.org/ (for structured data)
 - **MDN Web Docs - Meta Tags**: https://developer.mozilla.org/en-US/docs/Web/HTML/Element/meta
 

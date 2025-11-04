@@ -6,13 +6,12 @@
   "author": "Jonas Johansson",
   "email": "j@jonasjohansson.se",
   "social": {
-    "twitter": "@jonasjohansson",
     "instagram": "@jonasjohansson"
   },
   "meta": {
     "keywords": "artist, designer, educator, light, technology, interactive art, audiovisual, installation",
     "ogType": "website",
-    "ogImage": "/assets/og-image.jpg"
+    "ogImage": "/assets/img/jonasjohansson-firestarter.jpg"
   },
   "tags": ["light", "installation", "education", "av", "mixed reality", "stage"],
   "location": {
@@ -24,7 +23,6 @@
   "contact": {
     "email": "j@jonasjohansson.se",
     "sameAs": [
-      "https://twitter.com/jonasjohansson",
       "https://instagram.com/jonasjohansson"
     ]
   },

@@ -1,9 +1,9 @@
 <!-- Basic Meta Tags -->
 <meta charset="utf-8" />
-<title>{{ site.title }}</title>
+<title>{% if project %}{{ projectContent[project.slug].title }} - Jonas Johansson{% else %}{{ site.title }} - Artist, Educator, Designer{% endif %}</title>
 <meta
   name="description"
-  content="{{ description or site.description }}" />
+  content="{{ (description or site.description) | truncate(160) }}" />
 
 <!-- Viewport and Mobile Optimization -->
 <meta
@@ -43,6 +43,11 @@ projectsForJS[0].images[0] %}
   imagesizes="100vw" />
 {% endif %}
 
+<!-- Canonical URL -->
+<link
+  rel="canonical"
+  href="{{ site.url }}{{ page.url }}" />
+
 <!-- SEO and Performance -->
 <meta
   name="robots"
@@ -76,25 +81,15 @@ set projectUrl = site.url ~ page.url %} {% set projectImage = firstImage and (si
   property="og:image"
   content="{{ projectImage }}" />
 <meta
+  property="og:image:type"
+  content="image/jpeg" />
+<meta
   property="og:site_name"
   content="{{ site.title }}" />
 <meta
   property="og:locale"
   content="en_US" />
 
-<!-- Twitter -->
-<meta
-  name="twitter:card"
-  content="summary_large_image" />
-<meta
-  name="twitter:title"
-  content="{{ projectTitle }}" />
-<meta
-  name="twitter:description"
-  content="{{ projectDescription }}" />
-<meta
-  name="twitter:image"
-  content="{{ projectImage }}" />
 {% else %}
 <!-- Default site metadata -->
 <meta
@@ -113,25 +108,15 @@ set projectUrl = site.url ~ page.url %} {% set projectImage = firstImage and (si
   property="og:image"
   content="{{ site.url }}{{ site.meta.ogImage }}" />
 <meta
+  property="og:image:type"
+  content="image/jpeg" />
+<meta
   property="og:site_name"
   content="{{ site.title }}" />
 <meta
   property="og:locale"
   content="en_US" />
 
-<!-- Twitter -->
-<meta
-  name="twitter:card"
-  content="summary_large_image" />
-<meta
-  name="twitter:title"
-  content="{{ title or site.title }}" />
-<meta
-  name="twitter:description"
-  content="{{ description or site.description }}" />
-<meta
-  name="twitter:image"
-  content="{{ site.url }}{{ site.meta.ogImage }}" />
 {% endif %}
 
 <!-- Performance and Security -->
@@ -180,7 +165,6 @@ set projectUrl = site.url ~ page.url %} {% set projectImage = firstImage and (si
   "image": "{{ site.url }}{{ site.meta.ogImage }}",
   "sameAs": [
     {% if site.contact.sameAs %}{% for link in site.contact.sameAs %}"{{ link }}"{% if not loop.last %},{% endif %}{% endfor %}{% else %}
-    "https://twitter.com/jonasjohansson",
     "https://instagram.com/jonasjohansson"
     {% endif %}
   ]{% if site.location %},
