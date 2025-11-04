@@ -57,6 +57,8 @@ header {
   z-index: 2;
   gap: var(--spacing-sm);
   overflow: visible;
+  /* Prevent hover state from sticking on touch devices */
+  touch-action: manipulation;
 }
 
 .header-buttons {
@@ -81,10 +83,62 @@ header {
   color: var(--color-white);
 }
 
+.header-center:active {
+  background: var(--color-black);
+  color: var(--color-white);
+}
+
+/* Reset hover state on touch devices after interaction */
+@media (hover: none) and (pointer: coarse) {
+  .header-center {
+    background: var(--color-white);
+    color: var(--color-black);
+  }
+
+  .header-center:active {
+    background: var(--color-black);
+    color: var(--color-white);
+  }
+
+  /* Prevent hover from persisting */
+  .header-center:hover:not(:active) {
+    background: var(--color-white);
+    color: var(--color-black);
+  }
+}
+
 .header-left:hover,
 .header-right:hover {
   background: var(--color-black);
   color: var(--color-white);
+}
+
+.header-left:active,
+.header-right:active {
+  background: var(--color-black);
+  color: var(--color-white);
+}
+
+/* Reset hover state on touch devices after interaction */
+@media (hover: none) and (pointer: coarse) {
+  .header-left,
+  .header-right {
+    background: var(--color-white);
+    color: var(--color-black);
+  }
+
+  .header-left:active,
+  .header-right:active {
+    background: var(--color-black);
+    color: var(--color-white);
+  }
+
+  /* Prevent hover from persisting */
+  .header-left:hover:not(:active),
+  .header-right:hover:not(:active) {
+    background: var(--color-white);
+    color: var(--color-black);
+  }
 }
 
 .header-links {

@@ -75,6 +75,15 @@ function initHeaderButtons() {
 
     window.scrollTo({ top: targetTop, behavior: "smooth" });
     aboutSection.classList.toggle("visible", targetTop === 0);
+
+    // Remove focus to prevent hover state from persisting on mobile
+    if (headerToggle) {
+      headerToggle.blur();
+    }
+    const headerCenter = headerToggle.closest(".header-center");
+    if (headerCenter) {
+      headerCenter.blur();
+    }
   });
 
   // Update about visibility on scroll
