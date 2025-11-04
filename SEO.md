@@ -235,6 +235,65 @@ To add opening hours or map location for a studio/workspace, you can add a `Loca
 
 **Note:** Opening hours are typically for businesses with physical locations. For an artist/educator, the Person schema with address information is usually sufficient for Google Knowledge Panel.
 
+### Getting Rich Search Results (Like "Rumtiden Idea Lab")
+
+To get rich search results with map, location sidebar, and enhanced snippets (similar to "Rumtiden Idea Lab"), you need:
+
+#### 1. **Google Business Profile** (Most Important!)
+
+- **Create/Claim your profile**: https://www.google.com/business/
+- This is what generates the map, directions, hours, and contact sidebar
+- Use the exact same business name, address, and phone number everywhere
+- Verify your business with Google
+- Add photos, hours, and services
+- **This is the #1 requirement for rich location-based results**
+
+#### 2. **Structured Data** (✅ Already Implemented)
+
+- Organization schema with full address (already added)
+- Geo coordinates (latitude/longitude) - **add to `site.json` location.geo**
+- Person schema with address
+- Contact information
+
+#### 3. **Consistent NAP (Name, Address, Phone)**
+
+- Use the same name, address, and phone number across:
+  - Your website
+  - Google Business Profile
+  - Social media profiles
+  - Directory listings
+  - Any other online presence
+
+#### 4. **Local Citations**
+
+- List your business in local directories
+- Get mentioned in local publications
+- Have consistent contact information everywhere
+
+#### 5. **Verify Your Coordinates**
+
+The coordinates in `site.json` are approximate. To get exact coordinates:
+
+- Open Google Maps: https://www.google.com/maps
+- Search for your address: "Åsögatan 122, 116 24 Stockholm"
+- Right-click on the location → "What's here?"
+- Copy the latitude and longitude
+- Update `site.json` → `location.geo.latitude` and `location.geo.longitude`
+
+#### 6. **Wait for Indexing**
+
+- After adding structured data and Google Business Profile, it can take 1-4 weeks for Google to show rich results
+- Submit your sitemap to Google Search Console
+- Request indexing in Search Console after updates
+
+**Current Status:**
+
+- ✅ Organization schema with address
+- ✅ Person schema with location
+- ✅ Geo coordinates support (add your exact coordinates)
+- ⏳ Google Business Profile (you need to create this)
+- ⏳ Consistent NAP across the web
+
 ### Google Knowledge Panel
 
 The Person schema helps Google create a Knowledge Panel when people search for your name. This panel can show:

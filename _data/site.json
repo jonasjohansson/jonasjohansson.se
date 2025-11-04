@@ -16,15 +16,17 @@
   "tags": ["light", "installation", "education", "av", "mixed reality", "stage"],
   "location": {
     "addressCountry": "SE",
-    "addressRegion": "Halland",
+    "addressRegion": "Stockholm",
     "addressLocality": "Stockholm",
-    "address": "Stockholm, Sweden"
+    "address": "Åsögatan 122, 116 24 Stockholm, Sweden",
+    "geo": {
+      "latitude": "59.3131025",
+      "longitude": "18.0761036"
+    }
   },
   "contact": {
     "email": "j@jonasjohansson.se",
-    "sameAs": [
-      "https://instagram.com/jonasjohansson"
-    ]
+    "sameAs": ["https://instagram.com/jnsjohansson"]
   },
   "jobTitle": "Artist, Educator, Designer",
   "birthDate": "1987",

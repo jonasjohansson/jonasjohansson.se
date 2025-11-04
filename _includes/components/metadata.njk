@@ -170,9 +170,10 @@ set projectUrl = site.url ~ page.url %} {% set projectImage = firstImage and (si
   ]{% if site.location %},
   "address": {
     "@type": "PostalAddress",
-    "addressCountry": "{{ site.location.addressCountry or 'SE' }}",
+    "streetAddress": "{{ site.location.address or '' }}",
+    "addressLocality": "{{ site.location.addressLocality or 'Stockholm' }}",
     "addressRegion": "{{ site.location.addressRegion or '' }}",
-    "addressLocality": "{{ site.location.addressLocality or 'Stockholm' }}"
+    "addressCountry": "{{ site.location.addressCountry or 'SE' }}"
   }{% endif %},
   "knowsAbout": [
     {% for tag in site.tags %}"{{ tag }}"{% if not loop.last %},{% endif %}{% endfor %}
@@ -233,6 +234,37 @@ set projectUrl = site.url ~ page.url %} {% set projectImage = firstImage and (si
   }
 }
 </script>
+
+{% if site.location and site.location.address %}
+<!-- LocalBusiness/Organization Schema for Location and Map -->
+<script type="application/ld+json">
+{
+  "@context": "https://schema.org",
+  "@type": "Organization",
+  "name": "{{ site.title }}",
+  "alternateName": "{{ site.subtitle }}",
+  "url": "{{ site.url }}",
+  "description": "{{ site.description }}",
+  "address": {
+    "@type": "PostalAddress",
+    "streetAddress": "{{ site.location.address }}",
+    "addressLocality": "{{ site.location.addressLocality }}",
+    "addressRegion": "{{ site.location.addressRegion }}",
+    "addressCountry": "{{ site.location.addressCountry }}"
+  }{% if site.location.geo %},
+  "geo": {
+    "@type": "GeoCoordinates",
+    "latitude": "{{ site.location.geo.latitude }}",
+    "longitude": "{{ site.location.geo.longitude }}"
+  }{% endif %},
+  "contactPoint": {
+    "@type": "ContactPoint",
+    "email": "{{ site.contact.email or site.email }}",
+    "contactType": "artist, educator, designer"
+  }
+}
+</script>
+{% endif %}
 
 {% if project %}
 <!-- CreativeWork Schema for Project Pages -->
