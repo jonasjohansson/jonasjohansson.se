@@ -47,10 +47,6 @@ export default function (eleventyConfig) {
 
   eleventyConfig.addGlobalData("isDev", process.env.ELEVENTY_RUN_MODE !== "build");
   eleventyConfig.addGlobalData("buildYear", new Date().getFullYear());
-  eleventyConfig.addGlobalData("about", () => {
-    const aboutPath = path.join(process.cwd(), "_data/about.md");
-    return existsSync(aboutPath) ? readFileSync(aboutPath, "utf8") : "";
-  });
 
   eleventyConfig.setLibrary("njk", nunjucks.configure({ autoescape: true, throwOnUndefined: false, trimBlocks: true, lstripBlocks: true }));
 
@@ -266,7 +262,8 @@ export default function (eleventyConfig) {
         return { title, images: firstImageOptimized && firstImageOptimized.startsWith('/') ? [firstImageOptimized] : [], tags, year, slug: dir };
       })
     );
-    return projects;
+    // Filter out "about" project from strips (it's accessible via header)
+    return projects.filter((p) => p.slug !== "about");
   });
 
   /** Project content scanner → reads data.md with YAML frontmatter */

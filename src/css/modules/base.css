@@ -2,18 +2,26 @@
 
 html {
   /* Support for iOS dynamic viewport height */
-  min-height: 100dvh; /* Dynamic viewport height - accounts for address bar */
+  /* iOS Safari fix: use -webkit-fill-available for full height, fallback to dvh/vh */
+  min-height: 100vh;
+  min-height: 100dvh;
+  min-height: -webkit-fill-available;
   overflow-y: auto;
   margin: 0;
   padding: 0;
+  /* Match background to prevent color flash on iOS scroll */
+  background: var(--color-black);
 }
 
 body {
+  /* iOS Safari fix: use -webkit-fill-available for full height, fallback to dvh/vh */
+  min-height: 100vh;
   min-height: 100dvh;
+  min-height: -webkit-fill-available;
   width: 100%;
   margin: 0;
   padding: 0;
-  background: var(--text-primary);
+  background: var(--color-black);
   color: var(--text-primary);
   font-family: var(--font-family);
   letter-spacing: var(--letter-spacing-wider);
@@ -190,37 +198,6 @@ img[data-hero] {
   align-items: center;
 }
 
-/* About text utility class */
-.about-text-base {
-  margin: 0 0 var(--spacing-xs) 0 !important;
-  padding: 0 0 var(--spacing-xs) 0 !important;
-  font-size: var(--font-size-base) !important;
-  letter-spacing: var(--letter-spacing-wide);
-  line-height: 1.4;
-  text-align: center;
-}
-
-.about-text-base:first-child {
-  margin-top: 0 !important;
-  padding-top: 0 !important;
-}
-
-.about-text-base a {
-  color: inherit;
-  text-decoration: none;
-  border-bottom: 1px solid currentColor;
-}
-
-.about-text-base a:hover {
-  color: var(--color-gray);
-}
-
-/* Responsive adjustments for very small screens */
-@media (max-width: 375px) {
-  .about-text-base {
-    line-height: 1.35;
-  }
-}
 
 /* Common text utility classes */
 .text-base {

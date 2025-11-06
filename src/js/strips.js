@@ -3,6 +3,7 @@ import { shuffle, clamp } from "./utils/helpers.js";
 import { CONFIG, FILTER_CATEGORIES } from "./config/constants.js";
 import { ColorExtractor } from "./utils/colorExtractor.js";
 import { createScrambler } from "./utils/scrambleText.js";
+import { getProjectPath } from "./utils/pathBuilder.js";
 
 // Get projects from window global (injected by 11ty)
 const projects = window.__PROJECTS_DATA__ || [];
@@ -19,7 +20,7 @@ window.preloadCache = preloadCache;
 function preloadProject(slug) {
   if (preloadCache.has(slug)) return; // Already preloaded
 
-  const fetchPath = pathPrefix ? `${pathPrefix}/work/${slug}/` : `/work/${slug}/`;
+  const fetchPath = getProjectPath(slug);
   fetch(fetchPath)
     .then((response) => response.text())
     .then((html) => {
@@ -259,12 +260,31 @@ function updateStripCount() {
   document.documentElement.style.setProperty("--visible-strip-count", visibleCount);
 }
 
+// iOS Safari viewport height fix
+function setStripsHeight() {
+  if (!stripsContainer) return;
+  
+  // Use actual viewport height for iOS Safari
+  // Use the larger of window.innerHeight or document.documentElement.clientHeight
+  // to handle address bar changes
+  const vh = Math.max(window.innerHeight, document.documentElement.clientHeight || window.innerHeight);
+  stripsContainer.style.height = `${vh}px`;
+  
+  // Also set individual strip heights
+  allStrips.forEach((strip) => {
+    strip.style.height = `${vh}px`;
+  });
+}
+
 // ---------- Initialize Strips ----------
 export function initializeStrips() {
   // Populate DOM references
   stripsContainer = document.getElementById("strips");
   allStrips = Array.from(stripsContainer?.querySelectorAll(".strip") || []);
   stripImages = Array.from(stripsContainer?.querySelectorAll(".strip-image") || []);
+  
+  // Set height dynamically for iOS Safari
+  setStripsHeight();
 
   // Track if strips have been initialized (to prevent animations on filter)
   const hasInitialized = stripsContainer.classList.contains("strips-initialized");
@@ -293,6 +313,9 @@ export function initializeStrips() {
   // Update references after shuffle
   allStrips = shuffledStrips;
   stripImages = Array.from(stripsContainer?.querySelectorAll(".strip-image") || []);
+  
+  // Update height after strips are set up
+  setStripsHeight();
 
   // Progressive image loading - load all on project pages, eager-load first 4 on home
   const isProjectPage = window.location.pathname.includes("/work/");
@@ -313,7 +336,6 @@ export function initializeStrips() {
 
   // CSS animations handle strip entrance automatically
   // No JavaScript animation needed
-  // Strips will be animated when intro.js triggers them
 
   headerSubtitle = document.querySelector(".header-subtitle");
 
@@ -332,25 +354,6 @@ export function initializeStrips() {
   // Set title to just the name
   document.title = baseName;
 
-  // Header hover behavior: show friendly prompt unless About is open
-  const headerEl = document.getElementById("header");
-  const introSectionEl = document.getElementById("intro-section");
-  if (headerEl && headerSubtitle) {
-    headerEl.addEventListener("mouseenter", () => {
-      const aboutOpen = !!introSectionEl && introSectionEl.classList.contains("visible");
-      if (!aboutOpen && subtitleScrambler) {
-        subtitleScrambler.scramble("STAY A WHILE AND LISTEN");
-      }
-    });
-
-    headerEl.addEventListener("mouseleave", () => {
-      const aboutOpen = !!introSectionEl && introSectionEl.classList.contains("visible");
-      if (!aboutOpen && subtitleScrambler) {
-        const title = getCurrentProjectTitle();
-        subtitleScrambler.scramble(title.toUpperCase());
-      }
-    });
-  }
 
   function getCurrentProjectTitle() {
     const fromDataset = document.documentElement?.dataset?.currentProjectTitle?.trim();
@@ -389,7 +392,7 @@ export function initializeStrips() {
 
       strip.addEventListener("click", () => {
         const computedId = project.slug || project.title.toLowerCase().replace(/\s+/g, "-");
-        const projectPath = pathPrefix ? `${pathPrefix}/work/${computedId}` : `/work/${computedId}`;
+        const projectPath = getProjectPath(computedId);
 
         strip.classList.add("selected");
         allStrips.forEach((s) => s !== strip && s.classList.add("not-selected"));
@@ -470,10 +473,17 @@ export function initializeStrips() {
           if (strip) {
             strip.classList.add("touch-hover");
 
-            // Update subtitle for touch
+            // Update subtitle for touch - scramble the project title
             const projectSlug = strip.getAttribute("data-project");
             const project = projects.find((p) => p.slug === projectSlug);
-            // Don't update header title on touch - keep as default
+            if (project && subtitleScrambler && headerSubtitle) {
+              subtitleScrambler.scramble(project.title.toUpperCase());
+            }
+          } else {
+            // No strip under touch - reset to default
+            if (subtitleScrambler && headerSubtitle) {
+              subtitleScrambler.scramble(currentPageTitle.toUpperCase());
+            }
           }
 
           currentlyTouchedStrip = strip;
@@ -492,7 +502,7 @@ export function initializeStrips() {
 
       if (project) {
         const projectId = project.slug || project.title.toLowerCase().replace(/\s+/g, "-");
-        const projectPath = pathPrefix ? `${pathPrefix}/work/${projectId}` : `/work/${projectId}`;
+        const projectPath = getProjectPath(projectId);
 
         // Don't scroll here - let router handle scrolling after content loads
         router.navigate(projectPath);
@@ -504,7 +514,11 @@ export function initializeStrips() {
       currentlyTouchedStrip.classList.remove("touch-hover");
       currentlyTouchedStrip = null;
     }
-    // Don't update header title - keep as default
+    
+    // Reset subtitle to default when touch ends
+    if (subtitleScrambler && headerSubtitle) {
+      subtitleScrambler.scramble(currentPageTitle.toUpperCase());
+    }
 
     touchStartStrip = null;
     hasMoved = false;
@@ -518,17 +532,42 @@ export function initializeStrips() {
 
   // Update strip count for dynamic grid sizing
   updateStripCount();
+  
+  // Ensure height is set correctly after initialization
+  setStripsHeight();
 
   // Disable transitions during window resize to prevent weird animations
+  // Also update height on resize and orientation change (for iOS Safari)
   let resizeTimeout;
+  let scrollTimeout;
+  
   window.addEventListener("resize", () => {
     if (stripsContainer) {
+      // Update height for iOS Safari
+      setStripsHeight();
       stripsContainer.classList.add("resizing");
       clearTimeout(resizeTimeout);
       resizeTimeout = setTimeout(() => {
         stripsContainer.classList.remove("resizing");
       }, 100);
     }
+  });
+  
+  // Update height on scroll (for iOS Safari address bar show/hide)
+  window.addEventListener("scroll", () => {
+    if (stripsContainer) {
+      clearTimeout(scrollTimeout);
+      scrollTimeout = setTimeout(() => {
+        setStripsHeight();
+      }, 50);
+    }
+  }, { passive: true });
+  
+  // Update height on orientation change (for iOS Safari)
+  window.addEventListener("orientationchange", () => {
+    setTimeout(() => {
+      setStripsHeight();
+    }, 100);
   });
 }
 

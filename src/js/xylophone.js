@@ -94,11 +94,22 @@ export function initXylophone() {
   });
 
   // Global touch handler for mobile
+  let touchStartX = 0;
+  let touchStartY = 0;
+  let isHorizontalGesture = false;
+  let hasDetectedDirection = false;
+
   stripsContainer.addEventListener(
     "touchstart",
     (e) => {
       isTouching = true;
+      hasDetectedDirection = false;
+      isHorizontalGesture = false;
+      
       const touch = e.touches[0];
+      touchStartX = touch.clientX;
+      touchStartY = touch.clientY;
+      
       const element = document.elementFromPoint(touch.clientX, touch.clientY);
       const strip = element?.closest(".strip");
       if (strip) {
@@ -119,34 +130,57 @@ export function initXylophone() {
         }
       }
     },
-    { passive: false }
+    { passive: true }
   );
 
   stripsContainer.addEventListener(
     "touchmove",
     (e) => {
       if (!isTouching) return;
-      e.preventDefault();
+      
       const touch = e.touches[0];
-      const element = document.elementFromPoint(touch.clientX, touch.clientY);
-      const strip = element?.closest(".strip");
-      if (strip) {
-        const index = strips.indexOf(strip);
-        if (index !== -1 && currentTouchStrip !== index) {
-          currentTouchStrip = index;
-          if (melodyPlayer.isMelodyMode) {
-            // Play next note in melody
-            const playedNote = melodyPlayer.playCurrentNote(playNote);
-            if (playedNote) {
-              console.log(`Playing melody note: ${playedNote.note}`);
+      
+      // Detect direction on first move
+      if (!hasDetectedDirection) {
+        const deltaX = Math.abs(touch.clientX - touchStartX);
+        const deltaY = Math.abs(touch.clientY - touchStartY);
+        
+        // Only handle horizontal gestures (X-axis)
+        if (deltaX > deltaY && deltaX > 10) {
+          isHorizontalGesture = true;
+          hasDetectedDirection = true;
+        } else if (deltaY > deltaX && deltaY > 10) {
+          // Vertical scroll - let browser handle it, don't prevent default
+          isHorizontalGesture = false;
+          hasDetectedDirection = true;
+          return; // Allow normal scrolling
+        }
+      }
+      
+      // Only prevent default and handle music for horizontal gestures
+      if (isHorizontalGesture) {
+        e.preventDefault();
+        const element = document.elementFromPoint(touch.clientX, touch.clientY);
+        const strip = element?.closest(".strip");
+        if (strip) {
+          const index = strips.indexOf(strip);
+          if (index !== -1 && currentTouchStrip !== index) {
+            currentTouchStrip = index;
+            if (melodyPlayer.isMelodyMode) {
+              // Play next note in melody
+              const playedNote = melodyPlayer.playCurrentNote(playNote);
+              if (playedNote) {
+                console.log(`Playing melody note: ${playedNote.note}`);
+              }
+            } else {
+              // Play individual strip note
+              const frequency = getFrequencyForStrip(index, strips.length);
+              playNote(frequency, 0.3);
             }
-          } else {
-            // Play individual strip note
-            const frequency = getFrequencyForStrip(index, strips.length);
-            playNote(frequency, 0.3);
           }
         }
       }
+      // If vertical gesture, don't prevent default - allow normal scrolling
     },
     { passive: false }
   );
@@ -156,8 +190,10 @@ export function initXylophone() {
     (e) => {
       isTouching = false;
       currentTouchStrip = -1;
+      hasDetectedDirection = false;
+      isHorizontalGesture = false;
     },
-    { passive: false }
+    { passive: true }
   );
 }
 

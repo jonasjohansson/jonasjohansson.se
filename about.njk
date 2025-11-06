@@ -1,0 +1,52 @@
+---
+layout: jonasjohansson.njk
+permalink: "about/"
+eleventyComputed:
+  title: "About"
+---
+
+{% set projectSlug = "about" %}
+
+<div
+  id="projects"
+  class="projects-container">
+  <section
+    class="project visible"
+    id="{{ projectSlug }}"
+    data-project="{{ projectSlug }}">
+    <h1 class="project-title">{{ projectContent[projectSlug].title }}</h1>
+    <div class="project-grid">
+      {% for block in projectContent[projectSlug].content %} {% if block.type == 'image' %}
+      <figure class="media-item {% if loop.first %}hero{% endif %} col-start-{{ block.colStart }} col-span-{{ block.colSpan }}">
+        {% responsiveImage block.src, block.alt %}
+      </figure>
+      {% elif block.type == 'video' %}
+      <figure class="media-item col-start-{{ block.colStart }} col-span-{{ block.colSpan }}">
+        <video
+          src="{{ block.src | url }}"
+          playsinline
+          muted
+          loop
+          controls
+          preload="metadata"
+          style="max-width: 100%; height: auto"></video>
+      </figure>
+      {% elif block.type == 'text' %}
+      <article
+        class="text-block {{ block.fontSizeClass or 'text-medium' }} col-start-{{ block.colStart }} col-span-{{ block.colSpan }}"
+        style="{% if block.textAlign %}text-align: {{ block.textAlign }};{% endif %}">
+        {{ block.content | safe }}
+      </article>
+      {% elif block.type == 'credits' %}
+      <aside class="credits-block col-start-{{ block.colStart }} col-span-{{ block.colSpan }}">
+        <ul class="credits-list">
+          {% for credit in block.credits %}
+          <li>{{ credit | safe }}</li>
+          {% endfor %}
+        </ul>
+      </aside>
+      {% endif %} {% endfor %}
+    </div>
+  </section>
+</div>
+

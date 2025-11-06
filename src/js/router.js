@@ -1,4 +1,5 @@
 import { resetFilters, updateProjectViewState, applyProjectColor, updateCurrentPageTitle } from "./strips.js";
+import { getProjectPath } from "./utils/pathBuilder.js";
 
 const projects = window.__PROJECTS_DATA__ || [];
 const pathPrefix = window.__PATH_PREFIX__ || "";
@@ -44,9 +45,12 @@ class SPARouter {
 
     if (relativePath === "/" || relativePath === "/index.html" || relativePath === "") {
       this.showHome();
-    } else if (relativePath.startsWith("/work/")) {
-      const slug = relativePath.replace("/work/", "").replace(/\/$/, "");
-      this.showProject(slug);
+    } else {
+      // Extract slug from any project path (work/{slug} or about)
+      let slug = relativePath.replace(/^\/work\//, "").replace(/^\/about/, "about").replace(/\/$/, "");
+      if (slug) {
+        this.showProject(slug);
+      }
     }
   }
 
@@ -152,8 +156,8 @@ class SPARouter {
       if (window.preloadCache && window.preloadCache.has(slug)) {
         projectContentHTML = window.preloadCache.get(slug);
       } else {
-        // Fetch if not preloaded
-        const fetchPath = pathPrefix ? `${pathPrefix}/work/${slug}/` : `/work/${slug}/`;
+        // Fetch if not preloaded - use unified path builder
+        const fetchPath = getProjectPath(slug);
         const response = await fetch(fetchPath);
         if (!response.ok) throw new Error(`Failed to fetch project: ${response.status}`);
 
@@ -199,10 +203,28 @@ class SPARouter {
       }
 
       // Scroll to content-wrapper immediately after inserting content
-      import("./utils/scrollPosition.js").then(({ getProjectScrollPosition }) => {
-        window.scrollTo({
-          top: getProjectScrollPosition(),
-          behavior: "auto", // Instant scroll to prevent skip
+      // Use requestAnimationFrame to ensure DOM is updated, then double RAF for iOS
+      requestAnimationFrame(() => {
+        requestAnimationFrame(() => {
+          const contentWrapper = document.getElementById("content-wrapper");
+          if (contentWrapper) {
+            // Get the actual position of the content-wrapper element
+            const rect = contentWrapper.getBoundingClientRect();
+            const contentPosition = rect.top + window.scrollY;
+            
+            window.scrollTo({
+              top: contentPosition,
+              behavior: "auto", // Instant scroll to prevent skip
+            });
+          } else {
+            // Fallback to old method if content-wrapper not found
+            import("./utils/scrollPosition.js").then(({ getProjectScrollPosition }) => {
+              window.scrollTo({
+                top: getProjectScrollPosition(),
+                behavior: "auto",
+              });
+            });
+          }
         });
       });
 
@@ -318,7 +340,7 @@ class SPARouter {
         }
       }
 
-      window.scrollTo(0, 0);
+      // Don't scroll to top - we already scrolled to content-wrapper above
 
       if (updateProjectViewState) {
         updateProjectViewState();

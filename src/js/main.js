@@ -2,6 +2,7 @@ import "./strips.js";
 import "./router.js";
 import { applyProjectColor, initializeStrips } from "./strips.js";
 import { loadingManager } from "./utils/loadingManager.js";
+import { createScrambler } from "./utils/scrambleText.js";
 import "./melody.js";
 
 async function initializeApp() {
@@ -19,15 +20,10 @@ async function initializeApp() {
   const elements = {
     header: document.getElementById("header"),
     filterContainer: document.getElementById("filter-dropdown-container"),
-    aboutSection: document.getElementById("about-section"),
   };
 
   if (elements.header) elements.header.style.display = "";
   if (elements.filterContainer) elements.filterContainer.style.display = "";
-  if (elements.aboutSection) {
-    elements.aboutSection.style.opacity = "1";
-    elements.aboutSection.style.transition = "opacity 0.3s ease";
-  }
 
   // Apply project color if on project page
   if (window.__INITIAL_PROJECT__) {
@@ -35,17 +31,6 @@ async function initializeApp() {
   }
 
   initHeaderButtons();
-  setTimeout(autoScrollToContent, 200);
-}
-
-function autoScrollToContent() {
-  const contentWrapper = document.getElementById("content-wrapper");
-  if (contentWrapper) {
-    window.scrollTo({
-      top: window.innerHeight * 0.8, // 80vh about section height
-      behavior: "auto",
-    });
-  }
 }
 
 // Initialize when DOM is ready
@@ -57,40 +42,72 @@ if (document.readyState === "loading") {
 
 function initHeaderButtons() {
   const headerToggle = document.getElementById("header-toggle");
-  const aboutSection = document.getElementById("about-section");
-  const contentWrapper = document.getElementById("content-wrapper");
-  if (!headerToggle || !aboutSection || !contentWrapper) return;
+  if (!headerToggle) return;
 
-  const threshold = 100;
+  const headerSubtitle = document.getElementById("header-subtitle");
+  const headerLinks = document.getElementById("header-links");
+  const headerCenter = headerToggle.closest(".header-center");
 
-  const getContentWrapperPosition = () => {
-    const rect = contentWrapper.getBoundingClientRect();
-    return rect.top + window.scrollY;
-  };
+  if (!headerSubtitle || !headerLinks || !headerCenter) return;
 
-  headerToggle.addEventListener("click", () => {
-    const scrollY = window.scrollY;
-    const contentPosition = getContentWrapperPosition();
-    const targetTop = scrollY < threshold ? contentPosition : 0;
+  // Create scrambler for EMAIL link
+  const emailLink = headerLinks.querySelector('a[href^="mailto"]');
+  
+  // Store original text
+  const emailText = emailLink ? emailLink.textContent.trim() : "";
+  
+  // Initialize link with scrambled text (it's hidden initially)
+  if (emailLink && emailText) {
+    emailLink.textContent = "#####";
+  }
+  
+  const emailScrambler = emailLink ? createScrambler(emailLink, {
+    duration: 400,
+    frameDelay: 30,
+  }) : null;
 
-    window.scrollTo({ top: targetTop, behavior: "smooth" });
-    aboutSection.classList.toggle("visible", targetTop === 0);
+  // Check if device supports hover (desktop)
+  const supportsHover = window.matchMedia("(hover: hover)").matches;
 
-    // Remove focus to prevent hover state from persisting on mobile
-    if (headerToggle) {
+  function showLinks() {
+    headerSubtitle.style.display = "none";
+    headerLinks.style.display = "flex";
+    
+    // Scramble EMAIL link to its actual text
+    if (emailScrambler && emailLink && emailText) {
+      emailScrambler.scramble(emailText);
+    }
+  }
+
+  function showSubtitle() {
+    headerSubtitle.style.display = "";
+    headerLinks.style.display = "none";
+    
+    // Reset link to scrambled text for next appearance
+    if (emailLink && emailText) {
+      emailLink.textContent = "#####";
+    }
+  }
+
+  if (supportsHover) {
+    // Desktop: show links on hover
+    headerCenter.addEventListener("mouseenter", showLinks);
+    headerCenter.addEventListener("mouseleave", showSubtitle);
+  } else {
+    // Touch devices: toggle on click
+    headerToggle.addEventListener("click", () => {
+      const isSubtitleVisible = headerSubtitle.style.display !== "none";
+      
+      if (isSubtitleVisible) {
+        showLinks();
+      } else {
+        showSubtitle();
+      }
+      
+      // Remove focus to prevent hover state from persisting on mobile
       headerToggle.blur();
-    }
-    const headerCenter = headerToggle.closest(".header-center");
-    if (headerCenter) {
       headerCenter.blur();
-    }
-  });
-
-  // Update about visibility on scroll
-  window.addEventListener("scroll", () => {
-    if (window.__IS_FILTERING__?.() || window.__PROGRAMMATIC_SCROLL__) return;
-    aboutSection.classList.toggle("visible", window.scrollY < 50);
-  });
+    });
+  }
 }
 
-// removed legacy setDefaultScrollPosition (now handled by autoScrollToContent)

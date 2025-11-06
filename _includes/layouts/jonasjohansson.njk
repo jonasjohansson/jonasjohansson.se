@@ -20,19 +20,7 @@
     <div id="site-container">
       {% include "../components/header.njk" %}
 
-      <!-- About section (aside) - hidden until loaded -->
-      <aside
-        id="about-section"
-        class="about-section"
-        style="opacity: 0">
-        <div class="about-content">
-          <div class="about-columns">
-            {{ about | markdown | safe }}
-          </div>
-        </div>
-      </aside>
-
-      <!-- Wrapper for main content that gets pushed down -->
+      <!-- Wrapper for main content -->
       <div id="content-wrapper">
         <main id="main">
           {{ content | safe }}
