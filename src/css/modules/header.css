@@ -86,8 +86,7 @@ header {
 }
 
 .header-center:hover,
-.header-center:focus-visible,
-.header-center.overlay-active {
+.header-center:focus-visible {
   background: var(--color-black);
   color: var(--color-white);
 }
