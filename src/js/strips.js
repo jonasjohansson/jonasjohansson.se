@@ -106,6 +106,7 @@ async function applyProjectColorFromImageUrl(imageUrl) {
 let stripsContainer;
 let allStrips = [];
 let stripImages = [];
+let navigationTimeoutId = null;
 
 // ---------- Global State ----------
 let headerSubtitle;
@@ -549,12 +550,21 @@ export function initializeStrips() {
       });
 
       strip.addEventListener("click", () => {
+        if (document.body?.dataset?.filtering === "true") {
+          return;
+        }
         const computedId = project.slug || project.title.toLowerCase().replace(/\s+/g, "-");
         const projectPath = getProjectPath(computedId);
 
         strip.classList.add("selected");
         allStrips.forEach((s) => s !== strip && s.classList.add("not-selected"));
-        setTimeout(() => router.navigate(projectPath), 600);
+        if (navigationTimeoutId) {
+          clearTimeout(navigationTimeoutId);
+        }
+        navigationTimeoutId = setTimeout(() => {
+          router.navigate(projectPath);
+          navigationTimeoutId = null;
+        }, 600);
       });
     }
   });
@@ -575,6 +585,10 @@ export function initializeStrips() {
   stripsContainer.addEventListener(
     "touchstart",
     (e) => {
+      if (document.body?.dataset?.filtering === "true") {
+        touchStartStrip = null;
+        return;
+      }
       if (e.touches && e.touches.length > 0) {
         const t = e.touches[0];
         touchStartX = t.clientX;
@@ -654,7 +668,7 @@ export function initializeStrips() {
   // Handle touch end - detect tap vs slide
   stripsContainer.addEventListener("touchend", (e) => {
     // If user didn't move and tapped on a strip, open it
-    if (!hasMoved && touchStartStrip) {
+    if (!hasMoved && touchStartStrip && document.body?.dataset?.filtering !== "true") {
       const projectSlug = touchStartStrip.getAttribute("data-project");
       const project = projects.find((p) => p.slug === projectSlug);
 
@@ -735,7 +749,16 @@ export function initializeStrips() {
 
 // Initialize filters
 function initFilters() {
-  let isFiltering = false;
+  const body = document.body;
+
+  const setFiltering = (value) => {
+    if (!body) return;
+    if (value) {
+      body.dataset.filtering = "true";
+    } else {
+      delete body.dataset.filtering;
+    }
+  };
 
   const buttons = document.querySelectorAll(".filter-dropdown-button");
 
@@ -753,8 +776,12 @@ function initFilters() {
   const preserveScroll = (callback) => {
     const scrollY = window.scrollY;
     const scrollX = window.scrollX;
-    isFiltering = true;
+    setFiltering(true);
     window.__PROGRAMMATIC_SCROLL__ = true;
+    if (navigationTimeoutId) {
+      clearTimeout(navigationTimeoutId);
+      navigationTimeoutId = null;
+    }
 
     callback();
 
@@ -763,7 +790,7 @@ function initFilters() {
         window.scrollTo({ top: scrollY, left: scrollX, behavior: "auto" });
         setTimeout(() => {
           window.__PROGRAMMATIC_SCROLL__ = false;
-          isFiltering = false;
+          setFiltering(false);
         }, 50);
       });
     });
