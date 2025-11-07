@@ -49,7 +49,7 @@ class SPARouter {
       // Extract slug from any project path (work/{slug} or about)
       let slug = relativePath.replace(/^\/work\//, "").replace(/^\/about/, "about").replace(/\/$/, "");
       if (slug) {
-        this.showProject(slug);
+      this.showProject(slug);
       }
     }
   }
@@ -218,9 +218,9 @@ class SPARouter {
             });
           } else {
             // Fallback to old method if content-wrapper not found
-            import("./utils/scrollPosition.js").then(({ getProjectScrollPosition }) => {
-              window.scrollTo({
-                top: getProjectScrollPosition(),
+      import("./utils/scrollPosition.js").then(({ getProjectScrollPosition }) => {
+        window.scrollTo({
+          top: getProjectScrollPosition(),
                 behavior: "auto",
               });
             });

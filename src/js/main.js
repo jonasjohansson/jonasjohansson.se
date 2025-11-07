@@ -89,20 +89,60 @@ function initHeaderButtons() {
     }
   }
 
+  // Get about overlay
+  const aboutOverlay = document.getElementById("about-overlay");
+  
+  function showAboutOverlay() {
+    if (!aboutOverlay) return;
+    aboutOverlay.classList.add("visible");
+    // Prevent body scroll when overlay is open
+    document.body.style.overflow = "hidden";
+  }
+  
+  function hideAboutOverlay() {
+    if (!aboutOverlay) return;
+    aboutOverlay.classList.remove("visible");
+    // Restore body scroll
+    document.body.style.overflow = "";
+  }
+  
+  function toggleAboutOverlay() {
+    if (!aboutOverlay) return;
+    const isVisible = aboutOverlay.classList.contains("visible");
+    if (isVisible) {
+      hideAboutOverlay();
+    } else {
+      showAboutOverlay();
+    }
+  }
+  
+  // Close overlay when clicking outside content or pressing Escape
+  if (aboutOverlay) {
+    aboutOverlay.addEventListener("click", (e) => {
+      if (e.target === aboutOverlay) {
+        hideAboutOverlay();
+      }
+    });
+    
+    document.addEventListener("keydown", (e) => {
+      if (e.key === "Escape" && aboutOverlay.classList.contains("visible")) {
+        hideAboutOverlay();
+      }
+    });
+  }
+
   if (supportsHover) {
-    // Desktop: show links on hover
+    // Desktop: show links on hover, toggle overlay on click
     headerCenter.addEventListener("mouseenter", showLinks);
     headerCenter.addEventListener("mouseleave", showSubtitle);
+    headerCenter.addEventListener("click", (e) => {
+      e.preventDefault();
+      toggleAboutOverlay();
+    });
   } else {
-    // Touch devices: toggle on click
+    // Touch devices: toggle overlay on click
     headerToggle.addEventListener("click", () => {
-      const isSubtitleVisible = headerSubtitle.style.display !== "none";
-      
-      if (isSubtitleVisible) {
-        showLinks();
-      } else {
-        showSubtitle();
-      }
+      toggleAboutOverlay();
       
       // Remove focus to prevent hover state from persisting on mobile
       headerToggle.blur();

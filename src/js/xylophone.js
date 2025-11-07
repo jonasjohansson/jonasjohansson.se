@@ -160,25 +160,25 @@ export function initXylophone() {
       // Only prevent default and handle music for horizontal gestures
       if (isHorizontalGesture) {
         e.preventDefault();
-        const element = document.elementFromPoint(touch.clientX, touch.clientY);
-        const strip = element?.closest(".strip");
-        if (strip) {
-          const index = strips.indexOf(strip);
-          if (index !== -1 && currentTouchStrip !== index) {
-            currentTouchStrip = index;
-            if (melodyPlayer.isMelodyMode) {
-              // Play next note in melody
-              const playedNote = melodyPlayer.playCurrentNote(playNote);
-              if (playedNote) {
-                console.log(`Playing melody note: ${playedNote.note}`);
-              }
-            } else {
-              // Play individual strip note
-              const frequency = getFrequencyForStrip(index, strips.length);
-              playNote(frequency, 0.3);
+      const element = document.elementFromPoint(touch.clientX, touch.clientY);
+      const strip = element?.closest(".strip");
+      if (strip) {
+        const index = strips.indexOf(strip);
+        if (index !== -1 && currentTouchStrip !== index) {
+          currentTouchStrip = index;
+          if (melodyPlayer.isMelodyMode) {
+            // Play next note in melody
+            const playedNote = melodyPlayer.playCurrentNote(playNote);
+            if (playedNote) {
+              console.log(`Playing melody note: ${playedNote.note}`);
             }
+          } else {
+            // Play individual strip note
+            const frequency = getFrequencyForStrip(index, strips.length);
+            playNote(frequency, 0.3);
           }
         }
+      }
       }
       // If vertical gesture, don't prevent default - allow normal scrolling
     },

@@ -283,55 +283,183 @@ export function initializeStrips() {
   allStrips = Array.from(stripsContainer?.querySelectorAll(".strip") || []);
   stripImages = Array.from(stripsContainer?.querySelectorAll(".strip-image") || []);
   
-  // Set height dynamically for iOS Safari
-  setStripsHeight();
-
   // Track if strips have been initialized (to prevent animations on filter)
   const hasInitialized = stripsContainer.classList.contains("strips-initialized");
 
   // Shuffle strips on page load for variety (only on initial load)
   let shuffledStrips;
   if (!hasInitialized) {
+    // Ensure the class is NOT present initially so animations can run
+    stripsContainer.classList.remove("strips-initialized");
+    
+    // IMPORTANT: Hide strips container immediately to prevent any visible rendering
+    // But use display: none instead to completely hide it
+    stripsContainer.style.display = "none";
+    
     shuffledStrips = shuffle([...allStrips]);
 
-    // Re-append strips in shuffled order and add index for staggered animation
-    shuffledStrips.forEach((strip, index) => {
-      stripsContainer.appendChild(strip);
-      // Add index as data attribute for CSS animation delay calculation
-      strip.setAttribute("data-index", index);
-      // Set CSS custom property for animation delay calculation
-      strip.style.setProperty("--strip-index", index);
+    // Remove all strips from DOM first to ensure clean re-insertion
+    // Also clear ALL inline styles that might interfere
+    shuffledStrips.forEach((strip) => {
+      if (strip.parentNode) {
+        strip.parentNode.removeChild(strip);
+      }
+      // Clear any data attributes and inline styles - CSS will handle all styling
+      strip.removeAttribute("data-index");
+      strip.style.removeProperty("--strip-index");
+      strip.style.removeProperty("height");
+      strip.style.removeProperty("opacity");
+      strip.style.removeProperty("transform");
+      strip.style.removeProperty("animation");
     });
 
-    // Mark as initialized to prevent animations on subsequent operations
-    stripsContainer.classList.add("strips-initialized");
+    // Set height on container first (before adding strips)
+    const vh = Math.max(window.innerHeight, document.documentElement.clientHeight || window.innerHeight);
+    stripsContainer.style.height = `${vh}px`;
+
+    // Preload ALL strip images before animating
+    const preloadAllImages = async () => {
+      // Store image URLs and strip images for later
+      const imageData = shuffledStrips.map((strip) => {
+        const stripImage = strip.querySelector(".strip-image");
+        const bgImage = stripImage?.getAttribute("data-bg-image");
+        return { strip, stripImage, bgImage };
+      });
+      
+      // Preload all images - don't set background-image yet
+      const imagePromises = imageData.map(({ bgImage }) => {
+        if (!bgImage) return Promise.resolve();
+        
+        return new Promise((resolve) => {
+          const img = new Image();
+          img.onload = () => resolve(img);
+          img.onerror = () => resolve(null); // Continue even if image fails
+          img.src = bgImage;
+        });
+      });
+      
+      // Wait for ALL images to load before doing anything
+      await Promise.all(imagePromises);
+      
+      // Now that all images are loaded, make container visible and add strips
+      stripsContainer.style.display = "";
+      
+      // Set all attributes and CSS variables BEFORE adding to DOM
+      shuffledStrips.forEach((strip, index) => {
+        strip.setAttribute("data-index", index);
+        strip.style.setProperty("--strip-index", index); // Set as number, not string
+        strip.style.height = `${vh}px`;
+      });
+      
+      // Calculate animation timing
+      const totalStrips = shuffledStrips.length;
+      const lastStripDelay = (totalStrips - 1) * 25; // CSS animation delay for last strip
+      const animationDuration = 400; // CSS animation duration
+      const totalAnimationTime = lastStripDelay + animationDuration;
+      
+      // Track when the last strip is added
+      let lastStripAddedTime = null;
+      
+      // Add strips one at a time with minimal delay to ensure each animation triggers
+      requestAnimationFrame(() => {
+        shuffledStrips.forEach((strip, index) => {
+          setTimeout(() => {
+            stripsContainer.appendChild(strip);
+            
+            // Set background image for this strip
+            const stripImage = strip.querySelector(".strip-image");
+            if (stripImage) {
+              const bgImage = stripImage.getAttribute("data-bg-image");
+              if (bgImage) {
+                stripImage.style.backgroundImage = `url('${bgImage}')`;
+                stripImage.classList.add("loaded");
+              }
+            }
+            
+            // On last strip, do final setup and start the timeout for adding the class
+            if (index === shuffledStrips.length - 1) {
+              // Force a reflow to ensure all animations are triggered
+              stripsContainer.getBoundingClientRect();
+              
+              // Update references after all strips are added
+              allStrips = shuffledStrips;
+              stripImages = Array.from(stripsContainer?.querySelectorAll(".strip-image") || []);
+              
+              // NOW start the timeout - this ensures we wait from when the last strip is actually added
+              // Add a small buffer to ensure all animations complete
+              setTimeout(() => {
+                stripsContainer.classList.add("strips-initialized");
+              }, totalAnimationTime + 50); // +50ms buffer to ensure all animations complete
+            }
+          }, index * 1); // 1ms delay ensures each strip is processed individually
+        });
+      });
+    };
+    
+    // Start preloading images - this will block until all are loaded
+    preloadAllImages().catch((err) => {
+      console.warn("Error preloading images:", err);
+      // Even if preload fails, show strips
+      stripsContainer.style.display = "";
+      
+      // Still add strips even if preload failed
+      const fragment = document.createDocumentFragment();
+      shuffledStrips.forEach((strip, index) => {
+        strip.setAttribute("data-index", index);
+        strip.style.setProperty("--strip-index", String(index));
+        strip.style.height = `${vh}px`;
+        fragment.appendChild(strip);
+      });
+      stripsContainer.appendChild(fragment);
+      
+      // Try to set background images even if preload failed
+      const allStripImages = Array.from(stripsContainer.querySelectorAll(".strip-image"));
+      allStripImages.forEach((stripImage) => {
+        const bgImage = stripImage.getAttribute("data-bg-image");
+        if (bgImage) {
+          stripImage.style.backgroundImage = `url('${bgImage}')`;
+          stripImage.classList.add("loaded");
+        }
+      });
+      
+      allStrips = shuffledStrips;
+      stripImages = allStripImages;
+      
+      // Mark as initialized after a delay
+      const totalStrips = shuffledStrips.length;
+      const lastStripDelay = (totalStrips - 1) * 25;
+      const animationDuration = 400;
+      setTimeout(() => {
+        stripsContainer.classList.add("strips-initialized");
+      }, lastStripDelay + animationDuration + 50);
+    });
   } else {
     // On subsequent operations (like filtering), keep strips in current order
     shuffledStrips = allStrips;
-  }
+    
+    // Update references after shuffle
+    allStrips = shuffledStrips;
+    stripImages = Array.from(stripsContainer?.querySelectorAll(".strip-image") || []);
+    
+    // Update height after strips are set up
+    setStripsHeight();
 
-  // Update references after shuffle
-  allStrips = shuffledStrips;
-  stripImages = Array.from(stripsContainer?.querySelectorAll(".strip-image") || []);
-  
-  // Update height after strips are set up
-  setStripsHeight();
+    // Progressive image loading - load all on project pages, eager-load first 4 on home
+    const isProjectPage = window.location.pathname.includes("/work/");
+    const loadImage = (img) => {
+      const bgImage = img.getAttribute("data-bg-image");
+      if (bgImage && !img.style.backgroundImage) {
+        img.style.backgroundImage = `url('${bgImage}')`;
+        img.classList.add("loaded");
+      }
+    };
 
-  // Progressive image loading - load all on project pages, eager-load first 4 on home
-  const isProjectPage = window.location.pathname.includes("/work/");
-  const loadImage = (img) => {
-    const bgImage = img.getAttribute("data-bg-image");
-    if (bgImage && !img.style.backgroundImage) {
-      img.style.backgroundImage = `url('${bgImage}')`;
-      img.classList.add("loaded");
+    if (isProjectPage) {
+      stripImages.forEach(loadImage);
+    } else {
+      stripImages.slice(0, 4).forEach(loadImage);
+      stripImages.slice(4).forEach((img) => imageObserver.observe(img));
     }
-  };
-
-  if (isProjectPage) {
-    stripImages.forEach(loadImage);
-  } else {
-    stripImages.slice(0, 4).forEach(loadImage);
-    stripImages.slice(4).forEach((img) => imageObserver.observe(img));
   }
 
   // CSS animations handle strip entrance automatically

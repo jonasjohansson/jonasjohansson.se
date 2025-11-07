@@ -77,34 +77,7 @@ header {
   z-index: 3;
 }
 
-.header-center:hover {
-  background: var(--color-black);
-  color: var(--color-white);
-}
-
-.header-center:active {
-  background: var(--color-black);
-  color: var(--color-white);
-}
-
-/* Reset hover state on touch devices after interaction */
-@media (hover: none) and (pointer: coarse) {
-  .header-center {
-    background: var(--color-white);
-    color: var(--color-black);
-  }
-
-  .header-center:active {
-    background: var(--color-black);
-    color: var(--color-white);
-  }
-
-  /* Prevent hover from persisting */
-  .header-center:hover:not(:active) {
-    background: var(--color-white);
-    color: var(--color-black);
-  }
-}
+/* Header center no longer changes background on hover - it's not a button */
 
 .header-left:hover,
 .header-right:hover {
@@ -156,12 +129,7 @@ header {
   text-transform: uppercase;
   line-height: var(--line-height-tight);
   white-space: nowrap;
-  transition: color 0.2s ease;
   cursor: pointer;
-}
-
-.header-link:hover {
-  color: var(--color-gray);
 }
 
 .header-icon,

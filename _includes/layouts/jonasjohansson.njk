@@ -28,6 +28,19 @@
 
         {% include "../components/strips.njk" %}
       </div>
+      
+      <!-- About overlay - full screen overlay with about content -->
+      <div id="about-overlay" class="about-overlay">
+        <div class="about-overlay-content">
+          {% if projectContent.about %}
+            {% for block in projectContent.about.content %}
+              {% if block.type == 'text' %}
+                <div class="about-text-block">{{ block.content | safe }}</div>
+              {% endif %}
+            {% endfor %}
+          {% endif %}
+        </div>
+      </div>
     </div>
 
     <script
