@@ -98,31 +98,22 @@ export default function (eleventyConfig) {
 
   const urlPathBase = process.env.PATH_PREFIX ? `${process.env.PATH_PREFIX}/img` : "/img";
 
+  const singleImageOptions = {
+    widths: [null],
+    formats: ["jpeg"],
+    urlPath: urlPathBase,
+    outputDir: "dist/img",
+    sharpJpegOptions: { quality: 90, progressive: true, mozjpeg: true },
+  };
+
   // Shared image processing function to ensure strips and hero use same images
   async function processImageForStrips(src) {
     try {
       const srcPath = path.join(process.cwd(), src);
-      const metadata = await Image(srcPath, {
-        widths: [640, 960, 1280, 1920, 2400],
-        formats: ["webp", "jpeg"],
-        urlPath: urlPathBase,
-        outputDir: "dist/img",
-        // Use quality 90 to match strip images and avoid visible compression
-        sharpJpegOptions: { quality: 90, progressive: true, mozjpeg: true },
-        sharpWebpOptions: { quality: 90, effort: 4 },
-        sharpOptions: { animated: true },
-        filenameFormat(id, fileSrc, width, format) {
-          const dirSlug = slug(path.basename(path.dirname(fileSrc)));
-          const baseSlug = slug(path.basename(fileSrc, path.extname(fileSrc)));
-          return `${dirSlug}-${baseSlug}-${width}w-${String(id).slice(0, 8)}.${format}`;
-        },
-      });
-      // Use largest JPEG - this matches the fallback 'src' attribute that Image.generateHTML uses
-      // This ensures strips use the exact same image as the <picture> element's fallback
-      const largestJpeg = metadata.jpeg?.[metadata.jpeg.length - 1];
-      // Ensure URL is absolute (starts with /) so it works on all pages
-      if (largestJpeg?.url) {
-        return largestJpeg.url.startsWith('/') ? largestJpeg.url : `/${largestJpeg.url}`;
+      const metadata = await Image(srcPath, singleImageOptions);
+      const jpeg = metadata.jpeg?.[0];
+      if (jpeg?.url) {
+        return jpeg.url.startsWith('/') ? jpeg.url : `/${jpeg.url}`;
       }
       return null;
     } catch (err) {
@@ -132,35 +123,32 @@ export default function (eleventyConfig) {
 
   eleventyConfig.addNunjucksAsyncShortcode(
     "responsiveImage",
-    async (src, alt, className = "media-img", sizes = "(min-width: 800px) 980px, 100vw") => {
+    async (src, alt, className = "media-img", sizes) => {
       try {
         const srcPath = path.join(process.cwd(), src);
-        const metadata = await Image(srcPath, {
-          widths: [640, 960, 1280, 1920, 2400],
-          formats: ["webp", "jpeg"],
-          urlPath: urlPathBase,
-          outputDir: "dist/img",
-          // Use quality 90 to match strip images and avoid visible compression
-          sharpJpegOptions: { quality: 90, progressive: true, mozjpeg: true },
-          sharpWebpOptions: { quality: 90, effort: 4 },
-          sharpOptions: { animated: true },
-          filenameFormat(id, fileSrc, width, format) {
-            const dirSlug = slug(path.basename(path.dirname(fileSrc)));
-            const baseSlug = slug(path.basename(fileSrc, path.extname(fileSrc)));
-            return `${dirSlug}-${baseSlug}-${width}w-${String(id).slice(0, 8)}.${format}`;
-          },
-        });
-        const largestJpeg = metadata.jpeg?.[metadata.jpeg.length - 1];
+        const metadata = await Image(srcPath, singleImageOptions);
+        const jpeg = metadata.jpeg?.[0];
+        if (!jpeg) {
+          return `<img src="${src}" alt="${alt}" class="${className}" />`;
+        }
+
         const attrs = {
           alt,
-          sizes,
           class: className,
-          loading: "lazy",
+          loading: className?.includes("lcp") ? "eager" : "lazy",
           decoding: "async",
-          ...(largestJpeg?.width && largestJpeg?.height ? { width: largestJpeg.width, height: largestJpeg.height } : {}),
+          src: jpeg.url,
+          ...(jpeg.width && jpeg.height ? { width: jpeg.width, height: jpeg.height } : {}),
+          ...(sizes ? { sizes } : {}),
         };
         if (className?.includes("lcp")) attrs.fetchpriority = "high";
-        return Image.generateHTML(metadata, attrs, { whitespaceMode: "inline" });
+
+        const attrString = Object.entries(attrs)
+          .filter(([_, value]) => value !== undefined && value !== null && value !== "")
+          .map(([key, value]) => `${key}="${String(value).replace(/"/g, "&quot;")}"`)
+          .join(" ");
+
+        return `<img ${attrString} />`;
       } catch (err) {
         return `<img src="${src}" alt="${alt}" class="${className}" />`;
       }
