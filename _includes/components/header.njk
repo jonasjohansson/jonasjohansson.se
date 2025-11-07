@@ -8,15 +8,12 @@
       <h1 class="header-title">
         {{ site.title | upper }}
       </h1>
-      <div class="header-subtitle" id="header-subtitle">
+      <div class="header-subtitle" id="header-subtitle" data-default-subtitle="{{ site.subtitle }}">
         {% if project %}
         {{ projectContent[project.slug].title }}
         {% else %}
         {{ site.subtitle }}
         {% endif %}
-      </div>
-      <div class="header-links" id="header-links" style="display: none;">
-        <a href="mailto:{{ site.email }}" class="header-link">you got something to say?</a>
       </div>
     </div>
   </div>

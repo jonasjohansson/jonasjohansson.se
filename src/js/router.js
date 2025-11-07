@@ -28,6 +28,14 @@ class SPARouter {
 
     const currentPath = window.location.pathname;
     this.currentRoute = currentPath;
+    
+    // Check if initial route is /about/ and show overlay
+    const relativePath = pathPrefix ? currentPath.replace(pathPrefix, "") : currentPath;
+    if (relativePath === "/about" || relativePath === "/about/") {
+      // Navigate to home but keep the /about/ URL
+      window.history.replaceState({ route: currentPath }, "", currentPath);
+      this.showHome(true);
+    }
   }
 
   navigate(path, pushState = true) {
@@ -43,18 +51,24 @@ class SPARouter {
 
     const relativePath = pathPrefix ? path.replace(pathPrefix, "") : path;
 
+    // Handle /about/ route - navigate to home but show about overlay
+    if (relativePath === "/about" || relativePath === "/about/") {
+      this.showHome(true); // Pass flag to show about overlay
+      return;
+    }
+
     if (relativePath === "/" || relativePath === "/index.html" || relativePath === "") {
       this.showHome();
     } else {
-      // Extract slug from any project path (work/{slug} or about)
-      let slug = relativePath.replace(/^\/work\//, "").replace(/^\/about/, "about").replace(/\/$/, "");
+      // Extract slug from any project path (work/{slug})
+      let slug = relativePath.replace(/^\/work\//, "").replace(/\/$/, "");
       if (slug) {
       this.showProject(slug);
       }
     }
   }
 
-  showHome() {
+  showHome(showAboutOverlay = false) {
     // Remove any existing project containers first
     const existingProjects = document.querySelectorAll("#projects");
     existingProjects.forEach((proj) => {
@@ -121,6 +135,22 @@ class SPARouter {
 
     // Reset project colors when returning to home
     resetProjectColors();
+
+    // Show about overlay if requested
+    if (showAboutOverlay) {
+      // Wait for DOM to be fully ready and main.js to initialize
+      const tryShowOverlay = () => {
+        const aboutOverlay = document.getElementById("about-overlay");
+        if (aboutOverlay && window.__SHOW_ABOUT_OVERLAY__) {
+          window.__SHOW_ABOUT_OVERLAY__();
+        } else {
+          // Retry if not ready yet
+          setTimeout(tryShowOverlay, 50);
+        }
+      };
+      // Start trying after a short delay
+      setTimeout(tryShowOverlay, 100);
+    }
   }
 
   async showProject(slug) {

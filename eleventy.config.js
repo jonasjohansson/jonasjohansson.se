@@ -47,6 +47,15 @@ export default function (eleventyConfig) {
 
   eleventyConfig.addGlobalData("isDev", process.env.ELEVENTY_RUN_MODE !== "build");
   eleventyConfig.addGlobalData("buildYear", new Date().getFullYear());
+  
+  // Add about.md as global data
+  eleventyConfig.addGlobalData("about", () => {
+    const aboutPath = path.join(projectRoot, "_data", "about.md");
+    if (existsSync(aboutPath)) {
+      return readFileSync(aboutPath, "utf8");
+    }
+    return "";
+  });
 
   eleventyConfig.setLibrary("njk", nunjucks.configure({ autoescape: true, throwOnUndefined: false, trimBlocks: true, lstripBlocks: true }));
 

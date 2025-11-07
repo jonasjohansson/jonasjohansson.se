@@ -96,36 +96,3 @@
   );
 }
 
-/* Mobile responsive typography and spacing */
-@media (max-width: 600px) {
-  :root {
-    --font-size-base: 14px;
-    --letter-spacing-base: 0.08rem;
-    --letter-spacing-wide: 0.1rem;
-    --letter-spacing-wider: 0.12rem;
-
-    /* Smaller spacing on mobile */
-    --spacing-xs: 0.125rem;
-    --spacing-sm: 0.25rem;
-    --spacing-md: 0.5rem;
-    --spacing-lg: 0.75rem;
-    --spacing-xl: 1rem;
-  }
-}
-
-/* Very small screens (iPhone SE, etc.) - more aggressive scaling */
-@media (max-width: 375px) {
-  :root {
-    --font-size-base: 13px;
-    --letter-spacing-base: 0.06rem;
-    --letter-spacing-wide: 0.08rem;
-    --letter-spacing-wider: 0.1rem;
-
-    /* Even smaller spacing on very small screens */
-    --spacing-xs: 0.125rem;
-    --spacing-sm: 0.25rem;
-    --spacing-md: 0.5rem;
-    --spacing-lg: 0.75rem;
-    --spacing-xl: 0.75rem;
-  }
-}

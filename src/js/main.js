@@ -1,8 +1,8 @@
 import "./strips.js";
 import "./router.js";
+import { router } from "./router.js";
 import { applyProjectColor, initializeStrips } from "./strips.js";
 import { loadingManager } from "./utils/loadingManager.js";
-import { createScrambler } from "./utils/scrambleText.js";
 import "./melody.js";
 
 async function initializeApp() {
@@ -45,69 +45,84 @@ function initHeaderButtons() {
   if (!headerToggle) return;
 
   const headerSubtitle = document.getElementById("header-subtitle");
-  const headerLinks = document.getElementById("header-links");
   const headerCenter = headerToggle.closest(".header-center");
 
-  if (!headerSubtitle || !headerLinks || !headerCenter) return;
+  if (!headerSubtitle || !headerCenter) return;
 
-  // Create scrambler for EMAIL link
-  const emailLink = headerLinks.querySelector('a[href^="mailto"]');
-  
-  // Store original text
-  const emailText = emailLink ? emailLink.textContent.trim() : "";
-  
-  // Initialize link with scrambled text (it's hidden initially)
-  if (emailLink && emailText) {
-    emailLink.textContent = "#####";
-  }
-  
-  const emailScrambler = emailLink ? createScrambler(emailLink, {
-    duration: 400,
-    frameDelay: 30,
-  }) : null;
-
-  // Check if device supports hover (desktop)
-  const supportsHover = window.matchMedia("(hover: hover)").matches;
-
-  function showLinks() {
-    headerSubtitle.style.display = "none";
-    headerLinks.style.display = "flex";
-    
-    // Scramble EMAIL link to its actual text
-    if (emailScrambler && emailLink && emailText) {
-      emailScrambler.scramble(emailText);
-    }
-  }
-
-  function showSubtitle() {
-    headerSubtitle.style.display = "";
-    headerLinks.style.display = "none";
-    
-    // Reset link to scrambled text for next appearance
-    if (emailLink && emailText) {
-      emailLink.textContent = "#####";
-    }
-  }
-
-  // Get about overlay
   const aboutOverlay = document.getElementById("about-overlay");
-  
+  if (!aboutOverlay) return;
+
+  const defaultSubtitleText = (headerSubtitle?.dataset?.defaultSubtitle || headerSubtitle?.textContent || "PROGRESS NOT PERFECTION").trim();
+
+  const getCurrentProjectTitle = () => {
+    const stored = window.__CURRENT_PROJECT_TITLE__?.trim();
+    if (stored) return stored;
+    return defaultSubtitleText;
+  };
+
+  const setSubtitle = (text) => {
+    if (!headerSubtitle) return;
+    const targetText = (text || defaultSubtitleText).trim().toUpperCase();
+    const scrambler = window.subtitleScrambler;
+    if (scrambler) {
+      scrambler.scramble(targetText);
+    } else {
+      headerSubtitle.textContent = targetText;
+    }
+  };
+
+  const pathPrefix = window.__PATH_PREFIX__ || "";
+  const aboutPath = pathPrefix ? `${pathPrefix}/about/` : "/about/";
+  const homePath = pathPrefix ? `${pathPrefix}/` : "/";
+  const body = document.body;
+
   function showAboutOverlay() {
-    if (!aboutOverlay) return;
+    const currentPath = window.location.pathname;
+    if (currentPath !== aboutPath) {
+      aboutOverlay.dataset.previousPath = currentPath;
+    }
+
     aboutOverlay.classList.add("visible");
-    // Prevent body scroll when overlay is open
-    document.body.style.overflow = "hidden";
+    body.style.overflow = "hidden";
+    setSubtitle(defaultSubtitleText);
+    headerCenter.classList.add("overlay-active");
+
+    if (router && currentPath !== aboutPath) {
+      window.history.pushState({ route: aboutPath }, "", aboutPath);
+      if (router.currentRoute !== undefined) {
+        router.currentRoute = aboutPath;
+      }
+    }
   }
-  
+
+  // Expose function for router to call
+  window.__SHOW_ABOUT_OVERLAY__ = showAboutOverlay;
+
   function hideAboutOverlay() {
-    if (!aboutOverlay) return;
     aboutOverlay.classList.remove("visible");
-    // Restore body scroll
-    document.body.style.overflow = "";
+    body.style.overflow = "";
+    const isProjectView = body.classList.contains("project-visible");
+    const nextSubtitle = isProjectView ? getCurrentProjectTitle() : defaultSubtitleText;
+    setSubtitle(nextSubtitle);
+    headerCenter.classList.remove("overlay-active");
+
+    const storedPreviousPath = aboutOverlay.dataset.previousPath;
+    delete aboutOverlay.dataset.previousPath;
+
+    let targetPath = storedPreviousPath || homePath;
+    if (!targetPath || targetPath === aboutPath) {
+      targetPath = homePath;
+    }
+
+    if (router && window.location.pathname !== targetPath) {
+      window.history.pushState({ route: targetPath }, "", targetPath);
+      if (router.currentRoute !== undefined) {
+        router.currentRoute = targetPath;
+      }
+    }
   }
-  
+
   function toggleAboutOverlay() {
-    if (!aboutOverlay) return;
     const isVisible = aboutOverlay.classList.contains("visible");
     if (isVisible) {
       hideAboutOverlay();
@@ -115,39 +130,27 @@ function initHeaderButtons() {
       showAboutOverlay();
     }
   }
-  
-  // Close overlay when clicking outside content or pressing Escape
+
   if (aboutOverlay) {
-    aboutOverlay.addEventListener("click", (e) => {
-      if (e.target === aboutOverlay) {
+    aboutOverlay.addEventListener("click", (event) => {
+      if (event.target === aboutOverlay) {
         hideAboutOverlay();
       }
     });
-    
-    document.addEventListener("keydown", (e) => {
-      if (e.key === "Escape" && aboutOverlay.classList.contains("visible")) {
+
+    document.addEventListener("keydown", (event) => {
+      if (event.key === "Escape" && aboutOverlay.classList.contains("visible")) {
         hideAboutOverlay();
       }
     });
   }
 
-  if (supportsHover) {
-    // Desktop: show links on hover, toggle overlay on click
-    headerCenter.addEventListener("mouseenter", showLinks);
-    headerCenter.addEventListener("mouseleave", showSubtitle);
-    headerCenter.addEventListener("click", (e) => {
-      e.preventDefault();
-      toggleAboutOverlay();
-    });
-  } else {
-    // Touch devices: toggle overlay on click
-    headerToggle.addEventListener("click", () => {
-      toggleAboutOverlay();
-      
-      // Remove focus to prevent hover state from persisting on mobile
-      headerToggle.blur();
-      headerCenter.blur();
-    });
-  }
+  const handleInteraction = (event) => {
+    event.preventDefault();
+    toggleAboutOverlay();
+    headerToggle.blur();
+    headerCenter.blur();
+  };
+
+  headerToggle.addEventListener("click", handleInteraction);
 }
-

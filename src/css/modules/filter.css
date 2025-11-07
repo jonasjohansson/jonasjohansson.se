@@ -49,6 +49,7 @@
   transform: none;
 }
 
+
 .filter-dropdown-button {
   order: 2;
   pointer-events: auto;
@@ -135,6 +136,14 @@
 }
 
 .filter-option:has(input[type="checkbox"]:checked) span {
+  color: var(--color-black);
+}
+
+.filter-option.is-active {
+  background: var(--color-white);
+}
+
+.filter-option.is-active span {
   color: var(--color-black);
 }
 

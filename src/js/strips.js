@@ -1,6 +1,10 @@
 import { router } from "./router.js";
 import { shuffle, clamp } from "./utils/helpers.js";
-import { CONFIG, FILTER_CATEGORIES } from "./config/constants.js";
+import { SETTINGS } from "./config/settings.js";
+const {
+  animation: { easeFactor, idleThresholdFrames, stripInitialDelayStep, stripInitialDuration, stripAppendDelayStep },
+  images: { loadMargin },
+} = SETTINGS;
 import { ColorExtractor } from "./utils/colorExtractor.js";
 import { createScrambler } from "./utils/scrambleText.js";
 import { getProjectPath } from "./utils/pathBuilder.js";
@@ -8,6 +12,35 @@ import { getProjectPath } from "./utils/pathBuilder.js";
 // Get projects from window global (injected by 11ty)
 const projects = window.__PROJECTS_DATA__ || [];
 const pathPrefix = window.__PATH_PREFIX__ || "";
+
+const filterCategories = (() => {
+  const seen = new Set();
+  const categories = [];
+
+  projects.forEach((project) => {
+    const tags = Array.isArray(project?.tags) ? project.tags : [];
+    tags.forEach((tag) => {
+      if (!tag) return;
+      const normalized = String(tag).trim();
+      if (!normalized) return;
+      const key = normalized.toLowerCase();
+      if (seen.has(key)) return;
+      seen.add(key);
+      categories.push(normalized);
+    });
+  });
+
+  categories.sort((a, b) => {
+    if (a.length === b.length) {
+      return a.localeCompare(b);
+    }
+    return a.length - b.length;
+  });
+
+  return categories;
+})();
+
+const filterCategorySet = new Set(filterCategories.map((tag) => tag.toLowerCase()));
 
 // Simple color extraction and application
 const colorExtractor = new ColorExtractor();
@@ -132,7 +165,7 @@ const imageObserver = new IntersectionObserver(
   },
   {
     root: stripsContainer,
-    rootMargin: CONFIG.IMAGE_LOAD_MARGIN,
+    rootMargin: loadMargin,
     threshold: 0,
   }
 );
@@ -149,8 +182,8 @@ function tick() {
   const prevX = curX;
   const prevY = curY;
 
-  curX += (targetX - curX) * CONFIG.ANIMATION_EASE_FACTOR;
-  curY += (targetY - curY) * CONFIG.ANIMATION_EASE_FACTOR;
+  curX += (targetX - curX) * easeFactor;
+  curY += (targetY - curY) * easeFactor;
 
   // Check if movement is significant enough to update
   const deltaX = Math.abs(curX - prevX);
@@ -160,7 +193,7 @@ function tick() {
   if (!hasMovement) {
     idleFrames++;
     // Stop animating after idle threshold to save CPU
-    if (idleFrames > CONFIG.IDLE_THRESHOLD_FRAMES && isAnimating) {
+    if (idleFrames > idleThresholdFrames && isAnimating) {
       isAnimating = false;
     }
   } else {
@@ -197,7 +230,7 @@ requestAnimationFrame(tick);
 function getSelectedFilters() {
   const tags = Array.from(document.querySelectorAll('.filter-dropdown-content input[type="checkbox"]:checked'))
     .map((cb) => cb.value)
-    .filter((value) => FILTER_CATEGORIES.includes(value));
+    .filter((value) => filterCategorySet.has(String(value).toLowerCase()));
   return { tags };
 }
 
@@ -263,13 +296,13 @@ function updateStripCount() {
 // iOS Safari viewport height fix
 function setStripsHeight() {
   if (!stripsContainer) return;
-  
+
   // Use actual viewport height for iOS Safari
   // Use the larger of window.innerHeight or document.documentElement.clientHeight
   // to handle address bar changes
   const vh = Math.max(window.innerHeight, document.documentElement.clientHeight || window.innerHeight);
   stripsContainer.style.height = `${vh}px`;
-  
+
   // Also set individual strip heights
   allStrips.forEach((strip) => {
     strip.style.height = `${vh}px`;
@@ -282,7 +315,7 @@ export function initializeStrips() {
   stripsContainer = document.getElementById("strips");
   allStrips = Array.from(stripsContainer?.querySelectorAll(".strip") || []);
   stripImages = Array.from(stripsContainer?.querySelectorAll(".strip-image") || []);
-  
+
   // Track if strips have been initialized (to prevent animations on filter)
   const hasInitialized = stripsContainer.classList.contains("strips-initialized");
 
@@ -291,11 +324,11 @@ export function initializeStrips() {
   if (!hasInitialized) {
     // Ensure the class is NOT present initially so animations can run
     stripsContainer.classList.remove("strips-initialized");
-    
+
     // IMPORTANT: Hide strips container immediately to prevent any visible rendering
     // But use display: none instead to completely hide it
     stripsContainer.style.display = "none";
-    
+
     shuffledStrips = shuffle([...allStrips]);
 
     // Remove all strips from DOM first to ensure clean re-insertion
@@ -325,11 +358,11 @@ export function initializeStrips() {
         const bgImage = stripImage?.getAttribute("data-bg-image");
         return { strip, stripImage, bgImage };
       });
-      
+
       // Preload all images - don't set background-image yet
       const imagePromises = imageData.map(({ bgImage }) => {
         if (!bgImage) return Promise.resolve();
-        
+
         return new Promise((resolve) => {
           const img = new Image();
           img.onload = () => resolve(img);
@@ -337,35 +370,36 @@ export function initializeStrips() {
           img.src = bgImage;
         });
       });
-      
+
       // Wait for ALL images to load before doing anything
       await Promise.all(imagePromises);
-      
+
       // Now that all images are loaded, make container visible and add strips
       stripsContainer.style.display = "";
-      
+
       // Set all attributes and CSS variables BEFORE adding to DOM
       shuffledStrips.forEach((strip, index) => {
         strip.setAttribute("data-index", index);
         strip.style.setProperty("--strip-index", index); // Set as number, not string
         strip.style.height = `${vh}px`;
       });
-      
+
       // Calculate animation timing
       const totalStrips = shuffledStrips.length;
-      const lastStripDelay = (totalStrips - 1) * 25; // CSS animation delay for last strip
-      const animationDuration = 400; // CSS animation duration
+      const lastStripDelay = (totalStrips - 1) * stripInitialDelayStep; // CSS animation delay per strip
+      const animationDuration = stripInitialDuration; // CSS animation duration
       const totalAnimationTime = lastStripDelay + animationDuration;
-      
-      // Track when the last strip is added
-      let lastStripAddedTime = null;
-      
-      // Add strips one at a time with minimal delay to ensure each animation triggers
+
+      // Add strips one at a time with delay to ensure each animation triggers individually
+      // Use configured delay to match the CSS animation timing and prevent batching
       requestAnimationFrame(() => {
         shuffledStrips.forEach((strip, index) => {
           setTimeout(() => {
             stripsContainer.appendChild(strip);
-            
+
+            // Force a reflow after each strip is added to ensure animation triggers
+            stripsContainer.getBoundingClientRect();
+
             // Set background image for this strip
             const stripImage = strip.querySelector(".strip-image");
             if (stripImage) {
@@ -375,33 +409,30 @@ export function initializeStrips() {
                 stripImage.classList.add("loaded");
               }
             }
-            
+
             // On last strip, do final setup and start the timeout for adding the class
             if (index === shuffledStrips.length - 1) {
-              // Force a reflow to ensure all animations are triggered
-              stripsContainer.getBoundingClientRect();
-              
               // Update references after all strips are added
               allStrips = shuffledStrips;
               stripImages = Array.from(stripsContainer?.querySelectorAll(".strip-image") || []);
-              
+
               // NOW start the timeout - this ensures we wait from when the last strip is actually added
               // Add a small buffer to ensure all animations complete
               setTimeout(() => {
                 stripsContainer.classList.add("strips-initialized");
               }, totalAnimationTime + 50); // +50ms buffer to ensure all animations complete
             }
-          }, index * 1); // 1ms delay ensures each strip is processed individually
+          }, index * stripAppendDelayStep); // ensures each strip is processed individually and animations don't batch
         });
       });
     };
-    
+
     // Start preloading images - this will block until all are loaded
     preloadAllImages().catch((err) => {
       console.warn("Error preloading images:", err);
       // Even if preload fails, show strips
       stripsContainer.style.display = "";
-      
+
       // Still add strips even if preload failed
       const fragment = document.createDocumentFragment();
       shuffledStrips.forEach((strip, index) => {
@@ -411,7 +442,7 @@ export function initializeStrips() {
         fragment.appendChild(strip);
       });
       stripsContainer.appendChild(fragment);
-      
+
       // Try to set background images even if preload failed
       const allStripImages = Array.from(stripsContainer.querySelectorAll(".strip-image"));
       allStripImages.forEach((stripImage) => {
@@ -421,14 +452,14 @@ export function initializeStrips() {
           stripImage.classList.add("loaded");
         }
       });
-      
+
       allStrips = shuffledStrips;
       stripImages = allStripImages;
-      
+
       // Mark as initialized after a delay
       const totalStrips = shuffledStrips.length;
-      const lastStripDelay = (totalStrips - 1) * 25;
-      const animationDuration = 400;
+      const lastStripDelay = (totalStrips - 1) * stripInitialDelayStep;
+      const animationDuration = stripInitialDuration;
       setTimeout(() => {
         stripsContainer.classList.add("strips-initialized");
       }, lastStripDelay + animationDuration + 50);
@@ -436,11 +467,11 @@ export function initializeStrips() {
   } else {
     // On subsequent operations (like filtering), keep strips in current order
     shuffledStrips = allStrips;
-    
+
     // Update references after shuffle
     allStrips = shuffledStrips;
     stripImages = Array.from(stripsContainer?.querySelectorAll(".strip-image") || []);
-    
+
     // Update height after strips are set up
     setStripsHeight();
 
@@ -481,7 +512,6 @@ export function initializeStrips() {
 
   // Set title to just the name
   document.title = baseName;
-
 
   function getCurrentProjectTitle() {
     const fromDataset = document.documentElement?.dataset?.currentProjectTitle?.trim();
@@ -642,7 +672,7 @@ export function initializeStrips() {
       currentlyTouchedStrip.classList.remove("touch-hover");
       currentlyTouchedStrip = null;
     }
-    
+
     // Reset subtitle to default when touch ends
     if (subtitleScrambler && headerSubtitle) {
       subtitleScrambler.scramble(currentPageTitle.toUpperCase());
@@ -660,7 +690,7 @@ export function initializeStrips() {
 
   // Update strip count for dynamic grid sizing
   updateStripCount();
-  
+
   // Ensure height is set correctly after initialization
   setStripsHeight();
 
@@ -668,7 +698,7 @@ export function initializeStrips() {
   // Also update height on resize and orientation change (for iOS Safari)
   let resizeTimeout;
   let scrollTimeout;
-  
+
   window.addEventListener("resize", () => {
     if (stripsContainer) {
       // Update height for iOS Safari
@@ -680,17 +710,21 @@ export function initializeStrips() {
       }, 100);
     }
   });
-  
+
   // Update height on scroll (for iOS Safari address bar show/hide)
-  window.addEventListener("scroll", () => {
-    if (stripsContainer) {
-      clearTimeout(scrollTimeout);
-      scrollTimeout = setTimeout(() => {
-        setStripsHeight();
-      }, 50);
-    }
-  }, { passive: true });
-  
+  window.addEventListener(
+    "scroll",
+    () => {
+      if (stripsContainer) {
+        clearTimeout(scrollTimeout);
+        scrollTimeout = setTimeout(() => {
+          setStripsHeight();
+        }, 50);
+      }
+    },
+    { passive: true }
+  );
+
   // Update height on orientation change (for iOS Safari)
   window.addEventListener("orientationchange", () => {
     setTimeout(() => {

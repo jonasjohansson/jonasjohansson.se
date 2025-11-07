@@ -4,7 +4,7 @@ header {
   top: calc(var(--spacing-lg) + env(safe-area-inset-top));
   left: 50%;
   transform: translateX(-50%);
-  z-index: 10001;
+  z-index: 11000;
   pointer-events: auto;
   background: transparent;
   color: var(--color-black);
@@ -19,6 +19,7 @@ header {
   gap: var(--spacing-sm);
   text-align: center;
   mix-blend-mode: luminosity;
+  font-family: var(--font-family-offbit);
 }
 
 /* Header sections - consolidated */
@@ -58,6 +59,7 @@ header {
   overflow: visible;
   /* Prevent hover state from sticking on touch devices */
   touch-action: manipulation;
+  cursor: pointer;
 }
 
 .header-buttons {
@@ -77,12 +79,22 @@ header {
   z-index: 3;
 }
 
-/* Header center no longer changes background on hover - it's not a button */
-
 .header-left:hover,
 .header-right:hover {
   background: var(--color-black);
   color: var(--color-white);
+}
+
+.header-center:hover,
+.header-center:focus-visible,
+.header-center.overlay-active {
+  background: var(--color-black);
+  color: var(--color-white);
+}
+
+.header-center:focus,
+.header-center:focus-visible {
+  outline: none;
 }
 
 .header-left:active,
@@ -124,12 +136,12 @@ header {
 .header-link {
   color: inherit;
   text-decoration: none;
+  white-space: nowrap;
+  cursor: pointer;
   font-size: var(--font-size-base);
   letter-spacing: var(--letter-spacing-wide);
   text-transform: uppercase;
   line-height: var(--line-height-tight);
-  white-space: nowrap;
-  cursor: pointer;
 }
 
 .header-icon,
@@ -151,12 +163,12 @@ header {
   display: flex;
   align-items: center;
   gap: var(--spacing-xs);
+  font-weight: bold;
+  margin: 0; /* Reset default h1 margin */
   font-size: var(--font-size-base);
   letter-spacing: var(--letter-spacing-wide);
   text-transform: uppercase;
   line-height: var(--line-height-tight);
-  font-weight: bold;
-  margin: 0; /* Reset default h1 margin */
 }
 
 .header-title a {
@@ -175,10 +187,6 @@ header {
 .header-icon {
   position: relative;
   display: inline-block;
-  font-size: 0.8em;
-  letter-spacing: var(--letter-spacing-wide);
-  text-transform: uppercase;
-  line-height: var(--line-height-tight);
 }
 
 .header-title a:last-child {
@@ -186,11 +194,11 @@ header {
 }
 
 .header-subtitle {
+  white-space: nowrap;
   font-size: var(--font-size-base);
   letter-spacing: var(--letter-spacing-wide);
   text-transform: uppercase;
   line-height: var(--line-height-tight);
-  white-space: nowrap;
 }
 
 .header-button {
@@ -216,22 +224,10 @@ header {
   color: var(--color-black);
 }
 
-.cv-button {
-  color: var(--color-white);
-  background: var(--color-black);
-  border-radius: var(--radius-sm);
-  clip-path: var(--cut-corner-sm);
-}
-
 .header-button:hover {
   color: var(--color-gray);
 }
 
 .email-button:hover {
   color: var(--color-gray);
-}
-
-.cv-button:hover {
-  background: var(--color-gray);
-  color: var(--color-black);
 }
