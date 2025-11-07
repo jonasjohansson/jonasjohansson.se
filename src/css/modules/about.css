@@ -39,7 +39,7 @@
 
 .about-text-inner {
   box-sizing: border-box;
-  max-width: min(25vw, 800px);
+  max-width: min(50vw, 600px);
 }
 
 .about-text-inner > * {

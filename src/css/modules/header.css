@@ -169,6 +169,7 @@ header {
   letter-spacing: var(--letter-spacing-wide);
   text-transform: uppercase;
   line-height: var(--line-height-tight);
+  white-space: nowrap;
 }
 
 .header-title a {
