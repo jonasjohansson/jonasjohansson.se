@@ -700,21 +700,17 @@ function exportSettings() {
   linkElement.click();
   
   console.log('Settings exported to shader-settings.json');
-  console.log('Place this file in the /config directory to have it loaded automatically on each page load.');
+  console.log('Place this file in src/js/config/ directory to have it loaded automatically on each page load.');
 }
 
 async function loadSettingsFromFile() {
+  // Try to import the config file directly
   try {
-    const response = await fetch('/config/shader-settings.json', { cache: 'no-store' });
-    if (!response.ok) {
-      console.log('No shader-settings.json found in /config, using localStorage or defaults');
-      return null;
-    }
-    const data = await response.json();
-    console.log('Loaded settings from /config/shader-settings.json');
-    return data;
+    const settings = await import('./config/shader-settings.json');
+    console.log('Loaded settings from config/shader-settings.json');
+    return settings.default || settings;
   } catch (error) {
-    console.log('Could not load shader-settings.json from /config:', error.message);
+    console.log('No shader-settings.json found in config folder, using localStorage or defaults');
     return null;
   }
 }
