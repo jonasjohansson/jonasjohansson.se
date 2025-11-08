@@ -21,8 +21,8 @@ async function initializeApp() {
   // Initialize grain
   initializeGrain();
   
-  // Initialize shader
-  initializeShader();
+  // Initialize shader (async to load from file)
+  await initializeShader();
 
   // Show UI elements
   const elements = {

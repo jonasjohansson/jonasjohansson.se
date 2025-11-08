@@ -569,6 +569,11 @@ function createGUI() {
     saveShaderSettingsToLocalStorage();
   });
 
+  // Add export/import buttons
+  const settingsFolder = gui.addFolder('Settings');
+  const exportButton = { exportSettings: () => exportSettings() };
+  settingsFolder.add(exportButton, 'exportSettings').name('Export Settings');
+  
   gui.add(params, 'enabled').name('Enabled');
   const blurController = gui.add(params, 'globalBlur', 0, 100, 0.5).name('Global Blur');
   blurController.onChange(() => {
@@ -677,20 +682,53 @@ function toggleGUI() {
   }
 }
 
-export function initializeShader() {
+function exportSettings() {
+  if (shaderInstances.length === 0) return;
+  const params = shaderInstances[0].params;
+  const settings = {
+    params: JSON.parse(JSON.stringify(params))
+  };
+  
+  // Create download
+  const dataStr = JSON.stringify(settings, null, 2);
+  const dataUri = 'data:application/json;charset=utf-8,'+ encodeURIComponent(dataStr);
+  const exportFileDefaultName = 'shader-settings.json';
+  
+  const linkElement = document.createElement('a');
+  linkElement.setAttribute('href', dataUri);
+  linkElement.setAttribute('download', exportFileDefaultName);
+  linkElement.click();
+  
+  console.log('Settings exported to shader-settings.json');
+  console.log('Place this file in the /config directory to have it loaded automatically on each page load.');
+}
+
+async function loadSettingsFromFile() {
+  try {
+    const response = await fetch('/config/shader-settings.json', { cache: 'no-store' });
+    if (!response.ok) {
+      console.log('No shader-settings.json found in /config, using localStorage or defaults');
+      return null;
+    }
+    const data = await response.json();
+    console.log('Loaded settings from /config/shader-settings.json');
+    return data;
+  } catch (error) {
+    console.log('Could not load shader-settings.json from /config:', error.message);
+    return null;
+  }
+}
+
+export async function initializeShader() {
+  // Priority: shader-settings.json (file in repo) > localStorage > defaults
+  
+  // Load from file first (takes precedence)
+  const fileSettings = await loadSettingsFromFile();
+  
   // Load saved settings from localStorage
   const savedSettings = loadShaderSettingsFromLocalStorage();
   
-  // Check for data.json override (if it exists)
-  let dataJsonSettings = null;
-  try {
-    // Try to fetch data.json - this would need to be implemented if data.json exists
-    // For now, we'll just use localStorage
-  } catch (error) {
-    // data.json not found or error, use localStorage
-  }
-  
-  // Merge settings: data.json overrides localStorage, which overrides defaults
+  // Merge settings: file overrides localStorage, which overrides defaults
   const initialConfig = {
     shape: 0.0, // Square
     positionMode: 'relative',
@@ -706,9 +744,10 @@ export function initializeShader() {
     Object.assign(initialConfig, savedSettings);
   }
   
-  // Apply data.json override if present (data.json takes precedence)
-  if (dataJsonSettings) {
-    Object.assign(initialConfig, dataJsonSettings);
+  // Apply file settings if present (file takes precedence over localStorage)
+  if (fileSettings && fileSettings.params) {
+    Object.assign(initialConfig, fileSettings.params);
+    console.log('Using settings from shader-settings.json');
   }
   
   // Create single shader instance
@@ -742,6 +781,7 @@ export function initializeShader() {
 
   // Expose functions globally
   window.toggleShaderGUI = toggleGUI;
+  window.exportShaderSettings = exportSettings;
 
   // Add keyboard shortcut to toggle GUI (press 'G' key)
   document.addEventListener('keydown', (event) => {
@@ -753,4 +793,6 @@ export function initializeShader() {
       toggleGUI();
     }
   });
+  
+  console.log('Shader initialized. Press G to toggle GUI, or call window.exportShaderSettings() to export settings.');
 }
