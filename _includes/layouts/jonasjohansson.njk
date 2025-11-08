@@ -17,11 +17,11 @@
     </script>
   </head>
   <body>
-    <div id="site-container">
-      {% include "../components/header.njk" %}
+    {% include "../components/shader.njk" %} {% include "../components/header.njk" %}
 
       <!-- About overlay - full screen overlay with about content -->
-      <aside id="about-overlay" class="about-overlay">
+      <!-- MUST be outside #content to escape its stacking context -->
+      <aside id="about">
         <div class="about-container">
           <div class="about-text">
             <div class="about-text-inner">
@@ -30,21 +30,18 @@
               {% endif %}
             </div>
           </div>
-          <div class="about-image">
-            {% responsiveImage "projects/about/01.jpg", "Jonas Johansson" %}
-          </div>
+          <div class="about-image">{% responsiveImage "projects/about/01.jpg", "Jonas Johansson" %}</div>
         </div>
       </aside>
 
       <!-- Wrapper for main content -->
-      <div id="content-wrapper">
+      <div id="content">
         <main id="main">
           {{ content | safe }}
         </main>
 
         {% include "../components/strips.njk" %}
       </div>
-
 
     <script
       type="module"

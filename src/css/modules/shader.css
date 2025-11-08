@@ -1,0 +1,47 @@
+/* Grain as body::before pseudo-element - scrolls with page */
+body::before {
+  content: '';
+  position: absolute;
+  top: 0;
+  left: 0;
+  width: 100vw;
+  min-height: 100%;
+  height: 100%;
+  z-index: 500;
+  pointer-events: none;
+  opacity: var(--grain-opacity, 0);
+  background-image: var(--grain-image, none);
+  background-size: var(--grain-size, 200px 200px);
+  background-repeat: repeat;
+  mix-blend-mode: var(--grain-blend, overlay);
+  will-change: opacity;
+}
+
+/* Shader Canvas - fixed at top */
+#shader-canvas {
+  position: fixed;
+  top: 0;
+  left: 0;
+  width: 100vw;
+  height: 100vh;
+  height: 100dvh;
+  height: -webkit-fill-available;
+  z-index: 400;
+  pointer-events: none;
+  mix-blend-mode: screen;
+  background: transparent;
+  display: block;
+  transform: scale(1.15) translate(2vw, -2vw);
+}
+
+/* GUI - reset typography to defaults */
+.lil-gui {
+  font-family: system-ui, -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Oxygen, Ubuntu, Cantarell, sans-serif !important;
+  letter-spacing: normal !important;
+}
+
+.lil-gui * {
+  font-family: inherit !important;
+  letter-spacing: inherit !important;
+}
+

@@ -52,9 +52,6 @@
   --line-height-relaxed: 1.6;
 
   /* Layout */
-  --header-z-index: 300;
-  --detail-z-index: 100;
-  --expand-z-index: 50;
   --grid-columns: 24; /* Default fallback, will be overridden by JavaScript */
   --content-max-width: 800px;
   --breakpoint-mobile: 768px;
@@ -95,4 +92,3 @@
     0 16px
   );
 }
-

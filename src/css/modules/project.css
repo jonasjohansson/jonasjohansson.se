@@ -68,7 +68,6 @@
   min-height: 100vh;
   min-height: 100dvh;
   position: relative;
-  z-index: 10;
   background: var(--project-accent-color-dark, var(--color-black));
 }
 

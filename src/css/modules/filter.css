@@ -5,7 +5,6 @@
   bottom: calc(var(--spacing-xl) + env(safe-area-inset-bottom, 0px));
   left: 50%;
   transform: translateX(-50%) scale(1);
-  z-index: 150;
   pointer-events: auto;
   display: flex;
   flex-direction: column;

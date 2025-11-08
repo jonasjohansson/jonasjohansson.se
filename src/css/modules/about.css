@@ -1,4 +1,4 @@
-.about-overlay {
+#about {
   position: fixed;
   top: 0;
   left: 0;
@@ -6,16 +6,31 @@
   height: 100vh;
   height: 100dvh;
   background: var(--color-black);
-  z-index: 10001;
-  opacity: 0;
-  visibility: hidden;
+  z-index: 250; /* Below header (300), shader (400), grain (500) */
+  display: none;
   color: var(--color-white);
   overflow: hidden;
+  pointer-events: none;
+  opacity: 0;
+  transition: opacity 0.3s ease;
+  /* Force own compositing layer */
+  transform: translate3d(0, 0, 0);
+  backface-visibility: hidden;
 }
 
-.about-overlay.visible {
+/* When body has about-visible, keep about below shader */
+body.about-visible #about {
+  z-index: 250; /* Below header (300), shader (400), grain (500) */
+}
+
+#about.visible {
+  display: block;
+  pointer-events: auto;
   opacity: 1;
-  visibility: visible;
+}
+
+#about.fade-out {
+  opacity: 0;
 }
 
 .about-container {
@@ -80,12 +95,12 @@
   object-position: center center;
 }
 
-#about-overlay a {
+#about a {
   color: inherit;
   text-decoration: underline;
 }
 
-#about-overlay a:hover {
+#about a:hover {
   color: inherit;
 }
 
@@ -125,7 +140,7 @@
     height: 100%;
   }
 
-  #about-overlay p {
+  #about p {
     font-size: 1rem;
     line-height: 1.5;
   }

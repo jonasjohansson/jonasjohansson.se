@@ -1,6 +1,6 @@
-// Helper function to get scroll position for content-wrapper (used for both home and project pages)
+// Helper function to get scroll position for content (used for both home and project pages)
 function getContentWrapperPosition() {
-  const contentWrapper = document.getElementById("content-wrapper");
+  const contentWrapper = document.getElementById("content");
   if (contentWrapper) {
     const rect = contentWrapper.getBoundingClientRect();
     return rect.top + window.scrollY;

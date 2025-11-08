@@ -4,7 +4,7 @@ header {
   top: calc(var(--spacing-lg) + env(safe-area-inset-top));
   left: 50%;
   transform: translateX(-50%);
-  z-index: 11000;
+  z-index: 300;
   pointer-events: auto;
   background: transparent;
   color: var(--color-black);
@@ -18,8 +18,10 @@ header {
   justify-content: center;
   gap: var(--spacing-sm);
   text-align: center;
-  mix-blend-mode: luminosity;
+  mix-blend-mode: normal;
   font-family: var(--font-family-offbit);
+  visibility: visible;
+  opacity: 1;
 }
 
 /* Header sections - consolidated */
@@ -34,11 +36,10 @@ header {
   clip-path: var(--cut-corner-sm);
   padding: var(--spacing-xs);
   box-sizing: border-box;
-  mix-blend-mode: luminosity;
+  mix-blend-mode: normal;
   height: auto;
   min-height: fit-content;
   position: relative;
-  z-index: 1;
   gap: var(--spacing-xs);
 }
 
@@ -52,21 +53,20 @@ header {
   clip-path: var(--cut-corner-sm);
   padding: var(--spacing-sm) var(--spacing-md);
   box-sizing: border-box;
-  mix-blend-mode: luminosity;
+  mix-blend-mode: normal;
   position: relative;
-  z-index: 2;
   gap: var(--spacing-sm);
   overflow: visible;
   /* Prevent hover state from sticking on touch devices */
   touch-action: manipulation;
   cursor: pointer;
+  pointer-events: auto;
 }
 
 .header-buttons {
   position: relative;
   display: flex;
   gap: var(--spacing-md);
-  z-index: 1;
   margin-top: var(--spacing-sm);
 }
 
@@ -76,7 +76,7 @@ header {
   align-items: center;
   gap: var(--spacing-xs);
   position: relative;
-  z-index: 3;
+  pointer-events: auto;
 }
 
 .header-left:hover,

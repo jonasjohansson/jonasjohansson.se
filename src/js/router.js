@@ -34,7 +34,10 @@ class SPARouter {
     if (relativePath === "/about" || relativePath === "/about/") {
       // Navigate to home but keep the /about/ URL
       window.history.replaceState({ route: currentPath }, "", currentPath);
-      this.showHome(true);
+      // Delay to ensure main.js has initialized
+      setTimeout(() => {
+        this.showHome(true);
+      }, 200);
     }
   }
 
@@ -139,13 +142,20 @@ class SPARouter {
     // Show about overlay if requested
     if (showAboutOverlay) {
       // Wait for DOM to be fully ready and main.js to initialize
+      let retryCount = 0;
+      const maxRetries = 20; // Try for up to 2 seconds (20 * 100ms)
       const tryShowOverlay = () => {
-        const aboutOverlay = document.getElementById("about-overlay");
+        const aboutOverlay = document.getElementById("about");
         if (aboutOverlay && window.__SHOW_ABOUT_OVERLAY__) {
           window.__SHOW_ABOUT_OVERLAY__();
+        } else if (retryCount < maxRetries) {
+          retryCount++;
+          setTimeout(tryShowOverlay, 100);
         } else {
-          // Retry if not ready yet
-          setTimeout(tryShowOverlay, 50);
+          console.warn("Failed to show about overlay: element or function not found", {
+            aboutOverlay: !!aboutOverlay,
+            showFunction: !!window.__SHOW_ABOUT_OVERLAY__
+          });
         }
       };
       // Start trying after a short delay
@@ -175,7 +185,7 @@ class SPARouter {
     if (clickedStrip) {
       clickedStrip.style.transition = "flex-grow 0.8s ease-out";
       clickedStrip.style.flexGrow = "100";
-      clickedStrip.style.zIndex = "300";
+      clickedStrip.style.zIndex = "150"; // Below shader
       clickedStrip.classList.add("selected");
     }
 
@@ -232,13 +242,13 @@ class SPARouter {
         currentProjects = projectContent;
       }
 
-      // Scroll to content-wrapper immediately after inserting content
+      // Scroll to content immediately after inserting content
       // Use requestAnimationFrame to ensure DOM is updated, then double RAF for iOS
       requestAnimationFrame(() => {
         requestAnimationFrame(() => {
-          const contentWrapper = document.getElementById("content-wrapper");
+          const contentWrapper = document.getElementById("content");
           if (contentWrapper) {
-            // Get the actual position of the content-wrapper element
+            // Get the actual position of the content element
             const rect = contentWrapper.getBoundingClientRect();
             const contentPosition = rect.top + window.scrollY;
             
@@ -247,7 +257,7 @@ class SPARouter {
               behavior: "auto", // Instant scroll to prevent skip
             });
           } else {
-            // Fallback to old method if content-wrapper not found
+            // Fallback to old method if content not found
       import("./utils/scrollPosition.js").then(({ getProjectScrollPosition }) => {
         window.scrollTo({
           top: getProjectScrollPosition(),
@@ -282,7 +292,7 @@ class SPARouter {
             stripOverlay.style.backgroundSize = "cover";
             stripOverlay.style.backgroundPosition = "center";
             stripOverlay.style.backgroundRepeat = "no-repeat";
-            stripOverlay.style.zIndex = "10000";
+            stripOverlay.style.zIndex = "150"; // Below about (250), header (300), shader (400), grain (500)
             stripOverlay.style.pointerEvents = "none";
             document.body.appendChild(stripOverlay);
           }
@@ -370,7 +380,7 @@ class SPARouter {
         }
       }
 
-      // Don't scroll to top - we already scrolled to content-wrapper above
+      // Don't scroll to top - we already scrolled to content above
 
       if (updateProjectViewState) {
         updateProjectViewState();

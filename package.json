@@ -15,6 +15,7 @@
     "concurrently": "^9.2.1",
     "fast-average-color-node": "^3.1.0",
     "html-minifier-terser": "^7.2.0",
+    "lil-gui": "^0.21.0",
     "markdown-it": "^14.1.0",
     "nunjucks": "^3.2.4",
     "sharp": "^0.34.3",
