@@ -179,7 +179,7 @@ const fragmentCommon = `
   }
 `;
 
-const fragmentShaderSource = `#version 300 es\n${fragmentCommon}\n  void main(){ vec2 uv = gl_FragCoord.xy; vec2 p = (uv - u_center - u_position) / vec2(u_scaleX, u_scaleY); float dist = mix(max(abs(p.x), abs(p.y)), length(p), u_shape); float angle = atan(p.y, p.x); float baseRadius = 300.0; float radiusOffset = getBlobRadius(angle); float noise = blobNoise(p * u_noiseScale, u_time * u_waveSpeed); float waveDisplacement = noise * u_waveHeight * 0.3; float blobRadius = baseRadius + radiusOffset + waveDisplacement; float blobDist = dist - blobRadius; float alpha = smoothstep(u_blur, -u_blur, blobDist); float featherAlpha = smoothstep(u_feather, -u_feather, blobDist); alpha = mix(alpha, min(alpha, featherAlpha), step(0.001, u_feather)); alpha = smoothstep5(clamp(alpha, 0.0, 1.0)); vec2 flowOffset = u_flowDir * (u_time * u_flowAmount * u_flowSpeed * 10.0); vec2 patternP = rotate2D((p + u_patternOffset) * u_patternScale, u_patternRotation); float noiseValue = backgroundNoise(patternP + flowOffset, u_time * u_patternSpeed, 0.0); noiseValue = mix(0.5, noiseValue, u_patternIntensity); vec3 color = gradientColor(noiseValue); color = color + u_brightness; color = (color - 0.5) * u_contrast + 0.5; color = clamp(color, 0.0, 1.0); alpha *= u_layerOpacity; outColor = vec4(color, alpha); }`;
+const fragmentShaderSource = `#version 300 es\n${fragmentCommon}\n  void main(){ vec2 uv = gl_FragCoord.xy; vec2 p = (uv - u_center - u_position) / vec2(u_scaleX, u_scaleY); float time = u_time * u_waveSpeed; float metaballField = 0.0; float baseRadius = 300.0; int numBlobs = 5; for(int i = 0; i < numBlobs; i++) { float angle = float(i) * 2.0 * 3.14159 / float(numBlobs) + time * 0.1; float radius = baseRadius * (0.8 + 0.4 * sin(time * 0.3 + float(i))); vec2 blobCenter = vec2(cos(angle) * 400.0, sin(angle) * 300.0 + sin(time * 0.2 + float(i)) * 200.0); float dist = length(p - blobCenter); float blobField = radius / (dist + 0.1); metaballField += blobField; } float noise = blobNoise(p * u_noiseScale * 0.5, time); metaballField += noise * u_waveHeight * 0.1; float threshold = 0.6; float baseAlpha = smoothstep(threshold - u_blur * 0.01, threshold + u_blur * 0.01, metaballField); baseAlpha = smoothstep5(clamp(baseAlpha, 0.0, 1.0)); float minAlpha = 0.5; float alpha = minAlpha + (1.0 - minAlpha) * baseAlpha; vec2 flowOffset = u_flowDir * (u_time * u_flowAmount * u_flowSpeed * 10.0); vec2 patternP = rotate2D((p + u_patternOffset) * u_patternScale, u_patternRotation); float noiseValue = backgroundNoise(patternP + flowOffset, u_time * u_patternSpeed, 0.0); float positionValue = (uv.y / u_resolution.y) * 0.4 + (uv.x / u_resolution.x) * 0.3 + 0.3; noiseValue = mix(positionValue, noiseValue, u_patternIntensity); noiseValue = clamp(noiseValue, 0.0, 1.0); vec3 color = gradientColor(noiseValue); color = color + u_brightness; color = (color - 0.5) * u_contrast + 0.5; color = clamp(color, 0.0, 1.0); alpha *= u_layerOpacity; outColor = vec4(color, alpha); }`;
 
 function createShader(glctx, type, source) {
   const shader = glctx.createShader(type);
@@ -246,7 +246,7 @@ function createDefaultParams() {
     flowSpeed: 0.1,
     flowAmount: 0.5,
     flowAngle: 0,
-    layerOpacity: 1.0,
+    layerOpacity: 0.7,
     noiseScale: 1.0,
     waveHeight: 50.0,
     waveSpeed: 0.1,
@@ -255,7 +255,7 @@ function createDefaultParams() {
     patternRotation: 0.0,
     patternOffsetX: 0.0,
     patternOffsetY: 0.0,
-    patternIntensity: 1.0,
+    patternIntensity: 0.8,
     patternContrast: 1.0,
     patternTurbulence: 0.0,
     globalBlur: 0.0,
@@ -354,7 +354,12 @@ class ShaderInstance {
   resizeCanvas() {
     if (!this.canvas || !this.gl) return;
     const displayWidth = this.canvas.clientWidth;
-    const displayHeight = this.canvas.clientHeight;
+    // Use document height instead of viewport height for full page coverage
+    const displayHeight = Math.max(
+      document.documentElement.scrollHeight,
+      document.documentElement.clientHeight,
+      window.innerHeight
+    );
     if (this.canvas.width !== displayWidth || this.canvas.height !== displayHeight) {
       this.canvas.width = displayWidth;
       this.canvas.height = displayHeight;
@@ -684,10 +689,19 @@ export async function initializeShader() {
   // Create GUI (uses instance's params)
   createGUI();
 
-  // Handle window resize
-  window.addEventListener('resize', () => {
+  // Handle window resize and scroll (for dynamic page height)
+  const handleResize = () => {
     shaderInstances.forEach(instance => instance.resizeCanvas());
-  });
+  };
+  window.addEventListener('resize', handleResize);
+  window.addEventListener('scroll', handleResize);
+  
+  // Also update on content load to catch dynamic height changes
+  if (document.readyState === 'complete') {
+    setTimeout(handleResize, 100);
+  } else {
+    window.addEventListener('load', () => setTimeout(handleResize, 100));
+  }
 
   // Start rendering
   instance.start();

@@ -24,21 +24,20 @@ body.strips-initialized::before {
   opacity: var(--grain-opacity, 0);
 }
 
-/* Shader Canvas - fixed at top */
+/* Shader Canvas - fixed at top, covers full page height */
 #shader-canvas {
   position: fixed;
   top: 0;
   left: 0;
   width: 100vw;
-  height: 100vh;
-  height: 100dvh;
-  height: -webkit-fill-available;
+  height: 100%;
+  min-height: 100vh;
+  min-height: 100dvh;
   z-index: 400;
   pointer-events: none;
   mix-blend-mode: screen;
   background: transparent;
   display: block;
-  transform: scale(1.15) translate(2vw, -2vw);
   opacity: 0;
   transition: opacity 1.2s ease-out;
 }
