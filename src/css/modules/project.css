@@ -110,10 +110,13 @@ figure {
   overflow: hidden;
   height: 100vh;
   height: 100dvh;
+  min-height: 100vh; /* Ensure full viewport height for snap */
   margin-left: calc(-1 * var(--spacing-xl));
   margin-right: calc(-1 * var(--spacing-xl));
   width: calc(100% + 2 * var(--spacing-xl));
   max-width: none;
+  /* Hero scroll snap */
+  scroll-snap-align: start;
 }
 
 .project-grid > .media-item:first-child img,
@@ -127,6 +130,9 @@ figure {
 .media-item {
   width: 100%;
   margin: 0;
+  /* Scroll snap alignment for media items */
+  scroll-snap-align: start;
+  scroll-snap-stop: normal;
 }
 
 .media-item:not(:last-child:only-child) {

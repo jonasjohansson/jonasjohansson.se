@@ -32,6 +32,8 @@
   background: var(--color-black);
   /* Ensure strips stay within content z-index */
   z-index: 1;
+  /* Vertical scroll snap for snapping strips into view */
+  scroll-snap-align: start;
 }
 
 #strips.dimmed {

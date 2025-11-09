@@ -271,33 +271,8 @@ function createDefaultParams() {
   };
 }
 
-const STORAGE_KEY = 'shaderSettings';
 let gui = null;
 let shaderInstances = [];
-
-function saveShaderSettingsToLocalStorage() {
-  try {
-    if (shaderInstances.length === 0) return;
-    const params = shaderInstances[0].params;
-    const settings = JSON.parse(JSON.stringify(params));
-    localStorage.setItem(STORAGE_KEY, JSON.stringify(settings));
-  } catch (error) {
-    console.warn('Failed to save shader settings to localStorage:', error);
-  }
-}
-
-function loadShaderSettingsFromLocalStorage() {
-  try {
-    const stored = localStorage.getItem(STORAGE_KEY);
-    if (stored) {
-      const settings = JSON.parse(stored);
-      return settings;
-    }
-  } catch (error) {
-    console.warn('Failed to load shader settings from localStorage:', error);
-  }
-  return null;
-}
 
 // ShaderInstance class
 class ShaderInstance {
@@ -565,8 +540,7 @@ function createGUI() {
     shaderInstances.forEach(instance => {
       Object.assign(instance.params, params);
     });
-    // Save to localStorage on any change
-    saveShaderSettingsToLocalStorage();
+    // Note: Changes are only saved when you export settings
   });
 
   // Add export/import buttons
@@ -716,15 +690,10 @@ async function loadSettingsFromFile() {
 }
 
 export async function initializeShader() {
-  // Priority: shader-settings.json (file in repo) > localStorage > defaults
-  
-  // Load from file first (takes precedence)
+  // Load settings from config file
   const fileSettings = await loadSettingsFromFile();
   
-  // Load saved settings from localStorage
-  const savedSettings = loadShaderSettingsFromLocalStorage();
-  
-  // Merge settings: file overrides localStorage, which overrides defaults
+  // Start with defaults
   const initialConfig = {
     shape: 0.0, // Square
     positionMode: 'relative',
@@ -735,15 +704,12 @@ export async function initializeShader() {
     scaleY: 0.75, // 25% smaller than viewport height
   };
   
-  // Apply saved settings from localStorage
-  if (savedSettings) {
-    Object.assign(initialConfig, savedSettings);
-  }
-  
-  // Apply file settings if present (file takes precedence over localStorage)
+  // Apply file settings if present (overrides defaults)
   if (fileSettings && fileSettings.params) {
     Object.assign(initialConfig, fileSettings.params);
-    console.log('Using settings from shader-settings.json');
+    console.log('Using settings from src/js/config/shader-settings.json');
+  } else {
+    console.log('Using default shader settings');
   }
   
   // Create single shader instance
