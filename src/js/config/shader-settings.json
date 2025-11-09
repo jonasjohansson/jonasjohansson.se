@@ -49,7 +49,7 @@
     "blendMode": "difference",
     "shape": 1,
     "followCursor": true,
-    "grainOpacity": 0.15,
+    "grainOpacity": 0.1,
     "grainScale": 1,
     "grainBlend": "multiply",
     "brightness": 1,

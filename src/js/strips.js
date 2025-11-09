@@ -421,6 +421,8 @@ export function initializeStrips() {
               // Add a small buffer to ensure all animations complete
               setTimeout(() => {
                 stripsContainer.classList.add("strips-initialized");
+                // Add body class to trigger grain and shader fade-in
+                document.body.classList.add("strips-initialized");
               }, totalAnimationTime + 50); // +50ms buffer to ensure all animations complete
             }
           }, index * stripAppendDelayStep); // ensures each strip is processed individually and animations don't batch
@@ -463,6 +465,8 @@ export function initializeStrips() {
       const animationDuration = stripInitialDuration;
       setTimeout(() => {
         stripsContainer.classList.add("strips-initialized");
+        // Add body class to trigger grain and shader fade-in
+        document.body.classList.add("strips-initialized");
       }, lastStripDelay + animationDuration + 50);
     });
   } else {
