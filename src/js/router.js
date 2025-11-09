@@ -29,14 +29,14 @@ class SPARouter {
     const currentPath = window.location.pathname;
     this.currentRoute = currentPath;
     
-    // Check if initial route is /about/ and show overlay
+    // Check if initial route is /about/ and show overlay immediately
     const relativePath = pathPrefix ? currentPath.replace(pathPrefix, "") : currentPath;
     if (relativePath === "/about" || relativePath === "/about/") {
       // Navigate to home but keep the /about/ URL
       window.history.replaceState({ route: currentPath }, "", currentPath);
-      // Delay to ensure main.js has initialized
+      // Delay to ensure main.js has initialized, then show immediately
       setTimeout(() => {
-        this.showHome(true);
+        this.showHome(true, true); // Pass immediate flag
       }, 200);
     }
   }
@@ -56,7 +56,7 @@ class SPARouter {
 
     // Handle /about/ route - navigate to home but show about overlay
     if (relativePath === "/about" || relativePath === "/about/") {
-      this.showHome(true); // Pass flag to show about overlay
+      this.showHome(true, true); // Pass flags to show about overlay immediately
       return;
     }
 
@@ -71,7 +71,7 @@ class SPARouter {
     }
   }
 
-  showHome(showAboutOverlay = false) {
+  showHome(showAboutOverlay = false, immediate = false) {
     // Remove any existing project containers first
     const existingProjects = document.querySelectorAll("#projects");
     existingProjects.forEach((proj) => {
@@ -141,25 +141,33 @@ class SPARouter {
 
     // Show about overlay if requested
     if (showAboutOverlay) {
-      // Wait for DOM to be fully ready and main.js to initialize
-      let retryCount = 0;
-      const maxRetries = 20; // Try for up to 2 seconds (20 * 100ms)
-      const tryShowOverlay = () => {
+      // For immediate display (direct navigation), show right away
+      if (immediate) {
         const aboutOverlay = document.getElementById("about");
         if (aboutOverlay && window.__SHOW_ABOUT_OVERLAY__) {
-          window.__SHOW_ABOUT_OVERLAY__();
-        } else if (retryCount < maxRetries) {
-          retryCount++;
-          setTimeout(tryShowOverlay, 100);
-        } else {
-          console.warn("Failed to show about overlay: element or function not found", {
-            aboutOverlay: !!aboutOverlay,
-            showFunction: !!window.__SHOW_ABOUT_OVERLAY__
-          });
+          window.__SHOW_ABOUT_OVERLAY__(true);
         }
-      };
-      // Start trying after a short delay
-      setTimeout(tryShowOverlay, 100);
+      } else {
+        // Wait for DOM to be fully ready and main.js to initialize
+        let retryCount = 0;
+        const maxRetries = 20; // Try for up to 2 seconds (20 * 100ms)
+        const tryShowOverlay = () => {
+          const aboutOverlay = document.getElementById("about");
+          if (aboutOverlay && window.__SHOW_ABOUT_OVERLAY__) {
+            window.__SHOW_ABOUT_OVERLAY__();
+          } else if (retryCount < maxRetries) {
+            retryCount++;
+            setTimeout(tryShowOverlay, 100);
+          } else {
+            console.warn("Failed to show about overlay: element or function not found", {
+              aboutOverlay: !!aboutOverlay,
+              showFunction: !!window.__SHOW_ABOUT_OVERLAY__
+            });
+          }
+        };
+        // Start trying after a short delay
+        setTimeout(tryShowOverlay, 100);
+      }
     }
   }
 

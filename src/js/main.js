@@ -7,10 +7,24 @@ import "./melody.js";
 import { initializeGrain } from "./grain.js";
 import { initializeShader } from "./shader.js";
 
+// Preload about image to prevent pop-in
+function preloadAboutImage() {
+  return new Promise((resolve) => {
+    const pathPrefix = window.__PATH_PREFIX__ || "";
+    const aboutImagePath = `${pathPrefix}/projects/about/01.jpg`;
+    const img = new Image();
+    img.onload = () => resolve();
+    img.onerror = () => resolve(); // Continue even if image fails
+    img.src = aboutImagePath;
+  });
+}
+
 async function initializeApp() {
   // Non-blocking initializations
   document.fonts?.load("14px OffBit").catch(() => {});
   loadingManager.preloadStripImages().catch(() => {});
+  // Preload about image early
+  preloadAboutImage().catch(() => {});
   if (document.getElementById("strips")) {
     import("./xylophone.js").catch(() => {});
   }
@@ -87,10 +101,52 @@ function initHeaderButtons() {
   const homePath = pathPrefix ? `${pathPrefix}/` : "/";
   const body = document.body;
 
-  function showAboutOverlay() {
+  async function showAboutOverlay(immediate = false) {
     const currentPath = window.location.pathname;
+    const isDirectNavigation = currentPath === aboutPath || currentPath === aboutPath.replace(/\/$/, '');
+    
     if (currentPath !== aboutPath) {
       aboutOverlay.dataset.previousPath = currentPath;
+    }
+
+    // On direct navigation, show immediately without waiting for image
+    if (immediate || isDirectNavigation) {
+      body.classList.add('about-visible');
+      aboutOverlay.style.display = "block";
+      aboutOverlay.style.visibility = "visible";
+      aboutOverlay.style.zIndex = "250";
+      aboutOverlay.style.opacity = "1";
+      aboutOverlay.style.pointerEvents = "auto";
+      aboutOverlay.classList.add("visible");
+      aboutOverlay.classList.remove("fade-out");
+      aboutOverlay.setAttribute("data-immediate", "true");
+      
+      // Show image immediately on direct navigation
+      const aboutImage = aboutOverlay.querySelector('.about-image img');
+      if (aboutImage) {
+        aboutImage.style.opacity = "1";
+        aboutImage.style.transition = "none";
+      }
+      
+      body.style.overflow = "hidden";
+      setSubtitle(defaultSubtitleText);
+      headerCenter.classList.add("overlay-active");
+      return;
+    }
+
+    // For transitions from other pages, wait for image and fade in
+    const aboutImage = aboutOverlay.querySelector('.about-image img');
+    if (aboutImage && !aboutImage.complete) {
+      await new Promise((resolve) => {
+        if (aboutImage.complete) {
+          resolve();
+        } else {
+          aboutImage.onload = resolve;
+          aboutImage.onerror = resolve; // Continue even if image fails
+          // Fallback timeout
+          setTimeout(resolve, 1000);
+        }
+      });
     }
 
     // Force about to be visible with direct inline styles
@@ -109,6 +165,13 @@ function initHeaderButtons() {
       body.style.overflow = "hidden";
       setSubtitle(defaultSubtitleText);
       headerCenter.classList.add("overlay-active");
+      
+      // Ensure image fades in smoothly
+      if (aboutImage) {
+        requestAnimationFrame(() => {
+          aboutImage.style.opacity = "1";
+        });
+      }
     });
 
     if (router && currentPath !== aboutPath) {

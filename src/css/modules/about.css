@@ -93,6 +93,19 @@ body.about-visible #about {
 .about-image img {
   object-fit: cover;
   object-position: center center;
+  opacity: 0;
+  transition: opacity 0.3s ease;
+}
+
+/* Image starts hidden, fades in when loaded (unless on direct navigation) */
+#about.visible .about-image img {
+  opacity: 1;
+}
+
+/* On direct navigation, show image immediately without transition */
+#about[data-immediate] .about-image img {
+  opacity: 1 !important;
+  transition: none;
 }
 
 #about a {

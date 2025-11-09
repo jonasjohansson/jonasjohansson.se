@@ -46,12 +46,12 @@
     "patternTurbulence": 5,
     "globalBlur": 100,
     "enabled": true,
-    "blendMode": "multiply",
+    "blendMode": "color-burn",
     "shape": 1,
     "grainOpacity": 0.1,
     "grainScale": 1,
     "grainBlend": "multiply",
-    "brightness": 0.21,
+    "brightness": 0.16,
     "contrast": 2
   }
 }
