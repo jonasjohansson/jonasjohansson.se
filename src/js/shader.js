@@ -476,49 +476,6 @@ class ShaderInstance {
   }
 }
 
-function createGrainTexture() {
-  const canvas = document.createElement('canvas');
-  canvas.width = 200;
-  canvas.height = 200;
-  const ctx = canvas.getContext('2d');
-  const imageData = ctx.createImageData(200, 200);
-  const data = imageData.data;
-  
-  for (let i = 0; i < data.length; i += 4) {
-    const value = Math.random() * 255;
-    data[i] = value;
-    data[i + 1] = value;
-    data[i + 2] = value;
-    data[i + 3] = 255;
-  }
-  
-  ctx.putImageData(imageData, 0, 0);
-  const dataUrl = canvas.toDataURL('image/png');
-  document.documentElement.style.setProperty('--grain-image', `url(${dataUrl})`);
-}
-
-function updateGrain() {
-  const currentGrainImage = getComputedStyle(document.documentElement).getPropertyValue('--grain-image');
-  if (!currentGrainImage || currentGrainImage === 'none') {
-    createGrainTexture();
-  }
-  
-  // Use first instance's grain params (they should be the same)
-  if (shaderInstances.length > 0) {
-    const params = shaderInstances[0].params;
-    if (typeof params.grainOpacity !== 'undefined') {
-      document.documentElement.style.setProperty('--grain-opacity', params.grainOpacity);
-    }
-    if (typeof params.grainScale !== 'undefined') {
-      const baseSize = 200;
-      const scaledSize = baseSize / params.grainScale;
-      document.documentElement.style.setProperty('--grain-size', `${scaledSize}px ${scaledSize}px`);
-    }
-    if (typeof params.grainBlend !== 'undefined') {
-      document.documentElement.style.setProperty('--grain-blend', params.grainBlend);
-    }
-  }
-}
 
 function createGUI() {
   if (gui) return;
@@ -571,26 +528,20 @@ function createGUI() {
   const grainFolder = gui.addFolder('Grain/Noise');
   const grainOpacityController = grainFolder.add(params, 'grainOpacity', 0, 1, 0.01).name('Grain Opacity');
   grainOpacityController.onChange(() => {
-    // Sync with grain.js params
     grainParams.opacity = params.grainOpacity;
     updateGrainFromModule();
-    updateGrain(); // Also update shader's grain function
   });
   
   const grainScaleController = grainFolder.add(params, 'grainScale', 0.1, 5.0, 0.1).name('Grain Scale');
   grainScaleController.onChange(() => {
-    // Sync with grain.js params
     grainParams.scale = params.grainScale;
     updateGrainFromModule();
-    updateGrain(); // Also update shader's grain function
   });
   
   const grainBlendController = grainFolder.add(params, 'grainBlend', blendModes).name('Grain Blend Mode');
   grainBlendController.onChange(() => {
-    // Sync with grain.js params
     grainParams.blend = params.grainBlend;
     updateGrainFromModule();
-    updateGrain(); // Also update shader's grain function
   });
 
   const gradientFolder = gui.addFolder('Gradient Colors');
@@ -688,7 +639,7 @@ async function loadSettingsFromFile() {
     console.log('Loaded settings from config/shader-settings.json');
     return settings.default || settings;
   } catch (error) {
-    console.log('No shader-settings.json found in config folder, using localStorage or defaults');
+    console.log('No shader-settings.json found in config folder, using defaults');
     return null;
   }
 }
@@ -725,13 +676,10 @@ export async function initializeShader() {
 
   shaderInstances.push(instance);
 
-  // Sync grain params from grain.js (which may have loaded from localStorage)
+  // Sync grain params from grain.js
   instance.params.grainOpacity = grainParams.opacity;
   instance.params.grainScale = grainParams.scale;
   instance.params.grainBlend = grainParams.blend;
-
-  // Initialize grain
-  updateGrain();
 
   // Create GUI (uses instance's params)
   createGUI();
