@@ -23,6 +23,17 @@ body.about-visible #about {
   z-index: 250; /* Below header (300), shader (400), grain (500) */
 }
 
+/* Show immediately on direct navigation to /about/ */
+#about[data-initial-about],
+body[data-initial-about] #about {
+  display: block !important;
+  opacity: 1 !important;
+  pointer-events: auto !important;
+  visibility: visible !important;
+  z-index: 250 !important;
+  transition: none !important;
+}
+
 #about.visible {
   display: block;
   pointer-events: auto;

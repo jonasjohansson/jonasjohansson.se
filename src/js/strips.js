@@ -538,6 +538,12 @@ export function initializeStrips() {
     if (project) {
       // Mouse hover events for scramble text
       strip.addEventListener("mouseenter", () => {
+        // Don't update subtitle if about overlay is visible
+        const aboutOverlay = document.getElementById("about");
+        if (aboutOverlay && aboutOverlay.classList.contains("visible")) {
+          return;
+        }
+        
         if (subtitleScrambler && headerSubtitle) {
           subtitleScrambler.scramble(project.title.toUpperCase());
         }
@@ -547,6 +553,12 @@ export function initializeStrips() {
       });
 
       strip.addEventListener("mouseleave", () => {
+        // Don't update subtitle if about overlay is visible
+        const aboutOverlay = document.getElementById("about");
+        if (aboutOverlay && aboutOverlay.classList.contains("visible")) {
+          return;
+        }
+        
         if (subtitleScrambler && headerSubtitle) {
           // Always return to the stored current page title
           subtitleScrambler.scramble(currentPageTitle.toUpperCase());
@@ -650,15 +662,23 @@ export function initializeStrips() {
             strip.classList.add("touch-hover");
 
             // Update subtitle for touch - scramble the project title
-            const projectSlug = strip.getAttribute("data-project");
-            const project = projects.find((p) => p.slug === projectSlug);
-            if (project && subtitleScrambler && headerSubtitle) {
-              subtitleScrambler.scramble(project.title.toUpperCase());
+            // Don't update if about overlay is visible
+            const aboutOverlay = document.getElementById("about");
+            if (!aboutOverlay || !aboutOverlay.classList.contains("visible")) {
+              const projectSlug = strip.getAttribute("data-project");
+              const project = projects.find((p) => p.slug === projectSlug);
+              if (project && subtitleScrambler && headerSubtitle) {
+                subtitleScrambler.scramble(project.title.toUpperCase());
+              }
             }
           } else {
             // No strip under touch - reset to default
-            if (subtitleScrambler && headerSubtitle) {
-              subtitleScrambler.scramble(currentPageTitle.toUpperCase());
+            // Don't update if about overlay is visible
+            const aboutOverlay = document.getElementById("about");
+            if (!aboutOverlay || !aboutOverlay.classList.contains("visible")) {
+              if (subtitleScrambler && headerSubtitle) {
+                subtitleScrambler.scramble(currentPageTitle.toUpperCase());
+              }
             }
           }
 

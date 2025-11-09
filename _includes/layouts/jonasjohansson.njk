@@ -17,11 +17,16 @@
     </script>
   </head>
   <body>
+    <!-- Loading screen - shown while assets are loading -->
+    <div id="loading-screen">
+      <div id="loading-spinner"></div>
+    </div>
+
     {% include "../components/shader.njk" %} {% include "../components/header.njk" %}
 
       <!-- About overlay - full screen overlay with about content -->
       <!-- MUST be outside #content to escape its stacking context -->
-      <aside id="about">
+      <aside id="about" {% if page.url === '/about/' %}data-initial-about="true"{% endif %}>
         <div class="about-container">
           <div class="about-text">
             <div class="about-text-inner">

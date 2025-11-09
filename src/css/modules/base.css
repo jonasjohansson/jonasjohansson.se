@@ -107,24 +107,87 @@ figcaption {
   -o-user-drag: none;
 }
 
-/* Loading screen */
-
-/* Loading states - hide elements during loading */
+/* Loading states - hide all content during loading */
 body.loading #main,
 body.loading #strips,
 body.loading #header,
-body.loading #filter-dropdown-container {
-  opacity: 0;
-  pointer-events: none;
+body.loading #filter-dropdown-container,
+body.loading #about,
+body.loading #shader-canvas,
+body.loading #projects {
+  opacity: 0 !important;
+  visibility: hidden !important;
+  pointer-events: none !important;
 }
 
-/* Show elements after loading */
-body.loaded #main,
-body.loaded #strips,
-body.loaded #header,
-body.loaded #filter-dropdown-container {
+/* Hide grain during loading */
+body.loading::before {
+  opacity: 0 !important;
+  visibility: hidden !important;
+}
+
+/* Show elements after loading - route-specific */
+body.loaded #header {
   opacity: 1;
+  visibility: visible;
   pointer-events: auto;
+  transition: opacity 0.3s ease;
+}
+
+/* Home route - show strips */
+body.loaded[data-route="home"] #strips,
+body.loaded:not([data-route]):not(.project-visible):not(.about-visible) #strips {
+  opacity: 1;
+  visibility: visible;
+  pointer-events: auto;
+}
+
+/* About route - show about overlay */
+body.loaded[data-route="about"] #about,
+body.loaded.about-visible #about {
+  opacity: 1;
+  visibility: visible;
+  pointer-events: auto;
+  transition: opacity 0.3s ease;
+}
+
+/* Project route - show project content */
+body.loaded[data-route="project"] #projects,
+body.loaded.project-visible #projects {
+  opacity: 1;
+  visibility: visible;
+  pointer-events: auto;
+  transition: opacity 0.3s ease;
+}
+
+/* Shader and grain fade in after strips are initialized (for home route) */
+body.loaded:not([data-route="about"]):not([data-route="project"]) #shader-canvas,
+body.loaded:not([data-route="about"]):not([data-route="project"])::before {
+  opacity: 0;
+  transition: opacity 1.2s ease-out;
+}
+
+body:has(#strips.strips-initialized)::before,
+body.strips-initialized::before,
+body:has(#strips.strips-initialized) #shader-canvas,
+body.strips-initialized #shader-canvas {
+  opacity: 1;
+}
+
+/* For about and project routes, show shader and grain immediately after loading */
+body.loaded[data-route="about"] #shader-canvas,
+body.loaded[data-route="project"] #shader-canvas,
+body.loaded.about-visible #shader-canvas,
+body.loaded.project-visible #shader-canvas {
+  opacity: 1;
+  transition: opacity 0.3s ease;
+}
+
+body.loaded[data-route="about"]::before,
+body.loaded[data-route="project"]::before,
+body.loaded.about-visible::before,
+body.loaded.project-visible::before {
+  opacity: var(--grain-opacity, 0);
   transition: opacity 0.3s ease;
 }
 

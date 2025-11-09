@@ -5,67 +5,133 @@ export class LoadingManager {
     this.totalImages = 0;
     this.isLoading = true;
     this.originalTitle = document.title;
+    this.onCompleteCallbacks = [];
 
     // Add loading class to body
     document.body.classList.add("loading");
   }
 
-  async preloadStripImages() {
-    const strips = document.querySelectorAll(".strip");
+  // Register callback to be called when loading completes
+  onComplete(callback) {
+    if (this.isLoading) {
+      this.onCompleteCallbacks.push(callback);
+    } else {
+      // Already loaded, call immediately
+      callback();
+    }
+  }
+
+  // Determine current route
+  getCurrentRoute() {
+    const pathPrefix = window.__PATH_PREFIX__ || "";
+    const currentPath = window.location.pathname;
+    const relativePath = pathPrefix ? currentPath.replace(pathPrefix, "") : currentPath;
     
-    // Don't preload all images - let lazy loading handle it
-    // Only mark loading complete immediately to avoid blocking
-    if (strips.length === 0) {
-      this.completeLoading();
-      return;
+    if (relativePath === "/about" || relativePath === "/about/") {
+      return "about";
+    } else if (relativePath.startsWith("/work/")) {
+      return "project";
+    } else {
+      return "home";
+    }
+  }
+
+  // Preload all assets based on route
+  async preloadAllAssets() {
+    const route = this.getCurrentRoute();
+    const promises = [];
+
+    // Always preload fonts
+    promises.push(
+      document.fonts?.ready || Promise.resolve()
+    );
+
+    // Preload assets based on route
+    if (route === "home") {
+      promises.push(this.preloadStripImages());
+    } else if (route === "about") {
+      promises.push(this.preloadAboutImage());
+    } else if (route === "project") {
+      promises.push(this.preloadProjectImages());
     }
 
-    // Only preload first 2-3 visible strips for faster LCP
-    const eagerCount = Math.min(3, strips.length);
-    const eagerImages = [];
-    
-    for (let i = 0; i < eagerCount; i++) {
-      const stripImage = strips[i]?.querySelector(".strip-image");
-      if (stripImage) {
-        const bgImage = stripImage.getAttribute("data-bg-image");
-        if (bgImage) {
-          eagerImages.push(this.loadImage(bgImage));
-        }
-      }
-    }
-
-    // Wait only for eager images, then mark complete (don't block on rest)
-    if (eagerImages.length > 0) {
-      await Promise.all(eagerImages);
-    }
+    // Wait for all assets to load
+    await Promise.all(promises);
     
     this.completeLoading();
   }
 
-  // initializeStrips removed - handled by strips.js now
+  async preloadStripImages() {
+    const strips = document.querySelectorAll(".strip");
+    
+    if (strips.length === 0) {
+      return;
+    }
+
+    // Preload all strip images
+    const imagePromises = [];
+    
+    strips.forEach((strip) => {
+      const stripImage = strip.querySelector(".strip-image");
+      if (stripImage) {
+        const bgImage = stripImage.getAttribute("data-bg-image");
+        if (bgImage) {
+          imagePromises.push(this.loadImage(bgImage));
+        }
+      }
+    });
+
+    if (imagePromises.length > 0) {
+      await Promise.all(imagePromises);
+    }
+  }
+
+  async preloadAboutImage() {
+    const pathPrefix = window.__PATH_PREFIX__ || "";
+    const aboutImagePath = `${pathPrefix}/projects/about/01.jpg`;
+    await this.loadImage(aboutImagePath);
+  }
+
+  async preloadProjectImages() {
+    // Get project from window global
+    const project = window.__INITIAL_PROJECT__;
+    if (!project || !project.images || project.images.length === 0) {
+      return;
+    }
+
+    // Preload all project images
+    const imagePromises = project.images.map((img) => {
+      const imageUrl = typeof img === "string" ? img : img.src;
+      const pathPrefix = window.__PATH_PREFIX__ || "";
+      const normalizedUrl = imageUrl.startsWith("/") 
+        ? imageUrl 
+        : imageUrl.startsWith("http") 
+        ? imageUrl 
+        : `${pathPrefix}/${imageUrl}`;
+      return this.loadImage(normalizedUrl);
+    });
+
+    if (imagePromises.length > 0) {
+      await Promise.all(imagePromises);
+    }
+  }
 
   loadImage(url) {
-    return new Promise((resolve, reject) => {
+    return new Promise((resolve) => {
       const img = new Image();
 
       img.onload = () => {
         this.loadedImages++;
-        this.updatePercentage();
         resolve();
       };
 
       img.onerror = () => {
         this.loadedImages++;
-        this.updatePercentage();
         resolve(); // Continue even if image fails
       };
 
       img.src = url;
     });
-  }
-
-  updatePercentage() {
-    // Removed - no longer tracking percentage during preload
   }
 
   completeLoading() {
@@ -74,9 +140,11 @@ export class LoadingManager {
     this.isLoading = false;
     document.body.classList.remove("loading");
     document.body.classList.add("loaded");
+    
+    // Call all registered callbacks
+    this.onCompleteCallbacks.forEach(callback => callback());
+    this.onCompleteCallbacks = [];
   }
-
-  // Removed startExperience, initializeStripsFull, animateStrips - no longer needed
 }
 
 export const loadingManager = new LoadingManager();

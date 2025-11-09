@@ -19,6 +19,8 @@
   scroll-padding: 0;
   /* Prevent any layout shifts */
   contain: layout style paint;
+  /* Ensure filter appears above strips */
+  z-index: 10;
 }
 
 /* Shared button styles - consolidated */

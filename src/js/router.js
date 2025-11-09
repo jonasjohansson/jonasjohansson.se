@@ -29,16 +29,8 @@ class SPARouter {
     const currentPath = window.location.pathname;
     this.currentRoute = currentPath;
     
-    // Check if initial route is /about/ and show overlay immediately
-    const relativePath = pathPrefix ? currentPath.replace(pathPrefix, "") : currentPath;
-    if (relativePath === "/about" || relativePath === "/about/") {
-      // Navigate to home but keep the /about/ URL
-      window.history.replaceState({ route: currentPath }, "", currentPath);
-      // Delay to ensure main.js has initialized, then show immediately
-      setTimeout(() => {
-        this.showHome(true, true); // Pass immediate flag
-      }, 200);
-    }
+    // Don't show content on initial load - let the loading system handle it
+    // The loading system in main.js will show the appropriate content after assets load
   }
 
   navigate(path, pushState = true) {
@@ -71,7 +63,32 @@ class SPARouter {
     }
   }
 
-  showHome(showAboutOverlay = false, immediate = false) {
+  async showHome(showAboutOverlay = false, immediate = false) {
+    // Update body data-route attribute to "home" so CSS can show strips
+    document.body.setAttribute("data-route", "home");
+    document.body.classList.remove("about-visible", "project-visible");
+    
+    // Hide about overlay unless explicitly requested to show it
+    if (!showAboutOverlay) {
+      // Always hide the about overlay when navigating to home (unless explicitly showing it)
+      if (window.__HIDE_ABOUT_OVERLAY__) {
+        // Pass skipNavigation=true since we're already navigating
+        window.__HIDE_ABOUT_OVERLAY__(true);
+      } else {
+        // Fallback: hide manually if function not available
+        const aboutOverlay = document.getElementById("about");
+        if (aboutOverlay) {
+          aboutOverlay.style.opacity = "0";
+          aboutOverlay.classList.remove("visible");
+          document.body.classList.remove('about-visible');
+          document.body.style.overflow = "";
+          setTimeout(() => {
+            aboutOverlay.style.display = "none";
+          }, 300);
+        }
+      }
+    }
+
     // Remove any existing project containers first
     const existingProjects = document.querySelectorAll("#projects");
     existingProjects.forEach((proj) => {
@@ -126,10 +143,22 @@ class SPARouter {
       });
     });
 
-    // Trigger strips animation on return
+    // Ensure strips are visible and trigger animation on return
     const stripsContainer = document.getElementById("strips");
     if (stripsContainer) {
+      // Make sure strips are visible
+      stripsContainer.style.opacity = "1";
+      stripsContainer.style.visibility = "visible";
+      stripsContainer.style.display = "";
       stripsContainer.classList.add("animate-in");
+      
+      // Initialize strips if they haven't been initialized yet
+      if (!stripsContainer.classList.contains("strips-initialized")) {
+        const { initializeStrips } = await import("./strips.js");
+        if (initializeStrips) {
+          initializeStrips();
+        }
+      }
     }
 
     if (updateProjectViewState) {

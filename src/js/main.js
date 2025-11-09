@@ -7,56 +7,129 @@ import "./melody.js";
 import { initializeGrain } from "./grain.js";
 import { initializeShader } from "./shader.js";
 
-// Preload about image to prevent pop-in
-function preloadAboutImage() {
-  return new Promise((resolve) => {
-    const pathPrefix = window.__PATH_PREFIX__ || "";
-    const aboutImagePath = `${pathPrefix}/projects/about/01.jpg`;
-    const img = new Image();
-    img.onload = () => resolve();
-    img.onerror = () => resolve(); // Continue even if image fails
-    img.src = aboutImagePath;
-  });
+// Determine current route
+function getCurrentRoute() {
+  const pathPrefix = window.__PATH_PREFIX__ || "";
+  const currentPath = window.location.pathname;
+  const relativePath = pathPrefix ? currentPath.replace(pathPrefix, "") : currentPath;
+  
+  if (relativePath === "/about" || relativePath === "/about/") {
+    return "about";
+  } else if (relativePath.startsWith("/work/")) {
+    return "project";
+  } else {
+    return "home";
+  }
+}
+
+// Show content based on route after loading
+async function showContentForRoute(route) {
+  const body = document.body;
+  body.setAttribute("data-route", route);
+
+  // Initialize grain and shader for all routes
+  initializeGrain();
+  await initializeShader();
+
+  // Show header for all routes
+  const header = document.getElementById("header");
+  if (header) {
+    header.style.display = "flex";
+    header.style.visibility = "visible";
+    header.style.opacity = "1";
+  }
+
+  if (route === "home") {
+    // Initialize strips - they will animate in
+    initializeStrips();
+    
+    const filterContainer = document.getElementById("filter-dropdown-container");
+    if (filterContainer) filterContainer.style.display = "";
+    
+  } else if (route === "about") {
+    // Show about overlay with fade in
+    const aboutOverlay = document.getElementById("about");
+    if (aboutOverlay) {
+      aboutOverlay.setAttribute("data-initial-about", "true");
+      body.setAttribute("data-initial-about", "true");
+      body.classList.add("about-visible");
+      
+      // Get header subtitle for setting text
+      const headerSubtitle = document.getElementById("header-subtitle");
+      const defaultSubtitleText = (headerSubtitle?.dataset?.defaultSubtitle || headerSubtitle?.textContent || "PROGRESS NOT PERFECTION").trim();
+      
+      // Fade in about overlay
+      requestAnimationFrame(() => {
+        aboutOverlay.style.display = "block";
+        aboutOverlay.style.visibility = "visible";
+        aboutOverlay.style.zIndex = "250";
+        aboutOverlay.style.pointerEvents = "auto";
+        aboutOverlay.classList.add("visible");
+        body.style.overflow = "hidden";
+        
+        // Fade in subtitle
+        if (headerSubtitle) {
+          headerSubtitle.style.opacity = "0";
+          headerSubtitle.style.transition = "opacity 0.3s ease";
+          const scrambler = window.subtitleScrambler;
+          if (scrambler) {
+            scrambler.scramble(defaultSubtitleText.toUpperCase());
+          } else {
+            headerSubtitle.textContent = defaultSubtitleText.toUpperCase();
+          }
+          requestAnimationFrame(() => {
+            headerSubtitle.style.opacity = "1";
+          });
+        }
+        
+        // Fade in image
+        const aboutImage = aboutOverlay.querySelector('.about-image img');
+        if (aboutImage) {
+          requestAnimationFrame(() => {
+            aboutImage.style.opacity = "1";
+          });
+        }
+      });
+    }
+    
+  } else if (route === "project") {
+    // Show project content with fade in
+    const projects = document.getElementById("projects");
+    if (projects) {
+      body.classList.add("project-visible");
+      
+      // Fade in project
+      requestAnimationFrame(() => {
+        projects.style.opacity = "1";
+        projects.style.visibility = "visible";
+      });
+      
+      // Apply project color
+      if (window.__INITIAL_PROJECT__) {
+        setTimeout(() => applyProjectColor(window.__INITIAL_PROJECT__), 100);
+      }
+    }
+  }
+  
+  // Initialize header buttons
+  initHeaderButtons();
 }
 
 async function initializeApp() {
   // Non-blocking initializations
-  document.fonts?.load("14px OffBit").catch(() => {});
-  loadingManager.preloadStripImages().catch(() => {});
-  // Preload about image early
-  preloadAboutImage().catch(() => {});
   if (document.getElementById("strips")) {
     import("./xylophone.js").catch(() => {});
   }
 
-  // Initialize strips
-  initializeStrips();
+  // Determine route and set data attribute
+  const route = getCurrentRoute();
+  document.body.setAttribute("data-route", route);
 
-  // Initialize grain
-  initializeGrain();
-  
-  // Initialize shader (async to load from file)
-  await initializeShader();
+  // Start preloading assets
+  await loadingManager.preloadAllAssets();
 
-  // Show UI elements
-  const elements = {
-    header: document.getElementById("header"),
-    filterContainer: document.getElementById("filter-dropdown-container"),
-  };
-
-  if (elements.header) {
-    elements.header.style.display = "flex";
-    elements.header.style.visibility = "visible";
-    elements.header.style.opacity = "1";
-  }
-  if (elements.filterContainer) elements.filterContainer.style.display = "";
-
-  // Apply project color if on project page
-  if (window.__INITIAL_PROJECT__) {
-    setTimeout(() => applyProjectColor(window.__INITIAL_PROJECT__), 100);
-  }
-
-  initHeaderButtons();
+  // Once loading is complete, show content for the route
+  showContentForRoute(route);
 }
 
 // Initialize when DOM is ready
@@ -85,14 +158,36 @@ function initHeaderButtons() {
     return defaultSubtitleText;
   };
 
-  const setSubtitle = (text) => {
+  const setSubtitle = (text, fadeIn = false) => {
     if (!headerSubtitle) return;
     const targetText = (text || defaultSubtitleText).trim().toUpperCase();
-    const scrambler = window.subtitleScrambler;
-    if (scrambler) {
-      scrambler.scramble(targetText);
+    
+    if (fadeIn) {
+      // Fade out first, then fade in with new text
+      headerSubtitle.style.opacity = "0";
+      headerSubtitle.style.transition = "opacity 0.3s ease";
+      
+      requestAnimationFrame(() => {
+        const scrambler = window.subtitleScrambler;
+        if (scrambler) {
+          scrambler.scramble(targetText);
+        } else {
+          headerSubtitle.textContent = targetText;
+        }
+        
+        // Fade in
+        requestAnimationFrame(() => {
+          headerSubtitle.style.opacity = "1";
+        });
+      });
     } else {
-      headerSubtitle.textContent = targetText;
+      // Immediate change (no fade)
+      const scrambler = window.subtitleScrambler;
+      if (scrambler) {
+        scrambler.scramble(targetText);
+      } else {
+        headerSubtitle.textContent = targetText;
+      }
     }
   };
 
@@ -101,7 +196,7 @@ function initHeaderButtons() {
   const homePath = pathPrefix ? `${pathPrefix}/` : "/";
   const body = document.body;
 
-  async function showAboutOverlay(immediate = false) {
+  function showAboutOverlay(immediate = false) {
     const currentPath = window.location.pathname;
     const isDirectNavigation = currentPath === aboutPath || currentPath === aboutPath.replace(/\/$/, '');
     
@@ -109,70 +204,59 @@ function initHeaderButtons() {
       aboutOverlay.dataset.previousPath = currentPath;
     }
 
-    // On direct navigation, show immediately without waiting for image
-    if (immediate || isDirectNavigation) {
-      body.classList.add('about-visible');
-      aboutOverlay.style.display = "block";
-      aboutOverlay.style.visibility = "visible";
-      aboutOverlay.style.zIndex = "250";
-      aboutOverlay.style.opacity = "1";
-      aboutOverlay.style.pointerEvents = "auto";
-      aboutOverlay.classList.add("visible");
-      aboutOverlay.classList.remove("fade-out");
-      aboutOverlay.setAttribute("data-immediate", "true");
-      
-      // Show image immediately on direct navigation
-      const aboutImage = aboutOverlay.querySelector('.about-image img');
-      if (aboutImage) {
-        aboutImage.style.opacity = "1";
-        aboutImage.style.transition = "none";
-      }
-      
-      body.style.overflow = "hidden";
-      setSubtitle(defaultSubtitleText);
-      headerCenter.classList.add("overlay-active");
-      return;
-    }
-
-    // For transitions from other pages, wait for image and fade in
-    const aboutImage = aboutOverlay.querySelector('.about-image img');
-    if (aboutImage && !aboutImage.complete) {
-      await new Promise((resolve) => {
-        if (aboutImage.complete) {
-          resolve();
-        } else {
-          aboutImage.onload = resolve;
-          aboutImage.onerror = resolve; // Continue even if image fails
-          // Fallback timeout
-          setTimeout(resolve, 1000);
-        }
-      });
-    }
-
-    // Force about to be visible with direct inline styles
+    // Show overlay immediately with fade-in animation
     body.classList.add('about-visible');
     
     // Set display first
     aboutOverlay.style.display = "block";
     aboutOverlay.style.visibility = "visible";
-    aboutOverlay.style.zIndex = "250"; // Below shader (400) and header (300)
+    aboutOverlay.style.zIndex = "250";
     aboutOverlay.classList.remove("fade-out");
     
-    // Wait a frame, then add visible class to trigger opacity transition
-    requestAnimationFrame(() => {
-      aboutOverlay.classList.add("visible");
-      aboutOverlay.style.pointerEvents = "auto";
-      body.style.overflow = "hidden";
-      setSubtitle(defaultSubtitleText);
-      headerCenter.classList.add("overlay-active");
-      
-      // Ensure image fades in smoothly
-      if (aboutImage) {
+      // Trigger fade-in animation immediately
+      requestAnimationFrame(() => {
+        aboutOverlay.classList.add("visible");
+        aboutOverlay.style.pointerEvents = "auto";
+        body.style.overflow = "hidden";
+        setSubtitle(defaultSubtitleText, true); // Fade in subtitle
+        headerCenter.classList.add("overlay-active");
+      });
+
+    // Handle image separately - fade it in once loaded
+    const aboutImage = aboutOverlay.querySelector('.about-image img');
+    if (aboutImage) {
+      // If image is already loaded, fade it in immediately
+      if (aboutImage.complete && aboutImage.naturalWidth > 0) {
         requestAnimationFrame(() => {
           aboutImage.style.opacity = "1";
         });
+      } else {
+        // Otherwise, wait for it to load and then fade in
+        aboutImage.style.opacity = "0";
+        const fadeInImage = () => {
+          requestAnimationFrame(() => {
+            aboutImage.style.opacity = "1";
+          });
+        };
+        if (aboutImage.complete) {
+          fadeInImage();
+        } else {
+          aboutImage.onload = fadeInImage;
+          aboutImage.onerror = fadeInImage; // Continue even if image fails
+          // Fallback timeout
+          setTimeout(fadeInImage, 1000);
+        }
       }
-    });
+    }
+
+    // On direct navigation, show image immediately without transition
+    if (immediate || isDirectNavigation) {
+      aboutOverlay.setAttribute("data-immediate", "true");
+      if (aboutImage) {
+        aboutImage.style.opacity = "1";
+        aboutImage.style.transition = "none";
+      }
+    }
 
     if (router && currentPath !== aboutPath) {
       window.history.pushState({ route: aboutPath }, "", aboutPath);
@@ -184,13 +268,19 @@ function initHeaderButtons() {
 
   // Expose function for router to call
   window.__SHOW_ABOUT_OVERLAY__ = showAboutOverlay;
+  window.__HIDE_ABOUT_OVERLAY__ = hideAboutOverlay;
   
   // Also expose a direct function to check if about is visible
   window.__IS_ABOUT_VISIBLE__ = () => {
     return aboutOverlay.classList.contains("visible");
   };
 
-  function hideAboutOverlay() {
+  function hideAboutOverlay(skipNavigation = false) {
+    // Remove data attributes immediately to prevent CSS from forcing visibility
+    aboutOverlay.removeAttribute("data-immediate");
+    aboutOverlay.removeAttribute("data-initial-about");
+    body.removeAttribute("data-initial-about");
+    
     // Fade out first
     aboutOverlay.style.opacity = "0";
     aboutOverlay.classList.add("fade-out");
@@ -213,18 +303,22 @@ function initHeaderButtons() {
     setSubtitle(nextSubtitle);
     headerCenter.classList.remove("overlay-active");
 
-    const storedPreviousPath = aboutOverlay.dataset.previousPath;
-    delete aboutOverlay.dataset.previousPath;
+    // Only navigate if not explicitly skipped (to avoid double navigation)
+    if (!skipNavigation) {
+      const storedPreviousPath = aboutOverlay.dataset.previousPath;
+      delete aboutOverlay.dataset.previousPath;
 
-    let targetPath = storedPreviousPath || homePath;
-    if (!targetPath || targetPath === aboutPath) {
-      targetPath = homePath;
-    }
+      let targetPath = storedPreviousPath || homePath;
+      if (!targetPath || targetPath === aboutPath) {
+        targetPath = homePath;
+      }
 
-    if (router && window.location.pathname !== targetPath) {
-      window.history.pushState({ route: targetPath }, "", targetPath);
-      if (router.currentRoute !== undefined) {
-        router.currentRoute = targetPath;
+      // Navigate to target path
+      if (router) {
+        // Always use router.navigate - it will handle hiding the about overlay
+        router.navigate(targetPath, true);
+      } else if (window.location.pathname !== targetPath) {
+        window.history.pushState({ route: targetPath }, "", targetPath);
       }
     }
   }
@@ -255,7 +349,17 @@ function initHeaderButtons() {
   const handleInteraction = (event) => {
     // Don't prevent default on the header itself, just stop propagation
     event.stopPropagation();
-    toggleAboutOverlay();
+    
+    // Simple toggle: check current state and toggle
+    const isAboutVisible = aboutOverlay.classList.contains("visible");
+    if (isAboutVisible) {
+      // Hide overlay and navigate to home
+      hideAboutOverlay();
+    } else {
+      // Show overlay
+      showAboutOverlay();
+    }
+    
     if (headerToggle) headerToggle.blur();
     if (headerCenter) headerCenter.blur();
   };
@@ -267,6 +371,10 @@ function initHeaderButtons() {
   
   // Reset subtitle when mouse leaves the header
   headerCenter.addEventListener("mouseleave", () => {
+    // Don't change subtitle if about overlay is visible
+    if (aboutOverlay.classList.contains("visible")) {
+      return;
+    }
     const isProjectView = body.classList.contains("project-visible");
     const nextSubtitle = isProjectView ? getCurrentProjectTitle() : defaultSubtitleText;
     setSubtitle(nextSubtitle);
@@ -274,6 +382,10 @@ function initHeaderButtons() {
   
   // Also reset when mouse leaves the header toggle
   headerToggle.addEventListener("mouseleave", () => {
+    // Don't change subtitle if about overlay is visible
+    if (aboutOverlay.classList.contains("visible")) {
+      return;
+    }
     const isProjectView = body.classList.contains("project-visible");
     const nextSubtitle = isProjectView ? getCurrentProjectTitle() : defaultSubtitleText;
     setSubtitle(nextSubtitle);
