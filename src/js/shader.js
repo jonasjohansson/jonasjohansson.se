@@ -262,7 +262,6 @@ function createDefaultParams() {
     enabled: true,
     blendMode: 'screen',
     shape: 1.0, // 1.0 = circle, 0.0 = square
-    followCursor: false,
     grainOpacity: 0.0,
     grainScale: 1.0,
     grainBlend: 'overlay',
@@ -659,8 +658,13 @@ function toggleGUI() {
 function exportSettings() {
   if (shaderInstances.length === 0) return;
   const params = shaderInstances[0].params;
+  // Remove unused cursor and followCursor properties
+  const cleanedParams = { ...params };
+  delete cleanedParams.cursorX;
+  delete cleanedParams.cursorY;
+  delete cleanedParams.followCursor;
   const settings = {
-    params: JSON.parse(JSON.stringify(params))
+    params: cleanedParams
   };
   
   // Create download
@@ -699,7 +703,6 @@ export async function initializeShader() {
     positionMode: 'relative',
     positionPercentX: 0.0,
     positionPercentY: 0.0,
-    followCursor: false,
     scaleX: 0.75, // 25% smaller than viewport width (1.0 = 100% width)
     scaleY: 0.75, // 25% smaller than viewport height
   };

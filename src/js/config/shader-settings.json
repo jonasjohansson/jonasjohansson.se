@@ -48,13 +48,10 @@
     "enabled": true,
     "blendMode": "difference",
     "shape": 1,
-    "followCursor": true,
     "grainOpacity": 0.1,
     "grainScale": 1,
     "grainBlend": "multiply",
     "brightness": 1,
-    "contrast": 0.8,
-    "cursorX": 235.25215480638587,
-    "cursorY": 156.9434490622318
+    "contrast": 0.8
   }
 }
