@@ -6,21 +6,7 @@ import { loadingManager } from "./utils/loadingManager.js";
 import "./melody.js";
 import { initializeGrain } from "./grain.js";
 import { initializeShader } from "./shader.js";
-
-// Determine current route
-function getCurrentRoute() {
-  const pathPrefix = window.__PATH_PREFIX__ || "";
-  const currentPath = window.location.pathname;
-  const relativePath = pathPrefix ? currentPath.replace(pathPrefix, "") : currentPath;
-  
-  if (relativePath === "/about" || relativePath === "/about/") {
-    return "about";
-  } else if (relativePath.startsWith("/work/")) {
-    return "project";
-  } else {
-    return "home";
-  }
-}
+import { getCurrentRoute, getPathPrefix } from "./utils/routeUtils.js";
 
 // Show content based on route after loading
 async function showContentForRoute(route) {
@@ -141,16 +127,15 @@ if (document.readyState === "loading") {
 
 function initHeaderButtons() {
   const headerToggle = document.getElementById("header-toggle");
-  if (!headerToggle) return;
-
   const headerSubtitle = document.getElementById("header-subtitle");
-  const headerCenter = headerToggle.closest(".header-center");
-  if (!headerSubtitle || !headerCenter) return;
-
   const aboutOverlay = document.getElementById("about");
-  if (!aboutOverlay) return;
+  
+  if (!headerToggle || !headerSubtitle || !aboutOverlay) return;
 
-  const defaultSubtitleText = (headerSubtitle?.dataset?.defaultSubtitle || headerSubtitle?.textContent || "PROGRESS NOT PERFECTION").trim();
+  const headerCenter = headerToggle.closest(".header-center");
+  if (!headerCenter) return;
+
+  const defaultSubtitleText = (headerSubtitle.dataset.defaultSubtitle || headerSubtitle.textContent || "PROGRESS NOT PERFECTION").trim();
 
   const getCurrentProjectTitle = () => {
     const stored = window.__CURRENT_PROJECT_TITLE__?.trim();
@@ -159,8 +144,15 @@ function initHeaderButtons() {
   };
 
   const setSubtitle = (text, fadeIn = false) => {
-    if (!headerSubtitle) return;
     const targetText = (text || defaultSubtitleText).trim().toUpperCase();
+    const scrambler = window.subtitleScrambler;
+    const updateText = () => {
+      if (scrambler) {
+        scrambler.scramble(targetText);
+      } else {
+        headerSubtitle.textContent = targetText;
+      }
+    };
     
     if (fadeIn) {
       // Fade out first, then fade in with new text
@@ -168,30 +160,18 @@ function initHeaderButtons() {
       headerSubtitle.style.transition = "opacity 0.3s ease";
       
       requestAnimationFrame(() => {
-        const scrambler = window.subtitleScrambler;
-        if (scrambler) {
-          scrambler.scramble(targetText);
-        } else {
-          headerSubtitle.textContent = targetText;
-        }
-        
-        // Fade in
+        updateText();
         requestAnimationFrame(() => {
           headerSubtitle.style.opacity = "1";
         });
       });
     } else {
       // Immediate change (no fade)
-      const scrambler = window.subtitleScrambler;
-      if (scrambler) {
-        scrambler.scramble(targetText);
-      } else {
-        headerSubtitle.textContent = targetText;
-      }
+      updateText();
     }
   };
 
-  const pathPrefix = window.__PATH_PREFIX__ || "";
+  const pathPrefix = getPathPrefix();
   const aboutPath = pathPrefix ? `${pathPrefix}/about/` : "/about/";
   const homePath = pathPrefix ? `${pathPrefix}/` : "/";
   const body = document.body;

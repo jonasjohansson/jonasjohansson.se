@@ -198,6 +198,32 @@ export default function (eleventyConfig) {
     return projects;
   });
 
+  // Helper to extract first image from project directory
+  function findFirstImageInDir(root, dir, dataMdPath) {
+    // Try data.md first
+    if (existsSync(dataMdPath)) {
+      try {
+        const fileContent = readFileSync(dataMdPath, "utf8");
+        const parsed = matter(fileContent);
+        const { blocks = [] } = parsed.data;
+        const firstImageBlock = blocks.find((b) => b.type === "image");
+        if (firstImageBlock?.src) {
+          return `${root}/${dir}/${firstImageBlock.src}`;
+        }
+      } catch (err) {}
+    }
+    // Fallback to first image file
+    const dirPath = path.join(root, dir);
+    const files = readdirSync(dirPath, { withFileTypes: true }).filter((f) => f.isFile());
+    for (const f of files) {
+      const ext = path.extname(f.name).toLowerCase();
+      if ([".jpg", ".jpeg", ".png", ".webp", ".gif"].includes(ext)) {
+        return `${root}/${dir}/${f.name}`;
+      }
+    }
+    return null;
+  }
+
   eleventyConfig.addGlobalData("projectsForJS", async () => {
     const root = "projects";
     if (!existsSync(root)) return [];
@@ -214,49 +240,30 @@ export default function (eleventyConfig) {
         let title = dir.replace(/[._-]+/g, " ").trim();
         let tags = [];
         let year = new Date().getFullYear();
-        let firstImageSrc = null;
-        let firstImageOptimized = null;
 
-        // Read data.md for metadata and first image - MUST match projectContent logic
+        // Read data.md for metadata
         if (existsSync(dataMdPath)) {
           try {
             const fileContent = readFileSync(dataMdPath, "utf8");
             const parsed = matter(fileContent);
-            const { title: mdTitle, date, tags: mdTags = [], blocks = [] } = parsed.data;
-
+            const { title: mdTitle, date, tags: mdTags = [] } = parsed.data;
             if (mdTitle) title = mdTitle;
             if (mdTags) tags = mdTags;
             if (date) year = new Date(date).getFullYear();
-
-            // Find first image block - EXACT same logic as projectContent
-            const firstImageBlock = blocks.find((b) => b.type === "image");
-            if (firstImageBlock && firstImageBlock.src) {
-              // Use EXACT same path format as projectContent: `${root}/${dir}/${src}`
-              firstImageSrc = `${root}/${dir}/${firstImageBlock.src}`;
-            }
           } catch (err) {}
         }
-        // Fallback to first image file if no data.md blocks
-        if (!firstImageSrc) {
-          const files = readdirSync(dirPath, { withFileTypes: true }).filter((f) => f.isFile());
-          for (const f of files) {
-            const ext = path.extname(f.name).toLowerCase();
-            if ([".jpg", ".jpeg", ".png", ".webp", ".gif"].includes(ext)) {
-              firstImageSrc = `${root}/${dir}/${f.name}`;
-              break;
-            }
-          }
-        }
+
+        // Find first image using shared helper
+        const firstImageSrc = findFirstImageInDir(root, dir, dataMdPath);
+        let firstImageOptimized = null;
 
         if (firstImageSrc) {
-          // Use the same processing function as responsiveImage to ensure identical output
           firstImageOptimized = await processImageForStrips(firstImageSrc);
-          // Ensure we got a valid absolute URL
           if (firstImageOptimized && !firstImageOptimized.startsWith('/')) {
             firstImageOptimized = `/${firstImageOptimized}`;
           }
         }
-        return { title, images: firstImageOptimized && firstImageOptimized.startsWith('/') ? [firstImageOptimized] : [], tags, year, slug: dir };
+        return { title, images: firstImageOptimized?.startsWith('/') ? [firstImageOptimized] : [], tags, year, slug: dir };
       })
     );
     // Filter out "about" project from strips (it's accessible via header)
@@ -283,13 +290,9 @@ export default function (eleventyConfig) {
         const parsed = matter(fileContent);
         const { title, date, tags = [], blocks = [], printable = true } = parsed.data;
 
-        let year = new Date().getFullYear();
-        let isoDate = null;
-
-        if (date) {
-          isoDate = new Date(date).toISOString();
-          year = new Date(date).getFullYear();
-        }
+        const year = date ? new Date(date).getFullYear() : new Date().getFullYear();
+        const isoDate = date ? new Date(date).toISOString() : null;
+        const projectTitle = title || dir.replace(/[._-]+/g, " ").trim();
 
         // Process blocks from frontmatter
         const content = blocks
@@ -300,8 +303,8 @@ export default function (eleventyConfig) {
               if (fontSize.includes("small") || fontSize.includes("1.2")) fontSizeClass = "text-small";
               else if (fontSize.includes("medium") || fontSize.includes("1.8")) fontSizeClass = "text-medium";
             }
-            if (type === "image") return { type: "image", src: `${root}/${dir}/${src}`, alt: title || dir, colStart, colSpan };
-            if (type === "video") return { type: "video", src: `${root}/${dir}/${src}`, alt: title || dir, colStart, colSpan };
+            if (type === "image") return { type: "image", src: `${root}/${dir}/${src}`, alt: projectTitle, colStart, colSpan };
+            if (type === "video") return { type: "video", src: `${root}/${dir}/${src}`, alt: projectTitle, colStart, colSpan };
             if (type === "text")
               return {
                 type: "text",
@@ -316,7 +319,7 @@ export default function (eleventyConfig) {
             return null;
           })
           .filter(Boolean);
-        projectContent[dir] = { title: title || dir.replace(/[._-]+/g, " ").trim(), tags, year, date: isoDate, content, printable };
+        projectContent[dir] = { title: projectTitle, tags, year, date: isoDate, content, printable };
       } catch (err) {}
     }
     return projectContent;

@@ -1,3 +1,5 @@
+import { getCurrentRoute, getPathPrefix } from "./routeUtils.js";
+
 // Loading manager for preloading images
 export class LoadingManager {
   constructor() {
@@ -21,30 +23,13 @@ export class LoadingManager {
     }
   }
 
-  // Determine current route
-  getCurrentRoute() {
-    const pathPrefix = window.__PATH_PREFIX__ || "";
-    const currentPath = window.location.pathname;
-    const relativePath = pathPrefix ? currentPath.replace(pathPrefix, "") : currentPath;
-    
-    if (relativePath === "/about" || relativePath === "/about/") {
-      return "about";
-    } else if (relativePath.startsWith("/work/")) {
-      return "project";
-    } else {
-      return "home";
-    }
-  }
-
   // Preload all assets based on route
   async preloadAllAssets() {
-    const route = this.getCurrentRoute();
+    const route = getCurrentRoute();
     const promises = [];
 
     // Always preload fonts
-    promises.push(
-      document.fonts?.ready || Promise.resolve()
-    );
+    promises.push(document.fonts?.ready || Promise.resolve());
 
     // Preload assets based on route
     if (route === "home") {
@@ -57,20 +42,20 @@ export class LoadingManager {
 
     // Wait for all assets to load
     await Promise.all(promises);
-    
+
     this.completeLoading();
   }
 
   async preloadStripImages() {
     const strips = document.querySelectorAll(".strip");
-    
+
     if (strips.length === 0) {
       return;
     }
 
     // Preload all strip images
     const imagePromises = [];
-    
+
     strips.forEach((strip) => {
       const stripImage = strip.querySelector(".strip-image");
       if (stripImage) {
@@ -87,7 +72,7 @@ export class LoadingManager {
   }
 
   async preloadAboutImage() {
-    const pathPrefix = window.__PATH_PREFIX__ || "";
+    const pathPrefix = getPathPrefix();
     const aboutImagePath = `${pathPrefix}/projects/about/01.jpg`;
     await this.loadImage(aboutImagePath);
   }
@@ -100,14 +85,10 @@ export class LoadingManager {
     }
 
     // Preload all project images
+    const pathPrefix = getPathPrefix();
     const imagePromises = project.images.map((img) => {
       const imageUrl = typeof img === "string" ? img : img.src;
-      const pathPrefix = window.__PATH_PREFIX__ || "";
-      const normalizedUrl = imageUrl.startsWith("/") 
-        ? imageUrl 
-        : imageUrl.startsWith("http") 
-        ? imageUrl 
-        : `${pathPrefix}/${imageUrl}`;
+      const normalizedUrl = imageUrl.startsWith("/") ? imageUrl : imageUrl.startsWith("http") ? imageUrl : `${pathPrefix}/${imageUrl}`;
       return this.loadImage(normalizedUrl);
     });
 
@@ -140,9 +121,9 @@ export class LoadingManager {
     this.isLoading = false;
     document.body.classList.remove("loading");
     document.body.classList.add("loaded");
-    
+
     // Call all registered callbacks
-    this.onCompleteCallbacks.forEach(callback => callback());
+    this.onCompleteCallbacks.forEach((callback) => callback());
     this.onCompleteCallbacks = [];
   }
 }

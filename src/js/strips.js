@@ -10,8 +10,10 @@ import { createScrambler } from "./utils/scrambleText.js";
 import { getProjectPath } from "./utils/pathBuilder.js";
 
 // Get projects from window global (injected by 11ty)
+import { getPathPrefix } from "./utils/routeUtils.js";
+
 const projects = window.__PROJECTS_DATA__ || [];
-const pathPrefix = window.__PATH_PREFIX__ || "";
+const pathPrefix = getPathPrefix();
 
 const filterCategories = (() => {
   const seen = new Set();
@@ -119,11 +121,6 @@ let curX = 0.5,
   curY = 0.5; // eased cursor (0..1)
 let targetX = 0.5,
   targetY = 0.5; // instantaneous cursor (0..1)
-
-// ---------- Helpers ----------
-function updateProjectViewState() {
-  // Legacy function kept for router compatibility
-}
 
 // ---------- Input ----------
 function handlePoint(clientX, clientY) {
@@ -848,7 +845,7 @@ function initFilters() {
   });
 
   // Expose flag for scroll handler
-  window.__IS_FILTERING__ = () => isFiltering;
+  window.__IS_FILTERING__ = () => body.dataset.filtering === "true";
 
   // Shared function to close all dropdowns
   const closeAllDropdowns = () => {
@@ -980,7 +977,7 @@ function updateCurrentPageTitle(title) {
 }
 
 // Export functions for use by router
-export { resetFilters, updateProjectViewState, applyProjectColor, updateCurrentPageTitle };
+export { resetFilters, applyProjectColor, updateCurrentPageTitle };
 
 // Initialize filters when DOM is ready
 if (document.readyState === "loading") {

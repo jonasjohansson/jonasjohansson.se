@@ -99,17 +99,17 @@ export class ColorExtractor {
   /**
    * Adjust color brightness for better contrast
    * @param {string} hex - Hex color string
-   * @param {number} factor - Brightness factor (0-1)
+   * @param {number} multiplier - Brightness multiplier (>1 = brighter, <1 = darker)
    * @returns {string} - Adjusted hex color string
    */
-  adjustBrightness(hex, factor) {
+  adjustBrightness(hex, multiplier) {
     const r = parseInt(hex.slice(1, 3), 16);
     const g = parseInt(hex.slice(3, 5), 16);
     const b = parseInt(hex.slice(5, 7), 16);
     
-    const newR = Math.round(r * factor);
-    const newG = Math.round(g * factor);
-    const newB = Math.round(b * factor);
+    const newR = Math.round(Math.min(255, r * multiplier));
+    const newG = Math.round(Math.min(255, g * multiplier));
+    const newB = Math.round(Math.min(255, b * multiplier));
     
     return this.rgbToHex(newR, newG, newB);
   }

@@ -1,8 +1,9 @@
-import { resetFilters, updateProjectViewState, applyProjectColor, updateCurrentPageTitle } from "./strips.js";
+import { resetFilters, applyProjectColor, updateCurrentPageTitle } from "./strips.js";
 import { getProjectPath } from "./utils/pathBuilder.js";
+import { getPathPrefix } from "./utils/routeUtils.js";
 
 const projects = window.__PROJECTS_DATA__ || [];
-const pathPrefix = window.__PATH_PREFIX__ || "";
+const pathPrefix = getPathPrefix();
 
 // Reset project colors to default
 function resetProjectColors() {
@@ -159,10 +160,6 @@ class SPARouter {
           initializeStrips();
         }
       }
-    }
-
-    if (updateProjectViewState) {
-      updateProjectViewState();
     }
 
     // Reset project colors when returning to home
@@ -418,10 +415,6 @@ class SPARouter {
       }
 
       // Don't scroll to top - we already scrolled to content above
-
-      if (updateProjectViewState) {
-        updateProjectViewState();
-      }
 
       await applyProjectColor(project);
     } catch (error) {
