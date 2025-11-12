@@ -44,7 +44,6 @@
   font-family: var(--font-family);
   width: fit-content;
   white-space: nowrap;
-  box-sizing: border-box;
   line-height: var(--line-height-tight);
   transition: none;
   transform: none;

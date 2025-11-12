@@ -327,6 +327,11 @@ export default function (eleventyConfig) {
 
   eleventyConfig.addFilter("findFirstImage", (content) => content?.find?.((b) => b.type === "image")?.src || null);
   eleventyConfig.addFilter("findFirstText", (content) => content?.find?.((b) => b.type === "text")?.content || null);
+  eleventyConfig.addFilter("stripHtml", (str) => {
+    if (!str) return "";
+    // Remove HTML tags and decode HTML entities
+    return str.replace(/<[^>]*>/g, "").replace(/&nbsp;/g, " ").replace(/&amp;/g, "&").replace(/&lt;/g, "<").replace(/&gt;/g, ">").replace(/&quot;/g, '"').replace(/&#39;/g, "'").trim();
+  });
   eleventyConfig.addFilter("truncate", (str, length = 160) => (str && str.length > length ? str.substring(0, length) + "..." : str || ""));
   
   // Minify HTML in production builds only

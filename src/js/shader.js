@@ -262,9 +262,9 @@ function createDefaultParams() {
     enabled: true,
     blendMode: 'screen',
     shape: 1.0, // 1.0 = circle, 0.0 = square
-    grainOpacity: 0.0,
+    grainOpacity: 0.1,
     grainScale: 1.0,
-    grainBlend: 'overlay',
+    grainBlend: 'multiply',
     brightness: 0.0,
     contrast: 1.0,
   };

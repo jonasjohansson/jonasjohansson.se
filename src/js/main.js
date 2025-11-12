@@ -289,7 +289,8 @@ function initHeaderButtons() {
       delete aboutOverlay.dataset.previousPath;
 
       let targetPath = storedPreviousPath || homePath;
-      if (!targetPath || targetPath === aboutPath) {
+      // Always navigate to home path when hiding about overlay (never navigate to about path)
+      if (!targetPath || targetPath === aboutPath || targetPath.includes('/about')) {
         targetPath = homePath;
       }
 

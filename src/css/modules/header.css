@@ -9,9 +9,7 @@ header {
   background: transparent;
   color: var(--color-black);
   user-select: none;
-  padding: var(--spacing-sm) var(--spacing-lg);
-  padding-top: calc(var(--spacing-sm) + 2px);
-  box-sizing: border-box;
+  padding: calc(var(--spacing-sm) + 2px) var(--spacing-lg) var(--spacing-sm);
   display: flex;
   flex-direction: row;
   align-items: center;
@@ -24,25 +22,9 @@ header {
   opacity: 1;
 }
 
-/* Header sections - consolidated */
+/* Header sections - consolidated flex pattern */
 .header-left,
-.header-right {
-  display: flex;
-  flex-direction: column;
-  align-items: center;
-  justify-content: center;
-  background: var(--color-white);
-  border-radius: var(--radius-sm);
-  clip-path: var(--cut-corner-sm);
-  padding: var(--spacing-xs);
-  box-sizing: border-box;
-  mix-blend-mode: normal;
-  height: auto;
-  min-height: fit-content;
-  position: relative;
-  gap: var(--spacing-xs);
-}
-
+.header-right,
 .header-center {
   display: flex;
   flex-direction: column;
@@ -51,10 +33,20 @@ header {
   background: var(--color-white);
   border-radius: var(--radius-sm);
   clip-path: var(--cut-corner-sm);
-  padding: var(--spacing-sm) var(--spacing-md);
-  box-sizing: border-box;
   mix-blend-mode: normal;
   position: relative;
+}
+
+.header-left,
+.header-right {
+  padding: var(--spacing-xs);
+  gap: var(--spacing-xs);
+  height: auto;
+  min-height: fit-content;
+}
+
+.header-center {
+  padding: var(--spacing-sm) var(--spacing-md);
   gap: var(--spacing-sm);
   overflow: visible;
   /* Prevent hover state from sticking on touch devices */
@@ -137,6 +129,14 @@ header {
   text-decoration: none;
   white-space: nowrap;
   cursor: pointer;
+}
+
+/* Shared typography for header icon and text */
+.header-icon,
+.header-text,
+.header-link,
+.header-title,
+.header-subtitle {
   font-size: var(--font-size-base);
   letter-spacing: var(--letter-spacing-wide);
   text-transform: uppercase;
@@ -146,9 +146,6 @@ header {
 .header-icon,
 .header-text {
   font-size: calc(var(--font-size-base) * 0.8);
-  letter-spacing: var(--letter-spacing-wide);
-  text-transform: uppercase;
-  line-height: var(--line-height-tight);
 }
 
 .header-spacer {
@@ -164,10 +161,6 @@ header {
   gap: var(--spacing-xs);
   font-weight: bold;
   margin: 0; /* Reset default h1 margin */
-  font-size: var(--font-size-base);
-  letter-spacing: var(--letter-spacing-wide);
-  text-transform: uppercase;
-  line-height: var(--line-height-tight);
   white-space: nowrap;
 }
 
@@ -195,10 +188,6 @@ header {
 
 .header-subtitle {
   white-space: nowrap;
-  font-size: var(--font-size-base);
-  letter-spacing: var(--letter-spacing-wide);
-  text-transform: uppercase;
-  line-height: var(--line-height-tight);
 }
 
 .header-button {

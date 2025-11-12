@@ -27,7 +27,6 @@
   padding: 0;
   top: 0;
   /* Prevent extra scrolling on iOS */
-  box-sizing: border-box;
   /* Match background to prevent color flash on iOS scroll */
   background: var(--color-black);
   /* Ensure strips stay within content z-index */

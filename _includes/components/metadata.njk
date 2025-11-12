@@ -68,7 +68,7 @@ projectsForJS[0].images[0] %}
 
 <!-- Project-specific metadata -->
 {% if project %} {% set firstImage = projectContent[project.slug].content | findFirstImage %} {% set projectTitle =
-projectContent[project.slug].title %} {% set projectDescription = projectContent[project.slug].content | findFirstText | truncate(160) %} {%
+projectContent[project.slug].title %} {% set projectDescription = projectContent[project.slug].content | findFirstText | stripHtml | truncate(160) %} {%
 set projectUrl = site.url ~ page.url %} {% set projectImage = firstImage and (site.url ~ firstImage) or (site.url ~ site.meta.ogImage) %}
 
 <!-- Open Graph / Facebook -->
@@ -280,7 +280,7 @@ set projectUrl = site.url ~ page.url %} {% set projectImage = firstImage and (si
   "@context": "https://schema.org",
   "@type": "CreativeWork",
   "name": "{{ projectContent[project.slug].title }}",
-  "description": "{{ projectContent[project.slug].content | findFirstText | truncate(160) }}",
+  "description": "{{ projectContent[project.slug].content | findFirstText | stripHtml | truncate(160) }}",
   "url": "{{ site.url }}{{ page.url }}",
   "image": "{{ projectImage }}",
   "creator": {

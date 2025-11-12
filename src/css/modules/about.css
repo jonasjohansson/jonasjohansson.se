@@ -46,17 +46,13 @@ body[data-initial-about] #about {
 
 .about-container {
   height: 100%;
-  box-sizing: border-box;
   position: relative;
   display: flex;
 }
 
 .about-text {
   width: 50%;
-  padding-left: var(--spacing-xl);
-  padding-right: var(--spacing-xl);
-  padding-bottom: var(--spacing-xl);
-  box-sizing: border-box;
+  padding: 0 var(--spacing-xl) var(--spacing-xl);
   overflow-y: auto;
   height: 100%;
   display: flex;
@@ -64,13 +60,12 @@ body[data-initial-about] #about {
 }
 
 .about-text-inner {
-  box-sizing: border-box;
-  max-width: min(50vw, 800px);
+  max-width: min(50vw, 700px);
 }
 
 .about-text-inner > * {
   margin: 0;
-  font-size: clamp(1rem, 0.8vw + 0.9rem, 1.5rem);
+  font-size: clamp(1rem, 0.8vw + 0rem, 1.5rem);
   line-height: 1.5;
   letter-spacing: var(--letter-spacing-base);
   font-weight: 400;
@@ -91,9 +86,7 @@ body[data-initial-about] #about {
   display: flex;
   align-items: center;
   justify-content: center;
-  box-sizing: border-box;
   overflow: hidden;
-  position: relative;
 }
 
 .about-image picture,
@@ -123,16 +116,12 @@ body[data-initial-about] #about {
   transition: none;
 }
 
+/* Links in about inherit color from #about */
 #about a {
-  color: inherit;
   text-decoration: underline;
 }
 
-#about a:hover {
-  color: inherit;
-}
-
-@media (max-width: 768px) {
+@media (max-width: 767px) {
   .about-container {
     flex-direction: column;
     overflow-y: auto;
@@ -175,9 +164,9 @@ body[data-initial-about] #about {
 }
 
 /* Desktop: ensure typography scales responsively and add gradient fade to image */
-@media (min-width: 769px) {
+@media (min-width: 768px) {
   .about-text-inner > * {
-    font-size: clamp(1rem, 1.2vw + 0.5rem, 1.5rem);
+    font-size: clamp(1rem, 1vw + 0.2rem, 1.5rem);
   }
 
   /* Gradient overlay - fades from background color to transparent, extending deeper into image */

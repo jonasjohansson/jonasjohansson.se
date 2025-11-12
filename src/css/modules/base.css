@@ -1,5 +1,12 @@
 /* Base Styles & Reset */
 
+/* Global box-sizing - apply to all elements */
+*,
+*::before,
+*::after {
+  box-sizing: border-box;
+}
+
 html {
   /* Support for iOS dynamic viewport height */
   /* iOS Safari fix: use -webkit-fill-available for full height, fallback to dvh/vh */
@@ -13,6 +20,8 @@ html {
   background: var(--color-black);
   /* Vertical scroll snap */
   scroll-snap-type: y proximity;
+  /* Hide scrollbars */
+  scrollbar-width: none;
 }
 
 body {
@@ -52,15 +61,7 @@ body {
   display: none;
 }
 
-html {
-  scrollbar-width: none;
-}
-
-body {
-  -ms-overflow-style: none;
-}
-
-/* Links */
+/* Links - inherit color by default */
 a {
   color: inherit;
   text-decoration: none;
@@ -259,7 +260,6 @@ img[data-hero] {
   height: 100vh;
   overflow-y: auto;
   padding: var(--spacing-xl);
-  box-sizing: border-box;
   display: flex;
   flex-direction: column;
   justify-content: center;
