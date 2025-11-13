@@ -5,7 +5,6 @@
   left: 0;
   width: 100vw;
   height: 100vh;
-  height: 100dvh;
   background: var(--color-black);
   z-index: 10000;
   display: flex;

@@ -66,7 +66,6 @@
   display: block;
   width: 100%;
   min-height: 100vh;
-  min-height: 100dvh;
   position: relative;
   background: var(--project-accent-color-dark, var(--color-black));
 }
@@ -86,7 +85,6 @@ body.project-visible {
   display: block;
   width: 100%;
   min-height: 100vh;
-  min-height: 100dvh;
 }
 
 figure {
@@ -108,22 +106,29 @@ figure {
 .project-grid > .media-item.hero {
   overflow: hidden;
   height: 100vh;
-  height: 100dvh;
   min-height: 100vh; /* Ensure full viewport height for snap */
+  max-height: 100vh; /* Prevent shrinking */
   margin-left: calc(-1 * var(--spacing-xl));
   margin-right: calc(-1 * var(--spacing-xl));
   width: calc(100% + 2 * var(--spacing-xl));
   max-width: none;
+  position: relative; /* Create positioning context */
   /* Hero scroll snap */
   scroll-snap-align: start;
 }
 
 .project-grid > .media-item:first-child img,
 .project-grid > .media-item.hero img {
+  position: absolute;
+  top: 0;
+  left: 0;
   width: 100%;
   height: 100%;
   object-fit: cover;
   object-position: center;
+  display: block;
+  /* Prevent image dimensions from affecting container */
+  min-height: 100%;
 }
 
 .media-item {

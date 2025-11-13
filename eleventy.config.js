@@ -1,4 +1,4 @@
-import { readdirSync, readFileSync, statSync, existsSync } from "node:fs";
+import { readdirSync, readFileSync, statSync, existsSync, mkdirSync } from "node:fs";
 import path from "node:path";
 import { fileURLToPath } from "node:url";
 import markdownIt from "markdown-it";
@@ -105,6 +105,32 @@ export default function (eleventyConfig) {
     outputDir: "dist/img",
     sharpJpegOptions: { quality: 90, progressive: true, mozjpeg: true },
   };
+
+  // Add about images list as global data
+  // Returns source paths - images will be processed when used via responsiveImage shortcode
+  eleventyConfig.addGlobalData("aboutImages", () => {
+    const aboutDir = path.join(projectRoot, "projects", "about");
+    if (!existsSync(aboutDir)) return ["projects/about/01.jpg"];
+    
+    try {
+      const files = readdirSync(aboutDir, { withFileTypes: true })
+        .filter((f) => f.isFile())
+        .map((f) => f.name);
+      
+      const imageFiles = files.filter((name) => {
+        const ext = path.extname(name).toLowerCase();
+        return [".jpg", ".jpeg", ".png", ".webp", ".gif"].includes(ext);
+      });
+      
+      // Return source paths - JavaScript will use these to switch images
+      const images = imageFiles.map((name) => `projects/about/${name}`);
+      
+      return images.length > 0 ? images : ["projects/about/01.jpg"];
+    } catch (err) {
+      console.warn("Error reading about images:", err);
+      return ["projects/about/01.jpg"]; // Fallback
+    }
+  });
 
   // Shared image processing function to ensure strips and hero use same images
   async function processImageForStrips(src) {
@@ -366,6 +392,37 @@ export default function (eleventyConfig) {
   }
   
   eleventyConfig.setWatchThrottleWaitTime(0);
+
+  // Ensure output directories exist before Eleventy writes
+  eleventyConfig.on("beforeBuild", () => {
+    const outputDir = "dist";
+    if (!existsSync(outputDir)) {
+      mkdirSync(outputDir, { recursive: true });
+    }
+    // Ensure common subdirectories exist
+    const subdirs = ["img", "about", "work"];
+    subdirs.forEach((subdir) => {
+      const dirPath = path.join(outputDir, subdir);
+      if (!existsSync(dirPath)) {
+        mkdirSync(dirPath, { recursive: true });
+      }
+    });
+    
+    // Ensure work subdirectories exist for all projects
+    const projectsRoot = "projects";
+    if (existsSync(projectsRoot)) {
+      const projectDirs = readdirSync(projectsRoot, { withFileTypes: true })
+        .filter((d) => d.isDirectory())
+        .map((d) => d.name);
+      
+      projectDirs.forEach((projectDir) => {
+        const workProjectPath = path.join(outputDir, "work", projectDir);
+        if (!existsSync(workProjectPath)) {
+          mkdirSync(workProjectPath, { recursive: true });
+        }
+      });
+    }
+  });
 
   return {
     dir: { input: ".", includes: "_includes", layouts: "_includes/layouts", output: "dist" },

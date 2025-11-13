@@ -3,7 +3,9 @@ import { defineConfig } from "vite";
 export default defineConfig({
   clearScreen: false,
   build: {
-    emptyOutDir: false,
+    // Only empty dist in production builds, not in watch mode (dev)
+    // This prevents removing Eleventy-processed images during development
+    emptyOutDir: process.env.ELEVENTY_RUN_MODE === "build",
     outDir: "dist",
     minify: "terser",
     terserOptions: {

@@ -205,6 +205,28 @@ class SPARouter {
       return;
     }
 
+    // Update body data-route attribute to "project" so CSS can hide strips
+    document.body.setAttribute("data-route", "project");
+    
+    // Hide about overlay when navigating to a project
+    document.body.classList.remove("about-visible");
+    if (window.__HIDE_ABOUT_OVERLAY__) {
+      // Pass skipNavigation=true since we're already navigating
+      window.__HIDE_ABOUT_OVERLAY__(true);
+    } else {
+      // Fallback: hide manually if function not available
+      const aboutOverlay = document.getElementById("about");
+      if (aboutOverlay) {
+        aboutOverlay.style.opacity = "0";
+        aboutOverlay.classList.remove("visible");
+        document.body.classList.remove('about-visible');
+        document.body.style.overflow = "";
+        setTimeout(() => {
+          aboutOverlay.style.display = "none";
+        }, 300);
+      }
+    }
+
     // Will scroll after content is loaded - see end of showProject function
 
     // Update header subtitle (document title stays as name)

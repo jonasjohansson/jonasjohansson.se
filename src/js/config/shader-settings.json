@@ -50,7 +50,7 @@
     "shape": 1,
     "grainOpacity": 0.1,
     "grainScale": 1,
-    "grainBlend": "multiply",
+    "grainBlend": "screen",
     "brightness": 0.16,
     "contrast": 2
   }

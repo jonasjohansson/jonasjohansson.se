@@ -8,11 +8,7 @@
 }
 
 html {
-  /* Support for iOS dynamic viewport height */
-  /* iOS Safari fix: use -webkit-fill-available for full height, fallback to dvh/vh */
   min-height: 100vh;
-  min-height: 100dvh;
-  min-height: -webkit-fill-available;
   overflow-y: auto;
   margin: 0;
   padding: 0;
@@ -25,10 +21,7 @@ html {
 }
 
 body {
-  /* iOS Safari fix: use -webkit-fill-available for full height, fallback to dvh/vh */
   min-height: 100vh;
-  min-height: 100dvh;
-  min-height: -webkit-fill-available;
   width: 100%;
   margin: 0;
   padding: 0;
@@ -51,8 +44,6 @@ body {
   position: relative;
   z-index: 100;
 }
-
-
 
 /* Project-visible class no longer needed for scroll, but keep for hooks */
 
@@ -266,7 +257,6 @@ img[data-hero] {
   align-items: center;
 }
 
-
 /* Common text utility classes */
 .text-base {
   font-size: var(--font-size-base);
@@ -289,4 +279,3 @@ img[data-hero] {
   align-items: center;
   justify-content: center;
 }
-

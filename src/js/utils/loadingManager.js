@@ -73,8 +73,34 @@ export class LoadingManager {
 
   async preloadAboutImage() {
     const pathPrefix = getPathPrefix();
-    const aboutImagePath = `${pathPrefix}/projects/about/01.jpg`;
-    await this.loadImage(aboutImagePath);
+    // Preload all available about images from Eleventy data
+    let imagesToPreload = [];
+
+    if (window.__ABOUT_IMAGES__ && Array.isArray(window.__ABOUT_IMAGES__) && window.__ABOUT_IMAGES__.length > 0) {
+      imagesToPreload = window.__ABOUT_IMAGES__.map((img) => {
+        // Ensure path has leading slash and pathPrefix
+        const normalizedPath = img.startsWith("/") ? img : `/${img}`;
+        return normalizedPath.startsWith(pathPrefix) ? normalizedPath : `${pathPrefix}${normalizedPath}`;
+      });
+    } else {
+      // Fallback: try numbered images
+      const aboutImageNumbers = [1, 2, 3, 4, 5, 6, 7, 8, 9, 10];
+      imagesToPreload = aboutImageNumbers.map((num) => {
+        const paddedNum = num.toString().padStart(2, "0");
+        return `${pathPrefix}/projects/about/${paddedNum}.jpg`;
+      });
+    }
+
+    const imagePromises = imagesToPreload.map((imagePath) => {
+      return this.loadImage(imagePath).catch(() => {
+        // Ignore errors for images that don't exist
+        return Promise.resolve();
+      });
+    });
+
+    if (imagePromises.length > 0) {
+      await Promise.all(imagePromises);
+    }
   }
 
   async preloadProjectImages() {

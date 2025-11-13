@@ -264,7 +264,7 @@ function createDefaultParams() {
     shape: 1.0, // 1.0 = circle, 0.0 = square
     grainOpacity: 0.1,
     grainScale: 1.0,
-    grainBlend: 'multiply',
+    grainBlend: 'screen',
     brightness: 0.0,
     contrast: 1.0,
   };

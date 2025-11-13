@@ -28,10 +28,9 @@ async function showContentForRoute(route) {
   if (route === "home") {
     // Initialize strips - they will animate in
     initializeStrips();
-    
+
     const filterContainer = document.getElementById("filter-dropdown-container");
     if (filterContainer) filterContainer.style.display = "";
-    
   } else if (route === "about") {
     // Show about overlay with fade in
     const aboutOverlay = document.getElementById("about");
@@ -39,11 +38,15 @@ async function showContentForRoute(route) {
       aboutOverlay.setAttribute("data-initial-about", "true");
       body.setAttribute("data-initial-about", "true");
       body.classList.add("about-visible");
-      
+
       // Get header subtitle for setting text
       const headerSubtitle = document.getElementById("header-subtitle");
-      const defaultSubtitleText = (headerSubtitle?.dataset?.defaultSubtitle || headerSubtitle?.textContent || "PROGRESS NOT PERFECTION").trim();
-      
+      const defaultSubtitleText = (
+        headerSubtitle?.dataset?.defaultSubtitle ||
+        headerSubtitle?.textContent ||
+        "PROGRESS NOT PERFECTION"
+      ).trim();
+
       // Fade in about overlay
       requestAnimationFrame(() => {
         aboutOverlay.style.display = "block";
@@ -52,7 +55,7 @@ async function showContentForRoute(route) {
         aboutOverlay.style.pointerEvents = "auto";
         aboutOverlay.classList.add("visible");
         body.style.overflow = "hidden";
-        
+
         // Fade in subtitle
         if (headerSubtitle) {
           headerSubtitle.style.opacity = "0";
@@ -67,9 +70,9 @@ async function showContentForRoute(route) {
             headerSubtitle.style.opacity = "1";
           });
         }
-        
+
         // Fade in image
-        const aboutImage = aboutOverlay.querySelector('.about-image img');
+        const aboutImage = aboutOverlay.querySelector(".about-image img");
         if (aboutImage) {
           requestAnimationFrame(() => {
             aboutImage.style.opacity = "1";
@@ -77,26 +80,25 @@ async function showContentForRoute(route) {
         }
       });
     }
-    
   } else if (route === "project") {
     // Show project content with fade in
     const projects = document.getElementById("projects");
     if (projects) {
       body.classList.add("project-visible");
-      
+
       // Fade in project
       requestAnimationFrame(() => {
         projects.style.opacity = "1";
         projects.style.visibility = "visible";
       });
-      
+
       // Apply project color
       if (window.__INITIAL_PROJECT__) {
         setTimeout(() => applyProjectColor(window.__INITIAL_PROJECT__), 100);
       }
     }
   }
-  
+
   // Initialize header buttons
   initHeaderButtons();
 }
@@ -129,7 +131,7 @@ function initHeaderButtons() {
   const headerToggle = document.getElementById("header-toggle");
   const headerSubtitle = document.getElementById("header-subtitle");
   const aboutOverlay = document.getElementById("about");
-  
+
   if (!headerToggle || !headerSubtitle || !aboutOverlay) return;
 
   const headerCenter = headerToggle.closest(".header-center");
@@ -153,12 +155,12 @@ function initHeaderButtons() {
         headerSubtitle.textContent = targetText;
       }
     };
-    
+
     if (fadeIn) {
       // Fade out first, then fade in with new text
       headerSubtitle.style.opacity = "0";
       headerSubtitle.style.transition = "opacity 0.3s ease";
-      
+
       requestAnimationFrame(() => {
         updateText();
         requestAnimationFrame(() => {
@@ -176,66 +178,162 @@ function initHeaderButtons() {
   const homePath = pathPrefix ? `${pathPrefix}/` : "/";
   const body = document.body;
 
-  function showAboutOverlay(immediate = false) {
+  // Cache for available about images
+  let availableAboutImages = null;
+
+  // Get available about images from Eleventy data or detect them
+  async function detectAvailableAboutImages() {
+    if (availableAboutImages !== null) {
+      return availableAboutImages;
+    }
+
+    // First, try to use images from Eleventy global data
+    if (window.__ABOUT_IMAGES__ && Array.isArray(window.__ABOUT_IMAGES__) && window.__ABOUT_IMAGES__.length > 0) {
+      const images = window.__ABOUT_IMAGES__.map((img) => {
+        // Ensure path has leading slash
+        return img.startsWith("/") ? img : `/${img}`;
+      });
+      availableAboutImages = images;
+      console.log("[About] Using images from Eleventy:", images);
+      return images;
+    }
+
+    // Fallback: detect images by trying to load them
+    const imagesToCheck = [1, 2, 3, 4, 5, 6, 7, 8, 9, 10]; // Check up to 10 images
+    const available = [];
+
+    const checkPromises = imagesToCheck.map((num) => {
+      const paddedNum = num.toString().padStart(2, "0");
+      const imagePath = `${pathPrefix}/projects/about/${paddedNum}.jpg`;
+
+      return new Promise((resolve) => {
+        const img = new Image();
+        img.onload = () => {
+          available.push(imagePath);
+          resolve();
+        };
+        img.onerror = () => resolve();
+        img.src = imagePath;
+      });
+    });
+
+    await Promise.all(checkPromises);
+
+    // If no images found, fallback to 01.jpg
+    if (available.length === 0) {
+      available.push(`${pathPrefix}/projects/about/01.jpg`);
+    }
+
+    availableAboutImages = available;
+    console.log("[About] Detected images:", available);
+    return available;
+  }
+
+  function getRandomAboutImage(availableImages) {
+    if (!availableImages || availableImages.length === 0) {
+      return `${pathPrefix}/projects/about/01.jpg`;
+    }
+    const randomIndex = Math.floor(Math.random() * availableImages.length);
+    return availableImages[randomIndex];
+  }
+
+  async function updateAboutImage() {
+    const aboutImage = aboutOverlay.querySelector(".about-image img");
+    if (aboutImage) {
+      // Detect available images first
+      const availableImages = await detectAvailableAboutImages();
+      const newSrc = getRandomAboutImage(availableImages);
+
+      console.log("[About] Selected random image:", newSrc, "from available:", availableImages);
+
+      // Preload the new image before switching
+      return new Promise((resolve) => {
+        const img = new Image();
+        img.onload = () => {
+          aboutImage.src = newSrc;
+          resolve();
+        };
+        img.onerror = () => {
+          // If image fails to load, try fallback
+          aboutImage.src = `${pathPrefix}/projects/about/01.jpg`;
+          resolve();
+        };
+        img.src = newSrc;
+      });
+    }
+    return Promise.resolve();
+  }
+
+  async function showAboutOverlay(immediate = false) {
     const currentPath = window.location.pathname;
-    const isDirectNavigation = currentPath === aboutPath || currentPath === aboutPath.replace(/\/$/, '');
-    
+    const isDirectNavigation = currentPath === aboutPath || currentPath === aboutPath.replace(/\/$/, "");
+
     if (currentPath !== aboutPath) {
       aboutOverlay.dataset.previousPath = currentPath;
     }
 
-    // Show overlay immediately with fade-in animation
-    body.classList.add('about-visible');
-    
-    // Set display first
-    aboutOverlay.style.display = "block";
-    aboutOverlay.style.visibility = "visible";
-    aboutOverlay.style.zIndex = "250";
-    aboutOverlay.classList.remove("fade-out");
-    
-      // Trigger fade-in animation immediately
-      requestAnimationFrame(() => {
-        aboutOverlay.classList.add("visible");
-        aboutOverlay.style.pointerEvents = "auto";
-        body.style.overflow = "hidden";
-        setSubtitle(defaultSubtitleText, true); // Fade in subtitle
-        headerCenter.classList.add("overlay-active");
-      });
-
-    // Handle image separately - fade it in once loaded
-    const aboutImage = aboutOverlay.querySelector('.about-image img');
-    if (aboutImage) {
-      // If image is already loaded, fade it in immediately
-      if (aboutImage.complete && aboutImage.naturalWidth > 0) {
-        requestAnimationFrame(() => {
-          aboutImage.style.opacity = "1";
-        });
-      } else {
-        // Otherwise, wait for it to load and then fade in
-        aboutImage.style.opacity = "0";
-        const fadeInImage = () => {
-          requestAnimationFrame(() => {
-            aboutImage.style.opacity = "1";
-          });
-        };
-        if (aboutImage.complete) {
-          fadeInImage();
-        } else {
-          aboutImage.onload = fadeInImage;
-          aboutImage.onerror = fadeInImage; // Continue even if image fails
-          // Fallback timeout
-          setTimeout(fadeInImage, 1000);
-        }
-      }
+    // Select a random about image on each open (except direct navigation)
+    // Wait for image to load before showing overlay
+    if (!isDirectNavigation) {
+      await updateAboutImage();
     }
 
-    // On direct navigation, show image immediately without transition
+    // Show overlay immediately with fade-in animation
+    body.classList.add("about-visible");
+
+    // Ensure image is visible (will fade in with the overlay)
+    const aboutImage = aboutOverlay.querySelector(".about-image img");
+
+    // On direct navigation, show everything immediately without transition
     if (immediate || isDirectNavigation) {
       aboutOverlay.setAttribute("data-immediate", "true");
+      aboutOverlay.style.display = "block";
+      aboutOverlay.style.visibility = "visible";
+      aboutOverlay.style.zIndex = "250";
+      aboutOverlay.style.opacity = "1";
+      aboutOverlay.style.transition = "none";
+      aboutOverlay.classList.remove("fade-out");
       if (aboutImage) {
         aboutImage.style.opacity = "1";
         aboutImage.style.transition = "none";
       }
+      aboutOverlay.classList.add("visible");
+      aboutOverlay.style.pointerEvents = "auto";
+      body.style.overflow = "hidden";
+      setSubtitle(defaultSubtitleText, true);
+      headerCenter.classList.add("overlay-active");
+    } else {
+      // Set opacity to 0 FIRST, before making it visible
+      aboutOverlay.style.opacity = "0";
+      aboutOverlay.style.transition = "opacity 0.3s ease";
+      aboutOverlay.style.zIndex = "250";
+      aboutOverlay.classList.remove("fade-out");
+
+      // Make it visible but keep opacity at 0
+      aboutOverlay.style.display = "block";
+      aboutOverlay.style.visibility = "visible";
+
+      // Image and text fade in with the overlay - set initial opacity to 0
+      if (aboutImage) {
+        aboutImage.style.opacity = "0";
+        aboutImage.style.transition = "opacity 0.3s ease";
+      }
+
+      // Now trigger fade-in after ensuring everything is set up
+      requestAnimationFrame(() => {
+        requestAnimationFrame(() => {
+          // Now fade in the entire overlay (image and text fade in together)
+          aboutOverlay.style.opacity = "1";
+          if (aboutImage) {
+            aboutImage.style.opacity = "1";
+          }
+          aboutOverlay.classList.add("visible");
+          aboutOverlay.style.pointerEvents = "auto";
+          body.style.overflow = "hidden";
+          setSubtitle(defaultSubtitleText, true); // Fade in subtitle
+          headerCenter.classList.add("overlay-active");
+        });
+      });
     }
 
     if (router && currentPath !== aboutPath) {
@@ -249,7 +347,7 @@ function initHeaderButtons() {
   // Expose function for router to call
   window.__SHOW_ABOUT_OVERLAY__ = showAboutOverlay;
   window.__HIDE_ABOUT_OVERLAY__ = hideAboutOverlay;
-  
+
   // Also expose a direct function to check if about is visible
   window.__IS_ABOUT_VISIBLE__ = () => {
     return aboutOverlay.classList.contains("visible");
@@ -260,23 +358,46 @@ function initHeaderButtons() {
     aboutOverlay.removeAttribute("data-immediate");
     aboutOverlay.removeAttribute("data-initial-about");
     body.removeAttribute("data-initial-about");
-    
-    // Fade out first
-    aboutOverlay.style.opacity = "0";
-    aboutOverlay.classList.add("fade-out");
-    aboutOverlay.classList.remove("visible");
-    body.classList.remove('about-visible');
-    
-    // Wait for transition to complete before hiding
-    setTimeout(() => {
-      aboutOverlay.style.display = "none";
-      aboutOverlay.style.opacity = "";
-      aboutOverlay.style.visibility = "";
-      aboutOverlay.style.zIndex = "";
-      aboutOverlay.style.pointerEvents = "";
-      aboutOverlay.classList.remove("fade-out");
-    }, 300); // Match CSS transition duration
-    
+
+    // Ensure overlay is visible before fading out
+    if (aboutOverlay.style.display === "none") {
+      aboutOverlay.style.display = "block";
+      aboutOverlay.style.visibility = "visible";
+    }
+
+    // Ensure transition is set and overlay is visible, then fade out entire overlay (including image)
+    aboutOverlay.style.transition = "opacity 0.3s ease";
+    aboutOverlay.style.opacity = "1"; // Ensure it starts at 1
+
+    // Use requestAnimationFrame to ensure the opacity is set before transitioning
+    requestAnimationFrame(() => {
+      requestAnimationFrame(() => {
+        // Now fade out the entire overlay (image fades with it)
+        aboutOverlay.style.opacity = "0";
+        aboutOverlay.classList.add("fade-out");
+        aboutOverlay.classList.remove("visible");
+        body.classList.remove("about-visible");
+
+        // Wait for transition to complete before hiding
+        setTimeout(() => {
+          aboutOverlay.style.display = "none";
+          aboutOverlay.style.opacity = "";
+          aboutOverlay.style.visibility = "";
+          aboutOverlay.style.zIndex = "";
+          aboutOverlay.style.pointerEvents = "";
+          aboutOverlay.style.transition = "";
+          aboutOverlay.classList.remove("fade-out");
+
+          // Reset image styles for next time
+          const aboutImage = aboutOverlay.querySelector(".about-image img");
+          if (aboutImage) {
+            aboutImage.style.opacity = "";
+            aboutImage.style.transition = "";
+          }
+        }, 300); // Match CSS transition duration
+      });
+    });
+
     body.style.overflow = "";
     const isProjectView = body.classList.contains("project-visible");
     const nextSubtitle = isProjectView ? getCurrentProjectTitle() : defaultSubtitleText;
@@ -290,7 +411,7 @@ function initHeaderButtons() {
 
       let targetPath = storedPreviousPath || homePath;
       // Always navigate to home path when hiding about overlay (never navigate to about path)
-      if (!targetPath || targetPath === aboutPath || targetPath.includes('/about')) {
+      if (!targetPath || targetPath === aboutPath || targetPath.includes("/about")) {
         targetPath = homePath;
       }
 
@@ -330,7 +451,7 @@ function initHeaderButtons() {
   const handleInteraction = (event) => {
     // Don't prevent default on the header itself, just stop propagation
     event.stopPropagation();
-    
+
     // Simple toggle: check current state and toggle
     const isAboutVisible = aboutOverlay.classList.contains("visible");
     if (isAboutVisible) {
@@ -340,7 +461,7 @@ function initHeaderButtons() {
       // Show overlay
       showAboutOverlay();
     }
-    
+
     if (headerToggle) headerToggle.blur();
     if (headerCenter) headerCenter.blur();
   };
@@ -349,7 +470,7 @@ function initHeaderButtons() {
   // Use capture phase to ensure we catch the event
   headerToggle.addEventListener("click", handleInteraction, true);
   headerCenter.addEventListener("click", handleInteraction, true);
-  
+
   // Reset subtitle when mouse leaves the header
   headerCenter.addEventListener("mouseleave", () => {
     // Don't change subtitle if about overlay is visible
@@ -360,7 +481,7 @@ function initHeaderButtons() {
     const nextSubtitle = isProjectView ? getCurrentProjectTitle() : defaultSubtitleText;
     setSubtitle(nextSubtitle);
   });
-  
+
   // Also reset when mouse leaves the header toggle
   headerToggle.addEventListener("mouseleave", () => {
     // Don't change subtitle if about overlay is visible
