@@ -307,6 +307,91 @@ function setStripsHeight() {
   });
 }
 
+// Helper function to attach event listeners to strips
+function attachStripEventListeners() {
+  if (!stripsContainer) {
+    console.warn("[Strips] No strips container found");
+    return;
+  }
+  
+  // Re-query strips from DOM to ensure we have the latest references
+  const currentStrips = Array.from(stripsContainer.querySelectorAll(".strip"));
+  if (!currentStrips || currentStrips.length === 0) {
+    console.warn("[Strips] No strips found in container");
+    return;
+  }
+
+  // Update allStrips reference to match DOM
+  allStrips = currentStrips;
+  console.log(`[Strips] Attaching listeners to ${allStrips.length} strips`);
+
+  allStrips.forEach((strip, index) => {
+    const projectSlug = strip.getAttribute("data-project");
+    const project = projects.find((p) => p.slug === projectSlug);
+
+    if (project) {
+      // Check if listeners are already attached using a data attribute
+      // But allow re-attaching if strip was removed and re-added to DOM
+      if (strip.dataset.listenersAttached === "true" && strip.parentNode === stripsContainer) {
+        console.log(`[Strips] Strip ${index} (${project.slug}) already has listeners attached`);
+        return; // Already attached and still in DOM
+      }
+      strip.dataset.listenersAttached = "true";
+      console.log(`[Strips] Attaching listeners to strip ${index} (${project.slug})`);
+
+      // Mouse hover events for scramble text
+      strip.addEventListener("mouseenter", () => {
+        // Don't update subtitle if about overlay is visible
+        const aboutOverlay = document.getElementById("about");
+        if (aboutOverlay && aboutOverlay.classList.contains("visible")) {
+          return;
+        }
+        
+        if (subtitleScrambler && headerSubtitle) {
+          subtitleScrambler.scramble(project.title.toUpperCase());
+        }
+
+        // Preload project content on hover for faster navigation
+        preloadProject(projectSlug);
+      });
+
+      strip.addEventListener("mouseleave", () => {
+        // Don't update subtitle if about overlay is visible
+        const aboutOverlay = document.getElementById("about");
+        if (aboutOverlay && aboutOverlay.classList.contains("visible")) {
+          return;
+        }
+        
+        if (subtitleScrambler && headerSubtitle) {
+          // Always return to the stored current page title
+          subtitleScrambler.scramble(currentPageTitle.toUpperCase());
+        }
+      });
+
+      strip.addEventListener("click", (e) => {
+        console.log("[Strips] Click detected on strip:", project.slug, e);
+        if (document.body?.dataset?.filtering === "true") {
+          console.log("[Strips] Filtering active, ignoring click");
+          return;
+        }
+        const computedId = project.slug || project.title.toLowerCase().replace(/\s+/g, "-");
+        const projectPath = getProjectPath(computedId);
+        console.log("[Strips] Navigating to:", projectPath);
+
+        strip.classList.add("selected");
+        allStrips.forEach((s) => s !== strip && s.classList.add("not-selected"));
+        if (navigationTimeoutId) {
+          clearTimeout(navigationTimeoutId);
+        }
+        navigationTimeoutId = setTimeout(() => {
+          router.navigate(projectPath);
+          navigationTimeoutId = null;
+        }, 600);
+      });
+    }
+  });
+}
+
 // ---------- Initialize Strips ----------
 export function initializeStrips() {
   // Populate DOM references
@@ -414,6 +499,9 @@ export function initializeStrips() {
               allStrips = shuffledStrips;
               stripImages = Array.from(stripsContainer?.querySelectorAll(".strip-image") || []);
 
+              // Attach event listeners now that strips are in the DOM
+              attachStripEventListeners();
+
               // NOW start the timeout - this ensures we wait from when the last strip is actually added
               // Add a small buffer to ensure all animations complete
               setTimeout(() => {
@@ -455,6 +543,9 @@ export function initializeStrips() {
 
       allStrips = shuffledStrips;
       stripImages = allStripImages;
+
+      // Attach event listeners now that strips are in the DOM
+      attachStripEventListeners();
 
       // Mark as initialized after a delay
       const totalStrips = shuffledStrips.length;
@@ -528,58 +619,10 @@ export function initializeStrips() {
     return project?.title || defaultSubtitle;
   }
 
-  allStrips.forEach((strip) => {
-    const projectSlug = strip.getAttribute("data-project");
-    const project = projects.find((p) => p.slug === projectSlug);
-
-    if (project) {
-      // Mouse hover events for scramble text
-      strip.addEventListener("mouseenter", () => {
-        // Don't update subtitle if about overlay is visible
-        const aboutOverlay = document.getElementById("about");
-        if (aboutOverlay && aboutOverlay.classList.contains("visible")) {
-          return;
-        }
-        
-        if (subtitleScrambler && headerSubtitle) {
-          subtitleScrambler.scramble(project.title.toUpperCase());
-        }
-
-        // Preload project content on hover for faster navigation
-        preloadProject(projectSlug);
-      });
-
-      strip.addEventListener("mouseleave", () => {
-        // Don't update subtitle if about overlay is visible
-        const aboutOverlay = document.getElementById("about");
-        if (aboutOverlay && aboutOverlay.classList.contains("visible")) {
-          return;
-        }
-        
-        if (subtitleScrambler && headerSubtitle) {
-          // Always return to the stored current page title
-          subtitleScrambler.scramble(currentPageTitle.toUpperCase());
-        }
-      });
-
-      strip.addEventListener("click", () => {
-        if (document.body?.dataset?.filtering === "true") {
-          return;
-        }
-        const computedId = project.slug || project.title.toLowerCase().replace(/\s+/g, "-");
-        const projectPath = getProjectPath(computedId);
-
-        strip.classList.add("selected");
-        allStrips.forEach((s) => s !== strip && s.classList.add("not-selected"));
-        if (navigationTimeoutId) {
-          clearTimeout(navigationTimeoutId);
-        }
-        navigationTimeoutId = setTimeout(() => {
-          router.navigate(projectPath);
-          navigationTimeoutId = null;
-        }, 600);
-      });
-    }
+  // Attach event listeners - always try to attach, function will check if already attached
+  // Use requestAnimationFrame to ensure DOM is ready
+  requestAnimationFrame(() => {
+    attachStripEventListeners();
   });
 
   // Attach mouse/touch event listeners for parallax effect

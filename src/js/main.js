@@ -1,7 +1,7 @@
 import "./strips.js";
 import "./router.js";
 import { router } from "./router.js";
-import { applyProjectColor, initializeStrips } from "./strips.js";
+import { applyProjectColor, initializeStrips, updateCurrentPageTitle } from "./strips.js";
 import { loadingManager } from "./utils/loadingManager.js";
 import "./melody.js";
 import { initializeGrain } from "./grain.js";
@@ -86,21 +86,61 @@ async function showContentForRoute(route) {
     if (projects) {
       body.classList.add("project-visible");
 
+      // Load strip images on project pages without full initialization (to avoid flash)
+      const stripsContainer = document.getElementById("strips");
+      if (stripsContainer) {
+        const stripImages = Array.from(stripsContainer.querySelectorAll(".strip-image"));
+        stripImages.forEach((img) => {
+          const bgImage = img.getAttribute("data-bg-image");
+          if (bgImage && !img.style.backgroundImage) {
+            img.style.backgroundImage = `url('${bgImage}')`;
+            img.classList.add("loaded");
+          }
+        });
+      }
+
       // Fade in project
       requestAnimationFrame(() => {
         projects.style.opacity = "1";
         projects.style.visibility = "visible";
       });
 
-      // Apply project color
+      // Apply project color and update header subtitle
       if (window.__INITIAL_PROJECT__) {
-        setTimeout(() => applyProjectColor(window.__INITIAL_PROJECT__), 100);
+        const projectTitle = window.__INITIAL_PROJECT__?.title;
+        if (projectTitle) {
+          // Initialize header buttons first to ensure scrambler is available
+          initHeaderButtons();
+          // Update subtitle after a short delay to ensure scrambler is initialized
+          setTimeout(() => {
+            updateCurrentPageTitle(projectTitle);
+            applyProjectColor(window.__INITIAL_PROJECT__);
+          }, 100);
+        } else {
+          setTimeout(() => applyProjectColor(window.__INITIAL_PROJECT__), 100);
+        }
+      } else {
+        // Fallback: extract project title from URL if __INITIAL_PROJECT__ is not available
+        const pathMatch = window.location.pathname.match(/\/work\/([^\/]+)/);
+        if (pathMatch) {
+          const slug = pathMatch[1];
+          const projectsData = window.__PROJECTS_DATA__ || [];
+          const project = projectsData.find((p) => p.slug === slug);
+          if (project?.title) {
+            initHeaderButtons();
+            setTimeout(() => {
+              updateCurrentPageTitle(project.title);
+            }, 100);
+          }
+        }
       }
     }
   }
 
-  // Initialize header buttons
-  initHeaderButtons();
+  // Initialize header buttons (if not already initialized in project route)
+  if (route !== "project") {
+    initHeaderButtons();
+  }
 }
 
 async function initializeApp() {

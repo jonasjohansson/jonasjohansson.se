@@ -235,6 +235,19 @@ class SPARouter {
     // Reset any active filters when entering a project
     resetFilters();
 
+    // Load strip images on project pages without full initialization (to avoid flash)
+    const stripsContainer = document.getElementById("strips");
+    if (stripsContainer) {
+      const stripImages = Array.from(stripsContainer.querySelectorAll(".strip-image"));
+      stripImages.forEach((img) => {
+        const bgImage = img.getAttribute("data-bg-image");
+        if (bgImage && !img.style.backgroundImage) {
+          img.style.backgroundImage = `url('${bgImage}')`;
+          img.classList.add("loaded");
+        }
+      });
+    }
+
     const clickedStrip = document.querySelector(`.strip[data-project="${slug}"]`);
 
     // Start strip animation immediately
