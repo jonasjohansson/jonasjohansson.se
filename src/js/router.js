@@ -1,4 +1,5 @@
-import { resetFilters, applyProjectColor, updateCurrentPageTitle } from "./strips.js";
+import { resetFilters, applyProjectColor, updateCurrentPageTitle, initializeStrips } from "./strips.js";
+import { getStripsScrollPosition, getProjectScrollPosition } from "./utils/scrollPosition.js";
 import { getProjectPath } from "./utils/pathBuilder.js";
 import { getPathPrefix } from "./utils/routeUtils.js";
 
@@ -137,11 +138,9 @@ class SPARouter {
     this.updateStripVisibility(null);
 
     // Auto-scroll to strips position when returning home
-    import("./utils/scrollPosition.js").then(({ getStripsScrollPosition }) => {
-      window.scrollTo({
-        top: getStripsScrollPosition(),
-        behavior: "auto", // Instant for navigation
-      });
+    window.scrollTo({
+      top: getStripsScrollPosition(),
+      behavior: "auto", // Instant for navigation
     });
 
     // Ensure strips are visible and trigger animation on return
@@ -155,10 +154,7 @@ class SPARouter {
       
       // Initialize strips if they haven't been initialized yet
       if (!stripsContainer.classList.contains("strips-initialized")) {
-        const { initializeStrips } = await import("./strips.js");
-        if (initializeStrips) {
-          initializeStrips();
-        }
+        initializeStrips();
       }
     }
 
@@ -230,6 +226,8 @@ class SPARouter {
     // Will scroll after content is loaded - see end of showProject function
 
     // Update header subtitle (document title stays as name)
+    // ALWAYS call updateCurrentPageTitle to ensure state is synced correctly
+    // It will check internally if scrambling is needed
     updateCurrentPageTitle(project.title);
 
     // Reset any active filters when entering a project
@@ -327,11 +325,9 @@ class SPARouter {
             });
           } else {
             // Fallback to old method if content not found
-      import("./utils/scrollPosition.js").then(({ getProjectScrollPosition }) => {
-        window.scrollTo({
-          top: getProjectScrollPosition(),
-                behavior: "auto",
-              });
+            window.scrollTo({
+              top: getProjectScrollPosition(),
+              behavior: "auto",
             });
           }
         });

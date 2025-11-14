@@ -33,12 +33,14 @@
   href="/assets/fonts/OffBit-101Bold.JQCzxZZ0.woff2"
   crossorigin />
 
-<!-- Preload about image to prevent pop-in when opening about -->
+<!-- Preload about image only on about page to prevent pop-in when opening about -->
+{% if page.url === '/about/' %}
 <link
   rel="preload"
   as="image"
   href="/projects/about/01.jpg"
   fetchpriority="low" />
+{% endif %}
 
 {# Preload first strip/hero image to improve LCP #} {% if projectsForJS and projectsForJS[0] and projectsForJS[0].images and
 projectsForJS[0].images[0] %}

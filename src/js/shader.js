@@ -1,5 +1,6 @@
-import GUI from 'lil-gui';
-import { grainParams, updateGrain as updateGrainFromModule } from './grain.js';
+import GUI from "lil-gui";
+import { grainParams, updateGrain as updateGrainFromModule } from "./grain.js";
+import shaderSettings from "./config/shader-settings.json";
 
 const simplexNoiseSource = `
   vec3 mod289(vec3 x) { return x - floor(x * (1.0 / 289.0)) * 289.0; }
@@ -260,11 +261,11 @@ function createDefaultParams() {
     patternTurbulence: 0.0,
     globalBlur: 0.0,
     enabled: true,
-    blendMode: 'screen',
+    blendMode: "screen",
     shape: 1.0, // 1.0 = circle, 0.0 = square
     grainOpacity: 0.1,
     grainScale: 1.0,
-    grainBlend: 'screen',
+    grainBlend: "screen",
     brightness: 0.0,
     contrast: 1.0,
   };
@@ -285,21 +286,21 @@ class ShaderInstance {
     this.params = createDefaultParams();
     // Apply config overrides
     Object.assign(this.params, config);
-    
-    this.gl = this.canvas.getContext('webgl2') || this.canvas.getContext('webgl');
+
+    this.gl = this.canvas.getContext("webgl2") || this.canvas.getContext("webgl");
     if (!this.gl) {
-      console.error('WebGL not supported');
+      console.error("WebGL not supported");
       return;
     }
 
-    this.canvas.style.display = 'block';
-    this.canvas.style.visibility = 'visible';
+    this.canvas.style.display = "block";
+    this.canvas.style.visibility = "visible";
 
     const vertexShader = createShader(this.gl, this.gl.VERTEX_SHADER, vertexShaderSource);
     const fragmentShader = createShader(this.gl, this.gl.FRAGMENT_SHADER, fragmentShaderSource);
     this.program = createProgram(this.gl, vertexShader, fragmentShader);
     if (!this.program) {
-      console.error('Failed to create WebGL program');
+      console.error("Failed to create WebGL program");
       return;
     }
 
@@ -309,43 +310,43 @@ class ShaderInstance {
     this.gl.bufferData(this.gl.ARRAY_BUFFER, new Float32Array([-1, -1, 1, -1, -1, 1, -1, 1, 1, -1, 1, 1]), this.gl.STATIC_DRAW);
 
     // Get uniform locations
-    this.positionLocation = this.gl.getAttribLocation(this.program, 'a_position');
-    this.resolutionLocation = this.gl.getUniformLocation(this.program, 'u_resolution');
-    this.timeLocation = this.gl.getUniformLocation(this.program, 'u_time');
-    this.centerLocation = this.gl.getUniformLocation(this.program, 'u_center');
-    this.scaleXLocation = this.gl.getUniformLocation(this.program, 'u_scaleX');
-    this.scaleYLocation = this.gl.getUniformLocation(this.program, 'u_scaleY');
-    this.blurLocation = this.gl.getUniformLocation(this.program, 'u_blur');
-    this.featherLocation = this.gl.getUniformLocation(this.program, 'u_feather');
-    this.flowSpeedLocation = this.gl.getUniformLocation(this.program, 'u_flowSpeed');
-    this.flowAmountLocation = this.gl.getUniformLocation(this.program, 'u_flowAmount');
-    this.flowDirLocation = this.gl.getUniformLocation(this.program, 'u_flowDir');
-    this.layerOpacityLocation = this.gl.getUniformLocation(this.program, 'u_layerOpacity');
-    this.noiseScaleLocation = this.gl.getUniformLocation(this.program, 'u_noiseScale');
-    this.waveHeightLocation = this.gl.getUniformLocation(this.program, 'u_waveHeight');
-    this.waveSpeedLocation = this.gl.getUniformLocation(this.program, 'u_waveSpeed');
-    this.positionLocation_uniform = this.gl.getUniformLocation(this.program, 'u_position');
-    this.patternScaleLocation = this.gl.getUniformLocation(this.program, 'u_patternScale');
-    this.patternSpeedLocation = this.gl.getUniformLocation(this.program, 'u_patternSpeed');
-    this.patternRotationLocation = this.gl.getUniformLocation(this.program, 'u_patternRotation');
-    this.patternOffsetLocation = this.gl.getUniformLocation(this.program, 'u_patternOffset');
-    this.patternIntensityLocation = this.gl.getUniformLocation(this.program, 'u_patternIntensity');
-    this.patternContrastLocation = this.gl.getUniformLocation(this.program, 'u_patternContrast');
-    this.patternTurbulenceLocation = this.gl.getUniformLocation(this.program, 'u_patternTurbulence');
-    this.shapeLocation = this.gl.getUniformLocation(this.program, 'u_shape');
-    this.colorStop1Location = this.gl.getUniformLocation(this.program, 'u_colorStop1');
-    this.colorStop2Location = this.gl.getUniformLocation(this.program, 'u_colorStop2');
-    this.colorStop3Location = this.gl.getUniformLocation(this.program, 'u_colorStop3');
-    this.colorStop4Location = this.gl.getUniformLocation(this.program, 'u_colorStop4');
-    this.colorStop5Location = this.gl.getUniformLocation(this.program, 'u_colorStop5');
-    this.stopPos1Location = this.gl.getUniformLocation(this.program, 'u_stopPos1');
-    this.stopPos2Location = this.gl.getUniformLocation(this.program, 'u_stopPos2');
-    this.stopPos3Location = this.gl.getUniformLocation(this.program, 'u_stopPos3');
-    this.stopPos4Location = this.gl.getUniformLocation(this.program, 'u_stopPos4');
-    this.stopPos5Location = this.gl.getUniformLocation(this.program, 'u_stopPos5');
+    this.positionLocation = this.gl.getAttribLocation(this.program, "a_position");
+    this.resolutionLocation = this.gl.getUniformLocation(this.program, "u_resolution");
+    this.timeLocation = this.gl.getUniformLocation(this.program, "u_time");
+    this.centerLocation = this.gl.getUniformLocation(this.program, "u_center");
+    this.scaleXLocation = this.gl.getUniformLocation(this.program, "u_scaleX");
+    this.scaleYLocation = this.gl.getUniformLocation(this.program, "u_scaleY");
+    this.blurLocation = this.gl.getUniformLocation(this.program, "u_blur");
+    this.featherLocation = this.gl.getUniformLocation(this.program, "u_feather");
+    this.flowSpeedLocation = this.gl.getUniformLocation(this.program, "u_flowSpeed");
+    this.flowAmountLocation = this.gl.getUniformLocation(this.program, "u_flowAmount");
+    this.flowDirLocation = this.gl.getUniformLocation(this.program, "u_flowDir");
+    this.layerOpacityLocation = this.gl.getUniformLocation(this.program, "u_layerOpacity");
+    this.noiseScaleLocation = this.gl.getUniformLocation(this.program, "u_noiseScale");
+    this.waveHeightLocation = this.gl.getUniformLocation(this.program, "u_waveHeight");
+    this.waveSpeedLocation = this.gl.getUniformLocation(this.program, "u_waveSpeed");
+    this.positionLocation_uniform = this.gl.getUniformLocation(this.program, "u_position");
+    this.patternScaleLocation = this.gl.getUniformLocation(this.program, "u_patternScale");
+    this.patternSpeedLocation = this.gl.getUniformLocation(this.program, "u_patternSpeed");
+    this.patternRotationLocation = this.gl.getUniformLocation(this.program, "u_patternRotation");
+    this.patternOffsetLocation = this.gl.getUniformLocation(this.program, "u_patternOffset");
+    this.patternIntensityLocation = this.gl.getUniformLocation(this.program, "u_patternIntensity");
+    this.patternContrastLocation = this.gl.getUniformLocation(this.program, "u_patternContrast");
+    this.patternTurbulenceLocation = this.gl.getUniformLocation(this.program, "u_patternTurbulence");
+    this.shapeLocation = this.gl.getUniformLocation(this.program, "u_shape");
+    this.colorStop1Location = this.gl.getUniformLocation(this.program, "u_colorStop1");
+    this.colorStop2Location = this.gl.getUniformLocation(this.program, "u_colorStop2");
+    this.colorStop3Location = this.gl.getUniformLocation(this.program, "u_colorStop3");
+    this.colorStop4Location = this.gl.getUniformLocation(this.program, "u_colorStop4");
+    this.colorStop5Location = this.gl.getUniformLocation(this.program, "u_colorStop5");
+    this.stopPos1Location = this.gl.getUniformLocation(this.program, "u_stopPos1");
+    this.stopPos2Location = this.gl.getUniformLocation(this.program, "u_stopPos2");
+    this.stopPos3Location = this.gl.getUniformLocation(this.program, "u_stopPos3");
+    this.stopPos4Location = this.gl.getUniformLocation(this.program, "u_stopPos4");
+    this.stopPos5Location = this.gl.getUniformLocation(this.program, "u_stopPos5");
     this.controlPointLocations = Array.from({ length: 10 }, (_, i) => this.gl.getUniformLocation(this.program, `u_controlPoint${i}`));
-    this.brightnessLocation = this.gl.getUniformLocation(this.program, 'u_brightness');
-    this.contrastLocation = this.gl.getUniformLocation(this.program, 'u_contrast');
+    this.brightnessLocation = this.gl.getUniformLocation(this.program, "u_brightness");
+    this.contrastLocation = this.gl.getUniformLocation(this.program, "u_contrast");
 
     this.startTime = performance.now() / 1000.0;
     this.animationFrameId = null;
@@ -355,11 +356,7 @@ class ShaderInstance {
     if (!this.canvas || !this.gl) return;
     const displayWidth = this.canvas.clientWidth;
     // Use document height instead of viewport height for full page coverage
-    const displayHeight = Math.max(
-      document.documentElement.scrollHeight,
-      document.documentElement.clientHeight,
-      window.innerHeight
-    );
+    const displayHeight = Math.max(document.documentElement.scrollHeight, document.documentElement.clientHeight, window.innerHeight);
     if (this.canvas.width !== displayWidth || this.canvas.height !== displayHeight) {
       this.canvas.width = displayWidth;
       this.canvas.height = displayHeight;
@@ -388,7 +385,7 @@ class ShaderInstance {
     this.gl.uniform2f(this.resolutionLocation, this.canvas.width, this.canvas.height);
     this.gl.uniform1f(this.timeLocation, currentTime);
     this.gl.uniform2f(this.centerLocation, this.canvas.width / 2, this.canvas.height / 2);
-    
+
     // Calculate scale so that scaleX = 1.0 means 100% viewport width
     // For a square: we want max(abs(p.x), abs(p.y)) = baseRadius when at viewport edge
     // At viewport edge: p.x = (canvas.width/2) / normalizedScaleX = baseRadius
@@ -398,8 +395,8 @@ class ShaderInstance {
     // When scaleX = 2.0, we want 200% width (shape should be 2x larger, so normalizedScaleX should be 2x larger)
     // The shader divides by normalizedScaleX, so: larger normalizedScaleX → smaller p → larger shape
     const baseRadius = 300.0;
-    const baseScaleX = (this.canvas.width / 2) / baseRadius;
-    const baseScaleY = (this.canvas.height / 2) / baseRadius;
+    const baseScaleX = this.canvas.width / 2 / baseRadius;
+    const baseScaleY = this.canvas.height / 2 / baseRadius;
     // scaleX = 1.0 → baseScaleX (100% width)
     // scaleX = 2.0 → baseScaleX * 2 (200% width, larger shape)
     // scaleX = 0.5 → baseScaleX * 0.5 (50% width, smaller shape)
@@ -412,7 +409,7 @@ class ShaderInstance {
     this.gl.uniform1f(this.featherLocation, this.params.feather);
     this.gl.uniform1f(this.flowSpeedLocation, this.params.flowSpeed);
     this.gl.uniform1f(this.flowAmountLocation, this.params.flowAmount);
-    const angleRad = this.params.flowAngle * Math.PI / 180;
+    const angleRad = (this.params.flowAngle * Math.PI) / 180;
     this.gl.uniform2f(this.flowDirLocation, Math.cos(angleRad), Math.sin(angleRad));
     this.gl.uniform1f(this.layerOpacityLocation, this.params.layerOpacity);
     this.gl.uniform1f(this.noiseScaleLocation, this.params.noiseScale);
@@ -420,7 +417,7 @@ class ShaderInstance {
     this.gl.uniform1f(this.waveSpeedLocation, this.params.waveSpeed);
     this.gl.uniform1f(this.patternScaleLocation, this.params.patternScale);
     this.gl.uniform1f(this.patternSpeedLocation, this.params.patternSpeed);
-    this.gl.uniform1f(this.patternRotationLocation, this.params.patternRotation * Math.PI / 180);
+    this.gl.uniform1f(this.patternRotationLocation, (this.params.patternRotation * Math.PI) / 180);
     this.gl.uniform2f(this.patternOffsetLocation, this.params.patternOffsetX, this.params.patternOffsetY);
     this.gl.uniform1f(this.patternIntensityLocation, this.params.patternIntensity);
     this.gl.uniform1f(this.patternContrastLocation, this.params.patternContrast);
@@ -430,12 +427,12 @@ class ShaderInstance {
     // Calculate position - fixed positions based on config
     let posX = this.params.positionX;
     let posY = this.params.positionY;
-    
+
     if (this.params.positionMode === "relative") {
-      posX = (this.params.positionPercentX || 0) * this.canvas.width / 200.0;
-      posY = (this.params.positionPercentY || 0) * this.canvas.height / 200.0;
+      posX = ((this.params.positionPercentX || 0) * this.canvas.width) / 200.0;
+      posY = ((this.params.positionPercentY || 0) * this.canvas.height) / 200.0;
     }
-    
+
     this.gl.uniform2f(this.positionLocation_uniform, posX, posY);
 
     const rgb1 = hexToRgb(this.params.colorStop1);
@@ -481,7 +478,6 @@ class ShaderInstance {
   }
 }
 
-
 function createGUI() {
   if (gui) return;
 
@@ -489,114 +485,127 @@ function createGUI() {
   if (shaderInstances.length === 0) return;
   const params = shaderInstances[0].params;
 
-  gui = new GUI({ title: 'Shader Controls' });
-  gui.domElement.style.position = 'fixed';
-  gui.domElement.style.top = '20px';
-  gui.domElement.style.left = '20px';
-  gui.domElement.style.zIndex = '10002';
+  gui = new GUI({ title: "Shader Controls" });
+  gui.domElement.style.position = "fixed";
+  gui.domElement.style.top = "20px";
+  gui.domElement.style.left = "20px";
+  gui.domElement.style.zIndex = "10002";
   gui.hide();
 
   gui.onChange(() => {
     // Sync changes to all instances
-    shaderInstances.forEach(instance => {
+    shaderInstances.forEach((instance) => {
       Object.assign(instance.params, params);
     });
     // Note: Changes are only saved when you export settings
   });
 
   // Add export/import buttons
-  const settingsFolder = gui.addFolder('Settings');
+  const settingsFolder = gui.addFolder("Settings");
   const exportButton = { exportSettings: () => exportSettings() };
-  settingsFolder.add(exportButton, 'exportSettings').name('Export Settings');
-  
-  gui.add(params, 'enabled').name('Enabled');
-  const blurController = gui.add(params, 'globalBlur', 0, 100, 0.5).name('Global Blur');
+  settingsFolder.add(exportButton, "exportSettings").name("Export Settings");
+
+  gui.add(params, "enabled").name("Enabled");
+  const blurController = gui.add(params, "globalBlur", 0, 100, 0.5).name("Global Blur");
   blurController.onChange(() => {
     // Apply blur immediately to all instances
-    shaderInstances.forEach(instance => {
+    shaderInstances.forEach((instance) => {
       instance.params.globalBlur = params.globalBlur;
       const blurValue = params.globalBlur > 0 ? `${params.globalBlur}px` : "none";
       instance.canvas.style.filter = `blur(${blurValue})`;
     });
   });
-  
-  const blendModes = ['normal', 'multiply', 'screen', 'overlay', 'soft-light', 'hard-light', 'color-dodge', 'color-burn', 'darken', 'lighten', 'difference', 'exclusion'];
-  const blendController = gui.add(params, 'blendMode', blendModes).name('Blend Mode');
+
+  const blendModes = [
+    "normal",
+    "multiply",
+    "screen",
+    "overlay",
+    "soft-light",
+    "hard-light",
+    "color-dodge",
+    "color-burn",
+    "darken",
+    "lighten",
+    "difference",
+    "exclusion",
+  ];
+  const blendController = gui.add(params, "blendMode", blendModes).name("Blend Mode");
   blendController.onChange(() => {
     // Apply blend mode immediately to all instances
-    shaderInstances.forEach(instance => {
+    shaderInstances.forEach((instance) => {
       instance.params.blendMode = params.blendMode;
       instance.canvas.style.mixBlendMode = params.blendMode;
     });
   });
-  
-  const grainFolder = gui.addFolder('Grain/Noise');
-  const grainOpacityController = grainFolder.add(params, 'grainOpacity', 0, 1, 0.01).name('Grain Opacity');
+
+  const grainFolder = gui.addFolder("Grain/Noise");
+  const grainOpacityController = grainFolder.add(params, "grainOpacity", 0, 1, 0.01).name("Grain Opacity");
   grainOpacityController.onChange(() => {
     grainParams.opacity = params.grainOpacity;
     updateGrainFromModule();
   });
-  
-  const grainScaleController = grainFolder.add(params, 'grainScale', 0.1, 5.0, 0.1).name('Grain Scale');
+
+  const grainScaleController = grainFolder.add(params, "grainScale", 0.1, 5.0, 0.1).name("Grain Scale");
   grainScaleController.onChange(() => {
     grainParams.scale = params.grainScale;
     updateGrainFromModule();
   });
-  
-  const grainBlendController = grainFolder.add(params, 'grainBlend', blendModes).name('Grain Blend Mode');
+
+  const grainBlendController = grainFolder.add(params, "grainBlend", blendModes).name("Grain Blend Mode");
   grainBlendController.onChange(() => {
     grainParams.blend = params.grainBlend;
     updateGrainFromModule();
   });
 
-  const gradientFolder = gui.addFolder('Gradient Colors');
-  gradientFolder.addColor(params, 'colorStop1').name('Stop 1');
-  gradientFolder.addColor(params, 'colorStop2').name('Stop 2');
-  gradientFolder.addColor(params, 'colorStop3').name('Stop 3');
-  gradientFolder.addColor(params, 'colorStop4').name('Stop 4');
-  gradientFolder.addColor(params, 'colorStop5').name('Stop 5');
+  const gradientFolder = gui.addFolder("Gradient Colors");
+  gradientFolder.addColor(params, "colorStop1").name("Stop 1");
+  gradientFolder.addColor(params, "colorStop2").name("Stop 2");
+  gradientFolder.addColor(params, "colorStop3").name("Stop 3");
+  gradientFolder.addColor(params, "colorStop4").name("Stop 4");
+  gradientFolder.addColor(params, "colorStop5").name("Stop 5");
 
-  const stopPosFolder = gui.addFolder('Color Stop Positions');
-  stopPosFolder.add(params, 'stopPos1', 0, 1, 0.01).name('Stop 1 Position');
-  stopPosFolder.add(params, 'stopPos2', 0, 1, 0.01).name('Stop 2 Position');
-  stopPosFolder.add(params, 'stopPos3', 0, 1, 0.01).name('Stop 3 Position');
-  stopPosFolder.add(params, 'stopPos4', 0, 1, 0.01).name('Stop 4 Position');
-  stopPosFolder.add(params, 'stopPos5', 0, 1, 0.01).name('Stop 5 Position');
+  const stopPosFolder = gui.addFolder("Color Stop Positions");
+  stopPosFolder.add(params, "stopPos1", 0, 1, 0.01).name("Stop 1 Position");
+  stopPosFolder.add(params, "stopPos2", 0, 1, 0.01).name("Stop 2 Position");
+  stopPosFolder.add(params, "stopPos3", 0, 1, 0.01).name("Stop 3 Position");
+  stopPosFolder.add(params, "stopPos4", 0, 1, 0.01).name("Stop 4 Position");
+  stopPosFolder.add(params, "stopPos5", 0, 1, 0.01).name("Stop 5 Position");
 
-  const positionFolder = gui.addFolder('Position');
-  positionFolder.add(params, 'positionMode', ['absolute', 'relative']).name('Position Mode');
-  positionFolder.add(params, 'positionX', -1000, 1000, 1).name('Position X (pixels)');
-  positionFolder.add(params, 'positionY', -1000, 1000, 1).name('Position Y (pixels)');
-  positionFolder.add(params, 'positionPercentX', -100, 100, 1).name('Position X (%)');
-  positionFolder.add(params, 'positionPercentY', -100, 100, 1).name('Position Y (%)');
+  const positionFolder = gui.addFolder("Position");
+  positionFolder.add(params, "positionMode", ["absolute", "relative"]).name("Position Mode");
+  positionFolder.add(params, "positionX", -1000, 1000, 1).name("Position X (pixels)");
+  positionFolder.add(params, "positionY", -1000, 1000, 1).name("Position Y (pixels)");
+  positionFolder.add(params, "positionPercentX", -100, 100, 1).name("Position X (%)");
+  positionFolder.add(params, "positionPercentY", -100, 100, 1).name("Position Y (%)");
 
-  gui.add(params, 'scaleX', 0, 2.0, 0.01).name('Width Scale');
-  gui.add(params, 'scaleY', 0, 2.0, 0.01).name('Height Scale');
-  gui.add(params, 'shape', { 'Circle': 1.0, 'Square': 0.0 }).name('Shape');
-  gui.add(params, 'blur', 0, 200, 1).name('Blur');
-  gui.add(params, 'feather', 0, 150, 1).name('Feather');
-  gui.add(params, 'layerOpacity', 0, 1, 0.01).name('Opacity');
-  gui.add(params, 'brightness', -1, 1, 0.01).name('Brightness');
-  gui.add(params, 'contrast', 0, 2, 0.01).name('Contrast');
-  gui.add(params, 'flowSpeed', 0, 5, 0.1).name('Flow Speed');
-  gui.add(params, 'flowAmount', 0, 10, 0.1).name('Flow Amount');
-  gui.add(params, 'flowAngle', 0, 360, 1).name('Flow Direction (°)');
-  gui.add(params, 'noiseScale', 0.1, 5.0, 0.1).name('Noise Scale');
-  gui.add(params, 'waveHeight', 0, 300, 1).name('Wave Height');
-  gui.add(params, 'waveSpeed', 0, 5, 0.1).name('Wave Speed');
+  gui.add(params, "scaleX", 0, 2.0, 0.01).name("Width Scale");
+  gui.add(params, "scaleY", 0, 2.0, 0.01).name("Height Scale");
+  gui.add(params, "shape", { Circle: 1.0, Square: 0.0 }).name("Shape");
+  gui.add(params, "blur", 0, 200, 1).name("Blur");
+  gui.add(params, "feather", 0, 150, 1).name("Feather");
+  gui.add(params, "layerOpacity", 0, 1, 0.01).name("Opacity");
+  gui.add(params, "brightness", -1, 1, 0.01).name("Brightness");
+  gui.add(params, "contrast", 0, 2, 0.01).name("Contrast");
+  gui.add(params, "flowSpeed", 0, 5, 0.1).name("Flow Speed");
+  gui.add(params, "flowAmount", 0, 10, 0.1).name("Flow Amount");
+  gui.add(params, "flowAngle", 0, 360, 1).name("Flow Direction (°)");
+  gui.add(params, "noiseScale", 0.1, 5.0, 0.1).name("Noise Scale");
+  gui.add(params, "waveHeight", 0, 300, 1).name("Wave Height");
+  gui.add(params, "waveSpeed", 0, 5, 0.1).name("Wave Speed");
 
-  const patternFolder = gui.addFolder('Pattern Controls');
-  patternFolder.add(params, 'patternScale', 0.1, 10.0, 0.1).name('Pattern Scale');
-  patternFolder.add(params, 'patternSpeed', 0, 10, 0.1).name('Pattern Speed');
-  patternFolder.add(params, 'patternRotation', 0, 360, 1).name('Pattern Rotation (°)');
-  patternFolder.add(params, 'patternOffsetX', -1000, 1000, 1).name('Pattern Offset X');
-  patternFolder.add(params, 'patternOffsetY', -1000, 1000, 1).name('Pattern Offset Y');
-  patternFolder.add(params, 'patternIntensity', 0, 5, 0.1).name('Pattern Intensity');
-  patternFolder.add(params, 'patternContrast', 0, 10, 0.1).name('Pattern Contrast');
-  patternFolder.add(params, 'patternTurbulence', 0, 5, 0.1).name('Pattern Turbulence');
+  const patternFolder = gui.addFolder("Pattern Controls");
+  patternFolder.add(params, "patternScale", 0.1, 10.0, 0.1).name("Pattern Scale");
+  patternFolder.add(params, "patternSpeed", 0, 10, 0.1).name("Pattern Speed");
+  patternFolder.add(params, "patternRotation", 0, 360, 1).name("Pattern Rotation (°)");
+  patternFolder.add(params, "patternOffsetX", -1000, 1000, 1).name("Pattern Offset X");
+  patternFolder.add(params, "patternOffsetY", -1000, 1000, 1).name("Pattern Offset Y");
+  patternFolder.add(params, "patternIntensity", 0, 5, 0.1).name("Pattern Intensity");
+  patternFolder.add(params, "patternContrast", 0, 10, 0.1).name("Pattern Contrast");
+  patternFolder.add(params, "patternTurbulence", 0, 5, 0.1).name("Pattern Turbulence");
 
-  const controlPointsFolder = gui.addFolder('Control Points');
-  const angleNames = ["0°","36°","72°","108°","144°","180°","216°","252°","288°","324°"];
+  const controlPointsFolder = gui.addFolder("Control Points");
+  const angleNames = ["0°", "36°", "72°", "108°", "144°", "180°", "216°", "252°", "288°", "324°"];
   for (let i = 0; i < 10; i++) {
     controlPointsFolder.add(params, `controlPoint${i}`, -100, 100, 0.5).name(`Point ${i} (${angleNames[i]})`);
   }
@@ -620,62 +629,61 @@ function exportSettings() {
   delete cleanedParams.cursorY;
   delete cleanedParams.followCursor;
   const settings = {
-    params: cleanedParams
+    params: cleanedParams,
   };
-  
+
   // Create download
   const dataStr = JSON.stringify(settings, null, 2);
-  const dataUri = 'data:application/json;charset=utf-8,'+ encodeURIComponent(dataStr);
-  const exportFileDefaultName = 'shader-settings.json';
-  
-  const linkElement = document.createElement('a');
-  linkElement.setAttribute('href', dataUri);
-  linkElement.setAttribute('download', exportFileDefaultName);
+  const dataUri = "data:application/json;charset=utf-8," + encodeURIComponent(dataStr);
+  const exportFileDefaultName = "shader-settings.json";
+
+  const linkElement = document.createElement("a");
+  linkElement.setAttribute("href", dataUri);
+  linkElement.setAttribute("download", exportFileDefaultName);
   linkElement.click();
-  
-  console.log('Settings exported to shader-settings.json');
-  console.log('Place this file in src/js/config/ directory to have it loaded automatically on each page load.');
+
+  console.log("Settings exported to shader-settings.json");
+  console.log("Place this file in src/js/config/ directory to have it loaded automatically on each page load.");
 }
 
-async function loadSettingsFromFile() {
-  // Try to import the config file directly
+function loadSettingsFromFile() {
+  // Return the imported settings (now statically imported, so synchronous)
   try {
-    const settings = await import('./config/shader-settings.json');
-    console.log('Loaded settings from config/shader-settings.json');
-    return settings.default || settings;
+    console.log("Loaded settings from config/shader-settings.json");
+    return shaderSettings.default || shaderSettings;
   } catch (error) {
-    console.log('No shader-settings.json found in config folder, using defaults');
+    console.log("No shader-settings.json found in config folder, using defaults");
     return null;
   }
 }
 
 export async function initializeShader() {
-  // Load settings from config file
-  const fileSettings = await loadSettingsFromFile();
-  
+  // Load settings from config file (now synchronous since it's statically imported)
+  const fileSettings = loadSettingsFromFile();
+
   // Start with defaults
   const initialConfig = {
     shape: 0.0, // Square
-    positionMode: 'relative',
+    positionMode: "relative",
     positionPercentX: 0.0,
     positionPercentY: 0.0,
     scaleX: 0.75, // 25% smaller than viewport width (1.0 = 100% width)
     scaleY: 0.75, // 25% smaller than viewport height
   };
-  
+
   // Apply file settings if present (overrides defaults)
   if (fileSettings && fileSettings.params) {
     Object.assign(initialConfig, fileSettings.params);
-    console.log('Using settings from src/js/config/shader-settings.json');
+    console.log("Using settings from src/js/config/shader-settings.json");
   } else {
-    console.log('Using default shader settings');
+    console.log("Using default shader settings");
   }
-  
+
   // Create single shader instance
-  const instance = new ShaderInstance('shader-canvas', initialConfig);
+  const instance = new ShaderInstance("shader-canvas", initialConfig);
 
   if (!instance.canvas || !instance.gl) {
-    console.error('Shader canvas not initialized');
+    console.error("Shader canvas not initialized");
     return;
   }
 
@@ -691,16 +699,16 @@ export async function initializeShader() {
 
   // Handle window resize and scroll (for dynamic page height)
   const handleResize = () => {
-    shaderInstances.forEach(instance => instance.resizeCanvas());
+    shaderInstances.forEach((instance) => instance.resizeCanvas());
   };
-  window.addEventListener('resize', handleResize);
-  window.addEventListener('scroll', handleResize);
-  
+  window.addEventListener("resize", handleResize);
+  window.addEventListener("scroll", handleResize);
+
   // Also update on content load to catch dynamic height changes
-  if (document.readyState === 'complete') {
+  if (document.readyState === "complete") {
     setTimeout(handleResize, 100);
   } else {
-    window.addEventListener('load', () => setTimeout(handleResize, 100));
+    window.addEventListener("load", () => setTimeout(handleResize, 100));
   }
 
   // Start rendering
@@ -711,15 +719,17 @@ export async function initializeShader() {
   window.exportShaderSettings = exportSettings;
 
   // Add keyboard shortcut to toggle GUI (press 'G' key)
-  document.addEventListener('keydown', (event) => {
-    if (event.key.toLowerCase() === 'g' && 
-        event.target.tagName !== 'INPUT' && 
-        event.target.tagName !== 'TEXTAREA' &&
-        !event.target.isContentEditable) {
+  document.addEventListener("keydown", (event) => {
+    if (
+      event.key.toLowerCase() === "g" &&
+      event.target.tagName !== "INPUT" &&
+      event.target.tagName !== "TEXTAREA" &&
+      !event.target.isContentEditable
+    ) {
       event.preventDefault();
       toggleGUI();
     }
   });
-  
-  console.log('Shader initialized. Press G to toggle GUI, or call window.exportShaderSettings() to export settings.');
+
+  console.log("Shader initialized. Press G to toggle GUI, or call window.exportShaderSettings() to export settings.");
 }

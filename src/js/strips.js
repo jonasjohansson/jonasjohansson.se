@@ -323,21 +323,24 @@ function attachStripEventListeners() {
 
   // Update allStrips reference to match DOM
   allStrips = currentStrips;
-  console.log(`[Strips] Attaching listeners to ${allStrips.length} strips`);
 
   allStrips.forEach((strip, index) => {
     const projectSlug = strip.getAttribute("data-project");
+    if (!projectSlug) {
+      return;
+    }
+    
     const project = projects.find((p) => p.slug === projectSlug);
+    if (!project) {
+      return;
+    }
 
-    if (project) {
-      // Check if listeners are already attached using a data attribute
-      // But allow re-attaching if strip was removed and re-added to DOM
-      if (strip.dataset.listenersAttached === "true" && strip.parentNode === stripsContainer) {
-        console.log(`[Strips] Strip ${index} (${project.slug}) already has listeners attached`);
-        return; // Already attached and still in DOM
-      }
-      strip.dataset.listenersAttached = "true";
-      console.log(`[Strips] Attaching listeners to strip ${index} (${project.slug})`);
+    // Check if listeners are already attached using a data attribute
+    // But allow re-attaching if strip was removed and re-added to DOM
+    if (strip.dataset.listenersAttached === "true" && strip.parentNode === stripsContainer) {
+      return; // Already attached and still in DOM
+    }
+    strip.dataset.listenersAttached = "true";
 
       // Mouse hover events for scramble text
       strip.addEventListener("mouseenter", () => {
@@ -347,12 +350,35 @@ function attachStripEventListeners() {
           return;
         }
         
-        if (subtitleScrambler && headerSubtitle) {
-          subtitleScrambler.scramble(project.title.toUpperCase());
+        // Look up project fresh on each hover to ensure we have the latest data
+        // This is critical because strips are shuffled, so we can't rely on closure-captured project data
+        const currentProjectSlug = strip.getAttribute("data-project");
+        if (!currentProjectSlug) {
+          return;
+        }
+        
+        const currentProject = projects.find((p) => p.slug === currentProjectSlug);
+        if (!currentProject || !currentProject.title) {
+          return;
+        }
+        
+        // Ensure scrambler is initialized
+        if (!subtitleScrambler || !headerSubtitle) {
+          return;
+        }
+        
+        const targetText = currentProject.title.toUpperCase();
+        const currentDisplayedText = headerSubtitle.textContent.trim().toUpperCase();
+        
+        // Only scramble if displayed text differs from target
+        // NOTE: Do NOT update originalText here - it should always reflect the current page title
+        // originalText will be used by mouseleave to reset to the correct base state
+        if (currentDisplayedText !== targetText) {
+          subtitleScrambler.scramble(targetText);
         }
 
         // Preload project content on hover for faster navigation
-        preloadProject(projectSlug);
+        preloadProject(currentProjectSlug);
       });
 
       strip.addEventListener("mouseleave", () => {
@@ -362,21 +388,44 @@ function attachStripEventListeners() {
           return;
         }
         
+        // Don't reset text if a navigation is pending (user clicked, navigation will happen soon)
+        if (navigationTimeoutId) {
+          return;
+        }
+        
         if (subtitleScrambler && headerSubtitle) {
           // Always return to the stored current page title
-          subtitleScrambler.scramble(currentPageTitle.toUpperCase());
+          const targetText = currentPageTitle.toUpperCase();
+          // Check displayed text first to avoid unnecessary scramble
+          const currentDisplayedText = headerSubtitle.textContent.trim().toUpperCase();
+          
+          // IMPORTANT: Restore originalText to currentPageTitle before scrambling
+          // This ensures the scrambler knows the correct base state
+          subtitleScrambler.originalText = currentPageTitle.toUpperCase();
+          
+          if (currentDisplayedText !== targetText) {
+            subtitleScrambler.scramble(targetText);
+          }
         }
       });
 
       strip.addEventListener("click", (e) => {
-        console.log("[Strips] Click detected on strip:", project.slug, e);
         if (document.body?.dataset?.filtering === "true") {
-          console.log("[Strips] Filtering active, ignoring click");
           return;
         }
         const computedId = project.slug || project.title.toLowerCase().replace(/\s+/g, "-");
         const projectPath = getProjectPath(computedId);
-        console.log("[Strips] Navigating to:", projectPath);
+
+        // Update currentPageTitle immediately to prevent mouseleave from resetting to old value
+        // This ensures the displayed text (from hover) matches the new project
+        currentPageTitle = project.title;
+        window.__CURRENT_PROJECT_TITLE__ = project.title;
+        document.documentElement.dataset.currentProjectTitle = project.title;
+        
+        // Sync scrambler's originalText to match the clicked project
+        if (subtitleScrambler) {
+          subtitleScrambler.originalText = project.title.toUpperCase();
+        }
 
         strip.classList.add("selected");
         allStrips.forEach((s) => s !== strip && s.classList.add("not-selected"));
@@ -619,6 +668,17 @@ export function initializeStrips() {
     return project?.title || defaultSubtitle;
   }
 
+  // Initialize currentPageTitle from current state if not already set
+  // This ensures hover/mouseleave work correctly on project pages
+  const initialTitle = getCurrentProjectTitle();
+  if (initialTitle && initialTitle !== defaultSubtitle) {
+    currentPageTitle = initialTitle;
+    // Also sync scrambler's originalText if available
+    if (subtitleScrambler && initialTitle !== defaultSubtitle) {
+      subtitleScrambler.originalText = initialTitle.toUpperCase();
+    }
+  }
+
   // Attach event listeners - always try to attach, function will check if already attached
   // Use requestAnimationFrame to ensure DOM is ready
   requestAnimationFrame(() => {
@@ -708,7 +768,16 @@ export function initializeStrips() {
               const projectSlug = strip.getAttribute("data-project");
               const project = projects.find((p) => p.slug === projectSlug);
               if (project && subtitleScrambler && headerSubtitle) {
-                subtitleScrambler.scramble(project.title.toUpperCase());
+                const targetText = project.title.toUpperCase();
+                // Check the actual displayed text first (most accurate)
+                const currentDisplayedText = headerSubtitle.textContent.trim().toUpperCase();
+                // Only scramble if displayed text differs from target
+                if (currentDisplayedText !== targetText) {
+                  subtitleScrambler.scramble(targetText);
+                } else {
+                  // Text already matches - sync originalText to prevent future mismatches
+                  subtitleScrambler.originalText = targetText;
+                }
               }
             }
           } else {
@@ -1006,11 +1075,28 @@ function updateCurrentPageTitle(title) {
     if (window.location.pathname.includes("/work/")) {
       // Try to update the header directly if subtitleScrambler is available
       if (subtitleScrambler && headerSubtitle) {
-        subtitleScrambler.scramble(currentPageTitle.toUpperCase());
+        const targetText = currentPageTitle.toUpperCase();
+        // Check the actual displayed text first (most accurate)
+        const currentDisplayedText = headerSubtitle.textContent.trim().toUpperCase();
+        
+        // Always sync originalText to match the new currentPageTitle
+        // This ensures state is consistent even if we don't scramble
+        subtitleScrambler.originalText = currentPageTitle;
+        
+        // Only scramble if displayed text differs from target
+        // The scrambler itself will also check, but we check here too to avoid the call
+        if (currentDisplayedText !== targetText) {
+          subtitleScrambler.scramble(targetText);
+        }
+        // If displayed text already matches, scrambler.originalText is already synced above
       } else {
         // Fallback: update the header text directly
         if (headerSubtitle) {
           headerSubtitle.textContent = currentPageTitle.toUpperCase();
+          // Update scrambler's originalText if it exists
+          if (subtitleScrambler && subtitleScrambler.setText) {
+            subtitleScrambler.setText(currentPageTitle.toUpperCase());
+          }
         }
       }
     }

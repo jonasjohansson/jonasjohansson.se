@@ -18,6 +18,33 @@
     </script>
   </head>
   <body>
+    <script>
+      // Set data-route immediately to prevent flash of wrong content
+      // This runs after body is parsed, so body and #about exist
+      (function() {
+        const path = window.location.pathname.replace(/\/$/, '') || '/';
+        let route = 'home';
+        if (path === '/about' || path === window.__PATH_PREFIX__ + '/about') {
+          route = 'about';
+        } else if (path.match(/\/work\/[^\/]+/)) {
+          route = 'project';
+        }
+        
+        document.body.setAttribute('data-route', route);
+        
+        // Hide about overlay immediately on project pages only
+        if (route === 'project') {
+          const about = document.getElementById('about');
+          if (about) {
+            about.style.display = 'none';
+            about.style.opacity = '0';
+            about.style.visibility = 'hidden';
+            about.style.pointerEvents = 'none';
+          }
+          document.body.classList.add('project-visible');
+        }
+      })();
+    </script>
     <!-- Loading screen - shown while assets are loading -->
     <div id="loading-screen">
       <div id="loading-spinner"></div>

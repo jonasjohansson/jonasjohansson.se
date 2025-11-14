@@ -33,6 +33,15 @@ body[data-initial-about] #about {
   transition: none !important;
 }
 
+/* Explicitly hide about overlay on project pages - must come after show rules */
+body[data-route="project"] #about:not([data-initial-about]):not(.visible),
+body.project-visible #about:not([data-initial-about]):not(.visible) {
+  display: none !important;
+  opacity: 0 !important;
+  visibility: hidden !important;
+  pointer-events: none !important;
+}
+
 #about.visible {
   display: block;
   pointer-events: auto;
@@ -99,13 +108,19 @@ body[data-initial-about] #about {
 .about-image img {
   object-fit: cover;
   object-position: center center;
-  opacity: 1;
-  /* Image fades in with the parent overlay, no separate transition needed */
+  opacity: 0;
+  transition: opacity 0.3s ease;
 }
 
-/* On direct navigation, ensure image is visible */
+/* Image fades in when about overlay is visible */
+#about.visible .about-image img {
+  opacity: 1;
+}
+
+/* On direct navigation, ensure image is visible immediately */
 #about[data-immediate] .about-image img {
   opacity: 1 !important;
+  transition: none !important;
 }
 
 /* Links in about inherit color from #about */

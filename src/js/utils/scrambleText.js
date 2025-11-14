@@ -3,7 +3,14 @@ const ASCII_CHARS = "!@#$%^&*()_+-=[]{}|;:',.<>?/~`0123456789ABCDEFGHIJKLMNOPQRS
 export class ScrambleText {
   constructor(element, options = {}) {
     this.element = element;
-    this.originalText = element.textContent;
+    // Store the current final text (not scrambled)
+    // Initialize with element's textContent, but we'll validate it's not scrambled
+    const initialText = element.textContent.trim();
+    // Check if initial text looks scrambled (contains special scramble chars)
+    const hasScrambleChars = /[!@#$%^&*()_+\-=\[\]{}|;:',.<>?/~`]/.test(initialText);
+    // If it looks scrambled, we can't know the original, so use empty string
+    // It will be set correctly on first scramble
+    this.originalText = hasScrambleChars ? "" : initialText;
     this.options = {
       duration: options.duration || 800,
       charactersPerFrame: options.charactersPerFrame || 1,
@@ -13,19 +20,54 @@ export class ScrambleText {
     this.isAnimating = false;
     this.animationFrame = null;
   }
+  
+  // Method to update originalText when text is set directly (not via scramble)
+  setText(text) {
+    const finalText = (text || this.element.textContent).trim();
+    this.originalText = finalText;
+    this.element.textContent = finalText;
+  }
 
   scramble(targetText) {
+    // EARLY RETURN: Check BEFORE doing anything else
+    const finalText = (targetText || this.originalText).trim();
+    const normalizedFinal = finalText.toUpperCase();
+    
+    // CRITICAL: Check ACTUAL DISPLAYED TEXT FIRST (most reliable)
+    // This catches cases where hover changed the text but originalText hasn't updated yet
+    const currentDisplayedText = this.element.textContent.trim();
+    const normalizedDisplayed = currentDisplayedText.toUpperCase();
+    
+    // If displayed text matches target, skip animation (regardless of originalText state)
+    if (normalizedDisplayed === normalizedFinal) {
+      // Check if it's currently scrambled (has scramble chars)
+      const hasScrambleChars = /[!@#$%^&*()_+\-=\[\]{}|;:',.<>?/~`]/.test(currentDisplayedText);
+      if (!hasScrambleChars) {
+        // Not scrambled and matches - update stored text and exit immediately
+        this.originalText = finalText;
+        return;
+      }
+      // If it IS scrambled but matches target, it means animation is in progress
+      // towards the correct target - update originalText and let it finish
+      this.originalText = finalText;
+      return;
+    }
+    
+    // Update originalText to the target BEFORE starting animation
+    // This ensures state is correct even if animation is interrupted
+    this.originalText = finalText;
+    
+    // Check stored originalText as secondary check
+    const normalizedStored = (this.originalText || "").trim().toUpperCase();
+    if (normalizedStored === normalizedFinal && this.isAnimating) {
+      // Animation already running to this target - don't restart
+      return;
+    }
+    
+    // Clear any existing animation before starting new one
     if (this.animationFrame) {
       clearTimeout(this.animationFrame);
       this.animationFrame = null;
-    }
-
-    const finalText = targetText || this.originalText;
-    
-    // Skip animation if the new text is the same as the current text
-    const currentText = this.element.textContent.trim();
-    if (currentText === finalText.trim()) {
-      return;
     }
 
     this.isAnimating = true;
@@ -35,9 +77,11 @@ export class ScrambleText {
 
     const animate = () => {
       if (currentIteration >= totalIterations) {
+        // Animation complete - set final text and update stored originalText
         this.element.textContent = finalText;
         this.isAnimating = false;
-        this.originalText = finalText;
+        this.originalText = finalText.trim(); // Ensure it's trimmed and synced
+        this.animationFrame = null; // Clear the frame reference
         return;
       }
 

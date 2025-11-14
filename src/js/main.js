@@ -7,6 +7,7 @@ import "./melody.js";
 import { initializeGrain } from "./grain.js";
 import { initializeShader } from "./shader.js";
 import { getCurrentRoute, getPathPrefix } from "./utils/routeUtils.js";
+import "./xylophone.js"; // Import statically to bundle into main.js
 
 // Show content based on route after loading
 async function showContentForRoute(route) {
@@ -81,23 +82,27 @@ async function showContentForRoute(route) {
       });
     }
   } else if (route === "project") {
+    // Hide about overlay immediately on project pages
+    const aboutOverlay = document.getElementById("about");
+    if (aboutOverlay) {
+      aboutOverlay.style.display = "none";
+      aboutOverlay.style.opacity = "0";
+      aboutOverlay.style.visibility = "hidden";
+      aboutOverlay.style.pointerEvents = "none";
+      aboutOverlay.classList.remove("visible");
+      body.classList.remove("about-visible");
+      body.removeAttribute("data-initial-about");
+      aboutOverlay.removeAttribute("data-initial-about");
+    }
+    
     // Show project content with fade in
     const projects = document.getElementById("projects");
     if (projects) {
       body.classList.add("project-visible");
 
-      // Load strip images on project pages without full initialization (to avoid flash)
-      const stripsContainer = document.getElementById("strips");
-      if (stripsContainer) {
-        const stripImages = Array.from(stripsContainer.querySelectorAll(".strip-image"));
-        stripImages.forEach((img) => {
-          const bgImage = img.getAttribute("data-bg-image");
-          if (bgImage && !img.style.backgroundImage) {
-            img.style.backgroundImage = `url('${bgImage}')`;
-            img.classList.add("loaded");
-          }
-        });
-      }
+      // Initialize strips to ensure event listeners are attached
+      // This is needed even on project pages so strips are clickable
+      initializeStrips();
 
       // Fade in project
       requestAnimationFrame(() => {
@@ -144,10 +149,7 @@ async function showContentForRoute(route) {
 }
 
 async function initializeApp() {
-  // Non-blocking initializations
-  if (document.getElementById("strips")) {
-    import("./xylophone.js").catch(() => {});
-  }
+  // xylophone.js is now statically imported, so it's already loaded
 
   // Determine route and set data attribute
   const route = getCurrentRoute();
@@ -190,7 +192,11 @@ function initHeaderButtons() {
     const scrambler = window.subtitleScrambler;
     const updateText = () => {
       if (scrambler) {
-        scrambler.scramble(targetText);
+        // Check if scrambler already has this text to avoid unnecessary scrambling
+        const currentStoredText = (scrambler.originalText || "").trim().toUpperCase();
+        if (currentStoredText !== targetText) {
+          scrambler.scramble(targetText);
+        }
       } else {
         headerSubtitle.textContent = targetText;
       }
@@ -353,23 +359,26 @@ function initHeaderButtons() {
       aboutOverlay.style.display = "block";
       aboutOverlay.style.visibility = "visible";
 
-      // Image and text fade in with the overlay - set initial opacity to 0
+      // Ensure image starts hidden (CSS default is opacity: 0)
       if (aboutImage) {
         aboutImage.style.opacity = "0";
-        aboutImage.style.transition = "opacity 0.3s ease";
+        aboutImage.style.transition = ""; // Let CSS handle transition
       }
 
       // Now trigger fade-in after ensuring everything is set up
       requestAnimationFrame(() => {
         requestAnimationFrame(() => {
-          // Now fade in the entire overlay (image and text fade in together)
-          aboutOverlay.style.opacity = "1";
+          // Remove inline opacity style BEFORE adding visible class so CSS transition works
           if (aboutImage) {
-            aboutImage.style.opacity = "1";
+            aboutImage.style.opacity = ""; // Remove inline style, let CSS handle it
           }
-          aboutOverlay.classList.add("visible");
+          
+          // Fade in the entire overlay
+          aboutOverlay.style.opacity = "1";
+          aboutOverlay.classList.add("visible"); // This will trigger CSS fade-in for image
           aboutOverlay.style.pointerEvents = "auto";
           body.style.overflow = "hidden";
+          
           setSubtitle(defaultSubtitleText, true); // Fade in subtitle
           headerCenter.classList.add("overlay-active");
         });
