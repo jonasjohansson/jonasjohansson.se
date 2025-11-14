@@ -36,8 +36,8 @@ async function showContentForRoute(route) {
     // Show about overlay with fade in
     const aboutOverlay = document.getElementById("about");
     if (aboutOverlay) {
-      aboutOverlay.setAttribute("data-initial-about", "true");
-      body.setAttribute("data-initial-about", "true");
+      // Don't set data-initial-about immediately - it forces opacity: 1 !important
+      // We'll set it after fade-in completes to prevent flash on navigation
       body.classList.add("about-visible");
 
       // Get header subtitle for setting text
@@ -49,36 +49,56 @@ async function showContentForRoute(route) {
       ).trim();
 
       // Fade in about overlay
+      const aboutImage = aboutOverlay.querySelector(".about-image img");
+      
+      // Set initial state: overlay visible but transparent, image hidden
+      aboutOverlay.style.display = "block";
+      aboutOverlay.style.visibility = "visible";
+      aboutOverlay.style.zIndex = "250";
+      aboutOverlay.style.opacity = "0";
+      aboutOverlay.style.transition = "opacity 0.3s ease";
+      
+      // Ensure image starts hidden
+      if (aboutImage) {
+        aboutImage.style.opacity = "0";
+        aboutImage.style.transition = "opacity 0.3s ease";
+      }
+      
+      // Fade in after a frame to ensure initial state is applied
       requestAnimationFrame(() => {
-        aboutOverlay.style.display = "block";
-        aboutOverlay.style.visibility = "visible";
-        aboutOverlay.style.zIndex = "250";
-        aboutOverlay.style.pointerEvents = "auto";
-        aboutOverlay.classList.add("visible");
-        body.style.overflow = "hidden";
-
-        // Fade in subtitle
-        if (headerSubtitle) {
-          headerSubtitle.style.opacity = "0";
-          headerSubtitle.style.transition = "opacity 0.3s ease";
-          const scrambler = window.subtitleScrambler;
-          if (scrambler) {
-            scrambler.scramble(defaultSubtitleText.toUpperCase());
-          } else {
-            headerSubtitle.textContent = defaultSubtitleText.toUpperCase();
-          }
-          requestAnimationFrame(() => {
-            headerSubtitle.style.opacity = "1";
-          });
-        }
-
-        // Fade in image
-        const aboutImage = aboutOverlay.querySelector(".about-image img");
-        if (aboutImage) {
-          requestAnimationFrame(() => {
+        requestAnimationFrame(() => {
+          // Fade in overlay
+          aboutOverlay.style.opacity = "1";
+          aboutOverlay.classList.add("visible");
+          aboutOverlay.style.pointerEvents = "auto";
+          body.style.overflow = "hidden";
+          
+          // Fade in image
+          if (aboutImage) {
             aboutImage.style.opacity = "1";
-          });
-        }
+          }
+          
+          // Fade in subtitle
+          if (headerSubtitle) {
+            headerSubtitle.style.opacity = "0";
+            headerSubtitle.style.transition = "opacity 0.3s ease";
+            const scrambler = window.subtitleScrambler;
+            if (scrambler) {
+              scrambler.scramble(defaultSubtitleText.toUpperCase());
+            } else {
+              headerSubtitle.textContent = defaultSubtitleText.toUpperCase();
+            }
+            requestAnimationFrame(() => {
+              headerSubtitle.style.opacity = "1";
+            });
+          }
+          
+          // Set data-initial-about after fade-in completes to prevent flash on navigation
+          setTimeout(() => {
+            aboutOverlay.setAttribute("data-initial-about", "true");
+            body.setAttribute("data-initial-about", "true");
+          }, 300); // Match transition duration
+        });
       });
     }
   } else if (route === "project") {
@@ -359,25 +379,25 @@ function initHeaderButtons() {
       aboutOverlay.style.display = "block";
       aboutOverlay.style.visibility = "visible";
 
-      // Ensure image starts hidden (CSS default is opacity: 0)
+      // Ensure image starts hidden and has transition
       if (aboutImage) {
         aboutImage.style.opacity = "0";
-        aboutImage.style.transition = ""; // Let CSS handle transition
+        aboutImage.style.transition = "opacity 0.3s ease";
       }
 
       // Now trigger fade-in after ensuring everything is set up
       requestAnimationFrame(() => {
         requestAnimationFrame(() => {
-          // Remove inline opacity style BEFORE adding visible class so CSS transition works
-          if (aboutImage) {
-            aboutImage.style.opacity = ""; // Remove inline style, let CSS handle it
-          }
-          
           // Fade in the entire overlay
           aboutOverlay.style.opacity = "1";
-          aboutOverlay.classList.add("visible"); // This will trigger CSS fade-in for image
+          aboutOverlay.classList.add("visible");
           aboutOverlay.style.pointerEvents = "auto";
           body.style.overflow = "hidden";
+          
+          // Fade in image with the overlay (controlled via JavaScript for smooth transition)
+          if (aboutImage) {
+            aboutImage.style.opacity = "1";
+          }
           
           setSubtitle(defaultSubtitleText, true); // Fade in subtitle
           headerCenter.classList.add("overlay-active");
