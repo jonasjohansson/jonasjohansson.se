@@ -76,7 +76,7 @@
 
 #strips:not(.strips-initialized) .strip {
   animation: slideInFromLeft 0.4s cubic-bezier(0.4, 0, 0.2, 1) forwards;
-  animation-delay: calc(var(--strip-index, 0) * 25ms);
+  animation-delay: calc(var(--strip-index, 0) * 50ms);
 }
 
 /* First strip animates immediately */
@@ -99,7 +99,7 @@
 /* Only animate strip images on initial page load */
 #strips:not(.strips-initialized) .strip-image {
   animation: fadeIn 0.2s ease forwards;
-  animation-delay: calc(var(--strip-index, 0) * 50ms + 100ms);
+  animation-delay: calc(var(--strip-index, 0) * 100ms + 100ms);
 }
 
 #strips.strips-initialized .strip-image {

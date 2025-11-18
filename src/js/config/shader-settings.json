@@ -46,7 +46,7 @@
     "patternTurbulence": 5,
     "globalBlur": 100,
     "enabled": true,
-    "blendMode": "color-burn",
+    "blendMode": "multiply",
     "shape": 1,
     "grainOpacity": 0.1,
     "grainScale": 1,

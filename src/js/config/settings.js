@@ -4,7 +4,7 @@ export const SETTINGS = {
   animation: {
     easeFactor: 0.18,
     idleThresholdFrames: 60,
-    stripInitialDelayStep: 25, // matches CSS animation-delay per strip
+    stripInitialDelayStep: 50, // matches CSS animation-delay per strip
     stripInitialDuration: 400,
     stripAppendDelayStep: 12, // delay between appending strips for staggered animation
   },

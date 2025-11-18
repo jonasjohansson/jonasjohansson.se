@@ -6,7 +6,7 @@ const {
   images: { loadMargin },
 } = SETTINGS;
 import { ColorExtractor } from "./utils/colorExtractor.js";
-import { createScrambler } from "./utils/scrambleText.js";
+import { createASCIIShift } from "./utils/asciiShift.js";
 import { getProjectPath } from "./utils/pathBuilder.js";
 
 // Get projects from window global (injected by 11ty)
@@ -114,7 +114,7 @@ let navigationTimeoutId = null;
 let headerSubtitle;
 let defaultSubtitle = "PROGRESS NOT PERFECTION";
 let currentPageTitle = defaultSubtitle;
-let subtitleScrambler = null;
+let subtitleASCIIShift = null;
 
 // ---------- State ----------
 let curX = 0.5,
@@ -342,8 +342,13 @@ function attachStripEventListeners() {
     }
     strip.dataset.listenersAttached = "true";
 
-      // Mouse hover events for scramble text
-      strip.addEventListener("mouseenter", () => {
+    // Mouse hover events for ASCII ripple effect
+    strip.addEventListener("mouseenter", (e) => {
+        // Don't update subtitle if strips aren't initialized yet
+        if (!stripsContainer || !stripsContainer.classList.contains("strips-initialized")) {
+          return;
+        }
+        
         // Don't update subtitle if about overlay is visible
         const aboutOverlay = document.getElementById("about");
         if (aboutOverlay && aboutOverlay.classList.contains("visible")) {
@@ -362,19 +367,34 @@ function attachStripEventListeners() {
           return;
         }
         
-        // Ensure scrambler is initialized
-        if (!subtitleScrambler || !headerSubtitle) {
+        // Ensure ASCII shift is initialized
+        if (!subtitleASCIIShift || !headerSubtitle) {
           return;
         }
         
         const targetText = currentProject.title.toUpperCase();
         const currentDisplayedText = headerSubtitle.textContent.trim().toUpperCase();
         
-        // Only scramble if displayed text differs from target
-        // NOTE: Do NOT update originalText here - it should always reflect the current page title
-        // originalText will be used by mouseleave to reset to the correct base state
+        // Only trigger ripple effect if text is actually changing
         if (currentDisplayedText !== targetText) {
-          subtitleScrambler.scramble(targetText);
+          subtitleASCIIShift.resetToOrig();
+          subtitleASCIIShift.updateTxt(targetText);
+          
+          // Trigger ripple effect by dispatching mouse event on header subtitle
+          // Map mouse position from strip to header subtitle
+          const stripRect = strip.getBoundingClientRect();
+          const headerRect = headerSubtitle.getBoundingClientRect();
+          const relativeX = (e.clientX - stripRect.left) / stripRect.width;
+          const mappedX = headerRect.left + relativeX * headerRect.width;
+          
+          // Dispatch synthetic mouseenter event to trigger a single ripple
+          const enterEvent = new MouseEvent("mouseenter", {
+            bubbles: true,
+            cancelable: true,
+            clientX: mappedX,
+            clientY: headerRect.top + headerRect.height / 2,
+          });
+          headerSubtitle.dispatchEvent(enterEvent);
         }
 
         // Preload project content on hover for faster navigation
@@ -382,6 +402,11 @@ function attachStripEventListeners() {
       });
 
       strip.addEventListener("mouseleave", () => {
+        // Don't update subtitle if strips aren't initialized yet
+        if (!stripsContainer || !stripsContainer.classList.contains("strips-initialized")) {
+          return;
+        }
+        
         // Don't update subtitle if about overlay is visible
         const aboutOverlay = document.getElementById("about");
         if (aboutOverlay && aboutOverlay.classList.contains("visible")) {
@@ -393,18 +418,16 @@ function attachStripEventListeners() {
           return;
         }
         
-        if (subtitleScrambler && headerSubtitle) {
+        if (subtitleASCIIShift && headerSubtitle) {
           // Always return to the stored current page title
           const targetText = currentPageTitle.toUpperCase();
-          // Check displayed text first to avoid unnecessary scramble
+          // Check displayed text first to avoid unnecessary update
           const currentDisplayedText = headerSubtitle.textContent.trim().toUpperCase();
           
-          // IMPORTANT: Restore originalText to currentPageTitle before scrambling
-          // This ensures the scrambler knows the correct base state
-          subtitleScrambler.originalText = currentPageTitle.toUpperCase();
-          
           if (currentDisplayedText !== targetText) {
-            subtitleScrambler.scramble(targetText);
+            subtitleASCIIShift.updateTxt(targetText);
+            // Reset ripple animation
+            subtitleASCIIShift.resetToOrig();
           }
         }
       });
@@ -422,9 +445,10 @@ function attachStripEventListeners() {
         window.__CURRENT_PROJECT_TITLE__ = project.title;
         document.documentElement.dataset.currentProjectTitle = project.title;
         
-        // Sync scrambler's originalText to match the clicked project
-        if (subtitleScrambler) {
-          subtitleScrambler.originalText = project.title.toUpperCase();
+        // Update ASCII shift text to match the clicked project
+        if (subtitleASCIIShift) {
+          subtitleASCIIShift.resetToOrig();
+          subtitleASCIIShift.updateTxt(project.title.toUpperCase());
         }
 
         strip.classList.add("selected");
@@ -437,7 +461,6 @@ function attachStripEventListeners() {
           navigationTimeoutId = null;
         }, 600);
       });
-    }
   });
 }
 
@@ -509,29 +532,27 @@ export function initializeStrips() {
       // Now that all images are loaded, make container visible and add strips
       stripsContainer.style.display = "";
 
-      // Set all attributes and CSS variables BEFORE adding to DOM
-      shuffledStrips.forEach((strip, index) => {
-        strip.setAttribute("data-index", index);
-        strip.style.setProperty("--strip-index", index); // Set as number, not string
-        strip.style.height = `${vh}px`;
-      });
-
       // Calculate animation timing
       const totalStrips = shuffledStrips.length;
       const lastStripDelay = (totalStrips - 1) * stripInitialDelayStep; // CSS animation delay per strip
       const animationDuration = stripInitialDuration; // CSS animation duration
       const totalAnimationTime = lastStripDelay + animationDuration;
 
-      // Add strips one at a time with delay to ensure each animation triggers individually
-      // Use configured delay to match the CSS animation timing and prevent batching
+      // Append strips one by one with a small delay to ensure browser processes each individually
+      // Use a small append delay but adjust animation delay so the overall cadence still matches stripInitialDelayStep
+      const appendDelayStep = 10; // ms
+      const effectiveAnimationDelayStep = Math.max(stripInitialDelayStep - appendDelayStep, 0);
+
       requestAnimationFrame(() => {
         shuffledStrips.forEach((strip, index) => {
           setTimeout(() => {
-            stripsContainer.appendChild(strip);
-
-            // Force a reflow after each strip is added to ensure animation triggers
-            stripsContainer.getBoundingClientRect();
-
+            // Set attributes and CSS variables right before appending
+            strip.setAttribute("data-index", index);
+            strip.style.setProperty("--strip-index", String(index));
+            strip.style.height = `${vh}px`;
+            // Set animation delay inline - this overrides the CSS calc
+            strip.style.animationDelay = `${index * effectiveAnimationDelayStep}ms`;
+            
             // Set background image for this strip
             const stripImage = strip.querySelector(".strip-image");
             if (stripImage) {
@@ -541,8 +562,15 @@ export function initializeStrips() {
                 stripImage.classList.add("loaded");
               }
             }
+            
+            // Append the strip
+            stripsContainer.appendChild(strip);
+            
+            // Force a reflow after each append to ensure browser processes it
+            // This is critical to prevent batching of the last few strips
+            stripsContainer.getBoundingClientRect();
 
-            // On last strip, do final setup and start the timeout for adding the class
+            // On last strip, do final setup
             if (index === shuffledStrips.length - 1) {
               // Update references after all strips are added
               allStrips = shuffledStrips;
@@ -551,15 +579,14 @@ export function initializeStrips() {
               // Attach event listeners now that strips are in the DOM
               attachStripEventListeners();
 
-              // NOW start the timeout - this ensures we wait from when the last strip is actually added
-              // Add a small buffer to ensure all animations complete
+              // Wait for all animations to complete before marking as initialized
               setTimeout(() => {
                 stripsContainer.classList.add("strips-initialized");
                 // Add body class to trigger grain and shader fade-in
                 document.body.classList.add("strips-initialized");
               }, totalAnimationTime + 50); // +50ms buffer to ensure all animations complete
             }
-          }, index * stripAppendDelayStep); // ensures each strip is processed individually and animations don't batch
+          }, index * appendDelayStep); // Small delay between appends to prevent batching
         });
       });
     };
@@ -641,12 +668,12 @@ export function initializeStrips() {
   headerSubtitle = document.querySelector(".header-subtitle");
 
   if (headerSubtitle) {
-    subtitleScrambler = createScrambler(headerSubtitle, {
-      duration: 400,
-      frameDelay: 30,
+    subtitleASCIIShift = createASCIIShift(headerSubtitle, {
+      dur: 600,
+      spread: 0.5,
     });
     // Make it globally available for router
-    window.subtitleScrambler = subtitleScrambler;
+    window.subtitleASCIIShift = subtitleASCIIShift;
   }
 
   // Get base name from site.json
@@ -673,9 +700,10 @@ export function initializeStrips() {
   const initialTitle = getCurrentProjectTitle();
   if (initialTitle && initialTitle !== defaultSubtitle) {
     currentPageTitle = initialTitle;
-    // Also sync scrambler's originalText if available
-    if (subtitleScrambler && initialTitle !== defaultSubtitle) {
-      subtitleScrambler.originalText = initialTitle.toUpperCase();
+    // Update ASCII shift text if available
+    if (subtitleASCIIShift && initialTitle !== defaultSubtitle) {
+      subtitleASCIIShift.resetToOrig();
+      subtitleASCIIShift.updateTxt(initialTitle.toUpperCase());
     }
   }
 
@@ -767,16 +795,14 @@ export function initializeStrips() {
             if (!aboutOverlay || !aboutOverlay.classList.contains("visible")) {
               const projectSlug = strip.getAttribute("data-project");
               const project = projects.find((p) => p.slug === projectSlug);
-              if (project && subtitleScrambler && headerSubtitle) {
+              if (project && subtitleASCIIShift && headerSubtitle) {
                 const targetText = project.title.toUpperCase();
                 // Check the actual displayed text first (most accurate)
                 const currentDisplayedText = headerSubtitle.textContent.trim().toUpperCase();
-                // Only scramble if displayed text differs from target
+                // Only update if displayed text differs from target
                 if (currentDisplayedText !== targetText) {
-                  subtitleScrambler.scramble(targetText);
-                } else {
-                  // Text already matches - sync originalText to prevent future mismatches
-                  subtitleScrambler.originalText = targetText;
+                  subtitleASCIIShift.resetToOrig();
+                  subtitleASCIIShift.updateTxt(targetText);
                 }
               }
             }
@@ -785,8 +811,9 @@ export function initializeStrips() {
             // Don't update if about overlay is visible
             const aboutOverlay = document.getElementById("about");
             if (!aboutOverlay || !aboutOverlay.classList.contains("visible")) {
-              if (subtitleScrambler && headerSubtitle) {
-                subtitleScrambler.scramble(currentPageTitle.toUpperCase());
+              if (subtitleASCIIShift && headerSubtitle) {
+                subtitleASCIIShift.resetToOrig();
+                subtitleASCIIShift.updateTxt(currentPageTitle.toUpperCase());
               }
             }
           }
@@ -821,8 +848,9 @@ export function initializeStrips() {
     }
 
     // Reset subtitle to default when touch ends
-    if (subtitleScrambler && headerSubtitle) {
-      subtitleScrambler.scramble(currentPageTitle.toUpperCase());
+    if (subtitleASCIIShift && headerSubtitle) {
+      subtitleASCIIShift.resetToOrig();
+      subtitleASCIIShift.updateTxt(currentPageTitle.toUpperCase());
     }
 
     touchStartStrip = null;
@@ -1059,8 +1087,9 @@ function updateCurrentPageTitle(title) {
     // If title is null, reset to homepage
     if (title === null) {
       currentPageTitle = defaultSubtitle;
-      if (subtitleScrambler && headerSubtitle) {
-        subtitleScrambler.scramble(defaultSubtitle.toUpperCase());
+      if (subtitleASCIIShift && headerSubtitle) {
+        subtitleASCIIShift.resetToOrig();
+        subtitleASCIIShift.updateTxt(defaultSubtitle.toUpperCase());
       }
       return;
     }
@@ -1073,30 +1102,21 @@ function updateCurrentPageTitle(title) {
 
     // Update the header subtitle if we're on a project page
     if (window.location.pathname.includes("/work/")) {
-      // Try to update the header directly if subtitleScrambler is available
-      if (subtitleScrambler && headerSubtitle) {
+      // Try to update the header directly if subtitleASCIIShift is available
+      if (subtitleASCIIShift && headerSubtitle) {
         const targetText = currentPageTitle.toUpperCase();
         // Check the actual displayed text first (most accurate)
         const currentDisplayedText = headerSubtitle.textContent.trim().toUpperCase();
         
-        // Always sync originalText to match the new currentPageTitle
-        // This ensures state is consistent even if we don't scramble
-        subtitleScrambler.originalText = currentPageTitle;
-        
-        // Only scramble if displayed text differs from target
-        // The scrambler itself will also check, but we check here too to avoid the call
+        // Only update if displayed text differs from target
         if (currentDisplayedText !== targetText) {
-          subtitleScrambler.scramble(targetText);
+          subtitleASCIIShift.resetToOrig();
+          subtitleASCIIShift.updateTxt(targetText);
         }
-        // If displayed text already matches, scrambler.originalText is already synced above
       } else {
         // Fallback: update the header text directly
         if (headerSubtitle) {
           headerSubtitle.textContent = currentPageTitle.toUpperCase();
-          // Update scrambler's originalText if it exists
-          if (subtitleScrambler && subtitleScrambler.setText) {
-            subtitleScrambler.setText(currentPageTitle.toUpperCase());
-          }
         }
       }
     }

@@ -143,6 +143,16 @@ figure {
   padding-bottom: var(--spacing-xl);
 }
 
+/* Ensure hero image has margin when followed by content, even if it's the only image */
+.project-grid > .media-item.hero:not(:last-child) {
+  padding-bottom: var(--spacing-xl);
+}
+
+/* If hero is the only media item but there are text blocks after it, add margin */
+.project-grid > .media-item.hero:only-of-type + .text-block {
+  margin-top: var(--spacing-xl);
+}
+
 .media-item img {
   width: 100%;
   height: auto;

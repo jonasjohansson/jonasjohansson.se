@@ -82,9 +82,10 @@ async function showContentForRoute(route) {
           if (headerSubtitle) {
             headerSubtitle.style.opacity = "0";
             headerSubtitle.style.transition = "opacity 0.3s ease";
-            const scrambler = window.subtitleScrambler;
-            if (scrambler) {
-              scrambler.scramble(defaultSubtitleText.toUpperCase());
+            const asciiShift = window.subtitleASCIIShift;
+            if (asciiShift) {
+              asciiShift.resetToOrig();
+              asciiShift.updateTxt(defaultSubtitleText.toUpperCase());
             } else {
               headerSubtitle.textContent = defaultSubtitleText.toUpperCase();
             }
@@ -209,13 +210,14 @@ function initHeaderButtons() {
 
   const setSubtitle = (text, fadeIn = false) => {
     const targetText = (text || defaultSubtitleText).trim().toUpperCase();
-    const scrambler = window.subtitleScrambler;
+    const asciiShift = window.subtitleASCIIShift;
     const updateText = () => {
-      if (scrambler) {
-        // Check if scrambler already has this text to avoid unnecessary scrambling
-        const currentStoredText = (scrambler.originalText || "").trim().toUpperCase();
-        if (currentStoredText !== targetText) {
-          scrambler.scramble(targetText);
+      if (asciiShift) {
+        // Check if text is already displayed to avoid unnecessary update
+        const currentDisplayedText = headerSubtitle.textContent.trim().toUpperCase();
+        if (currentDisplayedText !== targetText) {
+          asciiShift.resetToOrig();
+          asciiShift.updateTxt(targetText);
         }
       } else {
         headerSubtitle.textContent = targetText;
