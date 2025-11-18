@@ -17,6 +17,12 @@
   backface-visibility: hidden;
 }
 
+/* Disable scrolling in about text area when in laptop mode */
+body.laptop-view-active #about .about-text {
+  overflow-y: hidden !important;
+  overflow-x: hidden !important;
+}
+
 /* When body has about-visible, keep about below shader */
 body.about-visible #about {
   z-index: 250; /* Below header (300), shader (400), grain (500) */

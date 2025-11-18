@@ -138,10 +138,15 @@ class SPARouter {
     this.updateStripVisibility(null);
 
     // Auto-scroll to strips position when returning home
-    window.scrollTo({
-      top: getStripsScrollPosition(),
-      behavior: "auto", // Instant for navigation
-    });
+    // In laptop mode, reset to top instead
+    if (document.body.classList.contains('laptop-view-active') && window.__RESET_LAPTOP_SCROLL__) {
+      window.__RESET_LAPTOP_SCROLL__();
+    } else {
+      window.scrollTo({
+        top: getStripsScrollPosition(),
+        behavior: "auto", // Instant for navigation
+      });
+    }
 
     // Ensure strips are visible and trigger animation on return
     const stripsContainer = document.getElementById("strips");
@@ -313,22 +318,29 @@ class SPARouter {
       // Use requestAnimationFrame to ensure DOM is updated, then double RAF for iOS
       requestAnimationFrame(() => {
         requestAnimationFrame(() => {
-          const contentWrapper = document.getElementById("content");
-          if (contentWrapper) {
-            // Get the actual position of the content element
-            const rect = contentWrapper.getBoundingClientRect();
-            const contentPosition = rect.top + window.scrollY;
-            
-            window.scrollTo({
-              top: contentPosition,
-              behavior: "auto", // Instant scroll to prevent skip
-            });
+          // In laptop mode, scroll the site-wrapper instead of window
+          if (document.body.classList.contains('laptop-view-active') && window.__RESET_LAPTOP_SCROLL__) {
+            // Reset to top in laptop mode
+            window.__RESET_LAPTOP_SCROLL__();
           } else {
-            // Fallback to old method if content not found
-            window.scrollTo({
-              top: getProjectScrollPosition(),
-              behavior: "auto",
-            });
+            // Normal scroll behavior
+            const contentWrapper = document.getElementById("content");
+            if (contentWrapper) {
+              // Get the actual position of the content element
+              const rect = contentWrapper.getBoundingClientRect();
+              const contentPosition = rect.top + window.scrollY;
+              
+              window.scrollTo({
+                top: contentPosition,
+                behavior: "auto", // Instant scroll to prevent skip
+              });
+            } else {
+              // Fallback to old method if content not found
+              window.scrollTo({
+                top: getProjectScrollPosition(),
+                behavior: "auto",
+              });
+            }
           }
         });
       });

@@ -8,6 +8,7 @@ import { initializeGrain } from "./grain.js";
 import { initializeShader } from "./shader.js";
 import { getCurrentRoute, getPathPrefix } from "./utils/routeUtils.js";
 import "./xylophone.js"; // Import statically to bundle into main.js
+import { initializeLaptopView } from "./laptopView.js";
 
 // Show content based on route after loading
 async function showContentForRoute(route) {
@@ -157,6 +158,9 @@ async function showContentForRoute(route) {
 
 async function initializeApp() {
   // xylophone.js is now statically imported, so it's already loaded
+
+  // Initialize laptop view toggle button
+  initializeLaptopView();
 
   // Determine route and set data attribute
   const route = getCurrentRoute();
