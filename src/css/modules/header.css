@@ -53,7 +53,7 @@ header {
   touch-action: manipulation;
   cursor: pointer;
   pointer-events: auto;
-  transition: width var(--transition-normal), background-color var(--transition-fast), color var(--transition-fast);
+  transition: width var(--transition-normal);
 }
 
 .header-buttons {
