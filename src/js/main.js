@@ -48,21 +48,12 @@ async function showContentForRoute(route) {
         "PROGRESS NOT PERFECTION"
       ).trim();
 
-      // Fade in about overlay
-      const aboutImage = aboutOverlay.querySelector(".about-image img");
-      
       // Set initial state: overlay visible but transparent, image hidden
       aboutOverlay.style.display = "block";
       aboutOverlay.style.visibility = "visible";
       aboutOverlay.style.zIndex = "250";
       aboutOverlay.style.opacity = "0";
       aboutOverlay.style.transition = "opacity 0.3s ease";
-      
-      // Ensure image starts hidden
-      if (aboutImage) {
-        aboutImage.style.opacity = "0";
-        aboutImage.style.transition = "opacity 0.3s ease";
-      }
       
       // Fade in after a frame to ensure initial state is applied
       requestAnimationFrame(() => {
@@ -72,11 +63,6 @@ async function showContentForRoute(route) {
           aboutOverlay.classList.add("visible");
           aboutOverlay.style.pointerEvents = "auto";
           body.style.overflow = "hidden";
-          
-          // Fade in image
-          if (aboutImage) {
-            aboutImage.style.opacity = "1";
-          }
           
           // Fade in subtitle
           if (headerSubtitle) {
@@ -262,7 +248,6 @@ function initHeaderButtons() {
         return img.startsWith("/") ? img : `/${img}`;
       });
       availableAboutImages = images;
-      console.log("[About] Using images from Eleventy:", images);
       return images;
     }
 
@@ -293,7 +278,6 @@ function initHeaderButtons() {
     }
 
     availableAboutImages = available;
-    console.log("[About] Detected images:", available);
     return available;
   }
 
@@ -311,8 +295,6 @@ function initHeaderButtons() {
       // Detect available images first
       const availableImages = await detectAvailableAboutImages();
       const newSrc = getRandomAboutImage(availableImages);
-
-      console.log("[About] Selected random image:", newSrc, "from available:", availableImages);
 
       // Preload the new image before switching
       return new Promise((resolve) => {
@@ -349,22 +331,14 @@ function initHeaderButtons() {
     // Show overlay immediately with fade-in animation
     body.classList.add("about-visible");
 
-    // Ensure image is visible (will fade in with the overlay)
-    const aboutImage = aboutOverlay.querySelector(".about-image img");
-
     // On direct navigation, show everything immediately without transition
     if (immediate || isDirectNavigation) {
-      aboutOverlay.setAttribute("data-immediate", "true");
       aboutOverlay.style.display = "block";
       aboutOverlay.style.visibility = "visible";
       aboutOverlay.style.zIndex = "250";
       aboutOverlay.style.opacity = "1";
       aboutOverlay.style.transition = "none";
       aboutOverlay.classList.remove("fade-out");
-      if (aboutImage) {
-        aboutImage.style.opacity = "1";
-        aboutImage.style.transition = "none";
-      }
       aboutOverlay.classList.add("visible");
       aboutOverlay.style.pointerEvents = "auto";
       body.style.overflow = "hidden";
@@ -381,12 +355,6 @@ function initHeaderButtons() {
       aboutOverlay.style.display = "block";
       aboutOverlay.style.visibility = "visible";
 
-      // Ensure image starts hidden and has transition
-      if (aboutImage) {
-        aboutImage.style.opacity = "0";
-        aboutImage.style.transition = "opacity 0.3s ease";
-      }
-
       // Now trigger fade-in after ensuring everything is set up
       requestAnimationFrame(() => {
         requestAnimationFrame(() => {
@@ -395,12 +363,6 @@ function initHeaderButtons() {
           aboutOverlay.classList.add("visible");
           aboutOverlay.style.pointerEvents = "auto";
           body.style.overflow = "hidden";
-          
-          // Fade in image with the overlay (controlled via JavaScript for smooth transition)
-          if (aboutImage) {
-            aboutImage.style.opacity = "1";
-          }
-          
           setSubtitle(defaultSubtitleText, true); // Fade in subtitle
           headerCenter.classList.add("overlay-active");
         });
@@ -426,7 +388,6 @@ function initHeaderButtons() {
 
   function hideAboutOverlay(skipNavigation = false) {
     // Remove data attributes immediately to prevent CSS from forcing visibility
-    aboutOverlay.removeAttribute("data-immediate");
     aboutOverlay.removeAttribute("data-initial-about");
     body.removeAttribute("data-initial-about");
 
@@ -459,12 +420,6 @@ function initHeaderButtons() {
           aboutOverlay.style.transition = "";
           aboutOverlay.classList.remove("fade-out");
 
-          // Reset image styles for next time
-          const aboutImage = aboutOverlay.querySelector(".about-image img");
-          if (aboutImage) {
-            aboutImage.style.opacity = "";
-            aboutImage.style.transition = "";
-          }
         }, 300); // Match CSS transition duration
       });
     });

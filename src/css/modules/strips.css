@@ -50,12 +50,18 @@
   opacity: 0;
   transform: translateX(-120%) scale(0.95) rotate(-2deg);
   transform-origin: center center;
-  transition: flex-grow 0.45s cubic-bezier(0.25, 0.46, 0.45, 0.94),
-              transform 0.7s cubic-bezier(0.34, 1.56, 0.64, 1);
-  will-change: flex-grow, transform;
+  transition: opacity 0.4s cubic-bezier(0.4, 0, 0.2, 1),
+              transform 0.7s cubic-bezier(0.34, 1.56, 0.64, 1),
+              flex-grow 0.45s cubic-bezier(0.25, 0.46, 0.45, 0.94);
+  will-change: flex-grow, transform, opacity;
   position: relative;
   /* Keep strips below shader */
   z-index: 1;
+}
+
+.strip.strip-visible {
+  opacity: 1;
+  transform: translateX(0) scale(1) rotate(0deg);
 }
 
 /* Disable transitions during window resize to prevent weird animations */
@@ -68,23 +74,6 @@
   transition: transform 0.8s cubic-bezier(0.34, 1.56, 0.64, 1);
 }
 
-/* Only animate strips on initial page load, not on filter operations */
-#strips.strips-initialized .strip {
-  opacity: 1;
-  transform: translateX(0) scale(1) rotate(0deg);
-}
-
-#strips:not(.strips-initialized) .strip {
-  animation: slideInFromLeft 0.4s cubic-bezier(0.4, 0, 0.2, 1) forwards;
-  animation-delay: calc(var(--strip-index, 0) * 50ms);
-}
-
-/* First strip animates immediately */
-.strip[data-index="0"] {
-  animation-delay: 0ms;
-}
-
-
 .strip-image {
   width: 100%;
   height: 100%;
@@ -92,23 +81,13 @@
   background-position: center;
   background-repeat: no-repeat;
   opacity: 0;
-  transition: background-size 0.6s cubic-bezier(0.25, 0.46, 0.45, 0.94),
+  transition: opacity 0.4s ease,
+              background-size 0.6s cubic-bezier(0.25, 0.46, 0.45, 0.94),
               background-position 0.6s cubic-bezier(0.25, 0.46, 0.45, 0.94);
 }
 
-/* Only animate strip images on initial page load */
-#strips:not(.strips-initialized) .strip-image {
-  animation: fadeIn 0.2s ease forwards;
-  animation-delay: calc(var(--strip-index, 0) * 100ms + 100ms);
-}
-
-#strips.strips-initialized .strip-image {
+.strip.strip-visible .strip-image {
   opacity: 1;
-}
-
-/* First strip image shows immediately (or near-immediately) */
-.strip[data-index="0"] .strip-image {
-  animation-delay: 0ms;
 }
 
 .strip:first-child {
@@ -146,30 +125,6 @@
 
 .strip.hidden {
   display: none;
-}
-
-@keyframes slideInFromLeft {
-  0% {
-    transform: translateX(-120%) scale(0.95) rotate(-2deg);
-    opacity: 0;
-  }
-  60% {
-    transform: translateX(0) scale(1.02) rotate(0.5deg);
-    opacity: 1;
-  }
-  100% {
-    transform: translateX(0) scale(1) rotate(0deg);
-    opacity: 1;
-  }
-}
-
-@keyframes fadeIn {
-  0% {
-    opacity: 0;
-  }
-  100% {
-    opacity: 1;
-  }
 }
 
 @media (prefers-reduced-motion: reduce) {

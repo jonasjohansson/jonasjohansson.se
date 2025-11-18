@@ -115,6 +115,15 @@ let headerSubtitle;
 let defaultSubtitle = "PROGRESS NOT PERFECTION";
 let currentPageTitle = defaultSubtitle;
 let subtitleASCIIShift = null;
+let aboutOverlayEl = null;
+
+function getAboutOverlay() {
+  if (aboutOverlayEl && document.body.contains(aboutOverlayEl)) {
+    return aboutOverlayEl;
+  }
+  aboutOverlayEl = document.getElementById("about");
+  return aboutOverlayEl;
+}
 
 // ---------- State ----------
 let curX = 0.5,
@@ -350,7 +359,7 @@ function attachStripEventListeners() {
         }
         
         // Don't update subtitle if about overlay is visible
-        const aboutOverlay = document.getElementById("about");
+        const aboutOverlay = getAboutOverlay();
         if (aboutOverlay && aboutOverlay.classList.contains("visible")) {
           return;
         }
@@ -408,7 +417,7 @@ function attachStripEventListeners() {
         }
         
         // Don't update subtitle if about overlay is visible
-        const aboutOverlay = document.getElementById("about");
+        const aboutOverlay = getAboutOverlay();
         if (aboutOverlay && aboutOverlay.classList.contains("visible")) {
           return;
         }
@@ -538,56 +547,44 @@ export function initializeStrips() {
       const animationDuration = stripInitialDuration; // CSS animation duration
       const totalAnimationTime = lastStripDelay + animationDuration;
 
-      // Append strips one by one with a small delay to ensure browser processes each individually
-      // Use a small append delay but adjust animation delay so the overall cadence still matches stripInitialDelayStep
-      const appendDelayStep = 10; // ms
-      const effectiveAnimationDelayStep = Math.max(stripInitialDelayStep - appendDelayStep, 0);
+      // Prepare strips in a fragment before appending
+      const fragment = document.createDocumentFragment();
+      shuffledStrips.forEach((strip, index) => {
+        strip.setAttribute("data-index", index);
+        strip.style.setProperty("--strip-index", String(index));
+        strip.style.height = `${vh}px`;
+        strip.classList.remove("strip-visible");
+
+        const stripImage = strip.querySelector(".strip-image");
+        if (stripImage) {
+          const bgImage = stripImage.getAttribute("data-bg-image");
+          if (bgImage) {
+            stripImage.style.backgroundImage = `url('${bgImage}')`;
+            stripImage.classList.add("loaded");
+          }
+        }
+
+        fragment.appendChild(strip);
+      });
 
       requestAnimationFrame(() => {
+        stripsContainer.appendChild(fragment);
+        stripsContainer.getBoundingClientRect(); // ensure layout before transitions
+
+        allStrips = shuffledStrips;
+        stripImages = Array.from(stripsContainer?.querySelectorAll(".strip-image") || []);
+        attachStripEventListeners();
+
         shuffledStrips.forEach((strip, index) => {
           setTimeout(() => {
-            // Set attributes and CSS variables right before appending
-            strip.setAttribute("data-index", index);
-            strip.style.setProperty("--strip-index", String(index));
-            strip.style.height = `${vh}px`;
-            // Set animation delay inline - this overrides the CSS calc
-            strip.style.animationDelay = `${index * effectiveAnimationDelayStep}ms`;
-            
-            // Set background image for this strip
-            const stripImage = strip.querySelector(".strip-image");
-            if (stripImage) {
-              const bgImage = stripImage.getAttribute("data-bg-image");
-              if (bgImage) {
-                stripImage.style.backgroundImage = `url('${bgImage}')`;
-                stripImage.classList.add("loaded");
-              }
-            }
-            
-            // Append the strip
-            stripsContainer.appendChild(strip);
-            
-            // Force a reflow after each append to ensure browser processes it
-            // This is critical to prevent batching of the last few strips
-            stripsContainer.getBoundingClientRect();
-
-            // On last strip, do final setup
-            if (index === shuffledStrips.length - 1) {
-              // Update references after all strips are added
-              allStrips = shuffledStrips;
-              stripImages = Array.from(stripsContainer?.querySelectorAll(".strip-image") || []);
-
-              // Attach event listeners now that strips are in the DOM
-              attachStripEventListeners();
-
-              // Wait for all animations to complete before marking as initialized
-              setTimeout(() => {
-                stripsContainer.classList.add("strips-initialized");
-                // Add body class to trigger grain and shader fade-in
-                document.body.classList.add("strips-initialized");
-              }, totalAnimationTime + 50); // +50ms buffer to ensure all animations complete
-            }
-          }, index * appendDelayStep); // Small delay between appends to prevent batching
+            strip.classList.add("strip-visible");
+          }, index * stripInitialDelayStep);
         });
+
+        setTimeout(() => {
+          stripsContainer.classList.add("strips-initialized");
+          document.body.classList.add("strips-initialized");
+        }, totalAnimationTime + 50);
       });
     };
 
@@ -603,6 +600,7 @@ export function initializeStrips() {
         strip.setAttribute("data-index", index);
         strip.style.setProperty("--strip-index", String(index));
         strip.style.height = `${vh}px`;
+        strip.classList.remove("strip-visible");
         fragment.appendChild(strip);
       });
       stripsContainer.appendChild(fragment);
@@ -622,6 +620,12 @@ export function initializeStrips() {
 
       // Attach event listeners now that strips are in the DOM
       attachStripEventListeners();
+
+      shuffledStrips.forEach((strip, index) => {
+        setTimeout(() => {
+          strip.classList.add("strip-visible");
+        }, index * stripInitialDelayStep);
+      });
 
       // Mark as initialized after a delay
       const totalStrips = shuffledStrips.length;
@@ -791,7 +795,7 @@ export function initializeStrips() {
 
             // Update subtitle for touch - scramble the project title
             // Don't update if about overlay is visible
-            const aboutOverlay = document.getElementById("about");
+            const aboutOverlay = getAboutOverlay();
             if (!aboutOverlay || !aboutOverlay.classList.contains("visible")) {
               const projectSlug = strip.getAttribute("data-project");
               const project = projects.find((p) => p.slug === projectSlug);
@@ -809,7 +813,7 @@ export function initializeStrips() {
           } else {
             // No strip under touch - reset to default
             // Don't update if about overlay is visible
-            const aboutOverlay = document.getElementById("about");
+            const aboutOverlay = getAboutOverlay();
             if (!aboutOverlay || !aboutOverlay.classList.contains("visible")) {
               if (subtitleASCIIShift && headerSubtitle) {
                 subtitleASCIIShift.resetToOrig();
