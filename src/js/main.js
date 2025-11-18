@@ -55,7 +55,7 @@ async function showContentForRoute(route) {
       aboutOverlay.style.zIndex = "250";
       aboutOverlay.style.opacity = "0";
       aboutOverlay.style.transition = "opacity 0.3s ease";
-      
+
       // Fade in after a frame to ensure initial state is applied
       requestAnimationFrame(() => {
         requestAnimationFrame(() => {
@@ -64,15 +64,14 @@ async function showContentForRoute(route) {
           aboutOverlay.classList.add("visible");
           aboutOverlay.style.pointerEvents = "auto";
           body.style.overflow = "hidden";
-          
+
           // Fade in subtitle
           if (headerSubtitle) {
             headerSubtitle.style.opacity = "0";
             headerSubtitle.style.transition = "opacity 0.3s ease";
-            const asciiShift = window.subtitleASCIIShift;
-            if (asciiShift) {
-              asciiShift.resetToOrig();
-              asciiShift.updateTxt(defaultSubtitleText.toUpperCase());
+            const scrambler = window.subtitleScrambler;
+            if (scrambler) {
+              scrambler.scramble(defaultSubtitleText.toUpperCase());
             } else {
               headerSubtitle.textContent = defaultSubtitleText.toUpperCase();
             }
@@ -80,7 +79,7 @@ async function showContentForRoute(route) {
               headerSubtitle.style.opacity = "1";
             });
           }
-          
+
           // Set data-initial-about after fade-in completes to prevent flash on navigation
           setTimeout(() => {
             aboutOverlay.setAttribute("data-initial-about", "true");
@@ -102,7 +101,7 @@ async function showContentForRoute(route) {
       body.removeAttribute("data-initial-about");
       aboutOverlay.removeAttribute("data-initial-about");
     }
-    
+
     // Show project content with fade in
     const projects = document.getElementById("projects");
     if (projects) {
@@ -200,15 +199,10 @@ function initHeaderButtons() {
 
   const setSubtitle = (text, fadeIn = false) => {
     const targetText = (text || defaultSubtitleText).trim().toUpperCase();
-    const asciiShift = window.subtitleASCIIShift;
+    const scrambler = window.subtitleScrambler;
     const updateText = () => {
-      if (asciiShift) {
-        // Check if text is already displayed to avoid unnecessary update
-        const currentDisplayedText = headerSubtitle.textContent.trim().toUpperCase();
-        if (currentDisplayedText !== targetText) {
-          asciiShift.resetToOrig();
-          asciiShift.updateTxt(targetText);
-        }
+      if (scrambler) {
+        scrambler.scramble(targetText);
       } else {
         headerSubtitle.textContent = targetText;
       }
@@ -423,7 +417,6 @@ function initHeaderButtons() {
           aboutOverlay.style.pointerEvents = "";
           aboutOverlay.style.transition = "";
           aboutOverlay.classList.remove("fade-out");
-
         }, 300); // Match CSS transition duration
       });
     });
