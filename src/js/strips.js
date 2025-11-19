@@ -116,6 +116,8 @@ let defaultSubtitle = "PROGRESS NOT PERFECTION";
 let currentPageTitle = defaultSubtitle;
 let subtitleScrambler = null;
 let aboutOverlayEl = null;
+let subtitleResetTimeoutId = null;
+let currentHoveredStrip = null;
 
 function getAboutOverlay() {
   if (aboutOverlayEl && document.body.contains(aboutOverlayEl)) {
@@ -123,6 +125,88 @@ function getAboutOverlay() {
   }
   aboutOverlayEl = document.getElementById("about");
   return aboutOverlayEl;
+}
+
+function getStripProjectTitle(strip) {
+  if (!strip) return null;
+  const dataTitle = strip.dataset?.projectTitle;
+  if (dataTitle && dataTitle.trim()) {
+    return dataTitle.trim();
+  }
+  const slug = strip.getAttribute("data-project");
+  if (!slug) return null;
+  const project = projects.find((p) => p.slug === slug);
+  return project?.title || null;
+}
+
+function scrambleSubtitleForStrip(strip) {
+  if (!strip || !subtitleScrambler || !headerSubtitle) return;
+  const projectTitle = getStripProjectTitle(strip);
+  if (!projectTitle) return;
+  subtitleScrambler.scramble(projectTitle.toUpperCase());
+}
+
+function scheduleSubtitleReset(delay = 100) {
+  if (subtitleResetTimeoutId) {
+    clearTimeout(subtitleResetTimeoutId);
+  }
+  subtitleResetTimeoutId = setTimeout(() => {
+    if (subtitleScrambler && headerSubtitle) {
+      subtitleScrambler.scramble(currentPageTitle.toUpperCase());
+    }
+    subtitleResetTimeoutId = null;
+  }, delay);
+}
+
+function handleStripPointerChange(strip) {
+  if (strip === currentHoveredStrip) {
+    return;
+  }
+  currentHoveredStrip = strip;
+
+  if (subtitleResetTimeoutId) {
+    clearTimeout(subtitleResetTimeoutId);
+    subtitleResetTimeoutId = null;
+  }
+
+  if (currentHoveredStrip) {
+    scrambleSubtitleForStrip(currentHoveredStrip);
+    const slug = currentHoveredStrip.getAttribute("data-project");
+    if (slug) {
+      preloadProject(slug);
+    }
+  } else if (!navigationTimeoutId) {
+    scheduleSubtitleReset();
+  }
+}
+
+function initStripHoverTracking() {
+  if (!stripsContainer) return;
+  if (stripsContainer.dataset.hoverTracking === "true") return;
+
+  const pointerMoveHandler = (e) => {
+    if (!stripsContainer.classList.contains("strips-initialized")) {
+      return;
+    }
+    const aboutOverlay = getAboutOverlay();
+    if (aboutOverlay && aboutOverlay.classList.contains("visible")) {
+      return;
+    }
+
+    const targetStrip = e.target?.closest?.(".strip");
+    handleStripPointerChange(targetStrip || null);
+  };
+
+  const pointerLeaveHandler = () => {
+    if (navigationTimeoutId) {
+      return;
+    }
+    handleStripPointerChange(null);
+  };
+
+  stripsContainer.addEventListener("pointermove", pointerMoveHandler);
+  stripsContainer.addEventListener("pointerleave", pointerLeaveHandler);
+  stripsContainer.dataset.hoverTracking = "true";
 }
 
 // ---------- State ----------
@@ -344,75 +428,15 @@ function attachStripEventListeners() {
       return;
     }
 
+    // Ensure project title is stored on dataset for reliable lookup after shuffling
+    strip.dataset.projectTitle = project.title || "";
+
     // Check if listeners are already attached using a data attribute
     // But allow re-attaching if strip was removed and re-added to DOM
     if (strip.dataset.listenersAttached === "true" && strip.parentNode === stripsContainer) {
       return; // Already attached and still in DOM
     }
     strip.dataset.listenersAttached = "true";
-
-    // Mouse hover events
-    strip.addEventListener("mouseenter", (e) => {
-      // Don't update subtitle if strips aren't initialized yet
-      if (!stripsContainer || !stripsContainer.classList.contains("strips-initialized")) {
-        return;
-      }
-
-      // Don't update subtitle if about overlay is visible
-      const aboutOverlay = getAboutOverlay();
-      if (aboutOverlay && aboutOverlay.classList.contains("visible")) {
-        return;
-      }
-
-      // Look up project fresh on each hover to ensure we have the latest data
-      // This is critical because strips are shuffled, so we can't rely on closure-captured project data
-      const currentProjectSlug = strip.getAttribute("data-project");
-      if (!currentProjectSlug) {
-        return;
-      }
-
-      const currentProject = projects.find((p) => p.slug === currentProjectSlug);
-      if (!currentProject || !currentProject.title) {
-        return;
-      }
-
-      // Ensure scrambler is initialized
-      if (!subtitleScrambler || !headerSubtitle) {
-        return;
-      }
-
-      const targetText = currentProject.title.toUpperCase();
-
-      // Use scramble effect to update text
-      subtitleScrambler.scramble(targetText);
-
-      // Preload project content on hover for faster navigation
-      preloadProject(currentProjectSlug);
-    });
-
-    strip.addEventListener("mouseleave", () => {
-      // Don't update subtitle if strips aren't initialized yet
-      if (!stripsContainer || !stripsContainer.classList.contains("strips-initialized")) {
-        return;
-      }
-
-      // Don't update subtitle if about overlay is visible
-      const aboutOverlay = getAboutOverlay();
-      if (aboutOverlay && aboutOverlay.classList.contains("visible")) {
-        return;
-      }
-
-      // Don't reset text if a navigation is pending (user clicked, navigation will happen soon)
-      if (navigationTimeoutId) {
-        return;
-      }
-
-      if (subtitleScrambler && headerSubtitle) {
-        // Always return to the stored current page title
-        const targetText = currentPageTitle.toUpperCase();
-        subtitleScrambler.scramble(targetText);
-      }
-    });
 
     strip.addEventListener("click", (e) => {
       if (document.body?.dataset?.filtering === "true") {
@@ -435,13 +459,14 @@ function attachStripEventListeners() {
 
       // Update currentPageTitle immediately to prevent mouseleave from resetting to old value
       // This ensures the displayed text (from hover) matches the new project
-      currentPageTitle = clickedProject.title;
-      window.__CURRENT_PROJECT_TITLE__ = clickedProject.title;
-      document.documentElement.dataset.currentProjectTitle = clickedProject.title;
+      const clickedTitle = getStripProjectTitle(strip) || clickedProject.title || defaultSubtitle;
+      currentPageTitle = clickedTitle;
+      window.__CURRENT_PROJECT_TITLE__ = clickedTitle;
+      document.documentElement.dataset.currentProjectTitle = clickedTitle;
 
       // Update scrambler text to match the clicked project
       if (subtitleScrambler) {
-        subtitleScrambler.scramble(clickedProject.title.toUpperCase());
+        subtitleScrambler.scramble(clickedTitle.toUpperCase());
       }
 
       strip.classList.add("selected");
@@ -698,6 +723,7 @@ export function initializeStrips() {
   // Use requestAnimationFrame to ensure DOM is ready
   requestAnimationFrame(() => {
     attachStripEventListeners();
+    initStripHoverTracking();
   });
 
   // Attach mouse/touch event listeners for parallax effect
@@ -780,11 +806,11 @@ export function initializeStrips() {
             // Don't update if about overlay is visible
             const aboutOverlay = getAboutOverlay();
             if (!aboutOverlay || !aboutOverlay.classList.contains("visible")) {
-              const projectSlug = strip.getAttribute("data-project");
-              const project = projects.find((p) => p.slug === projectSlug);
-              if (project && subtitleScrambler && headerSubtitle) {
-                const targetText = project.title.toUpperCase();
-                subtitleScrambler.scramble(targetText);
+              if (subtitleScrambler && headerSubtitle) {
+                const projectTitle = getStripProjectTitle(strip);
+                if (projectTitle) {
+                  subtitleScrambler.scramble(projectTitle.toUpperCase());
+                }
               }
             }
           } else {
@@ -810,10 +836,9 @@ export function initializeStrips() {
     // If user didn't move and tapped on a strip, open it
     if (!hasMoved && touchStartStrip && document.body?.dataset?.filtering !== "true") {
       const projectSlug = touchStartStrip.getAttribute("data-project");
-      const project = projects.find((p) => p.slug === projectSlug);
-
-      if (project) {
-        const projectId = project.slug || project.title.toLowerCase().replace(/\s+/g, "-");
+      if (projectSlug) {
+        const project = projects.find((p) => p.slug === projectSlug);
+        const projectId = project?.slug || projectSlug;
         const projectPath = getProjectPath(projectId);
 
         // Don't scroll here - let router handle scrolling after content loads
