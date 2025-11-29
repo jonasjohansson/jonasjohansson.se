@@ -80,13 +80,12 @@ class SPARouter {
         // Fallback: hide manually if function not available
         const aboutOverlay = document.getElementById("about");
         if (aboutOverlay) {
-          aboutOverlay.style.opacity = "0";
+          aboutOverlay.style.display = "none";
+          aboutOverlay.style.visibility = "hidden";
+          aboutOverlay.style.pointerEvents = "none";
           aboutOverlay.classList.remove("visible");
           document.body.classList.remove('about-visible');
           document.body.style.overflow = "";
-          setTimeout(() => {
-            aboutOverlay.style.display = "none";
-          }, 300);
         }
       }
     }
@@ -138,10 +137,7 @@ class SPARouter {
     this.updateStripVisibility(null);
 
     // Auto-scroll to strips position when returning home
-    // In laptop mode, reset to top instead
-    if (document.body.classList.contains('laptop-view-active') && window.__RESET_LAPTOP_SCROLL__) {
-      window.__RESET_LAPTOP_SCROLL__();
-    } else {
+    {
       window.scrollTo({
         top: getStripsScrollPosition(),
         behavior: "auto", // Instant for navigation
@@ -218,13 +214,12 @@ class SPARouter {
       // Fallback: hide manually if function not available
       const aboutOverlay = document.getElementById("about");
       if (aboutOverlay) {
-        aboutOverlay.style.opacity = "0";
+        aboutOverlay.style.display = "none";
+        aboutOverlay.style.visibility = "hidden";
+        aboutOverlay.style.pointerEvents = "none";
         aboutOverlay.classList.remove("visible");
         document.body.classList.remove('about-visible');
         document.body.style.overflow = "";
-        setTimeout(() => {
-          aboutOverlay.style.display = "none";
-        }, 300);
       }
     }
 
@@ -255,8 +250,8 @@ class SPARouter {
 
     // Start strip animation immediately
     if (clickedStrip) {
-      clickedStrip.style.transition = "flex-grow 0.8s ease-out";
-      clickedStrip.style.flexGrow = "100";
+      clickedStrip.style.transition = "flex-grow 0.25s ease-out";
+      clickedStrip.style.flexGrow = "25";
       clickedStrip.style.zIndex = "150"; // Below shader
       clickedStrip.classList.add("selected");
     }
@@ -318,11 +313,7 @@ class SPARouter {
       // Use requestAnimationFrame to ensure DOM is updated, then double RAF for iOS
       requestAnimationFrame(() => {
         requestAnimationFrame(() => {
-          // In laptop mode, scroll the site-wrapper instead of window
-          if (document.body.classList.contains('laptop-view-active') && window.__RESET_LAPTOP_SCROLL__) {
-            // Reset to top in laptop mode
-            window.__RESET_LAPTOP_SCROLL__();
-          } else {
+          {
             // Normal scroll behavior
             const contentWrapper = document.getElementById("content");
             if (contentWrapper) {
@@ -378,7 +369,7 @@ class SPARouter {
         // Helper to fade out the expanded strip after content is ready
         const fadeOutClickedStrip = () => {
           if (!clickedStrip) return;
-          clickedStrip.style.transition = "opacity 0.2s ease";
+          clickedStrip.style.transition = "opacity 0.1s ease";
           clickedStrip.style.opacity = "0";
           setTimeout(() => {
             clickedStrip.style.opacity = "";
@@ -393,7 +384,7 @@ class SPARouter {
             });
 
             this.updateStripVisibility(slug);
-          }, 200);
+          }, 100);
         };
 
         // Remove overlay after delay
@@ -412,7 +403,7 @@ class SPARouter {
           // Keep overlay briefly to blend, then remove
           setTimeout(() => {
             removeOverlay();
-          }, 300);
+          }, 150);
         };
 
         // Start with hidden content until ready
@@ -432,7 +423,7 @@ class SPARouter {
             revealProject();
           } else {
             // Fallback small delay
-            setTimeout(revealProject, 100);
+            setTimeout(revealProject, 50);
           }
         } else {
           // No hero image — reveal immediately
@@ -441,7 +432,7 @@ class SPARouter {
       } else {
         // No currentProjects, proceed with strip visibility update
         if (clickedStrip) {
-          clickedStrip.style.transition = "opacity 0.2s ease";
+          clickedStrip.style.transition = "opacity 0.1s ease";
           clickedStrip.style.opacity = "0";
           setTimeout(() => {
             clickedStrip.style.opacity = "";
@@ -451,7 +442,7 @@ class SPARouter {
             const allStrips = document.querySelectorAll(".strip");
             allStrips.forEach((strip) => strip.classList.remove("selected", "not-selected"));
             this.updateStripVisibility(slug);
-          }, 200);
+          }, 100);
         } else {
           this.updateStripVisibility(slug);
         }

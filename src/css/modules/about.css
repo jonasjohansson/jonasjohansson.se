@@ -10,17 +10,9 @@
   color: var(--color-white);
   overflow: hidden;
   pointer-events: none;
-  opacity: 0;
-  transition: opacity 0.3s ease;
   /* Force own compositing layer */
   transform: translate3d(0, 0, 0);
   backface-visibility: hidden;
-}
-
-/* Disable scrolling in about text area when in laptop mode */
-body.laptop-view-active #about .about-text {
-  overflow-y: hidden !important;
-  overflow-x: hidden !important;
 }
 
 /* When body has about-visible, keep about below shader */
@@ -32,18 +24,15 @@ body.about-visible #about {
 #about[data-initial-about],
 body[data-initial-about] #about {
   display: block !important;
-  opacity: 1 !important;
   pointer-events: auto !important;
   visibility: visible !important;
   z-index: 250 !important;
-  transition: none !important;
 }
 
 /* Explicitly hide about overlay on project pages - must come after show rules */
 body[data-route="project"] #about:not([data-initial-about]):not(.visible),
 body.project-visible #about:not([data-initial-about]):not(.visible) {
   display: none !important;
-  opacity: 0 !important;
   visibility: hidden !important;
   pointer-events: none !important;
 }
@@ -51,11 +40,6 @@ body.project-visible #about:not([data-initial-about]):not(.visible) {
 #about.visible {
   display: block;
   pointer-events: auto;
-  /* Opacity is controlled by JavaScript for smooth fade-in */
-}
-
-#about.fade-out {
-  opacity: 0;
 }
 
 .about-container {

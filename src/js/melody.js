@@ -96,7 +96,6 @@ class MelodyPlayer {
       this.currentMelody = MELODIES[melodyKey];
       this.currentNoteIndex = 0;
       this.isPlaying = false;
-      console.log(`Melody mode enabled: ${this.currentMelody.name}`);
       return true;
     }
     return false;
@@ -112,7 +111,6 @@ class MelodyPlayer {
       clearTimeout(this.playbackTimeout);
       this.playbackTimeout = null;
     }
-    console.log("Melody mode disabled");
   }
 
   // Get the next note in the melody

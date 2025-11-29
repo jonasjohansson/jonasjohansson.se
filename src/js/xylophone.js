@@ -81,10 +81,7 @@ export function initXylophone() {
     strip.addEventListener("mouseenter", () => {
       if (melodyPlayer.isMelodyMode) {
         // Play next note in melody
-        const playedNote = melodyPlayer.playCurrentNote(playNote);
-        if (playedNote) {
-          console.log(`Playing melody note: ${playedNote.note}`);
-        }
+        melodyPlayer.playCurrentNote(playNote);
       } else {
         // Play individual strip note
         const frequency = getFrequencyForStrip(index, strips.length);

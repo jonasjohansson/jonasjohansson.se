@@ -6,7 +6,6 @@ const {
   images: { loadMargin },
 } = SETTINGS;
 import { ColorExtractor } from "./utils/colorExtractor.js";
-import { createScrambler } from "./utils/scrambleText.js";
 import { getProjectPath } from "./utils/pathBuilder.js";
 
 // Get projects from window global (injected by 11ty)
@@ -114,11 +113,7 @@ let navigationTimeoutId = null;
 let headerSubtitle;
 let defaultSubtitle = "PROGRESS NOT PERFECTION";
 let currentPageTitle = defaultSubtitle;
-let subtitleScrambler = null;
 let aboutOverlayEl = null;
-let subtitleResetTimeoutId = null;
-let currentHoveredStrip = null;
-
 function getAboutOverlay() {
   if (aboutOverlayEl && document.body.contains(aboutOverlayEl)) {
     return aboutOverlayEl;
@@ -129,84 +124,24 @@ function getAboutOverlay() {
 
 function getStripProjectTitle(strip) {
   if (!strip) return null;
+
+  // Try dataset first (camelCase from data-project-title)
   const dataTitle = strip.dataset?.projectTitle;
   if (dataTitle && dataTitle.trim()) {
     return dataTitle.trim();
   }
+
+  // Fallback: try getAttribute directly (kebab-case)
+  const attrTitle = strip.getAttribute("data-project-title");
+  if (attrTitle && attrTitle.trim()) {
+    return attrTitle.trim();
+  }
+
+  // Final fallback: look up by slug
   const slug = strip.getAttribute("data-project");
   if (!slug) return null;
   const project = projects.find((p) => p.slug === slug);
   return project?.title || null;
-}
-
-function scrambleSubtitleForStrip(strip) {
-  if (!strip || !subtitleScrambler || !headerSubtitle) return;
-  const projectTitle = getStripProjectTitle(strip);
-  if (!projectTitle) return;
-  subtitleScrambler.scramble(projectTitle.toUpperCase());
-}
-
-function scheduleSubtitleReset(delay = 100) {
-  if (subtitleResetTimeoutId) {
-    clearTimeout(subtitleResetTimeoutId);
-  }
-  subtitleResetTimeoutId = setTimeout(() => {
-    if (subtitleScrambler && headerSubtitle) {
-      subtitleScrambler.scramble(currentPageTitle.toUpperCase());
-    }
-    subtitleResetTimeoutId = null;
-  }, delay);
-}
-
-function handleStripPointerChange(strip) {
-  if (strip === currentHoveredStrip) {
-    return;
-  }
-  currentHoveredStrip = strip;
-
-  if (subtitleResetTimeoutId) {
-    clearTimeout(subtitleResetTimeoutId);
-    subtitleResetTimeoutId = null;
-  }
-
-  if (currentHoveredStrip) {
-    scrambleSubtitleForStrip(currentHoveredStrip);
-    const slug = currentHoveredStrip.getAttribute("data-project");
-    if (slug) {
-      preloadProject(slug);
-    }
-  } else if (!navigationTimeoutId) {
-    scheduleSubtitleReset();
-  }
-}
-
-function initStripHoverTracking() {
-  if (!stripsContainer) return;
-  if (stripsContainer.dataset.hoverTracking === "true") return;
-
-  const pointerMoveHandler = (e) => {
-    if (!stripsContainer.classList.contains("strips-initialized")) {
-      return;
-    }
-    const aboutOverlay = getAboutOverlay();
-    if (aboutOverlay && aboutOverlay.classList.contains("visible")) {
-      return;
-    }
-
-    const targetStrip = e.target?.closest?.(".strip");
-    handleStripPointerChange(targetStrip || null);
-  };
-
-  const pointerLeaveHandler = () => {
-    if (navigationTimeoutId) {
-      return;
-    }
-    handleStripPointerChange(null);
-  };
-
-  stripsContainer.addEventListener("pointermove", pointerMoveHandler);
-  stripsContainer.addEventListener("pointerleave", pointerLeaveHandler);
-  stripsContainer.dataset.hoverTracking = "true";
 }
 
 // ---------- State ----------
@@ -438,6 +373,46 @@ function attachStripEventListeners() {
     }
     strip.dataset.listenersAttached = "true";
 
+    // Simple hover - just read the data attribute directly
+    strip.addEventListener("mouseenter", () => {
+      if (!headerSubtitle) return;
+      if (!stripsContainer?.classList.contains("strips-initialized")) return;
+      const aboutOverlay = getAboutOverlay();
+      if (aboutOverlay?.classList.contains("visible")) return;
+
+      // Just read the title from the data attribute and set it directly
+      const projectTitle = strip.getAttribute("data-project-title");
+      const projectSlug = strip.getAttribute("data-project");
+
+      if (projectTitle && projectTitle.trim()) {
+        headerSubtitle.textContent = projectTitle.toUpperCase();
+      } else {
+        // Fallback: lookup by slug
+        if (projectSlug) {
+          const project = projects.find((p) => p.slug === projectSlug);
+          if (project?.title) {
+            headerSubtitle.textContent = project.title.toUpperCase();
+          }
+        }
+      }
+
+      // Preload project
+      if (projectSlug) preloadProject(projectSlug);
+    });
+
+    strip.addEventListener("mouseleave", (e) => {
+      // Don't reset if moving to another strip
+      if (e.relatedTarget?.closest?.(".strip")) return;
+      if (!headerSubtitle) return;
+      if (!stripsContainer?.classList.contains("strips-initialized")) return;
+      const aboutOverlay = getAboutOverlay();
+      if (aboutOverlay?.classList.contains("visible")) return;
+      if (navigationTimeoutId) return;
+
+      // Reset to current page title
+      headerSubtitle.textContent = currentPageTitle.toUpperCase();
+    });
+
     strip.addEventListener("click", (e) => {
       if (document.body?.dataset?.filtering === "true") {
         return;
@@ -458,15 +433,14 @@ function attachStripEventListeners() {
       const projectPath = getProjectPath(computedId);
 
       // Update currentPageTitle immediately to prevent mouseleave from resetting to old value
-      // This ensures the displayed text (from hover) matches the new project
-      const clickedTitle = getStripProjectTitle(strip) || clickedProject.title || defaultSubtitle;
-      currentPageTitle = clickedTitle;
-      window.__CURRENT_PROJECT_TITLE__ = clickedTitle;
-      document.documentElement.dataset.currentProjectTitle = clickedTitle;
+      // Use the project title from the projects array, not from the strip (more reliable)
+      currentPageTitle = clickedProject.title;
+      window.__CURRENT_PROJECT_TITLE__ = clickedProject.title;
+      document.documentElement.dataset.currentProjectTitle = clickedProject.title;
 
-      // Update scrambler text to match the clicked project
-      if (subtitleScrambler) {
-        subtitleScrambler.scramble(clickedTitle.toUpperCase());
+      // Update subtitle text to match the clicked project
+      if (headerSubtitle) {
+        headerSubtitle.textContent = clickedProject.title.toUpperCase();
       }
 
       strip.classList.add("selected");
@@ -680,15 +654,6 @@ export function initializeStrips() {
 
   headerSubtitle = document.querySelector(".header-subtitle");
 
-  if (headerSubtitle) {
-    subtitleScrambler = createScrambler(headerSubtitle, {
-      duration: 600,
-      frameDelay: 30,
-    });
-    // Make it globally available for router
-    window.subtitleScrambler = subtitleScrambler;
-  }
-
   // Get base name from site.json
   const baseName = window.__SITE_TITLE__ || "Jonas Johansson";
 
@@ -713,9 +678,9 @@ export function initializeStrips() {
   const initialTitle = getCurrentProjectTitle();
   if (initialTitle && initialTitle !== defaultSubtitle) {
     currentPageTitle = initialTitle;
-    // Update scrambler text if available
-    if (subtitleScrambler && initialTitle !== defaultSubtitle) {
-      subtitleScrambler.scramble(initialTitle.toUpperCase());
+    // Update subtitle text if available
+    if (headerSubtitle && initialTitle !== defaultSubtitle) {
+      headerSubtitle.textContent = initialTitle.toUpperCase();
     }
   }
 
@@ -723,7 +688,6 @@ export function initializeStrips() {
   // Use requestAnimationFrame to ensure DOM is ready
   requestAnimationFrame(() => {
     attachStripEventListeners();
-    initStripHoverTracking();
   });
 
   // Attach mouse/touch event listeners for parallax effect
@@ -802,14 +766,14 @@ export function initializeStrips() {
           if (strip) {
             strip.classList.add("touch-hover");
 
-            // Update subtitle for touch - scramble the project title
+            // Update subtitle for touch
             // Don't update if about overlay is visible
             const aboutOverlay = getAboutOverlay();
             if (!aboutOverlay || !aboutOverlay.classList.contains("visible")) {
-              if (subtitleScrambler && headerSubtitle) {
-                const projectTitle = getStripProjectTitle(strip);
+              if (headerSubtitle) {
+                const projectTitle = strip.getAttribute("data-project-title") || getStripProjectTitle(strip);
                 if (projectTitle) {
-                  subtitleScrambler.scramble(projectTitle.toUpperCase());
+                  headerSubtitle.textContent = projectTitle.toUpperCase();
                 }
               }
             }
@@ -818,8 +782,8 @@ export function initializeStrips() {
             // Don't update if about overlay is visible
             const aboutOverlay = getAboutOverlay();
             if (!aboutOverlay || !aboutOverlay.classList.contains("visible")) {
-              if (subtitleScrambler && headerSubtitle) {
-                subtitleScrambler.scramble(currentPageTitle.toUpperCase());
+              if (headerSubtitle) {
+                headerSubtitle.textContent = currentPageTitle.toUpperCase();
               }
             }
           }
@@ -853,8 +817,8 @@ export function initializeStrips() {
     }
 
     // Reset subtitle to default when touch ends
-    if (subtitleScrambler && headerSubtitle) {
-      subtitleScrambler.scramble(currentPageTitle.toUpperCase());
+    if (headerSubtitle) {
+      headerSubtitle.textContent = currentPageTitle.toUpperCase();
     }
 
     touchStartStrip = null;
@@ -1091,8 +1055,8 @@ function updateCurrentPageTitle(title) {
     // If title is null, reset to homepage
     if (title === null) {
       currentPageTitle = defaultSubtitle;
-      if (subtitleScrambler && headerSubtitle) {
-        subtitleScrambler.scramble(defaultSubtitle.toUpperCase());
+      if (headerSubtitle) {
+        headerSubtitle.textContent = defaultSubtitle.toUpperCase();
       }
       return;
     }
@@ -1105,15 +1069,8 @@ function updateCurrentPageTitle(title) {
 
     // Update the header subtitle if we're on a project page
     if (window.location.pathname.includes("/work/")) {
-      // Try to update the header directly if subtitleScrambler is available
-      if (subtitleScrambler && headerSubtitle) {
-        const targetText = currentPageTitle.toUpperCase();
-        subtitleScrambler.scramble(targetText);
-      } else {
-        // Fallback: update the header text directly
-        if (headerSubtitle) {
-          headerSubtitle.textContent = currentPageTitle.toUpperCase();
-        }
+      if (headerSubtitle) {
+        headerSubtitle.textContent = currentPageTitle.toUpperCase();
       }
     }
   } catch (error) {

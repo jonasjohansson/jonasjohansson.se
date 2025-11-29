@@ -2,6 +2,9 @@ import GUI from "lil-gui";
 import { grainParams, updateGrain as updateGrainFromModule } from "./grain.js";
 import shaderSettings from "./config/shader-settings.json";
 
+// Enable/disable shader GUI - set to true to enable GUI controls
+const ENABLE_GUI = false;
+
 const simplexNoiseSource = `
   vec3 mod289(vec3 x) { return x - floor(x * (1.0 / 289.0)) * 289.0; }
   vec4 mod289(vec4 x) { return x - floor(x * (1.0 / 289.0)) * 289.0; }
@@ -642,17 +645,15 @@ function exportSettings() {
   linkElement.setAttribute("download", exportFileDefaultName);
   linkElement.click();
 
-  console.log("Settings exported to shader-settings.json");
-  console.log("Place this file in src/js/config/ directory to have it loaded automatically on each page load.");
+  // Settings exported to shader-settings.json
+  // Place this file in src/js/config/ directory to have it loaded automatically on each page load.
 }
 
 function loadSettingsFromFile() {
   // Return the imported settings (now statically imported, so synchronous)
   try {
-    console.log("Loaded settings from config/shader-settings.json");
     return shaderSettings.default || shaderSettings;
   } catch (error) {
-    console.log("No shader-settings.json found in config folder, using defaults");
     return null;
   }
 }
@@ -674,9 +675,6 @@ export async function initializeShader() {
   // Apply file settings if present (overrides defaults)
   if (fileSettings && fileSettings.params) {
     Object.assign(initialConfig, fileSettings.params);
-    console.log("Using settings from src/js/config/shader-settings.json");
-  } else {
-    console.log("Using default shader settings");
   }
 
   // Create single shader instance
@@ -694,8 +692,10 @@ export async function initializeShader() {
   instance.params.grainScale = grainParams.scale;
   instance.params.grainBlend = grainParams.blend;
 
-  // Create GUI (uses instance's params)
-  createGUI();
+  // Create GUI (uses instance's params) - disabled by default
+  if (ENABLE_GUI) {
+    createGUI();
+  }
 
   // Handle window resize and scroll (for dynamic page height)
   const handleResize = () => {
@@ -714,22 +714,25 @@ export async function initializeShader() {
   // Start rendering
   instance.start();
 
-  // Expose functions globally
-  window.toggleShaderGUI = toggleGUI;
-  window.exportShaderSettings = exportSettings;
+  // Expose functions globally (only if GUI is enabled)
+  if (ENABLE_GUI) {
+    window.toggleShaderGUI = toggleGUI;
+    window.exportShaderSettings = exportSettings;
 
-  // Add keyboard shortcut to toggle GUI (press 'G' key)
-  document.addEventListener("keydown", (event) => {
-    if (
-      event.key.toLowerCase() === "g" &&
-      event.target.tagName !== "INPUT" &&
-      event.target.tagName !== "TEXTAREA" &&
-      !event.target.isContentEditable
-    ) {
-      event.preventDefault();
-      toggleGUI();
-    }
-  });
-
-  console.log("Shader initialized. Press G to toggle GUI, or call window.exportShaderSettings() to export settings.");
+    // Add keyboard shortcut to toggle GUI (press 'G' key)
+    document.addEventListener("keydown", (event) => {
+      if (
+        event.key.toLowerCase() === "g" &&
+        event.target.tagName !== "INPUT" &&
+        event.target.tagName !== "TEXTAREA" &&
+        !event.target.isContentEditable
+      ) {
+        event.preventDefault();
+        toggleGUI();
+      }
+    });
+  } else {
+    // Still expose export function even when GUI is disabled (for programmatic use)
+    window.exportShaderSettings = exportSettings;
+  }
 }
