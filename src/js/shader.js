@@ -1,4 +1,3 @@
-import GUI from "lil-gui";
 import { grainParams, updateGrain as updateGrainFromModule } from "./grain.js";
 import shaderSettings from "./config/shader-settings.json";
 
@@ -481,13 +480,14 @@ class ShaderInstance {
   }
 }
 
-function createGUI() {
+async function createGUI() {
   if (gui) return;
 
   // Use first instance's params for GUI
   if (shaderInstances.length === 0) return;
   const params = shaderInstances[0].params;
 
+  const { default: GUI } = await import("lil-gui");
   gui = new GUI({ title: "Shader Controls" });
   gui.domElement.style.position = "fixed";
   gui.domElement.style.top = "20px";

@@ -35,17 +35,20 @@ body {
   /* Ensure content goes to top edge on mobile */
   padding-top: 0;
   margin-top: 0;
-  /* Scroll snap for Safari compatibility */
-  scroll-snap-type: y proximity;
 }
 
-/* Content wrapper - lowest z-index */
+html:has(body.about-visible),
+body.about-visible {
+  overflow: hidden;
+  height: 100vh;
+}
+
+/* Content wrapper */
 #content {
   position: relative;
   z-index: 100;
+  overflow-anchor: none;
 }
-
-/* Project-visible class no longer needed for scroll, but keep for hooks */
 
 /* Hide scrollbars */
 ::-webkit-scrollbar {
@@ -66,8 +69,6 @@ a:hover {
 * {
   user-select: none;
   -webkit-user-select: none;
-  -moz-user-select: none;
-  -ms-user-select: none;
 }
 
 /* Allow text selection only on project content */
@@ -81,8 +82,6 @@ a:hover {
 .project-grid * {
   user-select: text;
   -webkit-user-select: text;
-  -moz-user-select: text;
-  -ms-user-select: text;
 }
 
 /* Disable drag on media elements */
@@ -94,9 +93,6 @@ svg,
 picture,
 figcaption {
   -webkit-user-drag: none;
-  -khtml-user-drag: none;
-  -moz-user-drag: none;
-  -o-user-drag: none;
 }
 
 /* Loading states - hide all content during loading */
@@ -134,14 +130,7 @@ body.loaded:not([data-route]):not(.project-visible):not(.about-visible) #strips 
   pointer-events: auto;
 }
 
-/* About route - show about overlay */
-body.loaded[data-route="about"] #about,
-body.loaded.about-visible #about {
-  opacity: 1;
-  visibility: visible;
-  pointer-events: auto;
-  transition: opacity 0.3s ease;
-}
+/* About route - about section is controlled by content transform */
 
 /* Project route - show project content */
 body.loaded[data-route="project"] #projects,
@@ -229,7 +218,7 @@ img[data-hero] {
   letter-spacing: var(--letter-spacing-base);
   line-height: var(--line-height-tight);
   text-transform: uppercase;
-  font-family: var(--font-family-offbit);
+  font-family: var(--font-family);
   transition: all 0.2s ease;
 }
 
@@ -263,7 +252,7 @@ img[data-hero] {
   letter-spacing: var(--letter-spacing-wide);
   text-transform: uppercase;
   line-height: var(--line-height-tight);
-  font-family: var(--font-family-offbit);
+  font-family: var(--font-family);
 }
 
 /* Common flexbox utility classes */

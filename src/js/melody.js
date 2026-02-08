@@ -158,5 +158,3 @@ class MelodyPlayer {
 export const melodyPlayer = new MelodyPlayer();
 export { MELODIES, NOTE_FREQUENCIES };
 
-// Expose globally for console access
-window.melodyPlayer = melodyPlayer;

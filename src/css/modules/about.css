@@ -1,45 +1,24 @@
 #about {
-  position: fixed;
-  top: 0;
-  left: 0;
+  position: relative;
   width: 100vw;
   height: 100vh;
+  min-height: 100vh;
+  margin-top: -100vh;
   background: var(--color-black);
-  z-index: 250; /* Below header (300), shader (400), grain (500) */
-  display: none;
   color: var(--color-white);
   overflow: hidden;
-  pointer-events: none;
-  /* Force own compositing layer */
-  transform: translate3d(0, 0, 0);
+  transition: margin-top 0.5s cubic-bezier(0.4, 0, 0.2, 1);
   backface-visibility: hidden;
 }
 
-/* When body has about-visible, keep about below shader */
-body.about-visible #about {
-  z-index: 250; /* Below header (300), shader (400), grain (500) */
-}
-
-/* Show immediately on direct navigation to /about/ */
-#about[data-initial-about],
-body[data-initial-about] #about {
-  display: block !important;
-  pointer-events: auto !important;
-  visibility: visible !important;
-  z-index: 250 !important;
-}
-
-/* Explicitly hide about overlay on project pages - must come after show rules */
-body[data-route="project"] #about:not([data-initial-about]):not(.visible),
-body.project-visible #about:not([data-initial-about]):not(.visible) {
-  display: none !important;
-  visibility: hidden !important;
-  pointer-events: none !important;
-}
-
 #about.visible {
-  display: block;
-  pointer-events: auto;
+  margin-top: 0;
+}
+
+/* Direct visit to /about/ — show immediately without animation */
+#about[data-initial-about] {
+  margin-top: 0;
+  transition: none;
 }
 
 .about-container {

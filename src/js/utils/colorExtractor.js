@@ -114,20 +114,4 @@ export class ColorExtractor {
     return this.rgbToHex(newR, newG, newB);
   }
 
-  /**
-   * Get a contrasting color (light or dark) based on the input color
-   * @param {string} hex - Hex color string
-   * @returns {string} - Contrasting color
-   */
-  getContrastColor(hex) {
-    const r = parseInt(hex.slice(1, 3), 16);
-    const g = parseInt(hex.slice(3, 5), 16);
-    const b = parseInt(hex.slice(5, 7), 16);
-    
-    // Calculate luminance
-    const luminance = (0.299 * r + 0.587 * g + 0.114 * b) / 255;
-    
-    // Return white for dark colors, black for light colors
-    return luminance > 0.5 ? '#000000' : '#ffffff';
-  }
 }

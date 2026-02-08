@@ -1,0 +1,9 @@
+<script>
+  window.__PATH_PREFIX__ = "{{ '/' | url }}".replace(/\/$/, '');
+  window.__PROJECTS_DATA__ = {{ projectsForJS | dump | safe }};
+  window.__SITE_TITLE__ = {{ site.title | dump | safe }};
+  window.__ABOUT_IMAGES__ = {{ aboutImages | dump | safe }};
+  {% if project %}
+  window.__INITIAL_PROJECT__ = {{ project | dump | safe }};
+  {% endif %}
+</script>

@@ -6,6 +6,6 @@ Jonas's professional experience includes KRAM/WEISSHAAR (SE/DE), [FIELD](https:/
 
 Under the moniker Scenic Route, he has performed for artists such as La Fleur, Kornel Kovacs, Gesafellstein, Yuksek and all time idol, The Field.
 
-Today, Jonas runs the artist residency [Visualia](https://visualia.se), co-creates events with [PLX](https://plxplxplx.com/), collaborates with the lighting collective [Svartljus](https://svartljus.se), and co-founded [Nordic Audiovisual Artists](https://nava.community). He shares a studio in Stockholm with [SMASH](https://smash.studio) and [Rose Hallgren](https://rosehallgren.se).
+Today, Jonas runs the artist residency [Visualia](https://visualia.se), produces the fulldome film festival [Dome Dreaming](https://www.domedreaming.com), co-creates events with [PLX](https://plxplxplx.com/), collaborates with the lighting collective [Svartljus](https://svartljus.se), and co-founded [Nordic Audiovisual Artists](https://nava.community). He shares a studio in Stockholm with [SMASH](https://smash.studio) and [Rose Hallgren](https://rosehallgren.se).
 
 [j@jonasjohansson.se](mailto:j@jonasjohansson.se) · [CV](https://docs.google.com/spreadsheets/u/1/d/e/2PACX-1vSdECybrvqdFRdXdglDL9pYuygE9NiSIRDz7A-GzvuHMOh0-fRfZWww_Wj4SSNk_vtsreDhrGrstGkM/pubhtml)

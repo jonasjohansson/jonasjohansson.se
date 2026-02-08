@@ -66,9 +66,9 @@ body.loaded #loading-screen {
 /* About text styling - consolidated */
 #loading-intro .about-columns p,
 #intro-section .about-columns p {
-  margin: 0 0 var(--spacing-xs) 0 !important;
-  padding: 0 0 var(--spacing-xs) 0 !important;
-  font-size: var(--font-size-base) !important;
+  margin: 0 0 var(--spacing-xs) 0;
+  padding: 0 0 var(--spacing-xs) 0;
+  font-size: var(--font-size-base);
   letter-spacing: var(--letter-spacing-wide);
   line-height: 1.4;
   color: var(--color-white);
@@ -77,8 +77,8 @@ body.loaded #loading-screen {
 
 #loading-intro .about-columns p:first-child,
 #intro-section .about-columns p:first-child {
-  margin-top: 0 !important;
-  padding-top: 0 !important;
+  margin-top: 0;
+  padding-top: 0;
 }
 
 #loading-intro .about-columns a,
@@ -108,56 +108,7 @@ body.loaded #loading-screen {
   opacity: 1;
 }
 
-/* Start button */
-#start-button {
-  background: var(--color-white);
-  border: none;
-  border-radius: var(--radius-sm);
-  clip-path: var(--cut-corner-sm);
-  color: var(--color-black);
-  font-size: var(--font-size-base);
-  padding: var(--spacing-sm) var(--spacing-lg);
-  padding-top: calc(var(--spacing-sm) + 2px);
-  cursor: pointer;
-  display: inline-flex;
-  align-items: center;
-  justify-content: center;
-  letter-spacing: var(--letter-spacing-base);
-  line-height: var(--line-height-tight);
-  text-transform: uppercase;
-  font-family: var(--font-family-offbit);
-}
-
-#start-button:disabled {
-  opacity: 0.5;
-  cursor: not-allowed;
-}
-
-#start-button:hover:not(:disabled) {
-  background: var(--color-gray);
-}
-
-/* Difficult button */
-#difficult-button {
-  background: var(--color-white);
-  border: none;
-  border-radius: var(--radius-sm);
-  clip-path: var(--cut-corner-sm);
-  color: var(--color-black);
-  font-size: var(--font-size-base);
-  padding: var(--spacing-sm) var(--spacing-lg);
-  padding-top: calc(var(--spacing-sm) + 2px);
-  cursor: not-allowed;
-  display: inline-flex;
-  align-items: center;
-  justify-content: center;
-  letter-spacing: var(--letter-spacing-base);
-  line-height: var(--line-height-tight);
-  text-transform: uppercase;
-  font-family: var(--font-family-offbit);
-  opacity: 0.3;
-  pointer-events: none;
-}
+/* Start button - extends .btn-base from base.css */
 
 /* Intro section (slides in from top) */
 #intro-section {
@@ -195,15 +146,7 @@ body.loaded #loading-screen {
 }
 
 /* Mobile responsive */
-@media (max-width: var(--breakpoint-mobile)) {
-  .about-columns {
-    column-count: 1;
-  }
-
-  #intro-section .about-columns {
-    column-count: 1;
-  }
-
+@media (max-width: 768px) {
   #loading-screen {
     padding: var(--spacing-md);
   }

@@ -1,6 +1,6 @@
 <nav
   id="strips"
-  role="list">
+  aria-label="Projects">
   {% for project in projectsForJS %} {% set stripImage = project.images[0] %} {% if stripImage and not stripImage.startsWith('/') %} {% set
   stripImage = '/' ~ stripImage %} {% endif %}
   <div

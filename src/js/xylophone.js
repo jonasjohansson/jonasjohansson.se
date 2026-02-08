@@ -1,5 +1,6 @@
 // Xylophone sound generator using Web Audio API
 import { melodyPlayer } from "./melody.js";
+import { detectSwipeDirection } from "./utils/gestureDetector.js";
 
 let audioContext = null;
 
@@ -139,15 +140,11 @@ export function initXylophone() {
       
       // Detect direction on first move
       if (!hasDetectedDirection) {
-        const deltaX = Math.abs(touch.clientX - touchStartX);
-        const deltaY = Math.abs(touch.clientY - touchStartY);
-        
-        // Only handle horizontal gestures (X-axis)
-        if (deltaX > deltaY && deltaX > 10) {
+        const direction = detectSwipeDirection(touchStartX, touchStartY, touch.clientX, touch.clientY);
+        if (direction === "horizontal") {
           isHorizontalGesture = true;
           hasDetectedDirection = true;
-        } else if (deltaY > deltaX && deltaY > 10) {
-          // Vertical scroll - let browser handle it, don't prevent default
+        } else if (direction === "vertical") {
           isHorizontalGesture = false;
           hasDetectedDirection = true;
           return; // Allow normal scrolling
@@ -196,9 +193,6 @@ export function initXylophone() {
 
 // Export melody player for external control
 export { melodyPlayer };
-
-// Expose globally for console access
-window.melodyPlayer = melodyPlayer;
 
 // Initialize when DOM is ready
 function init() {

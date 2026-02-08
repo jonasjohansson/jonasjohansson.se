@@ -6,7 +6,6 @@ export const SETTINGS = {
     idleThresholdFrames: 60,
     stripInitialDelayStep: 50, // matches CSS animation-delay per strip
     stripInitialDuration: 400,
-    stripAppendDelayStep: 12, // delay between appending strips for staggered animation
   },
   images: {
     loadMargin: "200px",

@@ -7,67 +7,32 @@
       rel="stylesheet"
       href="{{ 'styles.css' | viteAsset | url }}" />
 
-    <script>
-      window.__PATH_PREFIX__ = "{{ '/' | url }}".replace(/\/$/, '');
-      window.__PROJECTS_DATA__ = {{ projectsForJS | dump | safe }};
-      window.__SITE_TITLE__ = {{ site.title | dump | safe }};
-      window.__ABOUT_IMAGES__ = {{ aboutImages | dump | safe }};
-      {% if project %}
-      window.__INITIAL_PROJECT__ = {{ project | dump | safe }};
-      {% endif %}
-    </script>
+    {% include "../components/app-data.njk" %}
   </head>
   <body>
-    <script>
-      // Set data-route immediately to prevent flash of wrong content
-      // This runs after body is parsed, so body and #about exist
-      (function() {
-        const path = window.location.pathname.replace(/\/$/, '') || '/';
-        let route = 'home';
-        if (path === '/about' || path === window.__PATH_PREFIX__ + '/about') {
-          route = 'about';
-        } else if (path.match(/\/work\/[^\/]+/)) {
-          route = 'project';
-        }
-        
-        document.body.setAttribute('data-route', route);
-        
-        // Hide about overlay immediately on project pages only
-        if (route === 'project') {
-          const about = document.getElementById('about');
-          if (about) {
-            about.style.display = 'none';
-            about.style.visibility = 'hidden';
-            about.style.pointerEvents = 'none';
-          }
-          document.body.classList.add('project-visible');
-        }
-      })();
-    </script>
+    {% include "../components/route-init.njk" %}
     <!-- Loading screen - shown while assets are loading -->
     <div id="loading-screen">
       <div id="loading-spinner"></div>
     </div>
 
-    {% include "../components/shader.njk" %} {% include "../components/header.njk" %}
+    {% include "../components/shader.njk" %}
+    {% include "../components/header.njk" %}
 
-      <!-- About overlay - full screen overlay with about content -->
-      <!-- MUST be outside #content to escape its stacking context -->
-      <aside id="about" {% if page.url === '/about/' %}data-initial-about="true"{% endif %}>
-        <div class="about-container">
-          <div class="about-text">
-            <div class="about-text-inner">
-              {% if about %}
-                {{ about | markdown | safe }}
-              {% endif %}
-            </div>
-          </div>
-          <div class="about-image">{% responsiveImage "projects/about/01.jpg", "Jonas Johansson" %}</div>
-        </div>
-      </aside>
-
-      <!-- Wrapper for main content -->
       <div id="content">
+        <aside id="about" {% if page.url === '/about/' %}data-initial-about="true"{% endif %}>
+          <div class="about-container">
+            <div class="about-text">
+              <div class="about-text-inner">
+                {% if about %}
+                  {{ about | markdown | safe }}
+                {% endif %}
+              </div>
+            </div>
+            <div class="about-image">{% responsiveImage "projects/about/01.jpg", "Jonas Johansson" %}</div>
+          </div>
+        </aside>
+
         <main id="main">
           {{ content | safe }}
         </main>
