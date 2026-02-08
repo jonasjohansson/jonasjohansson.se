@@ -7,6 +7,7 @@
   background: var(--color-black);
   color: var(--color-white);
   overflow: hidden;
+  overflow-y: auto;
   transition: margin-top 0.5s cubic-bezier(0.4, 0, 0.2, 1);
   backface-visibility: hidden;
 }
@@ -34,6 +35,8 @@
   height: 100%;
   display: flex;
   align-items: flex-end;
+  container-type: size;
+  container-name: about-text;
 }
 
 .about-text-inner {
@@ -42,15 +45,15 @@
 
 .about-text-inner > * {
   margin: 0;
-  font-size: clamp(1rem, 0.8vw + 0rem, 1.5rem);
-  line-height: 1.5;
+  font-size: clamp(0.7rem, 3.2cqw, 1.4rem);
+  line-height: 1.35;
   letter-spacing: var(--letter-spacing-base);
   font-weight: 400;
   text-align: left;
 }
 
 .about-text-inner > * + * {
-  margin-top: var(--spacing-md);
+  margin-top: 0.6em;
 }
 
 .about-image {
@@ -119,15 +122,12 @@
     height: 100%;
   }
 
-  #about p {
-    font-size: clamp(1rem, 1rem + 0.5vw, 1.8rem);
-    line-height: 1.5;
+  .about-text {
+    container-type: inline-size;
   }
-}
 
-/* Desktop: ensure typography scales responsively */
-@media (min-width: 768px) {
   .about-text-inner > * {
-    font-size: clamp(1rem, 1vw + 0.2rem, 1.5rem);
+    font-size: clamp(0.7rem, 2.6cqw, 1rem);
+    line-height: 1.35;
   }
 }
