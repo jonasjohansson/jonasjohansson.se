@@ -149,7 +149,10 @@ body.loaded:not([data-route="about"]):not([data-route="project"])::before {
 }
 
 body:has(#strips.strips-initialized)::before,
-body.strips-initialized::before,
+body.strips-initialized::before {
+  opacity: var(--grain-opacity, 0);
+}
+
 body:has(#strips.strips-initialized) #shader-canvas,
 body.strips-initialized #shader-canvas {
   opacity: 1;

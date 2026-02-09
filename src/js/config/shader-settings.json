@@ -32,7 +32,7 @@
     "flowSpeed": 1,
     "flowAmount": 1,
     "flowAngle": 100,
-    "layerOpacity": 1,
+    "layerOpacity": 0.8,
     "noiseScale": 5,
     "waveHeight": 300,
     "waveSpeed": 2,
@@ -48,10 +48,10 @@
     "enabled": true,
     "blendMode": "multiply",
     "shape": 1,
-    "grainOpacity": 0.1,
+    "grainOpacity": 0.05,
     "grainScale": 1,
     "grainBlend": "screen",
-    "brightness": 0.16,
+    "brightness": 0.22,
     "contrast": 2
   }
 }

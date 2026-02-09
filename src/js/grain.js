@@ -22,7 +22,7 @@ function createGrainTextureCanvas() {
 
 // Grain parameters
 const grainParams = {
-  opacity: 0.10,
+  opacity: 0.05,
   scale: 1.0,
   blend: 'screen',
 };

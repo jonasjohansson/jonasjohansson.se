@@ -1,8 +1,5 @@
-import { grainParams, updateGrain as updateGrainFromModule } from "./grain.js";
+import { grainParams } from "./grain.js";
 import shaderSettings from "./config/shader-settings.json";
-
-// Enable/disable shader GUI - set to true to enable GUI controls
-const ENABLE_GUI = false;
 
 const simplexNoiseSource = `
   vec3 mod289(vec3 x) { return x - floor(x * (1.0 / 289.0)) * 289.0; }
@@ -273,7 +270,6 @@ function createDefaultParams() {
   };
 }
 
-let gui = null;
 let shaderInstances = [];
 
 // ShaderInstance class
@@ -480,175 +476,6 @@ class ShaderInstance {
   }
 }
 
-async function createGUI() {
-  if (gui) return;
-
-  // Use first instance's params for GUI
-  if (shaderInstances.length === 0) return;
-  const params = shaderInstances[0].params;
-
-  const { default: GUI } = await import("lil-gui");
-  gui = new GUI({ title: "Shader Controls" });
-  gui.domElement.style.position = "fixed";
-  gui.domElement.style.top = "20px";
-  gui.domElement.style.left = "20px";
-  gui.domElement.style.zIndex = "10002";
-  gui.hide();
-
-  gui.onChange(() => {
-    // Sync changes to all instances
-    shaderInstances.forEach((instance) => {
-      Object.assign(instance.params, params);
-    });
-    // Note: Changes are only saved when you export settings
-  });
-
-  // Add export/import buttons
-  const settingsFolder = gui.addFolder("Settings");
-  const exportButton = { exportSettings: () => exportSettings() };
-  settingsFolder.add(exportButton, "exportSettings").name("Export Settings");
-
-  gui.add(params, "enabled").name("Enabled");
-  const blurController = gui.add(params, "globalBlur", 0, 100, 0.5).name("Global Blur");
-  blurController.onChange(() => {
-    // Apply blur immediately to all instances
-    shaderInstances.forEach((instance) => {
-      instance.params.globalBlur = params.globalBlur;
-      const blurValue = params.globalBlur > 0 ? `${params.globalBlur}px` : "none";
-      instance.canvas.style.filter = `blur(${blurValue})`;
-    });
-  });
-
-  const blendModes = [
-    "normal",
-    "multiply",
-    "screen",
-    "overlay",
-    "soft-light",
-    "hard-light",
-    "color-dodge",
-    "color-burn",
-    "darken",
-    "lighten",
-    "difference",
-    "exclusion",
-  ];
-  const blendController = gui.add(params, "blendMode", blendModes).name("Blend Mode");
-  blendController.onChange(() => {
-    // Apply blend mode immediately to all instances
-    shaderInstances.forEach((instance) => {
-      instance.params.blendMode = params.blendMode;
-      instance.canvas.style.mixBlendMode = params.blendMode;
-    });
-  });
-
-  const grainFolder = gui.addFolder("Grain/Noise");
-  const grainOpacityController = grainFolder.add(params, "grainOpacity", 0, 1, 0.01).name("Grain Opacity");
-  grainOpacityController.onChange(() => {
-    grainParams.opacity = params.grainOpacity;
-    updateGrainFromModule();
-  });
-
-  const grainScaleController = grainFolder.add(params, "grainScale", 0.1, 5.0, 0.1).name("Grain Scale");
-  grainScaleController.onChange(() => {
-    grainParams.scale = params.grainScale;
-    updateGrainFromModule();
-  });
-
-  const grainBlendController = grainFolder.add(params, "grainBlend", blendModes).name("Grain Blend Mode");
-  grainBlendController.onChange(() => {
-    grainParams.blend = params.grainBlend;
-    updateGrainFromModule();
-  });
-
-  const gradientFolder = gui.addFolder("Gradient Colors");
-  gradientFolder.addColor(params, "colorStop1").name("Stop 1");
-  gradientFolder.addColor(params, "colorStop2").name("Stop 2");
-  gradientFolder.addColor(params, "colorStop3").name("Stop 3");
-  gradientFolder.addColor(params, "colorStop4").name("Stop 4");
-  gradientFolder.addColor(params, "colorStop5").name("Stop 5");
-
-  const stopPosFolder = gui.addFolder("Color Stop Positions");
-  stopPosFolder.add(params, "stopPos1", 0, 1, 0.01).name("Stop 1 Position");
-  stopPosFolder.add(params, "stopPos2", 0, 1, 0.01).name("Stop 2 Position");
-  stopPosFolder.add(params, "stopPos3", 0, 1, 0.01).name("Stop 3 Position");
-  stopPosFolder.add(params, "stopPos4", 0, 1, 0.01).name("Stop 4 Position");
-  stopPosFolder.add(params, "stopPos5", 0, 1, 0.01).name("Stop 5 Position");
-
-  const positionFolder = gui.addFolder("Position");
-  positionFolder.add(params, "positionMode", ["absolute", "relative"]).name("Position Mode");
-  positionFolder.add(params, "positionX", -1000, 1000, 1).name("Position X (pixels)");
-  positionFolder.add(params, "positionY", -1000, 1000, 1).name("Position Y (pixels)");
-  positionFolder.add(params, "positionPercentX", -100, 100, 1).name("Position X (%)");
-  positionFolder.add(params, "positionPercentY", -100, 100, 1).name("Position Y (%)");
-
-  gui.add(params, "scaleX", 0, 2.0, 0.01).name("Width Scale");
-  gui.add(params, "scaleY", 0, 2.0, 0.01).name("Height Scale");
-  gui.add(params, "shape", { Circle: 1.0, Square: 0.0 }).name("Shape");
-  gui.add(params, "blur", 0, 200, 1).name("Blur");
-  gui.add(params, "feather", 0, 150, 1).name("Feather");
-  gui.add(params, "layerOpacity", 0, 1, 0.01).name("Opacity");
-  gui.add(params, "brightness", -1, 1, 0.01).name("Brightness");
-  gui.add(params, "contrast", 0, 2, 0.01).name("Contrast");
-  gui.add(params, "flowSpeed", 0, 5, 0.1).name("Flow Speed");
-  gui.add(params, "flowAmount", 0, 10, 0.1).name("Flow Amount");
-  gui.add(params, "flowAngle", 0, 360, 1).name("Flow Direction (°)");
-  gui.add(params, "noiseScale", 0.1, 5.0, 0.1).name("Noise Scale");
-  gui.add(params, "waveHeight", 0, 300, 1).name("Wave Height");
-  gui.add(params, "waveSpeed", 0, 5, 0.1).name("Wave Speed");
-
-  const patternFolder = gui.addFolder("Pattern Controls");
-  patternFolder.add(params, "patternScale", 0.1, 10.0, 0.1).name("Pattern Scale");
-  patternFolder.add(params, "patternSpeed", 0, 10, 0.1).name("Pattern Speed");
-  patternFolder.add(params, "patternRotation", 0, 360, 1).name("Pattern Rotation (°)");
-  patternFolder.add(params, "patternOffsetX", -1000, 1000, 1).name("Pattern Offset X");
-  patternFolder.add(params, "patternOffsetY", -1000, 1000, 1).name("Pattern Offset Y");
-  patternFolder.add(params, "patternIntensity", 0, 5, 0.1).name("Pattern Intensity");
-  patternFolder.add(params, "patternContrast", 0, 10, 0.1).name("Pattern Contrast");
-  patternFolder.add(params, "patternTurbulence", 0, 5, 0.1).name("Pattern Turbulence");
-
-  const controlPointsFolder = gui.addFolder("Control Points");
-  const angleNames = ["0°", "36°", "72°", "108°", "144°", "180°", "216°", "252°", "288°", "324°"];
-  for (let i = 0; i < 10; i++) {
-    controlPointsFolder.add(params, `controlPoint${i}`, -100, 100, 0.5).name(`Point ${i} (${angleNames[i]})`);
-  }
-}
-
-function toggleGUI() {
-  if (!gui) return;
-  if (gui._hidden) {
-    gui.show();
-  } else {
-    gui.hide();
-  }
-}
-
-function exportSettings() {
-  if (shaderInstances.length === 0) return;
-  const params = shaderInstances[0].params;
-  // Remove unused cursor and followCursor properties
-  const cleanedParams = { ...params };
-  delete cleanedParams.cursorX;
-  delete cleanedParams.cursorY;
-  delete cleanedParams.followCursor;
-  const settings = {
-    params: cleanedParams,
-  };
-
-  // Create download
-  const dataStr = JSON.stringify(settings, null, 2);
-  const dataUri = "data:application/json;charset=utf-8," + encodeURIComponent(dataStr);
-  const exportFileDefaultName = "shader-settings.json";
-
-  const linkElement = document.createElement("a");
-  linkElement.setAttribute("href", dataUri);
-  linkElement.setAttribute("download", exportFileDefaultName);
-  linkElement.click();
-
-  // Settings exported to shader-settings.json
-  // Place this file in src/js/config/ directory to have it loaded automatically on each page load.
-}
-
 function loadSettingsFromFile() {
   // Return the imported settings (now statically imported, so synchronous)
   try {
@@ -692,11 +519,6 @@ export async function initializeShader() {
   instance.params.grainScale = grainParams.scale;
   instance.params.grainBlend = grainParams.blend;
 
-  // Create GUI (uses instance's params) - disabled by default
-  if (ENABLE_GUI) {
-    createGUI();
-  }
-
   // Handle window resize and scroll (for dynamic page height)
   const handleResize = () => {
     shaderInstances.forEach((instance) => instance.resizeCanvas());
@@ -714,25 +536,4 @@ export async function initializeShader() {
   // Start rendering
   instance.start();
 
-  // Expose functions globally (only if GUI is enabled)
-  if (ENABLE_GUI) {
-    window.toggleShaderGUI = toggleGUI;
-    window.exportShaderSettings = exportSettings;
-
-    // Add keyboard shortcut to toggle GUI (press 'G' key)
-    document.addEventListener("keydown", (event) => {
-      if (
-        event.key.toLowerCase() === "g" &&
-        event.target.tagName !== "INPUT" &&
-        event.target.tagName !== "TEXTAREA" &&
-        !event.target.isContentEditable
-      ) {
-        event.preventDefault();
-        toggleGUI();
-      }
-    });
-  } else {
-    // Still expose export function even when GUI is disabled (for programmatic use)
-    window.exportShaderSettings = exportSettings;
-  }
 }

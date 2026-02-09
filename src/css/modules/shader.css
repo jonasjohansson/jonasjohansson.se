@@ -52,14 +52,3 @@ body:has(#strips.strips-initialized) #shader-canvas,
 body.strips-initialized #shader-canvas {
   opacity: 1;
 }
-
-/* GUI - reset typography to defaults */
-.lil-gui {
-  font-family: system-ui, -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, Oxygen, Ubuntu, Cantarell, sans-serif !important;
-  letter-spacing: normal !important;
-}
-
-.lil-gui * {
-  font-family: inherit !important;
-  letter-spacing: inherit !important;
-}
