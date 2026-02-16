@@ -80,7 +80,7 @@ projectsForJS[0].images[0] %}
 <!-- Open Graph / Facebook -->
 {% if project %}
 {% set heroImage = projectContent[project.slug].heroImage %}
-{% set ogTitle = projectTitle %}
+{% set ogTitle = projectTitle ~ ' — ' ~ site.title %}
 {% set ogDescription = projectDescription or site.description %}
 {% set ogUrl = site.url ~ page.url %}
 {% set ogImage = heroImage and (site.url ~ heroImage) or (site.url ~ site.meta.ogImage) %}
