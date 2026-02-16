@@ -56,6 +56,21 @@
   line-height: 1.25 !important;
 }
 
+/* Text alignment classes */
+.text-left {
+  text-align: left;
+}
+
+.text-center {
+  text-align: center;
+}
+
+/* Video */
+.media-video {
+  max-width: 100%;
+  height: auto;
+}
+
 /* Mobile responsive font sizes for project text */
 @media (max-width: 768px) {
   .text-small {

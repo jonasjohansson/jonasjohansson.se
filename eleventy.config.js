@@ -343,7 +343,7 @@ export default function (eleventyConfig) {
                 colStart: colStart || 3,
                 colSpan: colSpan || 8,
                 fontSizeClass,
-                textAlign: textAlign || "center",
+                textAlignClass: `text-${textAlign || "center"}`,
               };
             if (type === "credits")
               return { type: "credits", credits: (credits || []).map((credit) => md.render(credit)), colStart, colSpan };

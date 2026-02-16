@@ -26,18 +26,18 @@ eleventyComputed:
       {% elif block.type == 'video' %}
       <figure class="media-item" style="--col-start: {{ block.colStart }}; --col-span: {{ block.colSpan }}">
         <video
+          class="media-video"
           src="{{ block.src | url }}"
           playsinline
           muted
           loop
           controls
-          preload="metadata"
-          style="max-width: 100%; height: auto"></video>
+          preload="metadata"></video>
       </figure>
       {% elif block.type == 'text' %}
       <article
-        class="text-block {{ block.fontSizeClass or 'text-medium' }}"
-        style="--col-start: {{ block.colStart }}; --col-span: {{ block.colSpan }};{% if block.textAlign %} text-align: {{ block.textAlign }};{% endif %}">
+        class="text-block {{ block.fontSizeClass or 'text-medium' }} {{ block.textAlignClass or 'text-center' }}"
+        style="--col-start: {{ block.colStart }}; --col-span: {{ block.colSpan }}">
         {{ block.content | safe }}
       </article>
       {% elif block.type == 'credits' %}
