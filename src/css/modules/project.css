@@ -40,12 +40,13 @@
 /* Font size classes for project content */
 .text-small {
   font-size: var(--font-size-small);
-  line-height: var(--line-height-base);
+  line-height: 1.3;
+  text-align: left;
 }
 
 .text-medium {
   font-size: var(--font-size-medium);
-  line-height: var(--line-height-base);
+  line-height: 1.3;
 }
 
 .text-block .text-large,
@@ -55,7 +56,7 @@
 }
 
 /* Mobile responsive font sizes for project text */
-@media (max-width: 767px) {
+@media (max-width: 768px) {
   .text-small {
     font-size: 1rem;
   }
@@ -189,7 +190,7 @@ figure {
   line-height: var(--line-height-base);
 }
 
-@media (max-width: 767px) {
+@media (max-width: 768px) {
   #about .text-block,
   #about .text-block.text-medium,
   [data-project="about"] .text-block,
@@ -225,7 +226,7 @@ figure {
 }
 
 /* Mobile override: force full-width */
-@media (max-width: 767px) {
+@media (max-width: 768px) {
   [style*="--col-start"] {
     grid-column-start: 1;
   }

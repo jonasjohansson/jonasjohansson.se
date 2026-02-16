@@ -20,17 +20,19 @@ blocks:
       stage, realized together with [Smash Studio](https://www.smash.studio/)
       as co-designers. Smash led the design work from 3D modelling to
       animation, while I served as technical director and creative support.
-
-
       The stage featured three 8 x 4.5m LED walls at 3200 x 1800 pixels
       each, a 7.9 x 9.1m LED floor at 1664 x 1920 pixels, and a physical
-      Romanesque gate with staircase built for projection mapping. The visual
-      world travels through milestone moments: a moonlit Romanesque evening,
-      a bountiful garden resembling Elysium, building towards the climax
-      where the gate falls back and unleashes a rush of light and sound,
-      soaring into open skies.
-
-
+      Romanesque gate with staircase built for projection mapping.
+  - type: text
+    fontSize: medium
+    content: >-
+      The visual world travels through milestone moments: a moonlit
+      Romanesque evening, a bountiful garden resembling Elysium, building
+      towards the climax where the gate falls back and unleashes a rush of
+      light and sound, soaring into open skies.
+  - type: text
+    fontSize: small
+    content: >-
       Architect [Rose Hallgren](https://rosehallgren.se/) built a physical
       maquette we used for testing visuals, and I developed a custom Unity
       camera tool for building a precise direction of photography across the
