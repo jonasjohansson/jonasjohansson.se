@@ -41,8 +41,9 @@ export default function (eleventyConfig) {
   eleventyConfig.addPassthroughCopy("web-app-manifest-*.png");
   eleventyConfig.addPassthroughCopy("CNAME");
   eleventyConfig.addPassthroughCopy({ "src/img": "assets/img" });
-  // Serve original project assets during dev/build as a fallback
-  // (Responsive images still emit to /img via the shortcode; this avoids 404s if processing falls back)
+  // Pass through project assets (videos, about images, etc.)
+  // Note: images are also processed by eleventy-img to /img/ but the originals
+  // are needed for about section images and as fallbacks
   eleventyConfig.addPassthroughCopy({ projects: "projects" });
 
   eleventyConfig.addGlobalData("isDev", process.env.ELEVENTY_RUN_MODE !== "build");
@@ -181,9 +182,12 @@ export default function (eleventyConfig) {
     }
   );
 
-  eleventyConfig.addGlobalData("projects", () => {
+  // Shared project scanner — cached so both `projects` and `projectsForJS` reuse one scan
+  let _projectsCache = null;
+  function scanProjects() {
+    if (_projectsCache) return _projectsCache;
     const root = "projects";
-    if (!existsSync(root)) return [];
+    if (!existsSync(root)) { _projectsCache = []; return _projectsCache; }
 
     const dirs = readdirSync(root, { withFileTypes: true })
       .filter((d) => d.isDirectory())
@@ -203,10 +207,10 @@ export default function (eleventyConfig) {
       files.forEach((f) => {
         const ext = path.extname(f.name).toLowerCase();
         if ([".jpg", ".jpeg", ".png", ".webp", ".gif"].includes(ext)) {
-          const relFsPath = `${root}/${dir}/${f.name}`; // filesystem path for responsiveImage shortcode
+          const relFsPath = `${root}/${dir}/${f.name}`;
           images.push({ src: relFsPath, alt: title });
         } else if ([".mp4", ".webm", ".mov"].includes(ext)) {
-          const relFsPath = `${root}/${dir}/${f.name}`; // videos stay as passthrough
+          const relFsPath = `${root}/${dir}/${f.name}`;
           videos.push({ src: relFsPath });
         } else if ((ext === ".md" && f.name !== "data.md") || ext === ".txt") {
           const raw = readFileSync(path.join(dirPath, f.name), "utf8");
@@ -221,8 +225,11 @@ export default function (eleventyConfig) {
       return { slug: dir, title, date, images, videos, texts };
     });
     projects.sort((a, b) => new Date(b.date) - new Date(a.date));
-    return projects;
-  });
+    _projectsCache = projects;
+    return _projectsCache;
+  }
+
+  eleventyConfig.addGlobalData("projects", () => scanProjects());
 
   // Helper to extract first image from project directory
   function findFirstImageInDir(root, dir, dataMdPath) {
@@ -250,54 +257,52 @@ export default function (eleventyConfig) {
     return null;
   }
 
-  eleventyConfig.addGlobalData("projectsForJS", async () => {
+  eleventyConfig.addGlobalData("projectsForJS", async function() {
+    // Derive from cached project scan to avoid scanning the filesystem twice
+    const allProjects = scanProjects();
     const root = "projects";
-    if (!existsSync(root)) return [];
 
-    const dirs = readdirSync(root, { withFileTypes: true })
-      .filter((d) => d.isDirectory())
-      .map((d) => d.name);
+    const results = await Promise.all(
+      allProjects
+        .filter((p) => p.slug !== "about")
+        .map(async (project) => {
+          const dirPath = path.join(root, project.slug);
+          const dataMdPath = path.join(dirPath, "data.md");
 
-    const projects = await Promise.all(
-      dirs.map(async (dir) => {
-        const dirPath = path.join(root, dir);
-        const dataMdPath = path.join(dirPath, "data.md");
+          let title = project.title;
+          let tags = [];
+          let year = new Date(project.date).getFullYear() || new Date().getFullYear();
 
-        let title = dir.replace(/[._-]+/g, " ").trim();
-        let tags = [];
-        let year = new Date().getFullYear();
-
-        // Read data.md for metadata
-        if (existsSync(dataMdPath)) {
-          try {
-            const fileContent = readFileSync(dataMdPath, "utf8");
-            const parsed = matter(fileContent);
-            const { title: mdTitle, date, tags: mdTags = [] } = parsed.data;
-            if (mdTitle) title = mdTitle;
-            if (mdTags) tags = mdTags;
-            if (date) year = new Date(date).getFullYear();
-          } catch (err) {}
-        }
-
-        // Find first image using shared helper
-        const firstImageSrc = findFirstImageInDir(root, dir, dataMdPath);
-        let firstImageOptimized = null;
-
-        if (firstImageSrc) {
-          firstImageOptimized = await processImageForStrips(firstImageSrc);
-          if (firstImageOptimized && !firstImageOptimized.startsWith('/')) {
-            firstImageOptimized = `/${firstImageOptimized}`;
+          // Read data.md for richer metadata (tags, explicit title)
+          if (existsSync(dataMdPath)) {
+            try {
+              const fileContent = readFileSync(dataMdPath, "utf8");
+              const parsed = matter(fileContent);
+              const { title: mdTitle, date, tags: mdTags = [] } = parsed.data;
+              if (mdTitle) title = mdTitle;
+              if (mdTags) tags = mdTags;
+              if (date) year = new Date(date).getFullYear();
+            } catch (err) {}
           }
-        }
-        return { title, images: firstImageOptimized?.startsWith('/') ? [firstImageOptimized] : [], tags, year, slug: dir };
-      })
+
+          // Find first image using shared helper
+          const firstImageSrc = findFirstImageInDir(root, project.slug, dataMdPath);
+          let firstImageOptimized = null;
+
+          if (firstImageSrc) {
+            firstImageOptimized = await processImageForStrips(firstImageSrc);
+            if (firstImageOptimized && !firstImageOptimized.startsWith('/')) {
+              firstImageOptimized = `/${firstImageOptimized}`;
+            }
+          }
+          return { title, images: firstImageOptimized?.startsWith('/') ? [firstImageOptimized] : [], tags, year, slug: project.slug };
+        })
     );
-    // Filter out "about" project from strips (it's accessible via header)
-    return projects.filter((p) => p.slug !== "about");
+    return results;
   });
 
   /** Project content scanner → reads data.md with YAML frontmatter */
-  eleventyConfig.addGlobalData("projectContent", () => {
+  eleventyConfig.addGlobalData("projectContent", async () => {
     const root = "projects";
     if (!existsSync(root)) return {};
 
@@ -345,7 +350,15 @@ export default function (eleventyConfig) {
             return null;
           })
           .filter(Boolean);
-        projectContent[dir] = { title: projectTitle, tags, year, date: isoDate, content, printable };
+
+        // Process hero image for OG tags
+        const firstImageSrc = findFirstImageInDir(root, dir, dataMdPath);
+        let heroImage = null;
+        if (firstImageSrc) {
+          heroImage = await processImageForStrips(firstImageSrc);
+        }
+
+        projectContent[dir] = { title: projectTitle, tags, year, date: isoDate, content, printable, heroImage };
       } catch (err) {}
     }
     return projectContent;
@@ -395,6 +408,7 @@ export default function (eleventyConfig) {
 
   // Ensure output directories exist before Eleventy writes
   eleventyConfig.on("beforeBuild", () => {
+    _projectsCache = null; // Reset cache for fresh scan
     const outputDir = "dist";
     if (!existsSync(outputDir)) {
       mkdirSync(outputDir, { recursive: true });

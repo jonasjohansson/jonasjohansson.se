@@ -1,9 +1,18 @@
 <!-- Basic Meta Tags -->
 <meta charset="utf-8" />
+{% if project %}
+{% set projectTitle = projectContent[project.slug].title %}
+{% set projectDescription = projectContent[project.slug].content | findFirstText | stripHtml | truncate(160) %}
+<title>{{ projectTitle }} — {{ site.title }}</title>
+<meta
+  name="description"
+  content="{{ projectDescription or site.description }}" />
+{% else %}
 <title>{{ site.title }}</title>
 <meta
   name="description"
   content="{{ (description or site.description) | truncate(160) }}" />
+{% endif %}
 
 <!-- Viewport and Mobile Optimization -->
 <meta
@@ -68,54 +77,36 @@ projectsForJS[0].images[0] %}
   name="keywords"
   content="artist, light art, interactive art, digital art, technology, installation, Sweden" />
 
-<!-- Project-specific metadata -->
-{% if project %} {% set firstImage = projectContent[project.slug].content | findFirstImage %} {% set projectTitle =
-projectContent[project.slug].title %} {% set projectDescription = projectContent[project.slug].content | findFirstText | stripHtml | truncate(160) %} {%
-set projectUrl = site.url ~ page.url %} {% set projectImage = firstImage and (site.url ~ firstImage) or (site.url ~ site.meta.ogImage) %}
-
 <!-- Open Graph / Facebook -->
-<meta
-  property="og:type"
-  content="article" />
-<meta
-  property="og:title"
-  content="{{ projectTitle }}" />
-<meta
-  property="og:description"
-  content="{{ projectDescription }}" />
-<meta
-  property="og:url"
-  content="{{ projectUrl }}" />
-<meta
-  property="og:image"
-  content="{{ projectImage }}" />
-<meta
-  property="og:image:type"
-  content="image/jpeg" />
-<meta
-  property="og:site_name"
-  content="{{ site.title }}" />
-<meta
-  property="og:locale"
-  content="en_US" />
-
+{% if project %}
+{% set heroImage = projectContent[project.slug].heroImage %}
+{% set ogTitle = projectTitle %}
+{% set ogDescription = projectDescription or site.description %}
+{% set ogUrl = site.url ~ page.url %}
+{% set ogImage = heroImage and (site.url ~ heroImage) or (site.url ~ site.meta.ogImage) %}
+{% set ogType = "article" %}
 {% else %}
-<!-- Default site metadata -->
+{% set ogTitle = title or site.title %}
+{% set ogDescription = description or site.description %}
+{% set ogUrl = site.url ~ page.url %}
+{% set ogImage = site.url ~ site.meta.ogImage %}
+{% set ogType = "website" %}
+{% endif %}
 <meta
   property="og:type"
-  content="website" />
+  content="{{ ogType }}" />
 <meta
   property="og:title"
-  content="{{ title or site.title }}" />
+  content="{{ ogTitle }}" />
 <meta
   property="og:description"
-  content="{{ description or site.description }}" />
+  content="{{ ogDescription }}" />
 <meta
   property="og:url"
-  content="{{ site.url }}{{ page.url }}" />
+  content="{{ ogUrl }}" />
 <meta
   property="og:image"
-  content="{{ site.url }}{{ site.meta.ogImage }}" />
+  content="{{ ogImage }}" />
 <meta
   property="og:image:type"
   content="image/jpeg" />
@@ -126,7 +117,19 @@ set projectUrl = site.url ~ page.url %} {% set projectImage = firstImage and (si
   property="og:locale"
   content="en_US" />
 
-{% endif %}
+<!-- Twitter Card -->
+<meta
+  name="twitter:card"
+  content="summary_large_image" />
+<meta
+  name="twitter:title"
+  content="{{ ogTitle }}" />
+<meta
+  name="twitter:description"
+  content="{{ ogDescription }}" />
+<meta
+  name="twitter:image"
+  content="{{ ogImage }}" />
 
 <!-- Performance and Security -->
 <meta
@@ -280,7 +283,7 @@ set projectUrl = site.url ~ page.url %} {% set projectImage = firstImage and (si
   "name": "{{ projectContent[project.slug].title }}",
   "description": "{{ projectContent[project.slug].content | findFirstText | stripHtml | truncate(160) }}",
   "url": "{{ site.url }}{{ page.url }}",
-  "image": "{{ projectImage }}",
+  "image": "{{ ogImage }}",
   "creator": {
     "@type": "Person",
     "name": "{{ site.author }}",
