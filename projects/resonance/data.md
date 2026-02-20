@@ -1,0 +1,27 @@
+---
+title: Resonance
+date: '2024-01-01'
+tags:
+  - av
+  - installation
+blocks:
+  - type: text
+    content: >-
+      Interactive projection mapping on Uppsala Town Hall, where the public
+      could paint the facade in colour.
+  - type: text
+    fontSize: small
+    content: >-
+      Resonance was an interactive projection mapping piece on the facade of
+      Uppsala Town Hall, created with
+      [Smash Studio](https://www.smash.studio/) for the city of Uppsala in
+      2024. Four weatherproofed touch pads with embedded lighting were placed in
+      the main square, built to handle snow, rain, and countless jumps. I built
+      them with Arduino, feeding into the Unreal Engine project over USB. Each
+      pad triggered a colour ripple across the facade, bringing life to an ocean
+      scene on the building's surface. When all four pads were activated at once,
+      a final crescendo of light, form, and music was revealed. I laser cut a
+      scale model of the building for testing the projection, and the facade was
+      drone-scanned to build a digital replica. Built together with
+      [Rose Hallgren](https://rosehallgren.se/).
+---
