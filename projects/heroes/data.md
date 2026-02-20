@@ -28,5 +28,7 @@ blocks:
       life on the facade with advanced lighting effects. Black and white, high
       contrast grayscale, with tight animation set to the building's ornate
       architecture.
+  - type: image
+    src: 03.png
 ---
 

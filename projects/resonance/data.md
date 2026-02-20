@@ -5,10 +5,14 @@ tags:
   - av
   - installation
 blocks:
+  - type: image
+    src: 01.jpg
   - type: text
     content: >-
       Interactive projection mapping on Uppsala Town Hall, where the public
       could paint the facade in colour.
+  - type: image
+    src: 02.jpg
   - type: text
     fontSize: small
     content: >-
@@ -24,4 +28,10 @@ blocks:
       scale model of the building for testing the projection, and the facade was
       drone-scanned to build a digital replica. Built together with
       [Rose Hallgren](https://rosehallgren.se/).
+  - type: image
+    src: 03.png
+  - type: image
+    src: 04.png
+  - type: image
+    src: 05.png
 ---
