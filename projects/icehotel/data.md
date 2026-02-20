@@ -21,7 +21,7 @@ blocks:
       [Jordi Claramunt](https://www.instagram.com/jordi.claramunt.art/), whom
       I had met at Nowhere in Spain, and architect Lukas Petko, a former
       student of mine at Hyper Island. The three of us made for an interesting
-      trio — Jordi the hands-on figurative sculptor, Lukas with his
+      trio: Jordi the hands-on figurative sculptor, Lukas with his
       appreciation for symmetry and structure, and myself somewhere in between.
   - type: text
     fontSize: small
@@ -31,8 +31,8 @@ blocks:
       riddle to gain entrance. We arrived in Jukkasjärvi and over two weeks
       worked day and night, our room facing the Torne river with an open end.
       I learned to sculpt and saw in ice, snow, and snice, with some very
-      questionable working methods. Jordi took a dip in the icy river — as did
-      I — followed by a proper sauna. We got to sleep in our own suite, but it
+      questionable working methods. Jordi took a dip in the icy river, as did
+      I, followed by a proper sauna. We got to sleep in our own suite, but it
       was so cold I left in the middle of the night and scurried back to our
       warm cabin lodge.
   - type: image
@@ -44,10 +44,10 @@ blocks:
       In 2023, Icehotel reached out and asked me to build a luxury suite for
       Icehotel 365, the permanent ice hotel. They wanted an earlier concept I
       had designed called Mystery on the Icehotel Express, inspired by Agatha
-      Christie's Murder on the Orient Express — a 1930s Orient Express train
+      Christie's Murder on the Orient Express, a 1930s Orient Express train
       where something has gone wrong, with clues scattered throughout for
       visitors to piece together. The room featured a bedroom and a dining
-      area with Art Deco details — drapes, ornaments, packed luggage, and a
+      area with Art Deco details: drapes, ornaments, packed luggage, and a
       ticking clock. I wanted to explore using CNC for ice and designed the
       clock and other details. The project was highly ambitious with a huge
       amount of ice, and Creative Director Luca Roncoroni and their team

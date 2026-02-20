@@ -9,7 +9,7 @@ blocks:
     src: 01.jpg
   - type: text
     content: >-
-      A series of digital sculptures that just are — like illustrations,
+      A series of digital sculptures that just are, like illustrations,
       but rendered in code.
   - type: text
     fontSize: small
@@ -29,7 +29,7 @@ blocks:
     content: >-
       Berg is a procedural mountain terrain, born from living next to the
       mountain on Rue des Pins in Montreal. Pilgrim is a billowing cloth
-      with generative wind and synth — a desire to keep something floating
+      with generative wind and synth, a desire to keep something floating
       still, in movement. Grotta came from building polygonal foam
       structures for projection mapping and getting drawn into designing
       origami-like spaces.

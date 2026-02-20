@@ -26,10 +26,9 @@ blocks:
   - type: text
     fontSize: medium
     content: >-
-      The visual world travels through milestone moments: a moonlit
-      Romanesque evening, a bountiful garden resembling Elysium, building
-      towards the climax where the gate falls back and unleashes a rush of
-      light and sound, soaring into open skies.
+      The visuals travel through a moonlit Romanesque evening, a garden
+      resembling Elysium, building towards the climax where the gate falls
+      back and unleashes a rush of light and sound, soaring into open skies.
   - type: text
     fontSize: small
     content: >-
