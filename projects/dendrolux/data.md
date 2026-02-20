@@ -43,18 +43,13 @@ blocks:
       [Svartljus](https://svartljus.se).
   - type: image
     src: 04.jpg
-    size: left
   - type: image
     src: 05.jpg
-    size: small-right
   - type: image
     src: 06.jpg
-    size: small-left
   - type: image
     src: 07.jpg
-    size: right
   - type: image
     src: 08.jpg
-    size: large
 ---
 

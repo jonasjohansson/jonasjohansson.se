@@ -167,9 +167,10 @@ figure {
   text-align: left;
 }
 
-/* Statement text: wider column for large type */
+/* Statement text: centered, wider column */
 .text-block.text-large {
   max-width: 40ch;
+  text-align: center;
 }
 
 .text-block p:last-child {
