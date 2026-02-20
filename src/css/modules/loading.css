@@ -6,7 +6,7 @@
   width: 100vw;
   height: 100vh;
   background: var(--color-black);
-  z-index: 10000;
+  z-index: var(--z-loading);
   display: flex;
   flex-direction: column;
   justify-content: center;

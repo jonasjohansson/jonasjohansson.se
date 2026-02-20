@@ -1,4 +1,3 @@
-import { router } from "./router.js";
 import { getPathPrefix } from "./utils/routeUtils.js";
 import { getCurrentProjectTitle } from "./utils/state.js";
 
@@ -10,9 +9,11 @@ class AboutOverlay {
     this.headerCenter = null;
     this.defaultSubtitleText = "PROGRESS NOT PERFECTION";
     this.initialized = false;
+    this._routerRef = null;
   }
 
-  init() {
+  init(routerRef) {
+    if (routerRef) this._routerRef = routerRef;
     if (this.initialized) return;
 
     this.headerToggle = document.getElementById("header-toggle");
@@ -59,10 +60,10 @@ class AboutOverlay {
 
     window.scrollTo({ top: 0, behavior: "smooth" });
 
-    if (router && currentPath !== aboutPath) {
+    if (this._routerRef && currentPath !== aboutPath) {
       window.history.pushState({ route: aboutPath }, "", aboutPath);
-      if (router.currentRoute !== undefined) {
-        router.currentRoute = aboutPath;
+      if (this._routerRef.currentRoute !== undefined) {
+        this._routerRef.currentRoute = aboutPath;
       }
     }
   }
@@ -99,10 +100,9 @@ class AboutOverlay {
       }
 
       // Restore URL and router state without full re-navigation
-      // (the underlying content is still in the DOM, just pushed below about)
       window.history.pushState({ route: targetPath }, "", targetPath);
-      if (router) {
-        router.currentRoute = targetPath;
+      if (this._routerRef) {
+        this._routerRef.currentRoute = targetPath;
       }
     }
   }

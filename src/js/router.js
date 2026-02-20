@@ -1,8 +1,6 @@
-import { resetFilters, applyProjectColor, updateCurrentPageTitle, initializeStrips } from "./strips.js";
 import { getStripsScrollPosition, getProjectScrollPosition } from "./utils/scrollPosition.js";
 import { getProjectPath } from "./utils/pathBuilder.js";
 import { getPathPrefix } from "./utils/routeUtils.js";
-import { aboutOverlay } from "./aboutOverlay.js";
 
 const projects = window.__PROJECTS_DATA__ || [];
 const pathPrefix = getPathPrefix();
@@ -24,6 +22,12 @@ class SPARouter {
   constructor() {
     this.currentRoute = null;
     this.initialized = false;
+    this._hooks = {};
+  }
+
+  // Register callbacks to decouple router from strips/aboutOverlay modules
+  registerHooks(hooks) {
+    Object.assign(this._hooks, hooks);
   }
 
   init() {
@@ -52,6 +56,11 @@ class SPARouter {
       return;
     }
 
+    if (relativePath === "/labs" || relativePath === "/labs/") {
+      this.showLabs();
+      return;
+    }
+
     if (relativePath === "/" || relativePath === "/index.html" || relativePath === "") {
       this.showHome();
     } else {
@@ -65,10 +74,15 @@ class SPARouter {
     document.body.classList.remove("about-visible", "project-visible");
 
     if (!showAboutOverlay) {
-      aboutOverlay.hide(true);
+      this._hooks.hideAbout?.(true);
     }
 
     clearExistingProjects();
+
+    // Clear labs content from main if navigating away from labs
+    const main = document.getElementById("main");
+    const labsEl = main?.querySelector("#labs");
+    if (labsEl) labsEl.remove();
 
     document.body.classList.remove("project-visible");
     document.documentElement.classList.remove("project-visible");
@@ -104,20 +118,65 @@ class SPARouter {
       stripsContainer.classList.add("animate-in");
 
       if (!stripsContainer.classList.contains("strips-initialized")) {
-        initializeStrips();
+        this._hooks.initializeStrips?.();
       }
     }
 
     resetProjectColors();
 
     if (showAboutOverlay) {
-      aboutOverlay.init();
+      this._hooks.initAbout?.();
       if (immediate) {
-        aboutOverlay.show(true);
+        this._hooks.showAbout?.(true);
       } else {
-        aboutOverlay.show();
+        this._hooks.showAbout?.();
       }
     }
+  }
+
+  async showLabs() {
+    document.body.setAttribute("data-route", "labs");
+    document.body.classList.remove("about-visible", "project-visible");
+    this._hooks.hideAbout?.(true);
+    clearExistingProjects();
+    resetProjectColors();
+
+    document.title = "Labs — " + (window.__SITE_TITLE__ || "Jonas Johansson");
+
+    // Hide strips on labs page
+    const stripsContainer = document.getElementById("strips");
+    if (stripsContainer) {
+      stripsContainer.style.display = "none";
+    }
+
+    try {
+      const response = await fetch("/labs/");
+      if (!response.ok) throw new Error(`Failed to fetch labs: ${response.status}`);
+      const html = await response.text();
+      const parser = new DOMParser();
+      const doc = parser.parseFromString(html, "text/html");
+      const labsContent = doc.getElementById("labs");
+
+      if (labsContent) {
+        const main = document.getElementById("main");
+        if (main) {
+          main.innerHTML = "";
+          main.appendChild(labsContent);
+        }
+        // Wire up card clicks for SPA navigation
+        labsContent.querySelectorAll(".labs-card").forEach((card) => {
+          card.addEventListener("click", (e) => {
+            e.preventDefault();
+            const href = card.getAttribute("href");
+            if (href) this.navigate(href);
+          });
+        });
+      }
+    } catch (error) {
+      console.error("Error loading labs:", error);
+    }
+
+    window.scrollTo({ top: 0, behavior: "auto" });
   }
 
   async showProject(slug) {
@@ -129,10 +188,15 @@ class SPARouter {
 
     document.body.setAttribute("data-route", "project");
     document.body.classList.remove("about-visible");
-    aboutOverlay.hide(true);
+    this._hooks.hideAbout?.(true);
 
-    updateCurrentPageTitle(project.title);
-    resetFilters();
+    // Clear labs content if navigating from labs to a project
+    const main = document.getElementById("main");
+    const labsEl = main?.querySelector("#labs");
+    if (labsEl) labsEl.remove();
+
+    this._hooks.updateCurrentPageTitle?.(project.title);
+    this._hooks.resetFilters?.();
 
     // Load strip images on project pages without full initialization
     const stripsContainer = document.getElementById("strips");
@@ -147,12 +211,6 @@ class SPARouter {
     }
 
     const clickedStrip = document.querySelector(`.strip[data-project="${slug}"]`);
-    if (clickedStrip) {
-      clickedStrip.style.transition = "flex-grow 0.25s ease-out";
-      clickedStrip.style.flexGrow = "25";
-      clickedStrip.style.zIndex = "150";
-      clickedStrip.classList.add("selected");
-    }
 
     try {
       let projectContentHTML;
@@ -270,7 +328,7 @@ class SPARouter {
         if (!clickedStrip) this.updateStripVisibility(slug);
       }
 
-      await applyProjectColor(project);
+      await this._hooks.applyProjectColor?.(project);
     } catch (error) {
       console.error("Error loading project:", error);
     }
@@ -293,4 +351,3 @@ class SPARouter {
 }
 
 export const router = new SPARouter();
-router.init();

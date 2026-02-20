@@ -156,5 +156,4 @@ class MelodyPlayer {
 }
 
 export const melodyPlayer = new MelodyPlayer();
-export { MELODIES, NOTE_FREQUENCIES };
 

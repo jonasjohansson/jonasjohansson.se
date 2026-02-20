@@ -46,6 +46,5 @@ export function initializeGrain() {
   updateGrain();
 }
 
-// Expose grain params for potential GUI control
-export { grainParams, updateGrain };
+export { grainParams };
 

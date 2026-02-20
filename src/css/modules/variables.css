@@ -32,12 +32,13 @@
   --line-height-base: 1.425;
   --line-height-relaxed: 1.6;
 
-  /* Layout */
-  --breakpoint-mobile: 768px;
-
-  /* Border radius - 45 degree corners */
-  --radius-sm: 0px;
-  --radius-md: 0px;
+  /* Z-Index Scale */
+  --z-strips: 1;
+  --z-filter: 10;
+  --z-content: 100;
+  --z-header: 300;
+  --z-grain: 400;
+  --z-loading: 10000;
 
   /* 45-degree cut corner styles - all four corners */
   --cut-corner-sm: polygon(

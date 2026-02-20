@@ -3,11 +3,56 @@ title: Tiny/Massive
 date: '2019-01-01'
 tags:
   - installation
+  - av
+  - light
 blocks:
   - type: image
     src: 01.jpg
   - type: text
     content: >-
-      An installation that plays with scale and perception, creating a dialogue between the intimate and the monumental through the manipulation of light and space.
+      An open call for artists to illuminate the facade of Harpa Concert Hall
+      in Reykjavík. 77 pixels wide, 13 pixels tall, one enormous building.
+  - type: text
+    fontSize: small
+    content: >-
+      Tiny/Massive grew out of
+      [NAVA](https://www.nava.community) (Nordic Audiovisual Artists) and our
+      years of working with the Harpa facade. The name says it all: the
+      building's 714 LED panels map to a resolution of just 77 by 13 pixels
+      across an almost 100-metre wide facade, each pixel over a metre wide.
+      We released an open call inviting artists to create video, generative,
+      and interactive content for this tiny-but-massive canvas, and the
+      response was incredible. Some of the most prolific artists within
+      generative art participated.
+  - type: text
+    fontSize: small
+    content: >-
+      For the Reykjavík Winter Lights Festival in February 2019, we parked a
+      Strætó, a Reykjavík city bus, outside Harpa in the middle of winter and
+      invited people to come in and experience the work. Inside the bus we had
+      a custom arcade tabletop with joysticks and buttons, so visitors could
+      play interactive games and control visualisations directly on the
+      building. We provided creators kits with templates for Processing, Unity,
+      TouchDesigner and After Effects, and ran workshops to help artists get
+      started.
+  - type: text
+    fontSize: small
+    content: >-
+      We ran a course at the
+      [Iceland University of the Arts](https://ugla.lhi.is/kennsluskra/index.php?tab=nam&chapter=namskeid&id=77239520186)
+      where students developed their own content for the building. During the
+      festival, [Loney Dear](https://youtu.be/wAKno0pe4UQ) performed a live
+      concert inside the bus, controlling the visuals on the facade in real
+      time with Teenage Engineering's OP-Z.
+  - type: text
+    fontSize: small
+    content: >-
+      I designed the open call, the
+      [website](https://tinymassive.io/), and the visual identity, project
+      managed the whole thing through NAVA, and coded visualisations for the
+      building. We had funding from the
+      [Nordic Culture Fund](https://nordiskkulturfond.org/) through their
+      Opstart grant. The collective behind Tiny/Massive was myself,
+      [Atlí Bollason](https://atlibollason.com/) and
+      [Owen Hindley](http://owenhindley.co.uk/).
 ---
-

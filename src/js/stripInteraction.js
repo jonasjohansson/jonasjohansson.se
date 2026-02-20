@@ -1,5 +1,4 @@
 // Strip event listeners - mouse/touch handlers, tap detection, preload-on-hover
-import { router } from "./router.js";
 import { getProjectPath } from "./utils/pathBuilder.js";
 import { setCurrentProjectTitle } from "./utils/state.js";
 import { handlePoint } from "./stripAnimation.js";
@@ -17,6 +16,7 @@ let getAboutOverlayFn = null;
 let getNavigationTimeoutId = null;
 let setNavigationTimeoutId = null;
 let preloadProjectFn = null;
+let navigateFn = null;
 
 export function initInteractionRefs(refs) {
   stripsContainer = refs.stripsContainer;
@@ -28,6 +28,7 @@ export function initInteractionRefs(refs) {
   getNavigationTimeoutId = refs.getNavigationTimeoutId;
   setNavigationTimeoutId = refs.setNavigationTimeoutId;
   preloadProjectFn = refs.preloadProject;
+  navigateFn = refs.navigate;
 }
 
 function getStripProjectTitle(strip) {
@@ -142,7 +143,7 @@ export function attachStripEventListeners() {
 
       setNavigationTimeoutId?.(
         setTimeout(() => {
-          router.navigate(projectPath);
+          navigateFn?.(projectPath);
           setNavigationTimeoutId?.(null);
         }, 600)
       );
@@ -247,7 +248,7 @@ export function attachTouchListeners() {
         const project = projects.find((p) => p.slug === projectSlug);
         const projectId = project?.slug || projectSlug;
         const projectPath = getProjectPath(projectId);
-        router.navigate(projectPath);
+        navigateFn?.(projectPath);
       }
     }
 

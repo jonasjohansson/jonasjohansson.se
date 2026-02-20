@@ -257,49 +257,81 @@ export default function (eleventyConfig) {
     return null;
   }
 
+  // Helper: read project metadata from data.md (type, title, tags, year)
+  function readProjectMeta(root, slug, fallbackDate) {
+    const dirPath = path.join(root, slug);
+    const dataMdPath = path.join(dirPath, "data.md");
+    let title = slug.replace(/[._-]+/g, " ").trim();
+    let tags = [];
+    let type = "work";
+    let year = new Date(fallbackDate).getFullYear() || new Date().getFullYear();
+
+    if (existsSync(dataMdPath)) {
+      try {
+        const fileContent = readFileSync(dataMdPath, "utf8");
+        const parsed = matter(fileContent);
+        const { title: mdTitle, date, tags: mdTags = [], type: mdType } = parsed.data;
+        if (mdTitle) title = mdTitle;
+        if (mdTags) tags = mdTags;
+        if (mdType) type = mdType;
+        if (date) year = new Date(date).getFullYear();
+      } catch (err) {}
+    }
+    return { title, tags, type, year, dataMdPath };
+  }
+
+  // Build a project entry with optimized first image
+  async function buildProjectEntry(root, project) {
+    const { title, tags, type, year, dataMdPath } = readProjectMeta(root, project.slug, project.date);
+    const firstImageSrc = findFirstImageInDir(root, project.slug, dataMdPath);
+    let firstImageOptimized = null;
+
+    if (firstImageSrc) {
+      firstImageOptimized = await processImageForStrips(firstImageSrc);
+      if (firstImageOptimized && !firstImageOptimized.startsWith('/')) {
+        firstImageOptimized = `/${firstImageOptimized}`;
+      }
+    }
+    return { title, images: firstImageOptimized?.startsWith('/') ? [firstImageOptimized] : [], tags, type, year, slug: project.slug };
+  }
+
   eleventyConfig.addGlobalData("projectsForJS", async function() {
-    // Derive from cached project scan to avoid scanning the filesystem twice
     const allProjects = scanProjects();
     const root = "projects";
 
     const results = await Promise.all(
       allProjects
         .filter((p) => p.slug !== "about")
-        .map(async (project) => {
-          const dirPath = path.join(root, project.slug);
-          const dataMdPath = path.join(dirPath, "data.md");
-
-          let title = project.title;
-          let tags = [];
-          let year = new Date(project.date).getFullYear() || new Date().getFullYear();
-
-          // Read data.md for richer metadata (tags, explicit title)
-          if (existsSync(dataMdPath)) {
-            try {
-              const fileContent = readFileSync(dataMdPath, "utf8");
-              const parsed = matter(fileContent);
-              const { title: mdTitle, date, tags: mdTags = [] } = parsed.data;
-              if (mdTitle) title = mdTitle;
-              if (mdTags) tags = mdTags;
-              if (date) year = new Date(date).getFullYear();
-            } catch (err) {}
-          }
-
-          // Find first image using shared helper
-          const firstImageSrc = findFirstImageInDir(root, project.slug, dataMdPath);
-          let firstImageOptimized = null;
-
-          if (firstImageSrc) {
-            firstImageOptimized = await processImageForStrips(firstImageSrc);
-            if (firstImageOptimized && !firstImageOptimized.startsWith('/')) {
-              firstImageOptimized = `/${firstImageOptimized}`;
-            }
-          }
-          return { title, images: firstImageOptimized?.startsWith('/') ? [firstImageOptimized] : [], tags, year, slug: project.slug };
-        })
+        .map((project) => buildProjectEntry(root, project))
     );
-    return results;
+    // Only include "work" type projects for homepage strips
+    return results.filter((p) => p.type !== "lab");
   });
+
+  // Lab projects: only type: "lab" projects, for /labs/ page
+  eleventyConfig.addGlobalData("labProjects", async function() {
+    const allProjects = scanProjects();
+    const root = "projects";
+
+    const results = await Promise.all(
+      allProjects
+        .filter((p) => p.slug !== "about")
+        .map((project) => buildProjectEntry(root, project))
+    );
+    return results.filter((p) => p.type === "lab");
+  });
+
+  // Redirects for merged projects: old slug → new slug
+  const projectRedirects = [
+    { oldSlug: "dendrolux-tjoloholms-slott", newSlug: "dendrolux" },
+    { oldSlug: "crack", newSlug: "eastern-city-portal" },
+    { oldSlug: "harpa-light-organ", newSlug: "harpa" },
+    { oldSlug: "harpa-touch", newSlug: "harpa" },
+    { oldSlug: "haven", newSlug: "icehotel" },
+    { oldSlug: "mystery-on-the-icehotel-express", newSlug: "icehotel" },
+    { oldSlug: "myriad", newSlug: "vista" },
+  ];
+  eleventyConfig.addGlobalData("projectRedirects", () => projectRedirects);
 
   /** Project content scanner → reads data.md with YAML frontmatter */
   eleventyConfig.addGlobalData("projectContent", async () => {
@@ -328,7 +360,7 @@ export default function (eleventyConfig) {
         // Process blocks from frontmatter
         const content = blocks
           .map((block) => {
-            const { type, src, content: textContent, colStart = 1, colSpan = 12, fontSize, textAlign, credits } = block;
+            const { type, src, content: textContent, colStart = 1, colSpan = 12, fontSize, credits } = block;
             let fontSizeClass = "text-large";
             if (fontSize) {
               if (fontSize.includes("small") || fontSize.includes("1.2")) fontSizeClass = "text-small";
@@ -343,7 +375,6 @@ export default function (eleventyConfig) {
                 colStart: colStart || 3,
                 colSpan: colSpan || 8,
                 fontSizeClass,
-                textAlignClass: `text-${textAlign || "center"}`,
               };
             if (type === "credits")
               return { type: "credits", credits: (credits || []).map((credit) => md.render(credit)), colStart, colSpan };
@@ -414,7 +445,7 @@ export default function (eleventyConfig) {
       mkdirSync(outputDir, { recursive: true });
     }
     // Ensure common subdirectories exist
-    const subdirs = ["img", "about", "work"];
+    const subdirs = ["img", "about", "work", "labs"];
     subdirs.forEach((subdir) => {
       const dirPath = path.join(outputDir, subdir);
       if (!existsSync(dirPath)) {

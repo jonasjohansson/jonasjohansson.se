@@ -21,8 +21,7 @@
   /* Prevent extra scrolling on iOS */
   /* Match background to prevent color flash on iOS scroll */
   background: var(--color-black);
-  /* Ensure strips stay within content z-index */
-  z-index: 1;
+  z-index: var(--z-strips);
   /* Vertical scroll snap for snapping strips into view */
   scroll-snap-align: start;
 }
@@ -52,8 +51,7 @@
               flex-grow 0.2s cubic-bezier(0.25, 0.46, 0.45, 0.94);
   will-change: flex-grow, transform, opacity;
   position: relative;
-  /* Keep strips below shader */
-  z-index: 1;
+  z-index: var(--z-strips);
 }
 
 .strip.strip-visible {

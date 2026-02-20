@@ -191,18 +191,11 @@ export function initXylophone() {
   );
 }
 
-// Export melody player for external control
 export { melodyPlayer };
 
-// Initialize when DOM is ready
-function init() {
-  initXylophone();
-  // Enable Mario melody by default
-  melodyPlayer.enableMelodyMode("mario");
-}
-
-if (document.readyState === "loading") {
-  document.addEventListener("DOMContentLoaded", init);
-} else {
-  init();
+export function destroyXylophone() {
+  if (audioContext) {
+    audioContext.close().catch(() => {});
+    audioContext = null;
+  }
 }

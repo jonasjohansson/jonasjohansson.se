@@ -6,7 +6,7 @@ const {
 } = SETTINGS;
 import { ColorExtractor } from "./utils/colorExtractor.js";
 import { getProjectPath } from "./utils/pathBuilder.js";
-import { setCurrentProjectTitle } from "./utils/state.js";
+import { getCurrentProjectTitle, setCurrentProjectTitle } from "./utils/state.js";
 import { initAnimation, throttledHandlePoint } from "./stripAnimation.js";
 import { attachStripEventListeners, attachTouchListeners, initInteractionRefs } from "./stripInteraction.js";
 import { resetFilters, filterProjects, initFilters, initFilteringRefs } from "./stripFiltering.js";
@@ -78,8 +78,11 @@ let navigationTimeoutId = null;
 // ---------- Global State ----------
 let headerSubtitle;
 let defaultSubtitle = "PROGRESS NOT PERFECTION";
-let currentPageTitle = defaultSubtitle;
 let aboutOverlayEl = null;
+
+// Navigate function injected by main.js to avoid circular dependency
+let _navigateFn = null;
+export function setNavigateFn(fn) { _navigateFn = fn; }
 
 // ---------- Cleanup for event listeners ----------
 let cleanupController = null;
@@ -184,12 +187,13 @@ export function initializeStrips() {
     stripsContainer,
     getAllStrips: () => allStrips,
     getHeaderSubtitle: () => headerSubtitle,
-    getCurrentPageTitle: () => currentPageTitle,
-    setCurrentPageTitle: (title) => { currentPageTitle = title; },
+    getCurrentPageTitle: () => getCurrentProjectTitle() || defaultSubtitle,
+    setCurrentPageTitle: (title) => { setCurrentProjectTitle(title); },
     getAboutOverlay,
     getNavigationTimeoutId: () => navigationTimeoutId,
     setNavigationTimeoutId: (id) => { navigationTimeoutId = id; },
     preloadProject,
+    navigate: (path) => _navigateFn?.(path),
   });
   initFilteringRefs(
     stripsContainer,
@@ -294,7 +298,10 @@ export function initializeStrips() {
   const baseName = window.__SITE_TITLE__ || "Jonas Johansson";
   document.title = baseName;
 
-  function getCurrentProjectTitle() {
+  function resolveCurrentTitle() {
+    const fromState = getCurrentProjectTitle()?.trim();
+    if (fromState) return fromState;
+
     const fromDataset = document.documentElement?.dataset?.currentProjectTitle?.trim();
     if (fromDataset) return fromDataset;
 
@@ -304,10 +311,10 @@ export function initializeStrips() {
     return project?.title || defaultSubtitle;
   }
 
-  const initialTitle = getCurrentProjectTitle();
+  const initialTitle = resolveCurrentTitle();
   if (initialTitle && initialTitle !== defaultSubtitle) {
-    currentPageTitle = initialTitle;
-    if (headerSubtitle && initialTitle !== defaultSubtitle) {
+    setCurrentProjectTitle(initialTitle);
+    if (headerSubtitle) {
       headerSubtitle.textContent = initialTitle.toUpperCase();
     }
   }
@@ -358,22 +365,21 @@ function updateCurrentPageTitle(title) {
     const baseName = window.__SITE_TITLE__ || "Jonas Johansson";
     document.title = baseName;
 
+    const newTitle = title === null ? defaultSubtitle : (title || defaultSubtitle);
+
+    document.documentElement.dataset.currentProjectTitle = newTitle;
+    setCurrentProjectTitle(newTitle);
+
     if (title === null) {
-      currentPageTitle = defaultSubtitle;
       if (headerSubtitle) {
         headerSubtitle.textContent = defaultSubtitle.toUpperCase();
       }
       return;
     }
 
-    currentPageTitle = title || defaultSubtitle;
-
-    document.documentElement.dataset.currentProjectTitle = currentPageTitle;
-    setCurrentProjectTitle(currentPageTitle);
-
     if (window.location.pathname.includes("/work/")) {
       if (headerSubtitle) {
-        headerSubtitle.textContent = currentPageTitle.toUpperCase();
+        headerSubtitle.textContent = newTitle.toUpperCase();
       }
     }
   } catch (error) {
@@ -381,13 +387,4 @@ function updateCurrentPageTitle(title) {
   }
 }
 
-export { resetFilters, applyProjectColor, updateCurrentPageTitle };
-
-// Initialize filters when DOM is ready
-if (document.readyState === "loading") {
-  document.addEventListener("DOMContentLoaded", () => {
-    initFilters();
-  });
-} else {
-  initFilters();
-}
+export { resetFilters, applyProjectColor, updateCurrentPageTitle, initFilters };

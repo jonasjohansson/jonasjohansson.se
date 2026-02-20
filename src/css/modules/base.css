@@ -46,7 +46,7 @@ body.about-visible {
 /* Content wrapper */
 #content {
   position: relative;
-  z-index: 100;
+  z-index: var(--z-content);
   overflow-anchor: none;
 }
 
@@ -101,7 +101,6 @@ body.loading #strips,
 body.loading #header,
 body.loading #filter-dropdown-container,
 body.loading #about,
-body.loading #shader-canvas,
 body.loading #projects {
   opacity: 0 !important;
   visibility: hidden !important;
@@ -141,8 +140,7 @@ body.loaded.project-visible #projects {
   transition: opacity 0.3s ease;
 }
 
-/* Shader and grain fade in after strips are initialized (for home route) */
-body.loaded:not([data-route="about"]):not([data-route="project"]) #shader-canvas,
+/* Grain fade in after strips are initialized (for home route) */
 body.loaded:not([data-route="about"]):not([data-route="project"])::before {
   opacity: 0;
   transition: opacity 1.2s ease-out;
@@ -153,20 +151,7 @@ body.strips-initialized::before {
   opacity: var(--grain-opacity, 0);
 }
 
-body:has(#strips.strips-initialized) #shader-canvas,
-body.strips-initialized #shader-canvas {
-  opacity: 1;
-}
-
-/* For about and project routes, show shader and grain immediately after loading */
-body.loaded[data-route="about"] #shader-canvas,
-body.loaded[data-route="project"] #shader-canvas,
-body.loaded.about-visible #shader-canvas,
-body.loaded.project-visible #shader-canvas {
-  opacity: 1;
-  transition: opacity 0.3s ease;
-}
-
+/* For about and project routes, show grain immediately after loading */
 body.loaded[data-route="about"]::before,
 body.loaded[data-route="project"]::before,
 body.loaded.about-visible::before,

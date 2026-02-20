@@ -102,10 +102,6 @@ function updateStripCount() {
   document.documentElement.style.setProperty("--visible-strip-count", visibleCount);
 }
 
-export function isFiltering() {
-  return document.body?.dataset?.filtering === "true";
-}
-
 export function initFilters() {
   const body = document.body;
 

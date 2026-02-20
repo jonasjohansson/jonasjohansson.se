@@ -11,10 +11,6 @@ export function setCurrentProjectTitle(title) {
   currentProjectTitle = title;
 }
 
-export function isProgrammaticScroll() {
-  return programmaticScroll;
-}
-
 export function setProgrammaticScroll(value) {
   programmaticScroll = value;
 }

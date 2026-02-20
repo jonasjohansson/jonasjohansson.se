@@ -6,6 +6,8 @@
     let route = 'home';
     if (path === '/about' || path === window.__PATH_PREFIX__ + '/about') {
       route = 'about';
+    } else if (path === '/labs' || path === window.__PATH_PREFIX__ + '/labs') {
+      route = 'labs';
     } else if (path.match(/\/work\/[^\/]+/)) {
       route = 'project';
     }

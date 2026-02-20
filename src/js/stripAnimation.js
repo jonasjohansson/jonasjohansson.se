@@ -82,9 +82,12 @@ export function resetAnimationState() {
   isAnimating = true;
 }
 
+let animationStarted = false;
+
 export function initAnimation(container) {
   stripsContainer = container;
+  if (!animationStarted) {
+    animationStarted = true;
+    requestAnimationFrame(tick);
+  }
 }
-
-// Start the animation loop immediately
-requestAnimationFrame(tick);

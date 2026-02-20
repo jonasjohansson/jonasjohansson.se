@@ -20,7 +20,7 @@
   /* Prevent any layout shifts */
   contain: layout style paint;
   /* Ensure filter appears above strips */
-  z-index: 10;
+  z-index: var(--z-filter);
 }
 
 /* Shared button styles - consolidated */
@@ -92,7 +92,7 @@
 
 .filter-separator {
   border: none;
-  border-top: 1px solid rgba(255, 255, 255, 0.2);
+  border-top: 1px solid color-mix(in srgb, var(--color-white) 20%, transparent);
   margin: 0.25rem 0;
 }
 

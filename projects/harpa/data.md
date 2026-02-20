@@ -1,0 +1,87 @@
+---
+title: Harpa
+date: '2017-01-01'
+tags:
+  - installation
+  - av
+  - light
+blocks:
+  - type: image
+    src: 01.jpg
+  - type: text
+    content: >-
+      A series of interactive interventions on the LED facade of Harpa Concert
+      Hall in Reykjavík, during Sónar Reykjavík and other occasions.
+  - type: text
+    fontSize: small
+    content: >-
+      It started in 2014 when [Atlí Bollason](https://atlibollason.com/) and
+      [Owen Hindley](http://owenhindley.co.uk/) turned Harpa's 43-metre tall,
+      almost 100-metre wide facade into a publicly playable game of
+      [Pong](https://youtu.be/R3_OSTtyfSw). Launched on Menningarnótt
+      (Culture Night) on 23 August 2014, it was the first time Ólafur
+      Elíasson granted another artist access to the 714 LED panels embedded
+      in the south facade's steel-and-glass quasibrick structure. Anyone with
+      a smartphone could join a Wi-Fi network and take control of a paddle on
+      the building.
+  - type: text
+    fontSize: small
+    content: >-
+      After the success of Pong, Harpa and the Sónar organisers invited Atlí
+      and Owen back for the festival in 2015. I was working at
+      [FIELD.io](https://field.io/) at the time, where Owen would freelance,
+      and that's how I got involved. Rather than simply re-run Pong, we
+      turned the entire building into an audio-reactive light show, taking
+      the music being played inside and using it to drive the visuals
+      outside. We reached out to creative developers across Europe, and ended
+      up with over 12 visual responses from 8 artists.
+  - type: text
+    fontSize: small
+    content: >-
+      I coded visualisations and animations for the facade, and took on much
+      of the project management, from writing funding applications to running
+      meetings and coordinating the group. One of the most striking things
+      about the project was the sheer scale of it. Harpa is an enormous
+      building set against the harbour in a fairly small city, and when your
+      animation fills that facade it's visible across half of Reykjavík.
+  - type: text
+    fontSize: small
+    content: >-
+      In 2016 we took it further and built a
+      [light organ](https://youtu.be/m53kuvMLAiY) on the 4th floor balcony,
+      overlooking the geometric glass front and the downtown area. Visitors
+      could play the building like an instrument. Harmony was colour, pitch
+      was position, strength was brilliance. In 2017 we did a series of
+      interactive installations using hardware from Teenage Engineering and
+      Flic, giving the festival audience direct control of the facade. We
+      called it Sónarspil.
+  - type: image
+    src: 02.jpg
+  - type: text
+    fontSize: small
+    content: >-
+      [Rose Hallgren](https://rosehallgren.com/) built the physical wood and
+      concrete models used as tactile interfaces, and Johanna Tano did the
+      hardware coding. We had funding from the
+      [Nordic Culture Fund](https://nordiskkulturfond.org/) through their
+      Opstart grant.
+  - type: text
+    fontSize: small
+    content: >-
+      In 2019, as [Tiny/Massive](/work/tinymassive/), we opened the facade to
+      artists worldwide during the Reykjavík Winter Lights Festival.
+      [Loney Dear](https://youtu.be/wAKno0pe4UQ) performed a live concert
+      controlling the visuals with Teenage Engineering's OP-Z, ten storeys of
+      light on the harbour, driven from inside a city bus.
+  - type: text
+    fontSize: small
+    content: >-
+      It was a great few years. We would gather in Reykjavík for Sónar, hack
+      the facade, have morning meetings in the pool, and enjoy playing with
+      lights in the evenings. The work with Harpa became the spark for
+      [NAVA](https://www.nava.community) (Nordic Audiovisual Artists), a
+      community where Atlí, Owen, myself and artist
+      [Rasmus Stride](https://www.instagram.com/rasmus.stride/) formed the
+      collective that would go on to do projects like Tiny/Massive and
+      Skaðablót.
+---

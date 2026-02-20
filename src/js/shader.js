@@ -474,6 +474,20 @@ class ShaderInstance {
     this.startTime = performance.now() / 1000.0;
     this.render();
   }
+
+  destroy() {
+    if (this.animationFrameId) {
+      cancelAnimationFrame(this.animationFrameId);
+      this.animationFrameId = null;
+    }
+    if (this.gl) {
+      if (this.program) this.gl.deleteProgram(this.program);
+      if (this.positionBuffer) this.gl.deleteBuffer(this.positionBuffer);
+      const ext = this.gl.getExtension("WEBGL_lose_context");
+      if (ext) ext.loseContext();
+      this.gl = null;
+    }
+  }
 }
 
 function loadSettingsFromFile() {
@@ -483,6 +497,11 @@ function loadSettingsFromFile() {
   } catch (error) {
     return null;
   }
+}
+
+export function destroyShader() {
+  shaderInstances.forEach((instance) => instance.destroy());
+  shaderInstances = [];
 }
 
 export async function initializeShader() {

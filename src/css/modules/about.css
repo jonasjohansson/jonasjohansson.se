@@ -87,7 +87,7 @@
   text-decoration: underline;
 }
 
-@media (max-width: 767px) {
+@media (max-width: 768px) {
   .about-container {
     flex-direction: column;
     overflow-y: auto;

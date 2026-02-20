@@ -4,7 +4,7 @@ header {
   top: calc(var(--spacing-lg) + env(safe-area-inset-top));
   left: 50%;
   transform: translateX(-50%);
-  z-index: 300;
+  z-index: var(--z-header);
   pointer-events: auto;
   background: transparent;
   color: var(--color-black);

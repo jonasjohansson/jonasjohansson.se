@@ -1,22 +1,34 @@
-import "./strips.js";
-import "./router.js";
-import { applyProjectColor, initializeStrips, updateCurrentPageTitle } from "./strips.js";
+import { applyProjectColor, initializeStrips, updateCurrentPageTitle, setNavigateFn, initFilters } from "./strips.js";
+import { resetFilters } from "./stripFiltering.js";
+import { router } from "./router.js";
 import { loadingManager } from "./utils/loadingManager.js";
-import "./melody.js";
 import { initializeGrain } from "./grain.js";
-import { initializeShader } from "./shader.js";
+
 import { getCurrentRoute } from "./utils/routeUtils.js";
-import "./xylophone.js"; // Import statically to bundle into main.js
 import { aboutOverlay } from "./aboutOverlay.js";
+import { initXylophone, melodyPlayer } from "./xylophone.js";
+
+// Wire up router hooks (breaks circular dependency: router <-> strips/aboutOverlay)
+router.registerHooks({
+  resetFilters,
+  applyProjectColor,
+  updateCurrentPageTitle,
+  initializeStrips,
+  hideAbout: (skip) => aboutOverlay.hide(skip),
+  showAbout: (immediate) => aboutOverlay.show(immediate),
+  initAbout: () => aboutOverlay.init(router),
+});
+
+// Give strips a way to navigate without importing router
+setNavigateFn((path) => router.navigate(path));
 
 // Show content based on route after loading
 async function showContentForRoute(route) {
   const body = document.body;
   body.setAttribute("data-route", route);
 
-  // Initialize grain and shader for all routes
+  // Initialize grain for all routes
   initializeGrain();
-  await initializeShader();
 
   // Show header for all routes
   const header = document.getElementById("header");
@@ -62,6 +74,21 @@ async function showContentForRoute(route) {
       // Scroll to top
       window.scrollTo({ top: 0, behavior: "auto" });
     }
+  } else if (route === "labs") {
+    // Labs page - content is already rendered server-side
+    const stripsContainer = document.getElementById("strips");
+    if (stripsContainer) {
+      stripsContainer.style.display = "none";
+    }
+
+    // Wire up lab card clicks for SPA navigation
+    document.querySelectorAll(".labs-card").forEach((card) => {
+      card.addEventListener("click", (e) => {
+        e.preventDefault();
+        const href = card.getAttribute("href");
+        if (href) router.navigate(href);
+      });
+    });
   } else if (route === "project") {
     // Hide about section on project pages
     const aboutEl = document.getElementById("about");
@@ -78,7 +105,6 @@ async function showContentForRoute(route) {
       body.classList.add("project-visible");
 
       // Initialize strips to ensure event listeners are attached
-      // This is needed even on project pages so strips are clickable
       initializeStrips();
 
       // Fade in project
@@ -92,7 +118,7 @@ async function showContentForRoute(route) {
         const projectTitle = window.__INITIAL_PROJECT__?.title;
         if (projectTitle) {
           // Initialize about overlay first to ensure subtitle is available
-          aboutOverlay.init();
+          aboutOverlay.init(router);
           // Update subtitle after a short delay to ensure scrambler is initialized
           setTimeout(() => {
             updateCurrentPageTitle(projectTitle);
@@ -109,7 +135,7 @@ async function showContentForRoute(route) {
           const projectsData = window.__PROJECTS_DATA__ || [];
           const project = projectsData.find((p) => p.slug === slug);
           if (project?.title) {
-            aboutOverlay.init();
+            aboutOverlay.init(router);
             setTimeout(() => {
               updateCurrentPageTitle(project.title);
             }, 100);
@@ -121,7 +147,7 @@ async function showContentForRoute(route) {
 
   // Initialize about overlay (if not already initialized in project route)
   if (route !== "project") {
-    aboutOverlay.init();
+    aboutOverlay.init(router);
   }
 }
 
@@ -129,6 +155,25 @@ async function initializeApp() {
   // Determine route and set data attribute
   const route = getCurrentRoute();
   document.body.setAttribute("data-route", route);
+
+  // Initialize router (listens for popstate)
+  router.init();
+
+  // Initialize filter dropdown UI
+  initFilters();
+
+  // Wire up Labs link for SPA navigation
+  const labsLink = document.getElementById("labs-link");
+  if (labsLink) {
+    labsLink.addEventListener("click", (e) => {
+      e.preventDefault();
+      router.navigate("/labs/");
+    });
+  }
+
+  // Initialize xylophone audio
+  initXylophone();
+  melodyPlayer.enableMelodyMode("mario");
 
   // Start preloading assets
   await loadingManager.preloadAllAssets();

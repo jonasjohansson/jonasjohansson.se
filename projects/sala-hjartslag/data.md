@@ -9,8 +9,15 @@ blocks:
     src: 01.jpg
   - type: text
     content: >-
-      Celebration of Sala turning 400 years with a beautifully crafted and
-      technically executed audiovisual mapping installation on a curved corner
-      wall.
+      Projection mapping celebrating 400 years of Sala.
+  - type: text
+    fontSize: small
+    content: >-
+      In 2024, the city of Sala celebrated 400 years since receiving its city
+      charter from Gustav II Adolf. For the anniversary, I worked as technical
+      lead and projection mapper in collaboration with
+      [Smash Studio](https://www.smash.studio/), who created the 3D modelling
+      and animation. The piece was an audiovisual journey through 400 years of
+      Sala's history, mapped onto a curved building facade. Much of the work
+      was done on-site, aligning the projection to fit the architecture.
 ---
-
