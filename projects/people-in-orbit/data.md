@@ -45,6 +45,6 @@ blocks:
       performed Signs of Presence at Barnens Scen in Malmö, a reinterpretation
       of the graphic score originally created by electronic pioneer Leo Nilsson
       and artist Al Eklund in 1978. I built a custom web app for drawing live
-      graphic scores on an iPad in dialogue with the music, and used Resolume
+      graphic scores on a tablet in dialogue with the music, and used Resolume
       with custom FFGL shaders for the live visual composition.
 ---
