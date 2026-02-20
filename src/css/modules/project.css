@@ -112,7 +112,7 @@ figure {
   grid-auto-flow: dense;
   width: 100%;
   max-width: 100%;
-  padding: 0 var(--spacing-xl);
+  padding: 0 var(--spacing-xl) var(--spacing-3xl);
 }
 
 /* Hero media items */
