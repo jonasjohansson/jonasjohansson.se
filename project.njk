@@ -35,11 +35,11 @@ eleventyComputed:
           preload="metadata"></video>
       </figure>
       {% elif block.type == 'text' %}
-      <article
-        class="text-block {{ block.fontSizeClass or 'text-medium' }} {{ block.textAlignClass or 'text-center' }}"
+      <div
+        class="text-block {{ block.fontSizeClass or 'text-medium' }}"
         style="--col-start: {{ block.colStart }}; --col-span: {{ block.colSpan }}">
         {{ block.content | safe }}
-      </article>
+      </div>
       {% elif block.type == 'credits' %}
       <aside class="credits-block" style="--col-start: {{ block.colStart }}; --col-span: {{ block.colSpan }}">
         <ul class="credits-list">
