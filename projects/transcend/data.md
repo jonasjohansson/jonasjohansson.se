@@ -8,11 +8,31 @@ blocks:
     src: 01.jpg
   - type: text
     content: >-
-      A mixed reality installation that explores the boundaries between physical and digital space, creating moments of transcendence through the seamless blending of real and virtual elements.
+      An interactive Pepper's Ghost installation inspired by the Sistine Chapel,
+      where two virtual hands meet in mid-air.
   - type: text
+    fontSize: small
     content: >-
-      The work uses advanced tracking technology to map virtual objects onto physical space with unprecedented accuracy, creating the illusion that digital elements exist as tangible objects in the real world.
+      Transcend was built for Urban Burn Stockholm in 2017, in collaboration
+      with Hybrid Forest (later
+      [Smash Studio](https://www.smash.studio/)) and
+      [Rose Hallgren](https://rosehallgren.se/). Two acrylic glass pyramids, one
+      inverted on top of the other, sat inside a wooden cage adorned with colors,
+      patterns, and vines. We wanted an Indiana Jones kind of feeling, like
+      discovering a hidden ancient machine, designed ages ago but still ahead of
+      its time.
   - type: text
+    fontSize: small
     content: >-
-      Visitors are invited to interact with these hybrid objects, experiencing a new form of presence that challenges our understanding of what is real and what is virtual.
+      Visitors placed their hands into one of two boxes, each housing a Leap
+      Motion sensor that turned their hand into a virtual one. The hand was
+      displayed on a hidden monitor and reflected through the acrylic using the
+      Pepper's Ghost technique, making it appear to hover inside the pyramid. The
+      virtual hands were covered in Aztec and Mayan-inspired patterns. Inspired
+      by Michelangelo's Creation of Adam, when two visitors' index fingers
+      touched, light streaks and particle effects appeared alongside an audio
+      cue. People loved just moving their hand around, watching it float in thin
+      air, and then pulling friends over to complete the gesture together. It was
+      my first time working with Pepper's Ghost and hand sensing, and the Leap
+      Motion turned out to be a great choice.
 ---
