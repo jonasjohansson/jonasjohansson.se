@@ -107,7 +107,9 @@ figure {
 .project-grid {
   display: grid;
   grid-template-columns: repeat(12, 1fr);
-  gap: 0;
+  column-gap: var(--spacing-xl);
+  row-gap: var(--spacing-3xl);
+  grid-auto-flow: dense;
   width: 100%;
   max-width: 100%;
   padding: 0 var(--spacing-xl);
@@ -151,47 +153,22 @@ figure {
   scroll-snap-stop: normal;
 }
 
-.media-item:not(:last-child:only-child) {
-  padding-bottom: var(--spacing-xl);
-}
-
-/* Ensure hero image has margin when followed by content, even if it's the only image */
-.project-grid > .media-item.hero:not(:last-child) {
-  padding-bottom: var(--spacing-xl);
-}
-
-/* If hero is the only media item but there are text blocks after it, add margin */
-.project-grid > .media-item.hero:only-of-type + .text-block {
-  margin-top: var(--spacing-xl);
-}
 
 .media-item img {
   width: 100%;
   height: auto;
   display: block;
-  clip-path: var(--cut-corner-sm);
-}
-
-.media-item:first-child img,
-.media-item.hero img {
-  clip-path: none;
 }
 
 .text-block {
-  padding-bottom: var(--spacing-xl);
   max-width: 65ch;
   margin: 0 auto;
   line-height: 1.6;
-  text-align: center;
+  text-align: left;
 }
 
 .text-block p:last-child {
   margin-bottom: 0;
-}
-
-.text-block.text-small,
-.text-block.text-medium {
-  text-align: left;
 }
 
 /* Smaller text for about page */
@@ -213,7 +190,6 @@ figure {
 }
 
 .credits-block {
-  padding-bottom: var(--spacing-xl);
   font-size: 0.8rem;
   opacity: 0.7;
 }
@@ -238,13 +214,38 @@ figure {
   grid-column-end: span var(--col-span);
 }
 
+/* Size utility classes for editorial layout */
+.media-item.size-full        { grid-column: 1 / -1; }
+.media-item.size-large       { grid-column: 2 / span 10; }
+.media-item.size-left        { grid-column: 1 / span 7; }
+.media-item.size-right       { grid-column: 6 / span 7; }
+.media-item.size-half-left   { grid-column: 1 / span 6; }
+.media-item.size-half-right  { grid-column: 7 / span 6; }
+.media-item.size-small-left  { grid-column: 1 / span 5; }
+.media-item.size-small-right { grid-column: 8 / span 5; }
+
 /* Mobile override: force full-width */
 @media (max-width: 768px) {
+  .project-grid {
+    row-gap: var(--spacing-2xl);
+  }
+
   [style*="--col-start"] {
     grid-column-start: 1;
   }
 
   [style*="--col-span"] {
     grid-column-end: span 12;
+  }
+
+  .media-item.size-full,
+  .media-item.size-large,
+  .media-item.size-left,
+  .media-item.size-right,
+  .media-item.size-half-left,
+  .media-item.size-half-right,
+  .media-item.size-small-left,
+  .media-item.size-small-right {
+    grid-column: 1 / -1;
   }
 }

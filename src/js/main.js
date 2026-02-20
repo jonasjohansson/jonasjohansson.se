@@ -74,21 +74,6 @@ async function showContentForRoute(route) {
       // Scroll to top
       window.scrollTo({ top: 0, behavior: "auto" });
     }
-  } else if (route === "labs") {
-    // Labs page - content is already rendered server-side
-    const stripsContainer = document.getElementById("strips");
-    if (stripsContainer) {
-      stripsContainer.style.display = "none";
-    }
-
-    // Wire up lab card clicks for SPA navigation
-    document.querySelectorAll(".labs-card").forEach((card) => {
-      card.addEventListener("click", (e) => {
-        e.preventDefault();
-        const href = card.getAttribute("href");
-        if (href) router.navigate(href);
-      });
-    });
   } else if (route === "project") {
     // Hide about section on project pages
     const aboutEl = document.getElementById("about");
@@ -161,15 +146,6 @@ async function initializeApp() {
 
   // Initialize filter dropdown UI
   initFilters();
-
-  // Wire up Labs link for SPA navigation
-  const labsLink = document.getElementById("labs-link");
-  if (labsLink) {
-    labsLink.addEventListener("click", (e) => {
-      e.preventDefault();
-      router.navigate("/labs/");
-    });
-  }
 
   // Initialize xylophone audio
   initXylophone();

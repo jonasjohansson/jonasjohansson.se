@@ -20,11 +20,11 @@ eleventyComputed:
     <h1 class="project-title">{{ projectContent[project.slug].title }}</h1>
     <div class="project-grid">
       {% for block in projectContent[project.slug].content %} {% if block.type == 'image' %}
-      <figure class="media-item {% if loop.first %}hero{% endif %}" style="--col-start: {{ block.colStart }}; --col-span: {{ block.colSpan }}">
+      <figure class="media-item {% if loop.first %}hero{% endif %}{% if block.size %} size-{{ block.size }}{% endif %}" style="--col-start: {{ block.colStart }}; --col-span: {{ block.colSpan }}">
         {% responsiveImage block.src, block.alt %}
       </figure>
       {% elif block.type == 'video' %}
-      <figure class="media-item" style="--col-start: {{ block.colStart }}; --col-span: {{ block.colSpan }}">
+      <figure class="media-item{% if block.size %} size-{{ block.size }}{% endif %}" style="--col-start: {{ block.colStart }}; --col-span: {{ block.colSpan }}">
         <video
           class="media-video"
           src="{{ block.src | url }}"

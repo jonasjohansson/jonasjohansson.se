@@ -56,11 +56,6 @@ class SPARouter {
       return;
     }
 
-    if (relativePath === "/labs" || relativePath === "/labs/") {
-      this.showLabs();
-      return;
-    }
-
     if (relativePath === "/" || relativePath === "/index.html" || relativePath === "") {
       this.showHome();
     } else {
@@ -78,11 +73,6 @@ class SPARouter {
     }
 
     clearExistingProjects();
-
-    // Clear labs content from main if navigating away from labs
-    const main = document.getElementById("main");
-    const labsEl = main?.querySelector("#labs");
-    if (labsEl) labsEl.remove();
 
     document.body.classList.remove("project-visible");
     document.documentElement.classList.remove("project-visible");
@@ -134,51 +124,6 @@ class SPARouter {
     }
   }
 
-  async showLabs() {
-    document.body.setAttribute("data-route", "labs");
-    document.body.classList.remove("about-visible", "project-visible");
-    this._hooks.hideAbout?.(true);
-    clearExistingProjects();
-    resetProjectColors();
-
-    document.title = "Labs — " + (window.__SITE_TITLE__ || "Jonas Johansson");
-
-    // Hide strips on labs page
-    const stripsContainer = document.getElementById("strips");
-    if (stripsContainer) {
-      stripsContainer.style.display = "none";
-    }
-
-    try {
-      const response = await fetch("/labs/");
-      if (!response.ok) throw new Error(`Failed to fetch labs: ${response.status}`);
-      const html = await response.text();
-      const parser = new DOMParser();
-      const doc = parser.parseFromString(html, "text/html");
-      const labsContent = doc.getElementById("labs");
-
-      if (labsContent) {
-        const main = document.getElementById("main");
-        if (main) {
-          main.innerHTML = "";
-          main.appendChild(labsContent);
-        }
-        // Wire up card clicks for SPA navigation
-        labsContent.querySelectorAll(".labs-card").forEach((card) => {
-          card.addEventListener("click", (e) => {
-            e.preventDefault();
-            const href = card.getAttribute("href");
-            if (href) this.navigate(href);
-          });
-        });
-      }
-    } catch (error) {
-      console.error("Error loading labs:", error);
-    }
-
-    window.scrollTo({ top: 0, behavior: "auto" });
-  }
-
   async showProject(slug) {
     const project = projects.find((p) => p.slug === slug);
     if (!project) {
@@ -189,11 +134,6 @@ class SPARouter {
     document.body.setAttribute("data-route", "project");
     document.body.classList.remove("about-visible");
     this._hooks.hideAbout?.(true);
-
-    // Clear labs content if navigating from labs to a project
-    const main = document.getElementById("main");
-    const labsEl = main?.querySelector("#labs");
-    if (labsEl) labsEl.remove();
 
     this._hooks.updateCurrentPageTitle?.(project.title);
     this._hooks.resetFilters?.();

@@ -12,8 +12,6 @@ export function getCurrentRoute() {
   
   if (relativePath === "/about" || relativePath === "/about/") {
     return "about";
-  } else if (relativePath === "/labs" || relativePath === "/labs/") {
-    return "labs";
   } else if (relativePath.startsWith("/work/")) {
     return "project";
   } else {

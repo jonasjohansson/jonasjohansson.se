@@ -37,8 +37,10 @@ blocks:
       the Eastern City Portal commission.
   - type: image
     src: 03.jpg
+    size: left
   - type: image
     src: 04.jpg
+    size: small-right
   - type: text
     fontSize: small
     content: >-
@@ -49,8 +51,10 @@ blocks:
       design.
   - type: image
     src: 05.jpg
+    size: small-left
   - type: image
     src: 06.jpg
+    size: right
   - type: text
     fontSize: small
     content: >-
@@ -58,10 +62,14 @@ blocks:
       wood and people can interact with both.
   - type: image
     src: 07.jpg
+    size: left
   - type: image
     src: 08.jpg
+    size: small-right
   - type: image
     src: 09.jpg
+    size: small-left
   - type: image
     src: 10.jpg
+    size: right
 ---

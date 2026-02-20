@@ -308,19 +308,6 @@ export default function (eleventyConfig) {
     return results.filter((p) => p.type !== "lab");
   });
 
-  // Lab projects: only type: "lab" projects, for /labs/ page
-  eleventyConfig.addGlobalData("labProjects", async function() {
-    const allProjects = scanProjects();
-    const root = "projects";
-
-    const results = await Promise.all(
-      allProjects
-        .filter((p) => p.slug !== "about")
-        .map((project) => buildProjectEntry(root, project))
-    );
-    return results.filter((p) => p.type === "lab");
-  });
-
   // Redirects for merged projects: old slug → new slug
   const projectRedirects = [
     { oldSlug: "dendrolux-tjoloholms-slott", newSlug: "dendrolux" },
@@ -332,6 +319,18 @@ export default function (eleventyConfig) {
     { oldSlug: "myriad", newSlug: "vista" },
   ];
   eleventyConfig.addGlobalData("projectRedirects", () => projectRedirects);
+
+  // Size shorthand → grid column placement
+  const SIZE_MAP = {
+    "full":        { colStart: 1, colSpan: 12 },
+    "large":       { colStart: 2, colSpan: 10 },
+    "left":        { colStart: 1, colSpan: 7 },
+    "right":       { colStart: 6, colSpan: 7 },
+    "half-left":   { colStart: 1, colSpan: 6 },
+    "half-right":  { colStart: 7, colSpan: 6 },
+    "small-left":  { colStart: 1, colSpan: 5 },
+    "small-right": { colStart: 8, colSpan: 5 },
+  };
 
   /** Project content scanner → reads data.md with YAML frontmatter */
   eleventyConfig.addGlobalData("projectContent", async () => {
@@ -360,20 +359,23 @@ export default function (eleventyConfig) {
         // Process blocks from frontmatter
         const content = blocks
           .map((block) => {
-            const { type, src, content: textContent, colStart = 1, colSpan = 12, fontSize, credits } = block;
+            const { type, src, content: textContent, size, colStart: explicitColStart, colSpan: explicitColSpan, fontSize, credits } = block;
+            const resolved = size && SIZE_MAP[size] ? SIZE_MAP[size] : {};
+            const colStart = explicitColStart || resolved.colStart || 1;
+            const colSpan = explicitColSpan || resolved.colSpan || 12;
             let fontSizeClass = "text-large";
             if (fontSize) {
               if (fontSize.includes("small") || fontSize.includes("1.2")) fontSizeClass = "text-small";
               else if (fontSize.includes("medium") || fontSize.includes("1.8")) fontSizeClass = "text-medium";
             }
-            if (type === "image") return { type: "image", src: `${root}/${dir}/${src}`, alt: projectTitle, colStart, colSpan };
-            if (type === "video") return { type: "video", src: `${root}/${dir}/${src}`, alt: projectTitle, colStart, colSpan };
+            if (type === "image") return { type: "image", src: `${root}/${dir}/${src}`, alt: projectTitle, colStart, colSpan, size };
+            if (type === "video") return { type: "video", src: `${root}/${dir}/${src}`, alt: projectTitle, colStart, colSpan, size };
             if (type === "text")
               return {
                 type: "text",
                 content: md.render(textContent || ""),
-                colStart: colStart || 3,
-                colSpan: colSpan || 8,
+                colStart: explicitColStart || resolved.colStart || 3,
+                colSpan: explicitColSpan || resolved.colSpan || 8,
                 fontSizeClass,
               };
             if (type === "credits")
@@ -445,7 +447,7 @@ export default function (eleventyConfig) {
       mkdirSync(outputDir, { recursive: true });
     }
     // Ensure common subdirectories exist
-    const subdirs = ["img", "about", "work", "labs"];
+    const subdirs = ["img", "about", "work"];
     subdirs.forEach((subdir) => {
       const dirPath = path.join(outputDir, subdir);
       if (!existsSync(dirPath)) {

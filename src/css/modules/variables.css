@@ -18,6 +18,8 @@
   --spacing-md: 1rem;
   --spacing-lg: 1.5rem;
   --spacing-xl: 2rem;
+  --spacing-2xl: 4rem;
+  --spacing-3xl: 6rem;
 
   /* Typography */
   --font-family: "OffBit", system-ui, -apple-system, Segoe UI, Roboto, Helvetica, Arial, sans-serif;

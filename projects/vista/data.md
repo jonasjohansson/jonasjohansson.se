@@ -22,8 +22,10 @@ blocks:
       from viewing code as function to embracing it as sculpture.
   - type: image
     src: 03.jpg
+    size: left
   - type: image
     src: 04.jpg
+    size: small-right
   - type: text
     fontSize: small
     content: >-
@@ -50,8 +52,11 @@ blocks:
       accreditation in human expression and creation.
   - type: image
     src: 05.jpg
+    size: half-left
   - type: image
     src: 06.jpg
+    size: half-right
   - type: image
     src: 07.jpg
+    size: large
 ---
