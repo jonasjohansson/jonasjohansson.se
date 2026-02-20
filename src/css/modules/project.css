@@ -38,18 +38,18 @@
 /* Font size classes for project content */
 .text-small {
   font-size: var(--font-size-small);
-  line-height: 1.3;
+  line-height: 1.5;
 }
 
 .text-medium {
   font-size: var(--font-size-medium);
-  line-height: 1.3;
+  line-height: 1.35;
 }
 
 .text-block .text-large,
 .text-large {
   font-size: var(--font-size-large);
-  line-height: 1.25 !important;
+  line-height: 1.15 !important;
 }
 
 /* Video */
@@ -70,7 +70,7 @@
 
   .text-block .text-large,
   .text-large {
-    font-size: 1.8rem;
+    font-size: 2.2rem;
   }
 }
 
@@ -161,10 +161,15 @@ figure {
 }
 
 .text-block {
-  max-width: 65ch;
+  max-width: 50ch;
   margin: 0 auto;
   line-height: 1.6;
   text-align: left;
+}
+
+/* Statement text: wider column for large type */
+.text-block.text-large {
+  max-width: 40ch;
 }
 
 .text-block p:last-child {
