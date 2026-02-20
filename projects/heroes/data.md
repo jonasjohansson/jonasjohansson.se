@@ -19,7 +19,7 @@ blocks:
       Heroes was a projection mapped piece on the facade of Stockholms Stora
       Synagoga, commissioned for Nobel Week Lights 2022. Created with
       [Smash Studio](https://www.smash.studio/), with music by
-      [Joseph Wilkinson](https://www.josephwilkinson.com/farfarstudio). The work
+      [Joseph Wilkinson](https://www.josephwilkinson.com). The work
       was inspired by three humanitarians: Raoul Wallenberg, who saved thousands
       of Jews in Budapest during the Holocaust, Elie Wiesel, 1986 Nobel Peace
       Prize laureate, and Dag Hammarskjöld, 1961 Nobel Peace Prize laureate and
