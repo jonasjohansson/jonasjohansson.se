@@ -185,8 +185,8 @@ figure {
   text-align: center;
 }
 
-.project-grid > :last-child.text-block {
-  padding-bottom: 0;
+.text-block p:last-child {
+  margin-bottom: 0;
 }
 
 .text-block.text-small,
