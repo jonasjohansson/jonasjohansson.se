@@ -101,10 +101,20 @@
 }
 
 .strip:hover,
-.strip.touch-hover {
+.strip.touch-hover,
+.strip:focus-visible {
   flex-grow: 4;
   transform: translateZ(0) scale(1.02);
   transition-delay: 0s;
+}
+
+.strip:focus {
+  outline: none;
+}
+
+.strip:focus-visible {
+  outline: 2px solid var(--color-white);
+  outline-offset: -2px;
 }
 
 .strip.selected {

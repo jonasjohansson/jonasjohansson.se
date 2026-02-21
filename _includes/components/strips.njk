@@ -5,6 +5,9 @@
   stripImage = '/' ~ stripImage %} {% endif %}
   <div
     class="strip"
+    role="link"
+    tabindex="0"
+    aria-label="{{ project.title | e('html_attr') }}"
     data-project="{{ project.slug }}"
     data-project-title="{{ project.title | e('html_attr') }}"
     data-tags="{{ project.tags | join(',') }}">
@@ -16,7 +19,8 @@
       muted
       loop
       autoplay
-      preload="auto"></video>
+      preload="auto"
+      aria-hidden="true"></video>
     {% endif %}
     <div
       class="strip-image"

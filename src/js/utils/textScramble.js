@@ -2,6 +2,7 @@
 const CHARS = "ABCDEFGHIJKLMNOPQRSTUVWXYZ";
 const FRAME_DURATION = 40;
 const RESOLVE_STEPS = 8;
+const prefersReducedMotion = window.matchMedia("(prefers-reduced-motion: reduce)");
 
 let activeAnimation = null;
 
@@ -18,6 +19,12 @@ export function scrambleText(element, newText, { duration = RESOLVE_STEPS } = {}
   if (activeAnimation) {
     cancelAnimationFrame(activeAnimation.raf);
     activeAnimation = null;
+  }
+
+  // Instant update for reduced motion
+  if (prefersReducedMotion.matches) {
+    element.textContent = target;
+    return;
   }
 
   const length = Math.max(oldText.length, target.length);

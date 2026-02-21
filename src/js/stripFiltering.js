@@ -92,9 +92,11 @@ export function filterProjects() {
 
 function updateStripCount() {
   const allStrips = allStripsRef ? allStripsRef() : [];
+  const hasFilters = document.body.classList.contains("filter-active");
   const visibleStrips = Array.from(allStrips).filter((strip) => {
-    const computedStyle = window.getComputedStyle(strip);
-    return computedStyle.display !== "none" && !strip.classList.contains("hidden");
+    if (strip.classList.contains("hidden")) return false;
+    if (hasFilters && !strip.classList.contains("filter-match")) return false;
+    return true;
   });
 
   const visibleCount = visibleStrips.length;

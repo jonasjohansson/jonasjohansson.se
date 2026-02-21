@@ -40,8 +40,11 @@ export class LoadingManager {
       promises.push(this.preloadProjectImages());
     }
 
-    // Wait for all assets to load
-    await Promise.all(promises);
+    // Wait for assets but cap at 4s to avoid blocking on slow connections
+    await Promise.race([
+      Promise.all(promises),
+      new Promise((resolve) => setTimeout(resolve, 4000)),
+    ]);
 
     this.completeLoading();
   }

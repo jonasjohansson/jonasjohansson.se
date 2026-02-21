@@ -57,9 +57,13 @@
   scroll-padding: 0 !important;
 }
 
-.filter-dropdown-button:focus,
-.filter-dropdown-button:focus-visible {
+.filter-dropdown-button:focus {
   outline: none;
+}
+
+.filter-dropdown-button:focus-visible {
+  outline: 2px solid currentColor;
+  outline-offset: 2px;
 }
 
 .filter-dropdown-button:hover,
@@ -104,9 +108,13 @@
   scroll-padding: 0;
 }
 
-.filter-option:focus,
-.filter-option:focus-visible {
+.filter-option:focus {
   outline: none;
+}
+
+.filter-option:focus-visible {
+  outline: 2px solid currentColor;
+  outline-offset: 2px;
 }
 
 .filter-option:hover span {

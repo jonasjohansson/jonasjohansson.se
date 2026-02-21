@@ -27,3 +27,11 @@ export function getPathPrefix() {
   return pathPrefix;
 }
 
+/**
+ * Extract the current project slug from the URL
+ * @returns {string|null}
+ */
+export function getCurrentProjectSlug() {
+  return window.location.pathname.match(/\/work\/([^\/]+)/)?.[1] || null;
+}
+

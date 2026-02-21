@@ -20,6 +20,9 @@
 body.loaded #loading-screen {
   opacity: 0;
   pointer-events: none;
+  /* Remove from rendering tree after fade-out */
+  transition: opacity 0.5s ease-out, visibility 0s 0.5s;
+  visibility: hidden;
 }
 
 #loading-spinner {

@@ -12,15 +12,18 @@
   <body>
     {% include "../components/route-init.njk" %}
     <!-- Loading screen - shown while assets are loading -->
-    <div id="loading-screen">
+    <div id="loading-screen" role="status" aria-label="Loading">
       <div id="loading-spinner"></div>
     </div>
+
+    <!-- Skip to content link for keyboard users -->
+    <a href="#main" class="skip-link">Skip to content</a>
 
     {% include "../components/shader.njk" %}
     {% include "../components/header.njk" %}
 
       <div id="content">
-        <aside id="about" {% if page.url === '/about/' %}data-initial-about="true"{% endif %}>
+        <aside id="about" role="dialog" aria-modal="false" aria-label="About Jonas Johansson" {% if page.url === '/about/' %}data-initial-about="true"{% endif %}>
           <div class="about-container">
             <div class="about-text">
               <div class="about-text-inner">

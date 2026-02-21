@@ -56,6 +56,8 @@ class AboutOverlay {
 
     document.body.classList.add("about-visible");
     this.aboutOverlay.classList.add("visible");
+    this.aboutOverlay.setAttribute("aria-modal", "true");
+    this.headerToggle?.setAttribute("aria-expanded", "true");
     this._setSubtitle(this.defaultSubtitleText);
     this.headerCenter.classList.add("overlay-active");
 
@@ -80,6 +82,8 @@ class AboutOverlay {
     document.body.removeAttribute("data-initial-about");
 
     this.aboutOverlay.classList.remove("visible");
+    this.aboutOverlay.setAttribute("aria-modal", "false");
+    this.headerToggle?.setAttribute("aria-expanded", "false");
     document.body.classList.remove("about-visible");
 
     // Reset scroll position so user isn't stranded after about collapses
@@ -122,7 +126,7 @@ class AboutOverlay {
     return this.pathPrefix ? `${this.pathPrefix}/about/` : "/about/";
   }
 
-  _setSubtitle(text, fadeIn = false) {
+  _setSubtitle(text) {
     if (!this.headerSubtitle) return;
     const targetText = (text || this.defaultSubtitleText).trim().toUpperCase();
 
@@ -154,6 +158,14 @@ class AboutOverlay {
 
     this.headerToggle.addEventListener("click", handleInteraction, true);
     this.headerCenter.addEventListener("click", handleInteraction, true);
+
+    // Keyboard support for header toggle
+    this.headerToggle.addEventListener("keydown", (e) => {
+      if (e.key === "Enter" || e.key === " ") {
+        e.preventDefault();
+        handleInteraction(e);
+      }
+    });
 
     // Reset subtitle when mouse leaves header
     const handleMouseLeave = () => {

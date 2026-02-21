@@ -4,6 +4,7 @@ import { setCurrentProjectTitle } from "./utils/state.js";
 import { handlePoint } from "./stripAnimation.js";
 import { detectSwipeDirection } from "./utils/gestureDetector.js";
 import { scrambleText } from "./utils/textScramble.js";
+import { getCurrentProjectSlug } from "./utils/routeUtils.js";
 
 const projects = window.__PROJECTS_DATA__ || [];
 
@@ -114,7 +115,7 @@ export function attachStripEventListeners() {
       if (getNavigationTimeoutId?.()) return;
 
       // Restore current project color or clear on homepage
-      const currentSlug = window.location.pathname.match(/\/work\/([^\/]+)/)?.[1];
+      const currentSlug = getCurrentProjectSlug();
       if (currentSlug) {
         document.documentElement.setAttribute("data-project", currentSlug);
       } else {
@@ -124,7 +125,7 @@ export function attachStripEventListeners() {
       scrambleText(headerSubtitle, currentPageTitle);
     });
 
-    strip.addEventListener("click", () => {
+    const handleStripActivate = () => {
       if (document.body?.dataset?.filtering === "true") return;
 
       const clickedProjectSlug = strip.getAttribute("data-project");
@@ -158,6 +159,16 @@ export function attachStripEventListeners() {
           setNavigationTimeoutId?.(null);
         }, 600)
       );
+    };
+
+    strip.addEventListener("click", handleStripActivate);
+
+    // Keyboard support: Enter/Space activates strip
+    strip.addEventListener("keydown", (e) => {
+      if (e.key === "Enter" || e.key === " ") {
+        e.preventDefault();
+        handleStripActivate();
+      }
     });
   });
 }
@@ -238,7 +249,7 @@ export function attachTouchListeners() {
               }
             }
           } else {
-            const touchCurrentSlug = window.location.pathname.match(/\/work\/([^\/]+)/)?.[1];
+            const touchCurrentSlug = getCurrentProjectSlug();
             if (touchCurrentSlug) {
               document.documentElement.setAttribute("data-project", touchCurrentSlug);
             } else {
@@ -278,7 +289,7 @@ export function attachTouchListeners() {
       currentlyTouchedStrip = null;
     }
 
-    const currentSlug = window.location.pathname.match(/\/work\/([^\/]+)/)?.[1];
+    const currentSlug = getCurrentProjectSlug();
     if (!hasMoved || !touchStartStrip) {
       if (currentSlug) {
         document.documentElement.setAttribute("data-project", currentSlug);
