@@ -64,6 +64,20 @@ class SPARouter {
     }
   }
 
+  randomizeHeaderAngles() {
+    const titleEl = document.querySelector('.header-title');
+    const subtitleEl = document.querySelector('.header-subtitle');
+    if (titleEl) titleEl.style.setProperty('--title-rotate', `${-1 - Math.random() * 3}deg`);
+    if (subtitleEl) subtitleEl.style.setProperty('--subtitle-rotate', `${0.5 + Math.random() * 3}deg`);
+  }
+
+  resetHeaderAngles() {
+    const titleEl = document.querySelector('.header-title');
+    const subtitleEl = document.querySelector('.header-subtitle');
+    if (titleEl) titleEl.style.removeProperty('--title-rotate');
+    if (subtitleEl) subtitleEl.style.removeProperty('--subtitle-rotate');
+  }
+
   async showHome(showAboutOverlay = false, immediate = false) {
     document.body.setAttribute("data-route", "home");
     document.body.classList.remove("about-visible", "project-visible");
@@ -113,6 +127,7 @@ class SPARouter {
     }
 
     resetProjectColors();
+    this.resetHeaderAngles();
     document.documentElement.removeAttribute("data-project");
 
     if (showAboutOverlay) {
@@ -136,6 +151,7 @@ class SPARouter {
     document.body.classList.remove("about-visible");
     document.documentElement.setAttribute("data-project", slug);
     this._hooks.hideAbout?.(true);
+    this.randomizeHeaderAngles();
 
     this._hooks.updateCurrentPageTitle?.(project.title);
     this._hooks.resetFilters?.();
