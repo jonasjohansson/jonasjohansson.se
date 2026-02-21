@@ -17,7 +17,7 @@ blocks:
   - type: text
     fontSize: small
     content: >-
-      Jag ar Gud is a self-biographical one-man show by dancer and performer
+      Jag är Gud is a self-biographical one-man show by dancer and performer
       Danne Dahlin, exploring a life shaped by bipolar disorder. I got
       involved through a mutual friend who introduced me to Danne, and over
       months of back-and-forth conversation, he found the talented actor and
@@ -37,7 +37,7 @@ blocks:
       19 years later, he was so affected by electroshock treatments and heavy
       medication that he could barely move. In 2018, Danne disappeared in Los
       Angeles. He was found surrounded by American police with drawn weapons.
-      His bipolar disorder had taken hold again. In Jag ar Gud, Danne looks
+      His bipolar disorder had taken hold again. In Jag är Gud, Danne looks
       back on his life: a youth as a promising dancer, his constant chase for
       love, parties with Russian oil billionaires and Spanish hitmen, his
       first manic episode in New York, and the stable years that could no

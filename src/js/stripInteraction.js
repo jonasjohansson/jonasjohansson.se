@@ -20,6 +20,9 @@ let setNavigationTimeoutId = null;
 let preloadProjectFn = null;
 let navigateFn = null;
 
+let hoverDebounceTimer = null;
+const HOVER_DEBOUNCE_MS = 120;
+
 export function initInteractionRefs(refs) {
   stripsContainer = refs.stripsContainer;
   getAllStrips = refs.getAllStrips;
@@ -83,30 +86,37 @@ export function attachStripEventListeners() {
 
     // Hover: show project title + preload + update header color
     strip.addEventListener("mouseenter", () => {
-      const headerSubtitle = getHeaderSubtitle?.();
-      if (!headerSubtitle) return;
       if (!stripsContainer?.classList.contains("strips-initialized")) return;
       const aboutOverlay = getAboutOverlayFn?.();
       if (aboutOverlay?.classList.contains("visible")) return;
 
-      const projectTitle = strip.getAttribute("data-project-title");
       const pSlug = strip.getAttribute("data-project");
 
-      if (projectTitle && projectTitle.trim()) {
-        scrambleText(headerSubtitle, projectTitle);
-      } else if (pSlug) {
-        const p = projects.find((pr) => pr.slug === pSlug);
-        if (p?.title) scrambleText(headerSubtitle, p.title);
-      }
-
+      // Update color and preload immediately (no delay needed)
       if (pSlug) {
         document.documentElement.setAttribute("data-project", pSlug);
         if (preloadProjectFn) preloadProjectFn(pSlug);
       }
+
+      // Debounce the text scramble so rapid mouse movement doesn't chain animations
+      if (hoverDebounceTimer) clearTimeout(hoverDebounceTimer);
+      hoverDebounceTimer = setTimeout(() => {
+        const headerSubtitle = getHeaderSubtitle?.();
+        if (!headerSubtitle) return;
+
+        const projectTitle = strip.getAttribute("data-project-title");
+        if (projectTitle && projectTitle.trim()) {
+          scrambleText(headerSubtitle, projectTitle);
+        } else if (pSlug) {
+          const p = projects.find((pr) => pr.slug === pSlug);
+          if (p?.title) scrambleText(headerSubtitle, p.title);
+        }
+      }, HOVER_DEBOUNCE_MS);
     });
 
     strip.addEventListener("mouseleave", (e) => {
       if (e.relatedTarget?.closest?.(".strip")) return;
+      if (hoverDebounceTimer) { clearTimeout(hoverDebounceTimer); hoverDebounceTimer = null; }
       const headerSubtitle = getHeaderSubtitle?.();
       if (!headerSubtitle) return;
       if (!stripsContainer?.classList.contains("strips-initialized")) return;

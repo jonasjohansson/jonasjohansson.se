@@ -5,6 +5,7 @@ const RESOLVE_STEPS = 8;
 const prefersReducedMotion = window.matchMedia("(prefers-reduced-motion: reduce)");
 
 let activeAnimation = null;
+let activeTarget = null;
 
 export function scrambleText(element, newText, { duration = RESOLVE_STEPS } = {}) {
   if (!element) return;
@@ -12,18 +13,22 @@ export function scrambleText(element, newText, { duration = RESOLVE_STEPS } = {}
   const target = newText.toUpperCase();
   const oldText = (element.textContent || "").trim();
 
-  // Skip if text is already the same
-  if (oldText === target) return;
+  // Skip if text is already the same, or if a running animation is already resolving to this target
+  if (oldText === target || activeTarget === target) return;
 
   // Cancel any running animation
   if (activeAnimation) {
     cancelAnimationFrame(activeAnimation.raf);
     activeAnimation = null;
+    activeTarget = null;
   }
+
+  activeTarget = target;
 
   // Instant update for reduced motion
   if (prefersReducedMotion.matches) {
     element.textContent = target;
+    activeTarget = null;
     return;
   }
 
@@ -59,6 +64,7 @@ export function scrambleText(element, newText, { duration = RESOLVE_STEPS } = {}
     } else {
       element.textContent = target;
       activeAnimation = null;
+      activeTarget = null;
     }
   }
 

@@ -36,7 +36,8 @@ header {
   clip-path: var(--cut-corner-sm);
   mix-blend-mode: normal;
   position: relative;
-  transition: background 0.3s ease, color 0.3s ease;
+  transition: background-color 0.3s ease, color 0.3s ease;
+  will-change: background-color, color;
 }
 
 .header-left,
@@ -55,7 +56,8 @@ header {
   touch-action: manipulation;
   cursor: pointer;
   pointer-events: auto;
-  transition: width var(--transition-normal);
+  transition: background-color 0.3s ease, color 0.3s ease, width var(--transition-normal);
+  will-change: background-color, color;
 }
 
 .header-content {
