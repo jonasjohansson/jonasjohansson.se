@@ -67,15 +67,15 @@ class SPARouter {
   randomizeHeaderAngles() {
     const titleEl = document.querySelector('.header-title');
     const subtitleEl = document.querySelector('.header-subtitle');
-    if (titleEl) titleEl.style.setProperty('--title-rotate', `${-1 - Math.random() * 3}deg`);
-    if (subtitleEl) subtitleEl.style.setProperty('--subtitle-rotate', `${0.5 + Math.random() * 3}deg`);
+    if (titleEl) titleEl.style.transform = `rotate(${(-1 - Math.random() * 3).toFixed(1)}deg)`;
+    if (subtitleEl) subtitleEl.style.transform = `rotate(${(0.5 + Math.random() * 3).toFixed(1)}deg)`;
   }
 
   resetHeaderAngles() {
     const titleEl = document.querySelector('.header-title');
     const subtitleEl = document.querySelector('.header-subtitle');
-    if (titleEl) titleEl.style.removeProperty('--title-rotate');
-    if (subtitleEl) subtitleEl.style.removeProperty('--subtitle-rotate');
+    if (titleEl) titleEl.style.transform = '';
+    if (subtitleEl) subtitleEl.style.transform = '';
   }
 
   async showHome(showAboutOverlay = false, immediate = false) {
