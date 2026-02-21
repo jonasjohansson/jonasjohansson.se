@@ -24,66 +24,95 @@ header {
 
 /* Header sections - consolidated flex pattern */
 .header-left,
-.header-right,
-.header-center {
+.header-right {
   display: flex;
   flex-direction: column;
   align-items: center;
   justify-content: center;
   background: var(--project-color, var(--color-white));
   color: var(--project-color-text, var(--color-black));
-  border-radius: var(--radius-sm);
-  clip-path: var(--cut-corner-sm);
+  clip-path: var(--cut-corner-md);
   mix-blend-mode: normal;
   position: relative;
   transition: background-color 0.3s ease, color 0.3s ease;
   will-change: background-color, color;
-}
-
-.header-left,
-.header-right {
-  padding: var(--spacing-xs);
+  padding: var(--spacing-xs) var(--spacing-md);
   gap: var(--spacing-xs);
   height: auto;
   min-height: fit-content;
 }
 
 .header-center {
-  padding: var(--spacing-sm) var(--spacing-md);
-  gap: var(--spacing-sm);
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  background: transparent;
+  position: relative;
   overflow: visible;
-  /* Prevent hover state from sticking on touch devices */
   touch-action: manipulation;
   cursor: pointer;
   pointer-events: auto;
-  transition: background-color 0.3s ease, color 0.3s ease, width var(--transition-normal);
-  will-change: background-color, color;
 }
 
 .header-content {
   display: flex;
   flex-direction: column;
   align-items: center;
-  gap: var(--spacing-xs);
+  gap: 0;
   position: relative;
   pointer-events: auto;
 }
 
-.header-left:hover,
-.header-right:hover,
-.header-left:active,
-.header-right:active,
-.header-center:hover,
-.header-center:focus-visible {
+/* Title shape - tilted left */
+.header-title {
+  background: var(--project-color, var(--color-white));
+  color: var(--project-color-text, var(--color-black));
+  clip-path: var(--cut-corner-md);
+  transform: rotate(-2deg);
+  padding: calc(var(--spacing-xs) + 2px) var(--spacing-xl) var(--spacing-xs);
+  transition: background-color 0.3s ease, color 0.3s ease;
+  position: relative;
+  z-index: 2;
+}
+
+/* Subtitle shape - tilted right, overlapping */
+.header-subtitle {
+  background: var(--project-color, var(--color-white));
+  color: var(--project-color-text, var(--color-black));
+  clip-path: var(--cut-corner-sm);
+  transform: rotate(1.5deg);
+  padding: calc(var(--spacing-xs) + 2px) var(--spacing-lg) var(--spacing-xs);
+  margin-top: -4px;
+  transition: background-color 0.3s ease, color 0.3s ease;
+  position: relative;
+  z-index: 1;
+}
+
+/* Hover - darken both shapes */
+.header-center:hover .header-title,
+.header-center:focus-visible .header-title,
+.header-center:hover .header-subtitle,
+.header-center:focus-visible .header-subtitle {
   background: var(--color-black);
   color: var(--color-white);
 }
 
 /* On project pages, invert hover to contrast with project color */
-html[data-project] .header-center:hover,
-html[data-project] .header-center:focus-visible {
+html[data-project] .header-center:hover .header-title,
+html[data-project] .header-center:focus-visible .header-title,
+html[data-project] .header-center:hover .header-subtitle,
+html[data-project] .header-center:focus-visible .header-subtitle {
   background: var(--color-white);
   color: var(--color-black);
+}
+
+.header-left:hover,
+.header-right:hover,
+.header-left:active,
+.header-right:active {
+  background: var(--color-black);
+  color: var(--color-white);
 }
 
 .header-center:focus {
@@ -91,6 +120,10 @@ html[data-project] .header-center:focus-visible {
 }
 
 .header-center:focus-visible {
+  outline: none;
+}
+
+.header-center:focus-visible .header-title {
   outline: 2px solid currentColor;
   outline-offset: 2px;
 }
@@ -109,7 +142,6 @@ html[data-project] .header-center:focus-visible {
     color: var(--color-white);
   }
 
-  /* Prevent hover from persisting */
   .header-left:hover:not(:active),
   .header-right:hover:not(:active) {
     background: var(--color-white);
@@ -152,7 +184,7 @@ html[data-project] .header-center:focus-visible {
   display: flex;
   align-items: center;
   gap: var(--spacing-xs);
-  font-weight: bold;
+  font-weight: 500;
   margin: 0; /* Reset default h1 margin */
   white-space: nowrap;
 }

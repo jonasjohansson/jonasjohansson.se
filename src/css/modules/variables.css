@@ -70,35 +70,29 @@ html[data-project="tufting-ex-machina"] { --project-color: #f37100; --project-co
 html[data-project="vista"] { --project-color: #8401ff; --project-color-text: var(--color-white); }
 
 :root {
-  /* 45-degree cut corner styles - all four corners */
+  /* Chevron/arrow shapes - pointed left and right ends */
   --cut-corner-sm: polygon(
     8px 0,
     calc(100% - 8px) 0,
-    100% 8px,
-    100% calc(100% - 8px),
+    100% 50%,
     calc(100% - 8px) 100%,
     8px 100%,
-    0 calc(100% - 8px),
-    0 8px
+    0 50%
   );
   --cut-corner-md: polygon(
     12px 0,
     calc(100% - 12px) 0,
-    100% 12px,
-    100% calc(100% - 12px),
+    100% 50%,
     calc(100% - 12px) 100%,
     12px 100%,
-    0 calc(100% - 12px),
-    0 12px
+    0 50%
   );
   --cut-corner-lg: polygon(
     16px 0,
     calc(100% - 16px) 0,
-    100% 16px,
-    100% calc(100% - 16px),
+    100% 50%,
     calc(100% - 16px) 100%,
     16px 100%,
-    0 calc(100% - 16px),
-    0 16px
+    0 50%
   );
 }

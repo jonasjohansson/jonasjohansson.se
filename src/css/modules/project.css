@@ -113,7 +113,7 @@ figure {
   grid-auto-flow: dense;
   width: 100%;
   max-width: 100%;
-  padding: 0 var(--spacing-xl) var(--spacing-xl);
+  padding: 0 var(--spacing-xl) 10rem;
 }
 
 /* Hero media items */
@@ -253,6 +253,42 @@ figure {
 .media-item.size-half-right  { grid-column: 7 / span 6; }
 .media-item.size-small-left  { grid-column: 1 / span 5; }
 .media-item.size-small-right { grid-column: 8 / span 5; }
+
+/* Large screens: 2-column image layout + bigger typography */
+@media (min-width: 1400px) {
+  .project-grid > .media-item:not(:first-child):not([class*="size-"]) {
+    grid-column-start: auto !important;
+    grid-column-end: span 6 !important;
+  }
+
+  .project-grid > .media-item + .media-item:not(:first-child):not([class*="size-"]) {
+    margin-top: 0;
+  }
+
+  /* Widen text columns and bump typography */
+  .text-block {
+    grid-column: 1 / -1 !important;
+    max-width: 80ch;
+  }
+
+  .text-block.text-large {
+    grid-column: 1 / -1 !important;
+    max-width: 60ch;
+  }
+
+  .text-small {
+    font-size: 1.6rem;
+  }
+
+  .text-medium {
+    font-size: 2.6rem;
+  }
+
+  .text-block .text-large,
+  .text-large {
+    font-size: 3.6rem;
+  }
+}
 
 /* Mobile override: force full-width */
 @media (max-width: 768px) {
