@@ -1,12 +1,12 @@
 /* CSS Variables */
 :root {
   /* Colors */
-  --color-white: white;
-  --color-black: #222222;
+  --color-white: #cacaca;
+  --color-black: #181818;
   --color-dark: #1c1b23;
   --color-gray: #555555;
-  --bg-primary: var(--color-white);
-  --text-primary: var(--color-black);
+  --bg-primary: var(--color-black);
+  --text-primary: var(--color-white);
 
   /* Transitions */
   --transition-fast: 0.4s ease;

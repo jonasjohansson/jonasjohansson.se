@@ -262,6 +262,30 @@ img[data-hero] {
 }
 
 /* Respect reduced motion preference globally */
+@media print {
+  body * {
+    display: none !important;
+    visibility: hidden !important;
+  }
+
+  body::before {
+    display: none !important;
+  }
+
+  body::after {
+    content: "Hey, I see you're interested in printing this page. Reach out to j@jonasjohansson.se and I'll send you a much better PDF.";
+    display: block !important;
+    visibility: visible !important;
+    color: black;
+    background: white;
+    font-family: system-ui, sans-serif;
+    font-size: 18px;
+    line-height: 1.6;
+    text-align: center;
+    padding: 4rem 2rem;
+  }
+}
+
 @media (prefers-reduced-motion: reduce) {
   *,
   *::before,

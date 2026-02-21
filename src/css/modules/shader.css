@@ -1,14 +1,14 @@
-/* Grain as body::before pseudo-element - fixed overlay on all pages */
+/* Grain as body::before pseudo-element - scrolls with content */
 body::before {
   content: "";
-  position: fixed;
+  position: absolute;
   top: 0;
   left: 0;
-  width: 100vw;
-  height: 100vh;
+  width: 100%;
+  height: 100%;
   z-index: var(--z-grain);
   pointer-events: none;
-  opacity: 0.08;
+  opacity: 0.03;
   background-image: url("/assets/img/grain.png");
   background-size: 200px 200px;
   background-repeat: repeat;
