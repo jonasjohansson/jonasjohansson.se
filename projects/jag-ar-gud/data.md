@@ -59,7 +59,7 @@ blocks:
       "Danne Dahlin lets us see his experience through the eye of the storm,
       a calm place in chaos. [...] When Danne Dahlin takes command of his
       self-exposing story, it is brave, human, and beautiful." — Anna
-      Angstrom, [Svenska Dagbladet](https://www.svd.se/)
+      Angstrom, [Svenska Dagbladet](https://www.svd.se/a/lwQXqe/recension-danne-dahlins-monolog-jag-ar-gud-ar-modig)
   - type: image
     src: 07.jpg
   - type: image
