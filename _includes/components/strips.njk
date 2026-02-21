@@ -8,6 +8,16 @@
     data-project="{{ project.slug }}"
     data-project-title="{{ project.title | e('html_attr') }}"
     data-tags="{{ project.tags | join(',') }}">
+    {% if project.heroVideo %}
+    <video
+      class="strip-video"
+      src="{{ project.heroVideo }}"
+      playsinline
+      muted
+      loop
+      autoplay
+      preload="auto"></video>
+    {% endif %}
     <div
       class="strip-image"
       data-bg-image="{{ stripImage }}"></div>
@@ -17,8 +27,7 @@
   <!-- Filter controls -->
   <div
     class="filter-dropdown"
-    id="filter-dropdown-container"
-    style="display: none">
+    id="filter-dropdown-container">
     <button class="filter-dropdown-button">Filter</button>
 
     <div

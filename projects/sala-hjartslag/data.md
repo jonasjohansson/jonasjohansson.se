@@ -14,7 +14,7 @@ blocks:
     fontSize: small
     content: >-
       In 2024, the city of Sala celebrated 400 years since receiving its city
-      charter from Gustav II Adolf. For the anniversary, I worked as technical
+      charter from [Gustav II Adolf](https://en.wikipedia.org/wiki/Gustavus_Adolphus_of_Sweden). For the anniversary, I worked as technical
       lead and projection mapper in collaboration with
       [Smash Studio](https://www.smash.studio/), who created the 3D modelling
       and animation. The piece was an audiovisual journey through 400 years of

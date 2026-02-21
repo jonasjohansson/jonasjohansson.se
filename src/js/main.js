@@ -42,8 +42,6 @@ async function showContentForRoute(route) {
     // Initialize strips - they will animate in
     initializeStrips();
 
-    const filterContainer = document.getElementById("filter-dropdown-container");
-    if (filterContainer) filterContainer.style.display = "";
   } else if (route === "about") {
     // Initialize strips behind the about section so they're ready when user closes about
     initializeStrips();

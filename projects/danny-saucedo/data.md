@@ -10,13 +10,16 @@ blocks:
   - type: text
     content: >-
       Projection mapping and stage design for Danny Saucedo's "Happy That
-      You Found Me" in Melodifestivalen 2024.
+      You Found Me" in
+      [Melodifestivalen](https://en.wikipedia.org/wiki/Melodifestivalen)
+      2024.
   - type: image
     src: 02.jpg
   - type: text
     fontSize: small
     content: >-
-      A long-held dream to bring something new to the Melodifestivalen
+      A long-held dream to bring something new to the
+      [Melodifestivalen](https://en.wikipedia.org/wiki/Melodifestivalen)
       stage, realized together with [Smash Studio](https://www.smash.studio/)
       as co-designers. Smash led the design work from 3D modelling to
       animation, while I served as technical director and creative support.
@@ -32,10 +35,10 @@ blocks:
   - type: text
     fontSize: small
     content: >-
-      Architect [Rose Hallgren](https://rosehallgren.se/) built a physical
-      maquette we used for testing visuals, and I developed a custom Unity
-      camera tool for building a precise direction of photography across the
-      scenes.
+      Architect [Rose Hallgren](https://rosehallgren.com/) built a physical
+      maquette we used for testing visuals, and I developed a custom
+      [Unity](https://unity.com/) camera tool for building a precise
+      direction of photography across the scenes.
   - type: image
     src: 03.jpg
 ---

@@ -19,7 +19,8 @@ blocks:
       Camomile Street in the City of London, commissioned by
       [Scarlett Entertainment](https://scarlettentertainment.com/). Created
       together with [Erik Schmitz](https://www.erikschmitz.art/), the piece
-      was a continuation of an installation at Nowhere, where we built a large
+      was a continuation of an installation at
+      [Nowhere](https://www.goingnowhere.org/), where we built a large
       wooden crack in the fabric of reality. Looking through it, visitors
       would see into a lush walnut garden, in contrast to the dry sandy
       landscape of Monegros. For this commission we developed the concept
@@ -31,8 +32,9 @@ blocks:
   - type: text
     fontSize: small
     content: >-
-      The original installation, Crack, was an augmented reality artwork at
-      Nowhere festival (2022) that opened a rip in reality to a flourishing
+      The original installation, **Crack**, was an augmented reality artwork
+      at [Nowhere](https://www.goingnowhere.org/) festival (2022) that
+      opened a rip in reality to a flourishing
       walnut field in the middle of the desert. That piece became the seed for
       the Eastern City Portal commission.
   - type: image

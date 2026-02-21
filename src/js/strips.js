@@ -7,6 +7,7 @@ const {
 import { ColorExtractor } from "./utils/colorExtractor.js";
 import { getProjectPath } from "./utils/pathBuilder.js";
 import { getCurrentProjectTitle, setCurrentProjectTitle } from "./utils/state.js";
+import { scrambleText } from "./utils/textScramble.js";
 import { initAnimation, throttledHandlePoint } from "./stripAnimation.js";
 import { attachStripEventListeners, attachTouchListeners, initInteractionRefs } from "./stripInteraction.js";
 import { resetFilters, filterProjects, initFilters, initFilteringRefs } from "./stripFiltering.js";
@@ -164,6 +165,8 @@ function animateStripsIn(shuffledStrips, container) {
   setTimeout(() => {
     container.classList.add("strips-initialized");
     document.body.classList.add("strips-initialized");
+    // Resume autoplay on strip videos (may pause when container is display:none)
+    container.querySelectorAll(".strip-video").forEach((v) => v.play().catch(() => {}));
   }, totalAnimationTime + 50);
 }
 
@@ -257,6 +260,7 @@ export function initializeStrips() {
         stripImages = Array.from(stripsContainer.querySelectorAll(".strip-image"));
         attachStripEventListeners();
         animateStripsIn(shuffledStrips, stripsContainer);
+        stripsContainer.querySelectorAll(".strip-video").forEach((v) => v.play().catch(() => {}));
       });
     };
 
@@ -270,6 +274,7 @@ export function initializeStrips() {
       stripImages = Array.from(stripsContainer.querySelectorAll(".strip-image"));
       attachStripEventListeners();
       animateStripsIn(shuffledStrips, stripsContainer);
+      stripsContainer.querySelectorAll(".strip-video").forEach((v) => v.play().catch(() => {}));
     });
   } else {
     stripImages = Array.from(stripsContainer.querySelectorAll(".strip-image"));
@@ -291,6 +296,7 @@ export function initializeStrips() {
       stripImages.slice(0, 4).forEach(loadImage);
       stripImages.slice(4).forEach((img) => imageObserver.observe(img));
     }
+    stripsContainer.querySelectorAll(".strip-video").forEach((v) => v.play().catch(() => {}));
   }
 
   headerSubtitle = document.querySelector(".header-subtitle");
@@ -372,14 +378,14 @@ function updateCurrentPageTitle(title) {
 
     if (title === null) {
       if (headerSubtitle) {
-        headerSubtitle.textContent = defaultSubtitle.toUpperCase();
+        scrambleText(headerSubtitle, defaultSubtitle);
       }
       return;
     }
 
     if (window.location.pathname.includes("/work/")) {
       if (headerSubtitle) {
-        headerSubtitle.textContent = newTitle.toUpperCase();
+        scrambleText(headerSubtitle, newTitle);
       }
     }
   } catch (error) {

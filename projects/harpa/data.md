@@ -10,8 +10,9 @@ blocks:
     src: 01.jpg
   - type: text
     content: >-
-      A series of interactive interventions on the LED facade of Harpa Concert
-      Hall in Reykjavík, during Sónar Reykjavík and other occasions.
+      A series of interactive interventions on the LED facade of
+      [Harpa Concert Hall](https://en.harpa.is/) in Reykjavík, during
+      [Sónar Reykjavík](https://sonarreykjavik.com/) and other occasions.
   - type: text
     fontSize: small
     content: >-
@@ -19,8 +20,9 @@ blocks:
       [Owen Hindley](http://owenhindley.co.uk/) turned Harpa's 43-metre tall,
       almost 100-metre wide facade into a publicly playable game of
       [Pong](https://youtu.be/R3_OSTtyfSw). Launched on Menningarnótt
-      (Culture Night) on 23 August 2014, it was the first time Ólafur
-      Elíasson granted another artist access to the 714 LED panels embedded
+      (Culture Night) on 23 August 2014, it was the first time
+      [Ólafur Elíasson](https://en.wikipedia.org/wiki/Olafur_Eliasson)
+      granted another artist access to the 714 LED panels embedded
       in the south facade's steel-and-glass quasibrick structure. Anyone with
       a smartphone could join a Wi-Fi network and take control of a paddle on
       the building.
@@ -52,7 +54,8 @@ blocks:
       overlooking the geometric glass front and the downtown area. Visitors
       could play the building like an instrument. Harmony was colour, pitch
       was position, strength was brilliance. In 2017 we did a series of
-      interactive installations using hardware from Teenage Engineering and
+      interactive installations using hardware from
+      [Teenage Engineering](https://teenage.engineering/) and
       Flic, giving the festival audience direct control of the facade. We
       called it Sónarspil.
   - type: image
@@ -71,7 +74,8 @@ blocks:
       In 2019, as [Tiny/Massive](/work/tinymassive/), we opened the facade to
       artists worldwide during the Reykjavík Winter Lights Festival.
       [Loney Dear](https://youtu.be/wAKno0pe4UQ) performed a live concert
-      controlling the visuals with Teenage Engineering's OP-Z, ten storeys of
+      controlling the visuals with [Teenage Engineering](https://teenage.engineering/)'s
+      [OP-Z](https://teenage.engineering/store/op-z/), ten storeys of
       light on the harbour, driven from inside a city bus.
   - type: text
     fontSize: small
@@ -82,6 +86,7 @@ blocks:
       [NAVA](https://www.nava.community) (Nordic Audiovisual Artists), a
       community where Atlí, Owen, myself and artist
       [Rasmus Stride](https://www.instagram.com/rasmus.stride/) formed the
-      collective that would go on to do projects like Tiny/Massive and
+      collective that would go on to do projects like
+      [Tiny/Massive](/work/tinymassive/) and
       Skaðablót.
 ---

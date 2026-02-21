@@ -1,31 +1,16 @@
-/* Grain as body::before pseudo-element - scrolls with page */
+/* Grain as body::before pseudo-element - fixed overlay on all pages */
 body::before {
   content: "";
-  position: absolute;
+  position: fixed;
   top: 0;
   left: 0;
   width: 100vw;
-  min-height: 100%;
-  height: 100%;
+  height: 100vh;
   z-index: var(--z-grain);
   pointer-events: none;
-  opacity: 0;
+  opacity: var(--grain-opacity, 0);
   background-image: var(--grain-image, none);
   background-size: var(--grain-size, 200px 200px);
   background-repeat: repeat;
   mix-blend-mode: var(--grain-blend, screen);
-  will-change: opacity;
-  transition: opacity 1.2s ease-out;
-}
-
-/* Keep grain fixed when about overlay is visible */
-body.about-visible::before {
-  position: fixed;
-  height: 100vh;
-}
-
-/* Fade in grain after strips have animated */
-body:has(#strips.strips-initialized)::before,
-body.strips-initialized::before {
-  opacity: var(--grain-opacity, 0);
 }

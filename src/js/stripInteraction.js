@@ -3,6 +3,7 @@ import { getProjectPath } from "./utils/pathBuilder.js";
 import { setCurrentProjectTitle } from "./utils/state.js";
 import { handlePoint } from "./stripAnimation.js";
 import { detectSwipeDirection } from "./utils/gestureDetector.js";
+import { scrambleText } from "./utils/textScramble.js";
 
 const projects = window.__PROJECTS_DATA__ || [];
 
@@ -79,7 +80,7 @@ export function attachStripEventListeners() {
     }
     strip.dataset.listenersAttached = "true";
 
-    // Hover: show project title + preload
+    // Hover: show project title + preload + update header color
     strip.addEventListener("mouseenter", () => {
       const headerSubtitle = getHeaderSubtitle?.();
       if (!headerSubtitle) return;
@@ -91,13 +92,16 @@ export function attachStripEventListeners() {
       const pSlug = strip.getAttribute("data-project");
 
       if (projectTitle && projectTitle.trim()) {
-        headerSubtitle.textContent = projectTitle.toUpperCase();
+        scrambleText(headerSubtitle, projectTitle);
       } else if (pSlug) {
         const p = projects.find((pr) => pr.slug === pSlug);
-        if (p?.title) headerSubtitle.textContent = p.title.toUpperCase();
+        if (p?.title) scrambleText(headerSubtitle, p.title);
       }
 
-      if (pSlug && preloadProjectFn) preloadProjectFn(pSlug);
+      if (pSlug) {
+        document.documentElement.setAttribute("data-project", pSlug);
+        if (preloadProjectFn) preloadProjectFn(pSlug);
+      }
     });
 
     strip.addEventListener("mouseleave", (e) => {
@@ -109,8 +113,15 @@ export function attachStripEventListeners() {
       if (aboutOverlay?.classList.contains("visible")) return;
       if (getNavigationTimeoutId?.()) return;
 
+      // Restore current project color or clear on homepage
+      const currentSlug = window.location.pathname.match(/\/work\/([^\/]+)/)?.[1];
+      if (currentSlug) {
+        document.documentElement.setAttribute("data-project", currentSlug);
+      } else {
+        document.documentElement.removeAttribute("data-project");
+      }
       const currentPageTitle = getCurrentPageTitleFn?.() || "PROGRESS NOT PERFECTION";
-      headerSubtitle.textContent = currentPageTitle.toUpperCase();
+      scrambleText(headerSubtitle, currentPageTitle);
     });
 
     strip.addEventListener("click", () => {
@@ -131,7 +142,7 @@ export function attachStripEventListeners() {
 
       const headerSubtitle = getHeaderSubtitle?.();
       if (headerSubtitle) {
-        headerSubtitle.textContent = clickedProject.title.toUpperCase();
+        scrambleText(headerSubtitle, clickedProject.title);
       }
 
       const allStrips = getAllStrips?.() || [];
@@ -213,23 +224,33 @@ export function attachTouchListeners() {
           if (strip) {
             strip.classList.add("touch-hover");
 
+            const pSlug = strip.getAttribute("data-project");
+            if (pSlug) document.documentElement.setAttribute("data-project", pSlug);
+
             const aboutOverlay = getAboutOverlayFn?.();
             if (!aboutOverlay || !aboutOverlay.classList.contains("visible")) {
               const headerSubtitle = getHeaderSubtitle?.();
               if (headerSubtitle) {
                 const projectTitle = strip.getAttribute("data-project-title") || getStripProjectTitle(strip);
                 if (projectTitle) {
-                  headerSubtitle.textContent = projectTitle.toUpperCase();
+                  scrambleText(headerSubtitle, projectTitle);
                 }
               }
             }
           } else {
+            const touchCurrentSlug = window.location.pathname.match(/\/work\/([^\/]+)/)?.[1];
+            if (touchCurrentSlug) {
+              document.documentElement.setAttribute("data-project", touchCurrentSlug);
+            } else {
+              document.documentElement.removeAttribute("data-project");
+            }
+
             const aboutOverlay = getAboutOverlayFn?.();
             if (!aboutOverlay || !aboutOverlay.classList.contains("visible")) {
               const headerSubtitle = getHeaderSubtitle?.();
               if (headerSubtitle) {
                 const currentPageTitle = getCurrentPageTitleFn?.() || "PROGRESS NOT PERFECTION";
-                headerSubtitle.textContent = currentPageTitle.toUpperCase();
+                scrambleText(headerSubtitle, currentPageTitle);
               }
             }
           }
@@ -257,10 +278,19 @@ export function attachTouchListeners() {
       currentlyTouchedStrip = null;
     }
 
+    const currentSlug = window.location.pathname.match(/\/work\/([^\/]+)/)?.[1];
+    if (!hasMoved || !touchStartStrip) {
+      if (currentSlug) {
+        document.documentElement.setAttribute("data-project", currentSlug);
+      } else {
+        document.documentElement.removeAttribute("data-project");
+      }
+    }
+
     const headerSubtitle = getHeaderSubtitle?.();
     if (headerSubtitle) {
       const currentPageTitle = getCurrentPageTitleFn?.() || "PROGRESS NOT PERFECTION";
-      headerSubtitle.textContent = currentPageTitle.toUpperCase();
+      scrambleText(headerSubtitle, currentPageTitle);
     }
 
     touchStartStrip = null;

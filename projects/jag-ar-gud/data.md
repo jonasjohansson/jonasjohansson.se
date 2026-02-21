@@ -23,7 +23,7 @@ blocks:
       months of back-and-forth conversation, he found the talented actor and
       director Jakob Bladh. I worked as videographer, light designer, and
       scenographer in collaboration with
-      [Rose Hallgren](https://rosehallgren.se/), who also worked on video and
+      [Rose Hallgren](https://rosehallgren.com/), who also worked on video and
       scenography.
   - type: image
     src: 03.jpg
@@ -48,7 +48,8 @@ blocks:
     fontSize: small
     content: >-
       The challenge was to bring Danne's stories to life visually while
-      keeping the lighting simple. The show premiered at Kilen, Kulturhuset Stockholm in
+      keeping the lighting simple. The show premiered at Kilen,
+      [Kulturhuset Stockholm](https://kulturhusetstadsteatern.se/) in
       November 2024. It sold out and ran twice due to popularity.
   - type: image
     src: 06.jpg
@@ -58,7 +59,7 @@ blocks:
       "Danne Dahlin lets us see his experience through the eye of the storm,
       a calm place in chaos. [...] When Danne Dahlin takes command of his
       self-exposing story, it is brave, human, and beautiful." — Anna
-      Angstrom, Svenska Dagbladet
+      Angstrom, [Svenska Dagbladet](https://www.svd.se/)
   - type: image
     src: 07.jpg
   - type: image

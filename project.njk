@@ -24,15 +24,15 @@ eleventyComputed:
         {% responsiveImage block.src, block.alt %}
       </figure>
       {% elif block.type == 'video' %}
-      <figure class="media-item{% if block.size %} size-{{ block.size }}{% endif %}" style="--col-start: {{ block.colStart }}; --col-span: {{ block.colSpan }}">
+      <figure class="media-item{% if loop.first %} hero{% endif %}{% if block.size %} size-{{ block.size }}{% endif %}" style="--col-start: {{ block.colStart }}; --col-span: {{ block.colSpan }}">
         <video
           class="media-video"
           src="{{ block.src | url }}"
           playsinline
           muted
           loop
-          controls
-          preload="metadata"></video>
+          autoplay
+          preload="auto"></video>
       </figure>
       {% elif block.type == 'text' %}
       <div

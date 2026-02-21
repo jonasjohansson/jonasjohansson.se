@@ -15,11 +15,12 @@ blocks:
   - type: text
     fontSize: small
     content: >-
-      Firestarter is an interactive installation presented at Nowhere in
-      Monegros, a regional burn I have attended since 2015. Created together
-      with Catalan artist [Erik Schmitz](https://www.erikschmitz.art/) and
-      architect [Rose Hallgren](https://rosehallgren.se/), the piece is an
-      enlarged replica of the classic Zippo lighter, born from a longing to
+      Firestarter is an interactive installation presented at
+      [Nowhere](https://www.goingnowhere.org/) in Monegros, a regional burn
+      I have attended since 2015. Created together with Catalan artist
+      [Erik Schmitz](https://www.erikschmitz.art/) and architect
+      [Rose Hallgren](https://rosehallgren.com/), the piece is an enlarged
+      replica of the classic Zippo lighter, born from a longing to
       work with fire as material, learning propane systems, sensors, and
       ignition triggers from the ground up. You walk up, you light a fire.
       A small rebellious act, of speaking up. The piece was also used for the
@@ -32,7 +33,8 @@ blocks:
     fontSize: small
     content: >-
       Built from aluminum sheets on a steel frame with hand-cut patterns, LED
-      lighting, Arduino, DMX, and an IR sensor. Constructed with help from
+      lighting, [Arduino](https://www.arduino.cc/),
+      [DMX](https://en.wikipedia.org/wiki/DMX512), and an IR sensor. Constructed with help from
       Josep Giribet in the workshop of David Giribet at
       [Calidos](https://calidos.cat/) in Tarrega.
   - type: image

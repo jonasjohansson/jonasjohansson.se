@@ -30,11 +30,13 @@ header {
   flex-direction: column;
   align-items: center;
   justify-content: center;
-  background: var(--color-white);
+  background: var(--project-color, var(--color-white));
+  color: var(--project-color-text, var(--color-black));
   border-radius: var(--radius-sm);
   clip-path: var(--cut-corner-sm);
   mix-blend-mode: normal;
   position: relative;
+  transition: background 0.3s ease, color 0.3s ease;
 }
 
 .header-left,
@@ -73,6 +75,13 @@ header {
 .header-center:focus-visible {
   background: var(--color-black);
   color: var(--color-white);
+}
+
+/* On project pages, invert hover to contrast with project color */
+html[data-project] .header-center:hover,
+html[data-project] .header-center:focus-visible {
+  background: var(--color-white);
+  color: var(--color-black);
 }
 
 .header-center:focus,

@@ -21,6 +21,9 @@
   --spacing-2xl: 4rem;
   --spacing-3xl: 6rem;
 
+  /* Border Radius */
+  --radius-sm: 4px;
+
   /* Typography */
   --font-family: "OffBit", system-ui, -apple-system, Segoe UI, Roboto, Helvetica, Arial, sans-serif;
   --font-size-base: 16px;
@@ -42,6 +45,31 @@
   --z-grain: 400;
   --z-loading: 10000;
 
+}
+
+/* Project accent colors (vibrant, extracted from hero images) */
+html[data-project="danny-saucedo"] { --project-color: #9b2500; --project-color-text: var(--color-white); }
+html[data-project="dendrolux"] { --project-color: #b07600; --project-color-text: var(--color-white); }
+html[data-project="eastern-city-portal"] { --project-color: #4698d2; --project-color-text: var(--color-black); }
+html[data-project="embed"] { --project-color: #1a43fe; --project-color-text: var(--color-white); }
+html[data-project="emerging-sensation"] { --project-color: #1521b4; --project-color-text: var(--color-white); }
+html[data-project="firestarter"] { --project-color: #005d80; --project-color-text: var(--color-white); }
+html[data-project="harpa"] { --project-color: #ff5c1a; --project-color-text: var(--color-black); }
+html[data-project="heroes"] { --project-color: #727171; --project-color-text: var(--color-white); }
+html[data-project="icehotel"] { --project-color: #0b4f80; --project-color-text: var(--color-white); }
+html[data-project="jag-ar-gud"] { --project-color: #833e00; --project-color-text: var(--color-white); }
+html[data-project="lights-for-ukraine"] { --project-color: #5500a0; --project-color-text: var(--color-white); }
+html[data-project="lyra"] { --project-color: #070a79; --project-color-text: var(--color-white); }
+html[data-project="people-in-orbit"] { --project-color: #e16518; --project-color-text: var(--color-black); }
+html[data-project="resonance"] { --project-color: #4f0396; --project-color-text: var(--color-white); }
+html[data-project="retrospectives"] { --project-color: #ff6a1a; --project-color-text: var(--color-black); }
+html[data-project="sala-hjartslag"] { --project-color: #962d00; --project-color-text: var(--color-white); }
+html[data-project="tinymassive"] { --project-color: #00338e; --project-color-text: var(--color-white); }
+html[data-project="transcend"] { --project-color: #cc1c65; --project-color-text: var(--color-white); }
+html[data-project="tufting-ex-machina"] { --project-color: #f37100; --project-color-text: var(--color-black); }
+html[data-project="vista"] { --project-color: #8401ff; --project-color-text: var(--color-white); }
+
+:root {
   /* 45-degree cut corner styles - all four corners */
   --cut-corner-sm: polygon(
     8px 0,

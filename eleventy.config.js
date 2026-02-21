@@ -257,6 +257,22 @@ export default function (eleventyConfig) {
     return null;
   }
 
+  // Helper to find first video from project data.md
+  function findFirstVideoInDir(root, dir, dataMdPath) {
+    if (existsSync(dataMdPath)) {
+      try {
+        const fileContent = readFileSync(dataMdPath, "utf8");
+        const parsed = matter(fileContent);
+        const { blocks = [] } = parsed.data;
+        // Only return video if it's the first block (hero)
+        if (blocks[0]?.type === "video" && blocks[0]?.src) {
+          return `/${root}/${dir}/${blocks[0].src}`;
+        }
+      } catch (err) {}
+    }
+    return null;
+  }
+
   // Helper: read project metadata from data.md (type, title, tags, year)
   function readProjectMeta(root, slug, fallbackDate) {
     const dirPath = path.join(root, slug);
@@ -284,6 +300,7 @@ export default function (eleventyConfig) {
   async function buildProjectEntry(root, project) {
     const { title, tags, type, year, dataMdPath } = readProjectMeta(root, project.slug, project.date);
     const firstImageSrc = findFirstImageInDir(root, project.slug, dataMdPath);
+    const heroVideo = findFirstVideoInDir(root, project.slug, dataMdPath);
     let firstImageOptimized = null;
 
     if (firstImageSrc) {
@@ -292,7 +309,9 @@ export default function (eleventyConfig) {
         firstImageOptimized = `/${firstImageOptimized}`;
       }
     }
-    return { title, images: firstImageOptimized?.startsWith('/') ? [firstImageOptimized] : [], tags, type, year, slug: project.slug };
+    const entry = { title, images: firstImageOptimized?.startsWith('/') ? [firstImageOptimized] : [], tags, type, year, slug: project.slug };
+    if (heroVideo) entry.heroVideo = heroVideo;
+    return entry;
   }
 
   eleventyConfig.addGlobalData("projectsForJS", async function() {
@@ -369,7 +388,7 @@ export default function (eleventyConfig) {
               else if (fontSize.includes("medium") || fontSize.includes("1.8")) fontSizeClass = "text-medium";
             }
             if (type === "image") return { type: "image", src: `${root}/${dir}/${src}`, alt: projectTitle, colStart, colSpan, size };
-            if (type === "video") return { type: "video", src: `${root}/${dir}/${src}`, alt: projectTitle, colStart, colSpan, size };
+            if (type === "video") return { type: "video", src: `/${root}/${dir}/${src}`, alt: projectTitle, colStart, colSpan, size };
             if (type === "text")
               return {
                 type: "text",

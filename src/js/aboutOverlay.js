@@ -1,5 +1,6 @@
 import { getPathPrefix } from "./utils/routeUtils.js";
 import { getCurrentProjectTitle } from "./utils/state.js";
+import { scrambleText } from "./utils/textScramble.js";
 
 class AboutOverlay {
   constructor() {
@@ -125,18 +126,7 @@ class AboutOverlay {
     if (!this.headerSubtitle) return;
     const targetText = (text || this.defaultSubtitleText).trim().toUpperCase();
 
-    if (fadeIn) {
-      this.headerSubtitle.style.opacity = "0";
-      this.headerSubtitle.style.transition = "opacity 0.3s ease";
-      requestAnimationFrame(() => {
-        this.headerSubtitle.textContent = targetText;
-        requestAnimationFrame(() => {
-          this.headerSubtitle.style.opacity = "1";
-        });
-      });
-    } else {
-      this.headerSubtitle.textContent = targetText;
-    }
+    scrambleText(this.headerSubtitle, targetText);
   }
 
   _attachEventListeners() {

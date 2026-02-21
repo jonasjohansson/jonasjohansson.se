@@ -113,6 +113,7 @@ class SPARouter {
     }
 
     resetProjectColors();
+    document.documentElement.removeAttribute("data-project");
 
     if (showAboutOverlay) {
       this._hooks.initAbout?.();
@@ -133,6 +134,7 @@ class SPARouter {
 
     document.body.setAttribute("data-route", "project");
     document.body.classList.remove("about-visible");
+    document.documentElement.setAttribute("data-project", slug);
     this._hooks.hideAbout?.(true);
 
     this._hooks.updateCurrentPageTitle?.(project.title);
@@ -149,6 +151,9 @@ class SPARouter {
         }
       });
     }
+
+    // Hide current project's strip immediately
+    this.updateStripVisibility(slug);
 
     const clickedStrip = document.querySelector(`.strip[data-project="${slug}"]`);
 

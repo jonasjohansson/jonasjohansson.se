@@ -1,5 +1,5 @@
 <!DOCTYPE html>
-<html lang="en">
+<html lang="en"{% if project %} data-project="{{ project.slug }}"{% endif %}>
   <head>
     {% include "../components/metadata.njk" %}
 

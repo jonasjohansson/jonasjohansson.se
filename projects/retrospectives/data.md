@@ -13,7 +13,8 @@ blocks:
   - type: text
     fontSize: small
     content: >-
-      Retrospectives was built for Nowhere 2022, together with
+      Retrospectives was built for [Nowhere](https://www.goingnowhere.org/)
+      2022, together with
       [Erik Schmitz](https://www.erikschmitz.art/). Erik constructed the glasses
       in his workshop near Tarrega and we drove them to the desert. They were
       about two metres wide and half a metre tall, CNC-milled, with the classic

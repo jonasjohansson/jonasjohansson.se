@@ -23,9 +23,11 @@ blocks:
       illustrators submitted work that I prepared for production as LED signs
       with colored silicone covers on laser-cut acrylic. The exhibition was
       mounted together with
-      [Rose Hallgren](https://rosehallgren.se/). I built a custom auction system
-      so passersby could bid on the pieces directly. All signs were auctioned off
-      with proceeds going to Sverige for UNHCR, the UN Refugee Agency. Logo by
+      [Rose Hallgren](https://rosehallgren.com/). I built a custom auction
+      system so passersby could bid on the pieces directly. All signs were
+      auctioned off with proceeds going to
+      [Sverige for UNHCR](https://sverigeforunhcr.se/), the UN Refugee
+      Agency. Logo by
       Eugenia Kukharchuk.
 ---
 
