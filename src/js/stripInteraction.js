@@ -173,7 +173,7 @@ export function attachStripEventListeners() {
         setTimeout(() => {
           navigateFn?.(projectPath);
           setNavigationTimeoutId?.(null);
-        }, 600)
+        }, 1900)
       );
     };
 

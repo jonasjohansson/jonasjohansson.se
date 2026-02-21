@@ -1,3 +1,10 @@
+/* Hide filter when a strip is selected (navigating to project) */
+#strips:has(.strip.selected) .filter-dropdown {
+  opacity: 0;
+  pointer-events: none;
+  transition: opacity 0.3s ease;
+}
+
 /* Filter Dropdown */
 .filter-dropdown {
   position: absolute;
