@@ -8,7 +8,7 @@ body::before {
   height: 100%;
   z-index: var(--z-grain);
   pointer-events: none;
-  opacity: 0.03;
+  opacity: 0.02;
   background-image: url("/assets/img/grain.png");
   background-size: 200px 200px;
   background-repeat: repeat;

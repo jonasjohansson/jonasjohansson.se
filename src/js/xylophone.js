@@ -193,6 +193,131 @@ export function initXylophone() {
 
 export { melodyPlayer };
 
+// --- Strip animation sound effects ---
+
+// Short click/snap for each strip sliding in
+export function playStripEnterSound(index, totalStrips) {
+  const ctx = initAudio();
+  if (ctx.state === "suspended") return;
+
+  const baseFreq = 800;
+  const maxFreq = 2000;
+  const freq = baseFreq + (maxFreq - baseFreq) * (index / Math.max(totalStrips - 1, 1));
+
+  const osc = ctx.createOscillator();
+  const gain = ctx.createGain();
+  const filter = ctx.createBiquadFilter();
+
+  // Short noise burst for a click feel
+  osc.type = "square";
+  osc.frequency.setValueAtTime(freq, ctx.currentTime);
+  osc.frequency.exponentialRampToValueAtTime(freq * 0.5, ctx.currentTime + 0.04);
+
+  filter.type = "bandpass";
+  filter.frequency.setValueAtTime(freq, ctx.currentTime);
+  filter.Q.setValueAtTime(2, ctx.currentTime);
+
+  // Sharp attack, instant decay
+  gain.gain.setValueAtTime(0.06, ctx.currentTime);
+  gain.gain.exponentialRampToValueAtTime(0.001, ctx.currentTime + 0.05);
+
+  osc.connect(filter);
+  filter.connect(gain);
+  gain.connect(ctx.destination);
+
+  osc.start(ctx.currentTime);
+  osc.stop(ctx.currentTime + 0.06);
+}
+
+// Percussive click for strips sliding out — descending, punchy
+export function playStripExitSound(index, totalStrips) {
+  const ctx = initAudio();
+  if (ctx.state === "suspended") return;
+
+  const baseFreq = 2400;
+  const minFreq = 200;
+  const freq = baseFreq - (baseFreq - minFreq) * (index / Math.max(totalStrips - 1, 1));
+
+  const osc = ctx.createOscillator();
+  const osc2 = ctx.createOscillator();
+  const gain = ctx.createGain();
+  const filter = ctx.createBiquadFilter();
+
+  // Sharp snap that drops
+  osc.type = "square";
+  osc.frequency.setValueAtTime(freq, ctx.currentTime);
+  osc.frequency.exponentialRampToValueAtTime(freq * 0.15, ctx.currentTime + 0.06);
+
+  // Add a noise-like second oscillator for texture
+  osc2.type = "sawtooth";
+  osc2.frequency.setValueAtTime(freq * 1.5, ctx.currentTime);
+  osc2.frequency.exponentialRampToValueAtTime(freq * 0.1, ctx.currentTime + 0.04);
+
+  filter.type = "bandpass";
+  filter.frequency.setValueAtTime(freq, ctx.currentTime);
+  filter.frequency.exponentialRampToValueAtTime(200, ctx.currentTime + 0.06);
+  filter.Q.setValueAtTime(4, ctx.currentTime);
+
+  // Punchy attack, fast decay
+  gain.gain.setValueAtTime(0.09, ctx.currentTime);
+  gain.gain.exponentialRampToValueAtTime(0.001, ctx.currentTime + 0.08);
+
+  osc.connect(filter);
+  osc2.connect(filter);
+  filter.connect(gain);
+  gain.connect(ctx.destination);
+
+  osc.start(ctx.currentTime);
+  osc2.start(ctx.currentTime);
+  osc.stop(ctx.currentTime + 0.09);
+  osc2.stop(ctx.currentTime + 0.09);
+}
+
+// Slow sweep that tracks the 1s grow transition
+export function playStripExpandSound() {
+  const ctx = initAudio();
+  if (ctx.state === "suspended") return;
+
+  const duration = 1.0; // Match CSS grow transition duration
+
+  const osc = ctx.createOscillator();
+  const osc2 = ctx.createOscillator();
+  const gain = ctx.createGain();
+  const filter = ctx.createBiquadFilter();
+
+  // Low tone that rises with the expansion
+  osc.type = "sine";
+  osc.frequency.setValueAtTime(60, ctx.currentTime);
+  osc.frequency.exponentialRampToValueAtTime(180, ctx.currentTime + duration);
+
+  // Harmonic that follows
+  osc2.type = "sine";
+  osc2.frequency.setValueAtTime(120, ctx.currentTime);
+  osc2.frequency.exponentialRampToValueAtTime(360, ctx.currentTime + duration);
+
+  // Filter opens as it expands
+  filter.type = "lowpass";
+  filter.frequency.setValueAtTime(200, ctx.currentTime);
+  filter.frequency.exponentialRampToValueAtTime(1200, ctx.currentTime + duration);
+  filter.Q.setValueAtTime(0.5, ctx.currentTime);
+
+  // Fade in quickly, sustain through transition, fade at end
+  gain.gain.setValueAtTime(0, ctx.currentTime);
+  gain.gain.linearRampToValueAtTime(0.07, ctx.currentTime + 0.03);
+  gain.gain.setValueAtTime(0.07, ctx.currentTime + duration * 0.7);
+  gain.gain.exponentialRampToValueAtTime(0.001, ctx.currentTime + duration);
+
+  osc.connect(filter);
+  osc2.connect(filter);
+  filter.connect(gain);
+  gain.connect(ctx.destination);
+
+  osc.start(ctx.currentTime);
+  osc2.start(ctx.currentTime);
+  osc.stop(ctx.currentTime + duration);
+  osc2.stop(ctx.currentTime + duration);
+}
+
 export function destroyXylophone() {
   if (audioContext) {
     audioContext.close().catch(() => {});

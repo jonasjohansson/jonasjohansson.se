@@ -5,6 +5,7 @@ import { handlePoint } from "./stripAnimation.js";
 import { detectSwipeDirection } from "./utils/gestureDetector.js";
 import { scrambleText } from "./utils/textScramble.js";
 import { getCurrentProjectSlug } from "./utils/routeUtils.js";
+import { playStripExitSound, playStripExpandSound } from "./xylophone.js";
 
 const projects = window.__PROJECTS_DATA__ || [];
 
@@ -164,16 +165,29 @@ export function attachStripEventListeners() {
 
       const allStrips = getAllStrips?.() || [];
       strip.classList.add("selected");
-      allStrips.forEach((s) => s !== strip && s.classList.add("not-selected"));
+      const otherStrips = allStrips.filter((s) => s !== strip);
+
+      // Staggered slide-out: each strip exits 30ms after the previous
+      const exitStagger = 30;
+      otherStrips.forEach((s, i) => {
+        setTimeout(() => {
+          s.classList.add("not-selected");
+          playStripExitSound(i, otherStrips.length);
+        }, i * exitStagger);
+      });
+
+      // Expand sound synced with CSS transition-delay (0.5s after .selected added)
+      setTimeout(() => playStripExpandSound(), 500);
 
       const navTimeoutId = getNavigationTimeoutId?.();
       if (navTimeoutId) clearTimeout(navTimeoutId);
 
+      // Navigate when grow transition finishes (500ms delay + 1000ms grow)
       setNavigationTimeoutId?.(
         setTimeout(() => {
           navigateFn?.(projectPath);
           setNavigationTimeoutId?.(null);
-        }, 1900)
+        }, 1500)
       );
     };
 
