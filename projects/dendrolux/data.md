@@ -1,6 +1,6 @@
 ---
 title: Dendrolux
-date: '2024-01-01'
+date: "2024-01-01"
 tags:
   - light
   - installation
@@ -15,7 +15,7 @@ blocks:
     src: 02.jpg
   - type: text
     fontSize: small
-    content: >-
+    content: |
       Dendrolux is a long-running project by lighting collective
       [Svartljus](https://svartljus.se), born at Into the Woods festival in
       Unnaryd, Sweden. Inspired by the
@@ -25,18 +25,13 @@ blocks:
       custom silicone diffusion, transforming them into lampposts for the
       forest. The installation is fully solar powered and interactive,
       responding to people nearby.
-  - type: text
-    fontSize: small
-    content: >-
+
       Since its debut in 2020, Dendrolux has been shown at
       [Copenhagen Light Festival](https://copenhagenlightfestival.org/)
       (2021, 2022), PLX Tjärö (2022), and Norra Bantorget in Stockholm
       (2024).
   - type: image
     src: 03.jpg
-  - type: text
-    content: >-
-      Dendrolux at [Tjoloholms Slott](https://tjoloholm.se/), 2024.
   - type: text
     fontSize: small
     content: >-
@@ -56,4 +51,3 @@ blocks:
   - type: image
     src: 08.jpg
 ---
-

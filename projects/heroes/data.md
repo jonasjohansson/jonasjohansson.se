@@ -9,8 +9,7 @@ blocks:
     src: 01.jpg
   - type: text
     content: >-
-      Projection mapping on Stockholm's Great Synagogue for
-      [Nobel Week Lights](https://nobelweeklights.se/) 2022.
+      Real-life statues, drone-scanned architecture, projected onto Stockholm's Great Synagogue.
   - type: image
     src: 02.jpg
   - type: text

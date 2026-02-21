@@ -1,12 +1,18 @@
 // Text scramble effect - cycles through random characters before resolving to target text
-const CHARS = "ABCDEFGHIJKLMNOPQRSTUVWXYZ0123456789";
-const FRAME_DURATION = 30;
-const RESOLVE_STEPS = 6;
+const CHARS = "ABCDEFGHIJKLMNOPQRSTUVWXYZ";
+const FRAME_DURATION = 40;
+const RESOLVE_STEPS = 8;
 
 let activeAnimation = null;
 
 export function scrambleText(element, newText, { duration = RESOLVE_STEPS } = {}) {
   if (!element) return;
+
+  const target = newText.toUpperCase();
+  const oldText = (element.textContent || "").trim();
+
+  // Skip if text is already the same
+  if (oldText === target) return;
 
   // Cancel any running animation
   if (activeAnimation) {
@@ -14,8 +20,6 @@ export function scrambleText(element, newText, { duration = RESOLVE_STEPS } = {}
     activeAnimation = null;
   }
 
-  const oldText = element.textContent || "";
-  const target = newText.toUpperCase();
   const length = Math.max(oldText.length, target.length);
   let step = 0;
   const totalSteps = duration;
@@ -24,13 +28,17 @@ export function scrambleText(element, newText, { duration = RESOLVE_STEPS } = {}
     let result = "";
     for (let i = 0; i < length; i++) {
       const progress = step / totalSteps;
-      // Characters resolve left-to-right with a slight stagger
       const charProgress = Math.max(0, (progress - i / length / 2) * 2);
 
       if (charProgress >= 1 && i < target.length) {
         result += target[i];
       } else if (i < target.length) {
-        result += CHARS[Math.floor(Math.random() * CHARS.length)];
+        // Keep characters that are already correct
+        if (oldText[i] === target[i]) {
+          result += target[i];
+        } else {
+          result += CHARS[Math.floor(Math.random() * CHARS.length)];
+        }
       }
     }
 

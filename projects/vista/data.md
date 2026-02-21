@@ -18,7 +18,7 @@ blocks:
       view over a stretch of time. Each piece is a web-based landscape
       built in [Three.js](https://threejs.org/), exploring generative sound,
       light, and terrain.
-      The series began in 2018 while living in Montreal, working at a
+      The series began in 2012 while living in Montreal, working at a
       design studio on large-scale stage experiences, and transitioning
       from viewing code as function to embracing it as sculpture.
   - type: text
@@ -49,8 +49,8 @@ blocks:
       began experimenting. Glommen reflects the connection to my seaside
       hometown and the bittersweet anticipation of life without my father.
       The sun's position in the artwork mirrors his birthday, near the
-      summer solstice. It was shown at Stockholm Showww, a pop-up
-      exhibition for internet art, and later at
+      summer solstice. It was shown at Stockholm Showww in 2014, a pop-up
+      exhibition for internet art, and ten years later at
       [Myriad](https://rethread.art/projects/myriad/) in R1 Reactor Hall,
       Stockholm in 2024, a re|thread project examining origin and
       accreditation in human expression and creation.

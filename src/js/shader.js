@@ -1,4 +1,3 @@
-import { grainParams } from "./grain.js";
 import shaderSettings from "./config/shader-settings.json";
 
 const simplexNoiseSource = `
@@ -533,10 +532,7 @@ export async function initializeShader() {
 
   shaderInstances.push(instance);
 
-  // Sync grain params from grain.js
-  instance.params.grainOpacity = grainParams.opacity;
-  instance.params.grainScale = grainParams.scale;
-  instance.params.grainBlend = grainParams.blend;
+  // Grain is now handled purely in CSS (shader.css + grain.png)
 
   // Handle window resize and scroll (for dynamic page height)
   const handleResize = () => {

@@ -2,8 +2,6 @@ import { applyProjectColor, initializeStrips, updateCurrentPageTitle, setNavigat
 import { resetFilters } from "./stripFiltering.js";
 import { router } from "./router.js";
 import { loadingManager } from "./utils/loadingManager.js";
-import { initializeGrain } from "./grain.js";
-
 import { getCurrentRoute } from "./utils/routeUtils.js";
 import { aboutOverlay } from "./aboutOverlay.js";
 import { initXylophone, melodyPlayer } from "./xylophone.js";
@@ -26,9 +24,6 @@ setNavigateFn((path) => router.navigate(path));
 async function showContentForRoute(route) {
   const body = document.body;
   body.setAttribute("data-route", route);
-
-  // Initialize grain for all routes
-  initializeGrain();
 
   // Show header for all routes
   const header = document.getElementById("header");
