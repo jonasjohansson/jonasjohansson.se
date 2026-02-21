@@ -23,7 +23,7 @@ blocks:
       months of back-and-forth conversation, he found the talented actor and
       director Jakob Bladh. I worked as videographer, light designer, and
       scenographer in collaboration with
-      [Rose Hallgren](https://rosehallgren.com/), who also worked on video and
+      [Rose Hallgren](https://rosehallgren.se/), who also worked on video and
       scenography.
   - type: image
     src: 03.jpg

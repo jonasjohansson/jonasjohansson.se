@@ -28,7 +28,7 @@ blocks:
       a final crescendo of light, form, and music was revealed. I laser cut a
       scale model of the building for testing the projection, and the facade was
       drone-scanned to build a digital replica. Built together with
-      [Rose Hallgren](https://rosehallgren.com/).
+      [Rose Hallgren](https://rosehallgren.se/).
   - type: image
     src: 03.png
   - type: image

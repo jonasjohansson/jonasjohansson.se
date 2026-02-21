@@ -35,7 +35,7 @@ blocks:
   - type: text
     fontSize: small
     content: >-
-      Architect [Rose Hallgren](https://rosehallgren.com/) built a physical
+      Architect [Rose Hallgren](https://rosehallgren.se/) built a physical
       maquette we used for testing visuals, and I developed a custom
       [Unity](https://unity.com/) camera tool for building a precise
       direction of photography across the scenes.

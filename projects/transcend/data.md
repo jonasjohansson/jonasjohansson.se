@@ -17,7 +17,7 @@ blocks:
       Transcend was built for Urban Burn Stockholm in 2017, in collaboration
       with Hybrid Forest (later
       [Smash Studio](https://www.smash.studio/)) and
-      [Rose Hallgren](https://rosehallgren.com/). Two acrylic glass pyramids, one
+      [Rose Hallgren](https://rosehallgren.se/). Two acrylic glass pyramids, one
       inverted on top of the other, sat inside a wooden cage adorned with colors,
       patterns, and vines. We wanted an Indiana Jones kind of feeling, like
       discovering a hidden ancient machine, designed ages ago but still ahead of

@@ -63,7 +63,7 @@ blocks:
   - type: text
     fontSize: small
     content: >-
-      [Rose Hallgren](https://rosehallgren.com/) built the physical wood and
+      [Rose Hallgren](https://rosehallgren.se/) built the physical wood and
       concrete models used as tactile interfaces, and Johanna Tano did the
       hardware coding. We had funding from the
       [Nordic Culture Fund](https://nordiskkulturfond.org/) through their

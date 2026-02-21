@@ -19,7 +19,7 @@ blocks:
       [Nowhere](https://www.goingnowhere.org/) in Monegros, a regional burn
       I have attended since 2015. Created together with Catalan artist
       [Erik Schmitz](https://www.erikschmitz.art/) and architect
-      [Rose Hallgren](https://rosehallgren.com/), the piece is an enlarged
+      [Rose Hallgren](https://rosehallgren.se/), the piece is an enlarged
       replica of the classic Zippo lighter, born from a longing to
       work with fire as material, learning propane systems, sensors, and
       ignition triggers from the ground up. You walk up, you light a fire.

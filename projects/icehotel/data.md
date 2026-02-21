@@ -59,6 +59,6 @@ blocks:
       most of the work as I could only be there for a few days. Music for the
       room by Francesco Torelli and Nikita Dudnik. I still send in proposals
       every year, longing to return with my partner
-      [Rose Hallgren](https://rosehallgren.com/) and collaborator
+      [Rose Hallgren](https://rosehallgren.se/) and collaborator
       [Erik Schmitz](https://www.erikschmitz.art/).
 ---
