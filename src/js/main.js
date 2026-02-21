@@ -85,6 +85,12 @@ async function showContentForRoute(route) {
       // Initialize strips to ensure event listeners are attached
       initializeStrips();
 
+      // Hide the current project's strip from navigation
+      const currentSlug = window.location.pathname.match(/\/work\/([^\/]+)/)?.[1];
+      if (currentSlug) {
+        document.querySelectorAll(`.strip[data-project="${currentSlug}"]`).forEach((s) => s.classList.add("hidden"));
+      }
+
       // Fade in project
       requestAnimationFrame(() => {
         projects.style.opacity = "1";

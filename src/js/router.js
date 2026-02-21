@@ -67,8 +67,8 @@ class SPARouter {
   randomizeHeaderAngles() {
     const titleEl = document.querySelector('.header-title');
     const subtitleEl = document.querySelector('.header-subtitle');
-    if (titleEl) titleEl.style.transform = `rotate(${(-1 - Math.random() * 3).toFixed(1)}deg)`;
-    if (subtitleEl) subtitleEl.style.transform = `rotate(${(0.5 + Math.random() * 3).toFixed(1)}deg)`;
+    if (titleEl) titleEl.style.transform = `rotate(${(-2 - Math.random() * 8).toFixed(1)}deg)`;
+    if (subtitleEl) subtitleEl.style.transform = `rotate(${(2 + Math.random() * 8).toFixed(1)}deg)`;
   }
 
   resetHeaderAngles() {
@@ -151,7 +151,6 @@ class SPARouter {
     document.body.classList.remove("about-visible");
     document.documentElement.setAttribute("data-project", slug);
     this._hooks.hideAbout?.(true);
-    this.randomizeHeaderAngles();
 
     this._hooks.updateCurrentPageTitle?.(project.title);
     this._hooks.resetFilters?.();
