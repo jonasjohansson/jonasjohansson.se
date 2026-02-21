@@ -22,9 +22,6 @@ const slug = (s) =>
 export default function (eleventyConfig) {
   eleventyConfig.ignores.add("jonasjohansson.se/**");
   eleventyConfig.ignores.add("projects/**/data.md");
-  // Ignore root-level .md files (documentation files, not templates)
-  eleventyConfig.ignores.add("SEO.md");
-  eleventyConfig.ignores.add("RESUME_SETUP.md");
   eleventyConfig.ignores.add("README.md");
   eleventyConfig.setServerOptions({
     domdiff: false,
@@ -35,10 +32,7 @@ export default function (eleventyConfig) {
   eleventyConfig.addWatchTarget("projects/**/*");
   eleventyConfig.addWatchTarget("src/**/*");
   eleventyConfig.setWatchJavaScriptDependencies(false);
-  eleventyConfig.addPassthroughCopy("site.webmanifest");
-  eleventyConfig.addPassthroughCopy("favicon.*");
-  eleventyConfig.addPassthroughCopy("apple-touch-icon.png");
-  eleventyConfig.addPassthroughCopy("web-app-manifest-*.png");
+  eleventyConfig.addPassthroughCopy({ "src/favicon": "favicon" });
   eleventyConfig.addPassthroughCopy("CNAME");
   eleventyConfig.addPassthroughCopy({ "src/img": "assets/img" });
   // Pass through project assets (videos, about images, etc.)

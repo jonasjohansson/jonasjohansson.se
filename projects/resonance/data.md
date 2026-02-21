@@ -18,8 +18,8 @@ blocks:
     content: >-
       Resonance was an interactive projection mapping piece on the facade of
       Uppsala Town Hall, created with
-      [Smash Studio](https://www.smash.studio/) for the city of Uppsala in
-      2024. Four weatherproofed touch pads with embedded lighting were placed in
+      [Smash Studio](https://www.smash.studio/) for
+      [Allt Ljus på Uppsala](https://alltljuspauppsala.se/). Four weatherproofed touch pads with embedded lighting were placed in
       the main square, built to handle snow, rain, and countless jumps. I built
       them with [Arduino](https://www.arduino.cc/), feeding into the
       [Unreal Engine](https://www.unrealengine.com/) project over USB. Each
