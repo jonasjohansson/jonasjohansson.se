@@ -1,6 +1,6 @@
 ---
 title: Eastern City Portal
-date: '2024-01-01'
+date: "2024-01-01"
 tags:
   - installation
   - mixed reality
@@ -28,14 +28,6 @@ blocks:
       could point their phone at it and see the street transformed.
   - type: image
     src: 11.jpg
-  - type: text
-    fontSize: small
-    content: >-
-      The original installation, **Crack**, was an augmented reality artwork
-      at [Nowhere](https://www.goingnowhere.org/) festival (2022) that
-      opened a rip in reality to a flourishing
-      walnut field in the middle of the desert. That piece became the seed for
-      the Eastern City Portal commission.
   - type: image
     src: 03.jpg
   - type: image
