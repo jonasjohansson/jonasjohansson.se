@@ -151,6 +151,12 @@ export function attachStripEventListeners() {
       setCurrentProjectTitle(clickedProject.title);
       document.documentElement.dataset.currentProjectTitle = clickedProject.title;
 
+      // Randomize header shape angles on each project click
+      const titleEl = document.querySelector('.header-title');
+      const subtitleEl = document.querySelector('.header-subtitle');
+      if (titleEl) titleEl.style.transform = `rotate(${(-1 - Math.random() * 4).toFixed(1)}deg)`;
+      if (subtitleEl) subtitleEl.style.transform = `rotate(${(0.5 + Math.random() * 4).toFixed(1)}deg)`;
+
       const headerSubtitle = getHeaderSubtitle?.();
       if (headerSubtitle) {
         scrambleText(headerSubtitle, clickedProject.title);
