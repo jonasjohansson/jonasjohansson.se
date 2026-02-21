@@ -18,10 +18,9 @@ blocks:
       with Hybrid Forest (later
       [Smash Studio](https://www.smash.studio/)) and
       [Rose Hallgren](https://rosehallgren.se/). Two acrylic glass pyramids, one
-      inverted on top of the other, sat inside a wooden cage adorned with colors,
-      patterns, and vines. We wanted an Indiana Jones kind of feeling, like
-      discovering a hidden ancient machine, designed ages ago but still ahead of
-      its time.
+      inverted on top of the other, sat inside a wooden cage adorned with
+      colours, patterns, and vines. We wanted an Indiana Jones feeling, like
+      discovering a hidden ancient machine.
   - type: text
     fontSize: small
     content: >-

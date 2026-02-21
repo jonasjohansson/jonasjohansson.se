@@ -22,8 +22,7 @@ blocks:
       across an almost 100-metre wide facade, each pixel over a metre wide.
       We released an open call inviting artists to create video, generative,
       and interactive content for this tiny-but-massive canvas, and the
-      response was incredible. Some of the most prolific artists within
-      generative art participated.
+      response was strong, with well-known generative artists contributing.
   - type: text
     fontSize: small
     content: >-

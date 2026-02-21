@@ -20,7 +20,7 @@ blocks:
     content: >-
       A long-held dream to bring something new to the
       [Melodifestivalen](https://en.wikipedia.org/wiki/Melodifestivalen)
-      stage, realized together with [Smash Studio](https://www.smash.studio/)
+      stage, realised together with [Smash Studio](https://www.smash.studio/)
       as co-designers. Smash led the design work from 3D modelling to
       animation, while I served as technical director and creative support.
       The stage featured three 8 x 4.5m LED walls at 3200 x 1800 pixels
@@ -29,9 +29,9 @@ blocks:
   - type: text
     fontSize: medium
     content: >-
-      The visuals travel through a moonlit Romanesque evening, a garden
-      resembling Elysium, building towards the climax where the gate falls
-      back and unleashes a rush of light and sound, soaring into open skies.
+      The visuals move through a moonlit Romanesque evening, a garden
+      resembling Elysium, building to a climax where the gate falls back
+      into open sky.
   - type: text
     fontSize: small
     content: >-

@@ -17,11 +17,10 @@ blocks:
   - type: text
     fontSize: small
     content: >-
-      Jag är Gud is a self-biographical one-man show by dancer and performer
-      Danne Dahlin, exploring a life shaped by bipolar disorder. I got
-      involved through a mutual friend who introduced me to Danne, and over
-      months of back-and-forth conversation, he found the talented actor and
-      director Jakob Bladh. I worked as videographer, light designer, and
+      Jag är Gud is an autobiographical one-man show by dancer and performer
+      Danne Dahlin about living with bipolar disorder. I got involved through
+      a mutual friend who introduced me to Danne, and over months of
+      conversation, he found actor and director Jakob Bladh. I worked as videographer, light designer, and
       scenographer in collaboration with
       [Rose Hallgren](https://rosehallgren.se/), who also worked on video and
       scenography.
@@ -32,8 +31,8 @@ blocks:
   - type: text
     fontSize: small
     content: >-
-      When Danne graduated, he had already caught the attention of the world's
-      greatest choreographers and was destined for a brilliant dance career.
+      When Danne graduated, he had already caught the attention of leading
+      choreographers and was headed for a career in dance.
       19 years later, he was so affected by electroshock treatments and heavy
       medication that he could barely move. In 2018, Danne disappeared in Los
       Angeles. He was found surrounded by American police with drawn weapons.
@@ -47,8 +46,8 @@ blocks:
   - type: text
     fontSize: small
     content: >-
-      The challenge was to bring Danne's stories to life visually while
-      keeping the lighting simple. The show premiered at Kilen,
+      The challenge was making Danne's stories visible on stage while keeping
+      the lighting simple. The show premiered at Kilen,
       [Kulturhuset Stockholm](https://kulturhusetstadsteatern.se/) in
       November 2024. It sold out and ran twice due to popularity.
   - type: image

@@ -52,8 +52,8 @@ blocks:
       visitors to piece together. The room featured a bedroom and a dining
       area with [Art Deco](https://en.wikipedia.org/wiki/Art_Deco) details: drapes, ornaments, packed luggage, and a
       ticking clock. I wanted to explore using CNC for ice and designed the
-      clock and other details. The project was highly ambitious with a huge
-      amount of ice, and Creative Director Luca Roncoroni and their team
+      clock and other details. The build required a large amount of ice,
+      and Creative Director Luca Roncoroni and their team
       helped with several elements. This time I invited Jordi Claramunt and
       his friend [Abel Pruñonosa](https://www.abelprunyonosa.com/), who did
       most of the work as I could only be there for a few days. Music for the

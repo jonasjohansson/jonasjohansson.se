@@ -23,9 +23,9 @@ blocks:
       the main square, built to handle snow, rain, and countless jumps. I built
       them with [Arduino](https://www.arduino.cc/), feeding into the
       [Unreal Engine](https://www.unrealengine.com/) project over USB. Each
-      pad triggered a colour ripple across the facade, bringing life to an ocean
-      scene on the building's surface. When all four pads were activated at once,
-      a final crescendo of light, form, and music was revealed. I laser cut a
+      pad triggered a colour ripple across the facade, animating an ocean
+      scene on the building's surface. When all four pads were activated at
+      once, a final sequence of light and music played out. I laser cut a
       scale model of the building for testing the projection, and the facade was
       drone-scanned to build a digital replica. Built together with
       [Rose Hallgren](https://rosehallgren.se/).

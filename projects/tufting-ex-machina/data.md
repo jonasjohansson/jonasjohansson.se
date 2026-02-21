@@ -10,8 +10,8 @@ blocks:
   - type: text
     content: >-
       A collaborative [tufting](https://en.wikipedia.org/wiki/Tufting)
-      workshop using the exquisite corpse technique to explore cultural
-      identity through pattern and yarn.
+      workshop using the exquisite corpse technique, turning cultural
+      patterns into tufted textiles.
   - type: image
     src: 02.jpg
   - type: text

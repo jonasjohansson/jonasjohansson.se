@@ -9,8 +9,8 @@ blocks:
     src: 01.jpg
   - type: text
     content: >-
-      An immersive projection room at Hobo Hotel, turning a hotel room into a
-      physical VR experience.
+      A hotel room turned into an immersive projection environment at Hobo
+      Hotel, Stockholm.
   - type: text
     fontSize: small
     content: >-
@@ -20,9 +20,6 @@ blocks:
       Hotel in Stockholm,
       with an elaborate speaker system and a custom control
       interface on a tablet. Guests could book the room and browse curated films
-      and generative graphics, surrounded by visuals on every wall, like being
-      inside a virtual space but with the freedom to move around physically.
-      These kinds of experiences are more common now, but back then it felt
-      novel.
+      and generative graphics, surrounded by visuals on every wall.
 ---
 

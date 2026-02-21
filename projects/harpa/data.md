@@ -42,9 +42,9 @@ blocks:
     content: >-
       I coded visualisations and animations for the facade, and took on much
       of the project management, from writing funding applications to running
-      meetings and coordinating the group. One of the most striking things
-      about the project was the sheer scale of it. Harpa is an enormous
-      building set against the harbour in a fairly small city, and when your
+      meetings and coordinating the group. The scale was hard to grasp.
+      Harpa is an enormous
+      building set against the harbour in a small city, and when your
       animation fills that facade it's visible across half of Reykjavík.
   - type: text
     fontSize: small

@@ -24,9 +24,8 @@ blocks:
       wooden crack in the fabric of reality. Looking through it, visitors
       would see into a lush walnut garden, in contrast to the dry sandy
       landscape of Monegros. For this commission we developed the concept
-      further into a sculpture that doubled as an AR experience, inviting
-      passersby to see their neighbourhood in a new way using their mobile
-      phone.
+      further into a sculpture that doubled as an AR experience. Passersby
+      could point their phone at it and see the street transformed.
   - type: image
     src: 11.jpg
   - type: text
@@ -44,8 +43,8 @@ blocks:
   - type: text
     fontSize: small
     content: >-
-      Carved from sustainably sourced timber, the sculpture evoked the imagery
-      of a gateway, with its outline roughly following the shape of London.
+      Carved from sustainably sourced timber, the sculpture was shaped as a
+      gateway, its outline roughly following the shape of London.
       The wood was CNC carved and painted with patterns designed to guide the
       augmented reality experience, acting as markers for the three-layered
       design.

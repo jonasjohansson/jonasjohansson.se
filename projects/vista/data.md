@@ -19,8 +19,8 @@ blocks:
       built in [Three.js](https://threejs.org/), exploring generative sound,
       light, and terrain.
       The series began in 2012 while living in Montreal, working at a
-      design studio on large-scale stage experiences, and transitioning
-      from viewing code as function to embracing it as sculpture.
+      design studio on large-scale stage experiences, and starting to
+      treat code as sculpture rather than function.
   - type: text
     fontSize: small
     content: >-
@@ -44,16 +44,15 @@ blocks:
     fontSize: small
     content: >-
       [Glommen](https://jonasjohansson.github.io/vista/glommen) is my
-      first personal work, created during a pivotal time after moving to
-      Canada from Japan. Inspired by my father, a painter of light, I
-      began experimenting. Glommen reflects the connection to my seaside
-      hometown and the bittersweet anticipation of life without my father.
+      first personal work, made after moving to Canada from Japan.
+      Inspired by my father, a painter of light, I began experimenting.
+      Glommen reflects the connection to my seaside hometown and the
+      anticipation of life without my father.
       The sun's position in the artwork mirrors his birthday, near the
       summer solstice. It was shown at Stockholm Showww in 2014, a pop-up
       exhibition for internet art, and ten years later at
       [Myriad](https://rethread.art/projects/myriad/) in R1 Reactor Hall,
-      Stockholm in 2024, a re|thread project examining origin and
-      accreditation in human expression and creation.
+      Stockholm in 2024, a re|thread project on origin and authorship.
   - type: video
     src: 05.webm
   - type: image

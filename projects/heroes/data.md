@@ -26,10 +26,10 @@ blocks:
       [Raoul Wallenberg](https://en.wikipedia.org/wiki/Raoul_Wallenberg),
       who saved thousands of Jews in Budapest during the Holocaust, and
       [Dag Hammarskjöld](https://en.wikipedia.org/wiki/Dag_Hammarskj%C3%B6ld),
-      1961 Nobel Peace Prize laureate and UN Secretary-General. Real-life statues of both men were 3D scanned and the
-      synagogue was captured by drone, giving us the basis to bring objects to
-      life on the facade with advanced lighting effects. Black and white, high
-      contrast grayscale, with tight animation set to the building's ornate
+      1961 Nobel Peace Prize laureate and UN Secretary-General. Real-life
+      statues of both men were 3D scanned and the synagogue was captured by
+      drone, giving us precise geometry to work with. Black and white, high
+      contrast, with tight animation set to the building's ornate
       architecture.
   - type: image
     src: 03.png
