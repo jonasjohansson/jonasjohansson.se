@@ -19,8 +19,7 @@ const projects = window.__PROJECTS_DATA__ || [];
 const colorExtractor = new ColorExtractor();
 
 // Preload cache for faster navigation
-const preloadCache = new Map();
-window.preloadCache = preloadCache;
+export const preloadCache = new Map();
 
 function preloadProject(slug) {
   if (preloadCache.has(slug)) return;

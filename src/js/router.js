@@ -1,6 +1,7 @@
 import { getStripsScrollPosition, getProjectScrollPosition } from "./utils/scrollPosition.js";
 import { getProjectPath } from "./utils/pathBuilder.js";
 import { getPathPrefix } from "./utils/routeUtils.js";
+import { preloadCache } from "./strips.js";
 
 const projects = window.__PROJECTS_DATA__ || [];
 const pathPrefix = getPathPrefix();
@@ -53,11 +54,13 @@ class SPARouter {
 
     if (relativePath === "/about" || relativePath === "/about/") {
       this.showHome(true, true);
+      this.announce("About");
       return;
     }
 
     if (relativePath === "/" || relativePath === "/index.html" || relativePath === "") {
       this.showHome();
+      this.announce("Home");
     } else {
       const slug = relativePath.replace(/^\/work\//, "").replace(/\/$/, "");
       if (slug) this.showProject(slug);
@@ -154,6 +157,7 @@ class SPARouter {
 
     this._hooks.updateCurrentPageTitle?.(project.title);
     this._hooks.resetFilters?.();
+    this.announce(project.title);
 
     // Load strip images on project pages without full initialization
     const stripsContainer = document.getElementById("strips");
@@ -175,8 +179,8 @@ class SPARouter {
     try {
       let projectContentHTML;
 
-      if (window.preloadCache?.has(slug)) {
-        projectContentHTML = window.preloadCache.get(slug);
+      if (preloadCache.has(slug)) {
+        projectContentHTML = preloadCache.get(slug);
       } else {
         const fetchPath = getProjectPath(slug);
         const response = await fetch(fetchPath);
@@ -302,6 +306,14 @@ class SPARouter {
         strip.classList.remove("hidden");
       }
     });
+  }
+
+  announce(text) {
+    const el = document.getElementById("route-announcer");
+    if (el) {
+      el.textContent = "";
+      requestAnimationFrame(() => { el.textContent = `Navigated to ${text}`; });
+    }
   }
 
   goHome() {

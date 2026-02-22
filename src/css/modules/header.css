@@ -22,26 +22,6 @@ header {
   opacity: 1;
 }
 
-/* Header sections - consolidated flex pattern */
-.header-left,
-.header-right {
-  display: flex;
-  flex-direction: column;
-  align-items: center;
-  justify-content: center;
-  background: var(--project-color, var(--color-white));
-  color: var(--project-color-text, var(--color-black));
-  clip-path: var(--cut-corner-md);
-  mix-blend-mode: normal;
-  position: relative;
-  transition: background-color 0.3s ease, color 0.3s ease;
-  will-change: background-color, color;
-  padding: var(--spacing-xs) var(--spacing-md);
-  gap: var(--spacing-xs);
-  height: auto;
-  min-height: fit-content;
-}
-
 .header-center {
   display: flex;
   flex-direction: column;
@@ -107,14 +87,6 @@ html[data-project] .header-center:focus-visible .header-subtitle {
   color: var(--color-black);
 }
 
-.header-left:hover,
-.header-right:hover,
-.header-left:active,
-.header-right:active {
-  background: var(--color-black);
-  color: var(--color-white);
-}
-
 .header-center:focus {
   outline: none;
 }
@@ -128,38 +100,7 @@ html[data-project] .header-center:focus-visible .header-subtitle {
   outline-offset: 2px;
 }
 
-/* Reset hover state on touch devices after interaction */
-@media (hover: none) and (pointer: coarse) {
-  .header-left,
-  .header-right {
-    background: var(--color-white);
-    color: var(--color-black);
-  }
-
-  .header-left:active,
-  .header-right:active {
-    background: var(--color-black);
-    color: var(--color-white);
-  }
-
-  .header-left:hover:not(:active),
-  .header-right:hover:not(:active) {
-    background: var(--color-white);
-    color: var(--color-black);
-  }
-}
-
-.header-links {
-  display: flex;
-  gap: var(--spacing-sm);
-  align-items: center;
-  justify-content: center;
-  flex-wrap: wrap;
-}
-
-/* Shared typography for header icon and text */
-.header-icon,
-.header-text,
+/* Shared typography for header title and subtitle */
 .header-title,
 .header-subtitle {
   font-size: var(--font-size-base);
@@ -168,76 +109,15 @@ html[data-project] .header-center:focus-visible .header-subtitle {
   line-height: var(--line-height-tight);
 }
 
-.header-icon,
-.header-text {
-  font-size: calc(var(--font-size-base) * 0.8);
-}
-
-.header-spacer {
-  height: 0;
-  opacity: 0;
-  font-size: var(--font-size-base);
-  line-height: var(--line-height-tight);
-}
-
 .header-title {
   display: flex;
   align-items: center;
   gap: var(--spacing-xs);
   font-weight: 500;
-  margin: 0; /* Reset default h1 margin */
+  margin: 0;
   white-space: nowrap;
-}
-
-.header-title a {
-  color: inherit;
-  text-decoration: none;
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  margin-left: var(--spacing-xs);
-}
-
-.header-title a:hover {
-  color: var(--color-gray);
-}
-
-.header-icon {
-  position: relative;
-  display: inline-block;
-}
-
-.header-title a:last-child {
-  margin-left: var(--spacing-xs);
 }
 
 .header-subtitle {
   white-space: nowrap;
-}
-
-.header-button {
-  background: transparent;
-  color: var(--color-black);
-  border: none;
-  padding: 4px var(--spacing-sm);
-  font-size: 14px;
-  font-family: var(--font-family);
-  letter-spacing: var(--letter-spacing-wide);
-  text-transform: uppercase;
-  text-decoration: none;
-  cursor: pointer;
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  min-width: 32px;
-  height: 32px;
-  text-align: center;
-}
-
-.email-button {
-  color: var(--color-black);
-}
-
-.header-button:hover {
-  color: var(--color-gray);
 }

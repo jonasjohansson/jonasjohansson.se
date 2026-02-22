@@ -75,6 +75,19 @@ body.about-visible {
   top: var(--spacing-lg);
 }
 
+/* Screen reader only utility */
+.sr-only {
+  position: absolute;
+  width: 1px;
+  height: 1px;
+  padding: 0;
+  margin: -1px;
+  overflow: hidden;
+  clip: rect(0, 0, 0, 0);
+  white-space: nowrap;
+  border: 0;
+}
+
 /* Links - inherit color by default */
 a {
   color: inherit;
@@ -85,25 +98,12 @@ a:hover {
   color: inherit;
 }
 
-/* Disable text selection on everything by default */
-* {
+/* Disable text selection on interactive chrome */
+header,
+#strips,
+.filter-dropdown {
   user-select: none;
   -webkit-user-select: none;
-}
-
-/* Allow text selection on project and about content */
-#projects,
-#projects *,
-.project,
-.project *,
-.media-item,
-.media-item *,
-.project-grid,
-.project-grid *,
-#about,
-#about * {
-  user-select: text;
-  -webkit-user-select: text;
 }
 
 /* Disable drag on media elements */

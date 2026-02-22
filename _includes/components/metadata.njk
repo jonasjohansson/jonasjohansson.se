@@ -26,7 +26,7 @@
   content="black" />
 <meta
   name="theme-color"
-  content="#1a1a1a" />
+  content="#131313" />
 
 <!-- Preload critical fonts to avoid FOUT -->
 <link
@@ -220,7 +220,7 @@ projectsForJS[0].images[0] %}
 }
 </script>
 
-<!-- WebSite Schema for Sitelinks -->
+<!-- WebSite Schema -->
 <script type="application/ld+json">
 {
   "@context": "https://schema.org",
@@ -231,14 +231,6 @@ projectsForJS[0].images[0] %}
   "author": {
     "@type": "Person",
     "name": "{{ site.author }}"
-  },
-  "potentialAction": {
-    "@type": "SearchAction",
-    "target": {
-      "@type": "EntryPoint",
-      "urlTemplate": "{{ site.url }}/?s={search_term_string}"
-    },
-    "query-input": "required name=search_term_string"
   }
 }
 </script>

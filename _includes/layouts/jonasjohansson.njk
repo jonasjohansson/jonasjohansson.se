@@ -19,11 +19,14 @@
     <!-- Skip to content link for keyboard users -->
     <a href="#main" class="skip-link">Skip to content</a>
 
+    <!-- Live region for SPA navigation announcements -->
+    <div id="route-announcer" class="sr-only" aria-live="polite" aria-atomic="true"></div>
+
     {% include "../components/shader.njk" %}
     {% include "../components/header.njk" %}
 
       <div id="content">
-        <aside id="about" role="dialog" aria-modal="false" aria-label="About Jonas Johansson" {% if page.url === '/about/' %}data-initial-about="true"{% endif %}>
+        <div id="about" role="dialog" aria-modal="false" aria-label="About Jonas Johansson" {% if page.url === '/about/' %}data-initial-about="true"{% endif %}>
           <div class="about-container">
             <div class="about-text">
               <div class="about-text-inner">
@@ -34,7 +37,7 @@
             </div>
             <div class="about-image">{% responsiveImage "projects/about/01.jpg", "Jonas Johansson" %}</div>
           </div>
-        </aside>
+        </div>
 
         <main id="main">
           {{ content | safe }}

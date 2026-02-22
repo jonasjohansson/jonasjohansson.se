@@ -1,5 +1,5 @@
 // Xylophone sound generator using Web Audio API
-import { melodyPlayer } from "./melody.js";
+import { melodyPlayer, NOTE_FREQUENCIES } from "./melody.js";
 import { detectSwipeDirection } from "./utils/gestureDetector.js";
 
 let audioContext = null;
@@ -116,10 +116,7 @@ export function initXylophone() {
           currentTouchStrip = index;
           if (melodyPlayer.isMelodyMode) {
             // Play next note in melody
-            const playedNote = melodyPlayer.playCurrentNote(playNote);
-            if (playedNote) {
-              console.log(`Playing melody note: ${playedNote.note}`);
-            }
+            melodyPlayer.playCurrentNote(playNote);
           } else {
             // Play individual strip note
             const frequency = getFrequencyForStrip(index, strips.length);
@@ -162,10 +159,7 @@ export function initXylophone() {
           currentTouchStrip = index;
           if (melodyPlayer.isMelodyMode) {
             // Play next note in melody
-            const playedNote = melodyPlayer.playCurrentNote(playNote);
-            if (playedNote) {
-              console.log(`Playing melody note: ${playedNote.note}`);
-            }
+            melodyPlayer.playCurrentNote(playNote);
           } else {
             // Play individual strip note
             const frequency = getFrequencyForStrip(index, strips.length);
@@ -195,127 +189,154 @@ export { melodyPlayer };
 
 // --- Strip animation sound effects ---
 
-// Short click/snap for each strip sliding in
-export function playStripEnterSound(index, totalStrips) {
+// Wood block sound — sharp crack with hollow resonance (hyoshigi-style)
+function playWoodClick(freq, volume = 0.08) {
   const ctx = initAudio();
   if (ctx.state === "suspended") return;
 
-  const baseFreq = 800;
-  const maxFreq = 2000;
-  const freq = baseFreq + (maxFreq - baseFreq) * (index / Math.max(totalStrips - 1, 1));
+  const t = ctx.currentTime;
 
+  // 1. Noise burst for the initial "crack" of wood striking
+  const bufferSize = ctx.sampleRate * 0.02;
+  const noiseBuffer = ctx.createBuffer(1, bufferSize, ctx.sampleRate);
+  const data = noiseBuffer.getChannelData(0);
+  for (let i = 0; i < bufferSize; i++) data[i] = (Math.random() * 2 - 1);
+  const noise = ctx.createBufferSource();
+  noise.buffer = noiseBuffer;
+
+  const noiseBand = ctx.createBiquadFilter();
+  noiseBand.type = "bandpass";
+  noiseBand.frequency.setValueAtTime(freq * 2, t);
+  noiseBand.Q.setValueAtTime(2, t);
+
+  const noiseGain = ctx.createGain();
+  noiseGain.gain.setValueAtTime(volume * 1.5, t);
+  noiseGain.gain.exponentialRampToValueAtTime(0.001, t + 0.015);
+
+  noise.connect(noiseBand);
+  noiseBand.connect(noiseGain);
+  noiseGain.connect(ctx.destination);
+
+  // 2. Resonant body tone — hollow wood ring
   const osc = ctx.createOscillator();
-  const gain = ctx.createGain();
-  const filter = ctx.createBiquadFilter();
+  osc.type = "sine";
+  osc.frequency.setValueAtTime(freq, t);
+  osc.frequency.exponentialRampToValueAtTime(freq * 0.85, t + 0.1);
 
-  // Short noise burst for a click feel
-  osc.type = "square";
-  osc.frequency.setValueAtTime(freq, ctx.currentTime);
-  osc.frequency.exponentialRampToValueAtTime(freq * 0.5, ctx.currentTime + 0.04);
+  const bodyFilter = ctx.createBiquadFilter();
+  bodyFilter.type = "bandpass";
+  bodyFilter.frequency.setValueAtTime(freq * 1.2, t);
+  bodyFilter.Q.setValueAtTime(8, t);
 
-  filter.type = "bandpass";
-  filter.frequency.setValueAtTime(freq, ctx.currentTime);
-  filter.Q.setValueAtTime(2, ctx.currentTime);
+  const bodyGain = ctx.createGain();
+  bodyGain.gain.setValueAtTime(volume, t);
+  bodyGain.gain.exponentialRampToValueAtTime(0.001, t + 0.12);
 
-  // Sharp attack, instant decay
-  gain.gain.setValueAtTime(0.06, ctx.currentTime);
-  gain.gain.exponentialRampToValueAtTime(0.001, ctx.currentTime + 0.05);
+  osc.connect(bodyFilter);
+  bodyFilter.connect(bodyGain);
+  bodyGain.connect(ctx.destination);
 
-  osc.connect(filter);
-  filter.connect(gain);
-  gain.connect(ctx.destination);
+  // 3. Higher harmonic for brightness
+  const osc2 = ctx.createOscillator();
+  osc2.type = "sine";
+  osc2.frequency.setValueAtTime(freq * 2.7, t);
+  osc2.frequency.exponentialRampToValueAtTime(freq * 2, t + 0.06);
 
-  osc.start(ctx.currentTime);
-  osc.stop(ctx.currentTime + 0.06);
+  const harmGain = ctx.createGain();
+  harmGain.gain.setValueAtTime(volume * 0.4, t);
+  harmGain.gain.exponentialRampToValueAtTime(0.001, t + 0.06);
+
+  osc2.connect(bodyFilter);
+  bodyFilter.connect(harmGain);
+  harmGain.connect(ctx.destination);
+
+  noise.start(t);
+  osc.start(t);
+  osc2.start(t);
+  noise.stop(t + 0.02);
+  osc.stop(t + 0.13);
+  osc2.stop(t + 0.07);
 }
 
-// Percussive click for strips sliding out — descending, punchy
-export function playStripExitSound(index, totalStrips) {
-  const ctx = initAudio();
-  if (ctx.state === "suspended") return;
+// Click tuned to next melody note for each strip entering
+export function playStripEnterSound(index, totalStrips) {
+  const note = melodyPlayer.isMelodyMode ? melodyPlayer.getNextNote() : null;
+  if (note) {
+    const freq = NOTE_FREQUENCIES[note.note];
+    if (freq) { playWoodClick(freq, 0.06); return; }
+  }
+  // Fallback: ascending pentatonic
+  const baseFreq = 261.63;
+  const pentatonic = [1, 9/8, 5/4, 3/2, 5/3];
+  const pos = index / Math.max(totalStrips - 1, 1);
+  const octave = Math.floor(pos * 2);
+  const scaleIdx = Math.floor(((pos * 2) % 1) * pentatonic.length);
+  playWoodClick(baseFreq * Math.pow(2, octave) * pentatonic[scaleIdx], 0.06);
+}
 
+// Click tuned to next melody note for each strip exiting
+export function playStripExitSound(index, totalStrips) {
+  const note = melodyPlayer.isMelodyMode ? melodyPlayer.getNextNote() : null;
+  if (note) {
+    const freq = NOTE_FREQUENCIES[note.note];
+    if (freq) { playWoodClick(freq, 0.09); return; }
+  }
+  // Fallback: descending
   const baseFreq = 2400;
   const minFreq = 200;
-  const freq = baseFreq - (baseFreq - minFreq) * (index / Math.max(totalStrips - 1, 1));
-
-  const osc = ctx.createOscillator();
-  const osc2 = ctx.createOscillator();
-  const gain = ctx.createGain();
-  const filter = ctx.createBiquadFilter();
-
-  // Sharp snap that drops
-  osc.type = "square";
-  osc.frequency.setValueAtTime(freq, ctx.currentTime);
-  osc.frequency.exponentialRampToValueAtTime(freq * 0.15, ctx.currentTime + 0.06);
-
-  // Add a noise-like second oscillator for texture
-  osc2.type = "sawtooth";
-  osc2.frequency.setValueAtTime(freq * 1.5, ctx.currentTime);
-  osc2.frequency.exponentialRampToValueAtTime(freq * 0.1, ctx.currentTime + 0.04);
-
-  filter.type = "bandpass";
-  filter.frequency.setValueAtTime(freq, ctx.currentTime);
-  filter.frequency.exponentialRampToValueAtTime(200, ctx.currentTime + 0.06);
-  filter.Q.setValueAtTime(4, ctx.currentTime);
-
-  // Punchy attack, fast decay
-  gain.gain.setValueAtTime(0.09, ctx.currentTime);
-  gain.gain.exponentialRampToValueAtTime(0.001, ctx.currentTime + 0.08);
-
-  osc.connect(filter);
-  osc2.connect(filter);
-  filter.connect(gain);
-  gain.connect(ctx.destination);
-
-  osc.start(ctx.currentTime);
-  osc2.start(ctx.currentTime);
-  osc.stop(ctx.currentTime + 0.09);
-  osc2.stop(ctx.currentTime + 0.09);
+  playWoodClick(baseFreq - (baseFreq - minFreq) * (index / Math.max(totalStrips - 1, 1)), 0.09);
 }
 
-// Slow sweep that tracks the 1s grow transition
+// Deep wood thud for the expand — like a large taiko or temple drum
 export function playStripExpandSound() {
   const ctx = initAudio();
   if (ctx.state === "suspended") return;
 
-  const duration = 1.0; // Match CSS grow transition duration
+  const t = ctx.currentTime;
 
+  // 1. Noise burst for the hit impact
+  const bufferSize = ctx.sampleRate * 0.03;
+  const noiseBuffer = ctx.createBuffer(1, bufferSize, ctx.sampleRate);
+  const data = noiseBuffer.getChannelData(0);
+  for (let i = 0; i < bufferSize; i++) data[i] = (Math.random() * 2 - 1);
+  const noise = ctx.createBufferSource();
+  noise.buffer = noiseBuffer;
+
+  const noiseBand = ctx.createBiquadFilter();
+  noiseBand.type = "lowpass";
+  noiseBand.frequency.setValueAtTime(300, t);
+
+  const noiseGain = ctx.createGain();
+  noiseGain.gain.setValueAtTime(0.12, t);
+  noiseGain.gain.exponentialRampToValueAtTime(0.001, t + 0.04);
+
+  noise.connect(noiseBand);
+  noiseBand.connect(noiseGain);
+  noiseGain.connect(ctx.destination);
+
+  // 2. Deep body resonance
   const osc = ctx.createOscillator();
-  const osc2 = ctx.createOscillator();
-  const gain = ctx.createGain();
-  const filter = ctx.createBiquadFilter();
-
-  // Low tone that rises with the expansion
   osc.type = "sine";
-  osc.frequency.setValueAtTime(60, ctx.currentTime);
-  osc.frequency.exponentialRampToValueAtTime(180, ctx.currentTime + duration);
+  osc.frequency.setValueAtTime(65, t);
+  osc.frequency.exponentialRampToValueAtTime(50, t + 0.3);
 
-  // Harmonic that follows
-  osc2.type = "sine";
-  osc2.frequency.setValueAtTime(120, ctx.currentTime);
-  osc2.frequency.exponentialRampToValueAtTime(360, ctx.currentTime + duration);
+  const bodyFilter = ctx.createBiquadFilter();
+  bodyFilter.type = "lowpass";
+  bodyFilter.frequency.setValueAtTime(200, t);
+  bodyFilter.Q.setValueAtTime(1, t);
 
-  // Filter opens as it expands
-  filter.type = "lowpass";
-  filter.frequency.setValueAtTime(200, ctx.currentTime);
-  filter.frequency.exponentialRampToValueAtTime(1200, ctx.currentTime + duration);
-  filter.Q.setValueAtTime(0.5, ctx.currentTime);
+  const bodyGain = ctx.createGain();
+  bodyGain.gain.setValueAtTime(0.1, t);
+  bodyGain.gain.exponentialRampToValueAtTime(0.001, t + 0.4);
 
-  // Fade in quickly, sustain through transition, fade at end
-  gain.gain.setValueAtTime(0, ctx.currentTime);
-  gain.gain.linearRampToValueAtTime(0.07, ctx.currentTime + 0.03);
-  gain.gain.setValueAtTime(0.07, ctx.currentTime + duration * 0.7);
-  gain.gain.exponentialRampToValueAtTime(0.001, ctx.currentTime + duration);
+  osc.connect(bodyFilter);
+  bodyFilter.connect(bodyGain);
+  bodyGain.connect(ctx.destination);
 
-  osc.connect(filter);
-  osc2.connect(filter);
-  filter.connect(gain);
-  gain.connect(ctx.destination);
-
-  osc.start(ctx.currentTime);
-  osc2.start(ctx.currentTime);
-  osc.stop(ctx.currentTime + duration);
-  osc2.stop(ctx.currentTime + duration);
+  noise.start(t);
+  osc.start(t);
+  noise.stop(t + 0.04);
+  osc.stop(t + 0.4);
 }
 
 export function destroyXylophone() {

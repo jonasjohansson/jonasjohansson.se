@@ -1,7 +1,7 @@
 // Melody system for playing songs through strip interactions
 
 // Note frequencies for common notes (in Hz)
-const NOTE_FREQUENCIES = {
+export const NOTE_FREQUENCIES = {
   F2: 87.31,
   "F#2": 92.5,
   G2: 98.0,

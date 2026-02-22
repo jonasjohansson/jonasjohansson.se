@@ -20,7 +20,6 @@
 body.loaded #loading-screen {
   opacity: 0;
   pointer-events: none;
-  /* Remove from rendering tree after fade-out */
   transition: opacity 0.5s ease-out, visibility 0s 0.5s;
   visibility: hidden;
 }
@@ -40,137 +39,9 @@ body.loaded #loading-screen {
   }
 }
 
-#loading-percentage {
-  font-size: var(--font-size-large);
-  letter-spacing: var(--letter-spacing-wide);
-  text-transform: uppercase;
-  text-align: center;
-}
-
-#loading-intro {
-  width: 100%;
-  max-width: 600px;
-  opacity: 0;
-  transition: opacity 0.3s ease;
-  transition-delay: 0.1s;
-}
-
-#loading-screen.show #loading-intro {
-  opacity: 1;
-}
-
-/* Single-column layout for about text */
-.about-columns {
-  width: 100%;
-  column-count: 1;
-  column-gap: var(--spacing-md);
-}
-
-/* About text styling - consolidated */
-#loading-intro .about-columns p,
-#intro-section .about-columns p {
-  margin: 0 0 var(--spacing-xs) 0;
-  padding: 0 0 var(--spacing-xs) 0;
-  font-size: var(--font-size-base);
-  letter-spacing: var(--letter-spacing-wide);
-  line-height: 1.4;
-  color: var(--color-white);
-  text-align: center;
-}
-
-#loading-intro .about-columns p:first-child,
-#intro-section .about-columns p:first-child {
-  margin-top: 0;
-  padding-top: 0;
-}
-
-#loading-intro .about-columns a,
-#intro-section .about-columns a {
-  color: var(--color-white);
-  text-decoration: none;
-  border-bottom: 1px solid currentColor;
-}
-
-#loading-intro .about-columns a:hover,
-#intro-section .about-columns a:hover {
-  color: var(--color-gray);
-}
-
-/* Button group */
-.button-group {
-  display: flex;
-  gap: var(--spacing-md);
-  align-items: center;
-  margin-top: var(--spacing-md);
-  opacity: 0;
-  transition: opacity 0.3s ease;
-  transition-delay: 0.2s;
-}
-
-#loading-screen.show .button-group {
-  opacity: 1;
-}
-
-/* Start button - extends .btn-base from base.css */
-
-/* Intro section (slides in from top) */
-#intro-section {
-  position: fixed;
-  top: 0;
-  left: 0;
-  width: 100vw;
-  height: 100vh;
-  background: var(--color-black);
-  color: var(--color-white);
-  transform: translateY(-100%);
-  transition: transform 0.6s cubic-bezier(0.4, 0, 0.2, 1);
-  overflow-y: auto;
-  padding: var(--spacing-xl);
-  display: flex;
-  flex-direction: column;
-  justify-content: center;
-  align-items: center;
-}
-
-#intro-section.visible {
-  transform: translateY(0);
-}
-
-.about-grid {
-  width: 100%;
-  max-width: 600px;
-}
-
-/* Intro section about text styling - consolidated above */
-#intro-section .about-columns {
-  width: 100%;
-  column-count: 1;
-  column-gap: var(--spacing-md);
-}
-
 /* Mobile responsive */
 @media (max-width: 768px) {
   #loading-screen {
-    padding: var(--spacing-md);
-  }
-
-  #intro-section {
-    padding: var(--spacing-md);
-  }
-}
-
-/* Very small screens - additional adjustments */
-@media (max-width: 375px) {
-  #loading-intro .about-columns p,
-  #intro-section .about-columns p {
-    line-height: 1.35;
-  }
-
-  #loading-screen {
-    padding: var(--spacing-md);
-  }
-
-  #intro-section {
     padding: var(--spacing-md);
   }
 }

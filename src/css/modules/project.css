@@ -114,7 +114,7 @@ figure {
   grid-auto-flow: dense;
   width: 100%;
   max-width: 100%;
-  padding: 0 var(--spacing-xl) 10rem;
+  padding: 10rem var(--spacing-xl);
 }
 
 /* Hero media items */
@@ -124,6 +124,7 @@ figure {
   height: 100vh;
   min-height: 100vh; /* Ensure full viewport height for snap */
   max-height: 100vh; /* Prevent shrinking */
+  margin-top: -10rem;
   margin-left: calc(-1 * var(--spacing-xl));
   margin-right: calc(-1 * var(--spacing-xl));
   width: calc(100% + 2 * var(--spacing-xl));
@@ -255,21 +256,27 @@ figure {
 .media-item.size-small-left  { grid-column: 1 / span 5; }
 .media-item.size-small-right { grid-column: 8 / span 5; }
 
-/* Large screens: 2-column image layout + bigger typography */
+/* Large screens: narrower media + bigger typography */
 @media (min-width: 1400px) {
   .project-grid > .media-item:not(:first-child):not([class*="size-"]) {
-    grid-column-start: auto !important;
-    grid-column-end: span 6 !important;
+    grid-column: 2 / 12 !important;
   }
 
-  .project-grid > .media-item + .media-item:not(:first-child):not([class*="size-"]) {
-    margin-top: 0;
-  }
-
-  /* Widen text columns and bump typography */
+  /* Add breathing room around text blocks on large screens */
   .text-block {
     grid-column: 1 / -1 !important;
     max-width: 80ch;
+    margin-top: var(--spacing-3xl);
+    margin-bottom: var(--spacing-3xl);
+  }
+
+  /* Collapse margin between consecutive text blocks */
+  .text-block:has(+ .text-block) {
+    margin-bottom: 0;
+  }
+
+  .text-block + .text-block {
+    margin-top: 0;
   }
 
   .text-block.text-large {
