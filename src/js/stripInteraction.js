@@ -24,6 +24,24 @@ let navigateFn = null;
 let hoverDebounceTimer = null;
 const HOVER_DEBOUNCE_MS = 120;
 
+// Reliable smooth scroll using requestAnimationFrame
+function smoothScrollTo(targetY, duration = 600) {
+  const startY = window.scrollY;
+  const diff = targetY - startY;
+  if (Math.abs(diff) < 2) return;
+  const startTime = performance.now();
+
+  function step(now) {
+    const elapsed = now - startTime;
+    const progress = Math.min(elapsed / duration, 1);
+    const eased = 1 - Math.pow(1 - progress, 3); // ease-out cubic
+    window.scrollTo(0, startY + diff * eased);
+    if (progress < 1) requestAnimationFrame(step);
+  }
+
+  requestAnimationFrame(step);
+}
+
 export function initInteractionRefs(refs) {
   stripsContainer = refs.stripsContainer;
   getAllStrips = refs.getAllStrips;
@@ -161,6 +179,14 @@ export function attachStripEventListeners() {
       const headerSubtitle = getHeaderSubtitle?.();
       if (headerSubtitle) {
         scrambleText(headerSubtitle, clickedProject.title);
+      }
+
+      // Scroll strips flush with viewport top before animation plays
+      if (stripsContainer) {
+        const rect = stripsContainer.getBoundingClientRect();
+        if (rect.top > 2) {
+          smoothScrollTo(rect.top + window.scrollY, 600);
+        }
       }
 
       const allStrips = getAllStrips?.() || [];

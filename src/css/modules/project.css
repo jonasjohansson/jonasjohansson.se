@@ -38,7 +38,7 @@
 /* Font size classes for project content */
 .text-small {
   font-size: var(--font-size-small);
-  line-height: 1.5;
+  line-height: 1.425;
   letter-spacing: var(--letter-spacing-base);
 }
 
@@ -192,7 +192,7 @@ figure {
 /* Statement text: centered, wider column */
 .text-block.text-large {
   max-width: 40ch;
-  text-align: center;
+  text-align: left;
 }
 
 .project-grid p {

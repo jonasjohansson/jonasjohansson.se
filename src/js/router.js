@@ -263,12 +263,19 @@ class SPARouter {
         }
 
         const revealProject = () => {
+          currentProjects.style.transition = "opacity 0.3s ease";
           currentProjects.style.opacity = "1";
-          currentProjects.style.transition = "opacity 0.2s ease";
-          resetClickedStrip();
+
+          // Fade out overlay in sync, then clean up after project is fully visible
+          if (stripOverlay) {
+            stripOverlay.style.transition = "opacity 0.3s ease";
+            stripOverlay.style.opacity = "0";
+          }
+
           setTimeout(() => {
             stripOverlay?.remove();
-          }, 150);
+            resetClickedStrip();
+          }, 300);
         };
 
         currentProjects.style.opacity = "0";
@@ -294,6 +301,7 @@ class SPARouter {
         if (!clickedStrip) this.updateStripVisibility(slug);
       }
 
+      this.randomizeHeaderAngles();
       await this._hooks.applyProjectColor?.(project);
     } catch (error) {
       console.error("Error loading project:", error);
