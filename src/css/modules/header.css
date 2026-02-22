@@ -112,7 +112,7 @@ html[data-project] .header-center:focus-visible .header-subtitle {
 /* Shared typography for header title and subtitle */
 .header-title,
 .header-subtitle {
-  font-size: 22px;
+  font-size: 20px;
   letter-spacing: var(--letter-spacing-wide);
   text-transform: uppercase;
   line-height: var(--line-height-tight);
