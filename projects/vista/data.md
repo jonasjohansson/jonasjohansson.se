@@ -5,12 +5,14 @@ tags:
   - installation
   - light
 blocks:
-  - type: video
-    src: 01.webm
+  - type: image
+    src: 01.jpg
   - type: text
     content: >-
       A series of digital sculptures that just are, like illustrations,
       but rendered in code.
+  - type: video
+    src: 01.webm
   - type: text
     fontSize: small
     content: >-

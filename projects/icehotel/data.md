@@ -1,6 +1,6 @@
 ---
 title: Icehotel
-date: '2023-01-01'
+date: "2023-01-01"
 tags:
   - installation
 blocks:
@@ -25,6 +25,8 @@ blocks:
       [Hyper Island](https://www.hyperisland.com/). The three of us made for an interesting
       trio: Jordi the hands-on figurative sculptor, Lukas with his
       appreciation for symmetry and structure, and myself somewhere in between.
+  - type: image
+    src: 02.jpg
   - type: text
     fontSize: small
     content: >-
@@ -38,14 +40,16 @@ blocks:
       was so cold I left in the middle of the night and scurried back to our
       warm cabin lodge.
   - type: image
-    src: 02.jpg
+    src: 03.jpg
+  - type: image
+    src: 04.jpg
   - type: text
     fontSize: small
     content: >-
       After that experience I was hooked and kept applying almost every year.
       In 2023, Icehotel reached out and asked me to build a luxury suite for
       Icehotel 365, the permanent ice hotel. They wanted an earlier concept I
-      had designed called Mystery on the Icehotel Express, inspired by Agatha
+      had designed called [Mystery on the Icehotel Express](https://www.icehotel.com/mystery-icehotel-express), inspired by Agatha
       Christie's [Murder on the Orient Express](https://en.wikipedia.org/wiki/Murder_on_the_Orient_Express),
       a 1930s Orient Express train
       where something has gone wrong, with clues scattered throughout for

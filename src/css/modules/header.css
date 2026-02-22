@@ -44,29 +44,38 @@ header {
   pointer-events: auto;
 }
 
-/* Title shape - tilted left */
+/* Title shape - straight by default, tilted on project pages */
 .header-title {
   background: var(--project-color, var(--color-white));
   color: var(--project-color-text, var(--color-black));
   clip-path: var(--cut-corner-md);
-  transform: rotate(-2deg);
+  transform: rotate(0deg);
   padding: calc(var(--spacing-xs) + 2px) var(--spacing-xl) var(--spacing-xs);
   transition: background-color 0.3s ease, color 0.3s ease, transform 0.4s cubic-bezier(0.22, 1, 0.36, 1);
   position: relative;
   z-index: 1;
 }
 
-/* Subtitle shape - tilted right, overlapping, on top for readability */
+/* Subtitle shape - straight by default, tilted on project pages */
 .header-subtitle {
   background: var(--project-color, var(--color-white));
   color: var(--project-color-text, var(--color-black));
   clip-path: var(--cut-corner-sm);
-  transform: rotate(1.5deg);
+  transform: rotate(0deg);
   padding: calc(var(--spacing-xs) + 2px) var(--spacing-lg) var(--spacing-xs);
   margin-top: -4px;
   transition: background-color 0.3s ease, color 0.3s ease, transform 0.4s cubic-bezier(0.22, 1, 0.36, 1);
   position: relative;
   z-index: 2;
+}
+
+/* Tilt header shapes when on a project page */
+html[data-project] .header-title {
+  transform: rotate(var(--header-tilt-title, -2deg));
+}
+
+html[data-project] .header-subtitle {
+  transform: rotate(var(--header-tilt-subtitle, 1.5deg));
 }
 
 /* Hover - darken both shapes */

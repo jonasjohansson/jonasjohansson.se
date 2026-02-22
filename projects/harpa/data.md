@@ -89,4 +89,6 @@ blocks:
       collective that would go on to do projects like
       [Tiny/Massive](/work/tinymassive/) and
       Skaðablót.
+  - type: image
+    src: 03.jpg
 ---

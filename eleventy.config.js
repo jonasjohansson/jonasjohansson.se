@@ -323,7 +323,8 @@ export default function (eleventyConfig) {
 
   // Redirects for merged projects: old slug → new slug
   const projectRedirects = [
-    { oldSlug: "dendrolux-tjoloholms-slott", newSlug: "dendrolux" },
+    { oldSlug: "dendrolux-tjoloholms-slott", newSlug: "svartljus" },
+    { oldSlug: "dendrolux", newSlug: "svartljus" },
     { oldSlug: "crack", newSlug: "eastern-city-portal" },
     { oldSlug: "harpa-light-organ", newSlug: "harpa" },
     { oldSlug: "harpa-touch", newSlug: "harpa" },

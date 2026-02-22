@@ -70,8 +70,10 @@ class SPARouter {
   randomizeHeaderAngles() {
     const titleEl = document.querySelector('.header-title');
     const subtitleEl = document.querySelector('.header-subtitle');
-    if (titleEl) titleEl.style.transform = `rotate(${(-2 - Math.random() * 8).toFixed(1)}deg)`;
-    if (subtitleEl) subtitleEl.style.transform = `rotate(${(2 + Math.random() * 8).toFixed(1)}deg)`;
+    const titleDir = Math.random() < 0.5 ? -1 : 1;
+    const subtitleDir = Math.random() < 0.5 ? -1 : 1;
+    if (titleEl) titleEl.style.transform = `rotate(${(titleDir * (2 + Math.random() * 8)).toFixed(1)}deg)`;
+    if (subtitleEl) subtitleEl.style.transform = `rotate(${(subtitleDir * (2 + Math.random() * 8)).toFixed(1)}deg)`;
   }
 
   resetHeaderAngles() {

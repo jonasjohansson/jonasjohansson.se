@@ -20,4 +20,6 @@ blocks:
       and animation. The piece was an audiovisual journey through 400 years of
       Sala's history, mapped onto a curved building facade. Much of the work
       was done on-site, aligning the projection to fit the architecture.
+  - type: video
+    src: 01.mp4
 ---

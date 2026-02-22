@@ -33,5 +33,7 @@ blocks:
       architecture.
   - type: image
     src: 03.png
+  - type: video
+    src: 01.mp4
 ---
 

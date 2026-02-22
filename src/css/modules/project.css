@@ -257,7 +257,7 @@ figure {
 .media-item.size-small-right { grid-column: 8 / span 5; }
 
 /* Large screens: narrower media + bigger typography */
-@media (min-width: 1400px) {
+@media (min-width: 1800px) {
   .project-grid > .media-item:not(:first-child):not([class*="size-"]) {
     grid-column: 2 / 12 !important;
   }

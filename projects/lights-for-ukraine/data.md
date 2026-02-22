@@ -29,5 +29,7 @@ blocks:
       [Sverige for UNHCR](https://sverigeforunhcr.se/), the UN Refugee
       Agency. Logo by
       Eugenia Kukharchuk.
+  - type: image
+    src: 03.jpg
 ---
 

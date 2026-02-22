@@ -41,5 +41,7 @@ blocks:
       direction of photography across the scenes.
   - type: image
     src: 03.jpg
+  - type: video
+    src: 01.mp4
 ---
 
