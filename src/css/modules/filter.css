@@ -18,7 +18,6 @@
   align-items: center;
   gap: var(--spacing-sm);
   /* No transition on container - prevents weird movement on resize */
-  mix-blend-mode: luminosity;
   max-height: 50vh;
   overflow-y: auto;
   /* Prevent scroll jumping when interacting */
@@ -33,11 +32,12 @@
 /* Shared button styles - consolidated */
 .filter-dropdown-button,
 .filter-option {
-  background: var(--color-dark);
+  background: var(--project-color, var(--color-white));
   border: none;
   border-radius: var(--radius-sm);
   clip-path: var(--cut-corner-sm);
-  color: var(--color-white);
+  color: var(--project-color-text, var(--color-black));
+  transition: background-color 0.3s ease, color 0.3s ease;
   font-size: var(--font-size-base);
   padding: var(--spacing-sm) var(--spacing-lg);
   padding-top: calc(var(--spacing-sm) + 2px);
@@ -75,6 +75,12 @@
 
 .filter-dropdown-button:hover,
 .filter-option:hover {
+  background: var(--color-black);
+  color: var(--color-white);
+}
+
+html[data-project] .filter-dropdown-button:hover,
+html[data-project] .filter-option:hover {
   background: var(--color-white);
   color: var(--color-black);
 }
@@ -103,7 +109,7 @@
 
 .filter-separator {
   border: none;
-  border-top: 1px solid color-mix(in srgb, var(--color-white) 20%, transparent);
+  border-top: 1px solid color-mix(in srgb, var(--color-black) 20%, transparent);
   margin: 0.25rem 0;
 }
 
@@ -125,6 +131,10 @@
 }
 
 .filter-option:hover span {
+  color: var(--color-white);
+}
+
+html[data-project] .filter-option:hover span {
   color: var(--color-black);
 }
 
@@ -137,7 +147,7 @@
 }
 
 .filter-option span {
-  color: var(--color-white);
+  color: var(--project-color-text, var(--color-black));
   font-size: var(--font-size-base);
   white-space: nowrap;
   letter-spacing: var(--letter-spacing-base);
@@ -147,19 +157,19 @@
 
 /* Checked state */
 .filter-option:has(input[type="checkbox"]:checked) {
-  background: var(--color-white);
+  background: var(--color-black);
 }
 
 .filter-option:has(input[type="checkbox"]:checked) span {
-  color: var(--color-black);
+  color: var(--color-white);
 }
 
 .filter-option.is-active {
-  background: var(--color-white);
+  background: var(--color-black);
 }
 
 .filter-option.is-active span {
-  color: var(--color-black);
+  color: var(--color-white);
 }
 
 /* CSS Filtering System */
