@@ -11,6 +11,7 @@ class AboutOverlay {
     this.defaultSubtitleText = "PROGRESS NOT PERFECTION";
     this.initialized = false;
     this._routerRef = null;
+    this._savedScrollY = 0;
   }
 
   init(routerRef) {
@@ -54,6 +55,8 @@ class AboutOverlay {
       this.aboutOverlay.dataset.previousPath = currentPath;
     }
 
+    this._savedScrollY = window.scrollY;
+
     document.body.classList.add("about-visible");
     this.aboutOverlay.classList.add("visible");
     this.aboutOverlay.setAttribute("aria-modal", "true");
@@ -86,8 +89,8 @@ class AboutOverlay {
     this.headerToggle?.setAttribute("aria-expanded", "false");
     document.body.classList.remove("about-visible");
 
-    // Reset scroll position so user isn't stranded after about collapses
-    window.scrollTo({ top: 0, behavior: "instant" });
+    // Restore scroll position to where user was before opening about
+    window.scrollTo({ top: this._savedScrollY, behavior: "instant" });
 
     const isProjectView = document.body.classList.contains("project-visible");
     const storedTitle = getCurrentProjectTitle()?.trim();

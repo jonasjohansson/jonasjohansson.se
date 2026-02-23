@@ -122,8 +122,11 @@ figure {
 .project-grid > .media-item.hero {
   overflow: hidden;
   height: 100vh;
-  min-height: 100vh; /* Ensure full viewport height for snap */
-  max-height: 100vh; /* Prevent shrinking */
+  height: 100dvh;
+  min-height: 100vh;
+  min-height: 100dvh;
+  max-height: 100vh;
+  max-height: 100dvh;
   margin-top: -10rem;
   margin-left: calc(-1 * var(--spacing-xl));
   margin-right: calc(-1 * var(--spacing-xl));
@@ -170,6 +173,7 @@ figure {
   width: 100%;
   height: auto;
   max-height: calc(100vh - 2 * var(--spacing-3xl));
+  max-height: calc(100dvh - 2 * var(--spacing-3xl));
   object-fit: contain;
   display: block;
   border-radius: var(--radius-sm);

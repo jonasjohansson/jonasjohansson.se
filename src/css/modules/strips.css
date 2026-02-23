@@ -4,7 +4,9 @@
   width: 100vw;
   max-width: 100vw;
   height: 100vh;
+  height: 100dvh;
   min-height: 100vh;
+  min-height: 100dvh;
   overflow-x: auto;
   overflow-y: hidden;
   scrollbar-width: none;
@@ -37,7 +39,9 @@
 
 .strip {
   height: 100vh;
+  height: 100dvh;
   min-height: 100vh;
+  min-height: 100dvh;
   flex: 1 1 0;
   min-width: 0;
   overflow: visible;

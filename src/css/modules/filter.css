@@ -19,6 +19,7 @@
   gap: var(--spacing-sm);
   /* No transition on container - prevents weird movement on resize */
   max-height: 50vh;
+  max-height: 50dvh;
   overflow-y: auto;
   /* Prevent scroll jumping when interacting */
   scroll-margin: 0;

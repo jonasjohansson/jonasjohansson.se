@@ -41,6 +41,7 @@ html:has(body.about-visible),
 body.about-visible {
   overflow: hidden;
   height: 100vh;
+  height: 100dvh;
 }
 
 /* Content wrapper */
@@ -230,6 +231,7 @@ img[data-hero] {
   left: 0;
   width: 100vw;
   height: 100vh;
+  height: 100dvh;
   overflow-y: auto;
   padding: var(--spacing-xl);
   display: flex;
