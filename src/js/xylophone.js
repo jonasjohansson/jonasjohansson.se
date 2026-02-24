@@ -12,6 +12,44 @@ function initAudio() {
   return audioContext;
 }
 
+// Get number of currently visible strips (set by filter system)
+export function getVisibleStripCount() {
+  const container = document.getElementById("strips");
+  if (!container) return 20;
+  const count = parseInt(container.getAttribute("data-visible-count"), 10);
+  return isNaN(count) ? 20 : count;
+}
+
+// Subtle bass tone for minimal filter results
+function playBassNote(frequency = 55, duration = 0.5) {
+  const ctx = initAudio();
+  if (ctx.state === "suspended") return;
+
+  const t = ctx.currentTime;
+
+  const osc = ctx.createOscillator();
+  osc.type = "sine";
+  osc.frequency.setValueAtTime(frequency, t);
+  osc.frequency.exponentialRampToValueAtTime(frequency * 0.8, t + duration);
+
+  const filter = ctx.createBiquadFilter();
+  filter.type = "lowpass";
+  filter.frequency.setValueAtTime(250, t);
+  filter.Q.setValueAtTime(1, t);
+
+  const gain = ctx.createGain();
+  gain.gain.setValueAtTime(0, t);
+  gain.gain.linearRampToValueAtTime(0.08, t + 0.02);
+  gain.gain.exponentialRampToValueAtTime(0.001, t + duration);
+
+  osc.connect(filter);
+  filter.connect(gain);
+  gain.connect(ctx.destination);
+
+  osc.start(t);
+  osc.stop(t + duration);
+}
+
 // Generate a clear, melodic tone for Mario
 function playNote(frequency, duration = 0.3) {
   const ctx = initAudio();
@@ -69,6 +107,31 @@ function getFrequencyForStrip(index, totalStrips) {
   return frequency;
 }
 
+// Play a note adapted to how many strips are currently visible
+function playAdaptiveNote(index, totalStrips) {
+  const visibleCount = getVisibleStripCount();
+
+  if (visibleCount === 1) {
+    // Single result: just a bass tone
+    playBassNote(55, 0.5);
+  } else if (visibleCount <= 4) {
+    // Very few: low simple tones, no melody
+    const lowFreqs = [65.41, 82.41, 98.0, 110.0]; // C2, E2, G2, A2
+    playBassNote(lowFreqs[index % lowFreqs.length], 0.4);
+  } else if (visibleCount <= 7) {
+    // Few: reduced pentatonic, no melody
+    const frequency = getFrequencyForStrip(index, totalStrips);
+    playNote(frequency * 0.5, 0.3);
+  } else if (melodyPlayer.isMelodyMode) {
+    // Full set: play melody
+    melodyPlayer.playCurrentNote(playNote);
+  } else {
+    // Full set: individual strip note
+    const frequency = getFrequencyForStrip(index, totalStrips);
+    playNote(frequency, 0.4);
+  }
+}
+
 export function initXylophone() {
   const stripsContainer = document.getElementById("strips");
   if (!stripsContainer) return;
@@ -80,14 +143,7 @@ export function initXylophone() {
   // Mouse events for desktop
   strips.forEach((strip, index) => {
     strip.addEventListener("mouseenter", () => {
-      if (melodyPlayer.isMelodyMode) {
-        // Play next note in melody
-        melodyPlayer.playCurrentNote(playNote);
-      } else {
-        // Play individual strip note
-        const frequency = getFrequencyForStrip(index, strips.length);
-        playNote(frequency, 0.4);
-      }
+      playAdaptiveNote(index, strips.length);
     });
   });
 
@@ -114,14 +170,7 @@ export function initXylophone() {
         const index = strips.indexOf(strip);
         if (index !== -1 && currentTouchStrip !== index) {
           currentTouchStrip = index;
-          if (melodyPlayer.isMelodyMode) {
-            // Play next note in melody
-            melodyPlayer.playCurrentNote(playNote);
-          } else {
-            // Play individual strip note
-            const frequency = getFrequencyForStrip(index, strips.length);
-            playNote(frequency, 0.4);
-          }
+          playAdaptiveNote(index, strips.length);
         }
       }
     },
@@ -157,14 +206,7 @@ export function initXylophone() {
         const index = strips.indexOf(strip);
         if (index !== -1 && currentTouchStrip !== index) {
           currentTouchStrip = index;
-          if (melodyPlayer.isMelodyMode) {
-            // Play next note in melody
-            melodyPlayer.playCurrentNote(playNote);
-          } else {
-            // Play individual strip note
-            const frequency = getFrequencyForStrip(index, strips.length);
-            playNote(frequency, 0.3);
-          }
+          playAdaptiveNote(index, strips.length);
         }
       }
       }

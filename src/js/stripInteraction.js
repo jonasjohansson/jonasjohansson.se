@@ -5,7 +5,7 @@ import { handlePoint } from "./stripAnimation.js";
 import { detectSwipeDirection } from "./utils/gestureDetector.js";
 import { scrambleText } from "./utils/textScramble.js";
 import { getCurrentProjectSlug } from "./utils/routeUtils.js";
-import { playStripExitSound, playStripExpandSound } from "./xylophone.js";
+import { playStripExitSound, playStripExpandSound, getVisibleStripCount } from "./xylophone.js";
 
 const projects = window.__PROJECTS_DATA__ || [];
 
@@ -194,15 +194,20 @@ export function attachStripEventListeners() {
       const otherStrips = allStrips.filter((s) => s !== strip);
 
       // Staggered slide-out: each strip exits 30ms after the previous
+      const visibleCount = getVisibleStripCount();
       const exitStagger = 30;
       otherStrips.forEach((s, i) => {
         setTimeout(() => {
           s.classList.add("not-selected");
-          playStripExitSound(i, otherStrips.length);
+          // Skip exit sounds when very few strips are visible
+          if (visibleCount > 4) {
+            playStripExitSound(i, otherStrips.length);
+          }
         }, i * exitStagger);
       });
 
       // Expand sound synced with CSS transition-delay (0.5s after .selected added)
+      // Always play the expand thud - it's the bassy one
       setTimeout(() => playStripExpandSound(), 500);
 
       const navTimeoutId = getNavigationTimeoutId?.();

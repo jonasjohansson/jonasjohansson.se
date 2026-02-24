@@ -263,35 +263,41 @@ class SPARouter {
         }
 
         const revealProject = () => {
+          // Fade in project content while overlay stays solid on top
           currentProjects.style.transition = "opacity 0.3s ease";
           currentProjects.style.opacity = "1";
 
-          // Fade out overlay in sync, then clean up after project is fully visible
-          if (stripOverlay) {
-            stripOverlay.style.transition = "opacity 0.3s ease";
-            stripOverlay.style.opacity = "0";
-          }
-
+          // Wait for project to be fully opaque, then remove overlay instantly
           setTimeout(() => {
             stripOverlay?.remove();
             resetClickedStrip();
-          }, 300);
+          }, 350);
         };
 
         currentProjects.style.opacity = "0";
 
-        const heroImage = currentProjects.querySelector(".project-hero img, .project-hero-image img, img[data-hero]");
-        if (heroImage) {
-          const src = heroImage.src || heroImage.getAttribute("data-src");
+        const heroEl = currentProjects.querySelector(".media-item.hero img, .media-item.hero video, .project-hero img");
+        if (heroEl && heroEl.tagName === "VIDEO") {
+          // For video heroes, reveal once metadata/first frame is ready
+          if (heroEl.readyState >= 2) {
+            revealProject();
+          } else {
+            heroEl.addEventListener("loadeddata", revealProject, { once: true });
+            setTimeout(revealProject, 1000); // Fallback timeout
+          }
+        } else if (heroEl) {
+          // Force eager loading so browser fetches while container is hidden
+          heroEl.loading = "eager";
+          const src = heroEl.src || heroEl.getAttribute("data-src");
           const img = new Image();
           img.onload = revealProject;
           img.onerror = () => setTimeout(revealProject, 50);
           if (src) {
             img.src = src;
-          } else if (heroImage.complete && heroImage.naturalWidth > 0) {
+          } else if (heroEl.complete && heroEl.naturalWidth > 0) {
             revealProject();
           } else {
-            setTimeout(revealProject, 50);
+            setTimeout(revealProject, 300);
           }
         } else {
           revealProject();
