@@ -37,12 +37,7 @@ body {
   margin-top: 0;
 }
 
-html:has(body.about-visible),
-body.about-visible {
-  overflow: hidden;
-  height: 100vh;
-  height: 100dvh;
-}
+/* About overlay is position:fixed, so no body overflow change needed */
 
 /* Content wrapper */
 #content {

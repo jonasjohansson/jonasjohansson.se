@@ -1,27 +1,28 @@
 #about {
-  position: relative;
+  position: fixed;
+  top: 0;
+  left: 0;
   width: 100vw;
   height: 100vh;
   height: 100dvh;
-  min-height: 100vh;
-  min-height: 100dvh;
-  margin-top: -100vh;
-  margin-top: -100dvh;
   background: var(--color-black);
   color: var(--color-white);
   overflow: hidden;
   overflow-y: auto;
-  transition: margin-top 0.5s cubic-bezier(0.4, 0, 0.2, 1);
+  transform: translateY(-100%);
+  transition: transform 0.5s cubic-bezier(0.4, 0, 0.2, 1);
   backface-visibility: hidden;
+  overscroll-behavior: contain;
+  z-index: 200;
 }
 
 #about.visible {
-  margin-top: 0;
+  transform: translateY(0);
 }
 
 /* Direct visit to /about/ — show immediately without animation */
 #about[data-initial-about] {
-  margin-top: 0;
+  transform: translateY(0);
   transition: none;
 }
 

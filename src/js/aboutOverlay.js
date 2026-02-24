@@ -64,8 +64,6 @@ class AboutOverlay {
     this._setSubtitle(this.defaultSubtitleText);
     this.headerCenter.classList.add("overlay-active");
 
-    window.scrollTo({ top: 0, behavior: "smooth" });
-
     if (this._routerRef && currentPath !== aboutPath) {
       window.history.pushState({ route: aboutPath }, "", aboutPath);
       if (this._routerRef.currentRoute !== undefined) {
