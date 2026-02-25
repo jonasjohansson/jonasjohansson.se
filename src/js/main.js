@@ -4,7 +4,8 @@ import { router } from "./router.js";
 import { loadingManager } from "./utils/loadingManager.js";
 import { getCurrentRoute } from "./utils/routeUtils.js";
 import { aboutOverlay } from "./aboutOverlay.js";
-import { initXylophone, melodyPlayer } from "./xylophone.js";
+import { initXylophone } from "./xylophone.js";
+import { melodyPlayer } from "./melody.js";
 
 // Wire up router hooks (breaks circular dependency: router <-> strips/aboutOverlay)
 router.registerHooks({

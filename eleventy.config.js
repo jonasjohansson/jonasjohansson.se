@@ -40,7 +40,6 @@ export default function (eleventyConfig) {
   // are needed for about section images and as fallbacks
   eleventyConfig.addPassthroughCopy({ projects: "projects" });
 
-  eleventyConfig.addGlobalData("isDev", process.env.ELEVENTY_RUN_MODE !== "build");
   eleventyConfig.addGlobalData("buildYear", new Date().getFullYear());
   
   // Add about.md as global data
@@ -81,9 +80,6 @@ export default function (eleventyConfig) {
     return rendered.replace(/<a href="(https?:\/\/[^"]*)">/g, '<a href="$1" target="_blank" rel="noopener noreferrer">');
   });
 
-  eleventyConfig.addFilter("split", (str, separator) => {
-    return str.split(separator);
-  });
 
   // Sort array of strings by length descending
   eleventyConfig.addFilter("sortByLength", (arr) => {
@@ -421,7 +417,6 @@ export default function (eleventyConfig) {
     return projectContent;
   });
 
-  eleventyConfig.addFilter("findFirstImage", (content) => content?.find?.((b) => b.type === "image")?.src || null);
   eleventyConfig.addFilter("findFirstText", (content) => content?.find?.((b) => b.type === "text")?.content || null);
   eleventyConfig.addFilter("stripHtml", (str) => {
     if (!str) return "";

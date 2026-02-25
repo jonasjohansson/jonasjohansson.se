@@ -227,7 +227,6 @@ export function initXylophone() {
   );
 }
 
-export { melodyPlayer };
 
 // --- Strip animation sound effects ---
 
@@ -381,9 +380,3 @@ export function playStripExpandSound() {
   osc.stop(t + 0.4);
 }
 
-export function destroyXylophone() {
-  if (audioContext) {
-    audioContext.close().catch(() => {});
-    audioContext = null;
-  }
-}

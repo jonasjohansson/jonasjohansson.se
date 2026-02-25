@@ -141,18 +141,6 @@ class MelodyPlayer {
     return null;
   }
 
-  getAvailableMelodies() {
-    return Object.keys(MELODIES).map((key) => ({
-      key,
-      name: MELODIES[key].name,
-    }));
-  }
-
-  selectRandomMelody() {
-    const keys = Object.keys(MELODIES);
-    const randomKey = keys[Math.floor(Math.random() * keys.length)];
-    return randomKey;
-  }
 }
 
 export const melodyPlayer = new MelodyPlayer();

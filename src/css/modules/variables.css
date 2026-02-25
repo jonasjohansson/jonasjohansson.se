@@ -3,19 +3,13 @@
   /* Colors */
   --color-white: #cacaca;
   --color-black: #131313;
-  --color-dark: #1c1b23;
   --color-gray: #555555;
   --bg-primary: var(--color-black);
   --text-primary: var(--color-white);
 
-  /* Transitions */
-  --transition-fast: 0.4s ease;
-  --transition-normal: 0.6s ease;
-
   /* Spacing */
   --spacing-xs: 0.25rem;
   --spacing-sm: 0.5rem;
-  --spacing-md: 1rem;
   --spacing-lg: 1.5rem;
   --spacing-xl: 2rem;
   --spacing-2xl: 4rem;
@@ -35,7 +29,6 @@
   --letter-spacing-wider: 0.2rem;
   --line-height-tight: 1.2;
   --line-height-base: 1.425;
-  --line-height-relaxed: 1.6;
 
   /* Z-Index Scale */
   --z-strips: 1;
@@ -43,7 +36,6 @@
   --z-content: 100;
   --z-header: 300;
   --z-grain: 400;
-  --z-loading: 10000;
 
 }
 

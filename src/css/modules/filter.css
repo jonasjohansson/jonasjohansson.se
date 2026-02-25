@@ -115,7 +115,7 @@ html[data-project] .filter-option:hover {
 }
 
 .filter-option {
-  border-radius: var(--radius-md);
+  border-radius: var(--radius-sm);
   flex-shrink: 0;
   user-select: none;
   scroll-margin: 0;
