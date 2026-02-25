@@ -14,7 +14,8 @@ html {
   padding: 0;
 }
 
-html.transition-lock {
+html.transition-lock,
+body.about-visible {
   overflow: hidden;
   /* Match background to prevent color flash on iOS scroll */
   background: var(--color-black);
