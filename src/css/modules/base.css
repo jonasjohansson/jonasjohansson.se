@@ -12,6 +12,10 @@ html {
   overflow-y: auto;
   margin: 0;
   padding: 0;
+}
+
+html.transition-lock {
+  overflow: hidden;
   /* Match background to prevent color flash on iOS scroll */
   background: var(--color-black);
   /* Vertical scroll snap */

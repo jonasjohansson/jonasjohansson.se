@@ -156,6 +156,7 @@ export function attachStripEventListeners() {
 
     const handleStripActivate = () => {
       if (document.body?.dataset?.filtering === "true") return;
+      if (document.documentElement.classList.contains("transition-lock")) return;
 
       const clickedProjectSlug = strip.getAttribute("data-project");
       if (!clickedProjectSlug) return;
@@ -170,12 +171,6 @@ export function attachStripEventListeners() {
       setCurrentProjectTitle(clickedProject.title);
       document.documentElement.dataset.currentProjectTitle = clickedProject.title;
 
-      // Randomize header shape angles on each project click
-      const titleEl = document.querySelector('.header-title');
-      const subtitleEl = document.querySelector('.header-subtitle');
-      if (titleEl) titleEl.style.transform = `rotate(${(-2 - Math.random() * 8).toFixed(1)}deg)`;
-      if (subtitleEl) subtitleEl.style.transform = `rotate(${(2 + Math.random() * 8).toFixed(1)}deg)`;
-
       const headerSubtitle = getHeaderSubtitle?.();
       if (headerSubtitle) {
         scrambleText(headerSubtitle, clickedProject.title);
@@ -188,6 +183,9 @@ export function attachStripEventListeners() {
           smoothScrollTo(rect.top + window.scrollY, 600);
         }
       }
+
+      // Lock scroll during transition
+      document.documentElement.classList.add("transition-lock");
 
       const allStrips = getAllStrips?.() || [];
       strip.classList.add("selected");
@@ -335,34 +333,32 @@ export function attachTouchListeners() {
   );
 
   stripsContainer.addEventListener("touchend", () => {
-    if (!hasMoved && touchStartStrip && document.body?.dataset?.filtering !== "true") {
-      const projectSlug = touchStartStrip.getAttribute("data-project");
-      if (projectSlug) {
-        const project = projects.find((p) => p.slug === projectSlug);
-        const projectId = project?.slug || projectSlug;
-        const projectPath = getProjectPath(projectId);
-        navigateFn?.(projectPath);
-      }
-    }
+    // Tap navigation is handled by the click event on the strip itself.
+    // Previously, elementFromPoint() was used here to navigate directly,
+    // but it could return the wrong strip due to CSS transforms and flex-grow,
+    // causing taps to navigate to the wrong project.
 
     if (currentlyTouchedStrip) {
       currentlyTouchedStrip.classList.remove("touch-hover");
       currentlyTouchedStrip = null;
     }
 
+    // Always restore color and header text to the current project (or default)
+    // on touchend — lifting the finger is like hovering outside the strips
     const currentSlug = getCurrentProjectSlug();
-    if (!hasMoved || !touchStartStrip) {
-      if (currentSlug) {
-        document.documentElement.setAttribute("data-project", currentSlug);
-      } else {
-        document.documentElement.removeAttribute("data-project");
-      }
+    if (currentSlug) {
+      document.documentElement.setAttribute("data-project", currentSlug);
+    } else {
+      document.documentElement.removeAttribute("data-project");
     }
 
-    const headerSubtitle = getHeaderSubtitle?.();
-    if (headerSubtitle) {
-      const currentPageTitle = getCurrentPageTitleFn?.() || "PROGRESS NOT PERFECTION";
-      scrambleText(headerSubtitle, currentPageTitle);
+    const aboutOverlay = getAboutOverlayFn?.();
+    if (!aboutOverlay || !aboutOverlay.classList.contains("visible")) {
+      const headerSubtitle = getHeaderSubtitle?.();
+      if (headerSubtitle) {
+        const currentPageTitle = getCurrentPageTitleFn?.() || "PROGRESS NOT PERFECTION";
+        scrambleText(headerSubtitle, currentPageTitle);
+      }
     }
 
     touchStartStrip = null;

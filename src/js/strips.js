@@ -166,13 +166,14 @@ function animateStripsIn(shuffledStrips, container) {
   setTimeout(() => {
     container.classList.add("strips-initialized");
     document.body.classList.add("strips-initialized");
+    document.documentElement.classList.remove("transition-lock");
     // Resume autoplay on strip videos (may pause when container is display:none)
     container.querySelectorAll(".strip-video").forEach((v) => v.play().catch(() => {}));
   }, totalAnimationTime + 50);
 }
 
 // ---------- Initialize Strips ----------
-export function initializeStrips() {
+export function initializeStrips({ animate = true } = {}) {
   // Clean up previous listeners to prevent accumulation
   if (cleanupController) cleanupController.abort();
   cleanupController = new AbortController();
@@ -260,7 +261,13 @@ export function initializeStrips() {
         allStrips = shuffledStrips;
         stripImages = Array.from(stripsContainer.querySelectorAll(".strip-image"));
         attachStripEventListeners();
-        animateStripsIn(shuffledStrips, stripsContainer);
+        if (animate) {
+          animateStripsIn(shuffledStrips, stripsContainer);
+        } else {
+          shuffledStrips.forEach((strip) => strip.classList.add("strip-visible"));
+          stripsContainer.classList.add("strips-initialized");
+          document.body.classList.add("strips-initialized");
+        }
         stripsContainer.querySelectorAll(".strip-video").forEach((v) => v.play().catch(() => {}));
       });
     };
@@ -274,7 +281,13 @@ export function initializeStrips() {
       allStrips = shuffledStrips;
       stripImages = Array.from(stripsContainer.querySelectorAll(".strip-image"));
       attachStripEventListeners();
-      animateStripsIn(shuffledStrips, stripsContainer);
+      if (animate) {
+        animateStripsIn(shuffledStrips, stripsContainer);
+      } else {
+        shuffledStrips.forEach((strip) => strip.classList.add("strip-visible"));
+        stripsContainer.classList.add("strips-initialized");
+        document.body.classList.add("strips-initialized");
+      }
       stripsContainer.querySelectorAll(".strip-video").forEach((v) => v.play().catch(() => {}));
     });
   } else {

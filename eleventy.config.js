@@ -198,6 +198,16 @@ export default function (eleventyConfig) {
       let title = dir.replace(/[._-]+/g, " ").trim();
       let date = null;
 
+      // Read title from frontmatter so special characters (umlauts etc.) are preserved
+      const dataMdPath = path.join(dirPath, "data.md");
+      if (existsSync(dataMdPath)) {
+        try {
+          const parsed = matter(readFileSync(dataMdPath, "utf8"));
+          if (parsed.data.title) title = parsed.data.title;
+          if (parsed.data.date) date = new Date(parsed.data.date).toISOString();
+        } catch (err) {}
+      }
+
       files.forEach((f) => {
         const ext = path.extname(f.name).toLowerCase();
         if ([".jpg", ".jpeg", ".png", ".webp", ".gif"].includes(ext)) {

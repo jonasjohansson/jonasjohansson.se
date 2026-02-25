@@ -67,23 +67,9 @@ class SPARouter {
     }
   }
 
-  randomizeHeaderAngles() {
-    const titleEl = document.querySelector('.header-title');
-    const subtitleEl = document.querySelector('.header-subtitle');
-    const titleDir = Math.random() < 0.5 ? -1 : 1;
-    const subtitleDir = Math.random() < 0.5 ? -1 : 1;
-    if (titleEl) titleEl.style.transform = `rotate(${(titleDir * (2 + Math.random() * 8)).toFixed(1)}deg)`;
-    if (subtitleEl) subtitleEl.style.transform = `rotate(${(subtitleDir * (2 + Math.random() * 8)).toFixed(1)}deg)`;
-  }
-
-  resetHeaderAngles() {
-    const titleEl = document.querySelector('.header-title');
-    const subtitleEl = document.querySelector('.header-subtitle');
-    if (titleEl) titleEl.style.transform = '';
-    if (subtitleEl) subtitleEl.style.transform = '';
-  }
 
   async showHome(showAboutOverlay = false, immediate = false) {
+    document.documentElement.classList.add("transition-lock");
     document.body.setAttribute("data-route", "home");
     document.body.classList.remove("about-visible", "project-visible");
 
@@ -128,11 +114,15 @@ class SPARouter {
 
       if (!stripsContainer.classList.contains("strips-initialized")) {
         this._hooks.initializeStrips?.();
+      } else {
+        // Strips already initialized, unlock after a short settle
+        setTimeout(() => document.documentElement.classList.remove("transition-lock"), 400);
       }
+    } else {
+      document.documentElement.classList.remove("transition-lock");
     }
 
     resetProjectColors();
-    this.resetHeaderAngles();
     document.documentElement.removeAttribute("data-project");
 
     if (showAboutOverlay) {
@@ -267,10 +257,11 @@ class SPARouter {
           currentProjects.style.transition = "opacity 0.3s ease";
           currentProjects.style.opacity = "1";
 
-          // Wait for project to be fully opaque, then remove overlay instantly
+          // Wait for project to be fully opaque, then remove overlay and unlock scroll
           setTimeout(() => {
             stripOverlay?.remove();
             resetClickedStrip();
+            document.documentElement.classList.remove("transition-lock");
           }, 350);
         };
 
@@ -305,12 +296,13 @@ class SPARouter {
       } else {
         resetClickedStrip();
         if (!clickedStrip) this.updateStripVisibility(slug);
+        document.documentElement.classList.remove("transition-lock");
       }
 
-      this.randomizeHeaderAngles();
       await this._hooks.applyProjectColor?.(project);
     } catch (error) {
       console.error("Error loading project:", error);
+      document.documentElement.classList.remove("transition-lock");
     }
   }
 

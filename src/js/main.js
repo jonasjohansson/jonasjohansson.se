@@ -38,8 +38,8 @@ async function showContentForRoute(route) {
     initializeStrips();
 
   } else if (route === "about") {
-    // Initialize strips behind the about section so they're ready when user closes about
-    initializeStrips();
+    // Initialize strips behind the about section — no animation since they're hidden
+    initializeStrips({ animate: false });
 
     // Show about section
     const aboutEl = document.getElementById("about");
@@ -82,8 +82,8 @@ async function showContentForRoute(route) {
     if (projects) {
       body.classList.add("project-visible");
 
-      // Initialize strips to ensure event listeners are attached
-      initializeStrips();
+      // Initialize strips silently — no animation or sound on direct project load
+      initializeStrips({ animate: false });
 
       // Hide the current project's strip from navigation
       const currentSlug = window.location.pathname.match(/\/work\/([^\/]+)/)?.[1];
