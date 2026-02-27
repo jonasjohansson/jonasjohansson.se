@@ -91,10 +91,10 @@ export default function (eleventyConfig) {
 
   const singleImageOptions = {
     widths: [null],
-    formats: ["jpeg"],
+    formats: ["webp"],
     urlPath: urlPathBase,
     outputDir: "dist/img",
-    sharpJpegOptions: { quality: 90, progressive: true, mozjpeg: true },
+    sharpWebpOptions: { quality: 90 },
   };
 
   // Add about images list as global data
@@ -128,9 +128,9 @@ export default function (eleventyConfig) {
     try {
       const srcPath = path.join(process.cwd(), src);
       const metadata = await Image(srcPath, singleImageOptions);
-      const jpeg = metadata.jpeg?.[0];
-      if (jpeg?.url) {
-        return jpeg.url.startsWith('/') ? jpeg.url : `/${jpeg.url}`;
+      const webp = metadata.webp?.[0];
+      if (webp?.url) {
+        return webp.url.startsWith('/') ? webp.url : `/${webp.url}`;
       }
       return null;
     } catch (err) {
@@ -144,8 +144,8 @@ export default function (eleventyConfig) {
       try {
         const srcPath = path.join(process.cwd(), src);
         const metadata = await Image(srcPath, singleImageOptions);
-        const jpeg = metadata.jpeg?.[0];
-        if (!jpeg) {
+        const webp = metadata.webp?.[0];
+        if (!webp) {
           return `<img src="${src}" alt="${alt}" class="${className}" />`;
         }
 
@@ -154,8 +154,8 @@ export default function (eleventyConfig) {
           class: className,
           loading: className?.includes("lcp") ? "eager" : "lazy",
           decoding: "async",
-          src: jpeg.url,
-          ...(jpeg.width && jpeg.height ? { width: jpeg.width, height: jpeg.height } : {}),
+          src: webp.url,
+          ...(webp.width && webp.height ? { width: webp.width, height: webp.height } : {}),
           ...(sizes ? { sizes } : {}),
         };
         if (className?.includes("lcp")) attrs.fetchpriority = "high";

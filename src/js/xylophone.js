@@ -12,6 +12,16 @@ function initAudio() {
   return audioContext;
 }
 
+// Ensure audio context exists and is running; returns null if not ready
+function getActiveAudio() {
+  if (!audioContext) return null;
+  if (audioContext.state === "suspended") {
+    audioContext.resume();
+    return null;
+  }
+  return audioContext;
+}
+
 // Get number of currently visible strips (set by filter system)
 export function getVisibleStripCount() {
   const container = document.getElementById("strips");
@@ -22,8 +32,8 @@ export function getVisibleStripCount() {
 
 // Subtle bass tone for minimal filter results
 function playBassNote(frequency = 55, duration = 0.5) {
-  const ctx = initAudio();
-  if (ctx.state === "suspended") return;
+  const ctx = getActiveAudio();
+  if (!ctx) return;
 
   const t = ctx.currentTime;
 
@@ -52,7 +62,8 @@ function playBassNote(frequency = 55, duration = 0.5) {
 
 // Generate a clear, melodic tone for Mario
 function playNote(frequency, duration = 0.3) {
-  const ctx = initAudio();
+  const ctx = getActiveAudio();
+  if (!ctx) return;
 
   // Create oscillator for the main tone
   const oscillator = ctx.createOscillator();
@@ -140,9 +151,10 @@ export function initXylophone() {
   let currentTouchStrip = -1; // Track which strip the touch is currently over
   let isTouching = false;
 
-  // Mouse events for desktop
+  // Mouse events for desktop — also init audio on first interaction
   strips.forEach((strip, index) => {
     strip.addEventListener("mouseenter", () => {
+      initAudio();
       playAdaptiveNote(index, strips.length);
     });
   });
@@ -156,10 +168,11 @@ export function initXylophone() {
   stripsContainer.addEventListener(
     "touchstart",
     (e) => {
+      initAudio();
       isTouching = true;
       hasDetectedDirection = false;
       isHorizontalGesture = false;
-      
+
       const touch = e.touches[0];
       touchStartX = touch.clientX;
       touchStartY = touch.clientY;
@@ -232,8 +245,8 @@ export function initXylophone() {
 
 // Wood block sound — sharp crack with hollow resonance (hyoshigi-style)
 function playWoodClick(freq, volume = 0.08) {
-  const ctx = initAudio();
-  if (ctx.state === "suspended") return;
+  const ctx = getActiveAudio();
+  if (!ctx) return;
 
   const t = ctx.currentTime;
 
@@ -330,8 +343,8 @@ export function playStripExitSound(index, totalStrips) {
 
 // Deep wood thud for the expand — like a large taiko or temple drum
 export function playStripExpandSound() {
-  const ctx = initAudio();
-  if (ctx.state === "suspended") return;
+  const ctx = getActiveAudio();
+  if (!ctx) return;
 
   const t = ctx.currentTime;
 
