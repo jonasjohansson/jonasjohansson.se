@@ -89,12 +89,24 @@ export default function (eleventyConfig) {
 
   const urlPathBase = process.env.PATH_PREFIX ? `${process.env.PATH_PREFIX}/img` : "/img";
 
-  const singleImageOptions = {
-    widths: [null],
+  const sharpWebpOptions = { quality: 90 };
+
+  // Single width for strips (background-image, no srcset)
+  const stripImageOptions = {
+    widths: [1920],
     formats: ["webp"],
     urlPath: urlPathBase,
     outputDir: "dist/img",
-    sharpWebpOptions: { quality: 90 },
+    sharpWebpOptions,
+  };
+
+  // Multiple widths for project page images (srcset)
+  const responsiveImageOptions = {
+    widths: [640, 1280, 1920],
+    formats: ["webp"],
+    urlPath: urlPathBase,
+    outputDir: "dist/img",
+    sharpWebpOptions,
   };
 
   // Add about images list as global data
@@ -127,7 +139,7 @@ export default function (eleventyConfig) {
   async function processImageForStrips(src) {
     try {
       const srcPath = path.join(process.cwd(), src);
-      const metadata = await Image(srcPath, singleImageOptions);
+      const metadata = await Image(srcPath, stripImageOptions);
       const webp = metadata.webp?.[0];
       if (webp?.url) {
         return webp.url.startsWith('/') ? webp.url : `/${webp.url}`;
@@ -143,20 +155,24 @@ export default function (eleventyConfig) {
     async (src, alt, className = "media-img", sizes) => {
       try {
         const srcPath = path.join(process.cwd(), src);
-        const metadata = await Image(srcPath, singleImageOptions);
-        const webp = metadata.webp?.[0];
-        if (!webp) {
+        const metadata = await Image(srcPath, responsiveImageOptions);
+        const webpImages = metadata.webp;
+        if (!webpImages?.length) {
           return `<img src="${src}" alt="${alt}" class="${className}" />`;
         }
+
+        const largest = webpImages[webpImages.length - 1];
+        const srcset = webpImages.map((img) => `${img.url} ${img.width}w`).join(", ");
 
         const attrs = {
           alt,
           class: className,
           loading: className?.includes("lcp") ? "eager" : "lazy",
           decoding: "async",
-          src: webp.url,
-          ...(webp.width && webp.height ? { width: webp.width, height: webp.height } : {}),
-          ...(sizes ? { sizes } : {}),
+          src: largest.url,
+          srcset,
+          sizes: sizes || "100vw",
+          ...(largest.width && largest.height ? { width: largest.width, height: largest.height } : {}),
         };
         if (className?.includes("lcp")) attrs.fetchpriority = "high";
 
