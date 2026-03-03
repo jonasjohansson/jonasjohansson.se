@@ -8,17 +8,11 @@ let currentLayout = "normal";
 let toggleBtn = null;
 
 function readStoredLayout() {
-  try {
-    const stored = localStorage.getItem(STORAGE_KEY);
-    if (stored && LAYOUTS.includes(stored)) return stored;
-  } catch {}
   return "normal";
 }
 
 function writeStoredLayout(layout) {
-  try {
-    localStorage.setItem(STORAGE_KEY, layout);
-  } catch {}
+  // No persistence - always start in normal (vertical) mode
 }
 
 function applyLayout(layout) {

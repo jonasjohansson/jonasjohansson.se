@@ -76,11 +76,18 @@ function tick() {
       const strips = stripsContainer.querySelectorAll(".strip-image");
       const count = strips.length || 1;
       for (let i = 0; i < strips.length; i++) {
-        // Each strip's normalized position (0..1) within the row
+        // Selected: ease background position toward center for seamless hero transition
+        const parent = strips[i].parentElement;
+        if (parent?.classList.contains("selected") || parent?.classList.contains("not-selected")) {
+          const currentBgX = parseFloat(strips[i].style.getPropertyValue("--bg-x")) || 50;
+          const currentBgY = parseFloat(strips[i].style.getPropertyValue("--bg-y")) || 50;
+          const easedX = (currentBgX + (50 - currentBgX) * 0.15).toFixed(1);
+          const easedY = (currentBgY + (50 - currentBgY) * 0.15).toFixed(1);
+          strips[i].style.setProperty("--bg-x", `${easedX}%`);
+          strips[i].style.setProperty("--bg-y", `${easedY}%`);
+          continue;
+        }
         const stripNorm = count > 1 ? i / (count - 1) : 0.5;
-        // How far the cursor is from this strip's center, mapped to bg offset
-        // curX=0 means cursor far left, curX=1 means far right
-        // A strip on the left (stripNorm=0) should shift bg-x toward cursor
         const bgX = (30 + (curX - stripNorm) * 40).toFixed(1);
         const bgY = (30 + curY * 40).toFixed(1);
         strips[i].style.setProperty("--bg-x", `${bgX}%`);

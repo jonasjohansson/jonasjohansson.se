@@ -59,10 +59,24 @@ body.layout-horizontal .strip:focus-visible {
   transform: translateZ(0);
 }
 
+body.layout-horizontal .strip.selected {
+  flex-grow: 1000;
+  transition: flex-grow 1s cubic-bezier(0.4, 0, 0.2, 1) 0.5s;
+}
+
 body.layout-horizontal .strip.strip-visible.not-selected {
   transform: translateX(105%) !important;
   transition: transform 0.5s cubic-bezier(0.5, 0, 1, 0.5) !important;
   pointer-events: none;
+}
+
+body.layout-horizontal .strip::after {
+  writing-mode: horizontal-tb;
+  transform: none;
+  bottom: auto;
+  left: var(--spacing-lg);
+  top: 50%;
+  translate: 0 -50%;
 }
 
 body.layout-horizontal .strip .strip-image {
@@ -105,10 +119,24 @@ body.layout-list .strip:focus-visible {
   transform: translateZ(0);
 }
 
+body.layout-list .strip.selected {
+  flex-grow: 1000;
+  transition: flex-grow 1s cubic-bezier(0.4, 0, 0.2, 1) 0.5s;
+}
+
 body.layout-list .strip.strip-visible.not-selected {
   transform: translateX(-105%) !important;
   transition: transform 0.5s cubic-bezier(0.5, 0, 1, 0.5) !important;
   pointer-events: none;
+}
+
+body.layout-list .strip::after {
+  writing-mode: horizontal-tb;
+  transform: none;
+  bottom: auto;
+  left: var(--spacing-lg);
+  top: 50%;
+  translate: 0 -50%;
 }
 
 body.layout-list .strip .strip-image {
