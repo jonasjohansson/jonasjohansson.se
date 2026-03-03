@@ -312,6 +312,30 @@ export default function (eleventyConfig) {
     return { title, tags, type, year, dataMdPath };
   }
 
+  // Project colors mirroring variables.css (slug -> hex)
+  const PROJECT_COLORS = {
+    "danny-saucedo": "#9b2500",
+    "svartljus": "#b07600",
+    "eastern-city-portal": "#4698d2",
+    "embed": "#1a43fe",
+    "emerging-sensation": "#1521b4",
+    "firestarter": "#005d80",
+    "harpa": "#ff5c1a",
+    "heroes": "#727171",
+    "icehotel": "#0b4f80",
+    "jag-ar-gud": "#833e00",
+    "lights-for-ukraine": "#5500a0",
+    "lyra": "#070a79",
+    "people-in-orbit": "#e16518",
+    "resonance": "#4f0396",
+    "retrospectives": "#ff6a1a",
+    "sala-hjartslag": "#962d00",
+    "tinymassive": "#00338e",
+    "transcend": "#cc1c65",
+    "tufting-ex-machina": "#f37100",
+    "vista": "#8401ff",
+  };
+
   // Build a project entry with optimized first image
   async function buildProjectEntry(root, project) {
     const { title, tags, type, year, dataMdPath } = readProjectMeta(root, project.slug, project.date);
@@ -325,7 +349,9 @@ export default function (eleventyConfig) {
         firstImageOptimized = `/${firstImageOptimized}`;
       }
     }
+    const color = PROJECT_COLORS[project.slug] || null;
     const entry = { title, images: firstImageOptimized?.startsWith('/') ? [firstImageOptimized] : [], tags, type, year, slug: project.slug };
+    if (color) entry.color = color;
     if (heroVideo) entry.heroVideo = heroVideo;
     return entry;
   }

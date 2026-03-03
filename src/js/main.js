@@ -6,6 +6,7 @@ import { getCurrentRoute } from "./utils/routeUtils.js";
 import { aboutOverlay } from "./aboutOverlay.js";
 import { initXylophone } from "./xylophone.js";
 import { melodyPlayer } from "./melody.js";
+import { layoutToggle } from "./gameMode/easyMode.js";
 
 // Wire up router hooks (breaks circular dependency: router <-> strips/aboutOverlay)
 router.registerHooks({
@@ -156,6 +157,9 @@ async function initializeApp() {
 
   // Once loading is complete, show content for the route
   showContentForRoute(route);
+
+  // Initialize layout toggle (adds icon to header)
+  layoutToggle.init();
 }
 
 // Initialize when DOM is ready

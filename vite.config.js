@@ -13,7 +13,7 @@ function cleanOldAssets() {
       const jsFiles = readdirSync(assetsJsPath);
       const mainFiles = jsFiles.filter(f => f.startsWith("main.") && f.endsWith(".js"));
       const vendorFiles = jsFiles.filter(f => f.startsWith("vendor.") && f.endsWith(".js"));
-      
+
       if (mainFiles.length > 1) {
         const mainFilesWithTime = mainFiles.map(f => ({
           name: f,
@@ -30,7 +30,7 @@ function cleanOldAssets() {
           name: f,
           time: statSync(join(assetsJsPath, f)).mtimeMs
         })).sort((a, b) => b.time - a.time);
-        
+
         vendorFilesWithTime.slice(1).forEach(({ name }) => {
           rmSync(join(assetsJsPath, name), { force: true });
         });
@@ -94,7 +94,6 @@ export default defineConfig({
         },
         chunkFileNames: "assets/js/[name].[hash].js",
         entryFileNames: "assets/js/[name].[hash].js",
-        // Removed manualChunks to bundle everything into one file
       },
     },
   },

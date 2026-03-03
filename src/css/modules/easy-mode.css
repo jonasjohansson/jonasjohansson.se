@@ -1,0 +1,117 @@
+/* Layout toggle button */
+.layout-toggle {
+  position: fixed;
+  top: var(--spacing-lg);
+  top: calc(var(--spacing-lg) + env(safe-area-inset-top));
+  right: var(--spacing-lg);
+  z-index: var(--z-header);
+  background: none;
+  color: var(--color-white);
+  border: none;
+  padding: 6px;
+  cursor: pointer;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  opacity: 0.6;
+  transition: opacity 0.3s ease;
+}
+
+.layout-toggle:hover {
+  opacity: 1;
+}
+
+/* Hide on project pages */
+body[data-route="project"] .layout-toggle,
+body[data-route="about"] .layout-toggle {
+  display: none;
+}
+
+/* ── Horizontal layout: strips stacked within viewport ── */
+
+body.layout-horizontal #strips {
+  flex-direction: column;
+  overflow-y: hidden;
+  overflow-x: hidden;
+}
+
+body.layout-horizontal .strip {
+  flex: 1 1 0;
+  height: auto;
+  min-height: 0;
+  margin-left: 0;
+  margin-top: -1px;
+  transform: translateX(105%);
+}
+
+body.layout-horizontal .strip:first-child {
+  margin-top: 0;
+}
+
+body.layout-horizontal .strip.strip-visible {
+  transform: translateX(0);
+}
+
+body.layout-horizontal .strip:hover,
+body.layout-horizontal .strip.touch-hover,
+body.layout-horizontal .strip:focus-visible {
+  flex-grow: 4;
+  transform: translateZ(0);
+}
+
+body.layout-horizontal .strip.strip-visible.not-selected {
+  transform: translateX(105%) !important;
+  transition: transform 0.5s cubic-bezier(0.5, 0, 1, 0.5) !important;
+  pointer-events: none;
+}
+
+body.layout-horizontal .strip .strip-image {
+  width: 100%;
+  height: 100%;
+}
+
+/* ── List layout: scrollable rows with dynamic height ── */
+
+body.layout-list #strips {
+  flex-direction: column;
+  height: auto;
+  min-height: auto;
+  overflow-y: auto;
+  overflow-x: hidden;
+  scroll-snap-align: none;
+}
+
+body.layout-list .strip {
+  flex: 1 1 20vh;
+  min-height: 20vh;
+  height: auto;
+  margin-left: 0;
+  margin-top: -1px;
+  transform: translateX(-105%);
+}
+
+body.layout-list .strip:first-child {
+  margin-top: 0;
+}
+
+body.layout-list .strip.strip-visible {
+  transform: translateX(0);
+}
+
+body.layout-list .strip:hover,
+body.layout-list .strip.touch-hover,
+body.layout-list .strip:focus-visible {
+  flex-grow: 4;
+  transform: translateZ(0);
+}
+
+body.layout-list .strip.strip-visible.not-selected {
+  transform: translateX(-105%) !important;
+  transition: transform 0.5s cubic-bezier(0.5, 0, 1, 0.5) !important;
+  pointer-events: none;
+}
+
+body.layout-list .strip .strip-image {
+  width: 100%;
+  height: 100%;
+}

@@ -71,6 +71,21 @@ function tick() {
         stripsContainer.style.setProperty("--cursor-y", `${posY}%`);
         lastPosY = posY;
       }
+
+      // Update per-strip background position for "eyes follow cursor" effect
+      const strips = stripsContainer.querySelectorAll(".strip-image");
+      const count = strips.length || 1;
+      for (let i = 0; i < strips.length; i++) {
+        // Each strip's normalized position (0..1) within the row
+        const stripNorm = count > 1 ? i / (count - 1) : 0.5;
+        // How far the cursor is from this strip's center, mapped to bg offset
+        // curX=0 means cursor far left, curX=1 means far right
+        // A strip on the left (stripNorm=0) should shift bg-x toward cursor
+        const bgX = (30 + (curX - stripNorm) * 40).toFixed(1);
+        const bgY = (30 + curY * 40).toFixed(1);
+        strips[i].style.setProperty("--bg-x", `${bgX}%`);
+        strips[i].style.setProperty("--bg-y", `${bgY}%`);
+      }
     }
   }
 

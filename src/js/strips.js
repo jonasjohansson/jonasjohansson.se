@@ -1,5 +1,5 @@
-import { shuffle } from "./utils/helpers.js";
 import { SETTINGS } from "./config/settings.js";
+import { sortByHue } from "./gameMode/hueSort.js";
 const {
   animation: { stripInitialDelayStep, stripInitialDuration },
   images: { loadMargin },
@@ -219,7 +219,7 @@ export function initializeStrips({ animate = true } = {}) {
     stripsContainer.classList.remove("strips-initialized");
     stripsContainer.style.display = "none";
 
-    shuffledStrips = shuffle([...allStrips]);
+    shuffledStrips = sortByHue([...allStrips], projects);
 
     shuffledStrips.forEach((strip) => {
       strip.remove();
