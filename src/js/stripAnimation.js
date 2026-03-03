@@ -88,8 +88,8 @@ function tick() {
           continue;
         }
         const stripNorm = count > 1 ? i / (count - 1) : 0.5;
-        const bgX = (30 + (curX - stripNorm) * 40).toFixed(1);
-        const bgY = (30 + curY * 40).toFixed(1);
+        const bgX = (50 + (curX - stripNorm) * 15).toFixed(1);
+        const bgY = (40 + curY * 20).toFixed(1);
         strips[i].style.setProperty("--bg-x", `${bgX}%`);
         strips[i].style.setProperty("--bg-y", `${bgY}%`);
       }

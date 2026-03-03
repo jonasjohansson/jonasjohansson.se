@@ -185,6 +185,7 @@ class SPARouter {
 
         if (!projectContent) {
           console.warn("Project content not found in response");
+          document.documentElement.classList.remove("transition-lock");
           return;
         }
 
@@ -205,17 +206,6 @@ class SPARouter {
         currentProjects = projectContent;
       }
 
-      // Scroll to content
-      requestAnimationFrame(() => {
-        const contentWrapper = document.getElementById("content");
-        if (contentWrapper) {
-          const contentPosition = contentWrapper.getBoundingClientRect().top + window.scrollY;
-          window.scrollTo({ top: contentPosition, behavior: "auto" });
-        } else {
-          window.scrollTo({ top: getProjectScrollPosition(), behavior: "auto" });
-        }
-      });
-
       const resetClickedStrip = () => {
         if (!clickedStrip) return;
         clickedStrip.style.transition = "opacity 0.1s ease";
@@ -230,6 +220,19 @@ class SPARouter {
         }, 100);
       };
 
+      // Scroll to project content (called after transition-lock is removed so scroll works)
+      const scrollToProject = () => {
+        requestAnimationFrame(() => {
+          const contentWrapper = document.getElementById("content");
+          if (contentWrapper) {
+            const contentPosition = contentWrapper.getBoundingClientRect().top + window.scrollY;
+            window.scrollTo({ top: contentPosition, behavior: "auto" });
+          } else {
+            window.scrollTo({ top: getProjectScrollPosition(), behavior: "auto" });
+          }
+        });
+      };
+
       if (currentProjects) {
         document.body.classList.add("project-visible");
         document.documentElement.classList.add("project-visible");
@@ -239,7 +242,8 @@ class SPARouter {
         if (clickedStrip) {
           const stripImage = clickedStrip.querySelector(".strip-image");
           if (stripImage) {
-            const bgImage = window.getComputedStyle(stripImage).backgroundImage;
+            const computed = window.getComputedStyle(stripImage);
+            const bgImage = computed.backgroundImage;
             stripOverlay = document.createElement("div");
             Object.assign(stripOverlay.style, {
               position: "fixed", top: "0", left: "0",
@@ -252,7 +256,11 @@ class SPARouter {
           }
         }
 
+        let revealed = false;
         const revealProject = () => {
+          if (revealed) return;
+          revealed = true;
+
           // Fade in project content while overlay stays solid on top
           currentProjects.style.transition = "opacity 0.3s ease";
           currentProjects.style.opacity = "1";
@@ -262,6 +270,7 @@ class SPARouter {
             stripOverlay?.remove();
             resetClickedStrip();
             document.documentElement.classList.remove("transition-lock");
+            scrollToProject();
           }, 350);
         };
 
@@ -297,6 +306,7 @@ class SPARouter {
         resetClickedStrip();
         if (!clickedStrip) this.updateStripVisibility(slug);
         document.documentElement.classList.remove("transition-lock");
+        scrollToProject();
       }
 
       await this._hooks.applyProjectColor?.(project);
