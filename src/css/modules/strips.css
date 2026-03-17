@@ -78,6 +78,14 @@
   object-fit: cover;
   object-position: center;
   z-index: 1;
+  filter: saturate(0);
+  transition: filter 0.4s ease;
+}
+
+.strip:hover .strip-video,
+.strip.touch-hover .strip-video,
+.strip.selected .strip-video {
+  filter: saturate(1);
 }
 
 .strip-image {
@@ -86,6 +94,14 @@
   background-size: cover;
   background-position: var(--bg-x, 50%) var(--bg-y, 50%);
   background-repeat: no-repeat;
+  filter: saturate(0);
+  transition: filter 0.4s ease;
+}
+
+.strip:hover .strip-image,
+.strip.touch-hover .strip-image,
+.strip.selected .strip-image {
+  filter: saturate(1);
 }
 
 .strip:first-child {
@@ -110,10 +126,6 @@
   outline-offset: -2px;
 }
 
-.strip.selected::after,
-.strip.not-selected::after {
-  display: none;
-}
 
 /* Phase 1: other strips slide down, Phase 2: selected expands */
 .strip.selected {
@@ -145,39 +157,13 @@
 }
 
 .strip::after {
-  content: attr(data-project-title);
-  position: absolute;
-  bottom: var(--spacing-sm);
-  left: 50%;
-  translate: -50% 0;
-  font-family: var(--font-family);
-  font-size: var(--font-size-small);
-  letter-spacing: var(--letter-spacing-base);
-  color: var(--color-white);
-  text-transform: uppercase;
-  white-space: nowrap;
-  writing-mode: vertical-rl;
-  transform: rotate(180deg);
-  transform-origin: center center;
-  pointer-events: none;
-  z-index: 2;
-  opacity: 0.8;
+  display: none;
 }
 
 .strip.hidden {
   display: none;
 }
 
-/* When a strip is wide enough, show caption horizontally */
-@container (min-width: 150px) {
-  .strip::after {
-    writing-mode: horizontal-tb;
-    transform: none;
-    left: var(--spacing-sm);
-    translate: 0 0;
-    text-align: left;
-  }
-}
 
 @media (prefers-reduced-motion: reduce) {
   .strip {

@@ -69,14 +69,6 @@ header {
   z-index: 2;
 }
 
-/* Tilt header shapes when on a project page */
-html[data-project] .header-title {
-  transform: rotate(var(--header-tilt-title, -2deg));
-}
-
-html[data-project] .header-subtitle {
-  transform: rotate(var(--header-tilt-subtitle, 1.5deg));
-}
 
 /* Hover - darken both shapes */
 .header-center:hover .header-title,
