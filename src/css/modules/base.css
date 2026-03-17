@@ -49,6 +49,7 @@ body {
   position: relative;
   z-index: var(--z-content);
   overflow-anchor: none;
+  padding: var(--spacing-lg);
 }
 
 /* Hide scrollbars */
