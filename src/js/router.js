@@ -52,13 +52,7 @@ class SPARouter {
 
     const relativePath = pathPrefix ? path.replace(pathPrefix, "") : path;
 
-    if (relativePath === "/about" || relativePath === "/about/") {
-      this.showHome(true, true);
-      this.announce("About");
-      return;
-    }
-
-    if (relativePath === "/" || relativePath === "/index.html" || relativePath === "") {
+    if (relativePath === "/" || relativePath === "/index.html" || relativePath === "" || relativePath === "/about" || relativePath === "/about/" || relativePath === "/work" || relativePath === "/work/") {
       this.showHome();
       this.announce("Home");
     } else {
@@ -68,14 +62,10 @@ class SPARouter {
   }
 
 
-  async showHome(showAboutOverlay = false, immediate = false) {
+  async showHome() {
     document.documentElement.classList.add("transition-lock");
     document.body.setAttribute("data-route", "home");
-    document.body.classList.remove("about-visible", "project-visible");
-
-    if (!showAboutOverlay) {
-      this._hooks.hideAbout?.(true);
-    }
+    document.body.classList.remove("project-visible");
 
     clearExistingProjects();
 
@@ -124,15 +114,6 @@ class SPARouter {
 
     resetProjectColors();
     document.documentElement.removeAttribute("data-project");
-
-    if (showAboutOverlay) {
-      this._hooks.initAbout?.();
-      if (immediate) {
-        this._hooks.showAbout?.(true);
-      } else {
-        this._hooks.showAbout?.();
-      }
-    }
   }
 
   async showProject(slug) {
@@ -143,9 +124,7 @@ class SPARouter {
     }
 
     document.body.setAttribute("data-route", "project");
-    document.body.classList.remove("about-visible");
     document.documentElement.setAttribute("data-project", slug);
-    this._hooks.hideAbout?.(true);
 
     this._hooks.updateCurrentPageTitle?.(project.title);
     this._hooks.resetFilters?.();

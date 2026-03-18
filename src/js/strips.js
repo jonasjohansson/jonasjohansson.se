@@ -117,23 +117,16 @@ const imageObserver = new IntersectionObserver(
   }
 );
 
-// iOS Safari viewport height fix
+// iOS Safari viewport height fix (no-op, CSS handles sizing now)
 function setStripsHeight() {
-  if (!stripsContainer) return;
-  const vh = Math.max(window.innerHeight, document.documentElement.clientHeight || window.innerHeight);
-  stripsContainer.style.height = `${vh}px`;
-  allStrips.forEach((strip) => {
-    strip.style.height = `${vh}px`;
-  });
 }
 
 // Shared helper to insert strips into DOM after shuffle
-function insertStripsIntoDOM(shuffledStrips, container, vh) {
+function insertStripsIntoDOM(shuffledStrips, container) {
   const fragment = document.createDocumentFragment();
   shuffledStrips.forEach((strip, index) => {
     strip.setAttribute("data-index", index);
     strip.style.setProperty("--strip-index", String(index));
-    strip.style.height = `${vh}px`;
     strip.classList.remove("strip-visible");
 
     const stripImage = strip.querySelector(".strip-image");
@@ -152,24 +145,15 @@ function insertStripsIntoDOM(shuffledStrips, container, vh) {
 
 // Animate strips in with staggered delay
 function animateStripsIn(shuffledStrips, container) {
-  const totalStrips = shuffledStrips.length;
-  const lastStripDelay = (totalStrips - 1) * stripInitialDelayStep;
-  const totalAnimationTime = lastStripDelay + stripInitialDuration;
-
-  shuffledStrips.forEach((strip, index) => {
-    setTimeout(() => {
-      strip.classList.add("strip-visible");
-      playStripEnterSound(index, totalStrips);
-    }, index * stripInitialDelayStep);
+  // Show all strips immediately, no staggered animation
+  shuffledStrips.forEach((strip) => {
+    strip.classList.add("strip-visible");
   });
 
-  setTimeout(() => {
-    container.classList.add("strips-initialized");
-    document.body.classList.add("strips-initialized");
-    document.documentElement.classList.remove("transition-lock");
-    // Resume autoplay on strip videos (may pause when container is display:none)
-    container.querySelectorAll(".strip-video").forEach((v) => v.play().catch(() => {}));
-  }, totalAnimationTime + 50);
+  container.classList.add("strips-initialized");
+  document.body.classList.add("strips-initialized");
+  document.documentElement.classList.remove("transition-lock");
+  container.querySelectorAll(".strip-video").forEach((v) => v.play().catch(() => {}));
 }
 
 // ---------- Initialize Strips ----------
@@ -231,8 +215,6 @@ export function initializeStrips({ animate = true } = {}) {
       strip.style.removeProperty("animation");
     });
 
-    const vh = Math.max(window.innerHeight, document.documentElement.clientHeight || window.innerHeight);
-    stripsContainer.style.height = `${vh}px`;
 
     const preloadAllImages = async () => {
       const imageData = shuffledStrips.map((strip) => {
@@ -256,7 +238,7 @@ export function initializeStrips({ animate = true } = {}) {
       stripsContainer.style.display = "";
 
       requestAnimationFrame(() => {
-        insertStripsIntoDOM(shuffledStrips, stripsContainer, vh);
+        insertStripsIntoDOM(shuffledStrips, stripsContainer);
 
         allStrips = shuffledStrips;
         stripImages = Array.from(stripsContainer.querySelectorAll(".strip-image"));
@@ -276,7 +258,7 @@ export function initializeStrips({ animate = true } = {}) {
       console.warn("Error preloading images:", err);
       stripsContainer.style.display = "";
 
-      insertStripsIntoDOM(shuffledStrips, stripsContainer, vh);
+      insertStripsIntoDOM(shuffledStrips, stripsContainer);
 
       allStrips = shuffledStrips;
       stripImages = Array.from(stripsContainer.querySelectorAll(".strip-image"));

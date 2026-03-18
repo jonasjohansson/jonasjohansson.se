@@ -5,39 +5,33 @@
   transition: opacity 0.3s ease;
 }
 
-/* Filter Dropdown */
+/* Only show filter on desktop landscape */
 .filter-dropdown {
-  position: absolute;
-  bottom: var(--spacing-xl);
-  bottom: calc(var(--spacing-xl) + env(safe-area-inset-bottom, 0px));
-  left: 50%;
-  transform: translateX(-50%) scale(1);
-  pointer-events: auto;
-  display: flex;
-  flex-direction: column;
-  align-items: center;
-  gap: var(--spacing-sm);
-  /* No transition on container - prevents weird movement on resize */
-  max-height: 50vh;
-  max-height: 50dvh;
-  overflow-y: auto;
-  /* Prevent scroll jumping when interacting */
-  scroll-margin: 0;
-  scroll-padding: 0;
-  /* Prevent any layout shifts */
-  contain: layout style paint;
-  /* Ensure filter appears above strips */
-  z-index: var(--z-filter);
+  display: none;
 }
 
-/* Shared button styles - consolidated */
+@media (min-width: 769px) and (orientation: landscape) {
+  .filter-dropdown {
+    position: absolute;
+    bottom: 0;
+    left: 50%;
+    transform: translateX(-50%);
+    pointer-events: auto;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    gap: var(--spacing-sm);
+    z-index: var(--z-filter);
+  }
+}
+
+/* Shared button styles */
 .filter-dropdown-button,
 .filter-option {
-  background: var(--project-color, var(--color-white));
+  background-color: var(--bg-primary);
   border: none;
   border-radius: var(--radius-sm);
-  clip-path: var(--cut-corner-sm);
-  color: var(--project-color-text, var(--color-black));
+  color: var(--project-color-text, var(--color-white));
   transition: background-color 0.3s ease, color 0.3s ease;
   font-size: var(--font-size-base);
   padding: var(--spacing-sm) var(--spacing-lg);
@@ -53,16 +47,12 @@
   width: fit-content;
   white-space: nowrap;
   line-height: var(--line-height-tight);
-  transition: none;
-  transform: none;
 }
-
 
 .filter-dropdown-button {
   order: 2;
   pointer-events: auto;
-  scroll-margin: 0 !important;
-  scroll-padding: 0 !important;
+  border-radius: var(--radius-sm) var(--radius-sm) 0 0;
 }
 
 .filter-dropdown-button:focus {
@@ -88,14 +78,13 @@ html[data-project] .filter-option:hover {
 
 .filter-dropdown-content {
   display: none;
-  flex-direction: column;
+  flex-direction: row;
   align-items: center;
   gap: var(--spacing-sm);
   white-space: nowrap;
   pointer-events: none;
   order: 1;
   width: auto;
-  /* Only transition opacity and transform for dropdown animation */
   transition: opacity 0.3s ease, transform 0.3s ease;
   opacity: 0;
   transform: translateY(10px);
@@ -108,18 +97,10 @@ html[data-project] .filter-option:hover {
   transform: translateY(0);
 }
 
-.filter-separator {
-  border: none;
-  border-top: 1px solid color-mix(in srgb, var(--color-black) 20%, transparent);
-  margin: 0.25rem 0;
-}
-
 .filter-option {
   border-radius: var(--radius-sm);
   flex-shrink: 0;
   user-select: none;
-  scroll-margin: 0;
-  scroll-padding: 0;
 }
 
 .filter-option:focus {
@@ -141,14 +122,13 @@ html[data-project] .filter-option:hover span {
 
 .filter-option input[type="checkbox"] {
   display: none;
-  /* Prevent focus scrolling */
   position: absolute;
   opacity: 0;
   pointer-events: none;
 }
 
 .filter-option span {
-  color: var(--project-color-text, var(--color-black));
+  color: var(--project-color-text, var(--color-white));
   font-size: var(--font-size-base);
   white-space: nowrap;
   letter-spacing: var(--letter-spacing-base);

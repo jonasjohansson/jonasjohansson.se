@@ -2,13 +2,13 @@
   id="header"
   style="display: none">
   <div class="header-center">
-    <div
+    <a
       class="header-content"
       id="header-toggle"
-      role="button"
-      tabindex="0"
-      aria-label="Toggle about section"
-      aria-expanded="false">
+      href="{{ site.aboutUrl or '/' }}"
+      target="_blank"
+      rel="noopener noreferrer"
+      aria-label="About Jonas Johansson">
       <h1 class="header-title">
         {{ site.title | upper }}
       </h1>
@@ -19,6 +19,6 @@
         {{ site.subtitle }}
         {% endif %}
       </div>
-    </div>
+    </a>
   </div>
 </header>

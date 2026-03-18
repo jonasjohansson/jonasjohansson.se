@@ -5,10 +5,9 @@
   max-width: 100%;
   height: calc(100vh - var(--spacing-lg) * 2);
   height: calc(100dvh - var(--spacing-lg) * 2);
-  min-height: calc(100vh - var(--spacing-lg) * 2);
-  min-height: calc(100dvh - var(--spacing-lg) * 2);
-  overflow-x: auto;
-  overflow-y: hidden;
+  min-height: 0;
+  flex-shrink: 0;
+  overflow: hidden;
   scrollbar-width: none;
   backface-visibility: hidden;
   transition: opacity 0.3s ease;
@@ -42,12 +41,10 @@
   min-height: 100%;
   flex: 1 1 0;
   min-width: 0;
-  overflow: visible;
+  overflow: hidden;
   cursor: pointer;
   margin-left: -1px;
-  transform: translateY(105%);
-  transition: transform 0.6s cubic-bezier(0.22, 1, 0.36, 1),
-              flex-grow 0.2s cubic-bezier(0.25, 0.46, 0.45, 0.94);
+  transition: flex-grow 0.2s cubic-bezier(0.25, 0.46, 0.45, 0.94);
   position: relative;
   z-index: var(--z-strips);
   container-type: inline-size;
@@ -132,9 +129,8 @@
 }
 
 
-.strip.strip-visible.not-selected {
-  transform: translateY(105%) !important;
-  transition: transform 0.5s cubic-bezier(0.5, 0, 1, 0.5) !important;
+.strip.not-selected {
+  display: none;
   pointer-events: none;
 }
 

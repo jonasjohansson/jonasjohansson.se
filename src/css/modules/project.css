@@ -79,15 +79,9 @@
 #projects {
   display: block;
   width: 100%;
-  min-height: 100vh;
+  min-height: calc(100vh - var(--spacing-lg) * 2);
   position: relative;
-  background: var(--project-accent-color-dark, var(--color-black));
-}
-
-/* Apply project accent color to body when project is visible */
-body:has(#projects),
-body.project-visible {
-  background: var(--project-accent-color-dark, var(--color-black));
+  background-color: var(--bg-primary);
 }
 
 #projects:not(:has(.project)) {
@@ -121,19 +115,18 @@ figure {
 .project-grid > .media-item:first-child,
 .project-grid > .media-item.hero {
   overflow: hidden;
-  height: 100vh;
-  height: 100dvh;
-  min-height: 100vh;
-  min-height: 100dvh;
-  max-height: 100vh;
-  max-height: 100dvh;
+  height: calc(100vh - var(--spacing-lg) * 2);
+  height: calc(100dvh - var(--spacing-lg) * 2);
+  min-height: calc(100vh - var(--spacing-lg) * 2);
+  min-height: calc(100dvh - var(--spacing-lg) * 2);
+  max-height: calc(100vh - var(--spacing-lg) * 2);
+  max-height: calc(100dvh - var(--spacing-lg) * 2);
   margin-top: -10rem;
   margin-left: calc(-1 * var(--spacing-xl));
   margin-right: calc(-1 * var(--spacing-xl));
   width: calc(100% + 2 * var(--spacing-xl));
   max-width: none;
-  position: relative; /* Create positioning context */
-  /* Hero scroll snap */
+  position: relative;
   scroll-snap-align: start;
 }
 

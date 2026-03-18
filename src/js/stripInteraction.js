@@ -106,8 +106,7 @@ export function attachStripEventListeners() {
     // Hover: show project title + preload + update header color
     strip.addEventListener("mouseenter", () => {
       if (!stripsContainer?.classList.contains("strips-initialized")) return;
-      const aboutOverlay = getAboutOverlayFn?.();
-      if (aboutOverlay?.classList.contains("visible")) return;
+
 
       const pSlug = strip.getAttribute("data-project");
 
@@ -139,8 +138,7 @@ export function attachStripEventListeners() {
       const headerSubtitle = getHeaderSubtitle?.();
       if (!headerSubtitle) return;
       if (!stripsContainer?.classList.contains("strips-initialized")) return;
-      const aboutOverlay = getAboutOverlayFn?.();
-      if (aboutOverlay?.classList.contains("visible")) return;
+
       if (getNavigationTimeoutId?.()) return;
 
       // Restore current project color or clear on homepage
@@ -176,48 +174,9 @@ export function attachStripEventListeners() {
         scrambleText(headerSubtitle, clickedProject.title);
       }
 
-      // Scroll strips flush with viewport top before animation plays
-      if (stripsContainer) {
-        const rect = stripsContainer.getBoundingClientRect();
-        if (rect.top > 2) {
-          smoothScrollTo(rect.top + window.scrollY, 600);
-        }
-      }
-
-      // Lock scroll during transition
+      // Navigate immediately
       document.documentElement.classList.add("transition-lock");
-
-      const allStrips = getAllStrips?.() || [];
-      strip.classList.add("selected");
-      const otherStrips = allStrips.filter((s) => s !== strip);
-
-      // Staggered slide-out: each strip exits 30ms after the previous
-      const visibleCount = getVisibleStripCount();
-      const exitStagger = 30;
-      otherStrips.forEach((s, i) => {
-        setTimeout(() => {
-          s.classList.add("not-selected");
-          // Skip exit sounds when very few strips are visible
-          if (visibleCount > 4) {
-            playStripExitSound(i, otherStrips.length);
-          }
-        }, i * exitStagger);
-      });
-
-      // Expand sound synced with CSS transition-delay (0.5s after .selected added)
-      // Always play the expand thud - it's the bassy one
-      setTimeout(() => playStripExpandSound(), 500);
-
-      const navTimeoutId = getNavigationTimeoutId?.();
-      if (navTimeoutId) clearTimeout(navTimeoutId);
-
-      // Navigate when grow transition finishes (500ms delay + 1000ms grow)
-      setNavigationTimeoutId?.(
-        setTimeout(() => {
-          navigateFn?.(projectPath);
-          setNavigationTimeoutId?.(null);
-        }, 1500)
-      );
+      navigateFn?.(projectPath);
     };
 
     strip.addEventListener("click", handleStripActivate);

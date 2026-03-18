@@ -1,21 +1,15 @@
 <script>
   // Set data-route immediately to prevent flash of wrong content
-  // This runs after body is parsed, so body and #about exist
   (function() {
     const path = window.location.pathname.replace(/\/$/, '') || '/';
     let route = 'home';
-    if (path === '/about' || path === window.__PATH_PREFIX__ + '/about') {
-      route = 'about';
-    } else if (path.match(/\/work\/[^\/]+/)) {
+    if (path.match(/\/work\/[^\/]+/)) {
       route = 'project';
     }
 
     document.body.setAttribute('data-route', route);
 
-    if (route === 'about') {
-      document.body.classList.add('about-visible');
-      document.body.setAttribute('data-initial-about', 'true');
-    } else if (route === 'project') {
+    if (route === 'project') {
       document.body.classList.add('project-visible');
     }
   })();

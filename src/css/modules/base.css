@@ -14,11 +14,10 @@ html {
   padding: 0;
 }
 
-html.transition-lock,
-body.about-visible {
+html.transition-lock {
   overflow: hidden;
   /* Match background to prevent color flash on iOS scroll */
-  background: var(--color-black);
+  background-color: var(--bg-primary);
   /* Vertical scroll snap */
   scroll-snap-type: y proximity;
   /* Hide scrollbars */
@@ -30,8 +29,9 @@ body {
   width: 100%;
   margin: 0;
   padding: 0;
-  background: var(--color-black);
+  background-color: var(--bg-primary);
   color: var(--text-primary);
+
   font-family: var(--font-family);
   letter-spacing: var(--letter-spacing-wider);
   overflow-y: auto;
@@ -50,6 +50,22 @@ body {
   z-index: var(--z-content);
   overflow-anchor: none;
   padding: var(--spacing-lg);
+  background-color: var(--bg-primary);
+
+}
+
+/* Prevent scroll on home route */
+body[data-route="home"] #content {
+  height: 100vh;
+  height: 100dvh;
+  overflow: hidden;
+  display: flex;
+  flex-direction: column;
+}
+
+/* Keep content clipped during strip transition */
+html.transition-lock #content {
+  overflow: hidden;
 }
 
 /* Hide scrollbars */
@@ -124,7 +140,6 @@ body.loading #main,
 body.loading #strips,
 body.loading #header,
 body.loading #filter-dropdown-container,
-body.loading #about,
 body.loading #projects {
   opacity: 0 !important;
   visibility: hidden !important;
@@ -147,13 +162,11 @@ body.loaded #header {
 
 /* Home route - show strips */
 body.loaded[data-route="home"] #strips,
-body.loaded:not([data-route]):not(.project-visible):not(.about-visible) #strips {
+body.loaded:not([data-route]):not(.project-visible) #strips {
   opacity: 1;
   visibility: visible;
   pointer-events: auto;
 }
-
-/* About route - about section is controlled by content transform */
 
 /* Project route - show project content */
 body.loaded[data-route="project"] #projects,

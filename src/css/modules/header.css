@@ -1,15 +1,16 @@
 header {
-  position: fixed;
-  top: var(--spacing-lg);
-  top: calc(var(--spacing-lg) + env(safe-area-inset-top));
+  position: absolute;
+  top: 0;
   left: 50%;
   transform: translateX(-50%);
   z-index: var(--z-header);
   pointer-events: auto;
-  background: transparent;
-  color: var(--color-black);
+  background-color: var(--bg-primary);
+  color: var(--color-white);
   user-select: none;
-  padding: calc(var(--spacing-sm) + 2px) var(--spacing-lg) var(--spacing-sm);
+  padding: calc(var(--spacing-lg) + 1rem) 1rem 1rem;
+  border-bottom-left-radius: 10px;
+  border-bottom-right-radius: 10px;
   display: flex;
   flex-direction: row;
   align-items: center;
@@ -20,6 +21,20 @@ header {
   font-family: var(--font-family);
   visibility: visible;
   opacity: 1;
+}
+
+header.header-hidden {
+  transform: translateX(-50%) translateY(-100%);
+  pointer-events: none;
+}
+
+/* Header docks to bottom of strips */
+header.header-bottom {
+  position: absolute;
+  top: auto;
+  bottom: 0;
+  padding: 1rem 1rem calc(var(--spacing-sm));
+  border-radius: 10px 10px 0 0;
 }
 
 .header-center {
@@ -46,47 +61,25 @@ header {
 
 /* Title shape - straight by default, tilted on project pages */
 .header-title {
-  background: var(--project-color, var(--color-white));
-  color: var(--project-color-text, var(--color-black));
-  clip-path: var(--cut-corner-md);
-  transform: rotate(0deg);
-  padding: calc(var(--spacing-xs) + 2px) var(--spacing-xl) var(--spacing-xs);
-  transition: background-color 0.3s ease, color 0.3s ease, transform 0.4s cubic-bezier(0.22, 1, 0.36, 1);
+  background: transparent;
+  color: var(--color-white);
+  clip-path: none;
+  padding: 0;
   position: relative;
   z-index: 1;
 }
 
-/* Subtitle shape - straight by default, tilted on project pages */
 .header-subtitle {
-  background: var(--project-color, var(--color-white));
-  color: var(--project-color-text, var(--color-black));
-  clip-path: var(--cut-corner-sm);
-  transform: rotate(0deg);
-  padding: calc(var(--spacing-xs) + 2px) var(--spacing-lg) var(--spacing-xs);
-  margin-top: -4px;
-  transition: background-color 0.3s ease, color 0.3s ease, transform 0.4s cubic-bezier(0.22, 1, 0.36, 1);
+  background: transparent;
+  color: var(--color-white);
+  clip-path: none;
+  padding: 0;
+  margin-top: 0;
   position: relative;
   z-index: 2;
 }
 
 
-/* Hover - darken both shapes */
-.header-center:hover .header-title,
-.header-center:focus-visible .header-title,
-.header-center:hover .header-subtitle,
-.header-center:focus-visible .header-subtitle {
-  background: var(--color-black);
-  color: var(--color-white);
-}
-
-/* On project pages, invert hover to contrast with project color */
-html[data-project] .header-center:hover .header-title,
-html[data-project] .header-center:focus-visible .header-title,
-html[data-project] .header-center:hover .header-subtitle,
-html[data-project] .header-center:focus-visible .header-subtitle {
-  background: var(--color-white);
-  color: var(--color-black);
-}
 
 .header-center:focus {
   outline: none;
