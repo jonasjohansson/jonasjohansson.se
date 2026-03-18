@@ -1,106 +1,54 @@
-/* Hide filter when a strip is selected (navigating to project) */
-#strips:has(.strip.selected) .filter-dropdown {
-  opacity: 0;
-  pointer-events: none;
-  transition: opacity 0.3s ease;
-}
-
 /* Only show filter on desktop landscape */
 .filter-dropdown {
   display: none;
 }
 
-@media (min-width: 769px) and (orientation: landscape) {
-  .filter-dropdown {
-    position: absolute;
-    bottom: 0;
-    left: 50%;
-    transform: translateX(-50%);
-    pointer-events: auto;
-    display: flex;
-    flex-direction: column;
-    align-items: center;
-    gap: var(--spacing-sm);
-    z-index: var(--z-filter);
-  }
+
+/* Hide the filter toggle button — options are always visible */
+.filter-dropdown-button {
+  display: none;
 }
 
-/* Shared button styles */
-.filter-dropdown-button,
+/* Filter options always visible, no dropdown needed */
+.filter-dropdown-content {
+  display: flex;
+  flex-direction: row;
+  align-items: stretch;
+  gap: 0;
+  pointer-events: auto;
+  opacity: 1;
+  transform: none;
+}
+
 .filter-option {
   background-color: var(--bg-primary);
   border: none;
-  border-radius: var(--radius-sm);
-  color: var(--project-color-text, var(--color-white));
+  border-radius: 0;
+  color: var(--color-white);
   transition: background-color 0.3s ease, color 0.3s ease;
   font-size: var(--font-size-base);
   padding: var(--spacing-sm) var(--spacing-lg);
-  padding-top: calc(var(--spacing-sm) + 2px);
+  padding-top: calc(var(--spacing-lg));
   cursor: pointer;
   display: inline-flex;
   align-items: center;
   justify-content: center;
-  gap: var(--spacing-sm);
   letter-spacing: var(--letter-spacing-base);
   text-transform: uppercase;
   font-family: var(--font-family);
-  width: fit-content;
   white-space: nowrap;
   line-height: var(--line-height-tight);
-}
-
-.filter-dropdown-button {
-  order: 2;
-  pointer-events: auto;
-  border-radius: var(--radius-sm) var(--radius-sm) 0 0;
-}
-
-.filter-dropdown-button:focus {
-  outline: none;
-}
-
-.filter-dropdown-button:focus-visible {
-  outline: 2px solid currentColor;
-  outline-offset: 2px;
-}
-
-.filter-dropdown-button:hover,
-.filter-option:hover {
-  background: var(--color-black);
-  color: var(--color-white);
-}
-
-html[data-project] .filter-dropdown-button:hover,
-html[data-project] .filter-option:hover {
-  background: var(--color-white);
-  color: var(--color-black);
-}
-
-.filter-dropdown-content {
-  display: none;
-  flex-direction: row;
-  align-items: center;
-  gap: var(--spacing-sm);
-  white-space: nowrap;
-  pointer-events: none;
-  order: 1;
-  width: auto;
-  transition: opacity 0.3s ease, transform 0.3s ease;
-  opacity: 0;
-  transform: translateY(10px);
-}
-
-.filter-dropdown.open .filter-dropdown-content {
-  display: flex;
-  pointer-events: auto;
-  opacity: 1;
-  transform: translateY(0);
-}
-
-.filter-option {
-  border-radius: var(--radius-sm);
   flex-shrink: 0;
   user-select: none;
+}
+
+/* Round top-left on first, top-right on last */
+.filter-option:first-child {
+  border-top-left-radius: 10px;
+}
+
+.filter-option:last-child {
+  border-top-right-radius: 10px;
 }
 
 .filter-option:focus {
@@ -112,12 +60,8 @@ html[data-project] .filter-option:hover {
   outline-offset: 2px;
 }
 
-.filter-option:hover span {
-  color: var(--color-white);
-}
-
-html[data-project] .filter-option:hover span {
-  color: var(--color-black);
+.filter-option:hover {
+  background-color: var(--color-gray);
 }
 
 .filter-option input[type="checkbox"] {
@@ -128,7 +72,7 @@ html[data-project] .filter-option:hover span {
 }
 
 .filter-option span {
-  color: var(--project-color-text, var(--color-white));
+  color: var(--color-white);
   font-size: var(--font-size-base);
   white-space: nowrap;
   letter-spacing: var(--letter-spacing-base);
@@ -136,19 +80,13 @@ html[data-project] .filter-option:hover span {
   line-height: var(--line-height-tight);
 }
 
-/* Checked state */
-.filter-option:has(input[type="checkbox"]:checked) {
-  background: var(--color-black);
-}
-
-.filter-option:has(input[type="checkbox"]:checked) span {
-  color: var(--color-white);
-}
-
+/* Active/checked state */
+.filter-option:has(input[type="checkbox"]:checked),
 .filter-option.is-active {
-  background: var(--color-black);
+  background-color: var(--color-black);
 }
 
+.filter-option:has(input[type="checkbox"]:checked) span,
 .filter-option.is-active span {
   color: var(--color-white);
 }
