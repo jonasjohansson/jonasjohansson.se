@@ -6,6 +6,7 @@ const {
 } = SETTINGS;
 import { ColorExtractor } from "./utils/colorExtractor.js";
 import { getProjectPath } from "./utils/pathBuilder.js";
+import { getCurrentRoute } from "./utils/routeUtils.js";
 import { getCurrentProjectTitle, setCurrentProjectTitle } from "./utils/state.js";
 import { scrambleText } from "./utils/textScramble.js";
 import { initAnimation, throttledHandlePoint } from "./stripAnimation.js";
@@ -277,7 +278,7 @@ export function initializeStrips({ animate = true } = {}) {
 
     setStripsHeight();
 
-    const isProjectPage = window.location.pathname.includes("/work/");
+    const isProjectPage = getCurrentRoute() === "project";
     const loadImage = (img) => {
       const bgImage = img.getAttribute("data-bg-image");
       if (bgImage && !img.style.backgroundImage) {
@@ -379,7 +380,7 @@ function updateCurrentPageTitle(title) {
       return;
     }
 
-    if (window.location.pathname.includes("/work/")) {
+    if (getCurrentRoute() === "project") {
       if (headerSubtitle) {
         scrambleText(headerSubtitle, newTitle);
       }

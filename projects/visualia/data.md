@@ -16,7 +16,7 @@ blocks:
     content: >-
       [Visualia](https://visualia.se) grew out of my work with
       [NAVA](https://www.nava.community) (Nordic Audiovisual Artists) and the
-      open call collaborations around [Harpa](/work/harpa/) and Sónar Reykjavík,
+      open call collaborations around [Harpa](/harpa/) and Sónar Reykjavík,
       where visual artists were paired with musicians to create new audiovisual
       performances. The idea of pairing artists to make something new kept
       pulling at me. I found a place for it in Långaveka småskola, a former

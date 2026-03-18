@@ -52,11 +52,12 @@ class SPARouter {
 
     const relativePath = pathPrefix ? path.replace(pathPrefix, "") : path;
 
-    if (relativePath === "/" || relativePath === "/index.html" || relativePath === "" || relativePath === "/about" || relativePath === "/about/" || relativePath === "/work" || relativePath === "/work/") {
+    const normalized = relativePath.replace(/\/$/, "") || "/";
+    if (normalized === "/" || normalized === "/index.html" || normalized === "/about") {
       this.showHome();
       this.announce("Home");
     } else {
-      const slug = relativePath.replace(/^\/work\//, "").replace(/\/$/, "");
+      const slug = normalized.replace(/^\//, "");
       if (slug) this.showProject(slug);
     }
   }
@@ -216,71 +217,10 @@ class SPARouter {
         document.body.classList.add("project-visible");
         document.documentElement.classList.add("project-visible");
 
-        // Create overlay copy of strip image to prevent flash
-        let stripOverlay = null;
-        if (clickedStrip) {
-          const stripImage = clickedStrip.querySelector(".strip-image");
-          if (stripImage) {
-            const computed = window.getComputedStyle(stripImage);
-            const bgImage = computed.backgroundImage;
-            stripOverlay = document.createElement("div");
-            Object.assign(stripOverlay.style, {
-              position: "fixed", top: "0", left: "0",
-              width: "100vw", height: "100vh",
-              backgroundImage: bgImage, backgroundSize: "cover",
-              backgroundPosition: "center", backgroundRepeat: "no-repeat",
-              zIndex: "150", pointerEvents: "none",
-            });
-            document.body.appendChild(stripOverlay);
-          }
-        }
-
-        let revealed = false;
-        const revealProject = () => {
-          if (revealed) return;
-          revealed = true;
-
-          // Fade in project content while overlay stays solid on top
-          currentProjects.style.transition = "opacity 0.3s ease";
-          currentProjects.style.opacity = "1";
-
-          // Wait for project to be fully opaque, then remove overlay and unlock scroll
-          setTimeout(() => {
-            stripOverlay?.remove();
-            resetClickedStrip();
-            document.documentElement.classList.remove("transition-lock");
-            scrollToProject();
-          }, 350);
-        };
-
-        currentProjects.style.opacity = "0";
-
-        const heroEl = currentProjects.querySelector(".media-item.hero img, .media-item.hero video, .project-hero img");
-        if (heroEl && heroEl.tagName === "VIDEO") {
-          // For video heroes, reveal once metadata/first frame is ready
-          if (heroEl.readyState >= 2) {
-            revealProject();
-          } else {
-            heroEl.addEventListener("loadeddata", revealProject, { once: true });
-            setTimeout(revealProject, 1000); // Fallback timeout
-          }
-        } else if (heroEl) {
-          // Force eager loading so browser fetches while container is hidden
-          heroEl.loading = "eager";
-          const src = heroEl.src || heroEl.getAttribute("data-src");
-          const img = new Image();
-          img.onload = revealProject;
-          img.onerror = () => setTimeout(revealProject, 50);
-          if (src) {
-            img.src = src;
-          } else if (heroEl.complete && heroEl.naturalWidth > 0) {
-            revealProject();
-          } else {
-            setTimeout(revealProject, 300);
-          }
-        } else {
-          revealProject();
-        }
+        currentProjects.style.opacity = "1";
+        resetClickedStrip();
+        document.documentElement.classList.remove("transition-lock");
+        scrollToProject();
       } else {
         resetClickedStrip();
         if (!clickedStrip) this.updateStripVisibility(slug);

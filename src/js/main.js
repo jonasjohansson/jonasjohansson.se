@@ -106,6 +106,8 @@ async function initializeApp() {
 
   // Header position toggle on scroll
   initHeaderAutoHide();
+
+
 }
 
 function initHeaderAutoHide() {

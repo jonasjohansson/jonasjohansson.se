@@ -71,7 +71,7 @@ blocks:
   - type: text
     fontSize: small
     content: >-
-      In 2019, as [Tiny/Massive](/work/tinymassive/), we opened the facade to
+      In 2019, as [Tiny/Massive](/tinymassive/), we opened the facade to
       artists worldwide during the Reykjavík Winter Lights Festival.
       [Loney Dear](https://youtu.be/wAKno0pe4UQ) performed a live concert
       controlling the visuals with [Teenage Engineering](https://teenage.engineering/)'s
@@ -87,7 +87,7 @@ blocks:
       community where Atlí, Owen, myself and artist
       [Rasmus Stride](https://www.instagram.com/rasmus.stride/) formed the
       collective that would go on to do projects like
-      [Tiny/Massive](/work/tinymassive/) and
+      [Tiny/Massive](/tinymassive/) and
       Skaðablót.
   - type: image
     src: 03.jpg

@@ -122,17 +122,6 @@
 }
 
 
-/* Phase 1: other strips slide down, Phase 2: selected expands */
-.strip.selected {
-  flex-grow: 1000;
-  transition: flex-grow 1s cubic-bezier(0.4, 0, 0.2, 1) 0.5s;
-}
-
-
-.strip.not-selected {
-  display: none;
-  pointer-events: none;
-}
 
 .strip .strip-image {
   position: absolute;

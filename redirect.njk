@@ -3,18 +3,18 @@ pagination:
   data: projectRedirects
   size: 1
   alias: redirect
-permalink: "work/{{ redirect.oldSlug }}/"
+permalink: "{{ redirect.oldSlug }}/"
 eleventyExcludeFromCollections: true
 ---
 <!DOCTYPE html>
 <html lang="en">
 <head>
   <meta charset="utf-8">
-  <meta http-equiv="refresh" content="0; url=/work/{{ redirect.newSlug }}/">
-  <link rel="canonical" href="/work/{{ redirect.newSlug }}/">
+  <meta http-equiv="refresh" content="0; url=/{{ redirect.newSlug }}/">
+  <link rel="canonical" href="/{{ redirect.newSlug }}/">
   <title>Redirecting...</title>
 </head>
 <body>
-  <p>Redirecting to <a href="/work/{{ redirect.newSlug }}/">/work/{{ redirect.newSlug }}/</a></p>
+  <p>Redirecting to <a href="/{{ redirect.newSlug }}/">/{{ redirect.newSlug }}/</a></p>
 </body>
 </html>

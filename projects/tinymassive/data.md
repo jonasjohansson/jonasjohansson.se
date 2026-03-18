@@ -11,13 +11,13 @@ blocks:
   - type: text
     content: >-
       An open call for artists to illuminate the facade of
-      [Harpa Concert Hall](/work/harpa/) in Reykjavík. 77 pixels wide, 13 pixels tall, one enormous building.
+      [Harpa Concert Hall](/harpa/) in Reykjavík. 77 pixels wide, 13 pixels tall, one enormous building.
   - type: text
     fontSize: small
     content: >-
       Tiny/Massive grew out of
       [NAVA](https://www.nava.community) (Nordic Audiovisual Artists) and our
-      years of working with the [Harpa](/work/harpa/) facade. The name says it all: the
+      years of working with the [Harpa](/harpa/) facade. The name says it all: the
       building's 714 LED panels map to a resolution of just 77 by 13 pixels
       across an almost 100-metre wide facade, each pixel over a metre wide.
       We released an open call inviting artists to create video, generative,

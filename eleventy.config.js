@@ -196,7 +196,7 @@ export default function (eleventyConfig) {
     if (!existsSync(root)) { _projectsCache = []; return _projectsCache; }
 
     const dirs = readdirSync(root, { withFileTypes: true })
-      .filter((d) => d.isDirectory())
+      .filter((d) => d.isDirectory() && d.name !== "about")
       .map((d) => d.name);
 
     const projects = dirs.map((dir) => {
@@ -400,7 +400,7 @@ export default function (eleventyConfig) {
     if (!existsSync(root)) return {};
 
     const dirs = readdirSync(root, { withFileTypes: true })
-      .filter((d) => d.isDirectory())
+      .filter((d) => d.isDirectory() && d.name !== "about")
       .map((d) => d.name);
 
     const projectContent = {};
