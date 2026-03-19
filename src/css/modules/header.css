@@ -8,7 +8,6 @@ header {
   background-color: var(--bg-primary);
   color: var(--color-white);
   user-select: none;
-  padding: calc(var(--spacing-lg) + 1rem) 1rem 1rem;
   border-bottom-left-radius: 10px;
   border-bottom-right-radius: 10px;
   display: flex;
@@ -33,7 +32,6 @@ header.header-bottom {
   position: absolute;
   top: auto;
   bottom: 0;
-  padding: 1rem 1rem calc(var(--spacing-sm));
   border-radius: 10px 10px 0 0;
 }
 
@@ -54,9 +52,14 @@ header.header-bottom {
   display: flex;
   flex-direction: column;
   align-items: center;
+  padding: calc(var(--spacing-sm) + 1rem) 1rem 1rem;
   gap: 0;
   position: relative;
   pointer-events: auto;
+}
+
+header.header-bottom .header-content {
+  padding: 1rem 1rem calc(var(--spacing-sm));
 }
 
 /* Title shape - straight by default, tilted on project pages */
@@ -78,8 +81,6 @@ header.header-bottom {
   position: relative;
   z-index: 2;
 }
-
-
 
 .header-center:focus {
   outline: none;

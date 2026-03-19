@@ -133,7 +133,13 @@
       "mcp__google-docs__applyTextStyle",
       "mcp__google-docs__getSpreadsheetInfo",
       "mcp__google-docs__readSpreadsheet",
-      "mcp__google-docs__applyParagraphStyle"
+      "mcp__google-docs__applyParagraphStyle",
+      "mcp__airtable__delete_records",
+      "mcp__google-docs__getFolderInfo",
+      "mcp__google-docs__copyFile",
+      "mcp__google-docs__deleteRange",
+      "mcp__google-docs__createDocument",
+      "mcp__google-docs__appendMarkdown"
     ]
   }
 }
