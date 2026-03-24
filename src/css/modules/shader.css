@@ -13,5 +13,5 @@ body::before {
   background-image: url("/assets/img/grain.png");
   background-size: 200px 200px;
   background-repeat: repeat;
-  mix-blend-mode: screen;
+  mix-blend-mode: multiply;
 }

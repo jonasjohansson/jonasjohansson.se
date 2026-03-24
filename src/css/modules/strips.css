@@ -21,7 +21,7 @@
   top: 0;
   /* Prevent extra scrolling on iOS */
   /* Match background to prevent color flash on iOS scroll */
-  background: var(--color-black);
+  background: var(--bg-primary);
   z-index: var(--z-strips);
   /* Vertical scroll snap for snapping strips into view */
   scroll-snap-align: start;
@@ -117,7 +117,7 @@
 }
 
 .strip:focus-visible {
-  outline: 2px solid var(--color-white);
+  outline: 2px solid var(--text-primary);
   outline-offset: -2px;
 }
 

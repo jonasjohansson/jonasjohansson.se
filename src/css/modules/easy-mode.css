@@ -6,7 +6,7 @@
   right: var(--spacing-lg);
   z-index: var(--z-header);
   background: none;
-  color: var(--color-white);
+  color: var(--text-primary);
   border: none;
   padding: 6px;
   cursor: pointer;

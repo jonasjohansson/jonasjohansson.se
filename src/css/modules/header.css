@@ -6,7 +6,7 @@ header {
   z-index: var(--z-header);
   pointer-events: auto;
   background-color: var(--bg-primary);
-  color: var(--color-white);
+  color: var(--text-primary);
   user-select: none;
   border-bottom-left-radius: 10px;
   border-bottom-right-radius: 10px;
@@ -65,7 +65,7 @@ header.header-bottom .header-content {
 /* Title shape - straight by default, tilted on project pages */
 .header-title {
   background: transparent;
-  color: var(--color-white);
+  color: var(--text-primary);
   clip-path: none;
   padding: 0;
   position: relative;
@@ -74,7 +74,7 @@ header.header-bottom .header-content {
 
 .header-subtitle {
   background: transparent;
-  color: var(--color-white);
+  color: var(--text-primary);
   clip-path: none;
   padding: 0;
   margin-top: 0;

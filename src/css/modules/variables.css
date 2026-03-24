@@ -1,11 +1,11 @@
 /* CSS Variables */
 :root {
   /* Colors */
-  --color-white: #cacaca;
-  --color-black: #131313;
+  --color-white: #f0f0f0;
+  --color-black: #1a1a1a;
   --color-gray: #555555;
-  --bg-primary: var(--color-black);
-  --text-primary: var(--color-white);
+  --bg-primary: var(--color-white);
+  --text-primary: var(--color-black);
 
   /* Spacing */
   --spacing-xs: 0.25rem;

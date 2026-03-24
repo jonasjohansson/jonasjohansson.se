@@ -24,7 +24,7 @@
   background-color: var(--bg-primary);
   border: none;
   border-radius: 0;
-  color: var(--color-white);
+  color: var(--text-primary);
   transition: background-color 0.3s ease, color 0.3s ease;
   font-size: var(--font-size-base);
   padding: var(--spacing-sm) var(--spacing-lg);
@@ -72,7 +72,7 @@
 }
 
 .filter-option span {
-  color: var(--color-white);
+  color: var(--text-primary);
   font-size: var(--font-size-base);
   white-space: nowrap;
   letter-spacing: var(--letter-spacing-base);
@@ -83,12 +83,12 @@
 /* Active/checked state */
 .filter-option:has(input[type="checkbox"]:checked),
 .filter-option.is-active {
-  background-color: var(--color-black);
+  background-color: var(--text-primary);
 }
 
 .filter-option:has(input[type="checkbox"]:checked) span,
 .filter-option.is-active span {
-  color: var(--color-white);
+  color: var(--bg-primary);
 }
 
 /* CSS Filtering System */
