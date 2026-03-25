@@ -224,21 +224,39 @@ export function attachTouchListeners() {
   stripsContainer.addEventListener(
     "touchmove",
     (e) => {
+      const isPortrait = window.matchMedia("(orientation: portrait)").matches;
+
       if (e.touches && e.touches.length > 0) {
         const t = e.touches[0];
 
         if (!hasMoved) {
           const direction = detectSwipeDirection(touchStartX, touchStartY, t.clientX, t.clientY);
-          if (direction === "horizontal") {
-            isHorizontalScroll = true;
-            hasMoved = true;
-          } else if (direction === "vertical") {
-            hasMoved = true;
-            return;
+
+          if (isPortrait) {
+            // Portrait: vertical swipe = strip interaction, horizontal = ignore
+            if (direction === "vertical") {
+              isHorizontalScroll = true; // reuse flag for "is strip interaction"
+              hasMoved = true;
+            } else if (direction === "horizontal") {
+              hasMoved = true;
+              return;
+            }
+          } else {
+            // Landscape: horizontal swipe = strip interaction, vertical = page scroll
+            if (direction === "horizontal") {
+              isHorizontalScroll = true;
+              hasMoved = true;
+            } else if (direction === "vertical") {
+              hasMoved = true;
+              return;
+            }
           }
         }
 
         if (!isHorizontalScroll) return;
+
+        // Prevent page scroll while interacting with strips
+        if (e.cancelable) e.preventDefault();
 
         handlePoint(t.clientX, t.clientY);
 
@@ -288,7 +306,7 @@ export function attachTouchListeners() {
         }
       }
     },
-    { passive: true }
+    { passive: false }
   );
 
   stripsContainer.addEventListener("touchend", () => {

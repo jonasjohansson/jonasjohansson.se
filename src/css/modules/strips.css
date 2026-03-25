@@ -106,7 +106,7 @@
 .strip:hover,
 .strip.touch-hover,
 .strip:focus-visible {
-  flex-grow: 4;
+  flex-grow: 8;
   transform: translateZ(0);
   transition-delay: 0s;
   will-change: flex-grow;
@@ -147,6 +147,30 @@
   display: none;
 }
 
+
+/* Portrait orientation: stack strips as horizontal rows */
+@media (orientation: portrait) {
+  #strips {
+    flex-direction: column;
+    touch-action: pan-x;
+  }
+
+  .strip {
+    height: auto;
+    min-height: 0;
+    margin-left: 0;
+    margin-top: -1px;
+  }
+
+  .strip:first-child {
+    margin-top: 0;
+  }
+
+  .strip .strip-image {
+    width: 100%;
+    height: 100%;
+  }
+}
 
 @media (prefers-reduced-motion: reduce) {
   .strip {

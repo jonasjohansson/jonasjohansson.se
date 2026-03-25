@@ -55,7 +55,7 @@ body.layout-horizontal .strip.strip-visible {
 body.layout-horizontal .strip:hover,
 body.layout-horizontal .strip.touch-hover,
 body.layout-horizontal .strip:focus-visible {
-  flex-grow: 4;
+  flex-grow: 8;
   transform: translateZ(0);
 }
 
@@ -115,7 +115,7 @@ body.layout-list .strip.strip-visible {
 body.layout-list .strip:hover,
 body.layout-list .strip.touch-hover,
 body.layout-list .strip:focus-visible {
-  flex-grow: 4;
+  flex-grow: 8;
   transform: translateZ(0);
 }
 

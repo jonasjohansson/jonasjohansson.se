@@ -304,6 +304,7 @@ figure {
 /* Mobile override: force full-width */
 @media (max-width: 768px) {
   .project-grid {
+    column-gap: 0;
     row-gap: var(--spacing-2xl);
   }
 
