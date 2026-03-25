@@ -146,12 +146,6 @@ body.loading #projects {
   pointer-events: none !important;
 }
 
-/* Hide grain during loading */
-body.loading::before {
-  opacity: 0 !important;
-  visibility: hidden !important;
-}
-
 /* Show elements after loading - route-specific */
 body.loaded #header {
   opacity: 1;
@@ -176,8 +170,6 @@ body.loaded.project-visible #projects {
   pointer-events: auto;
   transition: opacity 0.3s ease;
 }
-
-/* Grain is applied via body::before in shader.css with static opacity */
 
 /* 45-degree cut corner utility classes */
 .cut-corner-sm {

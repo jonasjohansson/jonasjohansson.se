@@ -52,14 +52,14 @@ header.header-bottom {
   display: flex;
   flex-direction: column;
   align-items: center;
-  padding: calc(var(--spacing-sm) + 1rem) 1rem 1rem;
+  padding: calc(var(--spacing-sm) + 1rem) 1rem 0.5rem;
   gap: 0;
   position: relative;
   pointer-events: auto;
 }
 
 header.header-bottom .header-content {
-  padding: 1rem 1rem calc(var(--spacing-sm));
+  padding: 0.5rem 1rem 0;
 }
 
 /* Title shape - straight by default, tilted on project pages */

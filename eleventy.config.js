@@ -90,23 +90,26 @@ export default function (eleventyConfig) {
   const urlPathBase = process.env.PATH_PREFIX ? `${process.env.PATH_PREFIX}/img` : "/img";
 
   const sharpWebpOptions = { quality: 90 };
+  const sharpAvifOptions = { quality: 75 };
 
   // Single width for strips (background-image, no srcset)
   const stripImageOptions = {
     widths: [1920],
-    formats: ["webp"],
+    formats: ["avif", "webp"],
     urlPath: urlPathBase,
     outputDir: "dist/img",
     sharpWebpOptions,
+    sharpAvifOptions,
   };
 
   // Multiple widths for project page images (srcset)
   const responsiveImageOptions = {
     widths: [640, 1280, 1920],
-    formats: ["webp"],
+    formats: ["avif", "webp"],
     urlPath: urlPathBase,
     outputDir: "dist/img",
     sharpWebpOptions,
+    sharpAvifOptions,
   };
 
   // Add about images list as global data
@@ -140,9 +143,12 @@ export default function (eleventyConfig) {
     try {
       const srcPath = path.join(process.cwd(), src);
       const metadata = await Image(srcPath, stripImageOptions);
+      // Prefer AVIF, fall back to WebP
+      const avif = metadata.avif?.[0];
       const webp = metadata.webp?.[0];
-      if (webp?.url) {
-        return webp.url.startsWith('/') ? webp.url : `/${webp.url}`;
+      const best = avif || webp;
+      if (best?.url) {
+        return best.url.startsWith('/') ? best.url : `/${best.url}`;
       }
       return null;
     } catch (err) {
@@ -156,32 +162,46 @@ export default function (eleventyConfig) {
       try {
         const srcPath = path.join(process.cwd(), src);
         const metadata = await Image(srcPath, responsiveImageOptions);
-        const webpImages = metadata.webp;
-        if (!webpImages?.length) {
+        const avifImages = metadata.avif || [];
+        const webpImages = metadata.webp || [];
+        if (!webpImages.length && !avifImages.length) {
           return `<img src="${src}" alt="${alt}" class="${className}" />`;
         }
 
-        const largest = webpImages[webpImages.length - 1];
-        const srcset = webpImages.map((img) => `${img.url} ${img.width}w`).join(", ");
+        // Use WebP as the fallback img src
+        const fallbackImages = webpImages.length ? webpImages : avifImages;
+        const largest = fallbackImages[fallbackImages.length - 1];
+
+        const isLcp = className?.includes("lcp");
+        const loadingAttr = isLcp ? "eager" : "lazy";
+        const sizesAttr = sizes || "100vw";
+
+        let sources = "";
+        if (avifImages.length) {
+          const avifSrcset = avifImages.map((img) => `${img.url} ${img.width}w`).join(", ");
+          sources += `<source type="image/avif" srcset="${avifSrcset}" sizes="${sizesAttr}">`;
+        }
+        if (webpImages.length) {
+          const webpSrcset = webpImages.map((img) => `${img.url} ${img.width}w`).join(", ");
+          sources += `<source type="image/webp" srcset="${webpSrcset}" sizes="${sizesAttr}">`;
+        }
 
         const attrs = {
           alt,
           class: className,
-          loading: className?.includes("lcp") ? "eager" : "lazy",
+          loading: loadingAttr,
           decoding: "async",
           src: largest.url,
-          srcset,
-          sizes: sizes || "100vw",
           ...(largest.width && largest.height ? { width: largest.width, height: largest.height } : {}),
         };
-        if (className?.includes("lcp")) attrs.fetchpriority = "high";
+        if (isLcp) attrs.fetchpriority = "high";
 
         const attrString = Object.entries(attrs)
           .filter(([_, value]) => value !== undefined && value !== null && value !== "")
           .map(([key, value]) => `${key}="${String(value).replace(/"/g, "&quot;")}"`)
           .join(" ");
 
-        return `<img ${attrString} />`;
+        return `<picture>${sources}<img ${attrString} /></picture>`;
       } catch (err) {
         return `<img src="${src}" alt="${alt}" class="${className}" />`;
       }

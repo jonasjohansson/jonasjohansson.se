@@ -8,6 +8,7 @@
   min-height: 0;
   flex-shrink: 0;
   overflow: hidden;
+  border-radius: 2rem;
   scrollbar-width: none;
   backface-visibility: hidden;
   transition: opacity 0.3s ease;
@@ -106,7 +107,7 @@
 .strip:hover,
 .strip.touch-hover,
 .strip:focus-visible {
-  flex-grow: 8;
+  flex-grow: 12;
   transform: translateZ(0);
   transition-delay: 0s;
   will-change: flex-grow;

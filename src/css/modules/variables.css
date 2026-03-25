@@ -19,7 +19,7 @@
   --radius-sm: 4px;
 
   /* Typography */
-  --font-family: "OffBit", system-ui, -apple-system, Segoe UI, Roboto, Helvetica, Arial, sans-serif;
+  --font-family: "SeasonMix", system-ui, -apple-system, Segoe UI, Roboto, Helvetica, Arial, sans-serif;
   --font-size-base: 16px;
   --font-size-small: 1.2rem;
   --font-size-medium: 2rem;
@@ -35,8 +35,6 @@
   --z-filter: 10;
   --z-content: 100;
   --z-header: 300;
-  --z-grain: 400;
-
 }
 
 /* Project accent colors (vibrant, extracted from hero images) */
