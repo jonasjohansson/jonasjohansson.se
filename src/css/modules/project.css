@@ -72,7 +72,7 @@
 
   .text-block .text-large,
   .text-large {
-    font-size: 2.2rem;
+    font-size: var(--font-size-large);
   }
 }
 
@@ -310,7 +310,7 @@ figure {
 @media (max-width: 768px) {
   .project-grid {
     column-gap: 0;
-    row-gap: var(--spacing-2xl);
+    row-gap: var(--spacing-xl);
   }
 
   .media-item + .media-item {
@@ -334,5 +334,13 @@ figure {
   .media-item.size-small-left,
   .media-item.size-small-right {
     grid-column: 1 / -1;
+  }
+
+  /* Make in-project images full-width to match hero */
+  .project-grid > .media-item:not(:first-child):not(.hero) {
+    margin-left: calc(-1 * var(--spacing-xl));
+    margin-right: calc(-1 * var(--spacing-xl));
+    width: calc(100% + 2 * var(--spacing-xl));
+    max-width: none;
   }
 }

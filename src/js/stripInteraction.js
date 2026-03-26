@@ -310,18 +310,28 @@ export function attachTouchListeners() {
   );
 
   stripsContainer.addEventListener("touchend", () => {
-    // Tap navigation is handled by the click event on the strip itself.
-    // Previously, elementFromPoint() was used here to navigate directly,
-    // but it could return the wrong strip due to CSS transforms and flex-grow,
-    // causing taps to navigate to the wrong project.
+    // If the user swiped through strips, navigate to the last touched strip
+    if (hasMoved && isHorizontalScroll && currentlyTouchedStrip) {
+      const strip = currentlyTouchedStrip;
+      currentlyTouchedStrip.classList.remove("touch-hover");
+      currentlyTouchedStrip = null;
+      touchStartStrip = null;
+      hasMoved = false;
+
+      if (!document.body?.dataset?.filtering === "true" && !document.documentElement.classList.contains("transition-lock")) {
+        strip.click();
+      } else {
+        strip.click();
+      }
+      return;
+    }
 
     if (currentlyTouchedStrip) {
       currentlyTouchedStrip.classList.remove("touch-hover");
       currentlyTouchedStrip = null;
     }
 
-    // Always restore color and header text to the current project (or default)
-    // on touchend — lifting the finger is like hovering outside the strips
+    // Restore color and header text to the current project (or default)
     const currentSlug = getCurrentProjectSlug();
     if (currentSlug) {
       document.documentElement.setAttribute("data-project", currentSlug);
