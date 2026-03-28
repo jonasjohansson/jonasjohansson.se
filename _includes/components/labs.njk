@@ -1,0 +1,29 @@
+<div id="labs" class="labs">
+  <div class="labs-toc">
+    <h2 class="labs-heading">Labs</h2>
+    <div class="labs-toc-grid">
+      {% for lab in labsContent %}
+      <a href="#lab-{{ lab.slug }}" class="labs-toc-item {% if lab.tocSize == 'large' %}labs-toc-large{% endif %}">
+        <span class="labs-toc-title">{{ lab.title }}</span>
+        {% if lab.description %}
+        <span class="labs-toc-description">{{ lab.description }}</span>
+        {% endif %}
+      </a>
+      {% endfor %}
+    </div>
+  </div>
+
+  {% for lab in labsContent %}
+  <article id="lab-{{ lab.slug }}" class="labs-article">
+    <div class="project-grid">
+      <div class="text-block text-small" style="--col-start: 3; --col-span: 8">
+        <h3>{{ lab.title }}</h3>
+        {{ lab.body | safe }}
+        {% if lab.url %}
+        <p><a href="{{ lab.url }}" target="_blank" rel="noopener">View on GitHub</a></p>
+        {% endif %}
+      </div>
+    </div>
+  </article>
+  {% endfor %}
+</div>
