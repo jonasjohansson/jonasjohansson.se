@@ -9,8 +9,7 @@ blocks:
     src: 05.jpg
   - type: text
     content: >-
-      A light art collective I co-founded, building modular installations for
-      forests, festivals, and public spaces.
+      Svartljus builds modular light installations for forests, festivals, and public spaces.
   - type: text
     fontSize: small
     content: >-
@@ -60,7 +59,9 @@ blocks:
     fontSize: small
     content: >-
       We also built Semiosphere, a geodesic sphere of light panels shown at
-      Urban Burn in 2018, and Autolux, a flexible LED tube sculpture.
+      Urban Burn in 2018, and Autolux, a flexible LED tube sculpture where
+      visitors each became a single LED pixel, racing each other along the
+      strip like a track.
   - type: image
     src: 03.jpg
   - type: image
@@ -74,10 +75,4 @@ blocks:
       fabrication and architecture to sound design and creative coding. We
       have also run an internship programme with students from Beckmans and
       Hyper Island.
-  - type: image
-    src: 10.jpg
-  - type: image
-    src: 11.jpg
-  - type: image
-    src: 12.jpg
 ---

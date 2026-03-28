@@ -49,7 +49,7 @@ async function showContentForRoute(route) {
       initializeStrips({ animate: false });
 
       // Hide the current project's strip from navigation
-      const currentSlug = window.location.pathname.match(/\/work\/([^\/]+)/)?.[1];
+      const currentSlug = window.location.pathname.replace(/\/$/, '').split('/').pop();
       if (currentSlug) {
         document.querySelectorAll(`.strip[data-project="${currentSlug}"]`).forEach((s) => s.classList.add("hidden"));
       }
