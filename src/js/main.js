@@ -99,6 +99,11 @@ async function initializeApp() {
   // Initialize router (listens for popstate)
   router.init();
 
+  // SPA navigation from intro links
+  window.addEventListener("spa-navigate", (e) => {
+    router.navigate(e.detail.path);
+  });
+
   // Initialize filter dropdown UI
   initFilters();
 
