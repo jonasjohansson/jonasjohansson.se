@@ -47,6 +47,12 @@ body[data-intro="open"] header {
   display: none !important;
 }
 
+@media (orientation: portrait) {
+  .intro {
+    max-width: none;
+  }
+}
+
 /* Hide intro on project pages */
 body[data-route="project"] .intro {
   display: none;
