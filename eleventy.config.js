@@ -23,6 +23,7 @@ export default function (eleventyConfig) {
   eleventyConfig.ignores.add("jonasjohansson.se/**");
   eleventyConfig.ignores.add("projects/**/data.md");
   eleventyConfig.ignores.add("README.md");
+  eleventyConfig.ignores.add("docs/**");
   eleventyConfig.setServerOptions({
     domdiff: false,
     headers: {
@@ -477,6 +478,42 @@ export default function (eleventyConfig) {
       } catch (err) {}
     }
     return projectContent;
+  });
+
+  eleventyConfig.addGlobalData("labsContent", () => {
+    const root = "projects";
+    if (!existsSync(root)) return [];
+
+    const dirs = readdirSync(root, { withFileTypes: true })
+      .filter((d) => d.isDirectory() && d.name !== "about")
+      .map((d) => d.name);
+
+    const labs = [];
+
+    for (const dir of dirs) {
+      const dataMdPath = path.join(root, dir, "data.md");
+      if (!existsSync(dataMdPath)) continue;
+      try {
+        const fileContent = readFileSync(dataMdPath, "utf8");
+        const parsed = matter(fileContent);
+        const { title, type, description, url, date, tocSize } = parsed.data;
+        if (type !== "lab") continue;
+
+        const body = parsed.content ? md.render(parsed.content) : "";
+        labs.push({
+          slug: dir,
+          title: title || dir.replace(/[._-]+/g, " ").trim(),
+          description: description || "",
+          url: url || null,
+          tocSize: tocSize || "small",
+          date: date ? new Date(date).toISOString() : null,
+          body,
+        });
+      } catch (err) {}
+    }
+
+    labs.sort((a, b) => (b.date || "").localeCompare(a.date || ""));
+    return labs;
   });
 
   eleventyConfig.addFilter("findFirstText", (content) => content?.find?.((b) => b.type === "text")?.content || null);
