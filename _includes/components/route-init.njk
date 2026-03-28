@@ -3,7 +3,9 @@
   (function() {
     const path = window.location.pathname.replace(/\/$/, '') || '/';
     let route = 'home';
-    if (path !== '/' && path !== '/index.html' && path !== '/about') {
+    if (path === '/labs') {
+      route = 'labs';
+    } else if (path !== '/' && path !== '/index.html' && path !== '/about') {
       route = 'project';
     }
 
