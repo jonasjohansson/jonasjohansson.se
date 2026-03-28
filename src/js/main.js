@@ -104,6 +104,13 @@ async function initializeApp() {
     router.navigate(e.detail.path);
   });
 
+  // Escape key exits labs mode
+  document.addEventListener("keydown", (e) => {
+    if (e.key === "Escape" && document.body.getAttribute("data-route") === "labs") {
+      router.goHome();
+    }
+  });
+
   // Initialize filter dropdown UI
   initFilters();
 
