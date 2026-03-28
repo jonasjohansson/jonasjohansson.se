@@ -53,7 +53,10 @@ class SPARouter {
     const relativePath = pathPrefix ? path.replace(pathPrefix, "") : path;
 
     const normalized = relativePath.replace(/\/$/, "") || "/";
-    if (normalized === "/" || normalized === "/index.html" || normalized === "/about") {
+    if (normalized === "/labs") {
+      this.showLabs();
+      this.announce("Labs");
+    } else if (normalized === "/" || normalized === "/index.html" || normalized === "/about") {
       this.showHome();
       this.announce("Home");
     } else {
@@ -116,6 +119,17 @@ class SPARouter {
     resetProjectColors();
     document.documentElement.removeAttribute("data-project");
     this._hooks.showIntro?.();
+  }
+
+  showLabs() {
+    document.body.setAttribute("data-route", "labs");
+    document.body.classList.remove("project-visible");
+    clearExistingProjects();
+    resetProjectColors();
+    document.documentElement.removeAttribute("data-project");
+    this._hooks.hideIntro?.();
+    document.title = "Labs — " + (window.__SITE_TITLE__ || "Jonas Johansson");
+    window.scrollTo({ top: 0, behavior: "auto" });
   }
 
   async showProject(slug) {

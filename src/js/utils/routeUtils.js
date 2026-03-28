@@ -14,6 +14,9 @@ export function getCurrentRoute() {
   const relativePath = pathPrefix ? currentPath.replace(pathPrefix, "") : currentPath;
   const normalized = relativePath.replace(/\/$/, "") || "/";
 
+  if (normalized === "/labs") {
+    return "labs";
+  }
   if (nonProjectPaths.includes(relativePath) || normalized === "/") {
     return "home";
   }
