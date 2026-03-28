@@ -142,10 +142,6 @@ figure {
   scroll-snap-stop: normal;
 }
 
-/* Collapse gap between consecutive media items */
-.media-item + .media-item {
-  margin-top: calc(-1 * var(--spacing-3xl) + var(--spacing-xl));
-}
 
 
 .media-item picture {
@@ -285,10 +281,6 @@ figure {
   .project-grid {
     column-gap: 0;
     row-gap: var(--spacing-xl);
-  }
-
-  .media-item + .media-item {
-    margin-top: calc(-1 * var(--spacing-2xl) + var(--spacing-xl));
   }
 
   [style*="--col-start"] {
