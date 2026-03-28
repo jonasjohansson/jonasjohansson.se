@@ -38,6 +38,9 @@ async function showContentForRoute(route) {
     initializeStrips();
     showIntro();
 
+  } else if (route === "labs") {
+    hideIntro();
+    window.scrollTo({ top: 0, behavior: "auto" });
   } else if (route === "project") {
     hideIntro();
     // Show project content with fade in
