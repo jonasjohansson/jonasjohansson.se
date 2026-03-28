@@ -5,6 +5,7 @@ import { loadingManager } from "./utils/loadingManager.js";
 import { getCurrentRoute } from "./utils/routeUtils.js";
 import { initXylophone } from "./xylophone.js";
 import { melodyPlayer } from "./melody.js";
+import { initIntro, hideIntro, showIntro } from "./intro.js";
 
 // Wire up router hooks
 router.registerHooks({
@@ -12,6 +13,8 @@ router.registerHooks({
   applyProjectColor,
   updateCurrentPageTitle,
   initializeStrips,
+  showIntro,
+  hideIntro,
 });
 
 // Give strips a way to navigate without importing router
@@ -33,8 +36,10 @@ async function showContentForRoute(route) {
   if (route === "home" || route === "about") {
     // Initialize strips - they will animate in
     initializeStrips();
+    showIntro();
 
   } else if (route === "project") {
+    hideIntro();
     // Show project content with fade in
     const projects = document.getElementById("projects");
     if (projects) {
@@ -93,6 +98,9 @@ async function initializeApp() {
 
   // Initialize filter dropdown UI
   initFilters();
+
+  // Initialize intro section
+  initIntro();
 
   // Initialize xylophone audio
   initXylophone();

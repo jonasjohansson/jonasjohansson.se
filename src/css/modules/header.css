@@ -44,8 +44,7 @@ header.header-bottom {
   position: relative;
   overflow: visible;
   touch-action: manipulation;
-  cursor: pointer;
-  pointer-events: auto;
+  pointer-events: none;
 }
 
 .header-content {

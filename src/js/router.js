@@ -115,6 +115,7 @@ class SPARouter {
 
     resetProjectColors();
     document.documentElement.removeAttribute("data-project");
+    this._hooks.showIntro?.();
   }
 
   async showProject(slug) {
@@ -129,6 +130,7 @@ class SPARouter {
 
     this._hooks.updateCurrentPageTitle?.(project.title);
     this._hooks.resetFilters?.();
+    this._hooks.hideIntro?.();
     this.announce(project.title);
 
     // Load strip images on project pages without full initialization

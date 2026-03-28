@@ -1,0 +1,53 @@
+.intro {
+  position: relative;
+  z-index: var(--z-content);
+  padding: 0 0 var(--spacing-lg);
+  max-width: calc(100% - (4 / 21 * 100%));
+  flex-shrink: 0;
+  max-height: 55vh;
+  overflow-y: auto;
+  transition: opacity 0.4s ease, max-height 0.5s ease, padding 0.5s ease;
+  scrollbar-width: none;
+}
+
+.intro.intro-hidden {
+  opacity: 0;
+  max-height: 0;
+  padding-top: 0;
+  padding-bottom: 0;
+  pointer-events: none;
+}
+
+.intro-text {
+  font-family: var(--font-family);
+  font-size: clamp(0.9rem, 0.5rem + 1vw + 0.3vh, 1.8rem);
+  line-height: var(--line-height-base);
+  color: var(--text-primary);
+  letter-spacing: 0;
+}
+
+.intro-text a {
+  text-decoration: underline;
+  text-underline-offset: 2px;
+}
+
+.intro-text a:hover {
+  opacity: 0.6;
+}
+
+/* When intro is open, strips fill remaining space via flex */
+body[data-intro="open"] #strips {
+  height: auto;
+  flex: 1;
+  min-height: 0;
+}
+
+/* Hide header when intro is visible */
+body[data-intro="open"] header {
+  display: none !important;
+}
+
+/* Hide intro on project pages */
+body[data-route="project"] .intro {
+  display: none;
+}

@@ -2,6 +2,7 @@
 @import "./modules/variables.css";
 @import "./modules/base.css";
 @import "./modules/header.css";
+@import "./modules/intro.css";
 @import "./modules/loading.css";
 @import "./modules/filter.css";
 @import "./modules/strips.css";

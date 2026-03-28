@@ -2,16 +2,9 @@
   id="header"
   style="display: none">
   <div class="header-center">
-    <a
+    <div
       class="header-content"
-      id="header-toggle"
-      href="{{ site.aboutUrl or '/' }}"
-      target="_blank"
-      rel="noopener noreferrer"
-      aria-label="About Jonas Johansson">
-      <h1 class="header-title">
-        {{ site.title | upper }}
-      </h1>
+      id="header-toggle">
       <div class="header-subtitle" id="header-subtitle" data-default-subtitle="{{ site.subtitle }}">
         {% if project %}
         {{ projectContent[project.slug].title }}
@@ -19,6 +12,6 @@
         {{ site.subtitle }}
         {% endif %}
       </div>
-    </a>
+    </div>
   </div>
 </header>
