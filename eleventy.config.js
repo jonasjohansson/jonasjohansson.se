@@ -231,13 +231,15 @@ export default function (eleventyConfig) {
       let title = dir.replace(/[._-]+/g, " ").trim();
       let date = null;
 
-      // Read title from frontmatter so special characters (umlauts etc.) are preserved
+      // Read title and type from frontmatter so special characters (umlauts etc.) are preserved
+      let type = "work";
       const dataMdPath = path.join(dirPath, "data.md");
       if (existsSync(dataMdPath)) {
         try {
           const parsed = matter(readFileSync(dataMdPath, "utf8"));
           if (parsed.data.title) title = parsed.data.title;
           if (parsed.data.date) date = new Date(parsed.data.date).toISOString();
+          if (parsed.data.type) type = parsed.data.type;
         } catch (err) {}
       }
 
@@ -259,10 +261,12 @@ export default function (eleventyConfig) {
         const mtimes = files.map((f) => statSync(path.join(dirPath, f.name)).mtimeMs);
         date = new Date(mtimes.length ? Math.max(...mtimes) : Date.now()).toISOString();
       }
-      return { slug: dir, title, date, images, videos, texts };
+      return { slug: dir, title, date, type, images, videos, texts };
     });
-    projects.sort((a, b) => new Date(b.date) - new Date(a.date));
-    _projectsCache = projects;
+    // Exclude lab-type projects from pagination (they're rendered on /labs/ page)
+    const filtered = projects.filter((p) => p.type !== "lab");
+    filtered.sort((a, b) => new Date(b.date) - new Date(a.date));
+    _projectsCache = filtered;
     return _projectsCache;
   }
 
