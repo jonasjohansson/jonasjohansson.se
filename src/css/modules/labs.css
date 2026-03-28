@@ -1,4 +1,4 @@
-/* Labs section: dark-mode TOC + articles */
+/* Labs section: dark-mode single-column document */
 .labs {
   display: none;
   background-color: var(--color-black);
@@ -19,70 +19,45 @@ body[data-route="labs"] .projects-container {
   display: none;
 }
 
-/* TOC */
+/* Narrow centered column */
+.labs-column {
+  max-width: 50ch;
+  margin: 0 auto;
+  padding: var(--spacing-3xl) 0;
+}
+
 .labs-heading {
   font-family: var(--font-family);
   font-size: var(--font-size-large);
   margin: 0 0 var(--spacing-2xl);
 }
 
-.labs-toc-grid {
-  display: grid;
-  grid-template-columns: repeat(3, 1fr);
-  gap: var(--spacing-lg);
-  margin-bottom: var(--spacing-3xl);
-}
-
-.labs-toc-item {
+/* TOC: simple list of links */
+.labs-toc {
   display: flex;
   flex-direction: column;
   gap: var(--spacing-xs);
-  padding: var(--spacing-lg);
-  text-decoration: none;
-  color: var(--color-white);
-  border: 1px solid rgba(240, 240, 240, 0.1);
-  transition: border-color 0.2s ease;
-}
-
-.labs-toc-item:hover {
-  border-color: rgba(240, 240, 240, 0.4);
-}
-
-.labs-toc-large {
-  grid-column: span 2;
-}
-
-.labs-toc-title {
-  font-size: var(--font-size-medium);
-  font-family: var(--font-family);
-}
-
-.labs-toc-large .labs-toc-title {
-  font-size: var(--font-size-large);
-}
-
-.labs-toc-description {
+  margin-bottom: var(--spacing-3xl);
   font-size: var(--font-size-small);
+}
+
+.labs-toc a {
+  color: var(--color-white);
+  text-decoration: none;
   opacity: 0.6;
+  transition: opacity 0.2s ease;
+}
+
+.labs-toc a:hover {
+  opacity: 1;
 }
 
 /* Articles */
 .labs-article {
   padding: var(--spacing-3xl) 0;
   border-top: 1px solid rgba(240, 240, 240, 0.1);
-}
-
-.labs-article .text-block {
-  color: var(--color-white);
-}
-
-.labs-article .text-block a {
-  color: var(--color-white);
-  opacity: 0.8;
-}
-
-.labs-article .text-block a:hover {
-  opacity: 1;
+  font-size: var(--font-size-small);
+  line-height: 1.5;
 }
 
 .labs-article h3 {
@@ -90,13 +65,19 @@ body[data-route="labs"] .projects-container {
   margin: 0 0 var(--spacing-lg);
 }
 
-/* Mobile: single column TOC */
-@media (max-width: 768px) {
-  .labs-toc-grid {
-    grid-template-columns: 1fr;
-  }
+.labs-article p {
+  margin: 0 0 1em;
+}
 
-  .labs-toc-large {
-    grid-column: span 1;
-  }
+.labs-article p:last-child {
+  margin-bottom: 0;
+}
+
+.labs-article a {
+  color: var(--color-white);
+  opacity: 0.8;
+}
+
+.labs-article a:hover {
+  opacity: 1;
 }
