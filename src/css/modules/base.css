@@ -63,6 +63,7 @@ body[data-route="home"] #content {
   flex-direction: column;
 }
 
+
 /* Keep content clipped during strip transition */
 html.transition-lock #content {
   overflow: hidden;
