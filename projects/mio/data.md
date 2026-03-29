@@ -6,6 +6,6 @@ date: '2026-01-01'
 url: https://github.com/jonasjohansson/mio
 ---
 
-A minimal macOS app for serial communication with hardware like Arduino and other microcontrollers. I use it for quick prototyping when I need to send and receive serial data without setting up a full development environment.
+A minimal macOS app for serial communication with hardware like Arduino and other microcontrollers. Useful for quick prototyping when you need to send and receive serial data without setting up a full development environment.
 
 [GitHub](https://github.com/jonasjohansson/mio)

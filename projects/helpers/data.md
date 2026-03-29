@@ -6,7 +6,7 @@ date: '2026-01-01'
 url: https://github.com/jonasjohansson/helpers
 ---
 
-A set of tiny browser tools I keep around for quick lookups and prototyping. Nothing fancy, just things I got tired of googling.
+A set of tiny browser tools for quick lookups and prototyping. Nothing fancy, just things that come up often enough to warrant a bookmark.
 
 - [Color Picker](https://jonasjohansson.github.io/helpers/colorpicker) — pick and copy color values
 - [Color Table](https://jonasjohansson.github.io/helpers/colortable) — named CSS colors at a glance
