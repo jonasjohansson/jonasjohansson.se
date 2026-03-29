@@ -1,20 +1,15 @@
 <div id="labs" class="labs">
   <div class="labs-column">
-    <h2 class="labs-heading">Labs</h2>
-
     <nav class="labs-toc">
       {% for lab in labsContent %}
-      <a href="#lab-{{ lab.slug }}">{{ lab.title }}</a>
+      <a href="#lab-{{ lab.slug }}">{{ loop.index }}. {{ lab.title }}</a>
       {% endfor %}
     </nav>
 
     {% for lab in labsContent %}
     <article id="lab-{{ lab.slug }}" class="labs-article">
-      <h3>{{ lab.title }}</h3>
+      <h3><a href="{{ lab.url }}" target="_blank" rel="noopener">{{ lab.title }}</a></h3>
       {{ lab.body | safe }}
-      {% if lab.url %}
-      <p><a href="{{ lab.url }}" target="_blank" rel="noopener">{{ lab.url }}</a></p>
-      {% endif %}
     </article>
     {% endfor %}
   </div>

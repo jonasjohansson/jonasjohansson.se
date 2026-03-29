@@ -20,10 +20,9 @@
 
 .intro-text {
   font-family: var(--font-family);
-  font-size: clamp(0.9rem, 0.5rem + 1vw + 0.3vh, 1.8rem);
+  font-size: var(--font-size-intro);
   line-height: var(--line-height-base);
   color: var(--text-primary);
-  letter-spacing: 0;
 }
 
 .intro-text a {

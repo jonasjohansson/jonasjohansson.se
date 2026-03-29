@@ -1,83 +1,77 @@
-/* Labs section: dark-mode single-column document */
+/* Labs section: dark block, flowing articles */
 .labs {
-  display: none;
   background-color: var(--color-black);
   color: var(--color-white);
-  min-height: 100vh;
-  padding: var(--spacing-xl);
+  padding: var(--spacing-lg);
 }
 
-body[data-route="labs"] .labs {
-  display: block;
-}
-
-/* Hide intro, strips, projects when in labs mode */
-body[data-route="labs"] .intro,
-body[data-route="labs"] #strips,
-body[data-route="labs"] #projects,
-body[data-route="labs"] .projects-container {
-  display: none;
-}
-
-/* Narrow centered column */
+/* Match intro text constraint */
 .labs-column {
-  max-width: 50ch;
-  margin: 0 auto;
-  padding: var(--spacing-3xl) 0;
+  max-width: calc(100% - (4 / 21 * 100%));
 }
 
-.labs-heading {
-  font-family: var(--font-family);
-  font-size: var(--font-size-large);
-  margin: 0 0 var(--spacing-2xl);
-}
-
-/* TOC: simple list of links */
+/* TOC */
 .labs-toc {
   display: flex;
   flex-direction: column;
   gap: var(--spacing-xs);
-  margin-bottom: var(--spacing-3xl);
-  font-size: var(--font-size-small);
+  padding-bottom: var(--spacing-lg);
+  font-family: var(--font-family);
+  font-size: var(--font-size-intro);
+  line-height: var(--line-height-base);
 }
 
 .labs-toc a {
   color: var(--color-white);
-  text-decoration: none;
-  opacity: 0.6;
-  transition: opacity 0.2s ease;
+  text-decoration: underline;
+  text-underline-offset: 2px;
 }
 
 .labs-toc a:hover {
-  opacity: 1;
+  opacity: 0.6;
 }
 
 /* Articles */
 .labs-article {
-  padding: var(--spacing-3xl) 0;
+  padding: var(--spacing-lg) 0;
   border-top: 1px solid rgba(240, 240, 240, 0.1);
-  font-size: var(--font-size-small);
-  line-height: 1.5;
+  font-family: var(--font-family);
+  font-size: var(--font-size-intro);
+  line-height: var(--line-height-base);
 }
 
 .labs-article h3 {
-  font-size: var(--font-size-medium);
-  margin: 0 0 var(--spacing-lg);
+  font-size: var(--font-size-intro);
+  margin: 0 0 var(--spacing-sm);
+}
+
+.labs-article h3 a {
+  color: var(--color-white);
+  text-decoration: underline;
+  text-underline-offset: 2px;
+}
+
+.labs-article h3 a:hover {
+  opacity: 0.6;
 }
 
 .labs-article p {
   margin: 0 0 1em;
+  opacity: 0.6;
 }
 
 .labs-article p:last-child {
   margin-bottom: 0;
 }
 
-.labs-article a {
-  color: var(--color-white);
-  opacity: 0.8;
+/* Mobile: full width */
+@media (orientation: portrait) {
+  .labs-column {
+    max-width: none;
+  }
 }
 
-.labs-article a:hover {
-  opacity: 1;
+/* Hide labs on project pages */
+body[data-route="project"] .labs {
+  display: none;
 }

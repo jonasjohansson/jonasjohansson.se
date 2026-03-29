@@ -33,14 +33,19 @@ async function showContentForRoute(route) {
     header.style.opacity = "1";
   }
 
-  if (route === "home" || route === "about") {
+  if (route === "home") {
     // Initialize strips - they will animate in
     initializeStrips();
     showIntro();
 
   } else if (route === "labs") {
-    hideIntro();
-    window.scrollTo({ top: 0, behavior: "auto" });
+    // Direct /labs/ access — jump straight to labs section
+    body.setAttribute("data-route", "home");
+    initializeStrips({ animate: false });
+    showIntro();
+    const labs = document.getElementById("labs");
+    if (labs) labs.scrollIntoView();
+
   } else if (route === "project") {
     hideIntro();
     // Show project content with fade in
@@ -102,13 +107,6 @@ async function initializeApp() {
   // SPA navigation from intro links
   window.addEventListener("spa-navigate", (e) => {
     router.navigate(e.detail.path);
-  });
-
-  // Escape key exits labs mode
-  document.addEventListener("keydown", (e) => {
-    if (e.key === "Escape" && document.body.getAttribute("data-route") === "labs") {
-      router.goHome();
-    }
   });
 
   // Initialize filter dropdown UI

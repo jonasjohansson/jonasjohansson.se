@@ -3,7 +3,7 @@
 const pathPrefix = window.__PATH_PREFIX__ || "";
 
 // Known non-project routes
-const nonProjectPaths = ["/", "/index.html", "/about", "/about/", ""];
+const nonProjectPaths = ["/", "/index.html", ""];
 
 /**
  * Get the current route from the URL

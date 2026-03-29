@@ -3,12 +3,12 @@ export function initIntro() {
   if (!intro) return;
   document.body.setAttribute("data-intro", "open");
 
-  // Intercept internal links for SPA navigation
+  // Intercept /labs/ link for SPA navigation
   intro.addEventListener("click", (e) => {
-    const link = e.target.closest("a[href^='/']");
+    const link = e.target.closest('a[href="/labs/"]');
     if (!link) return;
     e.preventDefault();
-    window.dispatchEvent(new CustomEvent("spa-navigate", { detail: { path: link.getAttribute("href") } }));
+    window.dispatchEvent(new CustomEvent("spa-navigate", { detail: { path: "/labs/" } }));
   });
 }
 

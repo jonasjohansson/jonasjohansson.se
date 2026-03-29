@@ -56,7 +56,7 @@ class SPARouter {
     if (normalized === "/labs") {
       this.showLabs();
       this.announce("Labs");
-    } else if (normalized === "/" || normalized === "/index.html" || normalized === "/about") {
+    } else if (normalized === "/" || normalized === "/index.html") {
       this.showHome();
       this.announce("Home");
     } else {
@@ -122,14 +122,11 @@ class SPARouter {
   }
 
   showLabs() {
-    document.body.setAttribute("data-route", "labs");
-    document.body.classList.remove("project-visible");
-    clearExistingProjects();
-    resetProjectColors();
-    document.documentElement.removeAttribute("data-project");
-    this._hooks.hideIntro?.();
     document.title = "Labs — " + (window.__SITE_TITLE__ || "Jonas Johansson");
-    window.scrollTo({ top: 0, behavior: "auto" });
+    const labs = document.getElementById("labs");
+    if (labs) {
+      labs.scrollIntoView({ behavior: "smooth" });
+    }
   }
 
   async showProject(slug) {
