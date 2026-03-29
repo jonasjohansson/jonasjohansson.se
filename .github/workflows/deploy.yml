@@ -52,7 +52,7 @@ jobs:
             .11ty-vite
             node_modules/.vite
             dist/img
-          key: ${{ runner.os }}-eleventy-${{ hashFiles('package-lock.json') }}-${{ hashFiles('projects/**') }}
+          key: ${{ runner.os }}-eleventy-${{ hashFiles('package-lock.json') }}-${{ hashFiles('projects/**/*.jpg', 'projects/**/*.jpeg', 'projects/**/*.png', 'projects/**/*.webp', 'projects/**/*.gif') }}
           restore-keys: |
             ${{ runner.os }}-eleventy-${{ hashFiles('package-lock.json') }}-
 
