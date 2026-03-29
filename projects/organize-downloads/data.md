@@ -8,4 +8,4 @@ url: https://github.com/jonasjohansson/organize-downloads-by-date-and-category-c
 
 A Chrome extension that automatically sorts downloads into folders by year and file type. Supports 15 categories and 150+ file extensions. You can customize the folder structure with tokens like `{year}`, `{month}`, `{day}`, `{category}`.
 
-[Chrome Web Store](https://chromewebstore.google.com/detail/organize-downloads-by-dat/bmjnpionejeiabjlfpjgejhdcabgpap) · [GitHub](https://github.com/jonasjohansson/organize-downloads-by-date-and-category-chrome-extension)
+[GitHub](https://github.com/jonasjohansson/organize-downloads-by-date-and-category-chrome-extension) · [Chrome Web Store](https://chromewebstore.google.com/detail/organize-downloads-by-dat/bmjnpionejeiabjlfpjgejhdcabgpap)
