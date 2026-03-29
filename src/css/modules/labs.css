@@ -1,8 +1,13 @@
-/* Labs section: dark block, flowing articles */
+/* Labs section */
 .labs {
   background-color: var(--color-black);
   color: var(--color-white);
   padding: var(--spacing-lg);
+}
+
+html[data-theme="dark"] .labs {
+  background-color: transparent;
+  border-top: 1px solid rgba(240, 240, 240, 0.1);
 }
 
 /* Match intro text constraint */

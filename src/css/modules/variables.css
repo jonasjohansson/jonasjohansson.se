@@ -38,6 +38,12 @@
   --z-header: 300;
 }
 
+/* Dark mode (time-based: 18:00–07:00) */
+html[data-theme="dark"] {
+  --bg-primary: var(--color-black);
+  --text-primary: var(--color-white);
+}
+
 /* Project accent colors (vibrant, extracted from hero images) */
 html[data-project="danny-saucedo"] { --project-color: #9b2500; --project-color-text: var(--color-white); }
 html[data-project="svartljus"] { --project-color: #b07600; --project-color-text: var(--color-white); }

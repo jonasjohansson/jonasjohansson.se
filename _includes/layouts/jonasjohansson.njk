@@ -8,6 +8,13 @@
       href="{{ 'styles.css' | viteAsset | url }}" />
 
     {% include "../components/app-data.njk" %}
+
+    <script>
+      (function() {
+        var h = new Date().getHours();
+        if (h >= 18 || h < 7) document.documentElement.setAttribute('data-theme', 'dark');
+      })();
+    </script>
   </head>
   <body>
     {% include "../components/route-init.njk" %}

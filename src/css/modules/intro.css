@@ -27,39 +27,69 @@
 
 .intro-text .name > span {
   display: inline;
-  animation: name-color 8s infinite;
 }
 
-.intro-text .name > span:nth-child(1) { animation-delay: 0s; }
-.intro-text .name > span:nth-child(2) { animation-delay: 0.15s; }
-.intro-text .name > span:nth-child(3) { animation-delay: 0.3s; }
-.intro-text .name > span:nth-child(4) { animation-delay: 0.45s; }
-.intro-text .name > span:nth-child(5) { animation-delay: 0.6s; }
-.intro-text .name > span:nth-child(6) { animation-delay: 0.9s; }
-.intro-text .name > span:nth-child(7) { animation-delay: 1.05s; }
-.intro-text .name > span:nth-child(8) { animation-delay: 1.2s; }
-.intro-text .name > span:nth-child(9) { animation-delay: 1.35s; }
-.intro-text .name > span:nth-child(10) { animation-delay: 1.5s; }
-.intro-text .name > span:nth-child(11) { animation-delay: 1.65s; }
-.intro-text .name > span:nth-child(12) { animation-delay: 1.8s; }
-.intro-text .name > span:nth-child(13) { animation-delay: 1.95s; }
-.intro-text .name > span:nth-child(14) { animation-delay: 2.1s; }
+.intro-text .sega {
+  font-family: "SEGA", sans-serif;
+}
+
+/* Dark mode: colored name with staggered color + wave animation */
+html[data-theme="dark"] .intro-text .name > span {
+  display: inline-block;
+  animation: name-color 8s infinite, name-wave 2s ease-in-out infinite;
+}
+
+html[data-theme="dark"] .intro-text .name > span:nth-of-type(1)  { color: #e63946; animation-delay: -0s, -0s; }
+html[data-theme="dark"] .intro-text .name > span:nth-of-type(2)  { color: #f77f00; animation-delay: -1.14s, -0.14s; }
+html[data-theme="dark"] .intro-text .name > span:nth-of-type(3)  { color: #fcbf49; animation-delay: -2.28s, -0.28s; }
+html[data-theme="dark"] .intro-text .name > span:nth-of-type(4)  { color: #2a9d8f; animation-delay: -3.42s, -0.42s; }
+html[data-theme="dark"] .intro-text .name > span:nth-of-type(5)  { color: #82c8e5; animation-delay: -4.56s, -0.56s; }
+html[data-theme="dark"] .intro-text .name > span:nth-of-type(6)  { color: #7209b7; animation-delay: -5.7s, -0.84s; }
+html[data-theme="dark"] .intro-text .name > span:nth-of-type(7)  { color: #3a86ff; animation-delay: -6.84s, -0.98s; }
+html[data-theme="dark"] .intro-text .name > span:nth-of-type(8)  { color: #e63946; animation-delay: -0.57s, -1.12s; }
+html[data-theme="dark"] .intro-text .name > span:nth-of-type(9)  { color: #f77f00; animation-delay: -1.71s, -1.26s; }
+html[data-theme="dark"] .intro-text .name > span:nth-of-type(10) { color: #fcbf49; animation-delay: -2.85s, -1.4s; }
+html[data-theme="dark"] .intro-text .name > span:nth-of-type(11) { color: #2a9d8f; animation-delay: -3.99s, -1.54s; }
+html[data-theme="dark"] .intro-text .name > span:nth-of-type(12) { color: #82c8e5; animation-delay: -5.13s, -1.68s; }
+html[data-theme="dark"] .intro-text .name > span:nth-of-type(13) { color: #7209b7; animation-delay: -6.27s, -1.82s; }
+html[data-theme="dark"] .intro-text .name > span:nth-of-type(14) { color: #3a86ff; animation-delay: -7.41s, -1.96s; }
 
 @keyframes name-color {
   0%   { color: #e63946; }
   14%  { color: #f77f00; }
   28%  { color: #fcbf49; }
   42%  { color: #2a9d8f; }
-  57%  { color: #264653; }
+  57%  { color: #82c8e5; }
   71%  { color: #7209b7; }
   85%  { color: #3a86ff; }
   100% { color: #e63946; }
 }
 
-.intro-text .sega {
-  font-family: "SEGA", sans-serif;
+@keyframes name-wave {
+  0%, 100% { transform: translateY(0); }
+  50%      { transform: translateY(-0.15em); }
+}
+
+html[data-theme="dark"] .intro-text .sega {
   color: #0060a8;
 }
+
+html[data-theme="dark"] .intro-text a {
+  color: var(--project-color, #3a86ff);
+}
+
+html[data-theme="dark"] .intro-text a:nth-of-type(1) { color: #e63946; }
+html[data-theme="dark"] .intro-text a:nth-of-type(2) { color: #f77f00; }
+html[data-theme="dark"] .intro-text a:nth-of-type(3) { color: #2a9d8f; }
+html[data-theme="dark"] .intro-text a:nth-of-type(4) { color: #7209b7; }
+html[data-theme="dark"] .intro-text a:nth-of-type(5) { color: #3a86ff; }
+html[data-theme="dark"] .intro-text a:nth-of-type(6) { color: #e63946; }
+html[data-theme="dark"] .intro-text a:nth-of-type(7) { color: #fcbf49; }
+html[data-theme="dark"] .intro-text a:nth-of-type(8) { color: #2a9d8f; }
+html[data-theme="dark"] .intro-text a:nth-of-type(9) { color: #7209b7; }
+html[data-theme="dark"] .intro-text a:nth-of-type(10) { color: #f77f00; }
+html[data-theme="dark"] .intro-text a:nth-of-type(11) { color: #3a86ff; }
+html[data-theme="dark"] .intro-text a:nth-of-type(12) { color: #e63946; }
 
 .intro-text .intro-logo {
   display: inline-block;
@@ -73,13 +103,17 @@
   margin: -0.15em 0.1em 0;
 }
 
+html[data-theme="dark"] .intro-text .intro-logo img {
+  filter: invert(1);
+}
+
 .intro-text a {
   text-decoration: underline;
   text-underline-offset: 2px;
 }
 
 .intro-text a:hover {
-  opacity: 0.6;
+  opacity: 0.8;
 }
 
 /* When intro is open, strips fill remaining space via flex */

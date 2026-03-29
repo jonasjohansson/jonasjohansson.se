@@ -167,7 +167,7 @@ figure {
 }
 
 .text-block a {
-  color: var(--project-color, var(--color-black));
+  color: var(--project-color, var(--text-primary));
   text-decoration: underline;
 }
 
