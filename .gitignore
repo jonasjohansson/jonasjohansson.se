@@ -4,3 +4,4 @@ node_modules
 Trace-*.json
 .claude
 .claude/
+lighthouse-report.*
