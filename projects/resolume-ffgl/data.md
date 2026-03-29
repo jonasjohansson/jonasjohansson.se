@@ -19,7 +19,6 @@ Custom ISF (Interactive Shader Format) shaders I write for live visuals in Resol
 - **SlitScreen** — repeats boundary pixels outward from a mask edge
 - **SmartVignette** — vignette with round/square modes, movable center, optional image mask
 - **SmokeDissipation** — content wisps away like rising smoke with curl noise turbulence
-- **Sunset** — volumetric sunset clouds with raymarch, based on [XorDev](https://x.com/XorDev)'s shader
 - **WarpFBM** — domain-warped FBM that organically warps source content with animated noise
 
 [GitHub](https://github.com/jonasjohansson/resolume-ffgl)
