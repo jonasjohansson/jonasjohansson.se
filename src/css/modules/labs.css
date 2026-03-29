@@ -64,6 +64,14 @@
   opacity: 0.6;
 }
 
+.labs-title-logo {
+  height: 1.1em;
+  width: auto;
+  vertical-align: middle;
+  margin-right: 0.3em;
+  filter: invert(1);
+}
+
 .labs-article p {
   margin: 0 0 1em;
   opacity: 0.6;

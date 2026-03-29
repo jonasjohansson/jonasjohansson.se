@@ -500,7 +500,7 @@ export default function (eleventyConfig) {
       try {
         const fileContent = readFileSync(dataMdPath, "utf8");
         const parsed = matter(fileContent);
-        const { title, type, description, url, date, tocSize } = parsed.data;
+        const { title, type, description, url, date, tocSize, logo } = parsed.data;
         if (type !== "lab") continue;
 
         const body = parsed.content ? md.render(parsed.content) : "";
@@ -509,6 +509,7 @@ export default function (eleventyConfig) {
           title: title || dir.replace(/[._-]+/g, " ").trim(),
           description: description || "",
           url: url || null,
+          logo: logo || null,
           tocSize: tocSize || "small",
           date: date ? new Date(date).toISOString() : null,
           body,

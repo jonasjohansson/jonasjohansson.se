@@ -10,7 +10,7 @@
 
     {% for lab in labsContent %}
     <article id="lab-{{ lab.slug }}" class="labs-article">
-      <h3>{{ lab.title }}</h3>
+      <h3>{% if lab.logo %}<img class="labs-title-logo" src="{{ lab.logo }}" alt="{{ lab.title }} logo"> {% endif %}{{ lab.title }}</h3>
       {{ lab.body | safe }}
     </article>
     {% endfor %}

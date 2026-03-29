@@ -25,6 +25,54 @@
   color: var(--text-primary);
 }
 
+.intro-text .name > span {
+  display: inline;
+  animation: name-color 8s infinite;
+}
+
+.intro-text .name > span:nth-child(1) { animation-delay: 0s; }
+.intro-text .name > span:nth-child(2) { animation-delay: 0.15s; }
+.intro-text .name > span:nth-child(3) { animation-delay: 0.3s; }
+.intro-text .name > span:nth-child(4) { animation-delay: 0.45s; }
+.intro-text .name > span:nth-child(5) { animation-delay: 0.6s; }
+.intro-text .name > span:nth-child(6) { animation-delay: 0.9s; }
+.intro-text .name > span:nth-child(7) { animation-delay: 1.05s; }
+.intro-text .name > span:nth-child(8) { animation-delay: 1.2s; }
+.intro-text .name > span:nth-child(9) { animation-delay: 1.35s; }
+.intro-text .name > span:nth-child(10) { animation-delay: 1.5s; }
+.intro-text .name > span:nth-child(11) { animation-delay: 1.65s; }
+.intro-text .name > span:nth-child(12) { animation-delay: 1.8s; }
+.intro-text .name > span:nth-child(13) { animation-delay: 1.95s; }
+.intro-text .name > span:nth-child(14) { animation-delay: 2.1s; }
+
+@keyframes name-color {
+  0%   { color: #e63946; }
+  14%  { color: #f77f00; }
+  28%  { color: #fcbf49; }
+  42%  { color: #2a9d8f; }
+  57%  { color: #264653; }
+  71%  { color: #7209b7; }
+  85%  { color: #3a86ff; }
+  100% { color: #e63946; }
+}
+
+.intro-text .sega {
+  font-family: "SEGA", sans-serif;
+  color: #0060a8;
+}
+
+.intro-text .intro-logo {
+  display: inline-block;
+  vertical-align: middle;
+}
+
+.intro-text .intro-logo img {
+  height: 1.1em;
+  width: auto;
+  vertical-align: middle;
+  margin: -0.15em 0.1em 0;
+}
+
 .intro-text a {
   text-decoration: underline;
   text-underline-offset: 2px;

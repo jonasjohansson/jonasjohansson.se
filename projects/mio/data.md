@@ -4,6 +4,7 @@ type: lab
 description: Serial communication app
 date: '2026-01-01'
 url: https://github.com/jonasjohansson/mio
+logo: /assets/img/logos/mio.svg
 ---
 
 A minimal macOS app for serial communication with hardware like Arduino and other microcontrollers. Useful for quick prototyping when you need to send and receive serial data without setting up a full development environment.
