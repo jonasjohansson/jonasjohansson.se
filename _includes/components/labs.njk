@@ -1,5 +1,7 @@
 <div id="labs" class="labs">
   <div class="labs-column">
+    <p class="labs-intro">Tools, experiments, and resources.</p>
+
     <nav class="labs-toc">
       {% for lab in labsContent %}
       <a href="#lab-{{ lab.slug }}">{{ loop.index }}. {{ lab.title }}</a>
@@ -8,9 +10,10 @@
 
     {% for lab in labsContent %}
     <article id="lab-{{ lab.slug }}" class="labs-article">
-      <h3><a href="{{ lab.url }}" target="_blank" rel="noopener">{{ lab.title }}</a></h3>
+      <h3>{{ lab.title }}</h3>
       {{ lab.body | safe }}
     </article>
     {% endfor %}
+
   </div>
 </div>

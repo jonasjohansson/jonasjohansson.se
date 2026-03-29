@@ -109,6 +109,15 @@ async function initializeApp() {
     router.navigate(e.detail.path);
   });
 
+  // Header click navigates home via SPA
+  const headerLink = document.querySelector("#header-toggle");
+  if (headerLink) {
+    headerLink.addEventListener("click", (e) => {
+      e.preventDefault();
+      router.goHome();
+    });
+  }
+
   // Initialize filter dropdown UI
   initFilters();
 

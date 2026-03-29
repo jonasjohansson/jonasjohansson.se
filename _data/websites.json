@@ -1,0 +1,40 @@
+{
+  "portfolios": [
+    { "url": "https://annaelisanilson.se", "title": "Anna Elisa Nilson", "description": "Artist" },
+    { "url": "https://bengtjohansson.se", "title": "Bengt Johansson", "description": "Painter, sculptor" },
+    { "url": "https://fredrikjohansson.info", "title": "Fredrik Johansson", "description": "Artist" },
+    { "url": "https://gravic.se", "title": "Jacob Andersson", "description": "Digital designer" },
+    { "url": "https://multiversalstudios.org", "title": "Lior Nonne Malue Hansen", "description": "Sculptor, installation artist" },
+    { "url": "https://olleanderson.se", "title": "Olle Anderson", "description": "Designer" },
+    { "url": "https://rosehallgren.se", "title": "Rose Hallgren", "description": "Studio Rose Hallgren" },
+    { "url": "https://tomashalling.se", "title": "Tomas Halling", "description": "Show artist, musician" }
+  ],
+  "projects": [
+    { "url": "https://321barneval.nu", "title": "3, 2, 1... Barneval!", "description": "Children's rights in urban development" },
+    { "url": "https://brick.bio", "title": "Brick", "description": "Synthetic biology brick registry" },
+    { "url": "https://domedreaming.com", "title": "Dome Dreaming", "description": "Fulldome project" },
+    { "url": "https://easterncityportal.co.uk", "title": "The Portal", "description": "A vision for the Eastern City" },
+    { "url": "https://enterhaven.se", "title": "Haven", "description": "AR experience" },
+    { "url": "https://facingworlds.org", "title": "Facing Worlds", "description": "Multiplayer 3D avatar game" },
+    { "url": "https://igem.se", "title": "iGEM Stockholm", "description": "Synthetic biology student group" },
+    { "url": "https://jagargud.se", "title": "JAG AR GUD", "description": "Theater performance" },
+    { "url": "https://kista.svartljus.se", "title": "Dendrolux Kista", "description": "Interactive light and sound installation" },
+    { "url": "https://lightsforukraine.se", "title": "Lights for Ukraine", "description": "Charity event" },
+    { "url": "https://nava.community", "title": "NAVA", "description": "Nordic Audiovisual Artists" },
+    { "url": "https://nordiclights.se", "title": "Nordic Lights", "description": "Audiovisual festival union" },
+    { "url": "https://peopleinorbit.se", "title": "People in Orbit", "description": "Jazz-rock band" },
+    { "url": "https://playlist.design", "title": "Playlist Design", "description": "Cover art generator" },
+    { "url": "https://prompta.live", "title": "Prompta", "description": "Prompt battle server" },
+    { "url": "https://scree.studio", "title": "Scree", "description": "Collaboration studio" },
+    { "url": "https://soundvisions.se", "title": "Sound & Visions", "description": "Audiovisual collaboration, Beckmans and KMH" },
+    { "url": "https://svartljus.se", "title": "Svartljus", "description": "Light art collective" },
+    { "url": "https://synb.art", "title": "Synbart", "description": "Public art project in Sundsvall" },
+    { "url": "https://tinymassive.io", "title": "Tiny/Massive", "description": "Architectural light interventions" },
+    { "url": "https://visualia.se", "title": "Visualia", "description": "Artist residency" }
+  ],
+  "teaching": [
+    { "url": "https://angl.tech", "title": "ANGL", "description": "3D product viewer" },
+    { "url": "https://hyperisland.dev", "title": "Exploring Code", "description": "Workshop site for Hyper Island" },
+    { "url": "https://preview.domedreaming.com", "title": "Dome Preview", "description": "Fulldome preview tool" }
+  ]
+}

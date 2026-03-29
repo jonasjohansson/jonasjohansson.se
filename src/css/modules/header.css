@@ -97,7 +97,7 @@ header.header-bottom .header-content {
 /* Shared typography for header title and subtitle */
 .header-title,
 .header-subtitle {
-  font-size: 16px;
+  font-size: var(--font-size-large);
   letter-spacing: var(--letter-spacing-wide);
   text-transform: uppercase;
   line-height: var(--line-height-tight);
