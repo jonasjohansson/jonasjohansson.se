@@ -32,9 +32,7 @@ export class LoadingManager {
 
     promises.push(document.fonts?.ready || Promise.resolve());
 
-    if (route === "home") {
-      promises.push(this.preloadStripImages());
-    } else if (route === "about") {
+    if (route === "about") {
       promises.push(this.preloadAboutImage());
     } else if (route === "project") {
       promises.push(this.preloadProjectImages());
@@ -42,7 +40,7 @@ export class LoadingManager {
 
     await Promise.race([
       Promise.all(promises),
-      new Promise((resolve) => setTimeout(resolve, 4000)),
+      new Promise((resolve) => setTimeout(resolve, 1500)),
     ]);
 
     this.completeLoading();

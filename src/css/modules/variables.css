@@ -24,7 +24,7 @@
   --font-size-small: clamp(1rem, 0.6rem + 1vw, 2rem);
   --font-size-medium: clamp(1.4rem, 0.8rem + 1.5vw, 2.6rem);
   --font-size-large: clamp(1.6rem, 1rem + 1.5vw, 2.4rem);
-  --font-size-intro: clamp(0.9rem, 0.5rem + 1vw + 0.3vh, 1.8rem);
+  --font-size-intro: clamp(1.15rem, 0.5rem + 1vw + 0.3vh, 1.8rem);
   --letter-spacing-base: 0;
   --letter-spacing-wide: 0;
   --letter-spacing-wider: 0;

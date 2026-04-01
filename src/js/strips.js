@@ -130,15 +130,6 @@ function insertStripsIntoDOM(shuffledStrips, container) {
     strip.style.setProperty("--strip-index", String(index));
     strip.classList.remove("strip-visible");
 
-    const stripImage = strip.querySelector(".strip-image");
-    if (stripImage) {
-      const bgImage = stripImage.getAttribute("data-bg-image");
-      if (bgImage) {
-        stripImage.style.backgroundImage = `url('${bgImage}')`;
-        stripImage.classList.add("loaded");
-      }
-    }
-
     fragment.appendChild(strip);
   });
   container.appendChild(fragment);
@@ -217,52 +208,17 @@ export function initializeStrips({ animate = true } = {}) {
     });
 
 
-    const preloadAllImages = async () => {
-      const imageData = shuffledStrips.map((strip) => {
-        const stripImage = strip.querySelector(".strip-image");
-        const bgImage = stripImage?.getAttribute("data-bg-image");
-        return { strip, stripImage, bgImage };
-      });
+    stripsContainer.style.display = "";
 
-      const imagePromises = imageData.map(({ bgImage }) => {
-        if (!bgImage) return Promise.resolve();
-        return new Promise((resolve) => {
-          const img = new Image();
-          img.onload = () => resolve(img);
-          img.onerror = () => resolve(null);
-          img.src = bgImage;
-        });
-      });
-
-      await Promise.all(imagePromises);
-
-      stripsContainer.style.display = "";
-
-      requestAnimationFrame(() => {
-        insertStripsIntoDOM(shuffledStrips, stripsContainer);
-
-        allStrips = shuffledStrips;
-        stripImages = Array.from(stripsContainer.querySelectorAll(".strip-image"));
-        attachStripEventListeners();
-        if (animate) {
-          animateStripsIn(shuffledStrips, stripsContainer);
-        } else {
-          shuffledStrips.forEach((strip) => strip.classList.add("strip-visible"));
-          stripsContainer.classList.add("strips-initialized");
-          document.body.classList.add("strips-initialized");
-        }
-        stripsContainer.querySelectorAll(".strip-video").forEach((v) => v.play().catch(() => {}));
-      });
-    };
-
-    preloadAllImages().catch((err) => {
-      console.warn("Error preloading images:", err);
-      stripsContainer.style.display = "";
-
+    requestAnimationFrame(() => {
       insertStripsIntoDOM(shuffledStrips, stripsContainer);
 
       allStrips = shuffledStrips;
       stripImages = Array.from(stripsContainer.querySelectorAll(".strip-image"));
+
+      // Lazy-load images via IntersectionObserver instead of preloading all
+      stripImages.forEach((img) => imageObserver.observe(img));
+
       attachStripEventListeners();
       if (animate) {
         animateStripsIn(shuffledStrips, stripsContainer);

@@ -33,7 +33,7 @@
   rel="preload"
   as="font"
   type="font/woff"
-  href="/assets/fonts/SeasonMix-Regular.D0nbA4c6.woff"
+  href="{{ 'SeasonMix-Regular.woff' | viteAsset | url }}"
   crossorigin />
 
 <!-- Preload about image only on about page to prevent pop-in when opening about -->
@@ -45,15 +45,9 @@
   fetchpriority="low" />
 {% endif %}
 
-{# Preload first strip/hero image to improve LCP #} {% if projectsForJS and projectsForJS[0] and projectsForJS[0].images and
-projectsForJS[0].images[0] %}
-<link
-  rel="preload"
-  as="image"
-  href="{{ projectsForJS[0].images[0] }}"
-  fetchpriority="high"
-  imagesizes="100vw" />
-{% endif %}
+{# Strip images are loaded by JS via data-bg-image, not by the browser's
+   image loader, so preloading them here just competes with the font and
+   delays the text LCP. Removed to improve Lighthouse performance score. #}
 
 <!-- Canonical URL -->
 <link

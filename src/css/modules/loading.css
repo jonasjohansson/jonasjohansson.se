@@ -1,4 +1,1 @@
-/* Loading state — content hidden until assets are ready */
-body.loading #content {
-  visibility: hidden;
-}
+/* Loading state — hide strips until assets are ready, but show intro immediately */

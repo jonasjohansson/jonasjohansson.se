@@ -12,7 +12,7 @@ html[data-theme="dark"] .labs {
 
 /* Match intro text constraint */
 .labs-column {
-  max-width: calc(100% - (4 / 21 * 100%));
+  max-width: calc(8 / 12 * 100%);
 }
 
 /* Intro text */
@@ -82,6 +82,11 @@ html[data-theme="dark"] .labs {
   opacity: 0.6;
 }
 
+.labs-article:first-child {
+  border-top: none;
+  padding-top: 0;
+}
+
 .labs-article p:last-child {
   margin-bottom: 0;
 }
@@ -128,6 +133,23 @@ html[data-theme="dark"] .labs {
 
 .labs-websites li {
   opacity: 0.6;
+}
+
+/* Large screens: TOC sticky left, articles right */
+@media (min-width: 1024px) {
+  .labs-column {
+    display: grid;
+    grid-template-columns: 1fr 2fr;
+    gap: var(--spacing-lg);
+    max-width: none;
+  }
+
+  .labs-toc {
+    position: sticky;
+    top: var(--spacing-lg);
+    align-self: start;
+    padding-bottom: 0;
+  }
 }
 
 /* Mobile: full width */

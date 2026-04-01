@@ -310,22 +310,20 @@ export function attachTouchListeners() {
   );
 
   stripsContainer.addEventListener("touchend", () => {
-    // If the user swiped through strips, navigate to the last touched strip
-    if (hasMoved && isHorizontalScroll && currentlyTouchedStrip) {
-      const strip = currentlyTouchedStrip;
-      currentlyTouchedStrip.classList.remove("touch-hover");
-      currentlyTouchedStrip = null;
+    // Tap without movement on the same strip = navigate
+    if (!hasMoved && touchStartStrip) {
+      const strip = touchStartStrip;
+      if (currentlyTouchedStrip) {
+        currentlyTouchedStrip.classList.remove("touch-hover");
+        currentlyTouchedStrip = null;
+      }
       touchStartStrip = null;
       hasMoved = false;
-
-      if (!document.body?.dataset?.filtering === "true" && !document.documentElement.classList.contains("transition-lock")) {
-        strip.click();
-      } else {
-        strip.click();
-      }
+      strip.click();
       return;
     }
 
+    // Swipe ended: just clean up, don't navigate
     if (currentlyTouchedStrip) {
       currentlyTouchedStrip.classList.remove("touch-hover");
       currentlyTouchedStrip = null;

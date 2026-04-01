@@ -124,6 +124,11 @@ async function initializeApp() {
   // Initialize intro section
   initIntro();
 
+  // Show intro immediately on home/labs routes (don't wait for image preload)
+  if (route === "home" || route === "labs") {
+    showIntro();
+  }
+
   // Initialize xylophone audio
   initXylophone();
   melodyPlayer.enableMelodyMode("mario");

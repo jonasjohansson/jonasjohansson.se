@@ -1,19 +1,20 @@
 <div id="labs" class="labs">
-  <div class="labs-column">
-    <p class="labs-intro">Tools, experiments, and resources.</p>
+  <p class="labs-intro">Tools, experiments, and resources.</p>
 
+  <div class="labs-column">
     <nav class="labs-toc">
       {% for lab in labsContent %}
       <a href="#lab-{{ lab.slug }}">{{ loop.index }}. {{ lab.title }}</a>
       {% endfor %}
     </nav>
 
-    {% for lab in labsContent %}
-    <article id="lab-{{ lab.slug }}" class="labs-article">
-      <h3>{% if lab.logo %}<img class="labs-title-logo" src="{{ lab.logo }}" alt="{{ lab.title }} logo"> {% endif %}{{ lab.title }}</h3>
-      {{ lab.body | safe }}
-    </article>
-    {% endfor %}
-
+    <div class="labs-articles">
+      {% for lab in labsContent %}
+      <article id="lab-{{ lab.slug }}" class="labs-article">
+        <h3>{% if lab.logo %}<img class="labs-title-logo" src="{{ lab.logo }}" alt="{{ lab.title }} logo"> {% endif %}{{ lab.title }}</h3>
+        {{ lab.body | safe }}
+      </article>
+      {% endfor %}
+    </div>
   </div>
 </div>
