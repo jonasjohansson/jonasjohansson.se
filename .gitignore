@@ -5,3 +5,5 @@ Trace-*.json
 .claude
 .claude/
 lighthouse-report.*
+lighthouse-desktop.html
+lighthouse-mobile.html

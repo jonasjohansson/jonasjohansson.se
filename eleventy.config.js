@@ -505,7 +505,9 @@ export default function (eleventyConfig) {
         const { title, type, description, url, date, tocSize, logo } = parsed.data;
         if (type !== "lab") continue;
 
-        const body = parsed.content ? md.render(parsed.content) : "";
+        const body = parsed.content
+          ? md.render(parsed.content).replace(/<a href="(https?:\/\/[^"]*)">/g, '<a href="$1" target="_blank" rel="noopener noreferrer">')
+          : "";
         labs.push({
           slug: dir,
           title: title || dir.replace(/[._-]+/g, " ").trim(),
