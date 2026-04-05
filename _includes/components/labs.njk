@@ -1,20 +1,19 @@
 <div id="labs" class="labs">
   <p class="labs-intro">Tools, experiments, and resources.</p>
 
-  <div class="labs-column">
-    <nav class="labs-toc">
-      {% for lab in labsContent %}
-      <a href="#lab-{{ lab.slug }}">{{ loop.index }}. {{ lab.title }}</a>
-      {% endfor %}
-    </nav>
-
-    <div class="labs-articles">
-      {% for lab in labsContent %}
-      <article id="lab-{{ lab.slug }}" class="labs-article">
-        <h3>{% if lab.logo %}<img class="labs-title-logo" src="{{ lab.logo }}" alt="{{ lab.title }} logo"> {% endif %}{{ lab.title }}</h3>
-        {{ lab.body | safe }}
-      </article>
-      {% endfor %}
+  <div class="labs-grid">
+    {% for lab in labsContent %}
+    {% if lab.url %}
+    <a href="{{ lab.url }}" class="labs-card" target="_blank" rel="noopener noreferrer">
+      <h3 class="labs-card-title">{{ lab.title }}{% if lab.logo %} <img class="labs-card-logo" src="{{ lab.logo }}" alt="">{% endif %}</h3>
+      {% if lab.description %}<p class="labs-card-desc">{{ lab.description }}</p>{% endif %}
+    </a>
+    {% else %}
+    <div class="labs-card">
+      <h3 class="labs-card-title">{{ lab.title }}{% if lab.logo %} <img class="labs-card-logo" src="{{ lab.logo }}" alt="">{% endif %}</h3>
+      {% if lab.description %}<p class="labs-card-desc">{{ lab.description }}</p>{% endif %}
     </div>
+    {% endif %}
+    {% endfor %}
   </div>
 </div>

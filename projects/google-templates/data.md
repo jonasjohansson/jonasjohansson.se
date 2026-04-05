@@ -3,6 +3,7 @@ title: Google Templates
 type: lab
 description: Shared Google Drive templates for project structure and finance planning
 date: '2026-04-01'
+url: https://drive.google.com/drive/folders/1f9R8S7efyesHzigLx6plSazXh47Pa-OV?usp=sharing
 ---
 
 Google Drive templates I use to organise and budget creative projects. Copy them to your own Drive and adapt as needed.
