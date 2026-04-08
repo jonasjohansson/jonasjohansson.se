@@ -101,7 +101,7 @@ figure {
 .project-grid > .media-item:first-child,
 .project-grid > .media-item.hero {
   overflow: hidden;
-  border-radius: 2rem;
+  border-radius: var(--radius-md);
   height: calc(100vh - var(--spacing-lg) * 2);
   height: calc(100dvh - var(--spacing-lg) * 2);
   min-height: calc(100vh - var(--spacing-lg) * 2);

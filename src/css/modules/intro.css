@@ -123,6 +123,14 @@ body[data-intro="open"] #strips {
   min-height: 0;
 }
 
+/* Wide screens: intro beside strips */
+@media (min-width: 1800px) {
+  body[data-intro="open"] .intro {
+    max-height: none;
+    padding-bottom: 0;
+  }
+}
+
 /* Hide header when intro is visible */
 body[data-intro="open"] header {
   display: none !important;

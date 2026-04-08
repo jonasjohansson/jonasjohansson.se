@@ -63,6 +63,39 @@ body[data-route="home"] #content {
   flex-direction: column;
 }
 
+/* Wide screens: intro left, strips right */
+@media (min-width: 1400px) and (orientation: landscape) {
+  body[data-route="home"] #content {
+    flex-direction: row;
+    align-items: stretch;
+  }
+
+  body[data-route="home"] .intro {
+    max-width: 40%;
+    max-height: none;
+    overflow-y: auto;
+    flex-shrink: 0;
+    align-self: flex-start;
+    padding-right: var(--spacing-xl);
+    padding-top: 0;
+  }
+
+  body[data-route="home"] .intro-text p:first-child {
+    margin-top: 0;
+  }
+
+  body[data-route="home"] #main {
+    display: none;
+  }
+
+  body[data-route="home"] #strips {
+    flex: 1;
+    height: auto;
+    min-height: 0;
+    align-self: stretch;
+  }
+}
+
 
 /* Keep content clipped during strip transition */
 html.transition-lock #content {

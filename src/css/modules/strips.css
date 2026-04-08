@@ -8,7 +8,7 @@
   min-height: 0;
   flex-shrink: 0;
   overflow: hidden;
-  border-radius: 2rem;
+  border-radius: var(--radius-md);
   scrollbar-width: none;
   backface-visibility: hidden;
   transition: opacity 0.3s ease;

@@ -8,8 +8,8 @@ header {
   background-color: var(--bg-primary);
   color: var(--text-primary);
   user-select: none;
-  border-bottom-left-radius: 10px;
-  border-bottom-right-radius: 10px;
+  border-bottom-left-radius: var(--radius-md);
+  border-bottom-right-radius: var(--radius-md);
   display: flex;
   flex-direction: row;
   align-items: center;
@@ -32,7 +32,7 @@ header.header-bottom {
   position: absolute;
   top: auto;
   bottom: 0;
-  border-radius: 10px 10px 0 0;
+  border-radius: var(--radius-md) var(--radius-md) 0 0;
 }
 
 .header-center {
