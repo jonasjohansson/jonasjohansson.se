@@ -23,6 +23,7 @@
   font-size: var(--font-size-intro);
   line-height: var(--line-height-base);
   color: var(--text-primary);
+  text-wrap: pretty;
 }
 
 .intro-text .name > span {

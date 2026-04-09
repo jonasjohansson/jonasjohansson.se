@@ -46,12 +46,14 @@
   font-size: var(--font-size-medium);
   line-height: 1.35;
   text-align: center;
+  text-wrap: balance;
 }
 
 .text-block .text-large,
 .text-large {
   font-size: var(--font-size-large);
   line-height: 1.15 !important;
+  text-wrap: balance;
 }
 
 /* Video */
@@ -164,6 +166,7 @@ figure {
   margin: 0 auto;
   line-height: 1.5;
   text-align: left;
+  text-wrap: pretty;
 }
 
 .text-block a {
