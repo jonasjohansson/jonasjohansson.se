@@ -2,7 +2,7 @@
 :root {
   /* Colors */
   --color-white: #f0f0f0;
-  --color-black: #1a1a1a;
+  --color-black: #252525;
   --color-gray: #555555;
   --bg-primary: var(--color-white);
   --text-primary: var(--color-black);

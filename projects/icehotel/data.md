@@ -65,4 +65,14 @@ blocks:
       every year, longing to return with my partner
       [Rose Hallgren](https://rosehallgren.se/) and collaborator
       [Erik Schmitz](https://www.erikschmitz.art/).
+  - type: image
+    src: 05.jpg
+  - type: image
+    src: 06.jpg
+  - type: image
+    src: 07.jpg
+  - type: image
+    src: 08.jpg
+  - type: image
+    src: 09.jpg
 ---

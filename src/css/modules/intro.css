@@ -71,26 +71,9 @@ html[data-theme="dark"] .intro-text .name > span:nth-of-type(14) { color: #3a86f
   50%      { transform: translateY(-0.15em); }
 }
 
-html[data-theme="dark"] .intro-text .sega {
-  color: #0060a8;
-}
-
 html[data-theme="dark"] .intro-text a {
-  color: var(--project-color, #3a86ff);
+  color: var(--color-white);
 }
-
-html[data-theme="dark"] .intro-text a:nth-of-type(1) { color: #e63946; }
-html[data-theme="dark"] .intro-text a:nth-of-type(2) { color: #f77f00; }
-html[data-theme="dark"] .intro-text a:nth-of-type(3) { color: #2a9d8f; }
-html[data-theme="dark"] .intro-text a:nth-of-type(4) { color: #7209b7; }
-html[data-theme="dark"] .intro-text a:nth-of-type(5) { color: #3a86ff; }
-html[data-theme="dark"] .intro-text a:nth-of-type(6) { color: #e63946; }
-html[data-theme="dark"] .intro-text a:nth-of-type(7) { color: #fcbf49; }
-html[data-theme="dark"] .intro-text a:nth-of-type(8) { color: #2a9d8f; }
-html[data-theme="dark"] .intro-text a:nth-of-type(9) { color: #7209b7; }
-html[data-theme="dark"] .intro-text a:nth-of-type(10) { color: #f77f00; }
-html[data-theme="dark"] .intro-text a:nth-of-type(11) { color: #3a86ff; }
-html[data-theme="dark"] .intro-text a:nth-of-type(12) { color: #e63946; }
 
 .intro-text .intro-logo {
   display: inline-block;
