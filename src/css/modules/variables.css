@@ -22,15 +22,15 @@
   /* Typography */
   --font-family: "SeasonMix", system-ui, -apple-system, Segoe UI, Roboto, Helvetica, Arial, sans-serif;
   --font-size-base: 16px;
-  --font-size-small: clamp(1rem, 0.6rem + 1vw, 2rem);
-  --font-size-medium: clamp(1.4rem, 0.8rem + 1.5vw, 2.6rem);
-  --font-size-large: clamp(1.6rem, 1rem + 1.5vw, 2.4rem);
-  --font-size-intro: clamp(1.15rem, 0.5rem + 1vw + 0.3vh, 1.8rem);
+  --font-size-small: clamp(0.9rem, 0.6rem + 1vw, 2rem);
+  --font-size-medium: clamp(1.25rem, 0.8rem + 1.5vw, 2.6rem);
+  --font-size-large: clamp(1.4rem, 1rem + 1.5vw, 2.4rem);
+  --font-size-intro: clamp(1.05rem, 0.5rem + 1vw + 0.3vh, 1.8rem);
   --letter-spacing-base: 0;
   --letter-spacing-wide: 0;
   --letter-spacing-wider: 0;
-  --line-height-tight: 1.2;
-  --line-height-base: 1.425;
+  --line-height-tight: 1.15;
+  --line-height-base: 1.375;
 
   /* Z-Index Scale */
   --z-strips: 1;
