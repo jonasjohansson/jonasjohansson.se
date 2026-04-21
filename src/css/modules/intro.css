@@ -97,7 +97,7 @@ html[data-theme="dark"] .intro-text .intro-logo img {
 }
 
 .intro-text a:hover {
-  opacity: 0.8;
+  opacity: 1;
 }
 
 /* When intro is open, strips fill remaining space via flex */

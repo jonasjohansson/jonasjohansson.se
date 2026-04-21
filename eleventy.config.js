@@ -462,13 +462,13 @@ export default function (eleventyConfig) {
             if (type === "text")
               return {
                 type: "text",
-                content: md.render(textContent || ""),
+                content: md.render(textContent || "").replace(/<a href="(https?:\/\/[^"]*)">/g, '<a href="$1" target="_blank" rel="noopener noreferrer">'),
                 colStart: explicitColStart || resolved.colStart || 3,
                 colSpan: explicitColSpan || resolved.colSpan || 8,
                 fontSizeClass,
               };
             if (type === "credits")
-              return { type: "credits", credits: (credits || []).map((credit) => md.render(credit)), colStart, colSpan };
+              return { type: "credits", credits: (credits || []).map((credit) => md.render(credit).replace(/<a href="(https?:\/\/[^"]*)">/g, '<a href="$1" target="_blank" rel="noopener noreferrer">')), colStart, colSpan };
             return null;
           })
           .filter(Boolean);

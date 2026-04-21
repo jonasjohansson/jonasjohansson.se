@@ -62,6 +62,18 @@
   height: auto;
 }
 
+.media-caption {
+  font-size: var(--font-size-small);
+  line-height: 1.425;
+  letter-spacing: var(--letter-spacing-base);
+  margin-top: 0.5em;
+  opacity: 0.7;
+}
+
+.media-caption a {
+  color: inherit;
+}
+
 
 #projects {
   display: block;
@@ -175,7 +187,7 @@ figure {
 }
 
 .text-block a:hover {
-  opacity: 0.7;
+  opacity: 1;
 }
 
 .text-block.text-medium {

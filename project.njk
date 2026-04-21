@@ -34,6 +34,11 @@ eleventyComputed:
           autoplay
           preload="metadata"
           aria-hidden="true"></video>
+        {% if block.caption %}
+        <figcaption class="media-caption">
+          {% if block.link %}<a href="{{ block.link }}" target="_blank" rel="noopener">{{ block.caption | safe }}</a>{% else %}{{ block.caption | safe }}{% endif %}
+        </figcaption>
+        {% endif %}
       </figure>
       {% elif block.type == 'text' %}
       <div

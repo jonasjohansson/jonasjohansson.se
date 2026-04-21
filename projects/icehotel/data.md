@@ -41,8 +41,6 @@ blocks:
       warm cabin lodge.
   - type: image
     src: 03.jpg
-  - type: image
-    src: 04.jpg
   - type: text
     fontSize: small
     content: >-
@@ -66,6 +64,8 @@ blocks:
       [Rose Hallgren](https://rosehallgren.se/) and collaborator
       [Erik Schmitz](https://www.erikschmitz.art/).
   - type: image
+    src: 04.jpg
+  - type: image
     src: 05.jpg
   - type: image
     src: 06.jpg
@@ -73,6 +73,4 @@ blocks:
     src: 07.jpg
   - type: image
     src: 08.jpg
-  - type: image
-    src: 09.jpg
 ---
