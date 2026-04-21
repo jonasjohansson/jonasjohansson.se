@@ -26,6 +26,14 @@
   text-wrap: pretty;
 }
 
+.intro-text p {
+  margin: 0;
+}
+
+.intro-text p + p {
+  text-indent: 2em;
+}
+
 .intro-text .name > span {
   display: inline;
 }
@@ -100,19 +108,31 @@ html[data-theme="dark"] .intro-text .intro-logo img {
   opacity: 1;
 }
 
-/* When intro is open, strips fill remaining space via flex */
-body[data-intro="open"] #strips {
-  height: auto;
-  flex: 1;
-  min-height: 0;
-}
-
 /* Wide screens: intro beside strips */
 @media (min-width: 1800px) {
   body[data-intro="open"] .intro {
     max-height: none;
     padding-bottom: 0;
   }
+}
+
+.intro-name-link,
+.intro-name-link:hover {
+  color: inherit;
+  text-decoration: none;
+}
+
+.intro-email-btn {
+  display: inline-block;
+  margin-left: 0.25em;
+  font-size: 0.85em;
+  text-decoration: none;
+  vertical-align: baseline;
+  line-height: 1;
+}
+
+.intro-email-btn:hover {
+  opacity: 0.7;
 }
 
 /* Hide header when intro is visible */

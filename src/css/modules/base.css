@@ -63,6 +63,15 @@ body[data-route="home"] #content {
   flex-direction: column;
 }
 
+/* When intro is open on narrow/portrait, let the page scroll so strips keep their full viewport height.
+   Wide landscape screens lay intro and strips side-by-side, so #content must keep its 100vh height. */
+@media (max-width: 1399px), (orientation: portrait) {
+  body[data-route="home"][data-intro="open"] #content {
+    height: auto;
+    overflow: visible;
+  }
+}
+
 /* Wide screens: intro left, strips right */
 @media (min-width: 1400px) and (orientation: landscape) {
   body[data-route="home"] #content {
