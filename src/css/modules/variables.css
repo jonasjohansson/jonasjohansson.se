@@ -47,6 +47,7 @@ html[data-theme="dark"] {
 
 /* Project accent colors (vibrant, extracted from hero images) */
 html[data-project="danny-saucedo"] { --project-color: #9b2500; --project-color-text: var(--color-white); }
+html[data-project="dome-dreaming"] { --project-color: #c75200; --project-color-text: var(--color-white); }
 html[data-project="svartljus"] { --project-color: #b07600; --project-color-text: var(--color-white); }
 html[data-project="eastern-city-portal"] { --project-color: #4698d2; --project-color-text: var(--color-black); }
 html[data-project="embed"] { --project-color: #1a43fe; --project-color-text: var(--color-white); }

@@ -463,8 +463,8 @@ export default function (eleventyConfig) {
               return {
                 type: "text",
                 content: md.render(textContent || "").replace(/<a href="(https?:\/\/[^"]*)">/g, '<a href="$1" target="_blank" rel="noopener noreferrer">'),
-                colStart: explicitColStart || resolved.colStart || 3,
-                colSpan: explicitColSpan || resolved.colSpan || 8,
+                colStart: explicitColStart || resolved.colStart || 2,
+                colSpan: explicitColSpan || resolved.colSpan || 10,
                 fontSizeClass,
               };
             if (type === "credits")

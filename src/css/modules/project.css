@@ -108,7 +108,6 @@ figure {
   width: 100%;
   max-width: 100%;
   padding: var(--spacing-xl);
-  padding-bottom: var(--spacing-3xl);
 }
 
 /* Hero media items */
@@ -174,7 +173,7 @@ figure {
 }
 
 .text-block {
-  max-width: 50ch;
+  max-width: 65ch;
   margin: 0 auto;
   line-height: 1.5;
   text-align: left;

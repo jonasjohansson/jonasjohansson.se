@@ -61,6 +61,11 @@ header.header-bottom .header-content {
   padding: 0.5rem 1rem 0;
 }
 
+/* Home: header docks to top of strips, mirror compact padding of docked version. */
+#strips > header:not(.header-bottom) .header-content {
+  padding: 0 1rem 0.5rem;
+}
+
 /* Title shape - straight by default, tilted on project pages */
 .header-title {
   background: transparent;
@@ -97,7 +102,7 @@ header.header-bottom .header-content {
 /* Shared typography for header title and subtitle */
 .header-title,
 .header-subtitle {
-  font-size: var(--font-size-large);
+  font-size: calc(var(--font-size-large) * 0.8);
   letter-spacing: var(--letter-spacing-wide);
   text-transform: uppercase;
   line-height: var(--line-height-tight);

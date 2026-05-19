@@ -54,56 +54,15 @@ body {
 
 }
 
-/* Prevent scroll on home route */
+/* Home route: intro on top, scroll down for the strips. */
 body[data-route="home"] #content {
-  height: 100vh;
-  height: 100dvh;
-  overflow: hidden;
   display: flex;
   flex-direction: column;
 }
 
-/* When intro is open on narrow/portrait, let the page scroll so strips keep their full viewport height.
-   Wide landscape screens lay intro and strips side-by-side, so #content must keep its 100vh height. */
-@media (max-width: 1399px), (orientation: portrait) {
-  body[data-route="home"][data-intro="open"] #content {
-    height: auto;
-    overflow: visible;
-  }
-}
-
-/* Wide screens: intro left, strips right */
-@media (min-width: 1400px) and (orientation: landscape) {
-  body[data-route="home"] #content {
-    flex-direction: row;
-    align-items: stretch;
-  }
-
-  body[data-route="home"] .intro {
-    max-width: 40%;
-    max-height: none;
-    overflow-y: auto;
-    flex-shrink: 0;
-    align-self: flex-start;
-    padding-right: var(--spacing-xl);
-    padding-top: 0;
-  }
-
-  body[data-route="home"] .intro-text p:first-child {
-    margin-top: 0;
-  }
-
-  body[data-route="home"] #main {
-    display: none;
-  }
-
-  body[data-route="home"] #strips {
-    flex: 1;
-    height: auto;
-    min-height: 0;
-    align-self: stretch;
-  }
-}
+body[data-route="home"] .intro  { order: 1; }
+body[data-route="home"] #main   { order: 2; }
+body[data-route="home"] #strips { order: 3; }
 
 
 /* Keep content clipped during strip transition */

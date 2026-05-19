@@ -151,10 +151,35 @@ function initHeaderAutoHide() {
 
   const originalParent = header.parentElement;
   const originalNextSibling = header.nextElementSibling;
-  let ticking = false;
 
+  function placeForRoute() {
+    const route = document.body.getAttribute("data-route");
+    const strips = document.getElementById("strips");
+    if (!strips) return;
+
+    if (route === "home") {
+      // Pin header to top of strips, no scroll-based movement.
+      if (header.parentElement !== strips || strips.firstChild !== header) {
+        strips.prepend(header);
+      }
+      header.classList.remove("header-bottom");
+    } else {
+      // Project/labs: restore header to original position at top of body.
+      if (header.parentElement !== originalParent) {
+        originalParent.insertBefore(header, originalNextSibling);
+      }
+      header.classList.remove("header-bottom");
+    }
+  }
+
+  placeForRoute();
+  const observer = new MutationObserver(placeForRoute);
+  observer.observe(document.body, { attributes: true, attributeFilter: ["data-route"] });
+
+  let ticking = false;
   window.addEventListener("scroll", () => {
     if (ticking) return;
+    if (document.body.getAttribute("data-route") === "home") return;
     ticking = true;
     requestAnimationFrame(() => {
       const isBottom = header.classList.contains("header-bottom");

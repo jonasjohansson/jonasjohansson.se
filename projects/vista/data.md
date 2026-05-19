@@ -26,10 +26,10 @@ blocks:
   - type: text
     fontSize: small
     content: >-
-      [Berg](https://jonasjohansson.github.io/vista/berg) is a procedural
+      [Berg](https://jonasjohansson-archive.github.io/vista/berg) is a procedural
       mountain terrain, born from living next to the mountain on Rue des
       Pins in Montreal.
-      [Grotta](https://jonasjohansson.github.io/vista/grotta) came from
+      [Grotta](https://jonasjohansson-archive.github.io/vista/grotta) came from
       building polygonal foam structures for projection mapping and
       getting drawn into designing origami-like spaces.
   - type: video
@@ -37,7 +37,7 @@ blocks:
   - type: text
     fontSize: small
     content: >-
-      [Pilgrim](https://jonasjohansson.github.io/vista/pilgrim) is a
+      [Pilgrim](https://jonasjohansson-archive.github.io/vista/pilgrim) is a
       billowing cloth with generative wind and synth, a desire to keep
       something floating still, in movement.
   - type: video
@@ -45,7 +45,7 @@ blocks:
   - type: text
     fontSize: small
     content: >-
-      [Glommen](https://jonasjohansson.github.io/vista/glommen) is my
+      [Glommen](https://jonasjohansson-archive.github.io/vista/glommen) is my
       first personal work, made after moving to Canada from Japan.
       Inspired by my father, a painter of light, I began experimenting.
       Glommen reflects the connection to my seaside hometown and the
