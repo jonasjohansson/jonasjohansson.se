@@ -151,12 +151,48 @@ export function initXylophone() {
   let currentTouchStrip = -1; // Track which strip the touch is currently over
   let isTouching = false;
 
-  // Mouse events for desktop — also init audio on first interaction
-  strips.forEach((strip, index) => {
-    strip.addEventListener("mouseenter", () => {
-      initAudio();
-      playAdaptiveNote(index, strips.length);
-    });
+  // Desktop: track strip crossings via pointermove + coalesced samples so fast
+  // sweeps don't skip strips when hover-driven reflow shifts geometry mid-move.
+  const TRAIL_MS = 75;
+  const trailTimers = new WeakMap();
+  let lastMouseStrip = null;
+
+  function flashStrip(strip) {
+    strip.classList.add("strip-trail");
+    const prev = trailTimers.get(strip);
+    if (prev) clearTimeout(prev);
+    trailTimers.set(strip, setTimeout(() => {
+      strip.classList.remove("strip-trail");
+      trailTimers.delete(strip);
+    }, TRAIL_MS));
+  }
+
+  function sampleMouseAt(x, y) {
+    const el = document.elementFromPoint(x, y);
+    const strip = el?.closest(".strip");
+    if (!strip || strip === lastMouseStrip) return;
+    if (!stripsContainer.contains(strip)) return;
+    const index = strips.indexOf(strip);
+    if (index === -1) return;
+    lastMouseStrip = strip;
+    initAudio();
+    playAdaptiveNote(index, strips.length);
+    flashStrip(strip);
+  }
+
+  stripsContainer.addEventListener("pointermove", (e) => {
+    if (e.pointerType !== "mouse") return;
+    const coalesced = typeof e.getCoalescedEvents === "function" ? e.getCoalescedEvents() : null;
+    if (coalesced && coalesced.length) {
+      for (const ev of coalesced) sampleMouseAt(ev.clientX, ev.clientY);
+    } else {
+      sampleMouseAt(e.clientX, e.clientY);
+    }
+  });
+
+  stripsContainer.addEventListener("pointerleave", (e) => {
+    if (e.pointerType !== "mouse") return;
+    lastMouseStrip = null;
   });
 
   // Global touch handler for mobile

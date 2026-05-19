@@ -80,6 +80,7 @@
 
 .strip:hover .strip-video,
 .strip.touch-hover .strip-video,
+.strip.strip-trail .strip-video,
 .strip.selected .strip-video {
   filter: saturate(1);
 }
@@ -96,6 +97,7 @@
 
 .strip:hover .strip-image,
 .strip.touch-hover .strip-image,
+.strip.strip-trail .strip-image,
 .strip.selected .strip-image {
   filter: saturate(1);
 }
@@ -106,6 +108,7 @@
 
 .strip:hover,
 .strip.touch-hover,
+.strip.strip-trail,
 .strip:focus-visible {
   flex-grow: 12;
   transform: translateZ(0);
@@ -135,7 +138,8 @@
 }
 
 .strip:hover .strip-image,
-.strip.touch-hover .strip-image {
+.strip.touch-hover .strip-image,
+.strip.strip-trail .strip-image {
   transform: translateZ(0);
   /* Removed filter to keep images looking natural */
 }
