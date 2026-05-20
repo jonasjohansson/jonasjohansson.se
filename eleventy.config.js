@@ -3,6 +3,7 @@ import path from "node:path";
 import { fileURLToPath } from "node:url";
 import markdownIt from "markdown-it";
 import Image from "@11ty/eleventy-img";
+import sharp from "sharp";
 import nunjucks from "nunjucks";
 import matter from "gray-matter";
 import htmlMinifier from "html-minifier-terser";
@@ -115,6 +116,11 @@ export default function (eleventyConfig) {
     sharpAvifOptions,
   };
 
+  // Site-wide Open Graph image (1200x630 JPEG, smart-cropped from firestarter source)
+  eleventyConfig.addGlobalData("siteOgImage", async () => {
+    return await processOgImage("src/img/jonasjohansson-firestarter.jpg", "site");
+  });
+
   // Add about images list as global data
   // Returns source paths - images will be processed when used via responsiveImage shortcode
   eleventyConfig.addGlobalData("aboutImages", () => {
@@ -154,6 +160,31 @@ export default function (eleventyConfig) {
         return best.url.startsWith('/') ? best.url : `/${best.url}`;
       }
       return null;
+    } catch (err) {
+      return null;
+    }
+  }
+
+  // Generate a 1200x630 JPEG crop for Open Graph / Twitter cards.
+  // Sharp's "attention" strategy picks the most salient region — much better
+  // than dead-center for portrait sources where the subject sits in one third.
+  // Skips work if the output file already exists.
+  const ogOutputDir = path.join(projectRoot, "dist", "img", "og");
+  async function processOgImage(src, slugKey) {
+    try {
+      const srcPath = path.join(process.cwd(), src);
+      if (!existsSync(srcPath)) return null;
+      if (!existsSync(ogOutputDir)) mkdirSync(ogOutputDir, { recursive: true });
+      const outName = `${slugKey}-og.jpg`;
+      const outPath = path.join(ogOutputDir, outName);
+      if (!existsSync(outPath)) {
+        await sharp(srcPath)
+          .resize(1200, 630, { fit: "cover", position: sharp.strategy.attention })
+          .jpeg({ quality: 82, mozjpeg: true })
+          .toFile(outPath);
+      }
+      const urlBase = process.env.PATH_PREFIX ? `${process.env.PATH_PREFIX}/img/og` : "/img/og";
+      return `${urlBase}/${outName}`;
     } catch (err) {
       return null;
     }
@@ -476,11 +507,13 @@ export default function (eleventyConfig) {
         // Process hero image for OG tags
         const firstImageSrc = findFirstImageInDir(root, dir, dataMdPath);
         let heroImage = null;
+        let ogImage = null;
         if (firstImageSrc) {
           heroImage = await processImageForStrips(firstImageSrc);
+          ogImage = await processOgImage(firstImageSrc, dir);
         }
 
-        projectContent[dir] = { title: projectTitle, tags, year, date: isoDate, content, printable, heroImage };
+        projectContent[dir] = { title: projectTitle, tags, year, date: isoDate, content, printable, heroImage, ogImage };
       } catch (err) {}
     }
     return projectContent;

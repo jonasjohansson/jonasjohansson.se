@@ -67,17 +67,19 @@
 
 <!-- Open Graph / Facebook -->
 {% if project %}
-{% set heroImage = projectContent[project.slug].heroImage %}
+{% set projectOgImage = projectContent[project.slug].ogImage %}
 {% set ogTitle = projectTitle ~ ' — ' ~ site.title %}
 {% set ogDescription = projectDescription or site.description %}
 {% set ogUrl = site.url ~ page.url %}
-{% set ogImage = heroImage and (site.url ~ heroImage) or (site.url ~ site.meta.ogImage) %}
+{% set ogImagePath = projectOgImage or siteOgImage or site.meta.ogImage %}
+{% set ogImage = site.url ~ ogImagePath %}
 {% set ogType = "article" %}
 {% else %}
 {% set ogTitle = title or site.title %}
 {% set ogDescription = description or site.description %}
 {% set ogUrl = site.url ~ page.url %}
-{% set ogImage = site.url ~ site.meta.ogImage %}
+{% set ogImagePath = siteOgImage or site.meta.ogImage %}
+{% set ogImage = site.url ~ ogImagePath %}
 {% set ogType = "website" %}
 {% endif %}
 <meta
@@ -98,6 +100,15 @@
 <meta
   property="og:image:type"
   content="image/jpeg" />
+<meta
+  property="og:image:width"
+  content="1200" />
+<meta
+  property="og:image:height"
+  content="630" />
+<meta
+  property="og:image:alt"
+  content="{{ ogTitle }}" />
 <meta
   property="og:site_name"
   content="{{ site.title }}" />
