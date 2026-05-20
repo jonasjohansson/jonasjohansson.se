@@ -180,6 +180,10 @@ figure {
   text-wrap: pretty;
 }
 
+.text-block + .text-block {
+  margin-top: calc(var(--spacing-lg) - var(--spacing-3xl));
+}
+
 .text-block a {
   color: var(--project-color, var(--text-primary));
   text-decoration: underline;

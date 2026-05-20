@@ -31,6 +31,7 @@ async function showContentForRoute(route) {
     header.style.display = "flex";
     header.style.visibility = "visible";
     header.style.opacity = "1";
+    header.classList.toggle("header-hidden", route === "home");
   }
 
   if (route === "home") {

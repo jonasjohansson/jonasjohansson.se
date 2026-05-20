@@ -11,6 +11,7 @@
 @media (orientation: portrait) {
   .intro {
     max-width: none;
+    padding: 0 0 var(--spacing-xl);
   }
 }
 

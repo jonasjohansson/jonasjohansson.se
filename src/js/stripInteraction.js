@@ -24,6 +24,11 @@ let navigateFn = null;
 let hoverDebounceTimer = null;
 const HOVER_DEBOUNCE_MS = 120;
 
+function setHeaderRevealed(headerSubtitle, revealed) {
+  const header = headerSubtitle?.closest("header");
+  if (header) header.classList.toggle("header-hidden", !revealed);
+}
+
 // Reliable smooth scroll using requestAnimationFrame
 function smoothScrollTo(targetY, duration = 600) {
   const startY = window.scrollY;
@@ -124,10 +129,14 @@ export function attachStripEventListeners() {
 
         const projectTitle = strip.getAttribute("data-project-title");
         if (projectTitle && projectTitle.trim()) {
+          setHeaderRevealed(headerSubtitle, true);
           scrambleText(headerSubtitle, projectTitle);
         } else if (pSlug) {
           const p = projects.find((pr) => pr.slug === pSlug);
-          if (p?.title) scrambleText(headerSubtitle, p.title);
+          if (p?.title) {
+            setHeaderRevealed(headerSubtitle, true);
+            scrambleText(headerSubtitle, p.title);
+          }
         }
       }, HOVER_DEBOUNCE_MS);
     });
@@ -149,6 +158,7 @@ export function attachStripEventListeners() {
         document.documentElement.removeAttribute("data-project");
       }
       const currentPageTitle = getCurrentPageTitleFn?.() || "PROGRESS NOT PERFECTION";
+      setHeaderRevealed(headerSubtitle, !!currentSlug);
       scrambleText(headerSubtitle, currentPageTitle);
     });
 
@@ -171,6 +181,7 @@ export function attachStripEventListeners() {
 
       const headerSubtitle = getHeaderSubtitle?.();
       if (headerSubtitle) {
+        setHeaderRevealed(headerSubtitle, true);
         scrambleText(headerSubtitle, clickedProject.title);
       }
 
@@ -280,6 +291,7 @@ export function attachTouchListeners() {
               if (headerSubtitle) {
                 const projectTitle = strip.getAttribute("data-project-title") || getStripProjectTitle(strip);
                 if (projectTitle) {
+                  setHeaderRevealed(headerSubtitle, true);
                   scrambleText(headerSubtitle, projectTitle);
                 }
               }
@@ -297,6 +309,7 @@ export function attachTouchListeners() {
               const headerSubtitle = getHeaderSubtitle?.();
               if (headerSubtitle) {
                 const currentPageTitle = getCurrentPageTitleFn?.() || "PROGRESS NOT PERFECTION";
+                setHeaderRevealed(headerSubtitle, !!touchCurrentSlug);
                 scrambleText(headerSubtitle, currentPageTitle);
               }
             }
@@ -342,6 +355,7 @@ export function attachTouchListeners() {
       const headerSubtitle = getHeaderSubtitle?.();
       if (headerSubtitle) {
         const currentPageTitle = getCurrentPageTitleFn?.() || "PROGRESS NOT PERFECTION";
+        setHeaderRevealed(headerSubtitle, !!currentSlug);
         scrambleText(headerSubtitle, currentPageTitle);
       }
     }
