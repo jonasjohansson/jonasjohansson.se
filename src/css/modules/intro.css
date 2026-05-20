@@ -35,6 +35,11 @@
   text-indent: 2em;
 }
 
+.intro-text p:last-child {
+  text-align: center;
+  text-indent: 0;
+}
+
 .intro-text .name > span {
   display: inline;
 }
@@ -107,12 +112,6 @@ html[data-theme="dark"] .intro-text .intro-logo img {
 
 .intro-text a:hover {
   opacity: 1;
-}
-
-.intro-name-link,
-.intro-name-link:hover {
-  color: inherit;
-  text-decoration: none;
 }
 
 .intro-email-btn {
