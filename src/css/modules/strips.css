@@ -45,7 +45,7 @@
   overflow: hidden;
   cursor: pointer;
   margin-left: -1px;
-  transition: flex-grow 0.2s cubic-bezier(0.25, 0.46, 0.45, 0.94);
+  transition: flex-grow 0.1s cubic-bezier(0.25, 0.46, 0.45, 0.94);
   position: relative;
   z-index: var(--z-strips);
   container-type: inline-size;
