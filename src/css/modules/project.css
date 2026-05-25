@@ -22,19 +22,6 @@
   border: 0;
 }
 
-.project.fade-in {
-  animation: fadeIn 0.3s ease-out forwards;
-}
-
-@keyframes fadeIn {
-  0% {
-    opacity: 0;
-  }
-  100% {
-    opacity: 1;
-  }
-}
-
 /* Font size classes for project content */
 .text-small {
   font-size: var(--font-size-small);

@@ -12,7 +12,6 @@ import { scrambleText } from "./utils/textScramble.js";
 import { initAnimation, throttledHandlePoint } from "./stripAnimation.js";
 import { attachStripEventListeners, attachTouchListeners, initInteractionRefs } from "./stripInteraction.js";
 import { resetFilters, filterProjects, initFilters, initFilteringRefs } from "./stripFiltering.js";
-import { playStripEnterSound } from "./xylophone.js";
 
 const projects = window.__PROJECTS_DATA__ || [];
 

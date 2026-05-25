@@ -5,7 +5,6 @@ import { handlePoint } from "./stripAnimation.js";
 import { detectSwipeDirection } from "./utils/gestureDetector.js";
 import { scrambleText } from "./utils/textScramble.js";
 import { getCurrentProjectSlug } from "./utils/routeUtils.js";
-import { playStripExitSound, playStripExpandSound, getVisibleStripCount } from "./xylophone.js";
 
 const projects = window.__PROJECTS_DATA__ || [];
 
@@ -27,24 +26,6 @@ const HOVER_DEBOUNCE_MS = 120;
 function setHeaderRevealed(headerSubtitle, revealed) {
   const header = headerSubtitle?.closest("header");
   if (header) header.classList.toggle("header-hidden", !revealed);
-}
-
-// Reliable smooth scroll using requestAnimationFrame
-function smoothScrollTo(targetY, duration = 600) {
-  const startY = window.scrollY;
-  const diff = targetY - startY;
-  if (Math.abs(diff) < 2) return;
-  const startTime = performance.now();
-
-  function step(now) {
-    const elapsed = now - startTime;
-    const progress = Math.min(elapsed / duration, 1);
-    const eased = 1 - Math.pow(1 - progress, 3); // ease-out cubic
-    window.scrollTo(0, startY + diff * eased);
-    if (progress < 1) requestAnimationFrame(step);
-  }
-
-  requestAnimationFrame(step);
 }
 
 export function initInteractionRefs(refs) {

@@ -8,11 +8,3 @@ lighthouse-report.*
 lighthouse-desktop.html
 lighthouse-mobile.html
 screenshots
-
-# Local-only avatar test sprite sheets (don't commit/ship ripped game assets)
-src/img/hero-sheet*.png
-src/img/hero-sheet*.gif
-src/img/_test-sprites/
-
-# Local sprite frame-picker tool
-sprite-tool.html

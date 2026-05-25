@@ -173,93 +173,11 @@ body.loaded.project-visible #projects {
   transition: opacity 0.3s ease;
 }
 
-/* 45-degree cut corner utility classes */
-.cut-corner-sm {
-  clip-path: var(--cut-corner-sm);
-}
-
-.cut-corner-md {
-  clip-path: var(--cut-corner-md);
-}
-
-.cut-corner-lg {
-  clip-path: var(--cut-corner-lg);
-}
-
 /* Project hero positioning to match strip images */
 .project-hero {
   background-size: cover;
   background-position: center;
   background-repeat: no-repeat;
-}
-
-/* Common button utility class */
-.btn-base {
-  background: var(--color-white);
-  border: none;
-  border-radius: var(--radius-sm);
-  clip-path: var(--cut-corner-sm);
-  color: var(--color-black);
-  font-size: var(--font-size-base);
-  padding: var(--spacing-sm) var(--spacing-lg);
-  padding-top: calc(var(--spacing-sm) + 2px);
-  cursor: pointer;
-  display: inline-flex;
-  align-items: center;
-  justify-content: center;
-  letter-spacing: var(--letter-spacing-base);
-  line-height: var(--line-height-tight);
-  text-transform: uppercase;
-  font-family: var(--font-family);
-  transition: all 0.2s ease;
-}
-
-.btn-base:hover:not(:disabled) {
-  background: var(--color-gray);
-}
-
-.btn-base:disabled {
-  opacity: 0.5;
-  cursor: not-allowed;
-}
-
-/* Full-screen layout utility class */
-.fullscreen-layout {
-  position: fixed;
-  top: 0;
-  left: 0;
-  width: 100vw;
-  height: 100vh;
-  height: 100dvh;
-  overflow-y: auto;
-  padding: var(--spacing-xl);
-  display: flex;
-  flex-direction: column;
-  justify-content: center;
-  align-items: center;
-}
-
-/* Common text utility classes */
-.text-base {
-  font-size: var(--font-size-base);
-  letter-spacing: var(--letter-spacing-wide);
-  text-transform: uppercase;
-  line-height: var(--line-height-tight);
-  font-family: var(--font-family);
-}
-
-/* Common flexbox utility classes */
-.flex-center {
-  display: flex;
-  align-items: center;
-  justify-content: center;
-}
-
-.flex-column-center {
-  display: flex;
-  flex-direction: column;
-  align-items: center;
-  justify-content: center;
 }
 
 /* Respect reduced motion preference globally */

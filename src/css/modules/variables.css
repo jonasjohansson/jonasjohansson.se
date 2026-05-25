@@ -78,20 +78,4 @@ html[data-project="vista"] { --project-color: #8401ff; --project-color-text: var
     8px 100%,
     0 50%
   );
-  --cut-corner-md: polygon(
-    12px 0,
-    calc(100% - 12px) 0,
-    100% 50%,
-    calc(100% - 12px) 100%,
-    12px 100%,
-    0 50%
-  );
-  --cut-corner-lg: polygon(
-    16px 0,
-    calc(100% - 16px) 0,
-    100% 50%,
-    calc(100% - 16px) 100%,
-    16px 100%,
-    0 50%
-  );
 }

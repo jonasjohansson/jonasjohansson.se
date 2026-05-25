@@ -81,13 +81,11 @@
 }
 
 /* Active/checked state */
-.filter-option:has(input[type="checkbox"]:checked),
-.filter-option.is-active {
+.filter-option:has(input[type="checkbox"]:checked) {
   background-color: var(--text-primary);
 }
 
-.filter-option:has(input[type="checkbox"]:checked) span,
-.filter-option.is-active span {
+.filter-option:has(input[type="checkbox"]:checked) span {
   color: var(--bg-primary);
 }
 

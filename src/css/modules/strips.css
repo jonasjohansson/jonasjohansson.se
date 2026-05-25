@@ -28,11 +28,6 @@
   scroll-snap-align: start;
 }
 
-#strips.dimmed {
-  opacity: 0.3;
-  pointer-events: none;
-}
-
 #strips::-webkit-scrollbar {
   display: none;
 }

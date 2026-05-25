@@ -1,5 +1,5 @@
 // Xylophone sound generator using Web Audio API
-import { melodyPlayer, NOTE_FREQUENCIES } from "./melody.js";
+import { melodyPlayer } from "./melody.js";
 import { detectSwipeDirection } from "./utils/gestureDetector.js";
 
 let audioContext = null;
@@ -23,7 +23,7 @@ function getActiveAudio() {
 }
 
 // Get number of currently visible strips (set by filter system)
-export function getVisibleStripCount() {
+function getVisibleStripCount() {
   const container = document.getElementById("strips");
   if (!container) return 20;
   const count = parseInt(container.getAttribute("data-visible-count"), 10);
@@ -277,155 +277,5 @@ export function initXylophone() {
 }
 
 
-// --- Strip animation sound effects ---
 
-// Wood block sound — sharp crack with hollow resonance (hyoshigi-style)
-function playWoodClick(freq, volume = 0.08) {
-  const ctx = getActiveAudio();
-  if (!ctx) return;
-
-  const t = ctx.currentTime;
-
-  // 1. Noise burst for the initial "crack" of wood striking
-  const bufferSize = ctx.sampleRate * 0.02;
-  const noiseBuffer = ctx.createBuffer(1, bufferSize, ctx.sampleRate);
-  const data = noiseBuffer.getChannelData(0);
-  for (let i = 0; i < bufferSize; i++) data[i] = (Math.random() * 2 - 1);
-  const noise = ctx.createBufferSource();
-  noise.buffer = noiseBuffer;
-
-  const noiseBand = ctx.createBiquadFilter();
-  noiseBand.type = "bandpass";
-  noiseBand.frequency.setValueAtTime(freq * 2, t);
-  noiseBand.Q.setValueAtTime(2, t);
-
-  const noiseGain = ctx.createGain();
-  noiseGain.gain.setValueAtTime(volume * 1.5, t);
-  noiseGain.gain.exponentialRampToValueAtTime(0.001, t + 0.015);
-
-  noise.connect(noiseBand);
-  noiseBand.connect(noiseGain);
-  noiseGain.connect(ctx.destination);
-
-  // 2. Resonant body tone — hollow wood ring
-  const osc = ctx.createOscillator();
-  osc.type = "sine";
-  osc.frequency.setValueAtTime(freq, t);
-  osc.frequency.exponentialRampToValueAtTime(freq * 0.85, t + 0.1);
-
-  const bodyFilter = ctx.createBiquadFilter();
-  bodyFilter.type = "bandpass";
-  bodyFilter.frequency.setValueAtTime(freq * 1.2, t);
-  bodyFilter.Q.setValueAtTime(8, t);
-
-  const bodyGain = ctx.createGain();
-  bodyGain.gain.setValueAtTime(volume, t);
-  bodyGain.gain.exponentialRampToValueAtTime(0.001, t + 0.12);
-
-  osc.connect(bodyFilter);
-  bodyFilter.connect(bodyGain);
-  bodyGain.connect(ctx.destination);
-
-  // 3. Higher harmonic for brightness
-  const osc2 = ctx.createOscillator();
-  osc2.type = "sine";
-  osc2.frequency.setValueAtTime(freq * 2.7, t);
-  osc2.frequency.exponentialRampToValueAtTime(freq * 2, t + 0.06);
-
-  const harmGain = ctx.createGain();
-  harmGain.gain.setValueAtTime(volume * 0.4, t);
-  harmGain.gain.exponentialRampToValueAtTime(0.001, t + 0.06);
-
-  osc2.connect(bodyFilter);
-  bodyFilter.connect(harmGain);
-  harmGain.connect(ctx.destination);
-
-  noise.start(t);
-  osc.start(t);
-  osc2.start(t);
-  noise.stop(t + 0.02);
-  osc.stop(t + 0.13);
-  osc2.stop(t + 0.07);
-}
-
-// Click tuned to next melody note for each strip entering
-export function playStripEnterSound(index, totalStrips) {
-  const note = melodyPlayer.isMelodyMode ? melodyPlayer.getNextNote() : null;
-  if (note) {
-    const freq = NOTE_FREQUENCIES[note.note];
-    if (freq) { playWoodClick(freq, 0.06); return; }
-  }
-  // Fallback: ascending pentatonic
-  const baseFreq = 261.63;
-  const pentatonic = [1, 9/8, 5/4, 3/2, 5/3];
-  const pos = index / Math.max(totalStrips - 1, 1);
-  const octave = Math.floor(pos * 2);
-  const scaleIdx = Math.floor(((pos * 2) % 1) * pentatonic.length);
-  playWoodClick(baseFreq * Math.pow(2, octave) * pentatonic[scaleIdx], 0.06);
-}
-
-// Click tuned to next melody note for each strip exiting
-export function playStripExitSound(index, totalStrips) {
-  const note = melodyPlayer.isMelodyMode ? melodyPlayer.getNextNote() : null;
-  if (note) {
-    const freq = NOTE_FREQUENCIES[note.note];
-    if (freq) { playWoodClick(freq, 0.09); return; }
-  }
-  // Fallback: descending
-  const baseFreq = 2400;
-  const minFreq = 200;
-  playWoodClick(baseFreq - (baseFreq - minFreq) * (index / Math.max(totalStrips - 1, 1)), 0.09);
-}
-
-// Deep wood thud for the expand — like a large taiko or temple drum
-export function playStripExpandSound() {
-  const ctx = getActiveAudio();
-  if (!ctx) return;
-
-  const t = ctx.currentTime;
-
-  // 1. Noise burst for the hit impact
-  const bufferSize = ctx.sampleRate * 0.03;
-  const noiseBuffer = ctx.createBuffer(1, bufferSize, ctx.sampleRate);
-  const data = noiseBuffer.getChannelData(0);
-  for (let i = 0; i < bufferSize; i++) data[i] = (Math.random() * 2 - 1);
-  const noise = ctx.createBufferSource();
-  noise.buffer = noiseBuffer;
-
-  const noiseBand = ctx.createBiquadFilter();
-  noiseBand.type = "lowpass";
-  noiseBand.frequency.setValueAtTime(300, t);
-
-  const noiseGain = ctx.createGain();
-  noiseGain.gain.setValueAtTime(0.12, t);
-  noiseGain.gain.exponentialRampToValueAtTime(0.001, t + 0.04);
-
-  noise.connect(noiseBand);
-  noiseBand.connect(noiseGain);
-  noiseGain.connect(ctx.destination);
-
-  // 2. Deep body resonance
-  const osc = ctx.createOscillator();
-  osc.type = "sine";
-  osc.frequency.setValueAtTime(65, t);
-  osc.frequency.exponentialRampToValueAtTime(50, t + 0.3);
-
-  const bodyFilter = ctx.createBiquadFilter();
-  bodyFilter.type = "lowpass";
-  bodyFilter.frequency.setValueAtTime(200, t);
-  bodyFilter.Q.setValueAtTime(1, t);
-
-  const bodyGain = ctx.createGain();
-  bodyGain.gain.setValueAtTime(0.1, t);
-  bodyGain.gain.exponentialRampToValueAtTime(0.001, t + 0.4);
-
-  osc.connect(bodyFilter);
-  bodyFilter.connect(bodyGain);
-  bodyGain.connect(ctx.destination);
-
-  noise.start(t);
-  osc.start(t);
-  noise.stop(t + 0.04);
-  osc.stop(t + 0.4);
-}
 
