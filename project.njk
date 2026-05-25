@@ -21,7 +21,7 @@ eleventyComputed:
     <div class="project-grid">
       {% for block in projectContent[project.slug].content %} {% if block.type == 'image' %}
       <figure class="media-item {% if loop.first %}hero{% endif %}{% if block.size %} size-{{ block.size }}{% endif %}" style="--col-start: {{ block.colStart }}; --col-span: {{ block.colSpan }}">
-        {% responsiveImage block.src, block.alt %}
+        {% responsiveImage block.src, block.alt, ("media-img lcp" if loop.first else "media-img") %}
       </figure>
       {% elif block.type == 'video' %}
       <figure class="media-item{% if loop.first %} hero{% endif %}{% if block.size %} size-{{ block.size }}{% endif %}" style="--col-start: {{ block.colStart }}; --col-span: {{ block.colSpan }}">
