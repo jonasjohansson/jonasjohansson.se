@@ -74,15 +74,6 @@
   object-fit: cover;
   object-position: center;
   z-index: 1;
-  filter: saturate(0);
-  transition: filter 0.4s ease;
-}
-
-.strip:hover .strip-video,
-.strip.touch-hover .strip-video,
-.strip.strip-trail .strip-video,
-.strip.selected .strip-video {
-  filter: saturate(1);
 }
 
 .strip-image {
@@ -91,15 +82,6 @@
   background-size: cover;
   background-position: var(--bg-x, 50%) var(--bg-y, 50%);
   background-repeat: no-repeat;
-  filter: saturate(0);
-  transition: filter 0.4s ease;
-}
-
-.strip:hover .strip-image,
-.strip.touch-hover .strip-image,
-.strip.strip-trail .strip-image,
-.strip.selected .strip-image {
-  filter: saturate(1);
 }
 
 .strip:first-child {

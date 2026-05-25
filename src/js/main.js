@@ -6,7 +6,6 @@ import { getCurrentRoute } from "./utils/routeUtils.js";
 import { initXylophone } from "./xylophone.js";
 import { melodyPlayer } from "./melody.js";
 import { initIntro, hideIntro, showIntro } from "./intro.js";
-
 // Wire up router hooks
 router.registerHooks({
   resetFilters,
@@ -142,7 +141,6 @@ async function initializeApp() {
 
   // Header position toggle on scroll
   initHeaderAutoHide();
-
 
 }
 
