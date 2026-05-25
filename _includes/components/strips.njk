@@ -3,10 +3,9 @@
   aria-label="Projects">
   {% for project in projectsForJS %} {% set stripImage = project.images[0] %} {% if stripImage and not stripImage.startsWith('/') %} {% set
   stripImage = '/' ~ stripImage %} {% endif %}
-  <div
+  <a
     class="strip"
-    role="button"
-    tabindex="0"
+    href="/{{ project.slug }}/"
     aria-label="{{ project.title | e('html_attr') }}"
     data-project="{{ project.slug }}"
     data-project-title="{{ project.title | e('html_attr') }}"
@@ -25,7 +24,7 @@
     <div
       class="strip-image"
       data-bg-image="{{ stripImage }}"></div>
-  </div>
+  </a>
   {% endfor %}
 
   <!-- Filter controls -->

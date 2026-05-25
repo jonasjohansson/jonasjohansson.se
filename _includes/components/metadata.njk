@@ -3,7 +3,7 @@
 {% if project %}
 {% set projectTitle = projectContent[project.slug].title %}
 {% set projectDescription = projectContent[project.slug].content | findFirstText | stripHtml | truncate(160) %}
-<title>{{ projectTitle }} — {{ site.title }}</title>
+<title>{{ site.title }} – {{ projectTitle }}</title>
 <meta
   name="description"
   content="{{ projectDescription or site.description }}" />
@@ -68,14 +68,14 @@
 <!-- Open Graph / Facebook -->
 {% if project %}
 {% set projectOgImage = projectContent[project.slug].ogImage %}
-{% set ogTitle = projectTitle ~ ' — ' ~ site.title %}
+{% set ogTitle = site.title ~ ' – ' ~ projectTitle %}
 {% set ogDescription = projectDescription or site.description %}
 {% set ogUrl = site.url ~ page.url %}
 {% set ogImagePath = projectOgImage or siteOgImage or site.meta.ogImage %}
 {% set ogImage = site.url ~ ogImagePath %}
 {% set ogType = "article" %}
 {% else %}
-{% set ogTitle = title or site.title %}
+{% set ogTitle = site.title %}
 {% set ogDescription = description or site.description %}
 {% set ogUrl = site.url ~ page.url %}
 {% set ogImagePath = siteOgImage or site.meta.ogImage %}
@@ -163,6 +163,7 @@
 {
   "@context": "https://schema.org",
   "@type": "Person",
+  "@id": "{{ site.url }}/#person",
   "name": "{{ site.author }}",
   "alternateName": "{{ site.title }}",
   "url": "{{ site.url }}",
@@ -227,10 +228,7 @@
   "name": "{{ site.title }}",
   "url": "{{ site.url }}",
   "description": "{{ site.description }}",
-  "author": {
-    "@type": "Person",
-    "name": "{{ site.author }}"
-  }
+  "author": { "@id": "{{ site.url }}/#person" }
 }
 </script>
 
@@ -275,12 +273,9 @@
   "description": "{{ projectContent[project.slug].content | findFirstText | stripHtml | truncate(160) }}",
   "url": "{{ site.url }}{{ page.url }}",
   "image": "{{ ogImage }}",
-  "creator": {
-    "@type": "Person",
-    "name": "{{ site.author }}",
-    "url": "{{ site.url }}"
-  },
+  "creator": { "@id": "{{ site.url }}/#person" },
   "datePublished": "{{ projectContent[project.slug].date or project.date }}",
+  "inLanguage": "en",
   "keywords": "{{ projectContent[project.slug].tags | join(', ') }}"
 }
 </script>

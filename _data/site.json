@@ -28,7 +28,11 @@
   },
   "contact": {
     "email": "j@jonasjohansson.se",
-    "sameAs": ["https://instagram.com/jnsjohansson"]
+    "sameAs": [
+      "https://instagram.com/jnsjohansson",
+      "https://github.com/jonasjohansson",
+      "https://www.linkedin.com/in/jnsjohansson/"
+    ]
   },
   "jobTitle": "Artist, Educator, Designer",
   "birthDate": "1987",

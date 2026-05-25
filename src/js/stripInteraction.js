@@ -162,7 +162,11 @@ export function attachStripEventListeners() {
       scrambleText(headerSubtitle, currentPageTitle);
     });
 
-    const handleStripActivate = () => {
+    const handleStripActivate = (e) => {
+      // Strips are real <a href> links. Let modifier-clicks (open in new
+      // tab/window) use the native href; intercept plain clicks for SPA nav.
+      if (e && (e.metaKey || e.ctrlKey || e.shiftKey || e.altKey || e.button === 1)) return;
+      if (e) e.preventDefault();
       if (document.body?.dataset?.filtering === "true") return;
       if (document.documentElement.classList.contains("transition-lock")) return;
 
@@ -192,9 +196,10 @@ export function attachStripEventListeners() {
 
     strip.addEventListener("click", handleStripActivate);
 
-    // Keyboard support: Enter/Space activates strip
+    // The strip is an <a href>, so Enter activates it natively (fires a click).
+    // Handle Space here too, which links don't activate by default.
     strip.addEventListener("keydown", (e) => {
-      if (e.key === "Enter" || e.key === " ") {
+      if (e.key === " ") {
         e.preventDefault();
         handleStripActivate();
       }
