@@ -37,10 +37,12 @@ export default function (eleventyConfig) {
   eleventyConfig.addPassthroughCopy({ "src/favicon": "favicon" });
   eleventyConfig.addPassthroughCopy("CNAME");
   eleventyConfig.addPassthroughCopy({ "src/img": "assets/img" });
-  // Pass through project assets (videos, about images, etc.)
-  // Note: images are also processed by eleventy-img to /img/ but the originals
-  // are needed for about section images and as fallbacks
-  eleventyConfig.addPassthroughCopy({ projects: "projects" });
+  // Pass through only the project assets the browser actually requests:
+  // videos (referenced raw) and the about-section images. All other images are
+  // processed by eleventy-img into /img/, so the multi-hundred-MB raw originals
+  // under projects/ must NOT be copied to the deploy.
+  eleventyConfig.addPassthroughCopy("projects/**/*.{mp4,webm,mov}");
+  eleventyConfig.addPassthroughCopy({ "projects/about": "projects/about" });
 
   eleventyConfig.addGlobalData("buildYear", new Date().getFullYear());
   
@@ -296,7 +298,8 @@ export default function (eleventyConfig) {
       }
       return { slug: dir, title, date, type, images, videos, texts };
     });
-    // Exclude lab-type projects from pagination (they're rendered on /labs/ page)
+    // Exclude lab-type projects from pagination (Labs now lives at the separate
+    // labs.jonasjohansson.se site; these data dirs are inert and generate no pages)
     const filtered = projects.filter((p) => p.type !== "lab");
     filtered.sort((a, b) => new Date(b.date) - new Date(a.date));
     _projectsCache = filtered;
@@ -479,7 +482,7 @@ export default function (eleventyConfig) {
         // Process blocks from frontmatter
         const content = blocks
           .map((block) => {
-            const { type, src, content: textContent, size, colStart: explicitColStart, colSpan: explicitColSpan, fontSize, credits } = block;
+            const { type, src, alt, content: textContent, size, colStart: explicitColStart, colSpan: explicitColSpan, fontSize, credits } = block;
             const resolved = size && SIZE_MAP[size] ? SIZE_MAP[size] : {};
             const colStart = explicitColStart || resolved.colStart || 1;
             const colSpan = explicitColSpan || resolved.colSpan || 12;
@@ -488,8 +491,8 @@ export default function (eleventyConfig) {
               if (fontSize.includes("small") || fontSize.includes("1.2")) fontSizeClass = "text-small";
               else if (fontSize.includes("medium") || fontSize.includes("1.8")) fontSizeClass = "text-medium";
             }
-            if (type === "image") return { type: "image", src: `${root}/${dir}/${src}`, alt: projectTitle, colStart, colSpan, size };
-            if (type === "video") return { type: "video", src: `/${root}/${dir}/${src}`, alt: projectTitle, colStart, colSpan, size };
+            if (type === "image") return { type: "image", src: `${root}/${dir}/${src}`, alt: alt || projectTitle, colStart, colSpan, size };
+            if (type === "video") return { type: "video", src: `/${root}/${dir}/${src}`, alt: alt || projectTitle, colStart, colSpan, size };
             if (type === "text")
               return {
                 type: "text",
@@ -517,45 +520,6 @@ export default function (eleventyConfig) {
       } catch (err) {}
     }
     return projectContent;
-  });
-
-  eleventyConfig.addGlobalData("labsContent", () => {
-    const root = "projects";
-    if (!existsSync(root)) return [];
-
-    const dirs = readdirSync(root, { withFileTypes: true })
-      .filter((d) => d.isDirectory() && d.name !== "about")
-      .map((d) => d.name);
-
-    const labs = [];
-
-    for (const dir of dirs) {
-      const dataMdPath = path.join(root, dir, "data.md");
-      if (!existsSync(dataMdPath)) continue;
-      try {
-        const fileContent = readFileSync(dataMdPath, "utf8");
-        const parsed = matter(fileContent);
-        const { title, type, description, url, date, tocSize, logo } = parsed.data;
-        if (type !== "lab") continue;
-
-        const body = parsed.content
-          ? md.render(parsed.content).replace(/<a href="(https?:\/\/[^"]*)">/g, '<a href="$1" target="_blank" rel="noopener noreferrer">')
-          : "";
-        labs.push({
-          slug: dir,
-          title: title || dir.replace(/[._-]+/g, " ").trim(),
-          description: description || "",
-          url: url || null,
-          logo: logo || null,
-          tocSize: tocSize || "small",
-          date: date ? new Date(date).toISOString() : null,
-          body,
-        });
-      } catch (err) {}
-    }
-
-    labs.sort((a, b) => (b.date || "").localeCompare(a.date || ""));
-    return labs;
   });
 
   eleventyConfig.addFilter("findFirstText", (content) => content?.find?.((b) => b.type === "text")?.content || null);

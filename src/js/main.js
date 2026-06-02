@@ -38,14 +38,6 @@ async function showContentForRoute(route) {
     initializeStrips();
     showIntro();
 
-  } else if (route === "labs") {
-    // Direct /labs/ access — jump straight to labs section
-    body.setAttribute("data-route", "home");
-    initializeStrips({ animate: false });
-    showIntro();
-    const labs = document.getElementById("labs");
-    if (labs) labs.scrollIntoView();
-
   } else if (route === "project") {
     hideIntro();
     // Show project content with fade in
@@ -124,8 +116,8 @@ async function initializeApp() {
   // Initialize intro section
   initIntro();
 
-  // Show intro immediately on home/labs routes (don't wait for image preload)
-  if (route === "home" || route === "labs") {
+  // Show intro immediately on the home route (don't wait for image preload)
+  if (route === "home") {
     showIntro();
   }
 

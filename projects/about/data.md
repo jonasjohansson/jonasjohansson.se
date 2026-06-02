@@ -10,12 +10,12 @@ blocks:
     colSpan: 12
   - type: text
     content: >-
-      Jonas Johansson is an anywhere-based artist, educator, and designer from Glommen, Halland. His work explores light and technology through play, community, and (un)human intervention.
+      Jonas Johansson is an anywhere-based artist, educator, and designer from Glommen, Halland. He works with light and technology through play, community, and (un)human intervention.
     colStart: 3
     colSpan: 8
   - type: text
     content: >-
-      Since 2024 Jonas plans courses for [Svenska Tecknare](https://svenskatecknare.se/), taught Visual Communication at [Beckmans](https://beckmans.se) (2017–2025), served as Industry Leader at Hyper Island (2014–2022), and have lectured at Aalto University, Konstfack, School of Machines, Berghs, Nyckelviken, Futuregames, to name a few.
+      Since 2024 Jonas plans courses for [Svenska Tecknare](https://svenskatecknare.se/), taught Visual Communication at [Beckmans](https://beckmans.se) (2017–2025), served as Industry Leader at Hyper Island (2014–2022), and has lectured at Aalto University, Konstfack, School of Machines, Berghs, Nyckelviken, Futuregames, to name a few.
     colStart: 3
     colSpan: 8
   - type: text

@@ -28,6 +28,9 @@
     {% include "../components/header.njk" %}
 
       <div id="content">
+        {% if not project %}
+        <h1 class="sr-only">Jonas Johansson — artist, educator and designer</h1>
+        {% endif %}
         {% include "../components/intro.njk" %}
 
         <main id="main">

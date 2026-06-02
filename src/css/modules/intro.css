@@ -129,7 +129,6 @@ html[data-theme="dark"] .intro-text .intro-logo img {
 }
 
 /* Intro/about only appears on the landing page */
-body[data-route="project"] .intro,
-body[data-route="labs"] .intro {
+body[data-route="project"] .intro {
   display: none;
 }

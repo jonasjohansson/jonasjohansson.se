@@ -2,14 +2,6 @@ export function initIntro() {
   const intro = document.getElementById("intro");
   if (!intro) return;
   document.body.setAttribute("data-intro", "open");
-
-  // Intercept /labs/ link for SPA navigation
-  intro.addEventListener("click", (e) => {
-    const link = e.target.closest('a[href="/labs/"]');
-    if (!link) return;
-    e.preventDefault();
-    window.dispatchEvent(new CustomEvent("spa-navigate", { detail: { path: "/labs/" } }));
-  });
 }
 
 export function hideIntro() {
