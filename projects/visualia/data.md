@@ -37,6 +37,8 @@ blocks:
       [Rose Hallgren](https://rosehallgren.se/).
   - type: image
     src: 03.jpg
+    size: half-left
   - type: image
     src: 04.jpg
+    size: half-right
 ---

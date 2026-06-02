@@ -26,8 +26,10 @@ blocks:
       scenography.
   - type: image
     src: 03.jpg
+    size: half-left
   - type: image
     src: 04.jpg
+    size: half-right
   - type: text
     fontSize: small
     content: >-
@@ -61,10 +63,14 @@ blocks:
       Angstrom, [Svenska Dagbladet](https://www.svd.se/a/lwQXqe/recension-danne-dahlins-monolog-jag-ar-gud-ar-modig)
   - type: image
     src: 07.jpg
+    size: half-left
   - type: image
     src: 08.jpg
+    size: half-right
   - type: image
     src: 09.jpg
+    size: half-left
   - type: image
     src: 10.jpg
+    size: half-right
 ---
