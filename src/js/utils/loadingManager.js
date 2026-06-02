@@ -32,9 +32,7 @@ export class LoadingManager {
 
     promises.push(document.fonts?.ready || Promise.resolve());
 
-    if (route === "about") {
-      promises.push(this.preloadAboutImage());
-    } else if (route === "project") {
+    if (route === "project") {
       promises.push(this.preloadProjectImages());
     }
 
@@ -63,33 +61,6 @@ export class LoadingManager {
     });
 
     this.updateTitleProgress();
-    if (imagePromises.length > 0) await Promise.all(imagePromises);
-  }
-
-  async preloadAboutImage() {
-    const pathPrefix = getPathPrefix();
-    let imagesToPreload = [];
-
-    if (window.__ABOUT_IMAGES__ && Array.isArray(window.__ABOUT_IMAGES__) && window.__ABOUT_IMAGES__.length > 0) {
-      imagesToPreload = window.__ABOUT_IMAGES__.map((img) => {
-        const normalizedPath = img.startsWith("/") ? img : `/${img}`;
-        return normalizedPath.startsWith(pathPrefix) ? normalizedPath : `${pathPrefix}${normalizedPath}`;
-      });
-    } else {
-      const aboutImageNumbers = [1, 2, 3, 4, 5, 6, 7, 8, 9, 10];
-      imagesToPreload = aboutImageNumbers.map((num) => {
-        const paddedNum = num.toString().padStart(2, "0");
-        return `${pathPrefix}/projects/about/${paddedNum}.jpg`;
-      });
-    }
-
-    this.totalImages += imagesToPreload.length;
-    this.updateTitleProgress();
-
-    const imagePromises = imagesToPreload.map((imagePath) => {
-      return this.loadImage(imagePath).catch(() => Promise.resolve());
-    });
-
     if (imagePromises.length > 0) await Promise.all(imagePromises);
   }
 

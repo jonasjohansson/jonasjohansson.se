@@ -26,7 +26,7 @@ class SPARouter {
     this._hooks = {};
   }
 
-  // Register callbacks to decouple router from strips/aboutOverlay modules
+  // Register callbacks to decouple router from the strips module
   registerHooks(hooks) {
     Object.assign(this._hooks, hooks);
   }
@@ -53,10 +53,7 @@ class SPARouter {
     const relativePath = pathPrefix ? path.replace(pathPrefix, "") : path;
 
     const normalized = relativePath.replace(/\/$/, "") || "/";
-    if (normalized === "/labs") {
-      this.showLabs();
-      this.announce("Labs");
-    } else if (normalized === "/" || normalized === "/index.html") {
+    if (normalized === "/" || normalized === "/index.html") {
       this.showHome();
       this.announce("Home");
     } else {
@@ -119,14 +116,6 @@ class SPARouter {
     resetProjectColors();
     document.documentElement.removeAttribute("data-project");
     this._hooks.showIntro?.();
-  }
-
-  showLabs() {
-    document.title = "Labs — " + (window.__SITE_TITLE__ || "Jonas Johansson");
-    const labs = document.getElementById("labs");
-    if (labs) {
-      labs.scrollIntoView({ behavior: "smooth" });
-    }
   }
 
   async showProject(slug) {

@@ -41,7 +41,7 @@ blocks:
       cyclical, almost diabolical world of
       [Uzumaki](https://en.wikipedia.org/wiki/Uzumaki) by
       [Junji Ito](https://en.wikipedia.org/wiki/Junji_Ito). The contrast of
-      those two realms, with a lighthouse shining its light in the center, became
+      those two realms, with a lighthouse shining its light in the centre, became
       the foundation. The singles zoom in: a whale's eye, a whirling vortex in
       the sea, a [fresnel lens](https://en.wikipedia.org/wiki/Fresnel_lens)
       from the lighthouse.

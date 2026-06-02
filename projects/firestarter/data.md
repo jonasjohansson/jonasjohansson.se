@@ -32,7 +32,7 @@ blocks:
   - type: text
     fontSize: small
     content: >-
-      Built from aluminum sheets on a steel frame with hand-cut patterns, LED
+      Built from aluminium sheets on a steel frame with hand-cut patterns, LED
       lighting, [Arduino](https://www.arduino.cc/),
       [DMX](https://en.wikipedia.org/wiki/DMX512), and an IR sensor. Constructed with help from
       Josep Giribet in the workshop of David Giribet at
@@ -41,12 +41,16 @@ blocks:
     src: 05.jpg
   - type: image
     src: 06.jpg
+    size: half-left
   - type: image
     src: 07.jpg
+    size: half-right
   - type: image
     src: 08.jpg
   - type: image
     src: 09.jpg
+    size: half-left
   - type: image
     src: 10.jpg
+    size: half-right
 ---

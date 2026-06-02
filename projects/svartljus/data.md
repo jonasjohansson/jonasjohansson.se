@@ -37,8 +37,10 @@ blocks:
       responding to people nearby.
   - type: image
     src: 06.jpg
+    size: half-left
   - type: image
     src: 07.jpg
+    size: half-right
   - type: text
     fontSize: small
     content: >-
@@ -51,8 +53,10 @@ blocks:
       into an interactive light walk.
   - type: image
     src: 01.jpg
+    size: half-left
   - type: image
     src: 08.jpg
+    size: half-right
   - type: image
     src: 09.jpg
   - type: text

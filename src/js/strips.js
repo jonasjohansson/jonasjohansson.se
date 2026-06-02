@@ -79,7 +79,6 @@ let navigationTimeoutId = null;
 // ---------- Global State ----------
 let headerSubtitle;
 let defaultSubtitle = "PROGRESS NOT PERFECTION";
-let aboutOverlayEl = null;
 
 // Navigate function injected by main.js to avoid circular dependency
 let _navigateFn = null;
@@ -87,14 +86,6 @@ export function setNavigateFn(fn) { _navigateFn = fn; }
 
 // ---------- Cleanup for event listeners ----------
 let cleanupController = null;
-
-function getAboutOverlay() {
-  if (aboutOverlayEl && document.body.contains(aboutOverlayEl)) {
-    return aboutOverlayEl;
-  }
-  aboutOverlayEl = document.getElementById("about");
-  return aboutOverlayEl;
-}
 
 // Image observer for lazy loading
 const imageObserver = new IntersectionObserver(
@@ -169,7 +160,6 @@ export function initializeStrips({ animate = true } = {}) {
     getHeaderSubtitle: () => headerSubtitle,
     getCurrentPageTitle: () => getCurrentProjectTitle() || defaultSubtitle,
     setCurrentPageTitle: (title) => { setCurrentProjectTitle(title); },
-    getAboutOverlay,
     getNavigationTimeoutId: () => navigationTimeoutId,
     setNavigationTimeoutId: (id) => { navigationTimeoutId = id; },
     preloadProject,

@@ -51,19 +51,19 @@ header.header-bottom {
   display: flex;
   flex-direction: column;
   align-items: center;
-  padding: calc(var(--spacing-sm) + 1rem) 1rem 0.5rem;
+  padding: calc(var(--spacing-sm) + var(--spacing-md)) var(--spacing-md) var(--spacing-sm);
   gap: 0;
   position: relative;
   pointer-events: auto;
 }
 
 header.header-bottom .header-content {
-  padding: 0.5rem 1rem 0;
+  padding: var(--spacing-sm) var(--spacing-md) 0;
 }
 
 /* Home: header docks to top of strips, mirror compact padding of docked version. */
 #strips > header:not(.header-bottom) .header-content {
-  padding: 0 1rem 0.5rem;
+  padding: 0 var(--spacing-md) var(--spacing-sm);
 }
 
 /* Title shape - straight by default, tilted on project pages */

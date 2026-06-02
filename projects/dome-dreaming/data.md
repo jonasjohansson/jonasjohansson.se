@@ -62,8 +62,10 @@ blocks:
       the wooden hall next to Wisdome Stockholm.
   - type: image
     src: 03.jpg
+    size: half-left
   - type: image
     src: 04.jpg
+    size: half-right
   - type: text
     fontSize: small
     content: >-
@@ -73,8 +75,10 @@ blocks:
       from SKH.
   - type: image
     src: 02.jpg
+    size: half-left
   - type: image
     src: 05.jpg
+    size: half-right
   - type: text
     fontSize: small
     content: >-
@@ -97,7 +101,7 @@ blocks:
     fontSize: small
     content: >-
       Documentation and communication by
-      [Rose Hallgren](https://rosehallgren.com/). Festival photography by
+      [Rose Hallgren](https://rosehallgren.se/). Festival photography by
       Glidephotos. Produced in collaboration with
       [Aavistus](https://aavistusfestival.fi),
       [Kokong](https://www.instagram.com/kokongfestival/),

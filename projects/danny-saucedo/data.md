@@ -27,7 +27,7 @@ blocks:
       each, a 7.9 x 9.1m LED floor at 1664 x 1920 pixels, and a physical
       Romanesque gate with staircase built for projection mapping.
   - type: text
-    fontSize: medium
+    fontSize: small
     content: >-
       The visuals move through a moonlit Romanesque evening, a garden
       resembling Elysium, building to a climax where the gate falls back

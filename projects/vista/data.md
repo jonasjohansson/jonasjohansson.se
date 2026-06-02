@@ -18,7 +18,7 @@ blocks:
     content: >-
       Vista means a distant view through an opening, an extensive mental
       view over a stretch of time. Each piece is a web-based landscape
-      built in [Three.js](https://threejs.org/), exploring generative sound,
+      built in [Three.js](https://threejs.org/), with generative sound,
       light, and terrain.
       The series began in 2012 while living in Montreal, working at a
       design studio on large-scale stage experiences, and starting to

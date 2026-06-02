@@ -24,7 +24,7 @@ blocks:
       [The Tilehunter](https://www.instagram.com/i_rescue_tiles/?hl=en), a
       Catalan man who travels to document and archive these tiles, an obsession I
       brought with me to a residency at
-      [Konvent Zero](https://konventzero.com/) where I worked with tufting, AI,
-      and tiles. At Nowhere the glasses gave people a place to sit and look at
+      [Konvent Zero](https://konventzero.com/) where I worked with tufting and
+      tiles. At Nowhere the glasses gave people a place to sit and look at
       the environment "in 3D". Nothing more, nothing less. Massive glasses.
 ---

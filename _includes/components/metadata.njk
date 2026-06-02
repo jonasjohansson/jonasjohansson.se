@@ -26,7 +26,7 @@
   content="black" />
 <meta
   name="theme-color"
-  content="#131313" />
+  content="#1a1a1a" />
 
 <!-- Preload critical fonts to avoid FOUT -->
 <link
@@ -35,15 +35,6 @@
   type="font/woff"
   href="{{ 'SeasonMix-Regular.woff' | viteAsset | url }}"
   crossorigin />
-
-<!-- Preload about image only on about page to prevent pop-in when opening about -->
-{% if page.url === '/about/' %}
-<link
-  rel="preload"
-  as="image"
-  href="/projects/about/01.jpg"
-  fetchpriority="low" />
-{% endif %}
 
 {# Strip images are loaded by JS via data-bg-image, not by the browser's
    image loader, so preloading them here just competes with the font and
@@ -114,7 +105,7 @@
   content="{{ site.title }}" />
 <meta
   property="og:locale"
-  content="en_US" />
+  content="en_GB" />
 
 <!-- Twitter Card -->
 <meta
@@ -274,9 +265,11 @@
   "url": "{{ site.url }}{{ page.url }}",
   "image": "{{ ogImage }}",
   "creator": { "@id": "{{ site.url }}/#person" },
-  "datePublished": "{{ projectContent[project.slug].date or project.date }}",
-  "inLanguage": "en",
-  "keywords": "{{ projectContent[project.slug].tags | join(', ') }}"
+  {% set cwDate = projectContent[project.slug].date or project.date %}
+  {% if cwDate %}"datePublished": "{{ cwDate }}",
+  {% endif %}{% set cwKeywords = projectContent[project.slug].tags | join(', ') %}
+  {% if cwKeywords %}"keywords": "{{ cwKeywords }}",
+  {% endif %}"inLanguage": "en"
 }
 </script>
 {% endif %}

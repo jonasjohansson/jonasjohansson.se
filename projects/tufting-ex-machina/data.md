@@ -22,9 +22,9 @@ blocks:
       in Helsinki that I have been part of since its start in 2022, as both
       an artist and collaborator through
       [Nordic Audiovisual Artists](https://nava.community). Created together
-      with [Rose Hallgren](https://rosehallgren.se/), the workshop invited 10
-      participants to explore their cultural canon through tufting. I had
-      myself been exploring tufting during a residency at
+      with [Rose Hallgren](https://rosehallgren.se/), the workshop brought
+      together 10 participants to tuft their own cultural canon. I had
+      myself been learning tufting during a residency at
       [Konvent Zero](https://konventzero.com/) in Spain.
   - type: image
     src: 03.jpg
@@ -48,8 +48,10 @@ blocks:
       140 x 210 cm.
   - type: image
     src: 05.jpg
+    size: half-left
   - type: image
     src: 06.jpg
+    size: half-right
   - type: text
     fontSize: small
     content: >-
@@ -66,6 +68,8 @@ blocks:
       produced a music track to accompany the work.
   - type: image
     src: 08.jpg
+    size: half-left
   - type: image
     src: 09.jpg
+    size: half-right
 ---

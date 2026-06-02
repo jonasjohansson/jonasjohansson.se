@@ -95,17 +95,23 @@ blocks:
       brought the six new acts to each festival over the summer and autumn.
   - type: image
     src: 11.jpg
+    size: half-left
   - type: image
     src: 16.jpg
+    size: half-right
   - type: image
     src: 14.jpg
+    size: half-left
   - type: image
     src: 13.jpg
+    size: half-right
   - type: image
     src: 12.jpg
-  - type: text
-    src: 17.jpg
+    size: half-left
   - type: image
+    src: 17.jpg
+    size: half-right
+  - type: text
     fontSize: small
     content: >-
       In 2023, [Annie Tådne](https://annietadne.com/), Merle Karp and I spent
