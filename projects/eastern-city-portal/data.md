@@ -15,7 +15,7 @@ blocks:
   - type: text
     fontSize: small
     content: >-
-      Eastern City Portal was a commissioned public artwork installed on
+      Eastern City Portal was a public artwork on
       Camomile Street in the City of London, commissioned by
       [Scarlett Entertainment](https://scarlettentertainment.com/). Created
       together with [Erik Schmitz](https://www.erikschmitz.art/), the piece

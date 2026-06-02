@@ -15,6 +15,13 @@ import { resetFilters, filterProjects, initFilters, initFilteringRefs } from "./
 
 const projects = window.__PROJECTS_DATA__ || [];
 
+// Respect reduced-motion: don't autoplay the looping strip videos.
+const prefersReducedMotion = window.matchMedia?.("(prefers-reduced-motion: reduce)")?.matches;
+function playStripVideos(root) {
+  if (prefersReducedMotion) return;
+  root.querySelectorAll(".strip-video").forEach((v) => v.play().catch(() => {}));
+}
+
 // Color extraction
 const colorExtractor = new ColorExtractor();
 
@@ -135,7 +142,7 @@ function animateStripsIn(shuffledStrips, container) {
   container.classList.add("strips-initialized");
   document.body.classList.add("strips-initialized");
   document.documentElement.classList.remove("transition-lock");
-  container.querySelectorAll(".strip-video").forEach((v) => v.play().catch(() => {}));
+  playStripVideos(container);
 }
 
 // ---------- Initialize Strips ----------
@@ -216,7 +223,7 @@ export function initializeStrips({ animate = true } = {}) {
         stripsContainer.classList.add("strips-initialized");
         document.body.classList.add("strips-initialized");
       }
-      stripsContainer.querySelectorAll(".strip-video").forEach((v) => v.play().catch(() => {}));
+      playStripVideos(stripsContainer);
     });
   } else {
     stripImages = Array.from(stripsContainer.querySelectorAll(".strip-image"));
@@ -238,7 +245,7 @@ export function initializeStrips({ animate = true } = {}) {
       stripImages.slice(0, 4).forEach(loadImage);
       stripImages.slice(4).forEach((img) => imageObserver.observe(img));
     }
-    stripsContainer.querySelectorAll(".strip-video").forEach((v) => v.play().catch(() => {}));
+    playStripVideos(stripsContainer);
   }
 
   headerSubtitle = document.querySelector(".header-subtitle");

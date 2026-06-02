@@ -15,8 +15,8 @@ blocks:
     content: >-
       [Svartljus](https://svartljus.se) started in 2017 at Stugan, a
       co-created makerspace in Sickla, Stockholm. I connected with Olle Bjerkås
-      and Markus Persson and we began experimenting with light as a spatial
-      medium. We kicked things off with a light tunnel for Spotify: two rows of
+      and Markus Persson and we began experimenting with light. Our first
+      piece was a light tunnel for Spotify: two rows of
       LED columns controlled in real time, serving as both entrance and exit at
       their Stockholm HQ. In 2018, Per-Olov Jernberg joined, bringing hardware
       and software skills that let us create more reactive systems. That year we
@@ -33,8 +33,7 @@ blocks:
       the underground networks through which trees communicate, Dendrolux
       wraps trees in bespoke light rings with 300 RGB dual-side pixels and
       custom silicone diffusion, transforming them into lampposts for the
-      forest. The installation is fully solar powered and interactive,
-      responding to people nearby.
+      forest. The installation is interactive, responding to people nearby.
   - type: image
     src: 06.jpg
     size: half-left

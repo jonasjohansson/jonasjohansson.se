@@ -182,10 +182,6 @@ html[data-theme="dark"] .text-block a {
   color: color-mix(in srgb, var(--project-color, var(--text-primary)) 45%, white);
 }
 
-.text-block a:hover {
-  opacity: 1;
-}
-
 .text-block.text-medium {
   line-height: var(--line-height-snug);
 }
@@ -243,12 +239,12 @@ html[data-theme="dark"] .text-block a {
 /* Large screens: narrower media + bigger typography */
 @media (min-width: 1800px) {
   .project-grid > .media-item:not(:first-child):not([class*="size-"]) {
-    grid-column: 2 / 12 !important;
+    grid-column: 2 / 12;
   }
 
   /* Add breathing room around text blocks on large screens */
   .text-block {
-    grid-column: 1 / -1 !important;
+    grid-column: 1 / -1;
     max-width: 80ch;
     margin-top: var(--spacing-3xl);
     margin-bottom: var(--spacing-3xl);
@@ -264,7 +260,7 @@ html[data-theme="dark"] .text-block a {
   }
 
   .text-block.text-large {
-    grid-column: 1 / -1 !important;
+    grid-column: 1 / -1;
     max-width: 60ch;
   }
 

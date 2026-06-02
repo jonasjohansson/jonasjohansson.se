@@ -22,7 +22,7 @@ blocks:
       [Jordi Claramunt](https://www.instagram.com/jordi.claramunt.art/), whom
       I had met at [Nowhere](https://www.goingnowhere.org/) in Spain, and
       architect Lukas Petko, a former student of mine at
-      [Hyper Island](https://www.hyperisland.com/). The three of us made for an interesting
+      [Hyper Island](https://www.hyperisland.com/). The three of us made for an odd
       trio: Jordi the hands-on figurative sculptor, Lukas with his
       appreciation for symmetry and structure, and myself somewhere in between.
   - type: image
@@ -53,7 +53,7 @@ blocks:
       where something has gone wrong, with clues scattered throughout for
       visitors to piece together. The room featured a bedroom and a dining
       area with [Art Deco](https://en.wikipedia.org/wiki/Art_Deco) details: drapes, ornaments, packed luggage, and a
-      ticking clock. I wanted to explore using CNC for ice and designed the
+      ticking clock. I wanted to try CNC milling on ice, and designed the
       clock and other details. The build required a large amount of ice,
       and Creative Director Luca Roncoroni and their team
       helped with several elements. This time I invited Jordi Claramunt and

@@ -20,11 +20,10 @@ blocks:
       I have attended since 2015. Created together with Catalan artist
       [Erik Schmitz](https://www.erikschmitz.art/) and architect
       [Rose Hallgren](https://rosehallgren.se/), the piece is an enlarged
-      replica of the classic Zippo lighter, born from a longing to
-      work with fire as material, learning propane systems, sensors, and
-      ignition triggers from the ground up. You walk up, you light a fire.
-      A small rebellious act, of speaking up. The piece was also used for the
-      official closing ceremony.
+      replica of the classic Zippo lighter. I wanted to work with fire as a
+      material, so we learned propane systems, sensors, and ignition triggers
+      from the ground up. You walk up, you light a fire. A small, rebellious
+      act of speaking up. It lit the official closing ceremony.
   - type: image
     src: 03.jpg
   - type: image

@@ -9,8 +9,8 @@ blocks:
     src: 01.jpg
   - type: text
     content: >-
-      A hotel room turned into an immersive projection environment at Hobo
-      Hotel, Stockholm.
+      A Hobo Hotel room where guests fill all four walls with films from a
+      tablet by the bed.
   - type: text
     fontSize: small
     content: >-

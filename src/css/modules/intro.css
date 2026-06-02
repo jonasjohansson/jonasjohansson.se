@@ -111,10 +111,6 @@ html[data-theme="dark"] .intro-text .intro-logo img {
   text-underline-offset: 2px;
 }
 
-.intro-text a:hover {
-  opacity: 1;
-}
-
 .intro-email-btn {
   display: inline-block;
   margin-left: 0.25em;

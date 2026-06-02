@@ -131,6 +131,15 @@ async function initializeApp() {
   // Once loading is complete, show content for the route
   showContentForRoute(route);
 
+  // Respect reduced motion: freeze autoplaying project/hero videos
+  // (the looping strip videos are gated separately in strips.js).
+  if (window.matchMedia?.("(prefers-reduced-motion: reduce)")?.matches) {
+    document.querySelectorAll("video:not(.strip-video)").forEach((v) => {
+      v.removeAttribute("autoplay");
+      v.pause();
+    });
+  }
+
   // Header position toggle on scroll
   initHeaderAutoHide();
 

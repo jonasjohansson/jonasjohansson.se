@@ -9,8 +9,8 @@ blocks:
     src: 01.jpg
   - type: text
     content: >-
-      A series of digital sculptures that just are, like illustrations,
-      but rendered in code.
+      A decade of web-based generative landscapes: mountains, cloth, and
+      caves, each with its own light and sound.
   - type: video
     src: 01.webm
   - type: text

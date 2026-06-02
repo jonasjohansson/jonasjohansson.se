@@ -9,8 +9,8 @@ blocks:
   - type: text
     content: >-
       An interactive [Pepper's Ghost](https://en.wikipedia.org/wiki/Pepper%27s_ghost)
-      installation inspired by the Sistine Chapel,
-      where two virtual hands meet in mid-air.
+      installation inspired by Michelangelo's Creation of Adam, where two
+      strangers' fingertips touch in mid-air.
   - type: text
     fontSize: small
     content: >-
@@ -37,6 +37,5 @@ blocks:
       touched, light streaks and particle effects appeared alongside an audio
       cue. People loved just moving their hand around, watching it float in thin
       air, and then pulling friends over to complete the gesture together. It was
-      my first time working with Pepper's Ghost and hand sensing, and the Leap
-      Motion turned out to be a great choice.
+      my first time working with Pepper's Ghost and hand sensing.
 ---

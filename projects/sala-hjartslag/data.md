@@ -9,7 +9,7 @@ blocks:
     src: 01.jpg
   - type: text
     content: >-
-      Projection mapping celebrating 400 years of Sala.
+      Projection mapping 400 years of Sala's history onto a curved facade.
   - type: text
     fontSize: small
     content: >-
