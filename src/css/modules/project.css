@@ -170,7 +170,9 @@ figure {
 }
 
 .text-block a {
-  color: var(--project-color, var(--text-primary));
+  /* Darken the accent so links keep their hue but pass AA (~4.7:1 worst case)
+     on the light background. Dark mode lightens instead (rule below). */
+  color: color-mix(in srgb, var(--project-color, var(--text-primary)) 70%, black);
   text-decoration: underline;
 }
 
