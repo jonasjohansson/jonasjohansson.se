@@ -15,7 +15,7 @@ blocks:
   - type: text
     fontSize: small
     content: >-
-      NAVA, Nordic Audiovisual Artists, started in 2016 during a project at
+      It started during a project at
       [Harpa](/harpa/) in Reykjavík with
       [Atli Bollason](https://atlibollason.com/),
       [Owen Hindley](http://owenhindley.co.uk/) and

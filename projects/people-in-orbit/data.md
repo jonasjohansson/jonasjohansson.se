@@ -19,7 +19,7 @@ blocks:
       I met trumpet player Adam Sass while working on another production, and he
       reached out about designing the artwork for their debut album
       [Close/Away](https://naxosdirect.se/items/close-away-1203059), released on
-      Prophone Records. I wanted the artwork to express their music. I was
+      Prophone Records. I was
       inspired by
       [The Garden of Earthly Delights](https://en.wikipedia.org/wiki/The_Garden_of_Earthly_Delights)
       by [Hieronymus Bosch](https://en.wikipedia.org/wiki/Hieronymus_Bosch)

@@ -37,6 +37,5 @@ blocks:
       touched, light streaks and particle effects appeared alongside an audio
       cue. People loved just moving their hand around, watching it float in thin
       air, and then pulling friends over to complete the gesture together. It was
-      my first time working with Pepper's Ghost and hand sensing, and the Leap
-      Motion turned out to be a great choice.
+      my first time working with Pepper's Ghost and hand sensing.
 ---

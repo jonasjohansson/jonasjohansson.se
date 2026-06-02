@@ -20,10 +20,9 @@ blocks:
       Jag är Gud is an autobiographical one-man show by dancer and performer
       Danne Dahlin about living with bipolar disorder. I got involved through
       a mutual friend who introduced me to Danne, and over months of
-      conversation, he found actor and director Jakob Bladh. I worked as videographer, light designer, and
-      scenographer in collaboration with
-      [Rose Hallgren](https://rosehallgren.se/), who also worked on video and
-      scenography.
+      conversation, he found actor and director Jakob Bladh.
+      [Rose Hallgren](https://rosehallgren.se/) and I shared video and
+      scenography; I also designed the lighting.
   - type: image
     src: 03.jpg
     size: half-left
@@ -51,7 +50,7 @@ blocks:
       The challenge was making Danne's stories visible on stage while keeping
       the lighting simple. The show premiered at Kilen,
       [Kulturhuset Stockholm](https://kulturhusetstadsteatern.se/) in
-      November 2024. It sold out and ran twice due to popularity.
+      November 2024. It sold out and ran a second time.
   - type: image
     src: 06.jpg
   - type: text

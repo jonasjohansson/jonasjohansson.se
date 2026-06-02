@@ -22,22 +22,21 @@ blocks:
       [Melodifestivalen](https://en.wikipedia.org/wiki/Melodifestivalen)
       stage, realised together with [Smash Studio](https://www.smash.studio/)
       as co-designers. Smash led the design work from 3D modelling to
-      animation, while I served as technical director and creative support.
+      animation, while I was technical director and creative support.
       The stage featured three 8 x 4.5m LED walls at 3200 x 1800 pixels
       each, a 7.9 x 9.1m LED floor at 1664 x 1920 pixels, and a physical
       Romanesque gate with staircase built for projection mapping.
   - type: text
     fontSize: small
     content: >-
-      The visuals move through a moonlit Romanesque evening, a garden
-      resembling Elysium, building to a climax where the gate falls back
-      into open sky.
+      The visuals move through a moonlit Romanesque evening, a garden like
+      Elysium, building to a climax where the gate falls back into open sky.
   - type: text
     fontSize: small
     content: >-
       Architect [Rose Hallgren](https://rosehallgren.se/) built a physical
       maquette we used for testing visuals, and I developed a custom
-      [Unity](https://unity.com/) camera tool for building a precise
+      [Unity](https://unity.com/) camera tool to lock a precise
       direction of photography across the scenes.
   - type: image
     src: 03.jpg

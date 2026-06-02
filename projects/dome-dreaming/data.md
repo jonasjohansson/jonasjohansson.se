@@ -18,9 +18,8 @@ blocks:
       [Fredrik Edström](https://www.ivar.studio/) of IVAR Studios and
       [Sebastian Häger](https://www.linkedin.com/in/sebastian-h%C3%A4ger-53054b155/),
       a non-profit festival across three evenings at Wisdome Stockholm and one
-      at Wisdome Malmö. Both venues were newly built, with fulldome projection
-      and ambisonic sound, and as far as we know it was the first fulldome
-      film festival in the Nordics.
+      at Wisdome Malmö. Both venues were newly built, and as far as we know it
+      was the first fulldome film festival in the Nordics.
   - type: image
     src: 06.jpg
   - type: text
@@ -50,8 +49,8 @@ blocks:
     content: >-
       Fulldome cinema fills the entire field of view, with ambisonic sound
       coming from every direction. There are no edges to compose against, and
-      audiences sit or lie back and look up. Dome Dreaming wanted to treat
-      that as an artistic medium rather than a planetarium attachment.
+      audiences sit or lie back and look up. We wanted to treat that as an
+      artistic medium, not a planetarium attachment.
   - type: text
     fontSize: small
     content: >-

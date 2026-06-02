@@ -23,8 +23,8 @@ blocks:
       an artist and collaborator through
       [Nordic Audiovisual Artists](https://nava.community). Created together
       with [Rose Hallgren](https://rosehallgren.se/), the workshop brought
-      together 10 participants to tuft their own cultural canon. I had
-      myself been learning tufting during a residency at
+      together 10 participants to tuft their own cultural canon. I'd
+      learned tufting during a residency at
       [Konvent Zero](https://konventzero.com/) in Spain.
   - type: image
     src: 03.jpg
