@@ -48,8 +48,10 @@ blocks:
       140 x 210 cm.
   - type: image
     src: 05.jpg
+    size: half-left
   - type: image
     src: 06.jpg
+    size: half-right
   - type: text
     fontSize: small
     content: >-
@@ -66,6 +68,8 @@ blocks:
       produced a music track to accompany the work.
   - type: image
     src: 08.jpg
+    size: half-left
   - type: image
     src: 09.jpg
+    size: half-right
 ---

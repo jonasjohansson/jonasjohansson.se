@@ -65,12 +65,16 @@ blocks:
       [Erik Schmitz](https://www.erikschmitz.art/).
   - type: image
     src: 04.jpg
+    size: half-left
   - type: image
     src: 05.jpg
+    size: half-right
   - type: image
     src: 06.jpg
+    size: half-left
   - type: image
     src: 07.jpg
+    size: half-right
   - type: image
     src: 08.jpg
 ---
