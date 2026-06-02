@@ -11,7 +11,7 @@ blocks:
   - type: text
     content: >-
       An open call for artists to illuminate the facade of
-      [Harpa Concert Hall](/harpa/) in Reykjavík. 77 pixels wide, 13 pixels tall, one enormous building.
+      [Harpa Concert Hall](/harpa/) in Reykjavík: 77 pixels wide, 13 pixels tall, one enormous building.
   - type: text
     fontSize: small
     content: >-

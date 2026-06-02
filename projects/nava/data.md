@@ -103,9 +103,9 @@ blocks:
     src: 13.jpg
   - type: image
     src: 12.jpg
-  - type: text
-    src: 17.jpg
   - type: image
+    src: 17.jpg
+  - type: text
     fontSize: small
     content: >-
       In 2023, [Annie Tådne](https://annietadne.com/), Merle Karp and I spent

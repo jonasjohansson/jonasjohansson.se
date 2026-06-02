@@ -97,7 +97,7 @@ blocks:
     fontSize: small
     content: >-
       Documentation and communication by
-      [Rose Hallgren](https://rosehallgren.com/). Festival photography by
+      [Rose Hallgren](https://rosehallgren.se/). Festival photography by
       Glidephotos. Produced in collaboration with
       [Aavistus](https://aavistusfestival.fi),
       [Kokong](https://www.instagram.com/kokongfestival/),
