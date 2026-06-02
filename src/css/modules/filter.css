@@ -90,10 +90,6 @@
 }
 
 /* CSS Filtering System */
-.strip {
-  display: block;
-}
-
 body.filter-active .strip {
   display: none;
 }

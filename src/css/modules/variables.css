@@ -30,7 +30,7 @@
   --font-size-large: clamp(1.6rem, 1.2rem + 1.8vw, 2.6rem);
   --font-size-intro: clamp(1.05rem, 0.5rem + 1vw + 0.3vh, 1.8rem);
   --letter-spacing-base: 0;
-  --letter-spacing-wide: 0;
+  --letter-spacing-wide: 0.04em; /* uppercase header/subtitle tracking */
   --letter-spacing-wider: 0;
   --line-height-tight: 1.15;
   --line-height-snug: 1.35;
@@ -53,27 +53,27 @@ html[data-theme="dark"] {
 }
 
 /* Project accent colors (vibrant, extracted from hero images) */
-html[data-project="danny-saucedo"] { --project-color: #9b2500; --project-color-text: var(--color-white); }
-html[data-project="dome-dreaming"] { --project-color: #c75200; --project-color-text: var(--color-white); }
-html[data-project="svartljus"] { --project-color: #b07600; --project-color-text: var(--color-white); }
-html[data-project="eastern-city-portal"] { --project-color: #4698d2; --project-color-text: var(--color-black); }
-html[data-project="embed"] { --project-color: #1a43fe; --project-color-text: var(--color-white); }
-html[data-project="emerging-sensation"] { --project-color: #1521b4; --project-color-text: var(--color-white); }
-html[data-project="firestarter"] { --project-color: #005d80; --project-color-text: var(--color-white); }
-html[data-project="harpa"] { --project-color: #ff5c1a; --project-color-text: var(--color-black); }
-html[data-project="heroes"] { --project-color: #727171; --project-color-text: var(--color-white); }
-html[data-project="icehotel"] { --project-color: #0b4f80; --project-color-text: var(--color-white); }
-html[data-project="jag-ar-gud"] { --project-color: #833e00; --project-color-text: var(--color-white); }
-html[data-project="lights-for-ukraine"] { --project-color: #5500a0; --project-color-text: var(--color-white); }
-html[data-project="lyra"] { --project-color: #070a79; --project-color-text: var(--color-white); }
-html[data-project="people-in-orbit"] { --project-color: #e16518; --project-color-text: var(--color-black); }
-html[data-project="resonance"] { --project-color: #4f0396; --project-color-text: var(--color-white); }
-html[data-project="retrospectives"] { --project-color: #ff6a1a; --project-color-text: var(--color-black); }
-html[data-project="sala-hjartslag"] { --project-color: #962d00; --project-color-text: var(--color-white); }
-html[data-project="tinymassive"] { --project-color: #00338e; --project-color-text: var(--color-white); }
-html[data-project="transcend"] { --project-color: #cc1c65; --project-color-text: var(--color-white); }
-html[data-project="tufting-ex-machina"] { --project-color: #f37100; --project-color-text: var(--color-black); }
-html[data-project="vista"] { --project-color: #8401ff; --project-color-text: var(--color-white); }
+html[data-project="danny-saucedo"] { --project-color: #9b2500; }
+html[data-project="dome-dreaming"] { --project-color: #c75200; }
+html[data-project="svartljus"] { --project-color: #b07600; }
+html[data-project="eastern-city-portal"] { --project-color: #4698d2; }
+html[data-project="embed"] { --project-color: #1a43fe; }
+html[data-project="emerging-sensation"] { --project-color: #1521b4; }
+html[data-project="firestarter"] { --project-color: #005d80; }
+html[data-project="harpa"] { --project-color: #ff5c1a; }
+html[data-project="heroes"] { --project-color: #727171; }
+html[data-project="icehotel"] { --project-color: #0b4f80; }
+html[data-project="jag-ar-gud"] { --project-color: #833e00; }
+html[data-project="lights-for-ukraine"] { --project-color: #5500a0; }
+html[data-project="lyra"] { --project-color: #070a79; }
+html[data-project="people-in-orbit"] { --project-color: #e16518; }
+html[data-project="resonance"] { --project-color: #4f0396; }
+html[data-project="retrospectives"] { --project-color: #ff6a1a; }
+html[data-project="sala-hjartslag"] { --project-color: #962d00; }
+html[data-project="tinymassive"] { --project-color: #00338e; }
+html[data-project="transcend"] { --project-color: #cc1c65; }
+html[data-project="tufting-ex-machina"] { --project-color: #f37100; }
+html[data-project="vista"] { --project-color: #8401ff; }
 
 :root {
   /* Chevron/arrow shapes - pointed left and right ends */

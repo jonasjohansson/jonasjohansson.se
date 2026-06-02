@@ -124,10 +124,6 @@
   /* Removed filter to keep images looking natural */
 }
 
-.strip::after {
-  display: none;
-}
-
 .strip.hidden {
   display: none;
 }
