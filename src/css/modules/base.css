@@ -173,14 +173,6 @@ body.loaded.project-visible #projects {
   transition: opacity 0.3s ease;
 }
 
-/* Project hero positioning to match strip images */
-.project-hero {
-  background-size: cover;
-  background-position: center;
-  background-repeat: no-repeat;
-}
-
-/* Respect reduced motion preference globally */
 @media print {
   body * {
     display: none !important;

@@ -25,21 +25,19 @@
 /* Font size classes for project content */
 .text-small {
   font-size: var(--font-size-small);
-  line-height: 1.425;
+  line-height: var(--line-height-relaxed);
   letter-spacing: var(--letter-spacing-base);
 }
 
 .text-medium {
   font-size: var(--font-size-medium);
-  line-height: 1.35;
+  line-height: var(--line-height-snug);
   text-align: center;
   text-wrap: balance;
 }
 
-.text-block .text-large,
 .text-large {
   font-size: var(--font-size-large);
-  line-height: 1.15 !important;
   text-wrap: balance;
 }
 
@@ -51,7 +49,7 @@
 
 .media-caption {
   font-size: var(--font-size-small);
-  line-height: 1.425;
+  line-height: var(--line-height-relaxed);
   letter-spacing: var(--letter-spacing-base);
   margin-top: 0.5em;
   opacity: 0.7;
@@ -162,7 +160,7 @@ figure {
 .text-block {
   max-width: 65ch;
   margin: 0 auto;
-  line-height: 1.5;
+  line-height: var(--line-height-loose);
   text-align: left;
   text-wrap: pretty;
 }
@@ -176,18 +174,25 @@ figure {
   text-decoration: underline;
 }
 
+/* In dark mode, lighten the accent so links keep their hue but stay legible
+   on the dark background (worst-case contrast ~5:1). */
+html[data-theme="dark"] .text-block a {
+  color: color-mix(in srgb, var(--project-color, var(--text-primary)) 45%, white);
+}
+
 .text-block a:hover {
   opacity: 1;
 }
 
 .text-block.text-medium {
-  line-height: 1.35;
+  line-height: var(--line-height-snug);
 }
 
-/* Statement text: wider column */
+/* Statement text: wider column, tighter leading */
 .text-block.text-large {
   max-width: 40ch;
   text-align: left;
+  line-height: var(--line-height-tight);
 }
 
 .project-grid p {
@@ -198,26 +203,8 @@ figure {
   margin-bottom: 0;
 }
 
-/* Smaller text for about page */
-#about .text-block,
-#about .text-block.text-medium,
-[data-project="about"] .text-block,
-[data-project="about"] .text-block.text-medium {
-  font-size: var(--font-size-small) !important;
-  line-height: var(--line-height-base);
-}
-
-@media (max-width: 768px) {
-  #about .text-block,
-  #about .text-block.text-medium,
-  [data-project="about"] .text-block,
-  [data-project="about"] .text-block.text-medium {
-    font-size: 1rem !important;
-  }
-}
-
 .credits-block {
-  font-size: 0.8rem;
+  font-size: var(--font-size-xs);
   opacity: 0.7;
 }
 
