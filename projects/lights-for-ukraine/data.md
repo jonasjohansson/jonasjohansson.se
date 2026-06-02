@@ -9,8 +9,8 @@ blocks:
     src: 01.jpg
   - type: text
     content: >-
-      An open call for illustrations turned into light signs, exhibited and
-      auctioned with all proceeds going to Sverige for UNHCR.
+      An open call for illustrations, turned into LED signs and auctioned for
+      Sverige för UNHCR.
   - type: image
     src: 02.jpg
   - type: text
@@ -26,7 +26,7 @@ blocks:
       [Rose Hallgren](https://rosehallgren.se/). I built a custom auction
       system so passersby could bid on the pieces directly. All signs were
       auctioned off with proceeds going to
-      [Sverige for UNHCR](https://sverigeforunhcr.se/), the UN Refugee
+      [Sverige för UNHCR](https://sverigeforunhcr.se/), the UN Refugee
       Agency. Logo by
       Eugenia Kukharchuk.
   - type: image

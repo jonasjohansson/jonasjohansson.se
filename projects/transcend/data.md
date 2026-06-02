@@ -9,8 +9,8 @@ blocks:
   - type: text
     content: >-
       An interactive [Pepper's Ghost](https://en.wikipedia.org/wiki/Pepper%27s_ghost)
-      installation inspired by the Sistine Chapel,
-      where two virtual hands meet in mid-air.
+      installation inspired by Michelangelo's Creation of Adam, where two
+      strangers' fingertips touch in mid-air.
   - type: text
     fontSize: small
     content: >-

@@ -10,9 +10,9 @@ blocks:
     src: 01.jpg
   - type: text
     content: >-
-      A series of interactive interventions on the LED facade of
-      [Harpa Concert Hall](https://en.harpa.is/) in Reykjavík, during
-      [Sónar Reykjavík](https://sonarreykjavik.com/) and other occasions.
+      We turned the 714-panel LED facade of Reykjavík's
+      [Harpa Concert Hall](https://en.harpa.is/) into a public game, then an
+      instrument.
   - type: text
     fontSize: small
     content: >-
