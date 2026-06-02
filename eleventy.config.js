@@ -37,23 +37,12 @@ export default function (eleventyConfig) {
   eleventyConfig.addPassthroughCopy({ "src/favicon": "favicon" });
   eleventyConfig.addPassthroughCopy("CNAME");
   eleventyConfig.addPassthroughCopy({ "src/img": "assets/img" });
-  // Pass through only the project assets the browser actually requests:
-  // videos (referenced raw) and the about-section images. All other images are
-  // processed by eleventy-img into /img/, so the multi-hundred-MB raw originals
-  // under projects/ must NOT be copied to the deploy.
+  // Pass through only the project assets the browser actually requests: videos
+  // (referenced raw). All images are processed by eleventy-img into /img/, so the
+  // multi-hundred-MB raw originals under projects/ must NOT be copied to the deploy.
   eleventyConfig.addPassthroughCopy("projects/**/*.{mp4,webm,mov}");
-  eleventyConfig.addPassthroughCopy({ "projects/about": "projects/about" });
 
   eleventyConfig.addGlobalData("buildYear", new Date().getFullYear());
-  
-  // Add about.md as global data
-  eleventyConfig.addGlobalData("about", () => {
-    const aboutPath = path.join(projectRoot, "_data", "about.md");
-    if (existsSync(aboutPath)) {
-      return readFileSync(aboutPath, "utf8");
-    }
-    return "";
-  });
 
   eleventyConfig.setLibrary("njk", nunjucks.configure({ autoescape: true, throwOnUndefined: false, trimBlocks: true, lstripBlocks: true }));
 
@@ -121,32 +110,6 @@ export default function (eleventyConfig) {
   // Site-wide Open Graph image (1200x630 JPEG, smart-cropped from firestarter source)
   eleventyConfig.addGlobalData("siteOgImage", async () => {
     return await processOgImage("src/img/jonasjohansson-firestarter.jpg", "site");
-  });
-
-  // Add about images list as global data
-  // Returns source paths - images will be processed when used via responsiveImage shortcode
-  eleventyConfig.addGlobalData("aboutImages", () => {
-    const aboutDir = path.join(projectRoot, "projects", "about");
-    if (!existsSync(aboutDir)) return ["projects/about/01.jpg"];
-    
-    try {
-      const files = readdirSync(aboutDir, { withFileTypes: true })
-        .filter((f) => f.isFile())
-        .map((f) => f.name);
-      
-      const imageFiles = files.filter((name) => {
-        const ext = path.extname(name).toLowerCase();
-        return [".jpg", ".jpeg", ".png", ".webp", ".gif"].includes(ext);
-      });
-      
-      // Return source paths - JavaScript will use these to switch images
-      const images = imageFiles.map((name) => `projects/about/${name}`);
-      
-      return images.length > 0 ? images : ["projects/about/01.jpg"];
-    } catch (err) {
-      console.warn("Error reading about images:", err);
-      return ["projects/about/01.jpg"]; // Fallback
-    }
   });
 
   // Shared image processing function to ensure strips and hero use same images
@@ -571,7 +534,7 @@ export default function (eleventyConfig) {
       mkdirSync(outputDir, { recursive: true });
     }
     // Ensure common subdirectories exist
-    const subdirs = ["img", "about", "work"];
+    const subdirs = ["img", "work"];
     subdirs.forEach((subdir) => {
       const dirPath = path.join(outputDir, subdir);
       if (!existsSync(dirPath)) {

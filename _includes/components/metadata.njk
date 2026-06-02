@@ -36,15 +36,6 @@
   href="{{ 'SeasonMix-Regular.woff' | viteAsset | url }}"
   crossorigin />
 
-<!-- Preload about image only on about page to prevent pop-in when opening about -->
-{% if page.url === '/about/' %}
-<link
-  rel="preload"
-  as="image"
-  href="/projects/about/01.jpg"
-  fetchpriority="low" />
-{% endif %}
-
 {# Strip images are loaded by JS via data-bg-image, not by the browser's
    image loader, so preloading them here just competes with the font and
    delays the text LCP. Removed to improve Lighthouse performance score. #}

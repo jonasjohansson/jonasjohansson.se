@@ -26,7 +26,7 @@ class SPARouter {
     this._hooks = {};
   }
 
-  // Register callbacks to decouple router from strips/aboutOverlay modules
+  // Register callbacks to decouple router from the strips module
   registerHooks(hooks) {
     Object.assign(this._hooks, hooks);
   }

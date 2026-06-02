@@ -14,7 +14,6 @@ let getAllStrips = null;
 let getHeaderSubtitle = null;
 let getCurrentPageTitleFn = null;
 let setCurrentPageTitleFn = null;
-let getAboutOverlayFn = null;
 let getNavigationTimeoutId = null;
 let setNavigationTimeoutId = null;
 let preloadProjectFn = null;
@@ -34,7 +33,6 @@ export function initInteractionRefs(refs) {
   getHeaderSubtitle = refs.getHeaderSubtitle;
   getCurrentPageTitleFn = refs.getCurrentPageTitle;
   setCurrentPageTitleFn = refs.setCurrentPageTitle;
-  getAboutOverlayFn = refs.getAboutOverlay;
   getNavigationTimeoutId = refs.getNavigationTimeoutId;
   setNavigationTimeoutId = refs.setNavigationTimeoutId;
   preloadProjectFn = refs.preloadProject;
@@ -271,15 +269,12 @@ export function attachTouchListeners() {
             const pSlug = strip.getAttribute("data-project");
             if (pSlug) document.documentElement.setAttribute("data-project", pSlug);
 
-            const aboutOverlay = getAboutOverlayFn?.();
-            if (!aboutOverlay || !aboutOverlay.classList.contains("visible")) {
-              const headerSubtitle = getHeaderSubtitle?.();
-              if (headerSubtitle) {
-                const projectTitle = strip.getAttribute("data-project-title") || getStripProjectTitle(strip);
-                if (projectTitle) {
-                  setHeaderRevealed(headerSubtitle, true);
-                  scrambleText(headerSubtitle, projectTitle);
-                }
+            const headerSubtitle = getHeaderSubtitle?.();
+            if (headerSubtitle) {
+              const projectTitle = strip.getAttribute("data-project-title") || getStripProjectTitle(strip);
+              if (projectTitle) {
+                setHeaderRevealed(headerSubtitle, true);
+                scrambleText(headerSubtitle, projectTitle);
               }
             }
           } else {
@@ -290,14 +285,11 @@ export function attachTouchListeners() {
               document.documentElement.removeAttribute("data-project");
             }
 
-            const aboutOverlay = getAboutOverlayFn?.();
-            if (!aboutOverlay || !aboutOverlay.classList.contains("visible")) {
-              const headerSubtitle = getHeaderSubtitle?.();
-              if (headerSubtitle) {
-                const currentPageTitle = getCurrentPageTitleFn?.() || "PROGRESS NOT PERFECTION";
-                setHeaderRevealed(headerSubtitle, !!touchCurrentSlug);
-                scrambleText(headerSubtitle, currentPageTitle);
-              }
+            const headerSubtitle = getHeaderSubtitle?.();
+            if (headerSubtitle) {
+              const currentPageTitle = getCurrentPageTitleFn?.() || "PROGRESS NOT PERFECTION";
+              setHeaderRevealed(headerSubtitle, !!touchCurrentSlug);
+              scrambleText(headerSubtitle, currentPageTitle);
             }
           }
 
@@ -336,14 +328,11 @@ export function attachTouchListeners() {
       document.documentElement.removeAttribute("data-project");
     }
 
-    const aboutOverlay = getAboutOverlayFn?.();
-    if (!aboutOverlay || !aboutOverlay.classList.contains("visible")) {
-      const headerSubtitle = getHeaderSubtitle?.();
-      if (headerSubtitle) {
-        const currentPageTitle = getCurrentPageTitleFn?.() || "PROGRESS NOT PERFECTION";
-        setHeaderRevealed(headerSubtitle, !!currentSlug);
-        scrambleText(headerSubtitle, currentPageTitle);
-      }
+    const headerSubtitle = getHeaderSubtitle?.();
+    if (headerSubtitle) {
+      const currentPageTitle = getCurrentPageTitleFn?.() || "PROGRESS NOT PERFECTION";
+      setHeaderRevealed(headerSubtitle, !!currentSlug);
+      scrambleText(headerSubtitle, currentPageTitle);
     }
 
     touchStartStrip = null;
