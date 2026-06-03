@@ -228,6 +228,22 @@ html[data-theme="dark"] .text-block a {
   margin-bottom: 0.5rem;
 }
 
+/* Shared closing line on every project page: ends the page on text and sits
+   above the navigation strips. */
+.project-footer {
+  margin-top: var(--spacing-3xl);
+  padding-inline: var(--spacing-xl);
+  font-size: var(--font-size-small);
+  text-align: center;
+  opacity: 0.6;
+}
+
+.project-footer a {
+  color: inherit;
+  text-decoration: underline;
+  text-underline-offset: 2px;
+}
+
 /* Grid column utilities via CSS custom properties */
 [style*="--col-start"] {
   grid-column-start: var(--col-start);
