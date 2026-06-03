@@ -66,6 +66,9 @@
   min-height: calc(100vh - var(--spacing-lg) * 2);
   position: relative;
   background-color: var(--bg-primary);
+  /* Separate the project from the navigation strips below it. Only renders
+     on project pages (#projects is display:none on home). */
+  margin-bottom: var(--spacing-3xl);
 }
 
 #projects:not(:has(.project)) {
