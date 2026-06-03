@@ -1,4 +1,4 @@
-import { applyProjectColor, initializeStrips, updateCurrentPageTitle, setNavigateFn, initFilters } from "./strips.js";
+import { initializeStrips, updateCurrentPageTitle, setNavigateFn, initFilters } from "./strips.js";
 import { resetFilters } from "./stripFiltering.js";
 import { router } from "./router.js";
 import { loadingManager } from "./utils/loadingManager.js";
@@ -9,7 +9,6 @@ import { initIntro, hideIntro, showIntro } from "./intro.js";
 // Wire up router hooks
 router.registerHooks({
   resetFilters,
-  applyProjectColor,
   updateCurrentPageTitle,
   initializeStrips,
   showIntro,
@@ -60,16 +59,13 @@ async function showContentForRoute(route) {
         projects.style.visibility = "visible";
       });
 
-      // Apply project color and update header subtitle
+      // Update header subtitle
       if (window.__INITIAL_PROJECT__) {
         const projectTitle = window.__INITIAL_PROJECT__?.title;
         if (projectTitle) {
           setTimeout(() => {
             updateCurrentPageTitle(projectTitle);
-            applyProjectColor(window.__INITIAL_PROJECT__);
           }, 100);
-        } else {
-          setTimeout(() => applyProjectColor(window.__INITIAL_PROJECT__), 100);
         }
       } else {
         const pathMatch = window.location.pathname.match(/\/work\/([^\/]+)/);

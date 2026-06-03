@@ -229,8 +229,6 @@ class SPARouter {
         document.documentElement.classList.remove("transition-lock");
         scrollToProject();
       }
-
-      await this._hooks.applyProjectColor?.(project);
     } catch (error) {
       console.error("Error loading project:", error);
       document.documentElement.classList.remove("transition-lock");
