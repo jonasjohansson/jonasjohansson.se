@@ -69,6 +69,11 @@ blocks:
   - type: image
     src: 05.jpg
     size: half-right
+  - type: text
+    fontSize: small
+    content: >-
+      Every detail had to sell the scene: a 1930s carriage where something
+      has gone wrong, waiting for someone to piece it together.
   - type: image
     src: 06.jpg
     size: half-left
