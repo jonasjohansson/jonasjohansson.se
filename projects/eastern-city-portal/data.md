@@ -59,6 +59,11 @@ blocks:
   - type: image
     src: 08.jpg
     size: half-right
+  - type: text
+    fontSize: small
+    content: >-
+      Getting the carved patterns to read as AR markers took the most tuning,
+      so the three layers landed when you raised your phone.
   - type: image
     src: 09.jpg
     size: half-left
