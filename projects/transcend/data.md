@@ -38,4 +38,8 @@ blocks:
       cue. People loved just moving their hand around, watching it float in thin
       air, and then pulling friends over to complete the gesture together. It was
       my first time working with Pepper's Ghost and hand sensing.
+  - type: credits
+    credits:
+      - "Collaboration: Hybrid Forest (later [Smash Studio](https://www.smash.studio/))"
+      - "[Rose Hallgren](https://rosehallgren.se/)"
 ---

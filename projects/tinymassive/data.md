@@ -58,4 +58,14 @@ blocks:
       Opstart grant. The collective behind Tiny/Massive was myself,
       [Atlí Bollason](https://atlibollason.com/) and
       [Owen Hindley](http://owenhindley.co.uk/).
+  - type: credits
+    credits:
+      - "Collective: [Atlí Bollason](https://atlibollason.com/)"
+      - "Collective: [Owen Hindley](http://owenhindley.co.uk/)"
+      - "Produced through [NAVA](https://www.nava.community)"
+      - "Venue: [Harpa Concert Hall](/harpa/)"
+      - "Live performance: [Loney Dear](https://youtu.be/wAKno0pe4UQ)"
+      - "Course: [Iceland University of the Arts](https://ugla.lhi.is/kennsluskra/index.php?tab=nam&chapter=namskeid&id=77239520186)"
+      - "Hardware: [Teenage Engineering](https://teenage.engineering/)"
+      - "Funding: [Nordic Culture Fund](https://nordiskkulturfond.org/)"
 ---

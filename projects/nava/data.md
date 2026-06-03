@@ -132,4 +132,12 @@ blocks:
       [Nordic Culture Fund](https://nordiskkulturfond.org/),
       [Nordic Culture Point](https://www.nordiskkulturkontakt.org/) and
       [NAPA](https://napa.gl/).
+  - type: credits
+    credits:
+      - "Co-founders: [Atli Bollason](https://atlibollason.com/), [Owen Hindley](http://owenhindley.co.uk/), [Rasmus Stride](https://www.instagram.com/rasmus.stride/)"
+      - "[Annie Tådne](https://annietadne.com/)"
+      - "Arctic Lights: [Annie Tådne](https://annietadne.com/), Merle Karp"
+      - "[Plútó](https://www.instagram.com/plutoreykjavik/)"
+      - "Festivals: [Roskilde Festival](https://www.roskilde-festival.dk/), [Monument](https://mnmt.no/), [Nonagon](https://nonagonfestival.se/), [Aavistus](https://www.aavistusfestival.fi/), [Arctic Sounds](https://arcticsoundsfestival.com/), [Bíó Paradís](https://bioparadis.is/)"
+      - "Supported by [Nordic Culture Fund](https://nordiskkulturfond.org/), [Nordic Culture Point](https://www.nordiskkulturkontakt.org/) and [NAPA](https://napa.gl/)"
 ---

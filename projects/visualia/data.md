@@ -41,4 +41,12 @@ blocks:
   - type: image
     src: 04.jpg
     size: half-right
+  - type: credits
+    credits:
+      - "Run with [Rose Hallgren](https://rosehallgren.se/)"
+      - "Grew out of [NAVA](https://www.nava.community)"
+      - "2022 residents: Gabriela Prochazka, Annie Tådne"
+      - "2023 residents: Sui, Niklas Alriksson"
+      - "2024 residents: Tomas Larsson, Merle Karp, Leo Pahta"
+      - "2024 micro-residents: Erik Natanael, Murilo Polese, Hara Alonso"
 ---

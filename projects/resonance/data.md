@@ -35,4 +35,9 @@ blocks:
     src: 04.png
   - type: image
     src: 05.png
+  - type: credits
+    credits:
+      - "Created with [Smash Studio](https://www.smash.studio/)"
+      - "Built together with [Rose Hallgren](https://rosehallgren.se/)"
+      - "For [Allt Ljus på Uppsala](https://alltljuspauppsala.se/)"
 ---

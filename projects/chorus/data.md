@@ -41,4 +41,11 @@ blocks:
       singer needed to recognise their own particle, a few pixels moving
       the way their voice moved. Getting that feeling right is what kept
       us going in the container.
+  - type: credits
+    credits:
+      - "Artist: [Tove Alderin](https://www.tovealderinstudio.se/)"
+      - "Pitch analysis: Mattias Heldner, Stockholm University Phonetics Laboratory"
+      - "Shaders: [Sol Sarratea](https://solsarratea.world/)"
+      - "Video: [David Giese](http://davidgiese.com/)"
+      - "Rig: [Scenteknik](https://scenteknik.se/)"
 ---

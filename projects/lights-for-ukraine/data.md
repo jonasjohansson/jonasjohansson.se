@@ -31,5 +31,11 @@ blocks:
       Eugenia Kukharchuk.
   - type: image
     src: 03.jpg
+  - type: credits
+    credits:
+      - "Mounted with: [Rose Hallgren](https://rosehallgren.se/)"
+      - "Gallery ([Shoof](https://beckmans.se/pop-up-stand-showcases-contemporary-expressions-of-visual-culture/)): Samira Bouabana"
+      - "Logo: Eugenia Kukharchuk"
+      - "Beneficiary: [Sverige för UNHCR](https://sverigeforunhcr.se/)"
 ---
 

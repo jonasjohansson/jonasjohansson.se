@@ -91,4 +91,15 @@ blocks:
       Skaðablót.
   - type: image
     src: 03.jpg
+  - type: credits
+    credits:
+      - "[Atlí Bollason](https://atlibollason.com/)"
+      - "[Owen Hindley](http://owenhindley.co.uk/)"
+      - "Facade access: [Ólafur Elíasson](https://en.wikipedia.org/wiki/Olafur_Eliasson)"
+      - "Physical models: [Rose Hallgren](https://rosehallgren.se/)"
+      - "Hardware coding: Johanna Tano"
+      - "Performance: [Loney Dear](https://youtu.be/wAKno0pe4UQ)"
+      - "[Rasmus Stride](https://www.instagram.com/rasmus.stride/)"
+      - "Hardware: [Teenage Engineering](https://teenage.engineering/)"
+      - "Funding: [Nordic Culture Fund](https://nordiskkulturfond.org/)"
 ---
