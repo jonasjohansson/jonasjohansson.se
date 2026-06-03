@@ -88,7 +88,7 @@ figure {
   display: grid;
   grid-template-columns: repeat(12, 1fr);
   column-gap: var(--spacing-xl);
-  row-gap: var(--spacing-3xl);
+  row-gap: var(--spacing-xl);
   grid-auto-flow: dense;
   width: 100%;
   max-width: 100%;
@@ -159,14 +159,22 @@ figure {
 
 .text-block {
   max-width: 65ch;
-  margin: 0 auto;
+  margin-inline: auto;
+  /* Images keep the tight grid gutter (row-gap); text blocks get a larger
+     break on both sides so they read as a separate beat. */
+  margin-block: var(--spacing-2xl);
   line-height: var(--line-height-loose);
   text-align: left;
   text-wrap: pretty;
 }
 
+/* Consecutive text blocks (e.g. statement + body) stay tight */
 .text-block + .text-block {
-  margin-top: calc(var(--spacing-lg) - var(--spacing-3xl));
+  margin-top: 0;
+}
+
+.text-block:has(+ .text-block) {
+  margin-bottom: 0;
 }
 
 .text-block a {
@@ -242,21 +250,11 @@ html[data-theme="dark"] .text-block a {
     grid-column: 2 / 12;
   }
 
-  /* Add breathing room around text blocks on large screens */
+  /* More breathing room around text blocks on large screens */
   .text-block {
     grid-column: 1 / -1;
     max-width: 80ch;
-    margin-top: var(--spacing-3xl);
-    margin-bottom: var(--spacing-3xl);
-  }
-
-  /* Collapse margin between consecutive text blocks */
-  .text-block:has(+ .text-block) {
-    margin-bottom: 0;
-  }
-
-  .text-block + .text-block {
-    margin-top: 0;
+    margin-block: var(--spacing-3xl);
   }
 
   .text-block.text-large {
