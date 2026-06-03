@@ -105,6 +105,11 @@ blocks:
   - type: image
     src: 13.jpg
     size: half-right
+  - type: text
+    fontSize: small
+    content: >-
+      A week together in a cabin or a silo, then the piece on stage: that
+      rhythm is what NAVA is really about.
   - type: image
     src: 12.jpg
     size: half-left

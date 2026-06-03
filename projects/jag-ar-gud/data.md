@@ -66,6 +66,11 @@ blocks:
   - type: image
     src: 08.jpg
     size: half-right
+  - type: text
+    fontSize: small
+    content: >-
+      Onstage, Danne carries the whole piece alone, and the lighting stays
+      simple so his stories can hold the room.
   - type: image
     src: 09.jpg
     size: half-left
