@@ -4,7 +4,6 @@ const {
   animation: { stripInitialDelayStep, stripInitialDuration },
   images: { loadMargin },
 } = SETTINGS;
-import { ColorExtractor } from "./utils/colorExtractor.js";
 import { getProjectPath } from "./utils/pathBuilder.js";
 import { getCurrentRoute } from "./utils/routeUtils.js";
 import { getCurrentProjectTitle, setCurrentProjectTitle } from "./utils/state.js";
@@ -21,9 +20,6 @@ function playStripVideos(root) {
   if (prefersReducedMotion) return;
   root.querySelectorAll(".strip-video").forEach((v) => v.play().catch(() => {}));
 }
-
-// Color extraction
-const colorExtractor = new ColorExtractor();
 
 // Preload cache for faster navigation
 export const preloadCache = new Map();
@@ -43,38 +39,6 @@ function preloadProject(slug) {
       }
     })
     .catch((error) => console.warn("Preload failed for", slug, error));
-}
-
-// Color helpers
-const normalizeImageUrl = (url) => {
-  if (!url) return null;
-  if (url.startsWith("http") || url.startsWith("/")) return url;
-  return `/${url}`;
-};
-
-const applyColorsToCSS = (dominantColor) => {
-  const lightColor = colorExtractor.adjustBrightness(dominantColor, 1.3);
-  const darkColor = colorExtractor.adjustBrightness(dominantColor, 0.7);
-  document.documentElement.style.setProperty("--project-accent-color", dominantColor);
-  document.documentElement.style.setProperty("--project-accent-color-light", lightColor);
-  document.documentElement.style.setProperty("--project-accent-color-dark", darkColor);
-};
-
-async function applyProjectColor(project) {
-  if (!project?.images?.[0]) return;
-  const imageUrl = typeof project.images[0] === "string" ? project.images[0] : project.images[0].src;
-  await applyProjectColorFromImageUrl(imageUrl);
-}
-
-async function applyProjectColorFromImageUrl(imageUrl) {
-  try {
-    const absoluteUrl = normalizeImageUrl(imageUrl);
-    if (!absoluteUrl) return;
-    const dominantColor = await colorExtractor.extractDominantColor(absoluteUrl);
-    applyColorsToCSS(dominantColor);
-  } catch (err) {
-    console.warn("Failed to extract color:", err);
-  }
 }
 
 // ---------- DOM Elements ----------
@@ -342,4 +306,4 @@ function updateCurrentPageTitle(title) {
   }
 }
 
-export { resetFilters, applyProjectColor, updateCurrentPageTitle, initFilters };
+export { resetFilters, updateCurrentPageTitle, initFilters };

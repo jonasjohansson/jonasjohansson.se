@@ -1,4 +1,4 @@
-import { getCurrentRoute, getPathPrefix } from "./routeUtils.js";
+import { getCurrentRoute } from "./routeUtils.js";
 
 // Loading manager for preloading images
 export class LoadingManager {
@@ -65,20 +65,18 @@ export class LoadingManager {
   }
 
   async preloadProjectImages() {
-    const project = window.__INITIAL_PROJECT__;
-    if (!project || !project.images || project.images.length === 0) return;
+    // Warm the optimized hero image (the LCP) straight from the DOM. The other
+    // grid images load via their own <img> tags, and the raw originals listed
+    // in __INITIAL_PROJECT__.images are no longer deployed (only /img/ variants).
+    const heroImg = document.querySelector(
+      ".project-grid .media-item.hero img, .project-grid .media-item:first-child img, .project-grid img"
+    );
+    const url = heroImg && (heroImg.currentSrc || heroImg.src);
+    if (!url) return;
 
-    const pathPrefix = getPathPrefix();
-    this.totalImages += project.images.length;
+    this.totalImages += 1;
     this.updateTitleProgress();
-
-    const imagePromises = project.images.map((img) => {
-      const imageUrl = typeof img === "string" ? img : img.src;
-      const normalizedUrl = imageUrl.startsWith("/") ? imageUrl : imageUrl.startsWith("http") ? imageUrl : `${pathPrefix}/${imageUrl}`;
-      return this.loadImage(normalizedUrl);
-    });
-
-    if (imagePromises.length > 0) await Promise.all(imagePromises);
+    await this.loadImage(url);
   }
 
   loadImage(url) {
