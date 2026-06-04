@@ -30,6 +30,4 @@ blocks:
   - type: credits
     credits:
       - "Built with [Erik Schmitz](https://www.erikschmitz.art/)"
-      - "For [Nowhere](https://www.goingnowhere.org/) 2022"
-      - "Residency: [Konvent Zero](https://konventzero.com/)"
 ---

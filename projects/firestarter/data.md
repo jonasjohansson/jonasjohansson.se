@@ -56,6 +56,5 @@ blocks:
     credits:
       - "Created with: [Erik Schmitz](https://www.erikschmitz.art/)"
       - "Created with: [Rose Hallgren](https://rosehallgren.se/)"
-      - "Construction: Josep Giribet"
-      - "Workshop: [Calidos](https://calidos.cat/) (David Giribet)"
+      - "Help from Josep Giribet"
 ---

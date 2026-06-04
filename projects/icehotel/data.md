@@ -86,7 +86,6 @@ blocks:
     credits:
       - "Sculptor: [Jordi Claramunt](https://www.instagram.com/jordi.claramunt.art/)"
       - "Architect: Lukas Petko"
-      - "Creative Director: Luca Roncoroni"
       - "Sculptor: [Abel Pruñonosa](https://www.abelprunyonosa.com/)"
       - "Music: Francesco Torelli"
       - "Music: Nikita Dudnik"

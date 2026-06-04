@@ -80,9 +80,7 @@ blocks:
       Hyper Island.
   - type: credits
     credits:
-      - "Studio: [Svartljus](https://svartljus.se)"
       - "Olle Bjerkås"
-      - "Markus Persson"
       - "Per-Olov Jernberg"
       - "Servando Barreiro"
       - "[Rose Hallgren](https://rosehallgren.se/)"

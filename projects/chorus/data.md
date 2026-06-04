@@ -44,7 +44,6 @@ blocks:
   - type: credits
     credits:
       - "Artist: [Tove Alderin](https://www.tovealderinstudio.se/)"
-      - "Pitch analysis: Mattias Heldner, Stockholm University Phonetics Laboratory"
       - "Shaders: [Sol Sarratea](https://solsarratea.world/)"
       - "Video: [David Giese](http://davidgiese.com/)"
       - "Rig: [Scenteknik](https://scenteknik.se/)"

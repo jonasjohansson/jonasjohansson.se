@@ -39,5 +39,4 @@ blocks:
     credits:
       - "Created with [Smash Studio](https://www.smash.studio/)"
       - "Built together with [Rose Hallgren](https://rosehallgren.se/)"
-      - "For [Allt Ljus på Uppsala](https://alltljuspauppsala.se/)"
 ---

@@ -24,4 +24,7 @@ blocks:
       along the walls and ceiling, turning the room into a kind of
       circuitry. The more people played, the richer it got. Built on
       [Arduino](https://www.arduino.cc/).
+  - type: credits
+    credits:
+      - "Created with Melanie Le Guen"
 ---

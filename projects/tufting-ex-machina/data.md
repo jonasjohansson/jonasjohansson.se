@@ -75,7 +75,4 @@ blocks:
   - type: credits
     credits:
       - "Created with [Rose Hallgren](https://rosehallgren.se/)"
-      - "Festival: [Aavistus](https://www.aavistusfestival.fi/)"
-      - "Collaboration through [Nordic Audiovisual Artists](https://nava.community)"
-      - "Residency: [Konvent Zero](https://konventzero.com/)"
 ---

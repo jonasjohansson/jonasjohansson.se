@@ -39,8 +39,5 @@ blocks:
     credits:
       - "Created with: [Smash Studio](https://www.smash.studio/)"
       - "Music: [Joseph Wilkinson](https://www.josephwilkinson.com)"
-      - "Commissioned by: [World Jewish Congress](https://www.worldjewishcongress.org/)"
-      - "Commissioned by: [Raoul Wallenberg Academy](https://rwacademy.se/)"
-      - "Commissioned by: [Nobel Week Lights](https://nobelweeklights.se/)"
 ---
 

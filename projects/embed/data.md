@@ -23,7 +23,7 @@ blocks:
       and generative graphics, surrounded by visuals on every wall.
   - type: credits
     credits:
-      - "[Barkas](https://barkas.com/)"
-      - "[Vitali Poluzhnikov](https://www.vitali.xyz/)"
+      - "Initiated and made with [Barkas](https://barkas.com/)"
+      - "Initiated and made with [Vitali Poluzhnikov](https://www.vitali.xyz/)"
 ---
 

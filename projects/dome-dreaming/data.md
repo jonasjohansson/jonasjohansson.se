@@ -119,9 +119,6 @@ blocks:
       - "Co-organiser: [Fredrik Edström](https://www.ivar.studio/), IVAR Studios"
       - "Co-organiser: [Sebastian Häger](https://www.linkedin.com/in/sebastian-h%C3%A4ger-53054b155/)"
       - "Graphics and animation: Linn Willebrand"
-      - "3D model: Ashley Reed, [Smash Studio](https://www.smash.studio/)"
-      - "Documentation and communication: [Rose Hallgren](https://rosehallgren.se/)"
+      - "Documentation, communication and photography: [Rose Hallgren](https://rosehallgren.se/)"
       - "Festival photography: Glidephotos"
-      - "In collaboration with [Aavistus](https://aavistusfestival.fi), [Kokong](https://www.instagram.com/kokongfestival/), [Baltic Analog Lab](https://www.balticanaloglab.lv/) and [Nordic Audiovisual Artists](https://www.nava.community)"
-      - "Supported by Tekniska museet, [Malmö Stad](https://malmo.se), [Region Stockholm](https://www.regionstockholm.se) and [Kulturfonden Sverige-Finland](https://fondensverigefinland.org/)"
 ---
