@@ -213,7 +213,7 @@ html[data-theme="dark"] .text-block a {
 }
 
 .credits-block {
-  font-size: var(--font-size-xs);
+  font-size: var(--font-size-small);
   opacity: 0.7;
   margin-top: var(--spacing-3xl);
 }
