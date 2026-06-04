@@ -35,5 +35,9 @@ blocks:
     src: 03.png
   - type: video
     src: 01.mp4
+  - type: credits
+    credits:
+      - "Created with: [Smash Studio](https://www.smash.studio/)"
+      - "Music: [Joseph Wilkinson](https://www.josephwilkinson.com)"
 ---
 

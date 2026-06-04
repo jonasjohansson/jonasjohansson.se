@@ -37,4 +37,8 @@ blocks:
       to System of a Down and going slightly insane.
   - type: image
     src: 03.jpg
+  - type: credits
+    credits:
+      - "Initiated by [Malin Bobeck Tadaa](https://malintadaa.com/)"
+      - "Mixed reality: Björn Albihn and Jonatan Crafoord, [Really Interactive](https://www.really-interactive.se/)"
 ---

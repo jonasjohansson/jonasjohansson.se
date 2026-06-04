@@ -21,5 +21,9 @@ blocks:
       with an elaborate speaker system and a custom control
       interface on a tablet. Guests could book the room and browse curated films
       and generative graphics, surrounded by visuals on every wall.
+  - type: credits
+    credits:
+      - "Initiated and made with [Barkas](https://barkas.com/)"
+      - "Initiated and made with [Vitali Poluzhnikov](https://www.vitali.xyz/)"
 ---
 

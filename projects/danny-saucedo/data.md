@@ -42,5 +42,9 @@ blocks:
     src: 03.jpg
   - type: video
     src: 01.mp4
+  - type: credits
+    credits:
+      - "Co-design, 3D modelling and animation: [Smash Studio](https://www.smash.studio/)"
+      - "Architect: [Rose Hallgren](https://rosehallgren.se/)"
 ---
 

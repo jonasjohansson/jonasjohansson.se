@@ -52,4 +52,9 @@ blocks:
   - type: image
     src: 10.jpg
     size: half-right
+  - type: credits
+    credits:
+      - "Created with: [Erik Schmitz](https://www.erikschmitz.art/)"
+      - "Created with: [Rose Hallgren](https://rosehallgren.se/)"
+      - "Help from Josep Giribet"
 ---

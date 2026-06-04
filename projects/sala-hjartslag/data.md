@@ -22,4 +22,7 @@ blocks:
       was done on-site, aligning the projection to fit the architecture.
   - type: video
     src: 01.mp4
+  - type: credits
+    credits:
+      - "3D modelling and animation: [Smash Studio](https://www.smash.studio/)"
 ---

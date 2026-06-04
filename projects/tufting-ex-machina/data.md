@@ -72,4 +72,7 @@ blocks:
   - type: image
     src: 09.jpg
     size: half-right
+  - type: credits
+    credits:
+      - "Created with [Rose Hallgren](https://rosehallgren.se/)"
 ---

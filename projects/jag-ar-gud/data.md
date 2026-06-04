@@ -77,4 +77,10 @@ blocks:
   - type: image
     src: 10.jpg
     size: half-right
+  - type: credits
+    credits:
+      - "Performer: Danne Dahlin"
+      - "Actor and director: Jakob Bladh"
+      - "Video and scenography: [Rose Hallgren](https://rosehallgren.se/)"
+      - "Mentor to Danne: Teresia Björk"
 ---

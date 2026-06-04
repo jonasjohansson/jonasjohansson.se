@@ -27,4 +27,7 @@ blocks:
       [Konvent Zero](https://konventzero.com/) where I worked with tufting and
       tiles. At Nowhere the glasses gave people a place to sit and look at
       the environment "in 3D". Nothing more, nothing less. Massive glasses.
+  - type: credits
+    credits:
+      - "Built with [Erik Schmitz](https://www.erikschmitz.art/)"
 ---

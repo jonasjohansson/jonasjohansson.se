@@ -114,4 +114,11 @@ blocks:
     content: >-
       Full programme and credits at
       [domedreaming.com](https://www.domedreaming.com).
+  - type: credits
+    credits:
+      - "Co-organiser: [Fredrik Edström](https://www.ivar.studio/), IVAR Studios"
+      - "Co-organiser: [Sebastian Häger](https://www.linkedin.com/in/sebastian-h%C3%A4ger-53054b155/)"
+      - "Graphics and animation: Linn Willebrand"
+      - "Documentation, communication and photography: [Rose Hallgren](https://rosehallgren.se/)"
+      - "Festival photography: Glidephotos"
 ---

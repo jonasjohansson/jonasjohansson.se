@@ -56,4 +56,7 @@ blocks:
       scores on a tablet in dialogue with the music, and used
       [Resolume](https://resolume.com/)
       with custom FFGL shaders for the live visual composition.
+  - type: credits
+    credits:
+      - "[People in Orbit](https://www.instagram.com/people_in_orbit/)"
 ---

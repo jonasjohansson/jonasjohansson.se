@@ -58,4 +58,7 @@ blocks:
       Opstart grant. The collective behind Tiny/Massive was myself,
       [Atlí Bollason](https://atlibollason.com/) and
       [Owen Hindley](http://owenhindley.co.uk/).
+  - type: credits
+    credits:
+      - "A [NAVA](/nava/) project"
 ---
