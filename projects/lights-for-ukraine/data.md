@@ -31,8 +31,5 @@ blocks:
       Eugenia Kukharchuk.
   - type: image
     src: 03.jpg
-  - type: credits
-    credits:
-      - "Logo: Eugenia Kukharchuk"
 ---
 
