@@ -61,9 +61,11 @@ function cleanOldAssets() {
 export default defineConfig({
   clearScreen: false,
   build: {
-    // Only empty dist in production builds, not in watch mode (dev)
-    // This prevents removing Eleventy-processed images during development
-    emptyOutDir: process.env.ELEVENTY_RUN_MODE === "build",
+    // Never let Vite empty dist: clean:dist already clears everything except
+    // dist/img (the eleventy-img cache). Emptying here wiped that cache on every
+    // production build, forcing a full ~3min image re-encode. Leaving it false
+    // lets warm builds reuse cached images (~3s instead of ~170s).
+    emptyOutDir: false,
     outDir: "dist",
     minify: "terser",
     terserOptions: {
