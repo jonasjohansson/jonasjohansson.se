@@ -1,6 +1,6 @@
 ---
 title: Dome Dreaming
-date: '2026-05-01'
+date: "2026-05-01"
 tags:
   - av
   - community
@@ -21,7 +21,9 @@ blocks:
       at Wisdome Malmö. Both venues were newly built, and as far as we know it
       was the first fulldome film festival in the Nordics.
   - type: image
-    src: 06.jpg
+    src: 04.jpg
+    colStart: 4
+    colSpan: 6
   - type: text
     fontSize: small
     content: >-
@@ -30,6 +32,8 @@ blocks:
       [Aavistus](https://aavistusfestival.fi) in Helsinki for years and seen
       how strong their fulldome programme was, and with two new Wisdome venues
       open in Sweden, we decided to make one of our own.
+  - type: image
+    src: 08.jpg
   - type: text
     fontSize: small
     content: >-
@@ -42,8 +46,6 @@ blocks:
       Cinema. The technology of his time couldn't quite catch up. Fulldome
       projection and ambisonic sound finally let that proposition feel like a
       medium.
-  - type: image
-    src: 07.jpg
   - type: text
     fontSize: small
     content: >-
@@ -60,10 +62,10 @@ blocks:
       artists across Europe, and an installation programme ran at Trähallen,
       the wooden hall next to Wisdome Stockholm.
   - type: image
-    src: 03.jpg
+    src: 07.jpg
     size: half-left
   - type: image
-    src: 04.jpg
+    src: 12.jpg
     size: half-right
   - type: text
     fontSize: small
@@ -73,11 +75,19 @@ blocks:
       orange extension cables, a VR embodiment piece, and the new mobile dome
       from SKH.
   - type: image
-    src: 02.jpg
+    src: 13.jpg
+    size: half-left
+  - type: image
+    src: 29.jpg
+    size: half-right
+  - type: image
+    src: 14.jpg
     size: half-left
   - type: image
     src: 05.jpg
     size: half-right
+  - type: image
+    src: 02.jpg
   - type: text
     fontSize: small
     content: >-
@@ -114,11 +124,50 @@ blocks:
     content: >-
       Full programme and credits at
       [domedreaming.com](https://www.domedreaming.com).
+  - type: image
+    src: 15.jpg
+    size: half-left
+  - type: image
+    src: 17.jpg
+    size: half-right
+  - type: image
+    src: 20.jpg
+    size: half-left
+  - type: image
+    src: 21.jpg
+    size: half-right
+  - type: image
+    src: 22.jpg
+    size: half-left
+  - type: image
+    src: 23.jpg
+    size: half-right
+  - type: image
+    src: 24.jpg
+    size: half-left
+  - type: image
+    src: 27.jpg
+    size: half-right
+  - type: image
+    src: 28.jpg
+    size: half-left
+  - type: image
+    src: 30.jpg
+    size: half-right
+  - type: image
+    src: 31.jpg
+    size: half-left
+  - type: image
+    src: 32.jpg
+    size: half-right
+  - type: image
+    src: 33.jpg
+    size: half-left
+  - type: image
+    src: 34.jpg
+    size: half-right
   - type: credits
     credits:
-      - "Co-organiser: [Fredrik Edström](https://www.ivar.studio/), IVAR Studios"
-      - "Co-organiser: [Sebastian Häger](https://www.linkedin.com/in/sebastian-h%C3%A4ger-53054b155/)"
-      - "Graphics and animation: Linn Willebrand"
-      - "Documentation, communication and photography: [Rose Hallgren](https://rosehallgren.se/)"
-      - "Festival photography: Glidephotos"
+      - "Production: Jonas Johansson, [Fredrik Edström](https://www.ivar.studio/) and [Sebastian Häger](https://www.linkedin.com/in/sebastian-h%C3%A4ger-53054b155/)"
+      - "Photography: [Rose Hallgren](https://rosehallgren.se/) and Glidephotos"
 ---
