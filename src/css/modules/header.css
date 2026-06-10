@@ -64,6 +64,9 @@ header.header-bottom .header-content {
 /* Home: header docks to top of strips, mirror compact padding of docked version. */
 #strips > header:not(.header-bottom) .header-content {
   padding: 0 var(--spacing-md) var(--spacing-sm);
+  /* Let the cursor pass through to the strip beneath so reaching the top edge
+     (where the hovered name sits) doesn't drop the strip's :hover and flicker. */
+  pointer-events: none;
 }
 
 /* Title shape - straight by default, tilted on project pages */
