@@ -195,6 +195,43 @@ export function attachTouchListeners() {
   let touchStartX = 0;
   let touchStartY = 0;
   let isHorizontalScroll = false;
+  // Touch model: first tap previews a strip (expand + reveal title), a second
+  // tap on the same previewed strip navigates. Avoids mis-taps on thin strips.
+  let previewedStrip = null;
+
+  function clearPreview() {
+    if (currentlyTouchedStrip) {
+      currentlyTouchedStrip.classList.remove("touch-hover");
+      currentlyTouchedStrip = null;
+    }
+    previewedStrip = null;
+
+    const currentSlug = getCurrentProjectSlug();
+    if (currentSlug) {
+      document.documentElement.setAttribute("data-project", currentSlug);
+    } else {
+      document.documentElement.removeAttribute("data-project");
+    }
+
+    const headerSubtitle = getHeaderSubtitle?.();
+    if (headerSubtitle) {
+      const currentPageTitle = getCurrentPageTitleFn?.() || "PROGRESS NOT PERFECTION";
+      setHeaderRevealed(headerSubtitle, !!currentSlug);
+      scrambleText(headerSubtitle, currentPageTitle);
+    }
+  }
+
+  // Tapping anywhere outside the strips dismisses a pending preview.
+  document.addEventListener(
+    "touchstart",
+    (e) => {
+      if (!previewedStrip) return;
+      const t = e.touches && e.touches[0];
+      const target = t ? document.elementFromPoint(t.clientX, t.clientY) : e.target;
+      if (!target?.closest?.("#strips")) clearPreview();
+    },
+    { passive: true }
+  );
 
   stripsContainer.addEventListener(
     "touchstart",
@@ -301,40 +338,47 @@ export function attachTouchListeners() {
   );
 
   stripsContainer.addEventListener("touchend", () => {
-    // Tap without movement on the same strip = navigate
+    // Tap without movement: first tap previews, second tap on the same strip opens
     if (!hasMoved && touchStartStrip) {
       const strip = touchStartStrip;
-      if (currentlyTouchedStrip) {
-        currentlyTouchedStrip.classList.remove("touch-hover");
-        currentlyTouchedStrip = null;
-      }
       touchStartStrip = null;
       hasMoved = false;
-      strip.click();
+
+      // Second tap on the already-previewed strip = navigate
+      if (strip === previewedStrip) {
+        if (currentlyTouchedStrip) {
+          currentlyTouchedStrip.classList.remove("touch-hover");
+          currentlyTouchedStrip = null;
+        }
+        previewedStrip = null;
+        strip.click();
+        return;
+      }
+
+      // First tap (or tap on a different strip) = preview it, don't navigate yet
+      if (currentlyTouchedStrip && currentlyTouchedStrip !== strip) {
+        currentlyTouchedStrip.classList.remove("touch-hover");
+      }
+      strip.classList.add("touch-hover");
+      currentlyTouchedStrip = strip;
+      previewedStrip = strip;
+
+      const pSlug = strip.getAttribute("data-project");
+      if (pSlug) document.documentElement.setAttribute("data-project", pSlug);
+
+      const headerSubtitle = getHeaderSubtitle?.();
+      if (headerSubtitle) {
+        const projectTitle = strip.getAttribute("data-project-title") || getStripProjectTitle(strip);
+        if (projectTitle) {
+          setHeaderRevealed(headerSubtitle, true);
+          scrambleText(headerSubtitle, projectTitle);
+        }
+      }
       return;
     }
 
-    // Swipe ended: just clean up, don't navigate
-    if (currentlyTouchedStrip) {
-      currentlyTouchedStrip.classList.remove("touch-hover");
-      currentlyTouchedStrip = null;
-    }
-
-    // Restore color and header text to the current project (or default)
-    const currentSlug = getCurrentProjectSlug();
-    if (currentSlug) {
-      document.documentElement.setAttribute("data-project", currentSlug);
-    } else {
-      document.documentElement.removeAttribute("data-project");
-    }
-
-    const headerSubtitle = getHeaderSubtitle?.();
-    if (headerSubtitle) {
-      const currentPageTitle = getCurrentPageTitleFn?.() || "PROGRESS NOT PERFECTION";
-      setHeaderRevealed(headerSubtitle, !!currentSlug);
-      scrambleText(headerSubtitle, currentPageTitle);
-    }
-
+    // Swipe ended: clean up, don't navigate, drop any pending preview
+    clearPreview();
     touchStartStrip = null;
     hasMoved = false;
   });

@@ -59,8 +59,12 @@ blocks:
     src: 05.webm
   - type: image
     src: 05.jpg
-  - type: image
-    src: 06.jpg
+    size: half-left
   - type: image
     src: 07.jpg
+    size: half-right
+  - type: image
+    src: 06.jpg
+    colStart: 4
+    colSpan: 6
 ---
