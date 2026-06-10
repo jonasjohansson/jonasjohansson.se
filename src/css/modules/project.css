@@ -68,7 +68,7 @@
   background-color: var(--bg-primary);
   /* Separate the project from the navigation strips below it. Only renders
      on project pages (#projects is display:none on home). */
-  margin-bottom: var(--spacing-3xl);
+  margin-bottom: var(--spacing-4xl);
 }
 
 #projects:not(:has(.project)) {
@@ -215,7 +215,9 @@ html[data-theme="dark"] .text-block a {
 .credits-block {
   font-size: var(--font-size-small);
   opacity: 0.7;
-  margin-top: var(--spacing-3xl);
+  /* Match the space below the project (#projects margin-bottom) so the
+     credits sit with even breathing room above and below. */
+  margin-top: var(--spacing-4xl);
 }
 
 .credits-list {
