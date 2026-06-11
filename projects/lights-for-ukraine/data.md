@@ -31,5 +31,9 @@ blocks:
       Eugenia Kukharchuk.
   - type: image
     src: 03.jpg
+  - type: credits
+    credits:
+      - "Mounted with [Rose Hallgren](https://rosehallgren.se/)"
+      - "Logo: Eugenia Kukharchuk"
 ---
 

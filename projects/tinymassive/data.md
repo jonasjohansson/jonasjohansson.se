@@ -60,5 +60,6 @@ blocks:
       [Owen Hindley](http://owenhindley.co.uk/).
   - type: credits
     credits:
+      - "Collective: Jonas Johansson, [Atlí Bollason](https://atlibollason.com/), [Owen Hindley](http://owenhindley.co.uk/)"
       - "A [NAVA](/nava/) project"
 ---

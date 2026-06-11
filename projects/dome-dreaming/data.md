@@ -169,5 +169,6 @@ blocks:
   - type: credits
     credits:
       - "Production: Jonas Johansson, [Fredrik Edström](https://www.ivar.studio/) and [Sebastian Häger](https://www.linkedin.com/in/sebastian-h%C3%A4ger-53054b155/)"
+      - "Communication and graphic design: Linn Willebrand"
       - "Photography: [Rose Hallgren](https://rosehallgren.se/) and Glidephotos"
 ---
