@@ -84,8 +84,9 @@ blocks:
     src: 08.jpg
   - type: credits
     credits:
+      - "Sculptor: Jonas Johansson"
       - "Sculptor: [Jordi Claramunt](https://www.instagram.com/jordi.claramunt.art/)"
-      - "Architect: Lukas Petko"
+      - "Sculptor: Lukas Petko"
       - "Sculptor: [Abel Pruñonosa](https://www.abelprunyonosa.com/)"
       - "Music: Francesco Torelli"
       - "Music: Nikita Dudnik"

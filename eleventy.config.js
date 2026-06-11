@@ -464,8 +464,26 @@ export default function (eleventyConfig) {
                 colSpan: explicitColSpan || resolved.colSpan || 10,
                 fontSizeClass,
               };
-            if (type === "credits")
-              return { type: "credits", credits: (credits || []).map((credit) => md.render(credit).replace(/<a href="(https?:\/\/[^"]*)">/g, '<a href="$1" target="_blank" rel="noopener noreferrer">')), colStart, colSpan };
+            if (type === "credits") {
+              const openInNewTab = (html) => html.replace(/<a href="(https?:\/\/[^"]*)">/g, '<a href="$1" target="_blank" rel="noopener noreferrer">');
+              const groups = [];
+              const byRole = new Map();
+              for (const credit of credits || []) {
+                const idx = credit.indexOf(":");
+                const role = idx === -1 ? "" : credit.slice(0, idx).trim();
+                const value = idx === -1 ? credit.trim() : credit.slice(idx + 1).trim();
+                const renderedValue = openInNewTab(md.renderInline(value));
+                if (byRole.has(role)) {
+                  byRole.get(role).values.push(renderedValue);
+                } else {
+                  const group = { role, values: [renderedValue] };
+                  byRole.set(role, group);
+                  groups.push(group);
+                }
+              }
+              const grouped = groups.map(({ role, values }) => (role ? `${role}: ` : "") + values.join(", "));
+              return { type: "credits", credits: grouped, colStart, colSpan };
+            }
             return null;
           })
           .filter(Boolean);
