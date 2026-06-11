@@ -80,6 +80,7 @@ blocks:
       Hyper Island.
   - type: credits
     credits:
+      - "Jonas Johansson"
       - "Olle Bjerkås"
       - "Per-Olov Jernberg"
       - "Servando Barreiro"

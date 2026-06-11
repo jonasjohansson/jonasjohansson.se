@@ -469,9 +469,11 @@ export default function (eleventyConfig) {
               const groups = [];
               const byRole = new Map();
               for (const credit of credits || []) {
-                const idx = credit.indexOf(":");
-                const role = idx === -1 ? "" : credit.slice(0, idx).trim();
-                const value = idx === -1 ? credit.trim() : credit.slice(idx + 1).trim();
+                // Only treat as "Role: value" when the label before the colon is
+                // plain words — never a URL or markdown link (which contain : [ ] ( )).
+                const m = credit.match(/^([^:[\]()]+):\s+(.+)$/);
+                const role = m ? m[1].trim() : "";
+                const value = m ? m[2].trim() : credit.trim();
                 const renderedValue = openInNewTab(md.renderInline(value));
                 if (byRole.has(role)) {
                   byRole.get(role).values.push(renderedValue);

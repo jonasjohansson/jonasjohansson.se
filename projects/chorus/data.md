@@ -43,6 +43,7 @@ blocks:
       us going in the container.
   - type: credits
     credits:
+      - "Creative Coding: Jonas Johansson"
       - "Artist: [Tove Alderin](https://www.tovealderinstudio.se/)"
       - "Shaders: [Sol Sarratea](https://solsarratea.world/)"
       - "Video: [David Giese](http://davidgiese.com/)"

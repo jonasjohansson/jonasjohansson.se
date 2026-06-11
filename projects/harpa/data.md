@@ -93,6 +93,7 @@ blocks:
     src: 03.jpg
   - type: credits
     credits:
+      - "Artistic Lead: Jonas Johansson"
       - "[Atlí Bollason](https://atlibollason.com/)"
       - "[Owen Hindley](http://owenhindley.co.uk/)"
       - "[Rasmus Stride](https://www.instagram.com/rasmus.stride/)"
