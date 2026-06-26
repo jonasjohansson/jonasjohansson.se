@@ -328,4 +328,14 @@ html[data-theme="dark"] .text-block a {
   .text-block {
     margin-block: var(--spacing-md);
   }
+
+  /* The 7.5rem breaks above credits and below the project are too much on
+     mobile; halve them (kept matched so credits stays evenly spaced). */
+  .credits-block {
+    margin-top: var(--spacing-2xl);
+  }
+
+  #projects {
+    margin-bottom: var(--spacing-2xl);
+  }
 }
