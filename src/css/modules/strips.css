@@ -175,8 +175,9 @@
   }
 
   /* Title shown as a small island flush to the strip's bottom-left corner,
-     rounded only on the top-right so it tucks into the corner */
-  .strip-label {
+     rounded only on the top-right so it tucks into the corner.
+     Landing page only — not on the strips nav at the foot of a project. */
+  body[data-route="home"] .strip-label {
     display: block;
     position: absolute;
     left: 0;
