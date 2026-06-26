@@ -128,6 +128,11 @@
   display: none;
 }
 
+/* Per-strip title label: desktop uses the header instead, so hide by default */
+.strip-label {
+  display: none;
+}
+
 /* Portrait orientation: stack strips as horizontal rows */
 @media (orientation: portrait) {
   #strips {
@@ -152,12 +157,12 @@
   }
 }
 
-/* Touch portrait: let strips be tall rows and scroll the page through them */
+/* Touch portrait: tall rows, page scrolls through them, title islands on top */
 @media (hover: none) and (orientation: portrait) {
   #strips {
     height: auto;
     min-height: 0;
-    overflow: visible;
+    /* overflow: hidden (inherited) keeps the radius clipping the nav as a whole */
     /* Allow the browser to scroll the page vertically over the strips */
     touch-action: pan-y;
   }
@@ -166,6 +171,34 @@
     flex: 0 0 auto;
     height: var(--strip-mobile-height);
     min-height: var(--strip-mobile-height);
+  }
+
+  /* Title shown as a small island on each strip; no big header needed */
+  .strip-label {
+    display: block;
+    position: absolute;
+    left: 50%;
+    bottom: var(--spacing-sm);
+    transform: translateX(-50%);
+    z-index: 2;
+    max-width: calc(100% - var(--spacing-md) * 2);
+    padding: var(--spacing-xs) var(--spacing-sm);
+    background: var(--bg-primary);
+    color: var(--text-primary);
+    border-radius: var(--radius-md);
+    font-size: var(--font-size-xs);
+    letter-spacing: var(--letter-spacing-wide);
+    text-transform: uppercase;
+    line-height: var(--line-height-tight);
+    white-space: nowrap;
+    overflow: hidden;
+    text-overflow: ellipsis;
+    pointer-events: none;
+  }
+
+  /* Skip the "PROGRESS NOT PERFECTION" header on the mobile landing page */
+  body[data-route="home"] #header {
+    display: none !important;
   }
 }
 

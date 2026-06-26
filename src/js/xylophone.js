@@ -143,6 +143,14 @@ function playAdaptiveNote(index, totalStrips) {
   }
 }
 
+// Advance the melody by a single note (used for tap-to-step on touch devices)
+export function stepMelody() {
+  initAudio();
+  if (melodyPlayer.isMelodyMode) {
+    melodyPlayer.playCurrentNote(playNote);
+  }
+}
+
 export function initXylophone() {
   const stripsContainer = document.getElementById("strips");
   if (!stripsContainer) return;
@@ -213,6 +221,10 @@ export function initXylophone() {
       touchStartX = touch.clientX;
       touchStartY = touch.clientY;
       
+      // On touch devices the melody steps via a page-wide tap handler, so don't
+      // also play a per-strip note here (would double up on each tap).
+      if (window.matchMedia("(hover: none)").matches) return;
+
       const element = document.elementFromPoint(touch.clientX, touch.clientY);
       const strip = element?.closest(".strip");
       if (strip) {
@@ -230,7 +242,9 @@ export function initXylophone() {
     "touchmove",
     (e) => {
       if (!isTouching) return;
-      
+      // No swipe-to-play on touch devices; let the page scroll instead.
+      if (window.matchMedia("(hover: none)").matches) return;
+
       const touch = e.touches[0];
       
       // Detect direction on first move

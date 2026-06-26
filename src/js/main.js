@@ -3,7 +3,7 @@ import { resetFilters } from "./stripFiltering.js";
 import { router } from "./router.js";
 import { loadingManager } from "./utils/loadingManager.js";
 import { getCurrentRoute } from "./utils/routeUtils.js";
-import { initXylophone } from "./xylophone.js";
+import { initXylophone, stepMelody } from "./xylophone.js";
 import { melodyPlayer } from "./melody.js";
 import { initIntro, hideIntro, showIntro } from "./intro.js";
 // Wire up router hooks
@@ -120,6 +120,13 @@ async function initializeApp() {
   // Initialize xylophone audio
   initXylophone();
   melodyPlayer.enableMelodyMode("mario");
+
+  // On touch devices, any tap on the landing page steps Mario one note
+  document.addEventListener("click", () => {
+    if (!window.matchMedia("(hover: none)").matches) return;
+    if (document.body.getAttribute("data-route") !== "home") return;
+    stepMelody();
+  });
 
   // Start preloading assets
   await loadingManager.preloadAllAssets();
