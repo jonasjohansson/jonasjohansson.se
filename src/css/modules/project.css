@@ -176,7 +176,10 @@ figure {
   margin-top: 0;
 }
 
-.text-block:has(+ .text-block) {
+/* Drop the trailing margin when a text block is the last thing before the
+   credits, so the gap above credits matches the gap below it. */
+.text-block:has(+ .text-block),
+.text-block:has(+ .credits-block) {
   margin-bottom: 0;
 }
 
@@ -337,5 +340,10 @@ html[data-theme="dark"] .text-block a {
 
   #projects {
     margin-bottom: var(--spacing-xl);
+  }
+
+  /* Left-align credits to match the body copy (centred looks off-axis) */
+  .credits-list {
+    text-align: left;
   }
 }
