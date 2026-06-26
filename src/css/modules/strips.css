@@ -152,6 +152,24 @@
   }
 }
 
+/* Touch / no-hover devices: just show the strips, no expand/scale-up */
+@media (hover: none) {
+  .strip:hover,
+  .strip.touch-hover,
+  .strip.strip-trail,
+  .strip:focus-visible {
+    flex-grow: 1;
+    will-change: auto;
+  }
+
+  .strip:hover .strip-image,
+  .strip.touch-hover .strip-image,
+  .strip.strip-trail .strip-image {
+    transform: none;
+    will-change: auto;
+  }
+}
+
 @media (prefers-reduced-motion: reduce) {
   .strip {
     will-change: auto;

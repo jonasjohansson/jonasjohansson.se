@@ -344,6 +344,18 @@ export function attachTouchListeners() {
       touchStartStrip = null;
       hasMoved = false;
 
+      // No-hover devices show strips without the expand/scale preview, so a
+      // single tap navigates straight to the project.
+      if (window.matchMedia("(hover: none)").matches) {
+        if (currentlyTouchedStrip) {
+          currentlyTouchedStrip.classList.remove("touch-hover");
+          currentlyTouchedStrip = null;
+        }
+        previewedStrip = null;
+        strip.click();
+        return;
+      }
+
       // Second tap on the already-previewed strip = navigate
       if (strip === previewedStrip) {
         if (currentlyTouchedStrip) {
