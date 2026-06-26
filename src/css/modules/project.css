@@ -322,4 +322,10 @@ html[data-theme="dark"] .text-block a {
     width: 100%;
     max-width: none;
   }
+
+  /* The 4rem text break is a desktop beat; on mobile it stacks on the 2rem
+     row-gap (~6rem between media and text). Trim it so blocks sit closer. */
+  .text-block {
+    margin-block: var(--spacing-md);
+  }
 }
