@@ -256,6 +256,18 @@ export function attachTouchListeners() {
   stripsContainer.addEventListener(
     "touchmove",
     (e) => {
+      // No-hover devices don't scrub strips; allow native page scrolling and
+      // just record that the finger moved so touchend won't fire a tap.
+      if (window.matchMedia("(hover: none)").matches) {
+        if (e.touches && e.touches.length > 0) {
+          const t = e.touches[0];
+          if (Math.abs(t.clientX - touchStartX) > 10 || Math.abs(t.clientY - touchStartY) > 10) {
+            hasMoved = true;
+          }
+        }
+        return;
+      }
+
       const isPortrait = window.matchMedia("(orientation: portrait)").matches;
 
       if (e.touches && e.touches.length > 0) {

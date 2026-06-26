@@ -152,6 +152,23 @@
   }
 }
 
+/* Touch portrait: let strips be tall rows and scroll the page through them */
+@media (hover: none) and (orientation: portrait) {
+  #strips {
+    height: auto;
+    min-height: 0;
+    overflow: visible;
+    /* Allow the browser to scroll the page vertically over the strips */
+    touch-action: pan-y;
+  }
+
+  .strip {
+    flex: 0 0 auto;
+    height: var(--strip-mobile-height);
+    min-height: var(--strip-mobile-height);
+  }
+}
+
 /* Touch / no-hover devices: just show the strips, no expand/scale-up */
 @media (hover: none) {
   .strip:hover,
