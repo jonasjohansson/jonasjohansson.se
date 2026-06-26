@@ -175,9 +175,8 @@
   }
 
   /* Title shown as a small island flush to the strip's bottom-left corner,
-     rounded only on the top-right so it tucks into the corner.
-     Landing page only — not on the strips nav at the foot of a project. */
-  body[data-route="home"] .strip-label {
+     rounded only on the top-right so it tucks into the corner */
+  .strip-label {
     display: block;
     position: absolute;
     left: 0;
@@ -198,8 +197,10 @@
     pointer-events: none;
   }
 
-  /* Skip the "PROGRESS NOT PERFECTION" header on the mobile landing page */
-  body[data-route="home"] #header {
+  /* Skip the "PROGRESS NOT PERFECTION" header on the mobile landing page,
+     and don't re-dock the project title at the foot of a project page. */
+  body[data-route="home"] #header,
+  header.header-bottom {
     display: none !important;
   }
 }

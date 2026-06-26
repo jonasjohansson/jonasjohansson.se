@@ -330,12 +330,12 @@ html[data-theme="dark"] .text-block a {
   }
 
   /* The 7.5rem breaks above credits and below the project are too much on
-     mobile; halve them (kept matched so credits stays evenly spaced). */
+     mobile; bring them down to 2rem (kept matched so credits stays even). */
   .credits-block {
-    margin-top: var(--spacing-2xl);
+    margin-top: var(--spacing-xl);
   }
 
   #projects {
-    margin-bottom: var(--spacing-2xl);
+    margin-bottom: var(--spacing-xl);
   }
 }
