@@ -155,7 +155,16 @@ export function initializeStrips({ animate = true } = {}) {
     stripsContainer.classList.remove("strips-initialized");
     stripsContainer.style.display = "none";
 
-    shuffledStrips = sortByHue([...allStrips], projects);
+    // Landing page: random order on every reload. Elsewhere: keep the hue sort.
+    if (getCurrentRoute() === "project") {
+      shuffledStrips = sortByHue([...allStrips], projects);
+    } else {
+      shuffledStrips = [...allStrips];
+      for (let i = shuffledStrips.length - 1; i > 0; i--) {
+        const j = Math.floor(Math.random() * (i + 1));
+        [shuffledStrips[i], shuffledStrips[j]] = [shuffledStrips[j], shuffledStrips[i]];
+      }
+    }
 
     shuffledStrips.forEach((strip) => {
       strip.remove();

@@ -177,14 +177,13 @@
   .strip-label {
     display: block;
     position: absolute;
-    left: 50%;
+    left: var(--spacing-sm);
     bottom: var(--spacing-sm);
-    transform: translateX(-50%);
     z-index: 2;
-    max-width: calc(100% - var(--spacing-md) * 2);
+    max-width: calc(100% - var(--spacing-sm) * 2);
     padding: var(--spacing-xs) var(--spacing-sm);
-    background: var(--bg-primary);
-    color: var(--text-primary);
+    background: var(--project-color, var(--bg-primary));
+    color: var(--color-white);
     border-radius: var(--radius-md);
     font-size: var(--font-size-xs);
     letter-spacing: var(--letter-spacing-wide);

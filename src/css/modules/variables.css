@@ -57,27 +57,27 @@ html[data-theme="dark"] {
 }
 
 /* Project accent colors (vibrant, extracted from hero images) */
-html[data-project="danny-saucedo"] { --project-color: #9b2500; }
-html[data-project="dome-dreaming"] { --project-color: #c75200; }
-html[data-project="svartljus"] { --project-color: #b07600; }
-html[data-project="eastern-city-portal"] { --project-color: #4698d2; }
-html[data-project="embed"] { --project-color: #1a43fe; }
-html[data-project="emerging-sensation"] { --project-color: #1521b4; }
-html[data-project="firestarter"] { --project-color: #005d80; }
-html[data-project="harpa"] { --project-color: #ff5c1a; }
-html[data-project="heroes"] { --project-color: #727171; }
-html[data-project="icehotel"] { --project-color: #0b4f80; }
-html[data-project="jag-ar-gud"] { --project-color: #833e00; }
-html[data-project="lights-for-ukraine"] { --project-color: #5500a0; }
-html[data-project="lyra"] { --project-color: #070a79; }
-html[data-project="people-in-orbit"] { --project-color: #e16518; }
-html[data-project="resonance"] { --project-color: #4f0396; }
-html[data-project="retrospectives"] { --project-color: #ff6a1a; }
-html[data-project="sala-hjartslag"] { --project-color: #962d00; }
-html[data-project="tinymassive"] { --project-color: #00338e; }
-html[data-project="transcend"] { --project-color: #cc1c65; }
-html[data-project="tufting-ex-machina"] { --project-color: #f37100; }
-html[data-project="vista"] { --project-color: #8401ff; }
+[data-project="danny-saucedo"] { --project-color: #9b2500; }
+[data-project="dome-dreaming"] { --project-color: #c75200; }
+[data-project="svartljus"] { --project-color: #b07600; }
+[data-project="eastern-city-portal"] { --project-color: #4698d2; }
+[data-project="embed"] { --project-color: #1a43fe; }
+[data-project="emerging-sensation"] { --project-color: #1521b4; }
+[data-project="firestarter"] { --project-color: #005d80; }
+[data-project="harpa"] { --project-color: #ff5c1a; }
+[data-project="heroes"] { --project-color: #727171; }
+[data-project="icehotel"] { --project-color: #0b4f80; }
+[data-project="jag-ar-gud"] { --project-color: #833e00; }
+[data-project="lights-for-ukraine"] { --project-color: #5500a0; }
+[data-project="lyra"] { --project-color: #070a79; }
+[data-project="people-in-orbit"] { --project-color: #e16518; }
+[data-project="resonance"] { --project-color: #4f0396; }
+[data-project="retrospectives"] { --project-color: #ff6a1a; }
+[data-project="sala-hjartslag"] { --project-color: #962d00; }
+[data-project="tinymassive"] { --project-color: #00338e; }
+[data-project="transcend"] { --project-color: #cc1c65; }
+[data-project="tufting-ex-machina"] { --project-color: #f37100; }
+[data-project="vista"] { --project-color: #8401ff; }
 
 :root {
   /* Chevron/arrow shapes - pointed left and right ends */
