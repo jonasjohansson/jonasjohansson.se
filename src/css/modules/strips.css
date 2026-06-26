@@ -171,6 +171,7 @@
     flex: 0 0 auto;
     height: var(--strip-mobile-height);
     min-height: var(--strip-mobile-height);
+    border-top-left-radius: var(--radius-md);
   }
 
   /* Title shown as a small island flush to the strip's bottom-left corner,
