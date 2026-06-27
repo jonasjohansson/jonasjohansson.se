@@ -22,6 +22,13 @@ let navigateFn = null;
 let hoverDebounceTimer = null;
 const HOVER_DEBOUNCE_MS = 120;
 
+// Activating a strip navigates and reflows the strip layout. A stationary
+// pointer over the reflowed layout fires a spurious mouseenter on a different
+// strip, which would overwrite the real project title. Ignore hover for a
+// short window after an activation.
+let lastActivateAt = 0;
+const POST_ACTIVATE_HOVER_MUTE_MS = 400;
+
 function setHeaderRevealed(headerSubtitle, revealed) {
   const header = headerSubtitle?.closest("header");
   if (header) header.classList.toggle("header-hidden", !revealed);
@@ -89,6 +96,12 @@ export function attachStripEventListeners() {
 
     // Hover: show project title + preload + update header color
     strip.addEventListener("mouseenter", () => {
+      // Touch devices emit emulated mouse events (incl. after a tap and the
+      // navigation reflow). Those must not drive the header title or they
+      // clobber the real project title with a stray strip's name. Tap
+      // navigation sets the title itself, so skip hover entirely here.
+      if (window.matchMedia("(hover: none)").matches) return;
+      if (Date.now() - lastActivateAt < POST_ACTIVATE_HOVER_MUTE_MS) return;
       if (!stripsContainer?.classList.contains("strips-initialized")) return;
 
 
@@ -121,6 +134,7 @@ export function attachStripEventListeners() {
     });
 
     strip.addEventListener("mouseleave", (e) => {
+      if (window.matchMedia("(hover: none)").matches) return;
       if (e.relatedTarget?.closest?.(".strip")) return;
       if (hoverDebounceTimer) { clearTimeout(hoverDebounceTimer); hoverDebounceTimer = null; }
       const headerSubtitle = getHeaderSubtitle?.();
@@ -154,6 +168,11 @@ export function attachStripEventListeners() {
 
       const clickedProject = projects.find((p) => p.slug === clickedProjectSlug);
       if (!clickedProject) return;
+
+      // Cancel any pending hover write and mute hover briefly so the
+      // post-navigation reflow can't overwrite this project's title.
+      if (hoverDebounceTimer) { clearTimeout(hoverDebounceTimer); hoverDebounceTimer = null; }
+      lastActivateAt = Date.now();
 
       const computedId = clickedProject.slug || clickedProject.title.toLowerCase().replace(/\s+/g, "-");
       const projectPath = getProjectPath(computedId);
