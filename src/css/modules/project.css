@@ -234,6 +234,11 @@ html[data-theme="dark"] .text-block a {
   margin-bottom: 0.5rem;
 }
 
+.credit-support {
+  display: block;
+  margin-top: var(--spacing-md);
+}
+
 .credits-list a {
   color: inherit;
   text-decoration: underline;
