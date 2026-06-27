@@ -27,14 +27,15 @@ blocks:
   - type: text
     fontSize: small
     content: >-
-      The first edition in 2022 brought Gabriela Prochazka and Annie Tådne,
-      who created "Here May Be Dragons," a projection onto coastal boulders at
-      dusk. In 2023, Sui and Niklas Alriksson were in residence. In 2024,
+      The first edition in 2022 brought Gabriela Prochazka and Annie Tådne.
+      Gabriela made "Here May Be Dragons," a projection onto coastal boulders
+      at dusk. In 2023, Sui and Niklas Alriksson were in residence. In 2024,
       Tomas Larsson, Merle Karp, and Leo Pahta worked at the school and
       exhibited at [Into the Woods](https://www.intothewoods.se/) in Unnaryd,
       joined by micro-residents Erik Natanael, Murilo Polese, and Hara Alonso.
       Visualia is a registered non-profit, run together with
-      [Rose Hallgren](https://rosehallgren.se/).
+      [Rose Hallgren](https://rosehallgren.se/) and
+      [Bengt Johansson](https://www.bengtjohansson.se).
   - type: image
     src: 03.jpg
     size: half-left
@@ -43,9 +44,6 @@ blocks:
     size: half-right
   - type: credits
     credits:
-      - "Run with [Rose Hallgren](https://rosehallgren.se/)"
-      - "2022 residents: Gabriela Prochazka, Annie Tådne"
-      - "2023 residents: Sui, Niklas Alriksson"
-      - "2024 residents: Tomas Larsson, Merle Karp, Leo Pahta"
-      - "2024 micro-residents: Erik Natanael, Murilo Polese, Hara Alonso"
+      - "Run with [Rose Hallgren](https://rosehallgren.se/), [Bengt Johansson](https://www.bengtjohansson.se)"
+      - "Supported by Region Halland"
 ---
