@@ -64,8 +64,15 @@ header.header-bottom .header-content {
 /* Home: header docks to top of strips, mirror compact padding of docked version. */
 #strips > header:not(.header-bottom) .header-content {
   padding: 0 var(--spacing-md) var(--spacing-sm);
-  /* Let the cursor pass through to the strip beneath so reaching the top edge
-     (where the hovered name sits) doesn't drop the strip's :hover and flicker. */
+}
+
+/* On home the header is just a title readout over the strips. The element's own
+   box (background + padding) must not capture the pointer, or moving onto the
+   title pill steals :hover from the strip beneath, collapsing it — flicker.
+   Setting only .header-content to none wasn't enough; the header box itself
+   captured. The home links live in the intro, so nothing here needs clicks. */
+#strips > header:not(.header-bottom),
+#strips > header:not(.header-bottom) .header-content {
   pointer-events: none;
 }
 
