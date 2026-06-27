@@ -20,7 +20,7 @@ blocks:
       where visual artists were paired with musicians to create new audiovisual
       performances. The idea of pairing artists to make something new kept
       pulling at me. I found a place for it in Långaveka småskola, a former
-      school from the late 1800s in Glommen, Halland, where my family is from.
+      school from the early 1900s in Glommen, Halland, where I grew up.
       Two artists stay for three weeks, working both individually and together.
   - type: image
     src: 02.jpg
