@@ -38,7 +38,7 @@ blocks:
     content: >-
       I handled the game and real-time visuals, designed and built the physical
       arcade controllers and their instruction panels, and built the
-      [web version](https://kanal5-jagadgame.se/) so anyone could play from a
+      [web version](https://jagad.jonasjohansson.se/) so anyone could play from a
       phone. Over three nights hundreds queued up, some to chase down their own
       avatar.
   - type: image
