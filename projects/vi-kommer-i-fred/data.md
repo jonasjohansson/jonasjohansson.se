@@ -51,6 +51,8 @@ blocks:
   - type: image
     src: render-day.jpg
     size: half-right
+  - type: video
+    src: alien-loop.webm
   - type: image
     src: bts-resolume.jpg
   - type: video
