@@ -12,8 +12,8 @@ blocks:
     content: >-
       In Kungsträdgården, facing the Royal Castle, a screen pulled everyone who
       walked past into an alien invasion of Stockholm.
-  - type: image
-    src: 02.jpg
+  - type: video
+    src: alien-loop.webm
   - type: text
     fontSize: small
     content: >-
@@ -24,8 +24,6 @@ blocks:
       craft breaking through the clouds over the city.
   - type: image
     src: 03.jpg
-  - type: video
-    src: montage.webm
   - type: text
     fontSize: small
     content: >-
@@ -33,11 +31,7 @@ blocks:
       camera feed placed into the scene and mapped onto the totem, then
       calibrated on location.
   - type: image
-    src: 05.jpg
-    size: half-left
-  - type: image
     src: 06.jpg
-    size: half-right
   - type: text
     fontSize: small
     content: >-
@@ -51,16 +45,10 @@ blocks:
   - type: image
     src: render-day.jpg
     size: half-right
-  - type: video
-    src: alien-loop.webm
   - type: image
     src: bts-resolume.jpg
   - type: video
     src: comp.webm
-    size: half-left
-  - type: image
-    src: test-early.jpg
-    size: half-right
   - type: image
     src: bts-onsite2.jpg
   - type: credits
