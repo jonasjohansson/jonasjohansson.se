@@ -41,14 +41,18 @@ blocks:
       the light, and it ran around the clock for two weeks.
   - type: image
     src: render-night.jpg
-    size: half-left
+    colStart: 1
+    colSpan: 4
   - type: image
     src: render-day.jpg
-    size: half-right
-  - type: image
-    src: bts-resolume.jpg
+    colStart: 5
+    colSpan: 4
   - type: video
     src: comp.webm
+    colStart: 9
+    colSpan: 4
+  - type: image
+    src: bts-resolume.jpg
   - type: image
     src: bts-onsite2.jpg
   - type: credits
