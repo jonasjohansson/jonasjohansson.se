@@ -24,7 +24,7 @@ blocks:
       and the whole road network flooded with your colour. High scores and
       player names were projected straight back onto the wall.
   - type: video
-    src: 03.webm
+    src: 09.webm
   - type: image
     src: 02.jpg
   - type: image
@@ -41,6 +41,8 @@ blocks:
       [web version](https://jagad.jonasjohansson.se/) so anyone could play from a
       phone. Over three nights hundreds queued up, some to chase down their own
       avatar.
+  - type: video
+    src: 10.webm
   - type: image
     src: 05.jpg
     size: half-left
@@ -49,6 +51,8 @@ blocks:
     size: half-right
   - type: image
     src: 08.jpg
+  - type: video
+    src: 11.webm
   - type: credits
     credits:
       - "Made with: [Smash Studio](https://www.smash.studio/), [Platon Marko](https://platon.design/)"
