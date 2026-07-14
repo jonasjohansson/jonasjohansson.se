@@ -26,5 +26,5 @@ blocks:
       [Arduino](https://www.arduino.cc/).
   - type: credits
     credits:
-      - "Created with Melanie Le Guen"
+      - "Made with: Melanie Le Guen"
 ---

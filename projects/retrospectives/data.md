@@ -29,5 +29,5 @@ blocks:
       the environment "in 3D". Nothing more, nothing less. Massive glasses.
   - type: credits
     credits:
-      - "Built with [Erik Schmitz](https://www.erikschmitz.art/)"
+      - "Made with: [Erik Schmitz](https://www.erikschmitz.art/)"
 ---

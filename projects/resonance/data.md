@@ -37,6 +37,5 @@ blocks:
     src: 05.png
   - type: credits
     credits:
-      - "Created with [Smash Studio](https://www.smash.studio/)"
-      - "Built together with [Rose Hallgren](https://rosehallgren.se/)"
+      - "Made with: [Smash Studio](https://www.smash.studio/), [Rose Hallgren](https://rosehallgren.se/)"
 ---

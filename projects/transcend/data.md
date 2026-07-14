@@ -40,6 +40,5 @@ blocks:
       my first time working with Pepper's Ghost and hand sensing.
   - type: credits
     credits:
-      - "Collaboration: Hybrid Forest (later [Smash Studio](https://www.smash.studio/))"
-      - "[Rose Hallgren](https://rosehallgren.se/)"
+      - "Made with: Hybrid Forest (later [Smash Studio](https://www.smash.studio/)), [Rose Hallgren](https://rosehallgren.se/)"
 ---

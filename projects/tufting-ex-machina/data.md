@@ -74,5 +74,5 @@ blocks:
     size: half-right
   - type: credits
     credits:
-      - "Created with [Rose Hallgren](https://rosehallgren.se/)"
+      - "Made with: [Rose Hallgren](https://rosehallgren.se/)"
 ---

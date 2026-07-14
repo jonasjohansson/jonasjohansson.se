@@ -54,7 +54,6 @@ blocks:
     size: half-right
   - type: credits
     credits:
-      - "Created with: [Erik Schmitz](https://www.erikschmitz.art/)"
-      - "Created with: [Rose Hallgren](https://rosehallgren.se/)"
+      - "Made with: [Erik Schmitz](https://www.erikschmitz.art/), [Rose Hallgren](https://rosehallgren.se/)"
       - "Help from Josep Giribet"
 ---

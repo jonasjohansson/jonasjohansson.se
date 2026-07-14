@@ -72,5 +72,5 @@ blocks:
     size: half-right
   - type: credits
     credits:
-      - "Created with [Erik Schmitz](https://www.erikschmitz.art/)"
+      - "Made with: [Erik Schmitz](https://www.erikschmitz.art/)"
 ---
