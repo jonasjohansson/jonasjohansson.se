@@ -44,12 +44,6 @@ blocks:
   - type: video
     src: 10.webm
   - type: image
-    src: 05.jpg
-    size: half-left
-  - type: image
-    src: 06.jpg
-    size: half-right
-  - type: image
     src: 08.jpg
   - type: video
     src: 11.webm
