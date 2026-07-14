@@ -43,10 +43,12 @@ blocks:
       avatar.
   - type: video
     src: 10.webm
-  - type: image
-    src: 08.jpg
+    size: half-left
   - type: video
     src: 11.webm
+    size: half-right
+  - type: image
+    src: 08.jpg
   - type: credits
     credits:
       - "Made with: [Smash Studio](https://www.smash.studio/), [Platon Marko](https://platon.design/)"
