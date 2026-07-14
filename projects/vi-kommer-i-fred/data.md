@@ -13,7 +13,7 @@ blocks:
       In Kungsträdgården, facing the Royal Castle, a screen pulled everyone who
       walked past into an alien invasion of Stockholm.
   - type: video
-    src: alien-loop.webm
+    src: 02.webm
   - type: text
     fontSize: small
     content: >-
@@ -31,7 +31,7 @@ blocks:
       camera feed placed into the scene and mapped onto the totem, then
       calibrated on location.
   - type: image
-    src: 06.jpg
+    src: 04.jpg
   - type: text
     fontSize: small
     content: >-
@@ -40,21 +40,21 @@ blocks:
       of the scene, one for day and one for night, swapped on a timer to match
       the light, and it ran around the clock for two weeks.
   - type: image
-    src: render-night.jpg
+    src: 05.jpg
     colStart: 1
     colSpan: 4
   - type: image
-    src: render-day.jpg
+    src: 06.jpg
     colStart: 5
     colSpan: 4
   - type: video
-    src: comp.webm
+    src: 07.webm
     colStart: 9
     colSpan: 4
   - type: image
-    src: bts-resolume.jpg
+    src: 08.jpg
   - type: image
-    src: bts-onsite2.jpg
+    src: 09.jpg
   - type: credits
     credits:
       - "Made with: [Smash Studio](https://www.smash.studio/)"
