@@ -163,6 +163,7 @@
     height: auto;
     min-height: 0;
     /* overflow: hidden (inherited) keeps the radius clipping the nav as a whole */
+    border-radius: var(--strip-mobile-radius);
     /* Allow the browser to scroll the page vertically over the strips */
     touch-action: pan-y;
   }
@@ -171,7 +172,7 @@
     flex: 0 0 auto;
     height: var(--strip-mobile-height);
     min-height: var(--strip-mobile-height);
-    border-top-left-radius: var(--radius-md);
+    border-top-left-radius: var(--strip-mobile-radius);
   }
 
   /* Title shown as a small island flush to the strip's bottom-left corner,
@@ -186,7 +187,7 @@
     padding: var(--spacing-xs) var(--spacing-sm);
     background: var(--bg-primary);
     color: var(--project-color, var(--text-primary));
-    border-radius: 0 var(--radius-md) 0 0;
+    border-radius: 0 var(--strip-mobile-radius) 0 0;
     font-size: var(--font-size-xs);
     letter-spacing: var(--letter-spacing-wide);
     text-transform: uppercase;
