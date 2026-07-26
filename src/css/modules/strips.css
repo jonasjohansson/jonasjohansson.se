@@ -184,12 +184,15 @@
     bottom: 0;
     z-index: 2;
     max-width: 100%;
-    padding: var(--spacing-sm) var(--spacing-md);
+    /* Tighter on the left so the text sits close to the screen edge, with a
+       slightly wider right side to clear the rounded corner. */
+    padding: var(--spacing-sm) calc(var(--spacing-sm) * 1.5) var(--spacing-sm) var(--spacing-sm);
     background: var(--bg-primary);
     /* Same accent treatment as project links: darken on light so the hue
        survives but passes AA. Dark mode lightens instead (rule below). */
     color: color-mix(in srgb, var(--project-color, var(--text-primary)) 70%, black);
-    border-radius: 0 var(--strip-mobile-radius) 0 0;
+    /* 1px tighter than the strip's own corner: this one curves into the image */
+    border-radius: 0 calc(var(--strip-mobile-radius) - 1px) 0 0;
     font-size: var(--font-size-xs);
     letter-spacing: var(--letter-spacing-wide);
     text-transform: uppercase;
