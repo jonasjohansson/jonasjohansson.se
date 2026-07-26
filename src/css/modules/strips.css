@@ -184,9 +184,11 @@
     bottom: 0;
     z-index: 2;
     max-width: 100%;
-    padding: var(--spacing-xs) var(--spacing-sm);
+    padding: var(--spacing-sm) var(--spacing-md);
     background: var(--bg-primary);
-    color: var(--project-color, var(--text-primary));
+    /* Same accent treatment as project links: darken on light so the hue
+       survives but passes AA. Dark mode lightens instead (rule below). */
+    color: color-mix(in srgb, var(--project-color, var(--text-primary)) 70%, black);
     border-radius: 0 var(--strip-mobile-radius) 0 0;
     font-size: var(--font-size-xs);
     letter-spacing: var(--letter-spacing-wide);
@@ -196,6 +198,10 @@
     overflow: hidden;
     text-overflow: ellipsis;
     pointer-events: none;
+  }
+
+  html[data-theme="dark"] .strip-label {
+    color: color-mix(in srgb, var(--project-color, var(--text-primary)) 45%, white);
   }
 
   /* Skip the "PROGRESS NOT PERFECTION" header on the mobile landing page,
