@@ -167,10 +167,13 @@ export function initializeStrips({ animate = true } = {}) {
     stripsContainer.classList.remove("strips-initialized");
     stripsContainer.style.display = "none";
 
-    // Placeholders are unmade work and always trail the finished projects,
-    // whichever ordering the rest of the wall gets.
-    const madeStrips = allStrips.filter((s) => !s.classList.contains("strip-placeholder"));
+    // The filter is pinned first and the unmade work trails at the end,
+    // whichever ordering the finished projects between them get.
+    const filterStrips = allStrips.filter((s) => s.classList.contains("strip-filter"));
     const placeholderStrips = allStrips.filter((s) => s.classList.contains("strip-placeholder"));
+    const madeStrips = allStrips.filter(
+      (s) => !s.classList.contains("strip-placeholder") && !s.classList.contains("strip-filter")
+    );
 
     // Landing page: random order on every reload. Elsewhere: keep the hue sort.
     let orderedStrips;
@@ -183,7 +186,7 @@ export function initializeStrips({ animate = true } = {}) {
         [orderedStrips[i], orderedStrips[j]] = [orderedStrips[j], orderedStrips[i]];
       }
     }
-    shuffledStrips = [...orderedStrips, ...placeholderStrips];
+    shuffledStrips = [...filterStrips, ...orderedStrips, ...placeholderStrips];
 
     shuffledStrips.forEach((strip) => {
       strip.remove();

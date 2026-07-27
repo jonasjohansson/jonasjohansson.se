@@ -95,6 +95,8 @@ function updateStripCount() {
   const hasFilters = document.body.classList.contains("filter-active");
   const visibleStrips = Array.from(allStrips).filter((strip) => {
     if (strip.classList.contains("hidden")) return false;
+    // The filter is a control, not a project, and the count drives audio pitch.
+    if (strip.classList.contains("strip-filter")) return false;
     // Placeholders are display:none outside mobile — CSS decides, so ask the DOM.
     if (strip.classList.contains("strip-placeholder") && getComputedStyle(strip).display === "none") return false;
     if (hasFilters && !strip.classList.contains("filter-match")) return false;
@@ -117,18 +119,6 @@ export function initFilters() {
       delete body.dataset.filtering;
     }
   };
-
-  const buttons = document.querySelectorAll(".filter-dropdown-button");
-
-  if (buttons.length === 0) {
-    setTimeout(() => {
-      const retryButtons = document.querySelectorAll(".filter-dropdown-button");
-      if (retryButtons.length > 0) {
-        initFilters();
-      }
-    }, 100);
-    return;
-  }
 
   // Helper to preserve scroll position
   const preserveScroll = (callback) => {
@@ -175,89 +165,4 @@ export function initFilters() {
       el.addEventListener("focus", (e) => e.preventDefault());
     }
   });
-
-  const closeAllDropdowns = () => {
-    document.querySelectorAll(".filter-dropdown").forEach((d) => {
-      d.classList.remove("open");
-      const btn = d.querySelector(".filter-dropdown-button");
-      if (btn) btn.textContent = "Filter";
-    });
-  };
-
-  buttons.forEach((button) => {
-    button.addEventListener(
-      "focus",
-      (e) => {
-        e.preventDefault();
-        button.blur();
-      },
-      true
-    );
-
-    button.addEventListener(
-      "mousedown",
-      (e) => {
-        const scrollY = window.scrollY;
-        const scrollX = window.scrollX;
-        setProgrammaticScroll(true);
-        window.scrollTo({ top: scrollY, left: scrollX, behavior: "auto" });
-        button._savedScrollY = scrollY;
-        button._savedScrollX = scrollX;
-      },
-      true
-    );
-
-    button.addEventListener(
-      "click",
-      (e) => {
-        e.preventDefault();
-        e.stopImmediatePropagation();
-
-        const savedScrollY = button._savedScrollY ?? window.scrollY;
-        const savedScrollX = button._savedScrollX ?? window.scrollX;
-
-        window.scrollTo({ top: savedScrollY, left: savedScrollX, behavior: "auto" });
-        setProgrammaticScroll(true);
-        button.blur();
-
-        const dropdown = button.closest(".filter-dropdown");
-        if (!dropdown) return;
-
-        const isOpen = dropdown.classList.contains("open");
-        closeAllDropdowns();
-
-        if (!isOpen) {
-          dropdown.classList.add("open");
-          button.textContent = "×";
-        }
-
-        const restoreScroll = () => window.scrollTo({ top: savedScrollY, left: savedScrollX, behavior: "auto" });
-        restoreScroll();
-        requestAnimationFrame(() => {
-          restoreScroll();
-          requestAnimationFrame(() => {
-            restoreScroll();
-            setTimeout(() => {
-              restoreScroll();
-              setProgrammaticScroll(false);
-              delete button._savedScrollY;
-              delete button._savedScrollX;
-            }, 100);
-          });
-        });
-      },
-      true
-    );
-  });
-
-  document.addEventListener(
-    "click",
-    (e) => {
-      if (e.target.closest(".filter-dropdown-button")) return;
-      if (!e.target.closest(".filter-dropdown")) {
-        closeAllDropdowns();
-      }
-    },
-    true
-  );
 }

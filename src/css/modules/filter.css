@@ -1,19 +1,29 @@
-/* Only show filter on desktop landscape */
-.filter-dropdown {
-  display: none;
+/* The filter is a cell in the strip wall, pinned first by strips.js. Landscape:
+   a column of tag bands with rotated labels, matching the placeholder strips. */
+.strip.strip-filter {
+  background: color-mix(in srgb, var(--text-primary) 7%, var(--bg-primary));
+  cursor: default;
 }
 
-
-/* Hide the filter toggle button — options are always visible */
-.filter-dropdown-button {
-  display: none;
+/* Nothing underneath to reveal, so it never expands */
+.strip.strip-filter:hover,
+.strip.strip-filter.touch-hover,
+.strip.strip-filter.strip-trail,
+.strip.strip-filter:focus-visible {
+  flex-grow: 1;
+  will-change: auto;
 }
 
-/* Filter options always visible, no dropdown needed */
+/* Filtering hides every strip that doesn't match — the control must survive it */
+body.filter-active .strip.strip-filter {
+  display: block;
+}
+
 .filter-dropdown-content {
   display: flex;
-  flex-direction: row;
+  flex-direction: column;
   align-items: stretch;
+  height: 100%;
   gap: 0;
   pointer-events: auto;
   opacity: 1;
@@ -21,34 +31,34 @@
 }
 
 .filter-option {
-  background-color: var(--bg-primary);
+  flex: 1 1 0;
+  min-height: 0;
+  background-color: transparent;
   border: none;
   border-radius: 0;
   color: var(--text-primary);
   transition: background-color 0.3s ease, color 0.3s ease;
-  font-size: var(--font-size-base);
-  padding: var(--spacing-sm) var(--spacing-lg);
-  padding-top: calc(var(--spacing-lg));
+  padding: var(--spacing-md) 0;
   cursor: pointer;
-  display: inline-flex;
+  display: flex;
   align-items: center;
   justify-content: center;
-  letter-spacing: var(--letter-spacing-base);
+  writing-mode: vertical-rl;
+  transform: rotate(180deg);
+  font-size: var(--font-size-xs);
+  letter-spacing: var(--letter-spacing-wide);
   text-transform: uppercase;
   font-family: var(--font-family);
   white-space: nowrap;
+  overflow: hidden;
   line-height: var(--line-height-tight);
-  flex-shrink: 0;
   user-select: none;
 }
 
-/* Round top-left on first, top-right on last */
-.filter-option:first-child {
-  border-top-left-radius: 10px;
-}
-
-.filter-option:last-child {
-  border-top-right-radius: 10px;
+/* Hairline between bands, same treatment as between placeholder strips.
+   Rotated 180deg, so the visual top edge is the box's bottom. */
+.filter-option + .filter-option {
+  box-shadow: inset 0 -1px 0 color-mix(in srgb, var(--text-primary) 14%, transparent);
 }
 
 .filter-option:focus {
@@ -61,7 +71,7 @@
 }
 
 .filter-option:hover {
-  background-color: var(--color-gray);
+  background-color: color-mix(in srgb, var(--text-primary) 14%, var(--bg-primary));
 }
 
 .filter-option input[type="checkbox"] {
@@ -72,12 +82,8 @@
 }
 
 .filter-option span {
-  color: var(--text-primary);
-  font-size: var(--font-size-base);
+  color: color-mix(in srgb, var(--text-primary) 55%, var(--bg-primary));
   white-space: nowrap;
-  letter-spacing: var(--letter-spacing-base);
-  text-transform: uppercase;
-  line-height: var(--line-height-tight);
 }
 
 /* Active/checked state */
@@ -87,6 +93,31 @@
 
 .filter-option:has(input[type="checkbox"]:checked) span {
   color: var(--bg-primary);
+}
+
+/* Stacked rows: the filter becomes a chip row across the top of the wall */
+@media (hover: none) and (orientation: portrait) {
+  .strip.strip-filter {
+    height: auto;
+    min-height: 0;
+  }
+
+  .filter-dropdown-content {
+    flex-direction: row;
+    flex-wrap: wrap;
+    height: auto;
+  }
+
+  .filter-option {
+    flex: 0 0 auto;
+    writing-mode: horizontal-tb;
+    transform: none;
+    padding: var(--spacing-sm) calc(var(--spacing-sm) * 1.5);
+  }
+
+  .filter-option + .filter-option {
+    box-shadow: inset 1px 0 0 color-mix(in srgb, var(--text-primary) 14%, transparent);
+  }
 }
 
 /* CSS Filtering System */

@@ -81,8 +81,8 @@ export function attachStripEventListeners() {
   }
 
   currentStrips.forEach((strip) => {
-    // Placeholders have nothing to open, preload or title-scramble to.
-    if (strip.classList.contains("strip-placeholder")) return;
+    // Placeholders and the filter have nothing to open, preload or scramble to.
+    if (strip.classList.contains("strip-placeholder") || strip.classList.contains("strip-filter")) return;
 
     const projectSlug = strip.getAttribute("data-project");
     if (!projectSlug) return;
@@ -138,9 +138,9 @@ export function attachStripEventListeners() {
 
     strip.addEventListener("mouseleave", (e) => {
       if (window.matchMedia("(hover: none)").matches) return;
-      // Placeholders don't set a title of their own, so moving onto one must
-      // still fall through and clear the previous strip's title.
-      if (e.relatedTarget?.closest?.(".strip:not(.strip-placeholder)")) return;
+      // Placeholders and the filter don't set a title of their own, so moving
+      // onto one must still fall through and clear the previous strip's title.
+      if (e.relatedTarget?.closest?.(".strip:not(.strip-placeholder):not(.strip-filter)")) return;
       if (hoverDebounceTimer) { clearTimeout(hoverDebounceTimer); hoverDebounceTimer = null; }
       const headerSubtitle = getHeaderSubtitle?.();
       if (!headerSubtitle) return;
@@ -329,8 +329,8 @@ export function attachTouchListeners() {
         handlePoint(t.clientX, t.clientY);
 
         const element = document.elementFromPoint(t.clientX, t.clientY);
-        // Placeholders aren't scrubbable — treat them as empty space.
-        const strip = element?.closest(".strip:not(.strip-placeholder)");
+        // Placeholders and the filter aren't scrubbable — treat as empty space.
+        const strip = element?.closest(".strip:not(.strip-placeholder):not(.strip-filter)");
 
         if (strip !== currentlyTouchedStrip) {
           if (currentlyTouchedStrip) {
@@ -381,8 +381,9 @@ export function attachTouchListeners() {
       touchStartStrip = null;
       hasMoved = false;
 
-      // Tapping an unmade project does nothing — there's no page to open.
-      if (strip.classList.contains("strip-placeholder")) {
+      // Tapping an unmade project does nothing, and the filter strip runs its
+      // own .filter-option handlers — neither should navigate.
+      if (strip.classList.contains("strip-placeholder") || strip.classList.contains("strip-filter")) {
         clearPreview();
         return;
       }

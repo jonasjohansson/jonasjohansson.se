@@ -161,11 +161,11 @@ function initHeaderAutoHide() {
     if (!strips) return;
 
     if (route === "home") {
-      // Pin header to top of strips, no scroll-based movement.
-      if (header.parentElement !== strips || strips.firstChild !== header) {
-        strips.prepend(header);
+      // Dock the title readout to the bottom of the strips, no scroll-based movement.
+      if (header.parentElement !== strips || strips.lastChild !== header) {
+        strips.appendChild(header);
       }
-      header.classList.remove("header-bottom");
+      header.classList.add("header-bottom");
     } else {
       // Project/labs: restore header to original position at top of body.
       if (header.parentElement !== originalParent) {

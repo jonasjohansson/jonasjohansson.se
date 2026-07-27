@@ -27,6 +27,11 @@ header.header-hidden {
   pointer-events: none;
 }
 
+/* Docked at the bottom, hiding upward would slide the pill over the strips */
+header.header-bottom.header-hidden {
+  transform: translateX(-50%) translateY(100%);
+}
+
 /* Header docks to bottom of strips */
 header.header-bottom {
   position: absolute;
@@ -61,18 +66,15 @@ header.header-bottom .header-content {
   padding: var(--spacing-sm) var(--spacing-md) 0;
 }
 
-/* Home: header docks to top of strips, mirror compact padding of docked version. */
-#strips > header:not(.header-bottom) .header-content {
-  padding: 0 var(--spacing-md) var(--spacing-sm);
-}
-
 /* On home the header is just a title readout over the strips. The element's own
    box (background + padding) must not capture the pointer, or moving onto the
    title pill steals :hover from the strip beneath, collapsing it — flicker.
    Setting only .header-content to none wasn't enough; the header box itself
-   captured. The home links live in the intro, so nothing here needs clicks. */
-#strips > header:not(.header-bottom),
-#strips > header:not(.header-bottom) .header-content {
+   captured. The home links live in the intro, so nothing here needs clicks.
+   Scoped to the route, not the dock position: the bottom-docked header on a
+   project page is a real link home and has to stay clickable. */
+body[data-route="home"] #strips > header,
+body[data-route="home"] #strips > header .header-content {
   pointer-events: none;
 }
 
