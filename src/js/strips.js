@@ -216,6 +216,9 @@ export function initializeStrips({ animate = true } = {}) {
         document.body.classList.add("strips-initialized");
       }
       playStripVideos(stripsContainer);
+      // Recount now that the strips are back in the document — the count reads
+      // computed styles, which say nothing while the nodes are detached.
+      filterProjects();
     });
   } else {
     stripImages = Array.from(stripsContainer.querySelectorAll(".strip-image"));

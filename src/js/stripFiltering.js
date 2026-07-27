@@ -95,6 +95,8 @@ function updateStripCount() {
   const hasFilters = document.body.classList.contains("filter-active");
   const visibleStrips = Array.from(allStrips).filter((strip) => {
     if (strip.classList.contains("hidden")) return false;
+    // Placeholders are display:none outside mobile — CSS decides, so ask the DOM.
+    if (strip.classList.contains("strip-placeholder") && getComputedStyle(strip).display === "none") return false;
     if (hasFilters && !strip.classList.contains("filter-match")) return false;
     return true;
   });

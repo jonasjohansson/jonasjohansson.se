@@ -234,78 +234,58 @@
 }
 
 /* ---------- Placeholder strips ---------- */
-/* Projects that don't exist yet. No image, no link, just the title holding a
-   gap open in the wall until there's something to put there. */
+/* Projects that don't exist yet. Mobile only: the stacked rows have room to
+   carry a bare title, the desktop wall stays finished work. */
 .strip.strip-placeholder {
-  flex-grow: var(--strip-placeholder-grow);
-  cursor: default;
-  background: color-mix(in srgb, var(--text-primary) 7%, var(--bg-primary));
+  display: none;
 }
 
-/* Without images the placeholders merge into one grey block, so draw a hairline
-   between them to keep each slot legible as its own */
-.strip-placeholder + .strip-placeholder {
-  box-shadow: inset 1px 0 0 color-mix(in srgb, var(--text-primary) 14%, transparent);
-}
+@media (hover: none) and (orientation: portrait) {
+  .strip.strip-placeholder {
+    display: block;
+    height: calc(var(--strip-mobile-height) * var(--strip-placeholder-height-scale));
+    min-height: calc(var(--strip-mobile-height) * var(--strip-placeholder-height-scale));
+    cursor: default;
+    background: color-mix(in srgb, var(--text-primary) 7%, var(--bg-primary));
+  }
 
-@media (orientation: portrait) {
+  /* Without images the rows merge into one grey block, so draw a hairline
+     between them to keep each slot legible as its own */
   .strip-placeholder + .strip-placeholder {
     box-shadow: inset 0 1px 0 color-mix(in srgb, var(--text-primary) 14%, transparent);
   }
-}
 
-/* Never expand on hover/focus — there's nothing underneath to reveal */
-.strip.strip-placeholder:hover,
-.strip.strip-placeholder.touch-hover,
-.strip.strip-placeholder.strip-trail,
-.strip.strip-placeholder:focus-visible {
-  flex-grow: var(--strip-placeholder-grow);
-  will-change: auto;
-}
+  /* The title island is inherited from .strip-label above; these have no accent
+     colour to carry, so mute them against the finished work. */
+  .strip-placeholder .strip-label,
+  html[data-theme="dark"] .strip-placeholder .strip-label {
+    color: color-mix(in srgb, var(--text-primary) 55%, var(--bg-primary));
+  }
 
-/* The title is the only content, so it's always visible: set vertically so it
-   fits the narrow strip. */
-.strip-placeholder .strip-label {
-  display: flex;
-  position: absolute;
-  inset: 0;
-  align-items: center;
-  justify-content: center;
-  padding: var(--spacing-md) 0;
-  background: none;
-  border-radius: 0;
-  writing-mode: vertical-rl;
-  transform: rotate(180deg);
-  color: color-mix(in srgb, var(--text-primary) 45%, var(--bg-primary));
-  font-size: var(--font-size-xs);
-  letter-spacing: var(--letter-spacing-wide);
-  text-transform: uppercase;
-  line-height: var(--line-height-tight);
-  white-space: nowrap;
-  overflow: hidden;
-  text-overflow: ellipsis;
-  pointer-events: none;
-}
-
-/* Stacked as rows: title back to horizontal in the same bottom-left island the
-   finished strips use. */
-@media (orientation: portrait) {
-  .strip-placeholder .strip-label {
-    inset: auto auto 0 0;
+  /* Placeholders are always a contiguous run at the end, so the one following a
+     real project heads the group and carries the marker for all of them. */
+  .strip:not(.strip-placeholder) + .strip-placeholder::before {
+    content: "Coming";
+    position: absolute;
+    top: 0;
+    left: 0;
+    z-index: 2;
     padding: var(--spacing-sm) calc(var(--spacing-sm) * 1.5) var(--spacing-sm) var(--spacing-sm);
     background: var(--bg-primary);
-    border-radius: 0 calc(var(--strip-mobile-radius) - 1px) 0 0;
-    writing-mode: horizontal-tb;
-    transform: none;
+    border-radius: var(--strip-mobile-radius) 0 calc(var(--strip-mobile-radius) - 1px) 0;
+    color: color-mix(in srgb, var(--text-primary) 55%, var(--bg-primary));
+    font-size: var(--font-size-xs);
+    letter-spacing: var(--letter-spacing-wide);
+    text-transform: uppercase;
+    line-height: var(--line-height-tight);
+    white-space: nowrap;
+    pointer-events: none;
   }
-}
 
-/* Touch portrait pins every row to a fixed height, so shrink placeholders
-   explicitly to keep them shorter than the finished work. */
-@media (hover: none) and (orientation: portrait) {
-  .strip.strip-placeholder {
-    height: calc(var(--strip-mobile-height) * 0.55);
-    min-height: calc(var(--strip-mobile-height) * 0.55);
+  /* Give that first row the height back so the marker and the title don't collide */
+  .strip:not(.strip-placeholder) + .strip-placeholder {
+    height: var(--strip-mobile-height);
+    min-height: var(--strip-mobile-height);
   }
 }
 
