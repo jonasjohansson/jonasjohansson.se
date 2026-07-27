@@ -1,0 +1,4 @@
+---
+title: Stenkast
+type: placeholder
+---

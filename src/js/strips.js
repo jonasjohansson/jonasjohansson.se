@@ -96,9 +96,8 @@ function insertStripsIntoDOM(shuffledStrips, container) {
   container.appendChild(fragment);
 }
 
-// Animate strips in with staggered delay
+// Animate strips in one after another (delays live in CSS, keyed off --strip-index)
 function animateStripsIn(shuffledStrips, container) {
-  // Show all strips immediately, no staggered animation
   shuffledStrips.forEach((strip) => {
     strip.classList.add("strip-visible");
   });
@@ -107,6 +106,19 @@ function animateStripsIn(shuffledStrips, container) {
   document.body.classList.add("strips-initialized");
   document.documentElement.classList.remove("transition-lock");
   playStripVideos(container);
+
+  if (prefersReducedMotion || !shuffledStrips.length) return;
+
+  container.classList.add("strips-entering");
+
+  // Drop the class once the last strip has landed, so hover transforms aren't
+  // fighting a finished animation. The timeout is a safety net for the case
+  // where animationend never fires (strip removed, tab backgrounded).
+  const endEntering = () => container.classList.remove("strips-entering");
+  const lastStrip = shuffledStrips[shuffledStrips.length - 1];
+  lastStrip.addEventListener("animationend", endEntering, { once: true });
+  const totalMs = stripInitialDuration + stripInitialDelayStep * shuffledStrips.length;
+  setTimeout(endEntering, totalMs + 500);
 }
 
 // ---------- Initialize Strips ----------
@@ -155,16 +167,23 @@ export function initializeStrips({ animate = true } = {}) {
     stripsContainer.classList.remove("strips-initialized");
     stripsContainer.style.display = "none";
 
+    // Placeholders are unmade work and always trail the finished projects,
+    // whichever ordering the rest of the wall gets.
+    const madeStrips = allStrips.filter((s) => !s.classList.contains("strip-placeholder"));
+    const placeholderStrips = allStrips.filter((s) => s.classList.contains("strip-placeholder"));
+
     // Landing page: random order on every reload. Elsewhere: keep the hue sort.
+    let orderedStrips;
     if (getCurrentRoute() === "project") {
-      shuffledStrips = sortByHue([...allStrips], projects);
+      orderedStrips = sortByHue(madeStrips, projects);
     } else {
-      shuffledStrips = [...allStrips];
-      for (let i = shuffledStrips.length - 1; i > 0; i--) {
+      orderedStrips = [...madeStrips];
+      for (let i = orderedStrips.length - 1; i > 0; i--) {
         const j = Math.floor(Math.random() * (i + 1));
-        [shuffledStrips[i], shuffledStrips[j]] = [shuffledStrips[j], shuffledStrips[i]];
+        [orderedStrips[i], orderedStrips[j]] = [orderedStrips[j], orderedStrips[i]];
       }
     }
+    shuffledStrips = [...orderedStrips, ...placeholderStrips];
 
     shuffledStrips.forEach((strip) => {
       strip.remove();

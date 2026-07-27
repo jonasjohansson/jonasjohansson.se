@@ -2,7 +2,16 @@
   id="strips"
   aria-label="Projects">
   {% for project in projectsForJS %} {% set stripImage = project.images[0] %} {% if stripImage and not stripImage.startsWith('/') %} {% set
-  stripImage = '/' ~ stripImage %} {% endif %}
+  stripImage = '/' ~ stripImage %} {% endif %} {% if project.type == 'placeholder' %}
+  <!-- Work that isn't made yet: an empty slot in the wall, not a link -->
+  <div
+    class="strip strip-placeholder"
+    data-project="{{ project.slug }}"
+    data-project-title="{{ project.title | e('html_attr') }}"
+    data-tags="">
+    <span class="strip-label">{{ project.title }}</span>
+  </div>
+  {% else %}
   <a
     class="strip"
     href="/{{ project.slug }}/"
@@ -26,7 +35,7 @@
       data-bg-image="{{ stripImage }}"></div>
     <span class="strip-label">{{ project.title }}</span>
   </a>
-  {% endfor %}
+  {% endif %} {% endfor %}
 
   <!-- Filter controls -->
   <div

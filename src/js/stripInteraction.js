@@ -81,6 +81,9 @@ export function attachStripEventListeners() {
   }
 
   currentStrips.forEach((strip) => {
+    // Placeholders have nothing to open, preload or title-scramble to.
+    if (strip.classList.contains("strip-placeholder")) return;
+
     const projectSlug = strip.getAttribute("data-project");
     if (!projectSlug) return;
 
@@ -135,7 +138,9 @@ export function attachStripEventListeners() {
 
     strip.addEventListener("mouseleave", (e) => {
       if (window.matchMedia("(hover: none)").matches) return;
-      if (e.relatedTarget?.closest?.(".strip")) return;
+      // Placeholders don't set a title of their own, so moving onto one must
+      // still fall through and clear the previous strip's title.
+      if (e.relatedTarget?.closest?.(".strip:not(.strip-placeholder)")) return;
       if (hoverDebounceTimer) { clearTimeout(hoverDebounceTimer); hoverDebounceTimer = null; }
       const headerSubtitle = getHeaderSubtitle?.();
       if (!headerSubtitle) return;
@@ -324,7 +329,8 @@ export function attachTouchListeners() {
         handlePoint(t.clientX, t.clientY);
 
         const element = document.elementFromPoint(t.clientX, t.clientY);
-        const strip = element?.closest(".strip");
+        // Placeholders aren't scrubbable — treat them as empty space.
+        const strip = element?.closest(".strip:not(.strip-placeholder)");
 
         if (strip !== currentlyTouchedStrip) {
           if (currentlyTouchedStrip) {
@@ -374,6 +380,12 @@ export function attachTouchListeners() {
       const strip = touchStartStrip;
       touchStartStrip = null;
       hasMoved = false;
+
+      // Tapping an unmade project does nothing — there's no page to open.
+      if (strip.classList.contains("strip-placeholder")) {
+        clearPreview();
+        return;
+      }
 
       // No-hover devices show strips without the expand/scale preview, so a
       // single tap navigates straight to the project.

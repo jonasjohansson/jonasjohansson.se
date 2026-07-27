@@ -269,7 +269,9 @@ export default function (eleventyConfig) {
     return _projectsCache;
   }
 
-  eleventyConfig.addGlobalData("projects", () => scanProjects());
+  // Pagination source: placeholders are unstarted work with no content, so they
+  // appear in the strips but must not generate an empty project page.
+  eleventyConfig.addGlobalData("projects", () => scanProjects().filter((p) => p.type !== "placeholder"));
 
   // Helper to extract first image from project directory
   function findFirstImageInDir(root, dir, dataMdPath) {
@@ -390,7 +392,12 @@ export default function (eleventyConfig) {
         .map((project) => buildProjectEntry(root, project))
     );
     // Only include "work" type projects for homepage strips
-    return results.filter((p) => p.type !== "lab");
+    const visible = results.filter((p) => p.type !== "lab");
+    // Placeholders sit at the end of the wall, after everything that's finished.
+    return [
+      ...visible.filter((p) => p.type !== "placeholder"),
+      ...visible.filter((p) => p.type === "placeholder"),
+    ];
   });
 
   // Redirects for merged projects: old slug → new slug
