@@ -95,9 +95,14 @@ body.filter-active .strip.strip-filter {
   color: var(--bg-primary);
 }
 
-/* Stacked rows: the filter becomes a chip row across the top of the wall */
-@media (hover: none) and (orientation: portrait) {
+/* Stacked rows: the filter becomes a chip row across the top of the wall.
+   Keyed on orientation alone, matching where strips.css turns the wall into
+   rows — a portrait window with a mouse stacks too, and vertical bands in a
+   row-height cell just clip. */
+@media (orientation: portrait) {
   .strip.strip-filter {
+    /* Hug the chips instead of taking an equal share of the wall */
+    flex: 0 0 auto;
     height: auto;
     min-height: 0;
   }
