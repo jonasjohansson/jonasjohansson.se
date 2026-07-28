@@ -196,7 +196,10 @@ export default function (eleventyConfig) {
         if (isLcp) attrs.fetchpriority = "high";
 
         const attrString = Object.entries(attrs)
-          .filter(([_, value]) => value !== undefined && value !== null && value !== "")
+          // alt is exempt from the empty-value filter: alt="" is a deliberate
+          // "this image is decorative", whereas a missing alt is an error that
+          // makes screen readers fall back to announcing the file name.
+          .filter(([key, value]) => value !== undefined && value !== null && (value !== "" || key === "alt"))
           .map(([key, value]) => `${key}="${String(value).replace(/"/g, "&quot;")}"`)
           .join(" ");
 
@@ -482,13 +485,17 @@ export default function (eleventyConfig) {
               if (fontSize.includes("small") || fontSize.includes("1.2")) fontSizeClass = "text-small";
               else if (fontSize.includes("medium") || fontSize.includes("1.8")) fontSizeClass = "text-medium";
             }
+            // Images default to alt="" — an explicit declaration that they are
+            // decorative, so screen readers skip them rather than announcing the
+            // project name once per image. The surrounding prose carries the
+            // meaning. An authored `alt:` still wins if a specific image needs one.
             if (type === "image") {
               const relPath = `${root}/${dir}/${src}`;
-              return { type: "image", src: relPath, alt: alt || projectTitle, caption, link, colStart, colSpan, size, ar: explicitAr ?? (await intrinsicAr(path.join(dirPath, src))) };
+              return { type: "image", src: relPath, alt: alt ?? "", caption, link, colStart, colSpan, size, ar: explicitAr ?? (await intrinsicAr(path.join(dirPath, src))) };
             }
             // sharp cannot read video containers, so a video only gets a ratio if the
             // author states one. Without it the box simply fills its track, as before.
-            if (type === "video") return { type: "video", src: `/${root}/${dir}/${src}`, alt: alt || projectTitle, caption, link, colStart, colSpan, size, ar: explicitAr ?? null };
+            if (type === "video") return { type: "video", src: `/${root}/${dir}/${src}`, alt: alt ?? "", caption, link, colStart, colSpan, size, ar: explicitAr ?? null };
             if (type === "text")
               return {
                 type: "text",
