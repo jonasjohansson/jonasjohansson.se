@@ -7,11 +7,11 @@
       id="header-toggle"
       href="/"
       style="text-decoration: none; color: inherit;">
-      <div class="header-subtitle" id="header-subtitle" data-default-subtitle="{{ site.subtitle }}">
+      <div class="header-subtitle" id="header-subtitle" data-default-subtitle="{{ site.title }}">
         {% if project %}
         {{ projectContent[project.slug].title }}
         {% else %}
-        {{ site.subtitle }}
+        {{ site.title }}
         {% endif %}
       </div>
     </a>

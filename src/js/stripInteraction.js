@@ -19,9 +19,6 @@ let setNavigationTimeoutId = null;
 let preloadProjectFn = null;
 let navigateFn = null;
 
-let hoverDebounceTimer = null;
-const HOVER_DEBOUNCE_MS = 120;
-
 // Activating a strip navigates and reflows the strip layout. A stationary
 // pointer over the reflowed layout fires a spurious mouseenter on a different
 // strip, which would overwrite the real project title. Ignore hover for a
@@ -81,8 +78,8 @@ export function attachStripEventListeners() {
   }
 
   currentStrips.forEach((strip) => {
-    // Placeholders and the filter have nothing to open, preload or scramble to.
-    if (strip.classList.contains("strip-placeholder") || strip.classList.contains("strip-filter")) return;
+    // Placeholders have nothing to open, preload or title-scramble to.
+    if (strip.classList.contains("strip-placeholder")) return;
 
     const projectSlug = strip.getAttribute("data-project");
     if (!projectSlug) return;
@@ -116,32 +113,28 @@ export function attachStripEventListeners() {
         if (preloadProjectFn) preloadProjectFn(pSlug);
       }
 
-      // Debounce the text scramble so rapid mouse movement doesn't chain animations
-      if (hoverDebounceTimer) clearTimeout(hoverDebounceTimer);
-      hoverDebounceTimer = setTimeout(() => {
-        const headerSubtitle = getHeaderSubtitle?.();
-        if (!headerSubtitle) return;
+      // Write the title straight away — no debounce, so it tracks the cursor
+      const headerSubtitle = getHeaderSubtitle?.();
+      if (!headerSubtitle) return;
 
-        const projectTitle = strip.getAttribute("data-project-title");
-        if (projectTitle && projectTitle.trim()) {
+      const projectTitle = strip.getAttribute("data-project-title");
+      if (projectTitle && projectTitle.trim()) {
+        setHeaderRevealed(headerSubtitle, true);
+        scrambleText(headerSubtitle, projectTitle);
+      } else if (pSlug) {
+        const p = projects.find((pr) => pr.slug === pSlug);
+        if (p?.title) {
           setHeaderRevealed(headerSubtitle, true);
-          scrambleText(headerSubtitle, projectTitle);
-        } else if (pSlug) {
-          const p = projects.find((pr) => pr.slug === pSlug);
-          if (p?.title) {
-            setHeaderRevealed(headerSubtitle, true);
-            scrambleText(headerSubtitle, p.title);
-          }
+          scrambleText(headerSubtitle, p.title);
         }
-      }, HOVER_DEBOUNCE_MS);
+      }
     });
 
     strip.addEventListener("mouseleave", (e) => {
       if (window.matchMedia("(hover: none)").matches) return;
-      // Placeholders and the filter don't set a title of their own, so moving
-      // onto one must still fall through and clear the previous strip's title.
-      if (e.relatedTarget?.closest?.(".strip:not(.strip-placeholder):not(.strip-filter)")) return;
-      if (hoverDebounceTimer) { clearTimeout(hoverDebounceTimer); hoverDebounceTimer = null; }
+      // Placeholders don't set a title of their own, so moving onto one must
+      // still fall through and clear the previous strip's title.
+      if (e.relatedTarget?.closest?.(".strip:not(.strip-placeholder)")) return;
       const headerSubtitle = getHeaderSubtitle?.();
       if (!headerSubtitle) return;
       if (!stripsContainer?.classList.contains("strips-initialized")) return;
@@ -155,7 +148,7 @@ export function attachStripEventListeners() {
       } else {
         document.documentElement.removeAttribute("data-project");
       }
-      const currentPageTitle = getCurrentPageTitleFn?.() || "PROGRESS NOT PERFECTION";
+      const currentPageTitle = getCurrentPageTitleFn?.() || window.__SITE_TITLE__ || "Jonas Johansson";
       setHeaderRevealed(headerSubtitle, !!currentSlug);
       scrambleText(headerSubtitle, currentPageTitle);
     });
@@ -174,9 +167,8 @@ export function attachStripEventListeners() {
       const clickedProject = projects.find((p) => p.slug === clickedProjectSlug);
       if (!clickedProject) return;
 
-      // Cancel any pending hover write and mute hover briefly so the
-      // post-navigation reflow can't overwrite this project's title.
-      if (hoverDebounceTimer) { clearTimeout(hoverDebounceTimer); hoverDebounceTimer = null; }
+      // Mute hover briefly so the post-navigation reflow can't overwrite
+      // this project's title.
       lastActivateAt = Date.now();
 
       const computedId = clickedProject.slug || clickedProject.title.toLowerCase().replace(/\s+/g, "-");
@@ -239,7 +231,7 @@ export function attachTouchListeners() {
 
     const headerSubtitle = getHeaderSubtitle?.();
     if (headerSubtitle) {
-      const currentPageTitle = getCurrentPageTitleFn?.() || "PROGRESS NOT PERFECTION";
+      const currentPageTitle = getCurrentPageTitleFn?.() || window.__SITE_TITLE__ || "Jonas Johansson";
       setHeaderRevealed(headerSubtitle, !!currentSlug);
       scrambleText(headerSubtitle, currentPageTitle);
     }
@@ -329,8 +321,8 @@ export function attachTouchListeners() {
         handlePoint(t.clientX, t.clientY);
 
         const element = document.elementFromPoint(t.clientX, t.clientY);
-        // Placeholders and the filter aren't scrubbable — treat as empty space.
-        const strip = element?.closest(".strip:not(.strip-placeholder):not(.strip-filter)");
+        // Placeholders aren't scrubbable — treat them as empty space.
+        const strip = element?.closest(".strip:not(.strip-placeholder)");
 
         if (strip !== currentlyTouchedStrip) {
           if (currentlyTouchedStrip) {
@@ -361,7 +353,7 @@ export function attachTouchListeners() {
 
             const headerSubtitle = getHeaderSubtitle?.();
             if (headerSubtitle) {
-              const currentPageTitle = getCurrentPageTitleFn?.() || "PROGRESS NOT PERFECTION";
+              const currentPageTitle = getCurrentPageTitleFn?.() || window.__SITE_TITLE__ || "Jonas Johansson";
               setHeaderRevealed(headerSubtitle, !!touchCurrentSlug);
               scrambleText(headerSubtitle, currentPageTitle);
             }
@@ -381,9 +373,8 @@ export function attachTouchListeners() {
       touchStartStrip = null;
       hasMoved = false;
 
-      // Tapping an unmade project does nothing, and the filter strip runs its
-      // own .filter-option handlers — neither should navigate.
-      if (strip.classList.contains("strip-placeholder") || strip.classList.contains("strip-filter")) {
+      // Tapping an unmade project does nothing — there's no page to open.
+      if (strip.classList.contains("strip-placeholder")) {
         clearPreview();
         return;
       }

@@ -60,9 +60,10 @@ body[data-route="home"] #content {
   flex-direction: column;
 }
 
-body[data-route="home"] .intro  { order: 1; }
-body[data-route="home"] #main   { order: 2; }
-body[data-route="home"] #strips { order: 3; }
+body[data-route="home"] .intro       { order: 1; }
+body[data-route="home"] #main        { order: 2; }
+body[data-route="home"] #strips      { order: 3; }
+body[data-route="home"] .intro-links { order: 4; }
 
 
 /* Keep content clipped during strip transition */
@@ -120,8 +121,7 @@ a:hover {
 
 /* Disable text selection on interactive chrome */
 header,
-#strips,
-.filter-dropdown {
+#strips {
   user-select: none;
   -webkit-user-select: none;
 }
@@ -141,7 +141,6 @@ figcaption {
 body.loading #main,
 body.loading #strips,
 body.loading #header,
-body.loading #filter-dropdown-container,
 body.loading #projects {
   opacity: 0 !important;
   visibility: hidden !important;

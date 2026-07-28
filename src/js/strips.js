@@ -1,7 +1,6 @@
 import { SETTINGS } from "./config/settings.js";
 import { sortByHue } from "./gameMode/hueSort.js";
 const {
-  animation: { stripInitialDelayStep, stripInitialDuration },
   images: { loadMargin },
 } = SETTINGS;
 import { getProjectPath } from "./utils/pathBuilder.js";
@@ -49,7 +48,30 @@ let navigationTimeoutId = null;
 
 // ---------- Global State ----------
 let headerSubtitle;
-let defaultSubtitle = "PROGRESS NOT PERFECTION";
+const siteName = window.__SITE_TITLE__ || "Jonas Johansson";
+
+// What the header reads when no strip is hovered. On a project page it depends
+// on where the header currently sits: at the top of the page it titles what
+// you're reading; docked at the foot of the wall it's the way home, so it
+// carries the site name instead of repeating the project.
+function getRestingTitle() {
+  if (getCurrentRoute() !== "project") return siteName;
+
+  const header = document.getElementById("header");
+  if (header?.classList.contains("header-bottom")) return siteName;
+
+  return (
+    getCurrentProjectTitle()?.trim() ||
+    document.documentElement?.dataset?.currentProjectTitle?.trim() ||
+    siteName
+  );
+}
+
+// Re-render the resting title after the header docks or undocks on scroll.
+export function refreshRestingTitle() {
+  const el = document.querySelector(".header-subtitle");
+  if (el) scrambleText(el, getRestingTitle());
+}
 
 // Navigate function injected by main.js to avoid circular dependency
 let _navigateFn = null;
@@ -88,7 +110,6 @@ function insertStripsIntoDOM(shuffledStrips, container) {
   const fragment = document.createDocumentFragment();
   shuffledStrips.forEach((strip, index) => {
     strip.setAttribute("data-index", index);
-    strip.style.setProperty("--strip-index", String(index));
     strip.classList.remove("strip-visible");
 
     fragment.appendChild(strip);
@@ -96,7 +117,7 @@ function insertStripsIntoDOM(shuffledStrips, container) {
   container.appendChild(fragment);
 }
 
-// Animate strips in one after another (delays live in CSS, keyed off --strip-index)
+// Reveal the strips. No entrance animation — they simply appear.
 function animateStripsIn(shuffledStrips, container) {
   shuffledStrips.forEach((strip) => {
     strip.classList.add("strip-visible");
@@ -106,19 +127,6 @@ function animateStripsIn(shuffledStrips, container) {
   document.body.classList.add("strips-initialized");
   document.documentElement.classList.remove("transition-lock");
   playStripVideos(container);
-
-  if (prefersReducedMotion || !shuffledStrips.length) return;
-
-  container.classList.add("strips-entering");
-
-  // Drop the class once the last strip has landed, so hover transforms aren't
-  // fighting a finished animation. The timeout is a safety net for the case
-  // where animationend never fires (strip removed, tab backgrounded).
-  const endEntering = () => container.classList.remove("strips-entering");
-  const lastStrip = shuffledStrips[shuffledStrips.length - 1];
-  lastStrip.addEventListener("animationend", endEntering, { once: true });
-  const totalMs = stripInitialDuration + stripInitialDelayStep * shuffledStrips.length;
-  setTimeout(endEntering, totalMs + 500);
 }
 
 // ---------- Initialize Strips ----------
@@ -141,7 +149,7 @@ export function initializeStrips({ animate = true } = {}) {
     stripsContainer,
     getAllStrips: () => allStrips,
     getHeaderSubtitle: () => headerSubtitle,
-    getCurrentPageTitle: () => getCurrentProjectTitle() || defaultSubtitle,
+    getCurrentPageTitle: () => getRestingTitle(),
     setCurrentPageTitle: (title) => { setCurrentProjectTitle(title); },
     getNavigationTimeoutId: () => navigationTimeoutId,
     setNavigationTimeoutId: (id) => { navigationTimeoutId = id; },
@@ -167,13 +175,10 @@ export function initializeStrips({ animate = true } = {}) {
     stripsContainer.classList.remove("strips-initialized");
     stripsContainer.style.display = "none";
 
-    // The filter is pinned first and the unmade work trails at the end,
-    // whichever ordering the finished projects between them get.
-    const filterStrips = allStrips.filter((s) => s.classList.contains("strip-filter"));
+    // Placeholders are unmade work and always trail the finished projects,
+    // whichever ordering the rest of the wall gets.
+    const madeStrips = allStrips.filter((s) => !s.classList.contains("strip-placeholder"));
     const placeholderStrips = allStrips.filter((s) => s.classList.contains("strip-placeholder"));
-    const madeStrips = allStrips.filter(
-      (s) => !s.classList.contains("strip-placeholder") && !s.classList.contains("strip-filter")
-    );
 
     // Landing page: random order on every reload. Elsewhere: keep the hue sort.
     let orderedStrips;
@@ -186,12 +191,11 @@ export function initializeStrips({ animate = true } = {}) {
         [orderedStrips[i], orderedStrips[j]] = [orderedStrips[j], orderedStrips[i]];
       }
     }
-    shuffledStrips = [...filterStrips, ...orderedStrips, ...placeholderStrips];
+    shuffledStrips = [...orderedStrips, ...placeholderStrips];
 
     shuffledStrips.forEach((strip) => {
       strip.remove();
       strip.removeAttribute("data-index");
-      strip.style.removeProperty("--strip-index");
       strip.style.removeProperty("height");
       strip.style.removeProperty("opacity");
       strip.style.removeProperty("transform");
@@ -251,25 +255,8 @@ export function initializeStrips({ animate = true } = {}) {
   const baseName = window.__SITE_TITLE__ || "Jonas Johansson";
   document.title = baseName;
 
-  function resolveCurrentTitle() {
-    const fromState = getCurrentProjectTitle()?.trim();
-    if (fromState) return fromState;
-
-    const fromDataset = document.documentElement?.dataset?.currentProjectTitle?.trim();
-    if (fromDataset) return fromDataset;
-
-    // Fallback: infer from URL
-    const slug = window.location.pathname.match(/\/work\/([^\/]+)/)?.[1];
-    const project = slug ? projects.find((p) => p.slug === slug) : null;
-    return project?.title || defaultSubtitle;
-  }
-
-  const initialTitle = resolveCurrentTitle();
-  if (initialTitle && initialTitle !== defaultSubtitle) {
-    setCurrentProjectTitle(initialTitle);
-    if (headerSubtitle) {
-      headerSubtitle.textContent = initialTitle.toUpperCase();
-    }
+  if (headerSubtitle) {
+    headerSubtitle.textContent = getRestingTitle().toUpperCase();
   }
 
   // Attach parallax and touch event listeners (using signal for cleanup)
@@ -318,22 +305,15 @@ function updateCurrentPageTitle(title) {
     const baseName = window.__SITE_TITLE__ || "Jonas Johansson";
     document.title = baseName;
 
-    const newTitle = title === null ? defaultSubtitle : (title || defaultSubtitle);
+    const newTitle = title === null ? siteName : (title || siteName);
 
+    // State still tracks the project you're on — only what the header *reads*
+    // falls back to the resting title.
     document.documentElement.dataset.currentProjectTitle = newTitle;
     setCurrentProjectTitle(newTitle);
 
-    if (title === null) {
-      if (headerSubtitle) {
-        scrambleText(headerSubtitle, defaultSubtitle);
-      }
-      return;
-    }
-
-    if (getCurrentRoute() === "project") {
-      if (headerSubtitle) {
-        scrambleText(headerSubtitle, newTitle);
-      }
+    if (headerSubtitle) {
+      scrambleText(headerSubtitle, getRestingTitle());
     }
   } catch (error) {
     // Silently handle errors

@@ -207,7 +207,7 @@
     color: color-mix(in srgb, var(--project-color, var(--text-primary)) 45%, white);
   }
 
-  /* Skip the "PROGRESS NOT PERFECTION" header on the mobile landing page,
+  /* Skip the header on the mobile landing page,
      and don't re-dock the project title at the foot of a project page. */
   body[data-route="home"] #header,
   header.header-bottom {
@@ -289,48 +289,8 @@
   }
 }
 
-/* ---------- First-paint entrance ---------- */
-/* Strips slide into place one after another so the wall assembles itself. */
-@keyframes strip-enter {
-  from {
-    opacity: 0;
-    transform: translateY(100%);
-  }
-  to {
-    opacity: 1;
-    transform: translateY(0);
-  }
-}
-
-@keyframes strip-enter-stacked {
-  from {
-    opacity: 0;
-    transform: translateX(-100%);
-  }
-  to {
-    opacity: 1;
-    transform: translateX(0);
-  }
-}
-
-#strips.strips-entering .strip {
-  animation: strip-enter var(--strip-enter-duration) cubic-bezier(0.22, 1, 0.36, 1) backwards;
-  animation-delay: calc(var(--strip-index, 0) * var(--strip-enter-step));
-}
-
-/* Rows come in from the side instead of from below */
-@media (orientation: portrait) {
-  #strips.strips-entering .strip {
-    animation-name: strip-enter-stacked;
-  }
-}
-
 @media (prefers-reduced-motion: reduce) {
   .strip {
     will-change: auto;
-  }
-
-  #strips.strips-entering .strip {
-    animation: none;
   }
 }

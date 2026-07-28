@@ -1,4 +1,4 @@
-import { initializeStrips, updateCurrentPageTitle, setNavigateFn, initFilters } from "./strips.js";
+import { initializeStrips, updateCurrentPageTitle, setNavigateFn, initFilters, refreshRestingTitle } from "./strips.js";
 import { resetFilters } from "./stripFiltering.js";
 import { router } from "./router.js";
 import { loadingManager } from "./utils/loadingManager.js";
@@ -161,11 +161,11 @@ function initHeaderAutoHide() {
     if (!strips) return;
 
     if (route === "home") {
-      // Dock the title readout to the bottom of the strips, no scroll-based movement.
-      if (header.parentElement !== strips || strips.lastChild !== header) {
-        strips.appendChild(header);
+      // Pin header to top of strips, no scroll-based movement.
+      if (header.parentElement !== strips || strips.firstChild !== header) {
+        strips.prepend(header);
       }
-      header.classList.add("header-bottom");
+      header.classList.remove("header-bottom");
     } else {
       // Project/labs: restore header to original position at top of body.
       if (header.parentElement !== originalParent) {
@@ -173,6 +173,7 @@ function initHeaderAutoHide() {
       }
       header.classList.remove("header-bottom");
     }
+    refreshRestingTitle();
   }
 
   placeForRoute();
@@ -192,9 +193,12 @@ function initHeaderAutoHide() {
       if (!isBottom && !nearTop) {
         header.classList.add("header-bottom");
         if (strips) strips.appendChild(header);
+        // Docking swaps the header's meaning, so re-read the resting title
+        refreshRestingTitle();
       } else if (isBottom && nearTop) {
         header.classList.remove("header-bottom");
         originalParent.insertBefore(header, originalNextSibling);
+        refreshRestingTitle();
       }
 
       ticking = false;

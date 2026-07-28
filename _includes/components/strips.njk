@@ -1,26 +1,6 @@
 <nav
   id="strips"
   aria-label="Projects">
-  <!-- Filter: a cell in the wall rather than an edge-docked bar. Pinned first
-       by strips.js, which keeps it out of the shuffle. -->
-  <div
-    class="strip strip-filter"
-    aria-label="Filter projects by tag">
-    <div
-      class="filter-dropdown-content"
-      id="filter-dropdown">
-      {% for tag in site.tags | sortByLength %}
-      <label class="filter-option">
-        <input
-          type="checkbox"
-          value="{{ tag }}"
-          data-type="category" />
-        <span>{{ tag | capitalize }}</span>
-      </label>
-      {% endfor %}
-    </div>
-  </div>
-
   {% for project in projectsForJS %} {% set stripImage = project.images[0] %} {% if stripImage and not stripImage.startsWith('/') %} {% set
   stripImage = '/' ~ stripImage %} {% endif %} {% if project.type == 'placeholder' %}
   <!-- Work that isn't made yet: an empty slot in the wall, not a link -->
