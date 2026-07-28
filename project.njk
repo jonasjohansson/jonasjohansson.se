@@ -19,12 +19,39 @@ eleventyComputed:
     data-project="{{ project.slug }}">
     <h1 class="project-title">{{ projectContent[project.slug].title }}</h1>
     <div class="project-grid">
-      {% for block in projectContent[project.slug].content %} {% if block.type == 'image' %}
-      <figure class="media-item {% if loop.first %}hero{% endif %}{% if block.size %} size-{{ block.size }}{% endif %}" style="--col-start: {{ block.colStart }}; --col-span: {{ block.colSpan }}">
+      {# The figure markup is repeated rather than factored into a macro:
+         responsiveImage is an async shortcode and Nunjucks macros are
+         synchronous, so calling it inside one silently renders nothing. #}
+      {% for block in projectContent[project.slug].content %}
+
+      {% if block.type == 'pair' %}
+      <div class="media-pair" style="--ar-sum: {{ block.arSum }}">
+        {% for item in block.items %}
+        <figure class="media-item size-{{ item.size }}" style="--ar: {{ item.ar }}">
+          {% responsiveImage item.src, item.alt, "media-img" %}
+          {% if item.caption %}
+          <figcaption class="media-caption">
+            {% if item.link %}<a href="{{ item.link }}" target="_blank" rel="noopener">{{ item.caption | safe }}</a>{% else %}{{ item.caption | safe }}{% endif %}
+          </figcaption>
+          {% endif %}
+        </figure>
+        {% endfor %}
+      </div>
+
+      {% elif block.type == 'image' %}
+      <figure class="media-item{% if loop.first %} hero{% endif %}{% if block.size %} size-{{ block.size }}{% endif %}"
+        style="{% if block.colStart %}--col-start: {{ block.colStart }}; --col-span: {{ block.colSpan }};{% endif %}{% if block.ar %} --ar: {{ block.ar }};{% endif %}">
         {% responsiveImage block.src, block.alt, ("media-img lcp" if loop.first else "media-img") %}
+        {% if block.caption %}
+        <figcaption class="media-caption">
+          {% if block.link %}<a href="{{ block.link }}" target="_blank" rel="noopener">{{ block.caption | safe }}</a>{% else %}{{ block.caption | safe }}{% endif %}
+        </figcaption>
+        {% endif %}
       </figure>
+
       {% elif block.type == 'video' %}
-      <figure class="media-item{% if loop.first %} hero{% endif %}{% if block.size %} size-{{ block.size }}{% endif %}" style="--col-start: {{ block.colStart }}; --col-span: {{ block.colSpan }}">
+      <figure class="media-item{% if loop.first %} hero{% endif %}{% if block.size %} size-{{ block.size }}{% endif %}"
+        style="{% if block.colStart %}--col-start: {{ block.colStart }}; --col-span: {{ block.colSpan }};{% endif %}{% if block.ar %} --ar: {{ block.ar }};{% endif %}">
         <video
           class="media-video"
           src="{{ block.src | url }}"
@@ -40,12 +67,14 @@ eleventyComputed:
         </figcaption>
         {% endif %}
       </figure>
+
       {% elif block.type == 'text' %}
       <div
         class="text-block {{ block.fontSizeClass or 'text-medium' }}"
         style="--col-start: {{ block.colStart }}; --col-span: {{ block.colSpan }}">
         {{ block.content | safe }}
       </div>
+
       {% elif block.type == 'credits' %}
       <aside class="credits-block" style="--col-start: {{ block.colStart }}; --col-span: {{ block.colSpan }}">
         <ul class="credits-list">
@@ -54,7 +83,9 @@ eleventyComputed:
           {% endfor %}
         </ul>
       </aside>
-      {% endif %} {% endfor %}
+      {% endif %}
+
+      {% endfor %}
     </div>
   </section>
 </div>

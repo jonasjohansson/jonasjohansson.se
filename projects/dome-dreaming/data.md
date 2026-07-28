@@ -29,7 +29,7 @@ blocks:
     content: >-
       The idea took shape at a hackathon I co-organised with Tekniska museet.
       Through [NAVA](/nava/), we had been collaborating with
-      [Aavistus](https://aavistusfestival.fi) in Helsinki for years and seen
+      [Aavistus](https://www.aavistusfestival.fi/) in Helsinki for years and seen
       how strong their fulldome programme was, and with two new Wisdome venues
       open in Sweden, we decided to make one of our own.
   - type: image
@@ -112,7 +112,7 @@ blocks:
       Documentation and communication by
       [Rose Hallgren](https://rosehallgren.se/). Festival photography by
       Glidephotos. Produced in collaboration with
-      [Aavistus](https://aavistusfestival.fi),
+      [Aavistus](https://www.aavistusfestival.fi/),
       [Kokong](https://www.instagram.com/kokongfestival/),
       [Baltic Analog Lab](https://www.balticanaloglab.lv/) and
       [Nordic Audiovisual Artists](https://www.nava.community). Supported by

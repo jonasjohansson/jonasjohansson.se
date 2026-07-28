@@ -40,6 +40,6 @@ blocks:
   - type: credits
     credits:
       - "Initiated by [Malin Bobeck Tadaa](https://malintadaa.com/)"
-      - "Creative Coding: Jonas Johansson"
+      - "Creative coding: Jonas Johansson"
       - "Mixed reality: Björn Albihn and Jonatan Crafoord, [Really Interactive](https://www.really-interactive.se/)"
 ---

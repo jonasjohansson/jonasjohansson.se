@@ -49,6 +49,7 @@ blocks:
     colSpan: 4
   - type: video
     src: 07.webm
+    ar: 0.5625
     colStart: 9
     colSpan: 4
   - type: image

@@ -29,7 +29,7 @@ blocks:
     content: >-
       I handled the projection mapping, composition and socket data.
       [Sol Sarratea](https://solsarratea.world/) wrote the shaders,
-      [David Giese](http://davidgiese.com/) did the video, and
+      [David Giese](https://davidgiese.com/) did the video, and
       [Scenteknik](https://scenteknik.se/) ran the rig in Stockholm. Both
       years we worked out of a freezing cargo container on the square,
       aligning the mapping as our breath fogged the laptops.
@@ -43,9 +43,9 @@ blocks:
       us going in the container.
   - type: credits
     credits:
-      - "Creative Coding: Jonas Johansson"
+      - "Creative coding: Jonas Johansson"
       - "Artist: [Tove Alderin](https://www.tovealderinstudio.se/)"
       - "Shaders: [Sol Sarratea](https://solsarratea.world/)"
-      - "Video: [David Giese](http://davidgiese.com/)"
+      - "Video: [David Giese](https://davidgiese.com/)"
       - "Rig: [Scenteknik](https://scenteknik.se/)"
 ---

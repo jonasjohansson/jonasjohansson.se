@@ -44,6 +44,6 @@ blocks:
     size: half-right
   - type: credits
     credits:
-      - "Run with [Rose Hallgren](https://rosehallgren.se/), [Bengt Johansson](https://www.bengtjohansson.se)"
+      - "Run with: [Rose Hallgren](https://rosehallgren.se/), [Bengt Johansson](https://www.bengtjohansson.se)"
       - "<span class=\"credit-support\">Supported by Region Halland</span>"
 ---

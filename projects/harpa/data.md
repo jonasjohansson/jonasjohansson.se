@@ -17,7 +17,7 @@ blocks:
     fontSize: small
     content: >-
       It started in 2014 when [Atlí Bollason](https://atlibollason.com/) and
-      [Owen Hindley](http://owenhindley.co.uk/) turned Harpa's 43-metre tall,
+      [Owen Hindley](https://www.owenhindley.co.uk/) turned Harpa's 43-metre tall,
       almost 100-metre wide facade into a publicly playable game of
       [Pong](https://youtu.be/R3_OSTtyfSw). Launched on Menningarnótt
       (Culture Night) on 23 August 2014, it was the first time
@@ -93,9 +93,9 @@ blocks:
     src: 03.jpg
   - type: credits
     credits:
-      - "Artistic Lead: Jonas Johansson"
+      - "Artistic lead: Jonas Johansson"
       - "[Atlí Bollason](https://atlibollason.com/)"
-      - "[Owen Hindley](http://owenhindley.co.uk/)"
+      - "[Owen Hindley](https://www.owenhindley.co.uk/)"
       - "[Rasmus Stride](https://www.instagram.com/rasmus.stride/)"
       - "Physical models: [Rose Hallgren](https://rosehallgren.se/)"
       - "Hardware coding: Johanna Tano"

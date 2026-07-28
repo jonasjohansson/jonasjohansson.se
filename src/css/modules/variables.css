@@ -21,6 +21,12 @@
   --radius-sm: 4px;
   --radius-md: 0.75rem;
 
+  /* Project media */
+  --media-max-h: calc(100dvh - 2 * var(--spacing-3xl)); /* ceiling on an in-body image */
+  --gutter-pair: var(--spacing-md); /* between the two halves of a pair: tighter than the row gap, so a pair reads as one unit */
+  --gutter-row: var(--spacing-2xl); /* between one media row and the next */
+  --radius-media: 4px;
+
   /* Strips */
   --strip-mobile-height: 8rem; /* row height for stacked strips on touch devices */
   --strip-mobile-radius: 6px; /* corner rounding on stacked strips and their title labels */

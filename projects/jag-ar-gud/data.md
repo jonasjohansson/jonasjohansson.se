@@ -81,7 +81,7 @@ blocks:
     credits:
       - "Performer: Danne Dahlin"
       - "Actor and director: Jakob Bladh"
-      - "Light & Video: Jonas Johansson"
+      - "Light and video: Jonas Johansson"
       - "Scenography: [Rose Hallgren](https://rosehallgren.se/)"
       - "Mentor to Danne: Teresia Björk"
 ---

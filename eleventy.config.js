@@ -425,6 +425,24 @@ export default function (eleventyConfig) {
     "small-right": { colStart: 8, colSpan: 5 },
   };
 
+  // Intrinsic aspect ratio, so a media box can take the shape of its picture
+  // instead of letterboxing it inside a full-width track. Null rather than a
+  // numeric guess: a wrong default silently reintroduces the dead air it exists
+  // to remove, and the CSS treats null as "no constraint".
+  const _arCache = new Map();
+  async function intrinsicAr(absPath) {
+    if (_arCache.has(absPath)) return _arCache.get(absPath);
+    let ar = null;
+    try {
+      const { width, height } = await sharp(absPath).metadata();
+      if (width && height) ar = +(width / height).toFixed(4);
+    } catch {
+      console.warn(`[ar] could not read ${absPath}`);
+    }
+    _arCache.set(absPath, ar);
+    return ar;
+  }
+
   /** Project content scanner → reads data.md with YAML frontmatter */
   eleventyConfig.addGlobalData("projectContent", async () => {
     const root = "projects";
@@ -450,19 +468,27 @@ export default function (eleventyConfig) {
         const projectTitle = title || dir.replace(/[._-]+/g, " ").trim();
 
         // Process blocks from frontmatter
-        const content = blocks
-          .map((block) => {
-            const { type, src, alt, content: textContent, size, colStart: explicitColStart, colSpan: explicitColSpan, fontSize, credits } = block;
+        const content = (await Promise.all(blocks
+          .map(async (block) => {
+            const { type, src, alt, caption, link, ar: explicitAr, content: textContent, size, colStart: explicitColStart, colSpan: explicitColSpan, fontSize, credits } = block;
             const resolved = size && SIZE_MAP[size] ? SIZE_MAP[size] : {};
-            const colStart = explicitColStart || resolved.colStart || 1;
-            const colSpan = explicitColSpan || resolved.colSpan || 12;
+            // Media placement stays null unless authored, so CSS can tell the
+            // difference between "author chose full width" and "author chose
+            // nothing". Emitting 1/12 for everything made those indistinguishable.
+            const colStart = explicitColStart ?? resolved.colStart ?? null;
+            const colSpan = explicitColSpan ?? resolved.colSpan ?? null;
             let fontSizeClass = "text-large";
             if (fontSize) {
               if (fontSize.includes("small") || fontSize.includes("1.2")) fontSizeClass = "text-small";
               else if (fontSize.includes("medium") || fontSize.includes("1.8")) fontSizeClass = "text-medium";
             }
-            if (type === "image") return { type: "image", src: `${root}/${dir}/${src}`, alt: alt || projectTitle, colStart, colSpan, size };
-            if (type === "video") return { type: "video", src: `/${root}/${dir}/${src}`, alt: alt || projectTitle, colStart, colSpan, size };
+            if (type === "image") {
+              const relPath = `${root}/${dir}/${src}`;
+              return { type: "image", src: relPath, alt: alt || projectTitle, caption, link, colStart, colSpan, size, ar: explicitAr ?? (await intrinsicAr(path.join(dirPath, src))) };
+            }
+            // sharp cannot read video containers, so a video only gets a ratio if the
+            // author states one. Without it the box simply fills its track, as before.
+            if (type === "video") return { type: "video", src: `/${root}/${dir}/${src}`, alt: alt || projectTitle, caption, link, colStart, colSpan, size, ar: explicitAr ?? null };
             if (type === "text")
               return {
                 type: "text",
@@ -472,6 +498,8 @@ export default function (eleventyConfig) {
                 fontSizeClass,
               };
             if (type === "credits") {
+              const creditsColStart = explicitColStart || resolved.colStart || 1;
+              const creditsColSpan = explicitColSpan || resolved.colSpan || 12;
               const openInNewTab = (html) => html.replace(/<a href="(https?:\/\/[^"]*)">/g, '<a href="$1" target="_blank" rel="noopener noreferrer">');
               const groups = [];
               const byRole = new Map();
@@ -491,11 +519,25 @@ export default function (eleventyConfig) {
                 }
               }
               const grouped = groups.map(({ role, values }) => (role ? `${role}: ` : "") + values.join(", "));
-              return { type: "credits", credits: grouped, colStart, colSpan };
+              return { type: "credits", credits: grouped, colStart: creditsColStart, colSpan: creditsColSpan };
             }
             return null;
-          })
-          .filter(Boolean);
+          }))).filter(Boolean);
+
+        // Fold half-left/half-right neighbours into one pair, so their widths can
+        // be split by aspect ratio and their heights match by construction rather
+        // than by the author matching source ratios by eye.
+        const paired = [];
+        for (let i = 0; i < content.length; i++) {
+          const a = content[i];
+          const b = content[i + 1];
+          if (a?.size === "half-left" && b?.size === "half-right" && a.ar && b.ar) {
+            paired.push({ type: "pair", items: [a, b], arSum: +(a.ar + b.ar).toFixed(4) });
+            i++;
+          } else {
+            paired.push(a);
+          }
+        }
 
         // Process hero image for OG tags
         const firstImageSrc = findFirstImageInDir(root, dir, dataMdPath);
@@ -506,7 +548,7 @@ export default function (eleventyConfig) {
           ogImage = await processOgImage(firstImageSrc, dir);
         }
 
-        projectContent[dir] = { title: projectTitle, tags, year, date: isoDate, content, printable, heroImage, ogImage };
+        projectContent[dir] = { title: projectTitle, tags, year, date: isoDate, content: paired, printable, heroImage, ogImage };
       } catch (err) {}
     }
     return projectContent;

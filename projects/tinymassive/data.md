@@ -57,9 +57,9 @@ blocks:
       [Nordic Culture Fund](https://nordiskkulturfond.org/) through their
       Opstart grant. The collective behind Tiny/Massive was myself,
       [Atlí Bollason](https://atlibollason.com/) and
-      [Owen Hindley](http://owenhindley.co.uk/).
+      [Owen Hindley](https://www.owenhindley.co.uk/).
   - type: credits
     credits:
-      - "Collective: Jonas Johansson, [Atlí Bollason](https://atlibollason.com/), [Owen Hindley](http://owenhindley.co.uk/)"
+      - "Collective: Jonas Johansson, [Atlí Bollason](https://atlibollason.com/), [Owen Hindley](https://www.owenhindley.co.uk/)"
       - "A [NAVA](/nava/) project"
 ---

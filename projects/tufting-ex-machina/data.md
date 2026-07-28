@@ -17,11 +17,11 @@ blocks:
   - type: text
     fontSize: small
     content: >-
-      **Tufting Ex Machina** was a two-day workshop at
+      Tufting Ex Machina was a two-day workshop at
       [Aavistus](https://www.aavistusfestival.fi/), an audiovisual festival
       in Helsinki that I have been part of since its start in 2022, as both
       an artist and collaborator through
-      [Nordic Audiovisual Artists](https://nava.community). Created together
+      [Nordic Audiovisual Artists](https://www.nava.community). Created together
       with [Rose Hallgren](https://rosehallgren.se/), the workshop brought
       together 10 participants to tuft their own cultural canon. I'd
       learned tufting during a residency at

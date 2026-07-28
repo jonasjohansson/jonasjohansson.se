@@ -18,7 +18,7 @@ blocks:
       It started during a project at
       [Harpa](/harpa/) in Reykjavík with
       [Atlí Bollason](https://atlibollason.com/),
-      [Owen Hindley](http://owenhindley.co.uk/) and
+      [Owen Hindley](https://www.owenhindley.co.uk/) and
       [Rasmus Stride](https://www.instagram.com/rasmus.stride/). We were
       already hacking the Harpa facade together for
       [Sónar](https://sonarreykjavik.com/), and NAVA came out of wanting to
@@ -134,5 +134,5 @@ blocks:
       [NAPA](https://napa.gl/).
   - type: credits
     credits:
-      - "Co-founders: Jonas Johansson, [Atlí Bollason](https://atlibollason.com/), [Owen Hindley](http://owenhindley.co.uk/), [Rasmus Stride](https://www.instagram.com/rasmus.stride/)"
+      - "Co-founders: Jonas Johansson, [Atlí Bollason](https://atlibollason.com/), [Owen Hindley](https://www.owenhindley.co.uk/), [Rasmus Stride](https://www.instagram.com/rasmus.stride/)"
 ---

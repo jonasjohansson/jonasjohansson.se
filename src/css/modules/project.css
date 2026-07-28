@@ -91,7 +91,7 @@ figure {
   display: grid;
   grid-template-columns: repeat(12, 1fr);
   column-gap: var(--spacing-xl);
-  row-gap: var(--spacing-xl);
+  row-gap: var(--gutter-row);
   grid-auto-flow: dense;
   width: 100%;
   max-width: 100%;
@@ -138,12 +138,24 @@ figure {
 .media-item {
   width: 100%;
   margin: 0;
+  /* Full width unless the author placed it. Specificity (0,1,0) so the inline
+     [style*="--col-start"] rule below and the .size-* classes both still win. */
+  grid-column: 1 / -1;
   /* Scroll snap alignment for media items */
   scroll-snap-align: start;
   scroll-snap-stop: normal;
 }
 
-
+/* The height ceiling belongs on the box, not the picture. With max-height on the
+   image the height clamped but the box stayed full-track width, so the picture
+   floated in dead air: a dome-dreaming plate painted 497px wide inside a 1501px
+   box. Giving the box the picture's own shape removes the gap entirely, and the
+   corner radius finally clips the photograph instead of transparent padding.
+   --ar is measured at build time; 999 makes an unmeasured image a no-op. */
+.media-item:not(.hero):not(:first-child) {
+  max-width: calc(var(--media-max-h) * var(--ar, 999));
+  justify-self: center;
+}
 
 .media-item picture {
   display: contents;
@@ -153,11 +165,8 @@ figure {
 .media-item video {
   width: 100%;
   height: auto;
-  max-height: calc(100vh - 2 * var(--spacing-3xl));
-  max-height: calc(100dvh - 2 * var(--spacing-3xl));
-  object-fit: contain;
   display: block;
-  border-radius: var(--radius-sm);
+  border-radius: var(--radius-media);
 }
 
 .text-block {
@@ -245,6 +254,30 @@ html[data-theme="dark"] .text-block a {
   text-underline-offset: 2px;
 }
 
+/* A half-left/half-right pair, folded into one flex row at build time. Widths
+   split by aspect ratio, so the two heights are equal by construction and
+   neither image is cropped. Previously the two sat in fixed 6-column tracks and
+   any ratio mismatch left one short — up to 167px of ragged bottom. */
+.media-pair {
+  grid-column: 1 / -1;
+  display: flex;
+  gap: var(--gutter-pair);
+  align-items: flex-start;
+  max-width: calc(var(--media-max-h) * var(--ar-sum) + var(--gutter-pair));
+  margin-inline: auto;
+}
+
+.media-pair > .media-item {
+  /* min-width:0 is load-bearing: flex items default to min-width:auto, which for
+     a box round a replaced element resolves to its intrinsic width and silently
+     defeats the ratio split. */
+  flex: var(--ar) 1 0;
+  min-width: 0;
+  max-width: none;
+  width: auto;
+  grid-column: auto;
+}
+
 /* Grid column utilities via CSS custom properties */
 [style*="--col-start"] {
   grid-column-start: var(--col-start);
@@ -266,7 +299,10 @@ html[data-theme="dark"] .text-block a {
 
 /* Large screens: narrower media + bigger typography */
 @media (min-width: 1800px) {
-  .project-grid > .media-item:not(:first-child):not([class*="size-"]) {
+  /* Only un-authored media narrows. Without the [style*="--col-"] guard this
+     rule's (0,4,0) beat the inline placement rule's (0,1,0) and flattened every
+     authored layout: vi-kommer-i-fred's triptych, dome-dreaming/04, vista/06. */
+  .project-grid > .media-item:not(:first-child):not([class*="size-"]):not([style*="--col-"]) {
     grid-column: 2 / 12;
   }
 
@@ -302,6 +338,12 @@ html[data-theme="dark"] .text-block a {
     margin-left: 0;
     margin-right: 0;
     width: 100%;
+  }
+
+  .media-pair {
+    flex-direction: column;
+    gap: var(--gutter-row);
+    max-width: none;
   }
 
   [style*="--col-start"] {
