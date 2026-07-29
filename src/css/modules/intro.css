@@ -147,17 +147,13 @@ html[data-theme="dark"] .intro-text .intro-logo img {
   }
 }
 
-/* Only on touch phones do the links move above the wall: there the stack is a
-   long scroll and they'd be stranded past every strip. Any pointer device keeps
-   them under the wall, however narrow the window. #content is a flex column on
-   home, so this is pure ordering — no markup moves. */
+/* Mobile: left-aligned to the same edge as the intro copy. margin-inline must
+   be reset too — the auto margins that centre the box in the flex column were
+   leaving a 3px sliver on the left, so the text sat 3px off the intro. */
 @media (hover: none) and (orientation: portrait) {
-  body[data-route="home"] .intro-links {
-    order: 3;
-  }
-
-  body[data-route="home"] #strips {
-    order: 4;
+  .intro-links {
+    text-align: left;
+    margin-inline: 0;
   }
 }
 

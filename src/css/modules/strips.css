@@ -261,32 +261,6 @@
   html[data-theme="dark"] .strip-placeholder .strip-label {
     color: color-mix(in srgb, var(--text-primary) 55%, var(--bg-primary));
   }
-
-  /* Placeholders are always a contiguous run at the end, so the one following a
-     real project heads the group and carries the marker for all of them. */
-  .strip:not(.strip-placeholder) + .strip-placeholder::before {
-    content: "Coming";
-    position: absolute;
-    top: 0;
-    left: 0;
-    z-index: 2;
-    padding: var(--spacing-sm) calc(var(--spacing-sm) * 1.5) var(--spacing-sm) var(--spacing-sm);
-    background: var(--bg-primary);
-    border-radius: var(--strip-mobile-radius) 0 calc(var(--strip-mobile-radius) - 1px) 0;
-    color: color-mix(in srgb, var(--text-primary) 55%, var(--bg-primary));
-    font-size: var(--font-size-xs);
-    letter-spacing: var(--letter-spacing-wide);
-    text-transform: uppercase;
-    line-height: var(--line-height-tight);
-    white-space: nowrap;
-    pointer-events: none;
-  }
-
-  /* Give that first row the height back so the marker and the title don't collide */
-  .strip:not(.strip-placeholder) + .strip-placeholder {
-    height: var(--strip-mobile-height);
-    min-height: var(--strip-mobile-height);
-  }
 }
 
 @media (prefers-reduced-motion: reduce) {
