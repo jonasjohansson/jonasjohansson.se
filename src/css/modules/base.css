@@ -12,6 +12,11 @@ html {
   overflow-y: auto;
   margin: 0;
   padding: 0;
+  /* The canopy overlay spans the document, not past its ends. Rubber-band
+     overscroll exposes a strip of unlit background beyond them, and next to the
+     lit page that strip reads as a shade over everything else. No bounce, no
+     strip. */
+  overscroll-behavior-y: none;
 }
 
 html.transition-lock {

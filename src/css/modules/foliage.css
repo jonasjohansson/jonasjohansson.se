@@ -1,0 +1,42 @@
+:root {
+  /* Overhang past the viewport. `overscroll-behavior-y: none` on <html> stops
+     the bounce that this guards against, so this only has to cover smaller
+     cases — a mobile URL bar collapsing, a mid-drag resize. */
+  --foliage-bleed: 80px;
+}
+
+/* Foliage shadow overlay — dappled canopy light over the whole page.
+
+   A single pass, above the entire stack. This was once two passes bracketing
+   the media layer so photographs took less light than paper, but unequal light
+   makes islands: the header's opaque title box sat above both passes, stayed
+   pure white against a shaded page, and read as a rectangle. A shadow falls on
+   whatever is in front of it, so one overlay covers everything — paper, type,
+   pictures, chrome — and every surface takes exactly the same light. */
+/* Positioned IN the document, not pinned to the viewport. A fixed overlay has
+   to be redrawn every frame to keep the light over the same words, and on a
+   compositor-scrolled page that redraw always arrives late — the canopy visibly
+   drags behind the text. As a page element the browser scrolls it natively, so
+   the light is welded to the page for free. It is a window: taller than the
+   viewport, re-placed by JS only when scrolling nears an edge. Geometry (top,
+   left, width, height) is owned by foliage.js — it depends on viewport size. */
+.foliage-canvas {
+  position: absolute;
+  pointer-events: none;
+  z-index: var(--z-foliage);
+  mix-blend-mode: multiply;
+  /* Open canopy multiplies by exactly 1.0, so strength only ever deepens the
+     shadows — the page's white stays white however far this is pushed */
+  opacity: 0.78;
+}
+
+/* On a dark ground shadows vanish; the shader paints faint warm light pools instead */
+html[data-theme="dark"] .foliage-canvas {
+  mix-blend-mode: screen;
+}
+
+/* A lost WebGL context leaves a black buffer, which would multiply the page
+   out; the overlay drops until the context is back and drawing again */
+.foliage-canvas.is-lost {
+  display: none;
+}

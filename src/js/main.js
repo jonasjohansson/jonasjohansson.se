@@ -6,6 +6,7 @@ import { getCurrentRoute } from "./utils/routeUtils.js";
 import { initXylophone, stepMelody } from "./xylophone.js";
 import { melodyPlayer } from "./melody.js";
 import { initIntro, hideIntro, showIntro } from "./intro.js";
+import { initFoliage } from "./foliage.js";
 // Wire up router hooks
 router.registerHooks({
   resetFilters,
@@ -111,6 +112,9 @@ async function initializeApp() {
 
   // Initialize intro section
   initIntro();
+
+  // Dappled foliage shadows over the page (no-op without WebGL)
+  initFoliage();
 
   // Show intro immediately on the home route (don't wait for image preload)
   if (route === "home") {
