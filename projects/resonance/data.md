@@ -30,11 +30,11 @@ blocks:
       drone-scanned to build a digital replica. Built together with
       [Rose Hallgren](https://rosehallgren.se/).
   - type: image
-    src: 03.png
+    src: 03.jpg
   - type: image
-    src: 04.png
+    src: 04.jpg
   - type: image
-    src: 05.png
+    src: 05.jpg
   - type: credits
     credits:
       - "Made with: [Smash Studio](https://www.smash.studio/), [Rose Hallgren](https://rosehallgren.se/)"
