@@ -188,7 +188,8 @@ figure {
 /* Drop the trailing margin when a text block is the last thing before the
    credits, so the gap above credits matches the gap below it. */
 .text-block:has(+ .text-block),
-.text-block:has(+ .credits-block) {
+.text-block:has(+ .credits-block),
+.text-block:has(+ .presskit-block) {
   margin-bottom: 0;
 }
 
@@ -249,6 +250,24 @@ html[data-theme="dark"] .text-block a {
 }
 
 .credits-list a {
+  color: inherit;
+  text-decoration: underline;
+  text-underline-offset: 2px;
+}
+
+.presskit-block {
+  font-size: var(--font-size-small);
+  opacity: 0.7;
+  text-align: center;
+  margin: var(--spacing-4xl) 0 0;
+  grid-column: 1 / -1;
+}
+
+.credits-block + .presskit-block {
+  margin-top: 0;
+}
+
+.presskit-block a {
   color: inherit;
   text-decoration: underline;
   text-underline-offset: 2px;
@@ -381,8 +400,13 @@ html[data-theme="dark"] .text-block a {
 
   /* The 7.5rem breaks above credits and below the project are too much on
      mobile; bring them down to 2rem (kept matched so credits stays even). */
-  .credits-block {
+  .credits-block,
+  .presskit-block {
     margin-top: var(--spacing-xl);
+  }
+
+  .credits-block + .presskit-block {
+    margin-top: 0;
   }
 
   #projects {
@@ -390,7 +414,8 @@ html[data-theme="dark"] .text-block a {
   }
 
   /* Left-align credits to match the body copy (centred looks off-axis) */
-  .credits-list {
+  .credits-list,
+  .presskit-block {
     text-align: left;
   }
 }

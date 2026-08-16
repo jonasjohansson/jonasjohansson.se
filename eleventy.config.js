@@ -464,7 +464,7 @@ export default function (eleventyConfig) {
       try {
         const fileContent = readFileSync(dataMdPath, "utf8");
         const parsed = matter(fileContent);
-        const { title, date, tags = [], blocks = [], printable = true } = parsed.data;
+        const { title, date, tags = [], blocks = [], printable = true, presskit: presskitRaw } = parsed.data;
 
         const year = date ? new Date(date).getFullYear() : new Date().getFullYear();
         const isoDate = date ? new Date(date).toISOString() : null;
@@ -555,7 +555,12 @@ export default function (eleventyConfig) {
           ogImage = await processOgImage(firstImageSrc, dir);
         }
 
-        projectContent[dir] = { title: projectTitle, tags, year, date: isoDate, content: paired, printable, heroImage, ogImage };
+        const presskit =
+          typeof presskitRaw === "string" && /^https?:\/\//i.test(presskitRaw.trim())
+            ? presskitRaw.trim()
+            : null;
+
+        projectContent[dir] = { title: projectTitle, tags, year, date: isoDate, content: paired, printable, heroImage, ogImage, presskit };
       } catch (err) {}
     }
     return projectContent;

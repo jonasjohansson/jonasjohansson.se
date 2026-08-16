@@ -86,6 +86,11 @@ eleventyComputed:
       {% endif %}
 
       {% endfor %}
+      {% if projectContent[project.slug].presskit %}
+      <p class="presskit-block">
+        <a href="{{ projectContent[project.slug].presskit }}" target="_blank" rel="noopener noreferrer">Press kit</a>
+      </p>
+      {% endif %}
     </div>
   </section>
 </div>
