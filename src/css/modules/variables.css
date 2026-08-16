@@ -56,10 +56,6 @@
   --z-content: 100;
   --z-header: 300;
   --z-loading: 400; /* top of the stack; the focused skip link sits at +1 */
-  /* The canopy light sits above the page but below the loading veil, so every
-     surface — paper, type, photography, header — takes the same shadow and
-     nothing reads as an unlit island */
-  --z-foliage: 350;
 }
 
 /* Dark mode (time-based: 18:00–07:00) */
