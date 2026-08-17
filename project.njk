@@ -10,13 +10,13 @@ eleventyComputed:
   title: "{{ project.title }}"
 ---
 
-<div
-  id="projects"
-  class="projects-container">
-  <section
-    class="project visible"
-    id="{{ project.slug }}"
-    data-project="{{ project.slug }}">
+{# The #projects wrapper lives in the layout so that it exists on every route,
+   including the home page, and a client-side navigation always has somewhere to
+   append a fetched section. #}
+<section
+  class="project visible"
+  id="{{ project.slug }}"
+  data-project="{{ project.slug }}">
     <h1 class="project-title">{{ projectContent[project.slug].title }}</h1>
     <div class="project-grid">
       {# The figure markup is repeated rather than factored into a macro:
@@ -92,5 +92,4 @@ eleventyComputed:
       </p>
       {% endif %}
     </div>
-  </section>
-</div>
+</section>

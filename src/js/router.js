@@ -13,9 +13,11 @@ function resetProjectColors() {
   document.documentElement.style.removeProperty("--project-accent-color-dark");
 }
 
-// Remove all existing project containers from the DOM
+// Empty the project container without removing it. #projects owns the spacing
+// below a project, its min-height, its background and the .project-visible
+// opacity rule, so it has to survive navigation for a fetched project to look
+// the same as a server-rendered one.
 function clearExistingProjects() {
-  document.querySelectorAll("#projects").forEach((el) => el.remove());
   document.querySelectorAll("section[data-project], .project.visible").forEach((el) => el.remove());
 }
 
@@ -176,15 +178,18 @@ class SPARouter {
 
       clearExistingProjects();
 
-      // Create new project container
+      // Put the section inside #projects, exactly where the server renders it.
+      // The spacing below a project, its min-height, background and the
+      // .project-visible opacity rule all hang off #projects, so a section
+      // inserted anywhere else silently loses all four.
       let currentProjects;
-      const stripsElement = document.getElementById("strips");
-      if (stripsElement?.parentNode) {
+      const projectsContainer = document.getElementById("projects");
+      if (projectsContainer) {
         const tempDiv = document.createElement("div");
         tempDiv.innerHTML = projectContentHTML;
         const projectContent = tempDiv.firstElementChild;
         projectContent.style.opacity = "0";
-        stripsElement.parentNode.insertBefore(projectContent, stripsElement);
+        projectsContainer.appendChild(projectContent);
         currentProjects = projectContent;
       }
 

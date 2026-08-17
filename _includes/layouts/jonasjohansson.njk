@@ -34,7 +34,14 @@
         {% include "../components/intro.njk" %}
 
         <main id="main">
-          {{ content | safe }}
+          {# The container is rendered on every route, not just project pages, so
+             that a client-side navigation has somewhere to put the fetched
+             section. It carries the spacing below a project, its min-height,
+             background and visibility rules, and hides itself when empty
+             (#projects:not(:has(.project))) — which is the home page. #}
+          <div id="projects" class="projects-container">
+            {{ content | safe }}
+          </div>
         </main>
 
         {% include "../components/strips.njk" %}
