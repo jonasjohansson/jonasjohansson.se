@@ -28,8 +28,8 @@ blocks:
       The ground it sits on is an illustration I had already made: a circular
       botanical scene, seed heads and reeds standing against a low sun. It went
       into the previewer as an example of how a pattern might sit behind the mark,
-      and it was the one they kept. Their lettering and the mouse from the
-      logotype ended up drawn over it in Light Pink, with the sun carried through
+      and it was the one they kept. Their lettering and the mouse at its sewing
+      machine ended up drawn over it in Light Pink, with the sun carried through
       in Ochre Yellow.
 
 
