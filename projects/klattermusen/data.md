@@ -8,10 +8,14 @@ blocks:
     src: 01.jpg
   - type: text
     content: >-
-      A two-metre hand-tufted wall piece for Klättermusens Verkstad, its palette
-      settled in a browser before a single loop was punched.
+      A two-metre hand-tufted wall piece for Klättermusens Verkstad, the outdoor
+      brand's mark drawn over a botanical landscape of mine.
   - type: image
     src: 02.jpg
+    size: half-left
+  - type: image
+    src: 03.jpg
+    size: half-right
   - type: text
     fontSize: small
     content: >-
@@ -21,17 +25,23 @@ blocks:
       They wanted their mark tufted at two by two metres for the wall of the space.
 
 
-      Rather than send a flat mockup, I built them a previewer. It recolours
+      The ground it sits on is an illustration I had already made: a circular
+      botanical scene, seed heads and reeds standing against a low sun. It went
+      into the previewer as an example of how a pattern might sit behind the mark,
+      and it was the one they kept. Their lettering and the mice from the logotype
+      ended up drawn over it in Light Pink, with the sun carried through in Ochre
+      Yellow.
+
+
+      Rather than send a flat mockup, I built them that previewer. It recolours
       artwork into real yarn, simulates how cut pile will render it, tallies the
       cones to order, and drops the result into a photograph of the wall it was
-      headed for. Their logo went in as the line work; the ground behind it is one
-      of my own botanical illustrations, bundled into the tool as a background
-      pattern. The palette was settled by playing with it: Salmon, Ochre Yellow,
-      Aubergine Purple, Maple Brown, and a Light Pink for the lettering.
-  - type: image
-    src: 03.jpg
+      headed for. The rest of the palette was settled by playing with it: Salmon,
+      Aubergine Purple and Maple Brown.
   - type: image
     src: 04.jpg
+  - type: image
+    src: 05.jpg
   - type: text
     fontSize: small
     content: >-
@@ -44,11 +54,11 @@ blocks:
       tufting gun punches from the back and every letter has to be drawn in
       reverse. Then 14 mm of cut pile, glued and trimmed.
   - type: image
-    src: 05.jpg
-  - type: image
     src: 06.jpg
   - type: image
     src: 07.jpg
+  - type: image
+    src: 08.jpg
   - type: text
     fontSize: small
     content: >-
@@ -61,11 +71,11 @@ blocks:
       first mount left it very slightly askew, so a second set carries an offset
       to correct it.
   - type: image
-    src: 08.jpg
-  - type: image
     src: 09.jpg
   - type: image
     src: 10.jpg
+  - type: image
+    src: 11.jpg
   - type: credits
     credits:
       - "Made with: [Rose Hallgren](https://rosehallgren.se/)"
