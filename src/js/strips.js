@@ -193,8 +193,15 @@ export function initializeStrips({ animate = true } = {}) {
     }
     shuffledStrips = [...orderedStrips, ...placeholderStrips];
 
+    // Clear inline state left by a previous run. The strips are deliberately
+    // NOT detached here: insertStripsIntoDOM moves them through a
+    // DocumentFragment, which reorders them in a single synchronous step.
+    // Removing them and reattaching in a later frame left the wall empty in
+    // between, and requestAnimationFrame does not fire in a tab that loaded
+    // hidden — a cmd-clicked link, a session restored at startup — so the
+    // strips never came back. It also set strips-initialized only in the async
+    // tail, long after the guard in router.js reads it.
     shuffledStrips.forEach((strip) => {
-      strip.remove();
       strip.removeAttribute("data-index");
       strip.style.removeProperty("height");
       strip.style.removeProperty("opacity");
@@ -202,31 +209,28 @@ export function initializeStrips({ animate = true } = {}) {
       strip.style.removeProperty("animation");
     });
 
-
     stripsContainer.style.display = "";
 
-    requestAnimationFrame(() => {
-      insertStripsIntoDOM(shuffledStrips, stripsContainer);
+    insertStripsIntoDOM(shuffledStrips, stripsContainer);
 
-      allStrips = shuffledStrips;
-      stripImages = Array.from(stripsContainer.querySelectorAll(".strip-image"));
+    allStrips = shuffledStrips;
+    stripImages = Array.from(stripsContainer.querySelectorAll(".strip-image"));
 
-      // Lazy-load images via IntersectionObserver instead of preloading all
-      stripImages.forEach((img) => imageObserver.observe(img));
+    // Lazy-load images via IntersectionObserver instead of preloading all
+    stripImages.forEach((img) => imageObserver.observe(img));
 
-      attachStripEventListeners();
-      if (animate) {
-        animateStripsIn(shuffledStrips, stripsContainer);
-      } else {
-        shuffledStrips.forEach((strip) => strip.classList.add("strip-visible"));
-        stripsContainer.classList.add("strips-initialized");
-        document.body.classList.add("strips-initialized");
-      }
-      playStripVideos(stripsContainer);
-      // Recount now that the strips are back in the document — the count reads
-      // computed styles, which say nothing while the nodes are detached.
-      filterProjects();
-    });
+    attachStripEventListeners();
+    if (animate) {
+      animateStripsIn(shuffledStrips, stripsContainer);
+    } else {
+      shuffledStrips.forEach((strip) => strip.classList.add("strip-visible"));
+      stripsContainer.classList.add("strips-initialized");
+      document.body.classList.add("strips-initialized");
+    }
+    playStripVideos(stripsContainer);
+    // Recount now that the strips are in their final order — the count reads
+    // computed styles.
+    filterProjects();
   } else {
     stripImages = Array.from(stripsContainer.querySelectorAll(".strip-image"));
 
