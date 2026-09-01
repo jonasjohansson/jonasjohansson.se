@@ -104,13 +104,4 @@ blocks:
       fabrication and architecture to sound design and creative coding. We
       have also run an internship programme with students from Beckmans and
       Hyper Island.
-  - type: credits
-    credits:
-      - "Jonas Johansson"
-      - "Olle Bjerkås"
-      - "Per-Olov Jernberg"
-      - "Servando Barreiro"
-      - "[Rose Hallgren](https://rosehallgren.se/)"
-      - "Elias Aabjerg"
-      - "Lior Nønne Malue Hansen"
 ---
