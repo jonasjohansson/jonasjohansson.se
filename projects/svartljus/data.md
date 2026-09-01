@@ -72,6 +72,32 @@ blocks:
   - type: text
     fontSize: small
     content: >-
+      In September 2025 we lit Unreal Fest Stockholm, Epic Games' developer
+      event, produced by [Happy Times](https://happytimes.se), at Fållan in
+      Slakthusområdet. We brought three pieces. Minigun stood alone in the
+      yard, three-metre LED tubes splayed out of a single base like a barrel
+      assembly, each tube its own set of channels, running a gradient from
+      white down to fire. Countdown held the clock in a pixel font drawn on a
+      16x16 grid, lit inside a hard-angled frame on the brick, and it kept
+      counting while the hall filled up behind it. The third was
+      [Facing Worlds](/facing-worlds/), a sticker you point a phone at.
+  - type: image
+    src: 13.jpg
+    size: half-left
+  - type: image
+    src: 14.jpg
+    size: half-right
+  - type: image
+    src: 15.jpg
+  - type: image
+    src: 16.jpg
+    size: half-left
+  - type: image
+    src: 17.jpg
+    size: half-right
+  - type: text
+    fontSize: small
+    content: >-
       The core group is now seven: myself, Olle Bjerkås, Per-Olov Jernberg,
       Servando Barreiro, [Rose Hallgren](https://rosehallgren.se/), Elias
       Aabjerg, and Lior Nønne Malue Hansen, each bringing skills from metal
