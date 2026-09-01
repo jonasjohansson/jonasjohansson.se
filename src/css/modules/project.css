@@ -286,20 +286,30 @@ html[data-theme="dark"] .text-block a {
   text-underline-offset: 2px;
 }
 
-/* A half-left/half-right pair, folded into one flex row at build time. Widths
-   split by aspect ratio, so the two heights are equal by construction and
-   neither image is cropped. Previously the two sat in fixed 6-column tracks and
-   any ratio mismatch left one short — up to 167px of ragged bottom. */
-.media-pair {
+/* Neighbouring media folded into one flex row at build time — an authored
+   half-left/half-right pair, or a run of uprights the author left alone. Widths
+   split by aspect ratio, so every height in the row is equal by construction and
+   nothing is cropped. Previously a pair sat in fixed 6-column tracks and any
+   ratio mismatch left one short — up to 167px of ragged bottom.
+   The ceiling adds the gutters back on because --ar-sum only describes the
+   pictures: a row of n carries n-1 of them. */
+.media-row {
   grid-column: 1 / -1;
   display: flex;
   gap: var(--gutter-pair);
   align-items: flex-start;
-  max-width: calc(var(--media-max-h) * var(--ar-sum) + var(--gutter-pair));
+  max-width: calc(
+    var(--media-max-h) * var(--ar-sum) + var(--gutter-pair) * var(--gutters, 1)
+  );
   margin-inline: auto;
 }
 
-.media-pair > .media-item {
+/* Two selectors, one rule. The row's first picture is :first-child, so the cap
+   above never matched it and the plain (0,2,0) selector is enough; pictures two
+   onward do match it at (0,3,0), so they need the longer form to win. That cap
+   never bound while a row held two landscapes — with three uprights it does. */
+.media-row > .media-item,
+.media-row > .media-item:not(.hero):not(:first-child) {
   /* min-width:0 is load-bearing: flex items default to min-width:auto, which for
      a box round a replaced element resolves to its intrinsic width and silently
      defeats the ratio split. */
@@ -374,7 +384,7 @@ html[data-theme="dark"] .text-block a {
     width: calc(100% + 2 * var(--bleed));
   }
 
-  .media-pair {
+  .media-row {
     flex-direction: column;
     gap: var(--gutter-row);
     max-width: none;

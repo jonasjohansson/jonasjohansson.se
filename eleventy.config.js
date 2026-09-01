@@ -531,19 +531,59 @@ export default function (eleventyConfig) {
             return null;
           }))).filter(Boolean);
 
-        // Fold half-left/half-right neighbours into one pair, so their widths can
-        // be split by aspect ratio and their heights match by construction rather
-        // than by the author matching source ratios by eye.
+        // Fold neighbouring media into one row, so their widths can be split by
+        // aspect ratio and their heights match by construction rather than by the
+        // author matching source ratios by eye.
+        //
+        // Two ways in. An authored half-left/half-right pair, as before; and any
+        // run of upright neighbours the author did not place, automatically —
+        // stacked, those read as one tall column of narrow pictures and a beat of
+        // the story costs several screens. Side by side they read as a row.
+        const ROW_MAX = 4;
+
+        const makeRow = (items) => ({
+          type: "row",
+          items,
+          arSum: +items.reduce((sum, it) => sum + it.ar, 0).toFixed(4),
+          // The track has one gutter fewer than it has pictures; the CSS ceiling
+          // needs the count because it adds them back onto the ratio sum.
+          gutters: items.length - 1,
+        });
+
+        // Balanced rather than greedy: five uprights make 3+2, not 4+1, so a run
+        // never ends on an orphan.
+        const chunk = (items) => {
+          const rows = Math.ceil(items.length / ROW_MAX);
+          const size = Math.ceil(items.length / rows);
+          const out = [];
+          for (let k = 0; k < items.length; k += size) out.push(items.slice(k, k + size));
+          return out;
+        };
+
+        // The hero is never folded (i > 0), nor is anything carrying an authored
+        // size or column placement — those are deliberate and stay put.
+        const foldable = (b, i) =>
+          i > 0 && b?.type === "image" && !b.size && !b.colStart && b.ar && b.ar <= 1;
+
         const paired = [];
         for (let i = 0; i < content.length; i++) {
           const a = content[i];
           const b = content[i + 1];
           if (a?.size === "half-left" && b?.size === "half-right" && a.ar && b.ar) {
-            paired.push({ type: "pair", items: [a, b], arSum: +(a.ar + b.ar).toFixed(4) });
+            paired.push(makeRow([a, b]));
             i++;
-          } else {
-            paired.push(a);
+            continue;
           }
+          if (foldable(a, i)) {
+            let j = i;
+            while (foldable(content[j + 1], j + 1)) j++;
+            if (j > i) {
+              for (const items of chunk(content.slice(i, j + 1))) paired.push(makeRow(items));
+              i = j;
+              continue;
+            }
+          }
+          paired.push(a);
         }
 
         // Process hero image for OG tags

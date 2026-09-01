@@ -24,10 +24,10 @@ eleventyComputed:
          synchronous, so calling it inside one silently renders nothing. #}
       {% for block in projectContent[project.slug].content %}
 
-      {% if block.type == 'pair' %}
-      <div class="media-pair" style="--ar-sum: {{ block.arSum }}">
+      {% if block.type == 'row' %}
+      <div class="media-row" style="--ar-sum: {{ block.arSum }}; --gutters: {{ block.gutters }}">
         {% for item in block.items %}
-        <figure class="media-item size-{{ item.size }}" style="--ar: {{ item.ar }}">
+        <figure class="media-item{% if item.size %} size-{{ item.size }}{% endif %}" style="--ar: {{ item.ar }}">
           {% responsiveImage item.src, item.alt, "media-img" %}
           {% if item.caption %}
           <figcaption class="media-caption">

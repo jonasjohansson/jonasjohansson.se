@@ -56,9 +56,9 @@ blocks:
   - type: image
     src: 06.jpg
   - type: image
-    src: 07.jpg
-  - type: image
     src: 08.jpg
+  - type: image
+    src: 07.jpg
   - type: text
     fontSize: small
     content: >-
