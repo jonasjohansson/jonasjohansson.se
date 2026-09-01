@@ -138,11 +138,22 @@
   #strips {
     flex-direction: column;
     touch-action: pan-x;
+    /* Rows carry a height floor now, so the wall has to be free to grow past
+       one screen. With the fixed height it kept, twenty-odd projects divided
+       100dvh between them and each landed at ~50px — a sliver, not an image.
+       height:auto still lets overflow:hidden clip the corner radius, because
+       an auto box never has content taller than itself. */
+    height: auto;
+    min-height: calc(100vh - var(--spacing-lg) * 2);
+    min-height: calc(100dvh - var(--spacing-lg) * 2);
   }
 
   .strip {
     height: auto;
-    min-height: 0;
+    /* A floor rather than a fixed height: filtered down to a handful, the rows
+       still share the screen between them; the full wall stacks past it. */
+    min-height: var(--strip-row-min);
+    flex: 1 1 auto;
     margin-left: 0;
     margin-top: -1px;
   }

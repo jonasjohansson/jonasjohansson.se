@@ -1,9 +1,9 @@
 /* CSS Variables */
 :root {
   /* Colors */
-  --color-white: #f0f0f0;
-  --color-black: #252525;
-  --color-gray: #555555;
+  --color-white: #e8e4dd;
+  --color-black: #221f1c;
+  --color-gray: #565049;
   --bg-primary: var(--color-white);
   --text-primary: var(--color-black);
 
@@ -28,6 +28,8 @@
   --radius-media: 4px;
 
   /* Strips */
+  --strip-row-min: 6rem; /* floor on a stacked strip row: short (filtered) lists still
+                            grow to fill the screen, long ones scroll past it */
   --strip-mobile-height: 8rem; /* row height for stacked strips on touch devices */
   --strip-mobile-radius: 6px; /* corner rounding on stacked strips and their title labels */
   --strip-placeholder-height-scale: 0.55; /* unmade projects sit as shorter rows than finished work */
@@ -36,11 +38,11 @@
   --font-family: "SeasonMix", system-ui, -apple-system, Segoe UI, Roboto, Helvetica, Arial, sans-serif;
   --font-size-base: 16px;
   /* Type scale — strictly monotonic (xs < small < medium < large at every width) */
-  --font-size-xs: 0.8rem;
-  --font-size-small: clamp(0.95rem, 0.8rem + 0.7vw, 1.35rem);
-  --font-size-medium: clamp(1.3rem, 1rem + 1.2vw, 1.9rem);
-  --font-size-large: clamp(1.6rem, 1.2rem + 1.8vw, 2.6rem);
-  --font-size-intro: clamp(1.05rem, 0.5rem + 1vw + 0.3vh, 1.8rem);
+  --font-size-xs: 0.86rem;
+  --font-size-small: clamp(1.03rem, 0.86rem + 0.76vw, 1.46rem);
+  --font-size-medium: clamp(1.4rem, 1.08rem + 1.3vw, 2.05rem);
+  --font-size-large: clamp(1.73rem, 1.3rem + 1.94vw, 2.81rem);
+  --font-size-intro: clamp(1.13rem, 0.54rem + 1.08vw + 0.32vh, 1.94rem);
   --letter-spacing-base: 0;
   --letter-spacing-wide: 0.04em; /* uppercase header/subtitle tracking */
   --letter-spacing-wider: 0;

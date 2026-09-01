@@ -98,21 +98,25 @@ figure {
   padding: var(--spacing-xl);
 }
 
-/* Hero media items */
+/* Hero media items — full bleed. Two paddings sit between the grid and the
+   viewport: .project-grid's own --spacing-xl and #content's --spacing-lg. The
+   hero has to clear both, hence the sum in --bleed; clearing only the grid's
+   left a 24px gutter and the image read as a card rather than the page. */
 .project-grid > .media-item:first-child,
 .project-grid > .media-item.hero {
+  --bleed: calc(var(--spacing-lg) + var(--spacing-xl));
   overflow: hidden;
-  border-radius: var(--radius-md);
-  height: calc(100vh - var(--spacing-lg) * 2);
-  height: calc(100dvh - var(--spacing-lg) * 2);
-  min-height: calc(100vh - var(--spacing-lg) * 2);
-  min-height: calc(100dvh - var(--spacing-lg) * 2);
-  max-height: calc(100vh - var(--spacing-lg) * 2);
-  max-height: calc(100dvh - var(--spacing-lg) * 2);
-  margin-top: calc(-1 * var(--spacing-xl));
-  margin-left: calc(-1 * var(--spacing-xl));
-  margin-right: calc(-1 * var(--spacing-xl));
-  width: calc(100% + 2 * var(--spacing-xl));
+  border-radius: 0;
+  height: 100vh;
+  height: 100dvh;
+  min-height: 100vh;
+  min-height: 100dvh;
+  max-height: 100vh;
+  max-height: 100dvh;
+  margin-top: calc(-1 * var(--bleed));
+  margin-left: calc(-1 * var(--bleed));
+  margin-right: calc(-1 * var(--bleed));
+  width: calc(100% + 2 * var(--bleed));
   max-width: none;
   position: relative;
   scroll-snap-align: start;
@@ -155,6 +159,15 @@ figure {
 .media-item:not(.hero):not(:first-child) {
   max-width: calc(var(--media-max-h) * var(--ar, 999));
   justify-self: center;
+}
+
+/* Anything wider than tall spans the whole track, so the left edge is flush
+   down the page instead of every picture landing at its own height-derived
+   width. Portrait and square keep the ceiling above and stay centred.
+   The class is stamped at build time (project.njk) because CSS cannot compare
+   --ar's value against 1 — only multiply by it. */
+.media-item.wide:not(.hero):not(:first-child) {
+  max-width: none;
 }
 
 .media-item picture {
@@ -350,13 +363,15 @@ html[data-theme="dark"] .text-block a {
     padding-inline: 0;
   }
 
-  /* Grid padding-inline is now 0, so media no longer needs to break out;
-     hero + images sit at the same 24px gutter as the text. */
+  /* Grid padding-inline is 0 here, so #content's gutter is the only thing left
+     between the hero and the screen edge. In-body images keep that gutter; the
+     hero alone breaks through it. */
   .project-grid > .media-item:first-child,
   .project-grid > .media-item.hero {
-    margin-left: 0;
-    margin-right: 0;
-    width: 100%;
+    --bleed: var(--spacing-lg);
+    margin-left: calc(-1 * var(--bleed));
+    margin-right: calc(-1 * var(--bleed));
+    width: calc(100% + 2 * var(--bleed));
   }
 
   .media-pair {
