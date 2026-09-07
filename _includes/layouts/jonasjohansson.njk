@@ -1,57 +1,36 @@
 <!DOCTYPE html>
-<html lang="en"{% if project %} data-project="{{ project.slug }}"{% endif %}>
+<html lang="en"{% if project %} data-project="{{ project.slug }}"{% if project.color %} style="--project-color: {{ project.color }}"{% endif %}{% endif %}>
   <head>
     {% include "../components/metadata.njk" %}
-
-    <link
-      rel="stylesheet"
-      href="{{ 'styles.css' | viteAsset | url }}" />
-
-    {% include "../components/app-data.njk" %}
-
     <script>
-      (function() {
-        var h = new Date().getHours();
-        if (h >= 18 || h < 7) document.documentElement.setAttribute('data-theme', 'dark');
+      (function () {
+        var dark = matchMedia('(prefers-color-scheme: dark)').matches;
+        document.documentElement.dataset.theme = dark ? 'dark' : 'light';
       })();
     </script>
+    <link rel="stylesheet" href="{{ 'styles.css' | viteAsset | url }}">
+    {% include "../components/app-data.njk" %}
   </head>
-  <body>
-    {% include "../components/route-init.njk" %}
-
-    <!-- Skip to content link for keyboard users -->
+  <body data-route="{{ 'project' if project else 'home' }}">
     <a href="#main" class="skip-link">Skip to content</a>
-
-    <!-- Live region for SPA navigation announcements -->
     <div id="route-announcer" class="sr-only" aria-live="polite" aria-atomic="true"></div>
-
     {% include "../components/header.njk" %}
-
-      <div id="content">
-        {% if not project %}
-        <h1 class="sr-only">Jonas Johansson — artist, educator and designer</h1>
-        {% endif %}
-        {% include "../components/intro.njk" %}
-
-        <main id="main">
-          {# The container is rendered on every route, not just project pages, so
-             that a client-side navigation has somewhere to put the fetched
-             section. It carries the spacing below a project, its min-height,
-             background and visibility rules, and hides itself when empty
-             (#projects:not(:has(.project))) — which is the home page. #}
-          <div id="projects" class="projects-container">
-            {{ content | safe }}
-          </div>
-        </main>
-
-        {% include "../components/strips.njk" %}
-
-        {% include "../components/intro-links.njk" %}
+    <div id="navigation-status" class="navigation-status" hidden>
+      <p id="navigation-message" role="status"></p>
+      <div id="navigation-actions" hidden>
+        <button type="button" id="navigation-retry">Try again</button>
+        <a id="navigation-fallback">Open page</a>
+        <button type="button" id="navigation-dismiss">Dismiss</button>
       </div>
-
-
-    <script
-      type="module"
-      src="{{ 'main.js' | viteAsset | url }}"></script>
+    </div>
+    <div id="content">
+      <main id="main" tabindex="-1">
+        {% include "../components/intro.njk" %}
+        <div id="projects" class="projects-container">{{ content | safe }}</div>
+        {% include "../components/strips.njk" %}
+      </main>
+      {% include "../components/intro-links.njk" %}
+    </div>
+    <script type="module" src="{{ 'main.js' | viteAsset | url }}"></script>
   </body>
 </html>

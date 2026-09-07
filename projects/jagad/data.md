@@ -6,7 +6,9 @@ tags:
   - av
 blocks:
   - type: image
-    src: 01.jpg
+    src: joystick-hero.png
+    mobileSrc: joystick-original.jpg
+    alt: "A hand grips a glowing arcade joystick under blue and purple light, reflected in the controller’s glossy surface."
   - type: text
     content: >-
       For three nights, a building in central Stockholm became a five-storey,
@@ -23,16 +25,22 @@ blocks:
       pavement, hunting roaming celebrity avatars across the facade. Catch one
       and the whole road network flooded with your colour. High scores and
       player names were projected straight back onto the wall.
+  - type: image
+    src: 01-corrected.png
+    alt: "Brightly outlined windows turn a five-storey Stockholm facade into a glowing arcade game at night."
   - type: video
     src: 09.webm
+    alt: "The Jagad title and a countdown appear across the building’s windows before the facade becomes a playable arcade."
+    ar: 1.619433
+    poster: 09-poster.jpg
   - type: image
     src: 02.jpg
   - type: image
-    src: 03.jpg
-    size: half-left
-  - type: image
     src: 04.jpg
-    size: half-right
+    ar: 0.75
+  - type: image
+    src: controller-facade-first-frame.png
+    alt: "Glowing arcade joysticks face a Stockholm building covered in colourful game projections across the wet street."
   - type: text
     fontSize: small
     content: >-
@@ -43,9 +51,15 @@ blocks:
       avatar.
   - type: video
     src: 10.webm
+    alt: "A close view of a colourful animated car moving through the illuminated city in Jagad."
+    ar: 1.619433
+    poster: 10-poster.jpg
     size: half-left
   - type: video
     src: 11.webm
+    alt: "An overhead view follows the game through brightly lit streets and rooftops."
+    ar: 1.619433
+    poster: 11-poster.jpg
     size: half-right
   - type: image
     src: 08.jpg

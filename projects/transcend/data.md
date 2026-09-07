@@ -1,11 +1,13 @@
 ---
 title: Transcend
+color: "#cc1c65"
 date: "2017-01-01"
 tags:
   - mixed reality
 blocks:
   - type: image
     src: 01.jpg
+    alt: "Two projected hands reach towards one another across a dark reflective surface."
   - type: text
     content: >-
       An interactive [Pepper's Ghost](https://en.wikipedia.org/wiki/Pepper%27s_ghost)

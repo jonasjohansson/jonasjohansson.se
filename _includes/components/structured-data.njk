@@ -1,0 +1,23 @@
+{% set person = {
+  '@context': 'https://schema.org', '@type': 'Person', '@id': site.url ~ '/#person',
+  'name': site.author, 'url': site.url, 'jobTitle': site.jobTitle,
+  'description': site.description, 'email': site.email,
+  'image': site.url ~ siteOgImage, 'sameAs': site.contact.sameAs, 'knowsAbout': site.tags
+} %}
+<script type="application/ld+json">{{ person | jsonScript | safe }}</script>
+{% set website = {
+  '@context': 'https://schema.org', '@type': 'WebSite',
+  'name': site.title, 'url': site.url, 'description': site.description,
+  'author': { '@id': site.url ~ '/#person' }
+} %}
+<script type="application/ld+json">{{ website | jsonScript | safe }}</script>
+{% if project %}
+{% set work = {
+  '@context': 'https://schema.org', '@type': 'CreativeWork',
+  'name': project.title, 'description': projectContent[project.slug].description,
+  'url': site.url ~ (page.url | url), 'image': ogImage,
+  'datePublished': project.date, 'keywords': project.tags | join(', '),
+  'creator': { '@id': site.url ~ '/#person' }, 'inLanguage': 'en'
+} %}
+<script type="application/ld+json">{{ work | jsonScript | safe }}</script>
+{% endif %}

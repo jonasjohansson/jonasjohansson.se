@@ -1,5 +1,6 @@
 ---
 title: Svartljus
+color: "#b07600"
 date: '2017-01-01'
 tags:
   - light
@@ -7,6 +8,7 @@ tags:
 blocks:
   - type: image
     src: 05.jpg
+    alt: "Glowing circular light rings surround tree trunks in a forest, lighting the branches yellow."
   - type: text
     content: >-
       Svartljus builds modular light installations for forests, festivals, and public spaces.

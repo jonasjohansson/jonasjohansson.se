@@ -1,39 +1,23 @@
-<nav
-  id="strips"
-  aria-label="Projects">
-  {% for project in projectsForJS %} {% set stripImage = project.images[0] %} {% if stripImage and not stripImage.startsWith('/') %} {% set
-  stripImage = '/' ~ stripImage %} {% endif %} {% if project.type == 'placeholder' %}
-  <!-- Work that isn't made yet: an empty slot in the wall, not a link -->
-  <div
-    class="strip strip-placeholder"
-    data-project="{{ project.slug }}"
-    data-project-title="{{ project.title | e('html_attr') }}"
-    data-tags="">
-    <span class="strip-label">Coming: {{ project.title }}</span>
-  </div>
-  {% else %}
-  <a
-    class="strip"
-    href="/{{ project.slug }}/"
-    aria-label="{{ project.title | e('html_attr') }}"
-    data-project="{{ project.slug }}"
-    data-project-title="{{ project.title | e('html_attr') }}"
-    data-tags="{{ project.tags | join(',') }}">
-    {% if project.heroVideo %}
-    <video
-      class="strip-video"
-      src="{{ project.heroVideo }}"
-      playsinline
-      muted
-      loop
-      autoplay
-      preload="auto"
-      aria-hidden="true"></video>
+<section id="collection" class="collection" aria-labelledby="collection-title" data-view="index">
+  <h2 id="collection-title" class="sr-only" tabindex="-1">{% if project %}More projects{% else %}Projects{% endif %}</h2>
+  <nav id="strips" aria-label="Projects">
+    {% for item in collectionItems %}
+    {% if item.upcoming %}
+    <div class="strip strip-upcoming" id="strip-{{ item.slug }}" aria-disabled="true"
+      data-project="{{ item.slug }}">
+      <span class="strip-label">{{ item.title }}</span>
+      <span class="strip-meta">In progress</span>
+    </div>
+    {% else %}
+    <a class="strip" id="strip-{{ item.slug }}" data-project-link
+      href="{{ ('/' ~ item.slug ~ '/') | url }}"
+      data-project="{{ item.slug }}"{% if item.color %} style="--project-color: {{ item.color }}"{% endif %}
+      {% if project and project.slug == item.slug %} hidden{% endif %}>
+      <span class="strip-label">{{ item.title }}</span>
+      <span class="strip-meta">{{ item.tags | join(' · ') }}<span class="strip-year">{{ item.year }}</span></span>
+    </a>
     {% endif %}
-    <div
-      class="strip-image"
-      data-bg-image="{{ stripImage }}"></div>
-    <span class="strip-label">{{ project.title }}</span>
-  </a>
-  {% endif %} {% endfor %}
-</nav>
+    {% endfor %}
+  </nav>
+  <p id="project-count" class="sr-only" aria-live="polite"></p>
+</section>

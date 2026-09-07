@@ -1,5 +1,6 @@
 ---
 title: Resonance
+color: "#4f0396"
 date: '2024-01-01'
 tags:
   - av
@@ -7,6 +8,7 @@ tags:
 blocks:
   - type: image
     src: 01.jpg
+    alt: "Purple, blue and green projections cover Uppsala Town Hall while people gather around a controller in the square."
   - type: text
     content: >-
       Interactive projection mapping on Uppsala Town Hall, where the public

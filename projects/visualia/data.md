@@ -7,6 +7,7 @@ tags:
 blocks:
   - type: image
     src: 01.jpg
+    alt: "Branching blue-white projections illuminate a large boulder beneath the dusk sky."
   - type: text
     content: >-
       An audiovisual artist residency in a former school on the west coast of

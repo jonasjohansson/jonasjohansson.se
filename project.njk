@@ -17,7 +17,7 @@ eleventyComputed:
   class="project visible"
   id="{{ project.slug }}"
   data-project="{{ project.slug }}">
-    <h1 class="project-title">{{ projectContent[project.slug].title }}</h1>
+    <h1 class="project-title" tabindex="-1">{{ projectContent[project.slug].title }}</h1>
     <div class="project-grid">
       {# The figure markup is repeated rather than factored into a macro:
          responsiveImage is an async shortcode and Nunjucks macros are
@@ -28,7 +28,7 @@ eleventyComputed:
       <div class="media-row" style="--ar-sum: {{ block.arSum }}; --gutters: {{ block.gutters }}">
         {% for item in block.items %}
         <figure class="media-item{% if item.size %} size-{{ item.size }}{% endif %}" style="--ar: {{ item.ar }}">
-          {% responsiveImage item.src, item.alt, "media-img" %}
+          {% responsiveImage item.src, item.alt, "media-img", item.sizes %}
           {% if item.caption %}
           <figcaption class="media-caption">
             {% if item.link %}<a href="{{ item.link }}" target="_blank" rel="noopener">{{ item.caption | safe }}</a>{% else %}{{ item.caption | safe }}{% endif %}
@@ -39,9 +39,9 @@ eleventyComputed:
       </div>
 
       {% elif block.type == 'image' %}
-      <figure class="media-item{% if loop.first %} hero{% endif %}{% if block.size %} size-{{ block.size }}{% endif %}{% if block.ar and block.ar >= 1 and not loop.first %} wide{% endif %}"
-        style="{% if block.colStart %}--col-start: {{ block.colStart }}; --col-span: {{ block.colSpan }};{% endif %}{% if block.ar %} --ar: {{ block.ar }};{% endif %}">
-        {% responsiveImage block.src, block.alt, ("media-img lcp" if loop.first else "media-img") %}
+      <figure class="media-item{% if loop.first %} hero hero-{{ block.heroFit }}{% endif %}{% if block.size %} size-{{ block.size }}{% endif %}{% if block.ar and block.ar >= 1 and not loop.first %} wide{% endif %}"
+        style="{% if block.colStart %}--col-start: {{ block.colStart }}; --col-span: {{ block.colSpan }};{% endif %}{% if block.ar %} --ar: {{ block.ar }};{% endif %}{% if loop.first %} --focal: {{ block.focal }}; --mobile-focal: {{ block.mobileFocal }}; --mobile-ar: {{ block.mobileAr }};{% endif %}">
+        {% responsiveImage block.src, block.alt, ("media-img lcp" if loop.first else "media-img"), block.sizes, block.mobileSrc %}
         {% if block.caption %}
         <figcaption class="media-caption">
           {% if block.link %}<a href="{{ block.link }}" target="_blank" rel="noopener">{{ block.caption | safe }}</a>{% else %}{{ block.caption | safe }}{% endif %}
@@ -50,17 +50,20 @@ eleventyComputed:
       </figure>
 
       {% elif block.type == 'video' %}
-      <figure class="media-item{% if loop.first %} hero{% endif %}{% if block.size %} size-{{ block.size }}{% endif %}{% if block.ar and block.ar >= 1 and not loop.first %} wide{% endif %}"
-        style="{% if block.colStart %}--col-start: {{ block.colStart }}; --col-span: {{ block.colSpan }};{% endif %}{% if block.ar %} --ar: {{ block.ar }};{% endif %}">
+      <figure class="media-item{% if loop.first %} hero hero-{{ block.heroFit }}{% endif %}{% if block.size %} size-{{ block.size }}{% endif %}{% if block.ar and block.ar >= 1 and not loop.first %} wide{% endif %}"
+        style="{% if block.colStart %}--col-start: {{ block.colStart }}; --col-span: {{ block.colSpan }};{% endif %}{% if block.ar %} --ar: {{ block.ar }};{% endif %}{% if loop.first %} --focal: {{ block.focal }}; --mobile-focal: {{ block.mobileFocal }}; --mobile-ar: {{ block.mobileAr }};{% endif %}">
         <video
           class="media-video"
           src="{{ block.src | url }}"
           playsinline
           muted
           loop
-          autoplay
-          preload="metadata"
-          aria-hidden="true"></video>
+          {% if not loop.first %}controls{% endif %}
+          preload="none"
+          {% if block.poster %}poster="{{ block.poster }}"{% endif %}
+          aria-label="{{ block.alt }}"
+          data-preview></video>
+        <p class="video-description{% if loop.first or block.hideDescription %} sr-only{% endif %}">{{ block.alt }}</p>
         {% if block.caption %}
         <figcaption class="media-caption">
           {% if block.link %}<a href="{{ block.link }}" target="_blank" rel="noopener">{{ block.caption | safe }}</a>{% else %}{{ block.caption | safe }}{% endif %}

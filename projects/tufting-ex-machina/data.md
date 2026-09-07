@@ -1,5 +1,6 @@
 ---
 title: Tufting Ex Machina
+color: "#f37100"
 date: '2024-01-01'
 tags:
   - education
@@ -7,6 +8,8 @@ tags:
 blocks:
   - type: image
     src: 01.jpg
+    alt: "A child reaches towards a large patchwork of colourful tufted textiles, including flowers, figures and a smiling face."
+    focal: "65% 50%"
   - type: text
     content: >-
       A collaborative [tufting](https://en.wikipedia.org/wiki/Tufting)

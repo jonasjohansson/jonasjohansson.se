@@ -1,5 +1,6 @@
 ---
 title: Eastern City Portal
+color: "#4698d2"
 date: "2024-01-01"
 tags:
   - installation
@@ -7,6 +8,8 @@ tags:
 blocks:
   - type: image
     src: 01.jpg
+    alt: "A carved wooden arch frames the surrounding London buildings, bringing an ornamental doorway into the street."
+    focal: "50% 35%"
   - type: text
     content: >-
       A hybrid sculpture and augmented reality portal for the streets of London.

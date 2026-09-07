@@ -1,5 +1,6 @@
 ---
 title: People in Orbit
+color: "#e16518"
 date: "2023-01-01"
 tags:
   - av
@@ -7,6 +8,8 @@ tags:
 blocks:
   - type: image
     src: 01.jpg
+    alt: "Four views of colourful album artwork combine dense botanical patterns, hand-drawn lettering and circular motifs."
+    heroFit: contain
   - type: text
     content: >-
       Album artwork and live visuals for electroacoustic jazz quintet People in

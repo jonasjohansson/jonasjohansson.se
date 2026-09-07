@@ -15,7 +15,14 @@
     "ogType": "website",
     "ogImage": "/assets/img/jonasjohansson-firestarter.jpg"
   },
-  "tags": ["light", "installation", "education", "av", "mixed reality", "stage"],
+  "tags": [
+    "light",
+    "installation",
+    "education",
+    "av",
+    "mixed reality",
+    "stage"
+  ],
   "location": {
     "addressCountry": "SE",
     "addressRegion": "Stockholm",
@@ -36,5 +43,6 @@
   },
   "jobTitle": "Artist, Educator, Designer",
   "birthDate": "1987",
-  "birthPlace": "Glommen, Halland, Sweden"
+  "birthPlace": "Glommen, Halland, Sweden",
+  "summary": "Artist, designer and educator working with light, technology and play."
 }

@@ -1,267 +1,157 @@
-import { getStripsScrollPosition, getProjectScrollPosition } from "./utils/scrollPosition.js";
-import { getProjectPath } from "./utils/pathBuilder.js";
-import { getPathPrefix } from "./utils/routeUtils.js";
-import { preloadCache } from "./strips.js";
+import { mountMedia } from './media.js';
 
-const projects = window.__PROJECTS_DATA__ || [];
-const pathPrefix = getPathPrefix();
+const prefix = window.__PATH_PREFIX__ || '';
+const homePath = `${prefix}/`;
+const projects = new Map((window.__PROJECTS_DATA__ || []).map(project => [`${prefix}/${project.slug}/`, project]));
+const metadataSelector = 'title, meta[name="description"], link[rel="canonical"], meta[property^="og:"], meta[name^="twitter:"], script[type="application/ld+json"], link[data-hero-preload]';
+const normalized = path => path === `${prefix}/index.html` || path === prefix ? homePath : path.endsWith('/') ? path : `${path}/`;
 
-// Reset project colors to default
-function resetProjectColors() {
-  document.documentElement.style.removeProperty("--project-accent-color");
-  document.documentElement.style.removeProperty("--project-accent-color-light");
-  document.documentElement.style.removeProperty("--project-accent-color-dark");
+function snapshot(doc) {
+  const projectsElement = doc.querySelector('#projects');
+  if (!projectsElement || !doc.querySelector('#intro') || !doc.querySelector('link[rel="canonical"]')) throw new Error('This page could not be loaded.');
+  return { content: projectsElement.innerHTML, metadata: [...doc.querySelectorAll(metadataSelector)].map(el => el.outerHTML).join('') };
 }
 
-// Empty the project container without removing it. #projects owns the spacing
-// below a project, its min-height, its background and the .project-visible
-// opacity rule, so it has to survive navigation for a fetched project to look
-// the same as a server-rendered one.
-function clearExistingProjects() {
-  document.querySelectorAll("section[data-project], .project.visible").forEach((el) => el.remove());
-}
-
-class SPARouter {
+class Router {
   constructor() {
-    this.currentRoute = null;
-    this.initialized = false;
-    this._hooks = {};
+    this.currentPath = normalized(location.pathname);
+    this.cache = new Map([[this.currentPath, snapshot(document)]]);
+    this.generation = 0;
+    this.controller = null;
+    this.pending = false;
+    this.homeReturn = null;
+    this.onCommit = () => {};
   }
 
-  // Register callbacks to decouple router from the strips module
-  registerHooks(hooks) {
-    Object.assign(this._hooks, hooks);
-  }
-
-  init() {
-    if (this.initialized) return;
-    this.initialized = true;
-
-    window.addEventListener("popstate", () => {
-      this.navigate(window.location.pathname, false);
+  init(onCommit) {
+    this.onCommit = onCommit;
+    history.scrollRestoration = 'manual';
+    history.replaceState({ ...history.state, route: this.currentPath }, '', location.href);
+    this.savePosition();
+    let frame;
+    addEventListener('scroll', () => {
+      if (frame || this.pending) return;
+      frame = requestAnimationFrame(() => { frame = null; if (!this.pending) this.savePosition(); });
+    }, { passive: true });
+    document.addEventListener('focusin', () => { if (!this.pending) this.savePosition(); });
+    addEventListener('popstate', event => {
+      this.navigate(location.href, { history: 'pop', restore: event.state });
     });
-
-    this.currentRoute = window.location.pathname;
-  }
-
-  navigate(path, pushState = true) {
-    if (this.currentRoute === path) return;
-
-    if (pushState) {
-      window.history.pushState({ route: path }, "", path);
-    }
-    this.currentRoute = path;
-
-    const relativePath = pathPrefix ? path.replace(pathPrefix, "") : path;
-
-    const normalized = relativePath.replace(/\/$/, "") || "/";
-    if (normalized === "/" || normalized === "/index.html") {
-      this.showHome();
-      this.announce("Home");
-    } else {
-      const slug = normalized.replace(/^\//, "");
-      if (slug) this.showProject(slug);
-    }
-  }
-
-
-  async showHome() {
-    document.documentElement.classList.add("transition-lock");
-    document.body.setAttribute("data-route", "home");
-    document.body.classList.remove("project-visible");
-
-    clearExistingProjects();
-
-    document.body.classList.remove("project-visible");
-    document.documentElement.classList.remove("project-visible");
-
-    document.title = window.__SITE_TITLE__ || "Jonas Johansson";
-
-    // Reset all strip inline styles and classes (from expanded state)
-    const allStrips = document.querySelectorAll(".strip");
-    allStrips.forEach((strip) => {
-      const computedFlexGrow = window.getComputedStyle(strip).flexGrow;
-      strip.style.flexGrow = "";
-      strip.style.zIndex = "";
-      strip.style.opacity = "";
-      strip.style.transition = "";
-      strip.classList.remove("touch-hover", "selected", "not-selected");
-      if (computedFlexGrow !== "1" && computedFlexGrow !== "0") {
-        strip.style.flexGrow = "1";
-      }
+    document.addEventListener('click', event => {
+      if (event.defaultPrevented || event.button !== 0 || event.metaKey || event.ctrlKey || event.shiftKey || event.altKey) return;
+      const anchor = event.target.closest('a[href]');
+      if (!anchor || anchor.target || anchor.hasAttribute('download') || anchor.id === 'navigation-fallback') return;
+      const url = new URL(anchor.href, location.href);
+      if (url.origin !== location.origin || url.search) return;
+      const path = normalized(url.pathname);
+      if (path !== homePath && !projects.has(path)) return;
+      if (path === this.currentPath && url.hash && !anchor.hasAttribute('data-home-link') && !this.pending) return;
+      event.preventDefault();
+      this.navigate(url.href, { returnToCollection: anchor.hasAttribute('data-home-link') });
     });
-
-    this.updateStripVisibility(null);
-
-    window.scrollTo({
-      top: getStripsScrollPosition(),
-      behavior: "auto",
+    addEventListener('spa-navigate', event => { this.navigate(event.detail.path); });
+    document.getElementById('navigation-retry').addEventListener('click', () => this.navigate(this.failedPath));
+    document.getElementById('navigation-dismiss').addEventListener('click', () => {
+      this.setStatus('');
+      document.getElementById('main').focus({ preventScroll: true });
     });
-
-    const stripsContainer = document.getElementById("strips");
-    if (stripsContainer) {
-      stripsContainer.style.opacity = "1";
-      stripsContainer.style.visibility = "visible";
-      stripsContainer.style.display = "";
-      stripsContainer.classList.add("animate-in");
-
-      if (!stripsContainer.classList.contains("strips-initialized")) {
-        this._hooks.initializeStrips?.();
-      } else {
-        // Strips already initialized, unlock after a short settle
-        setTimeout(() => document.documentElement.classList.remove("transition-lock"), 400);
-      }
-    } else {
-      document.documentElement.classList.remove("transition-lock");
-    }
-
-    resetProjectColors();
-    document.documentElement.removeAttribute("data-project");
-    this._hooks.showIntro?.();
   }
 
-  async showProject(slug) {
-    const project = projects.find((p) => p.slug === slug);
-    if (!project) {
-      console.warn("Project not found:", slug);
-      return;
+  position() {
+    return {
+      scrollY, focusId: document.activeElement?.id || '',
+      aboutOpen: document.getElementById('about').open,
+    };
+  }
+
+  savePosition() {
+    history.replaceState({ ...history.state, route: this.currentPath, ...this.position() }, '', location.href);
+  }
+
+  setStatus(message, error = false) {
+    document.getElementById('navigation-status').hidden = !message;
+    document.getElementById('navigation-message').textContent = message;
+    document.getElementById('navigation-actions').hidden = !error;
+    document.getElementById('main').setAttribute('aria-busy', String(this.pending));
+  }
+
+  async navigate(target, options = {}) {
+    const url = new URL(target, location.href);
+    const path = normalized(url.pathname);
+    if (url.origin !== location.origin || (path !== homePath && !projects.has(path))) return;
+    const generation = ++this.generation;
+    this.controller?.abort();
+    this.controller = new AbortController();
+    const isPop = options.history === 'pop';
+    const previousProject = projects.get(this.currentPath);
+    const currentPosition = this.position();
+    if (!isPop) {
+      this.savePosition();
+      if (this.currentPath === homePath && path !== homePath) this.homeReturn = currentPosition;
+      if (location.pathname !== path || location.hash !== url.hash) history.pushState({ route: path }, '', path + url.hash);
     }
-
-    document.body.setAttribute("data-route", "project");
-    document.documentElement.setAttribute("data-project", slug);
-
-    this._hooks.updateCurrentPageTitle?.(project.title);
-    this._hooks.resetFilters?.();
-    this._hooks.hideIntro?.();
-    this.announce(project.title);
-
-    // Load strip images on project pages without full initialization
-    const stripsContainer = document.getElementById("strips");
-    if (stripsContainer) {
-      stripsContainer.querySelectorAll(".strip-image").forEach((img) => {
-        const bgImage = img.getAttribute("data-bg-image");
-        if (bgImage && !img.style.backgroundImage) {
-          img.style.backgroundImage = `url('${bgImage}')`;
-          img.classList.add("loaded");
-        }
-      });
-    }
-
-    // Hide current project's strip immediately
-    this.updateStripVisibility(slug);
-
-    const clickedStrip = document.querySelector(`.strip[data-project="${slug}"]`);
-
+    const restore = options.restore || (options.returnToCollection ? this.homeReturn : null);
+    this.pending = true;
+    this.setStatus(`Opening ${projects.get(path)?.title || 'projects'}…`);
     try {
-      let projectContentHTML;
-
-      if (preloadCache.has(slug)) {
-        projectContentHTML = preloadCache.get(slug);
-      } else {
-        const fetchPath = getProjectPath(slug);
-        const response = await fetch(fetchPath);
-        if (!response.ok) throw new Error(`Failed to fetch project: ${response.status}`);
-
-        const html = await response.text();
-        const parser = new DOMParser();
-        const doc = parser.parseFromString(html, "text/html");
-        const projectContent = doc.querySelector("#projects");
-
-        if (!projectContent) {
-          console.warn("Project content not found in response");
-          document.documentElement.classList.remove("transition-lock");
-          return;
-        }
-
-        projectContentHTML = projectContent.innerHTML;
+      let page = this.cache.get(path);
+      if (!page) {
+        const response = await fetch(path, { signal: this.controller.signal });
+        if (!response.ok) throw new Error(`Request failed (${response.status})`);
+        const doc = new DOMParser().parseFromString(await response.text(), 'text/html');
+        page = snapshot(doc);
+        if (projects.has(path) && doc.querySelector('#projects .project')?.id !== projects.get(path).slug) throw new Error('The requested project was not returned.');
       }
-
-      clearExistingProjects();
-
-      // Put the section inside #projects, exactly where the server renders it.
-      // The spacing below a project, its min-height, background and the
-      // .project-visible opacity rule all hang off #projects, so a section
-      // inserted anywhere else silently loses all four.
-      let currentProjects;
-      const projectsContainer = document.getElementById("projects");
-      if (projectsContainer) {
-        const tempDiv = document.createElement("div");
-        tempDiv.innerHTML = projectContentHTML;
-        const projectContent = tempDiv.firstElementChild;
-        projectContent.style.opacity = "0";
-        projectsContainer.appendChild(projectContent);
-        currentProjects = projectContent;
-      }
-
-      const resetClickedStrip = () => {
-        if (!clickedStrip) return;
-        clickedStrip.style.transition = "opacity 0.1s ease";
-        clickedStrip.style.opacity = "0";
-        setTimeout(() => {
-          clickedStrip.style.opacity = "";
-          clickedStrip.style.transition = "";
-          clickedStrip.style.zIndex = "";
-          clickedStrip.style.flexGrow = "";
-          document.querySelectorAll(".strip").forEach((s) => s.classList.remove("selected", "not-selected"));
-          this.updateStripVisibility(slug);
-        }, 100);
-      };
-
-      // Scroll to project content (called after transition-lock is removed so scroll works)
-      const scrollToProject = () => {
-        requestAnimationFrame(() => {
-          const contentWrapper = document.getElementById("content");
-          if (contentWrapper) {
-            const contentPosition = contentWrapper.getBoundingClientRect().top + window.scrollY;
-            window.scrollTo({ top: contentPosition, behavior: "auto" });
-          } else {
-            window.scrollTo({ top: getProjectScrollPosition(), behavior: "auto" });
-          }
-        });
-      };
-
-      if (currentProjects) {
-        document.body.classList.add("project-visible");
-        document.documentElement.classList.add("project-visible");
-
-        currentProjects.style.opacity = "1";
-        resetClickedStrip();
-        document.documentElement.classList.remove("transition-lock");
-        scrollToProject();
-      } else {
-        resetClickedStrip();
-        if (!clickedStrip) this.updateStripVisibility(slug);
-        document.documentElement.classList.remove("transition-lock");
-        scrollToProject();
-      }
+      if (generation !== this.generation) return;
+      this.cache.set(path, page);
+      this.currentPath = path;
+      const project = projects.get(path);
+      const container = document.getElementById('projects');
+      container.innerHTML = page.content;
+      const metadata = document.createElement('template');
+      metadata.innerHTML = page.metadata;
+      document.querySelectorAll(metadataSelector).forEach(el => el.remove());
+      document.head.append(metadata.content);
+      document.body.dataset.route = project ? 'project' : 'home';
+      document.getElementById('intro').hidden = !!project;
+      document.getElementById('header').hidden = !project;
+      const titleLink = document.getElementById('header-toggle');
+      titleLink.textContent = project?.title || '';
+      titleLink.setAttribute('aria-label', project ? `${project.title} — Return to projects` : 'Return to projects');
+      document.getElementById('collection-title').textContent = project ? 'More projects' : 'Projects';
+      if (project) document.documentElement.dataset.project = project.slug;
+      else delete document.documentElement.dataset.project;
+      if (project?.color) document.documentElement.style.setProperty('--project-color', project.color);
+      else document.documentElement.style.removeProperty('--project-color');
+      document.getElementById('about').open = restore?.aboutOpen ?? false;
+      this.onCommit(project?.slug);
+      mountMedia(container);
+      this.pending = false;
+      this.setStatus('');
+      let focus;
+      if (restore?.focusId) focus = document.getElementById(restore.focusId);
+      if (focus?.closest('[hidden]')) focus = null;
+      if (!focus && project) focus = container.querySelector('.project-title');
+      if (!focus && options.returnToCollection && previousProject) focus = document.getElementById(`strip-${previousProject.slug}`);
+      focus ||= document.getElementById('home-title');
+      focus.focus({ preventScroll: true });
+      if (restore && typeof restore.scrollY === 'number') scrollTo({ top: restore.scrollY, behavior: 'instant' });
+      else if (url.hash === '#collection' || (options.returnToCollection && !project)) {
+        (focus.classList.contains('strip') ? focus : document.getElementById('collection')).scrollIntoView({ block: 'start' });
+      } else scrollTo({ top: 0, behavior: 'instant' });
+      this.savePosition();
+      document.getElementById('route-announcer').textContent = `Opened ${project?.title || 'home'}`;
     } catch (error) {
-      console.error("Error loading project:", error);
-      document.documentElement.classList.remove("transition-lock");
+      if (generation !== this.generation || error.name === 'AbortError') return;
+      this.pending = false;
+      this.failedPath = path;
+      // Preserve the readable page and its URL while offering explicit recovery.
+      history.replaceState({ route: this.currentPath, ...currentPosition }, '', this.currentPath);
+      document.getElementById('navigation-fallback').href = path;
+      this.setStatus(`Couldn’t open ${projects.get(path)?.title || 'the homepage'}. Please try again.`, true);
+      document.getElementById('navigation-retry').focus({ preventScroll: true });
     }
-  }
-
-  updateStripVisibility(currentProjectSlug) {
-    document.querySelectorAll(".strip").forEach((strip) => {
-      if (currentProjectSlug && strip.getAttribute("data-project") === currentProjectSlug) {
-        strip.classList.add("hidden");
-      } else {
-        strip.classList.remove("hidden");
-      }
-    });
-  }
-
-  announce(text) {
-    const el = document.getElementById("route-announcer");
-    if (el) {
-      el.textContent = "";
-      requestAnimationFrame(() => { el.textContent = `Navigated to ${text}`; });
-    }
-  }
-
-  goHome() {
-    const homePath = pathPrefix ? `${pathPrefix}/` : "/";
-    this.navigate(homePath);
   }
 }
 
-export const router = new SPARouter();
+export const router = new Router();

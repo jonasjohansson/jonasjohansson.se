@@ -1,19 +1,4 @@
-<header
-  id="header"
-  style="display: none">
-  <div class="header-center">
-    <a
-      class="header-content"
-      id="header-toggle"
-      href="/"
-      style="text-decoration: none; color: inherit;">
-      <div class="header-subtitle" id="header-subtitle" data-default-subtitle="{{ site.title }}">
-        {% if project %}
-        {{ projectContent[project.slug].title }}
-        {% else %}
-        {{ site.title }}
-        {% endif %}
-      </div>
-    </a>
-  </div>
+<header id="header"{% if not project %} hidden{% endif %}>
+  <a class="header-subtitle" id="header-toggle" href="{{ '/' | url }}#collection" data-home-link
+    {% if project %}aria-label="{{ project.title }} — Return to projects"{% endif %}>{% if project %}{{ project.title }}{% endif %}</a>
 </header>

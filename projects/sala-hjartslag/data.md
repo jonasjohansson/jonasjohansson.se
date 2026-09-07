@@ -1,5 +1,6 @@
 ---
 title: Sala Hjärtslag
+color: "#962d00"
 date: '2024-01-01'
 tags:
   - av
@@ -7,6 +8,7 @@ tags:
 blocks:
   - type: image
     src: 01.jpg
+    alt: "An illuminated face and warm architectural forms are projected across a curved building facade at night."
   - type: text
     content: >-
       Projection mapping 400 years of Sala's history onto a curved facade.
@@ -22,6 +24,9 @@ blocks:
       was done on-site, aligning the projection to fit the architecture.
   - type: video
     src: 01.mp4
+    alt: "Animated projections transform the curved facade for Sala’s 400-year celebration."
+    ar: 0.5625
+    poster: 01-poster.jpg
   - type: credits
     credits:
       - "3D modelling and animation: [Smash Studio](https://www.smash.studio/)"

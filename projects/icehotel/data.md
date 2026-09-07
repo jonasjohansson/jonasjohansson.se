@@ -1,11 +1,13 @@
 ---
 title: Icehotel
+color: "#0b4f80"
 date: "2023-01-01"
 tags:
   - installation
 blocks:
   - type: image
     src: 01.jpg
+    alt: "An ice bed sits within a tall carved alcove, flanked by ice sculptures and lit in pale blue."
   - type: text
     content: >-
       Two suites designed and sculpted for

@@ -1,5 +1,6 @@
 ---
 title: Dome Dreaming
+color: "#c75200"
 date: "2026-05-01"
 tags:
   - av
@@ -7,6 +8,8 @@ tags:
 blocks:
   - type: image
     src: 01.jpg
+    alt: "An audience reclines beneath a dome filled with swirling gold and white imagery during a live performance."
+    focal: "50% 60%"
   - type: text
     content: >-
       A fulldome film festival at two newly built domes in Stockholm and Malmö.

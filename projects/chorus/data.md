@@ -6,6 +6,7 @@ tags:
 blocks:
   - type: image
     src: 01.jpg
+    alt: "White branching lines radiate from a dark circular centre across the illuminated facade of Storkyrkan at night."
   - type: text
     content: >-
       A sound-reactive work by

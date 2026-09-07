@@ -1,5 +1,6 @@
 ---
 title: Vista
+color: "#8401ff"
 date: '2018-01-01'
 tags:
   - installation
@@ -7,12 +8,16 @@ tags:
 blocks:
   - type: image
     src: 01.jpg
+    alt: "A sharply faceted dark mountain catches golden light against a violet sky and orange sun."
   - type: text
     content: >-
       A decade of web-based generative landscapes: mountains, cloth, and
       caves, each with its own light and sound.
   - type: video
     src: 01.webm
+    alt: "Light moves across the angular faces of a mountain against a purple sky."
+    ar: 1.0
+    poster: 01-poster.jpg
   - type: text
     fontSize: small
     content: >-
@@ -34,6 +39,9 @@ blocks:
       getting drawn into designing origami-like spaces.
   - type: video
     src: 02.webm
+    alt: "The view travels through a twisting cave made of violet polygonal facets."
+    ar: 1.0
+    poster: 02-poster.jpg
   - type: text
     fontSize: small
     content: >-
@@ -42,6 +50,9 @@ blocks:
       something floating still, in movement.
   - type: video
     src: 03.webm
+    alt: "Subtle waves move across a dark purple generative landscape."
+    ar: 1.0
+    poster: 03-poster.jpg
   - type: text
     fontSize: small
     content: >-
@@ -57,6 +68,9 @@ blocks:
       Stockholm in 2024, a re|thread project on origin and authorship.
   - type: video
     src: 05.webm
+    alt: "An undulating blue horizon shifts beneath a warm orange sky."
+    ar: 1.0
+    poster: 05-poster.jpg
   - type: image
     src: 05.jpg
     size: half-left

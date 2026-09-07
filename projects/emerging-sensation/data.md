@@ -1,5 +1,6 @@
 ---
 title: Emerging Sensation
+color: "#1521b4"
 date: "2019-01-01"
 tags:
   - light
@@ -7,6 +8,7 @@ tags:
 blocks:
   - type: image
     src: 01.jpg
+    alt: "Translucent textile forms glow blue and pink, with a bright red line tracing their folds."
   - type: text
     content: >-
       An interactive installation combining smart textiles and augmented reality,

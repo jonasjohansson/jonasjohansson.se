@@ -7,6 +7,8 @@ tags:
 blocks:
   - type: image
     src: 01.jpg
+    alt: "A circular yellow and blue Facing Worlds sticker combines the game’s opposing towers with two sun symbols."
+    heroFit: contain
   - type: text
     content: >-
       A sticker you point a phone at, and the most famous map in Unreal
@@ -32,6 +34,9 @@ blocks:
       dramatic showdown.
   - type: video
     src: 03.webm
+    alt: "A first-person view moving between the opposing towers of the Facing Worlds game map."
+    ar: 1.777778
+    poster: 03-poster.jpg
   - type: text
     fontSize: small
     content: >-
@@ -69,6 +74,9 @@ blocks:
       else is playing it first-person somewhere else.
   - type: video
     src: 07.webm
+    alt: "The two towers of Facing Worlds stand on a small rocky world against a starry sky."
+    ar: 1.777778
+    poster: 07-poster.jpg
   - type: credits
     credits:
       - "Shown at: Unreal Fest, Stockholm, September 2025"

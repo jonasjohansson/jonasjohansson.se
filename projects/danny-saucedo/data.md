@@ -1,5 +1,6 @@
 ---
 title: Danny Saucedo
+color: "#9b2500"
 date: '2024-01-01'
 tags:
   - stage
@@ -7,6 +8,7 @@ tags:
 blocks:
   - type: image
     src: 01.jpg
+    alt: "A silhouetted performer stands inside nested orange arches that extend into the dark stage."
   - type: text
     content: >-
       Projection mapping and stage design for Danny Saucedo's "Happy That
@@ -42,6 +44,9 @@ blocks:
     src: 03.jpg
   - type: video
     src: 01.mp4
+    alt: "Behind the scenes and stage visuals for Danny Saucedo’s Happy That You Found Me."
+    ar: 0.5625
+    poster: 01-poster.jpg
   - type: credits
     credits:
       - "Technical director: Jonas Johansson"

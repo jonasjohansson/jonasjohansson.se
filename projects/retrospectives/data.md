@@ -1,11 +1,13 @@
 ---
 title: Retrospectives
+color: "#ff6a1a"
 date: "2022-01-01"
 tags:
   - installation
 blocks:
   - type: image
     src: 01.jpg
+    alt: "An oversized pair of red-and-blue 3D glasses rests on a dusty plain in warm evening light."
   - type: text
     content: >-
       A pair of supersized 3D glasses you can sit inside, adorned with patterns

@@ -8,6 +8,7 @@ tags:
 blocks:
   - type: image
     src: 01.jpg
+    alt: "Projected blue and white patterns cover a performer’s face and clothing in a dark audiovisual performance."
   - type: text
     content: >-
       [NAVA](https://www.nava.community), a network for audiovisual artists
@@ -27,6 +28,9 @@ blocks:
     src: 07.jpg
   - type: video
     src: 01.mp4
+    alt: "Documentation of NAVA’s audiovisual performance at Sónar Reykjavík in 2018."
+    ar: 1.777778
+    poster: 01-poster.jpg
     caption: Sónar Reykjavík, 2018
     link: https://youtu.be/ZTS57t5bLME
   - type: text
@@ -63,12 +67,18 @@ blocks:
       year.
   - type: video
     src: 02.mp4
+    alt: "A vocalist performs in front of projected imagery at Skaðablót in Bíó Paradís."
+    ar: 1.777778
+    poster: 02-poster.jpg
     caption: Skaðablót, Bíó Paradís, 2019
     link: https://youtu.be/ggpqBvYmc5Q
   - type: image
     src: 04.jpg
   - type: video
     src: 03.mp4
+    alt: "Building and performing with the SónarSpil audiovisual instrument for Sónar Reykjavík."
+    ar: 1.777778
+    poster: 03-poster.jpg
     caption: SónarSpil, Sónar Reykjavík, 2018
     link: https://youtu.be/MEi1VG6uWCI
   - type: text
@@ -81,6 +91,9 @@ blocks:
     src: 05.jpg
   - type: video
     src: 04.mp4
+    alt: "Moving white light patterns play across a street installation alongside vertical coloured lights."
+    ar: 1.777778
+    poster: 04-poster.jpg
   - type: text
     fontSize: small
     content: >-

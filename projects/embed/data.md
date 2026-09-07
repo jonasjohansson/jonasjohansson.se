@@ -1,5 +1,6 @@
 ---
 title: Embed
+color: "#1a43fe"
 date: '2021-01-01'
 tags:
   - av
@@ -7,6 +8,7 @@ tags:
 blocks:
   - type: image
     src: 01.jpg
+    alt: "A bedside tablet controls blue and violet projections that wrap around the walls of a hotel room."
   - type: text
     content: >-
       A Hobo Hotel room where guests fill all four walls with films from a

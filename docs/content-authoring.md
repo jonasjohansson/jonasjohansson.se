@@ -1,0 +1,51 @@
+# Editing the portfolio
+
+Each project lives in `projects/<slug>/data.md`, alongside its images and videos. Published work uses `type: work`; `type: placeholder` adds a non-clickable “In progress” entry to the project index. Work is ordered by date, newest first, with the slug breaking ties. The text index is the only collection view on every screen size.
+
+Run `npm run build` after editing. Required data and local media paths are validated; errors identify the project and field. Source images are encoded into `.cache/images`, and only assets referenced by the current build are copied to `dist/img`. `npm run clean:dist` preserves the cache; `npm run clean:img` clears it. Share-image filenames change automatically when their source changes.
+
+## Images
+
+The first block must be an image or video with a meaningful `alt` description. Video heroes also require a local poster image (see below). Describe the visible artwork, material, setting or interaction that matters beyond the surrounding prose. Add descriptions to other informative views too; use `alt: ""` for redundant views or decoration.
+
+```yaml
+title: Example project
+date: 2026-09-01
+type: work
+tags: [installation, light]
+color: "#4D75FF"
+blocks:
+  - type: image
+    src: hero.jpg
+    alt: "Visitors walk between suspended blue light tubes in a dark hall."
+    focal: "50% 40%"
+    mobileFocal: "60% 40%"
+    heroFit: cover
+```
+
+`focal` and `mobileFocal` set the crop position as horizontal and vertical percentages. `heroFit: contain` keeps the entire artwork visible. Heroes have a 24 px page inset and 12 px rounded corners. Mobile heroes use their natural proportions, capped at 85% of the viewport height. To supply a different mobile composition, add `mobileSrc: hero-mobile.jpg`; its dimensions are read automatically. These options use existing artwork and do not generate or alter source files.
+
+Image dimensions and responsive sources are generated during the build. Leave `ar` unset unless you deliberately need a layout ratio override. Optional `size` values are `full`, `large`, `left`, `right`, `half-left`, `half-right`, `small-left` and `small-right`. You can also set `colStart` and `colSpan` within the 12-column grid. Unplaced portrait images are grouped into balanced rows; an authored `half-left` followed by `half-right` forms a pair. Media stacks on mobile.
+
+## Videos
+
+```yaml
+  - type: video
+    src: sequence.mp4
+    poster: sequence-poster.jpg
+    ar: 1.777778
+    alt: "Bands of blue light travel across the suspended tubes."
+```
+
+Set `ar` to width divided by height so the page reserves space before downloading the video. Supply a representative poster image and a concise description; the description is displayed below the player. Set `hideDescription: true` to keep it available only to screen readers. Videos in the page body have native controls. Muted previews play when visible unless the visitor prefers reduced motion, and stop when offscreen. Interacting with the controls gives the visitor control of subsequent playback.
+
+A video can be the first block. Hero videos have no visible player controls and show their poster when reduced motion is preferred. The poster supplies the sharing preview and initial hero frame. The project index is text only. Hero descriptions are available to assistive technology without covering the video. Authored hero crop settings also apply to videos. To use the exact first frame, export it with `ffmpeg -i sequence.webm -frames:v 1 -q:v 1 sequence-first-frame.jpg` and reference that file as `poster`.
+
+## Verification
+
+- `npm test` checks project validation, image grouping and sharing-image cache invalidation.
+- `npm run build` produces the publishable site in `dist`.
+- `npm run test:browser` starts a temporary preview server and checks all project routes, loading geometry, navigation, focus, preferences, touch layouts and the no-JavaScript fallback. It saves results and screenshots under `screenshots/site-smoke`.
+- `npm run audit:visual` captures representative pages and detail views at five viewport sizes under `screenshots/visual-audit`, preserving earlier review evidence.
+
+Browser scripts use installed Playwright Chromium or local Google Chrome. Run `npx playwright install chromium` if neither is installed. `AUDIT_BASE_URL` can point the scripts at another preview. For a subdirectory deployment, use the same `PATH_PREFIX` for the build and verification commands. CI runs the build and regression checks before publishing.

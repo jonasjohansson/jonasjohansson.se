@@ -1,5 +1,6 @@
 ---
 title: Harpa
+color: "#ff5c1a"
 date: '2017-01-01'
 tags:
   - installation
@@ -8,6 +9,7 @@ tags:
 blocks:
   - type: image
     src: 01.jpg
+    alt: "Hands play a small illuminated keyboard on an orange tabletop, the public controller for Harpa’s facade."
   - type: text
     content: >-
       We turned the 714-panel LED facade of Reykjavík's

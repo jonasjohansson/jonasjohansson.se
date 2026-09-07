@@ -6,6 +6,8 @@ tags:
 blocks:
   - type: image
     src: 01.jpg
+    alt: "A large gold and purple tufted textile hangs above chairs in a bright studio, with flowers in the foreground."
+    focal: "50% 42%"
   - type: text
     content: >-
       A two-metre hand-tufted wall piece for Klättermusens Verkstad, the outdoor

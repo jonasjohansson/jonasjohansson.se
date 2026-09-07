@@ -4,7 +4,9 @@ on:
   push:
     branches: [main]
     paths:
-      - "index.njk"
+      - "*.njk"
+      - "scripts/**"
+      - "tests/**"
       - "_includes/**"
       - "_data/**"
       - "projects/**"
@@ -44,12 +46,7 @@ jobs:
           node-version: 22
           cache: npm
 
-      # Persist processed images (and Vite caches) across builds.
-      # Monotonic key (run_id) so EVERY run saves a fresh, growing cache; the
-      # prefix restore-key always pulls the most recent one. eleventy-img reuses
-      # outputs by content hash via existsSync, so stale entries are harmless and
-      # only new/changed images get re-encoded. Without this the cache froze
-      # incomplete and sharp re-encoded ~all AVIF every build (~35 min).
+      # Reuse encoded source images; only the current image manifest is published.
       - name: Cache build caches
         uses: actions/cache@v4
         with:
@@ -57,10 +54,9 @@ jobs:
             .cache
             .11ty-vite
             node_modules/.vite
-            dist/img
-          key: ${{ runner.os }}-eleventy-img-${{ github.run_id }}
+          key: ${{ runner.os }}-eleventy-images-v2-${{ github.run_id }}
           restore-keys: |
-            ${{ runner.os }}-eleventy-img-
+            ${{ runner.os }}-eleventy-images-v2-
 
       - name: Install
         run: npm ci
@@ -80,6 +76,15 @@ jobs:
         env:
           PATH_PREFIX: ${{ env.PATH_PREFIX }}
         run: npm run build
+
+      - name: Check project data
+        run: npm test
+
+      - name: Install test browser
+        run: npx playwright install --with-deps chromium
+
+      - name: Check navigation and layouts
+        run: npm run test:browser
 
       - name: Upload artifact
         uses: actions/upload-pages-artifact@v3

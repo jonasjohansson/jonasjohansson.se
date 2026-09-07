@@ -1,8 +1,5 @@
 <script>
-  window.__PATH_PREFIX__ = "{{ '/' | url }}".replace(/\/$/, '');
-  window.__PROJECTS_DATA__ = {{ projectsForJS | dump | safe }};
-  window.__SITE_TITLE__ = {{ site.title | dump | safe }};
-  {% if project %}
-  window.__INITIAL_PROJECT__ = {{ project | dump | safe }};
-  {% endif %}
+  window.__PATH_PREFIX__ = {{ ('/' | url) | jsonScript | safe }}.replace(/\/$/, '');
+  window.__PROJECTS_DATA__ = {{ projectsForJS | jsonScript | safe }};
+  window.__SITE_TITLE__ = {{ site.title | jsonScript | safe }};
 </script>

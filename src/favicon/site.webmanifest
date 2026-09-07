@@ -2,18 +2,18 @@
   "name": "Jonas Johansson",
   "short_name": "Jonas Johansson",
   "description": "Artist working with light art, interactive art, digital art, technology, and installation",
-  "start_url": "/",
+  "start_url": "../",
   "display": "standalone",
   "background_color": "#1a1a1a",
   "theme_color": "#1a1a1a",
   "icons": [
     {
-      "src": "/favicon/favicon-96x96.png",
+      "src": "favicon-96x96.png",
       "sizes": "96x96",
       "type": "image/png"
     },
     {
-      "src": "/favicon/apple-touch-icon.png",
+      "src": "apple-touch-icon.png",
       "sizes": "180x180",
       "type": "image/png"
     }

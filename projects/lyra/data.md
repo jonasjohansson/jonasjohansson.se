@@ -1,5 +1,6 @@
 ---
 title: Lyra
+color: "#070a79"
 date: "2013-01-01"
 tags:
   - light
@@ -7,6 +8,7 @@ tags:
 blocks:
   - type: image
     src: 01.jpg
+    alt: "Two visitors look up through a grid of glowing vertical strings in a dark room."
   - type: text
     content: >-
       A playable light instrument. Strings hung from floor to ceiling in a

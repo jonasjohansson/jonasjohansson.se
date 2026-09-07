@@ -1,213 +1,37 @@
-/* Base Styles & Reset */
-
-/* Global box-sizing - apply to all elements */
-*,
-*::before,
-*::after {
-  box-sizing: border-box;
+*, *::before, *::after { box-sizing: border-box; }
+html { min-height: 100%; scroll-padding-top: 5rem; }
+body { margin: 0; background: var(--bg-primary); color: var(--text-primary); font-family: var(--font-family); line-height: var(--line-height-base); }
+[hidden] { display: none !important; }
+#content { padding: var(--spacing-lg); }
+#main:focus, .project-title:focus, #home-title:focus, #collection-title:focus { outline: none; }
+a { color: inherit; text-underline-offset: 0.16em; }
+button, select { font: inherit; color: inherit; }
+button, summary, select { cursor: pointer; }
+button, select { background: transparent; border: 1px solid color-mix(in srgb, var(--text-primary) 30%, transparent); border-radius: 6px; padding: 0.5rem 0.75rem; }
+button:hover, select:hover { background: color-mix(in srgb, var(--text-primary) 6%, transparent); }
+button[aria-pressed="true"] { color: var(--bg-primary); background: var(--text-primary); border-color: var(--text-primary); }
+:focus-visible { outline: 2px solid currentColor; outline-offset: 4px; }
+summary { width: fit-content; }
+summary:focus-visible { outline-offset: 6px; }
+.sr-only, .project-title { position: absolute; width: 1px; height: 1px; padding: 0; margin: -1px; overflow: hidden; clip: rect(0,0,0,0); white-space: nowrap; border: 0; }
+.skip-link { position: fixed; left: 1rem; top: -8rem; padding: 0.75rem 1rem; background: var(--bg-primary); color: var(--text-primary); z-index: 1000; }
+.skip-link:focus { top: 1rem; }
+img, video { max-width: 100%; }
+.navigation-status { position: fixed; bottom: 1rem; left: 50%; transform: translateX(-50%); z-index: 500; width: max-content; max-width: calc(100% - 2rem); padding: 1rem 1.25rem; background: var(--bg-primary); color: var(--text-primary); border: 1px solid currentColor; border-radius: 8px; box-shadow: 0 4px 28px #0002; }
+.navigation-status p { margin: 0; }
+#navigation-actions { display: flex; align-items: center; flex-wrap: wrap; gap: 1rem; margin-top: 0.75rem; }
+@media (prefers-color-scheme: dark) {
+  html:not([data-theme="light"]) { --bg-primary: var(--color-black); --text-primary: var(--color-white); color-scheme: dark; }
 }
-
-html {
-  min-height: 100vh;
-  overflow-y: auto;
-  margin: 0;
-  padding: 0;
-  /* The canopy overlay spans the document, not past its ends. Rubber-band
-     overscroll exposes a strip of unlit background beyond them, and next to the
-     lit page that strip reads as a shade over everything else. No bounce, no
-     strip. */
-  overscroll-behavior-y: none;
-}
-
-html.transition-lock {
-  overflow: hidden;
-  /* Match background to prevent color flash on iOS scroll */
-  background-color: var(--bg-primary);
-  /* Vertical scroll snap */
-  scroll-snap-type: y proximity;
-  /* Hide scrollbars */
-  scrollbar-width: none;
-}
-
-body {
-  min-height: 100vh;
-  width: 100%;
-  margin: 0;
-  padding: 0;
-  background-color: var(--bg-primary);
-  color: var(--text-primary);
-
-  font-family: var(--font-family);
-  letter-spacing: var(--letter-spacing-wider);
-  overflow-y: auto;
-  overflow-x: hidden;
-  position: relative;
-  /* Ensure content goes to top edge on mobile */
-  padding-top: 0;
-  margin-top: 0;
-}
-
-/* About overlay is position:fixed, so no body overflow change needed */
-
-/* Content wrapper */
-#content {
-  position: relative;
-  z-index: var(--z-content);
-  overflow-anchor: none;
-  padding: var(--spacing-lg);
-  background-color: var(--bg-primary);
-
-}
-
-/* Home route: intro on top, scroll down for the strips. */
-body[data-route="home"] #content {
-  display: flex;
-  flex-direction: column;
-}
-
-body[data-route="home"] .intro       { order: 1; }
-body[data-route="home"] #main        { order: 2; }
-body[data-route="home"] #strips      { order: 3; }
-body[data-route="home"] .intro-links { order: 4; }
-
-
-/* Keep content clipped during strip transition */
-html.transition-lock #content {
-  overflow: hidden;
-}
-
-/* Hide scrollbars */
-::-webkit-scrollbar {
-  display: none;
-}
-
-/* Skip to content link */
-.skip-link {
-  position: absolute;
-  top: -100%;
-  left: 50%;
-  transform: translateX(-50%);
-  background: var(--color-white);
-  color: var(--color-black);
-  padding: var(--spacing-sm) var(--spacing-lg);
-  z-index: calc(var(--z-loading) + 1);
-  font-family: var(--font-family);
-  font-size: var(--font-size-base);
-  text-decoration: none;
-  clip-path: var(--cut-corner-sm);
-}
-
-.skip-link:focus {
-  top: var(--spacing-lg);
-}
-
-/* Screen reader only utility */
-.sr-only {
-  position: absolute;
-  width: 1px;
-  height: 1px;
-  padding: 0;
-  margin: -1px;
-  overflow: hidden;
-  clip: rect(0, 0, 0, 0);
-  white-space: nowrap;
-  border: 0;
-}
-
-/* Links - inherit color by default */
-a {
-  color: inherit;
-  text-decoration: none;
-}
-
-a:hover {
-  color: inherit;
-}
-
-/* Disable text selection on interactive chrome */
-header,
-#strips {
-  user-select: none;
-  -webkit-user-select: none;
-}
-
-/* Disable drag on media elements */
-img,
-figure,
-video,
-canvas,
-svg,
-picture,
-figcaption {
-  -webkit-user-drag: none;
-}
-
-/* Loading states - hide all content during loading */
-body.loading #main,
-body.loading #strips,
-body.loading #header,
-body.loading #projects {
-  opacity: 0 !important;
-  visibility: hidden !important;
-  pointer-events: none !important;
-}
-
-/* Show elements after loading - route-specific */
-body.loaded #header {
-  opacity: 1;
-  visibility: visible;
-  pointer-events: auto;
-  transition: opacity 0.3s ease;
-}
-
-/* Home route - show strips */
-body.loaded[data-route="home"] #strips,
-body.loaded:not([data-route]):not(.project-visible) #strips {
-  opacity: 1;
-  visibility: visible;
-  pointer-events: auto;
-}
-
-/* Project route - show project content */
-body.loaded[data-route="project"] #projects,
-body.loaded.project-visible #projects {
-  opacity: 1;
-  visibility: visible;
-  pointer-events: auto;
-  transition: opacity 0.3s ease;
-}
-
-@media print {
-  body * {
-    display: none !important;
-    visibility: hidden !important;
-  }
-
-  body::before {
-    display: none !important;
-  }
-
-  body::after {
-    content: "Hey, I see you're interested in printing this page. Reach out to j@jonasjohansson.se and I'll send you a PDF.";
-    display: block !important;
-    visibility: visible !important;
-    color: black;
-    background: white;
-    font-family: system-ui, sans-serif;
-    font-size: 18px;
-    line-height: 1.6;
-    text-align: center;
-    padding: 4rem 2rem;
-  }
-}
-
+html[data-theme="dark"] { color-scheme: dark; }
+html[data-theme="light"] { color-scheme: light; }
 @media (prefers-reduced-motion: reduce) {
-  *,
-  *::before,
-  *::after {
-    animation-duration: 0.01ms !important;
-    animation-iteration-count: 1 !important;
-    transition-duration: 0.01ms !important;
-    scroll-behavior: auto !important;
-  }
+  *, *::before, *::after { animation-duration: 0.01ms !important; animation-iteration-count: 1 !important; transition-duration: 0.01ms !important; scroll-behavior: auto !important; }
+}
+@media print {
+  #header, .collection, .intro-links, .skip-link, .navigation-status { display: none !important; }
+  body { background: white; color: black; }
+  #content { padding: 0; }
+  .project-title { position: static; clip: auto; width: auto; height: auto; }
+  .media-item, .media-row { break-inside: avoid; }
 }

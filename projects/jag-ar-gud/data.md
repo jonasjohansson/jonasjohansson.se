@@ -1,5 +1,6 @@
 ---
 title: Jag är Gud
+color: "#833e00"
 date: '2024-01-01'
 tags:
   - stage
@@ -8,6 +9,7 @@ tags:
 blocks:
   - type: image
     src: 01.jpg
+    alt: "A performer faces a towering black-and-white portrait projected onto the dark stage."
   - type: text
     content: >-
       Scenography, video, and lighting design for a sold-out autobiographical

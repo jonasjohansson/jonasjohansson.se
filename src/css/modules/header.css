@@ -1,139 +1,25 @@
-header {
+#header {
   position: absolute;
   top: 0;
   left: 50%;
   transform: translateX(-50%);
-  z-index: var(--z-header);
-  pointer-events: auto;
-  background-color: var(--bg-primary);
+  z-index: 300;
+  width: max-content;
+  max-width: calc(100% - 2 * var(--spacing-lg));
+  border-radius: 0 0 var(--radius-md) var(--radius-md);
+  background: var(--bg-primary);
   color: var(--text-primary);
-  user-select: none;
-  border-bottom-left-radius: var(--radius-md);
-  border-bottom-right-radius: var(--radius-md);
-  display: flex;
-  flex-direction: row;
-  align-items: center;
-  justify-content: center;
-  gap: var(--spacing-sm);
   text-align: center;
-  mix-blend-mode: normal;
-  font-family: var(--font-family);
-  visibility: visible;
-  opacity: 1;
 }
-
-header.header-hidden {
-  transform: translateX(-50%) translateY(-100%);
-  pointer-events: none;
-}
-
-/* Docked at the bottom, hiding upward would slide the pill over the strips */
-header.header-bottom.header-hidden {
-  transform: translateX(-50%) translateY(100%);
-}
-
-/* Header docks to bottom of strips */
-header.header-bottom {
-  position: absolute;
-  top: auto;
-  bottom: 0;
-  border-radius: var(--radius-md) var(--radius-md) 0 0;
-}
-
-.header-center {
-  display: flex;
-  flex-direction: column;
-  align-items: center;
-  justify-content: center;
-  background: transparent;
-  position: relative;
-  overflow: visible;
-  touch-action: manipulation;
-  pointer-events: none;
-}
-
-.header-content {
-  display: flex;
-  flex-direction: column;
-  align-items: center;
+.header-subtitle {
+  display: block;
   padding: calc(var(--spacing-sm) + var(--spacing-md)) var(--spacing-md) var(--spacing-sm);
-  gap: 0;
-  position: relative;
-  pointer-events: auto;
-}
-
-header.header-bottom .header-content {
-  padding: var(--spacing-sm) var(--spacing-md) 0;
-}
-
-/* Home: header docks to top of strips, mirror compact padding of docked version. */
-#strips > header:not(.header-bottom) .header-content {
-  padding: 0 var(--spacing-md) var(--spacing-sm);
-}
-
-/* On home the header is just a title readout over the strips. The element's own
-   box (background + padding) must not capture the pointer, or moving onto the
-   title pill steals :hover from the strip beneath, collapsing it — flicker.
-   Setting only .header-content to none wasn't enough; the header box itself
-   captured. The home links live in the intro, so nothing here needs clicks.
-   Scoped to the route, not the dock position: the bottom-docked header on a
-   project page is a real link home and has to stay clickable. */
-body[data-route="home"] #strips > header,
-body[data-route="home"] #strips > header .header-content {
-  pointer-events: none;
-}
-
-/* Title shape - straight by default, tilted on project pages */
-.header-title {
-  background: transparent;
-  color: var(--text-primary);
-  clip-path: none;
-  padding: 0;
-  position: relative;
-  z-index: 1;
-}
-
-.header-subtitle {
-  background: transparent;
-  color: var(--text-primary);
-  clip-path: none;
-  padding: 0;
-  margin-top: 0;
-  position: relative;
-  z-index: 2;
-}
-
-.header-center:focus {
-  outline: none;
-}
-
-.header-center:focus-visible {
-  outline: none;
-}
-
-.header-center:focus-visible .header-title {
-  outline: 2px solid currentColor;
-  outline-offset: 2px;
-}
-
-/* Shared typography for header title and subtitle */
-.header-title,
-.header-subtitle {
   font-size: calc(var(--font-size-large) * 0.8);
   letter-spacing: var(--letter-spacing-wide);
   text-transform: uppercase;
   line-height: var(--line-height-tight);
-}
-
-.header-title {
-  display: flex;
-  align-items: center;
-  gap: var(--spacing-xs);
-  font-weight: 500;
-  margin: 0;
-  white-space: nowrap;
-}
-
-.header-subtitle {
-  white-space: nowrap;
+  text-decoration: none;
+  text-wrap: balance;
+  overflow-wrap: anywhere;
+  border-radius: inherit;
 }

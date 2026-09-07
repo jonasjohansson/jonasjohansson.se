@@ -60,11 +60,10 @@ function cleanOldAssets() {
 
 export default defineConfig({
   clearScreen: false,
+  base: `${(process.env.PATH_PREFIX || '').replace(/\/$/, '')}/`,
   build: {
-    // Never let Vite empty dist: clean:dist already clears everything except
-    // dist/img (the eleventy-img cache). Emptying here wiped that cache on every
-    // production build, forcing a full ~3min image re-encode. Leaving it false
-    // lets warm builds reuse cached images (~3s instead of ~170s).
+    // clean:dist owns production cleanup. Watch rebuilds must preserve the HTML
+    // emitted by Eleventy. Reusable image encodings live in .cache/images.
     emptyOutDir: false,
     outDir: "dist",
     minify: "terser",

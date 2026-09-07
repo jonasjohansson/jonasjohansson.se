@@ -1,56 +1,124 @@
-import { readdirSync, readFileSync, statSync, existsSync, mkdirSync } from "node:fs";
-import path from "node:path";
-import { fileURLToPath } from "node:url";
-import markdownIt from "markdown-it";
-import Image from "@11ty/eleventy-img";
-import sharp from "sharp";
-import nunjucks from "nunjucks";
-import matter from "gray-matter";
-import htmlMinifier from "html-minifier-terser";
+import { readdirSync, statSync, existsSync } from 'node:fs';
+import path from 'node:path';
+import { fileURLToPath } from 'node:url';
+import markdownIt from 'markdown-it';
+import sharp from 'sharp';
+import nunjucks from 'nunjucks';
+import htmlMinifier from 'html-minifier-terser';
+import { readProjects, SIZE_MAP, groupMedia } from './scripts/project-data.js';
+import { responsiveImage, ogImage, imageMetadata, publishImages } from './scripts/images.js';
 
-const md = markdownIt({ html: true, breaks: false, linkify: true });
 const projectRoot = path.dirname(fileURLToPath(import.meta.url));
-const slug = (s) =>
-  String(s)
-    .trim()
-    .toLowerCase()
-    .replace(/å/g, "a")
-    .replace(/ä/g, "a")
-    .replace(/ö/g, "o")
-    .replace(/[^a-z0-9]+/g, "-")
-    .replace(/(^-|-$)/g, "");
+const md = markdownIt({ html: true, breaks: false, linkify: true });
+const prefix = (process.env.PATH_PREFIX || '').replace(/^\/$/, '').replace(/\/$/, '');
+const renderMarkdown = text => md.render(text || '').replace(/<a href="(https?:\/\/[^"]*)">/g, '<a href="$1" target="_blank" rel="noopener noreferrer">');
+const stripHtml = text => String(text || '').replace(/<[^>]*>/g, '').replace(/&nbsp;/g, ' ').replace(/&amp;/g, '&').replace(/&lt;/g, '<').replace(/&gt;/g, '>').replace(/&quot;/g, '"').replace(/&#39;/g, "'").trim();
+
+function creditsMarkup(credits) {
+  const groups = new Map();
+  for (const credit of credits) {
+    const match = credit.match(/^([^:[\]()]+):\s+(.+)$/);
+    const role = match ? match[1].trim() : '';
+    const value = match ? match[2].trim() : credit.trim();
+    const html = renderMarkdown(value).replace(/^<p>|<\/p>\n?$/g, '');
+    if (!groups.has(role)) groups.set(role, []);
+    groups.get(role).push(html);
+  }
+  return [...groups].map(([role, values]) => (role ? `${role}: ` : '') + values.join(', '));
+}
+
+async function buildProject(project) {
+  const content = await Promise.all(project.blocks.map(async (block, index) => {
+    const placement = block.size ? SIZE_MAP[block.size] : {};
+    const colStart = block.colStart ?? placement.colStart ?? null;
+    const colSpan = block.colSpan ?? placement.colSpan ?? null;
+    if (block.type === 'image') {
+      const src = `${project.directory}/${block.src}`;
+      const metadata = await sharp(src).metadata();
+      const ar = block.ar ?? metadata.width / metadata.height;
+      const mobileSrc = block.mobileSrc ? `${project.directory}/${block.mobileSrc}` : null;
+      const mobile = mobileSrc ? await sharp(mobileSrc).metadata() : metadata;
+      return { ...block, src, mobileSrc, alt: block.alt || '', ar, mobileAr: mobile.width / mobile.height,
+        focal: block.focal || '50% 50%', mobileFocal: block.mobileFocal || block.focal || '50% 50%',
+        heroFit: block.heroFit || 'cover', colStart, colSpan,
+        sizes: index === 0 ? 'calc(100vw - 48px)' : mediaSizes(colSpan, ar) };
+    }
+    if (block.type === 'video') {
+      let poster = null;
+      if (block.poster) {
+        const images = await imageMetadata(`${project.directory}/${block.poster}`, index === 0 ? [640, 1280, 1920] : [640, 1280]);
+        poster = images.webp.at(-1).url;
+      }
+      return { ...block, src: `/${project.directory}/${block.src}`, poster, colStart, colSpan,
+        mobileAr: block.ar, focal: block.focal || '50% 50%',
+        mobileFocal: block.mobileFocal || block.focal || '50% 50%', heroFit: block.heroFit || 'cover' };
+    }
+    if (block.type === 'text') {
+      return { type: 'text', content: renderMarkdown(block.content), colStart: colStart || 2, colSpan: colSpan || 10,
+        fontSizeClass: block.fontSize?.includes('small') || block.fontSize?.includes('1.2') ? 'text-small' : block.fontSize ? 'text-medium' : 'text-large' };
+    }
+    return { type: 'credits', credits: creditsMarkup(block.credits), colStart: colStart || 1, colSpan: colSpan || 12 };
+  }));
+  const grouped = groupMedia(content);
+  for (const block of grouped) {
+    if (block.type !== 'row') continue;
+    for (const item of block.items) {
+      // The desktop row fills the available track up to its height ceiling.
+      const fraction = item.ar / block.arSum;
+      const vw = +(fraction * 100).toFixed(3);
+      const inset = +((112 + 16 * block.gutters) * fraction).toFixed(3);
+      item.sizes = `(max-width: 768px) calc(100vw - 48px), min(calc(${vw}vw - ${inset}px), calc((100vh - 192px) * ${+item.ar.toFixed(4)}))`;
+    }
+  }
+  const firstImage = content[0].type === 'video' ? `${project.directory}/${project.blocks[0].poster}` : content[0].src;
+  const og = await ogImage(firstImage, project.slug);
+  const { slug, title, date, tags, color = null } = project;
+  return { slug, title, date, tags, color, year: new Date(date).getFullYear(), type: 'work',
+    content: grouped, ogImage: og, presskit: project.presskit || null,
+    description: stripHtml(content.find(block => block.type === 'text')?.content).slice(0, 160) };
+}
+
+function mediaSizes(span, ar) {
+  const track = span && span < 12 ? `calc(${+(span / 12 * 100).toFixed(3)}vw - ${+(112 * span / 12 + 32 * (1 - span / 12)).toFixed(3)}px)` : 'calc(100vw - 112px)';
+  const desktop = ar < 1 ? `min(${track}, calc((100vh - 192px) * ${+ar.toFixed(4)}))` : track;
+  return `(max-width: 768px) calc(100vw - 48px), ${desktop}`;
+}
 
 export default function (eleventyConfig) {
-  eleventyConfig.ignores.add("jonasjohansson.se/**");
-  eleventyConfig.ignores.add("projects/**/data.md");
-  eleventyConfig.ignores.add("README.md");
-  eleventyConfig.ignores.add("docs/**");
-  eleventyConfig.setServerOptions({
-    domdiff: false,
-    headers: {
-      "Cache-Control": "no-store, no-cache, must-revalidate",
-    },
-  });
-  eleventyConfig.addWatchTarget("projects/**/*");
-  eleventyConfig.addWatchTarget("src/**/*");
+  for (const pattern of ['jonasjohansson.se/**', 'projects/**/data.md', 'README.md', 'docs/**', 'screenshots/**', 'tests/**', '.cache/**']) eleventyConfig.ignores.add(pattern);
+  eleventyConfig.setServerOptions({ domdiff: false, headers: { 'Cache-Control': 'no-store' } });
+  eleventyConfig.addWatchTarget('projects/**/*');
+  eleventyConfig.addWatchTarget('src/**/*');
+  eleventyConfig.addWatchTarget('scripts/**/*');
   eleventyConfig.setWatchJavaScriptDependencies(false);
-  eleventyConfig.addPassthroughCopy({ "src/favicon": "favicon" });
-  eleventyConfig.addPassthroughCopy("CNAME");
-  eleventyConfig.addPassthroughCopy({ "src/img": "assets/img" });
-  // Pass through only the project assets the browser actually requests: videos
-  // (referenced raw). All images are processed by eleventy-img into /img/, so the
-  // multi-hundred-MB raw originals under projects/ must NOT be copied to the deploy.
-  eleventyConfig.addPassthroughCopy("projects/**/*.{mp4,webm,mov}");
+  eleventyConfig.addPassthroughCopy({ 'src/favicon': 'favicon', 'src/img': 'assets/img' });
+  eleventyConfig.addPassthroughCopy('CNAME');
+  eleventyConfig.addPassthroughCopy('projects/**/*.{mp4,webm,mov}');
+  eleventyConfig.setLibrary('njk', nunjucks.configure({ autoescape: true, trimBlocks: true, lstripBlocks: true }));
+  eleventyConfig.addGlobalData('buildYear', new Date().getFullYear());
+  eleventyConfig.addFilter('isoDate', value => value && !Number.isNaN(new Date(value).getTime()) ? new Date(value).toISOString().slice(0, 10) : '');
+  eleventyConfig.addFilter('markdown', renderMarkdown);
+  eleventyConfig.addFilter('stripHtml', stripHtml);
+  eleventyConfig.addFilter('truncate', (text, max = 160) => text?.length > max ? text.slice(0, max) + '…' : text || '');
+  eleventyConfig.addFilter('findFirstText', blocks => blocks?.find(block => block.type === 'text')?.content || '');
+  eleventyConfig.addFilter('jsonScript', value => JSON.stringify(value).replace(/</g, '\\u003c').replace(/>/g, '\\u003e').replace(/&/g, '\\u0026'));
+  eleventyConfig.addNunjucksAsyncShortcode('responsiveImage', responsiveImage);
+  eleventyConfig.addGlobalData('siteOgImage', () => ogImage('src/img/jonasjohansson-firestarter.jpg', 'site'));
 
-  eleventyConfig.addGlobalData("buildYear", new Date().getFullYear());
-
-  eleventyConfig.setLibrary("njk", nunjucks.configure({ autoescape: true, throwOnUndefined: false, trimBlocks: true, lstripBlocks: true }));
-
-  eleventyConfig.addFilter("isoDate", (d) => {
-    if (!d) return "";
-    const dt = new Date(d);
-    return isNaN(dt) ? "" : dt.toISOString().slice(0, 10);
-  });
+  let siteData;
+  function getSiteData() {
+    if (!siteData) siteData = (async () => {
+      const all = readProjects();
+      const work = await Promise.all(all.filter(project => project.type === 'work').map(buildProject));
+      const upcoming = all.filter(project => project.type === 'placeholder').map(({ slug, title, tags }) => ({ slug, title, tags, upcoming: true }));
+      return { work, collection: [...work, ...upcoming] };
+    })();
+    return siteData;
+  }
+  eleventyConfig.addGlobalData('projects', async () => (await getSiteData()).work.map(({ slug, title, date, tags, color }) => ({ slug, title, date, tags, color })));
+  eleventyConfig.addGlobalData('projectContent', async () => Object.fromEntries((await getSiteData()).work.map(project => [project.slug, project])));
+  eleventyConfig.addGlobalData('projectsForJS', async () => (await getSiteData()).work.map(({ slug, title, color }) => ({ slug, title, color })));
+  eleventyConfig.addGlobalData('collectionItems', async () => (await getSiteData()).collection);
 
   eleventyConfig.addFilter("viteAsset", (filename) => {
     const isJS = filename.endsWith(".js");
@@ -69,341 +137,7 @@ export default function (eleventyConfig) {
     return match ? `/assets/${subdir}/${match}` : `/assets/${filename}`;
   });
 
-  eleventyConfig.addFilter("markdown", (str) => {
-    const rendered = md.render(str);
-    // Add target="_blank" and rel="noopener" to external links for security
-    return rendered.replace(/<a href="(https?:\/\/[^"]*)">/g, '<a href="$1" target="_blank" rel="noopener noreferrer">');
-  });
 
-
-  // Sort array of strings by length descending
-  eleventyConfig.addFilter("sortByLength", (arr) => {
-    if (!Array.isArray(arr)) return arr;
-    return [...arr].sort((a, b) => String(b).length - String(a).length);
-  });
-
-  const urlPathBase = process.env.PATH_PREFIX ? `${process.env.PATH_PREFIX}/img` : "/img";
-
-  const sharpWebpOptions = { quality: 90 };
-  const sharpAvifOptions = { quality: 75 };
-
-  // Single width for strips (background-image, no srcset)
-  const stripImageOptions = {
-    widths: [1920],
-    formats: ["avif", "webp"],
-    urlPath: urlPathBase,
-    outputDir: "dist/img",
-    sharpWebpOptions,
-    sharpAvifOptions,
-  };
-
-  // Multiple widths for project page images (srcset)
-  const responsiveImageOptions = {
-    widths: [640, 1280, 1920],
-    formats: ["avif", "webp"],
-    urlPath: urlPathBase,
-    outputDir: "dist/img",
-    sharpWebpOptions,
-    sharpAvifOptions,
-  };
-
-  // Site-wide Open Graph image (1200x630 JPEG, smart-cropped from firestarter source)
-  eleventyConfig.addGlobalData("siteOgImage", async () => {
-    return await processOgImage("src/img/jonasjohansson-firestarter.jpg", "site");
-  });
-
-  // Shared image processing function to ensure strips and hero use same images
-  async function processImageForStrips(src) {
-    try {
-      const srcPath = path.join(process.cwd(), src);
-      const metadata = await Image(srcPath, stripImageOptions);
-      // Prefer AVIF, fall back to WebP
-      const avif = metadata.avif?.[0];
-      const webp = metadata.webp?.[0];
-      const best = avif || webp;
-      if (best?.url) {
-        return best.url.startsWith('/') ? best.url : `/${best.url}`;
-      }
-      return null;
-    } catch (err) {
-      return null;
-    }
-  }
-
-  // Generate a 1200x630 JPEG crop for Open Graph / Twitter cards.
-  // Sharp's "attention" strategy picks the most salient region — much better
-  // than dead-center for portrait sources where the subject sits in one third.
-  // Skips work if the output file already exists.
-  const ogOutputDir = path.join(projectRoot, "dist", "img", "og");
-  async function processOgImage(src, slugKey) {
-    try {
-      const srcPath = path.join(process.cwd(), src);
-      if (!existsSync(srcPath)) return null;
-      if (!existsSync(ogOutputDir)) mkdirSync(ogOutputDir, { recursive: true });
-      const outName = `${slugKey}-og.jpg`;
-      const outPath = path.join(ogOutputDir, outName);
-      if (!existsSync(outPath)) {
-        await sharp(srcPath)
-          .resize(1200, 630, { fit: "cover", position: sharp.strategy.attention })
-          .jpeg({ quality: 82, mozjpeg: true })
-          .toFile(outPath);
-      }
-      const urlBase = process.env.PATH_PREFIX ? `${process.env.PATH_PREFIX}/img/og` : "/img/og";
-      return `${urlBase}/${outName}`;
-    } catch (err) {
-      return null;
-    }
-  }
-
-  eleventyConfig.addNunjucksAsyncShortcode(
-    "responsiveImage",
-    async (src, alt, className = "media-img", sizes) => {
-      try {
-        const srcPath = path.join(process.cwd(), src);
-        const metadata = await Image(srcPath, responsiveImageOptions);
-        const avifImages = metadata.avif || [];
-        const webpImages = metadata.webp || [];
-        if (!webpImages.length && !avifImages.length) {
-          return `<img src="${src}" alt="${alt}" class="${className}" />`;
-        }
-
-        // Use WebP as the fallback img src
-        const fallbackImages = webpImages.length ? webpImages : avifImages;
-        const largest = fallbackImages[fallbackImages.length - 1];
-
-        const isLcp = className?.includes("lcp");
-        const loadingAttr = isLcp ? "eager" : "lazy";
-        const sizesAttr = sizes || "100vw";
-
-        let sources = "";
-        if (avifImages.length) {
-          const avifSrcset = avifImages.map((img) => `${img.url} ${img.width}w`).join(", ");
-          sources += `<source type="image/avif" srcset="${avifSrcset}" sizes="${sizesAttr}">`;
-        }
-        if (webpImages.length) {
-          const webpSrcset = webpImages.map((img) => `${img.url} ${img.width}w`).join(", ");
-          sources += `<source type="image/webp" srcset="${webpSrcset}" sizes="${sizesAttr}">`;
-        }
-
-        const attrs = {
-          alt,
-          class: className,
-          loading: loadingAttr,
-          decoding: "async",
-          src: largest.url,
-          ...(largest.width && largest.height ? { width: largest.width, height: largest.height } : {}),
-        };
-        if (isLcp) attrs.fetchpriority = "high";
-
-        const attrString = Object.entries(attrs)
-          // alt is exempt from the empty-value filter: alt="" is a deliberate
-          // "this image is decorative", whereas a missing alt is an error that
-          // makes screen readers fall back to announcing the file name.
-          .filter(([key, value]) => value !== undefined && value !== null && (value !== "" || key === "alt"))
-          .map(([key, value]) => `${key}="${String(value).replace(/"/g, "&quot;")}"`)
-          .join(" ");
-
-        return `<picture>${sources}<img ${attrString} /></picture>`;
-      } catch (err) {
-        return `<img src="${src}" alt="${alt}" class="${className}" />`;
-      }
-    }
-  );
-
-  // Shared project scanner — cached so both `projects` and `projectsForJS` reuse one scan
-  let _projectsCache = null;
-  function scanProjects() {
-    if (_projectsCache) return _projectsCache;
-    const root = "projects";
-    if (!existsSync(root)) { _projectsCache = []; return _projectsCache; }
-
-    const dirs = readdirSync(root, { withFileTypes: true })
-      .filter((d) => d.isDirectory() && d.name !== "about")
-      .map((d) => d.name);
-
-    const projects = dirs.map((dir) => {
-      const dirPath = path.join(root, dir);
-      const files = readdirSync(dirPath, { withFileTypes: true }).filter((f) => f.isFile());
-
-      const images = [];
-      const videos = [];
-      const texts = [];
-
-      let title = dir.replace(/[._-]+/g, " ").trim();
-      let date = null;
-
-      // Read title and type from frontmatter so special characters (umlauts etc.) are preserved
-      let type = "work";
-      const dataMdPath = path.join(dirPath, "data.md");
-      if (existsSync(dataMdPath)) {
-        try {
-          const parsed = matter(readFileSync(dataMdPath, "utf8"));
-          if (parsed.data.title) title = parsed.data.title;
-          if (parsed.data.date) date = new Date(parsed.data.date).toISOString();
-          if (parsed.data.type) type = parsed.data.type;
-        } catch (err) {}
-      }
-
-      files.forEach((f) => {
-        const ext = path.extname(f.name).toLowerCase();
-        if ([".jpg", ".jpeg", ".png", ".webp", ".gif"].includes(ext)) {
-          const relFsPath = `${root}/${dir}/${f.name}`;
-          images.push({ src: relFsPath, alt: title });
-        } else if ([".mp4", ".webm", ".mov"].includes(ext)) {
-          const relFsPath = `${root}/${dir}/${f.name}`;
-          videos.push({ src: relFsPath });
-        } else if ((ext === ".md" && f.name !== "data.md") || ext === ".txt") {
-          const raw = readFileSync(path.join(dirPath, f.name), "utf8");
-          texts.push(ext === ".md" ? md.render(raw) : `<p>${raw.replace(/\n\n+/g, "</p><p>").replace(/\n/g, "<br>")}</p>`);
-        }
-      });
-
-      if (!date) {
-        const mtimes = files.map((f) => statSync(path.join(dirPath, f.name)).mtimeMs);
-        date = new Date(mtimes.length ? Math.max(...mtimes) : Date.now()).toISOString();
-      }
-      return { slug: dir, title, date, type, images, videos, texts };
-    });
-    // Exclude lab-type projects from pagination (Labs now lives at the separate
-    // labs.jonasjohansson.se site; these data dirs are inert and generate no pages)
-    const filtered = projects.filter((p) => p.type !== "lab");
-    filtered.sort((a, b) => new Date(b.date) - new Date(a.date));
-    _projectsCache = filtered;
-    return _projectsCache;
-  }
-
-  // Pagination source: placeholders are unstarted work with no content, so they
-  // appear in the strips but must not generate an empty project page.
-  eleventyConfig.addGlobalData("projects", () => scanProjects().filter((p) => p.type !== "placeholder"));
-
-  // Helper to extract first image from project directory
-  function findFirstImageInDir(root, dir, dataMdPath) {
-    // Try data.md first
-    if (existsSync(dataMdPath)) {
-      try {
-        const fileContent = readFileSync(dataMdPath, "utf8");
-        const parsed = matter(fileContent);
-        const { blocks = [] } = parsed.data;
-        const firstImageBlock = blocks.find((b) => b.type === "image");
-        if (firstImageBlock?.src) {
-          return `${root}/${dir}/${firstImageBlock.src}`;
-        }
-      } catch (err) {}
-    }
-    // Fallback to first image file
-    const dirPath = path.join(root, dir);
-    const files = readdirSync(dirPath, { withFileTypes: true }).filter((f) => f.isFile());
-    for (const f of files) {
-      const ext = path.extname(f.name).toLowerCase();
-      if ([".jpg", ".jpeg", ".png", ".webp", ".gif"].includes(ext)) {
-        return `${root}/${dir}/${f.name}`;
-      }
-    }
-    return null;
-  }
-
-  // Helper to find first video from project data.md
-  function findFirstVideoInDir(root, dir, dataMdPath) {
-    if (existsSync(dataMdPath)) {
-      try {
-        const fileContent = readFileSync(dataMdPath, "utf8");
-        const parsed = matter(fileContent);
-        const { blocks = [] } = parsed.data;
-        // Only return video if it's the first block (hero)
-        if (blocks[0]?.type === "video" && blocks[0]?.src) {
-          return `/${root}/${dir}/${blocks[0].src}`;
-        }
-      } catch (err) {}
-    }
-    return null;
-  }
-
-  // Helper: read project metadata from data.md (type, title, tags, year)
-  function readProjectMeta(root, slug, fallbackDate) {
-    const dirPath = path.join(root, slug);
-    const dataMdPath = path.join(dirPath, "data.md");
-    let title = slug.replace(/[._-]+/g, " ").trim();
-    let tags = [];
-    let type = "work";
-    let year = new Date(fallbackDate).getFullYear() || new Date().getFullYear();
-
-    if (existsSync(dataMdPath)) {
-      try {
-        const fileContent = readFileSync(dataMdPath, "utf8");
-        const parsed = matter(fileContent);
-        const { title: mdTitle, date, tags: mdTags = [], type: mdType } = parsed.data;
-        if (mdTitle) title = mdTitle;
-        if (mdTags) tags = mdTags;
-        if (mdType) type = mdType;
-        if (date) year = new Date(date).getFullYear();
-      } catch (err) {}
-    }
-    return { title, tags, type, year, dataMdPath };
-  }
-
-  // Project colors mirroring variables.css (slug -> hex)
-  const PROJECT_COLORS = {
-    "danny-saucedo": "#9b2500",
-    "svartljus": "#b07600",
-    "eastern-city-portal": "#4698d2",
-    "embed": "#1a43fe",
-    "emerging-sensation": "#1521b4",
-    "firestarter": "#005d80",
-    "harpa": "#ff5c1a",
-    "heroes": "#727171",
-    "icehotel": "#0b4f80",
-    "jag-ar-gud": "#833e00",
-    "lights-for-ukraine": "#5500a0",
-    "lyra": "#070a79",
-    "people-in-orbit": "#e16518",
-    "resonance": "#4f0396",
-    "retrospectives": "#ff6a1a",
-    "sala-hjartslag": "#962d00",
-    "tinymassive": "#00338e",
-    "transcend": "#cc1c65",
-    "tufting-ex-machina": "#f37100",
-    "vista": "#8401ff",
-  };
-
-  // Build a project entry with optimized first image
-  async function buildProjectEntry(root, project) {
-    const { title, tags, type, year, dataMdPath } = readProjectMeta(root, project.slug, project.date);
-    const firstImageSrc = findFirstImageInDir(root, project.slug, dataMdPath);
-    const heroVideo = findFirstVideoInDir(root, project.slug, dataMdPath);
-    let firstImageOptimized = null;
-
-    if (firstImageSrc) {
-      firstImageOptimized = await processImageForStrips(firstImageSrc);
-      if (firstImageOptimized && !firstImageOptimized.startsWith('/')) {
-        firstImageOptimized = `/${firstImageOptimized}`;
-      }
-    }
-    const color = PROJECT_COLORS[project.slug] || null;
-    const entry = { title, images: firstImageOptimized?.startsWith('/') ? [firstImageOptimized] : [], tags, type, year, slug: project.slug };
-    if (color) entry.color = color;
-    if (heroVideo) entry.heroVideo = heroVideo;
-    return entry;
-  }
-
-  eleventyConfig.addGlobalData("projectsForJS", async function() {
-    const allProjects = scanProjects();
-    const root = "projects";
-
-    const results = await Promise.all(
-      allProjects
-        .filter((p) => p.slug !== "about")
-        .map((project) => buildProjectEntry(root, project))
-    );
-    // Only include "work" type projects for homepage strips
-    const visible = results.filter((p) => p.type !== "lab");
-    // Placeholders sit at the end of the wall, after everything that's finished.
-    return [
-      ...visible.filter((p) => p.type !== "placeholder"),
-      ...visible.filter((p) => p.type === "placeholder"),
-    ];
-  });
-
-  // Redirects for merged projects: old slug → new slug
   const projectRedirects = [
     { oldSlug: "dendrolux-tjoloholms-slott", newSlug: "svartljus" },
     { oldSlug: "dendrolux", newSlug: "svartljus" },
@@ -416,276 +150,18 @@ export default function (eleventyConfig) {
   ];
   eleventyConfig.addGlobalData("projectRedirects", () => projectRedirects);
 
-  // Size shorthand → grid column placement
-  const SIZE_MAP = {
-    "full":        { colStart: 1, colSpan: 12 },
-    "large":       { colStart: 2, colSpan: 10 },
-    "left":        { colStart: 1, colSpan: 7 },
-    "right":       { colStart: 6, colSpan: 7 },
-    "half-left":   { colStart: 1, colSpan: 6 },
-    "half-right":  { colStart: 7, colSpan: 6 },
-    "small-left":  { colStart: 1, colSpan: 5 },
-    "small-right": { colStart: 8, colSpan: 5 },
-  };
 
-  // Intrinsic aspect ratio, so a media box can take the shape of its picture
-  // instead of letterboxing it inside a full-width track. Null rather than a
-  // numeric guess: a wrong default silently reintroduces the dead air it exists
-  // to remove, and the CSS treats null as "no constraint".
-  const _arCache = new Map();
-  async function intrinsicAr(absPath) {
-    if (_arCache.has(absPath)) return _arCache.get(absPath);
-    let ar = null;
-    try {
-      const { width, height } = await sharp(absPath).metadata();
-      if (width && height) ar = +(width / height).toFixed(4);
-    } catch {
-      console.warn(`[ar] could not read ${absPath}`);
-    }
-    _arCache.set(absPath, ar);
-    return ar;
-  }
-
-  /** Project content scanner → reads data.md with YAML frontmatter */
-  eleventyConfig.addGlobalData("projectContent", async () => {
-    const root = "projects";
-    if (!existsSync(root)) return {};
-
-    const dirs = readdirSync(root, { withFileTypes: true })
-      .filter((d) => d.isDirectory() && d.name !== "about")
-      .map((d) => d.name);
-
-    const projectContent = {};
-
-    for (const dir of dirs) {
-      const dirPath = path.join(root, dir);
-      const dataMdPath = path.join(dirPath, "data.md");
-      if (!existsSync(dataMdPath)) continue;
-      try {
-        const fileContent = readFileSync(dataMdPath, "utf8");
-        const parsed = matter(fileContent);
-        const { title, date, tags = [], blocks = [], printable = true, presskit: presskitRaw } = parsed.data;
-
-        const year = date ? new Date(date).getFullYear() : new Date().getFullYear();
-        const isoDate = date ? new Date(date).toISOString() : null;
-        const projectTitle = title || dir.replace(/[._-]+/g, " ").trim();
-
-        // Process blocks from frontmatter
-        const content = (await Promise.all(blocks
-          .map(async (block) => {
-            const { type, src, alt, caption, link, ar: explicitAr, content: textContent, size, colStart: explicitColStart, colSpan: explicitColSpan, fontSize, credits } = block;
-            const resolved = size && SIZE_MAP[size] ? SIZE_MAP[size] : {};
-            // Media placement stays null unless authored, so CSS can tell the
-            // difference between "author chose full width" and "author chose
-            // nothing". Emitting 1/12 for everything made those indistinguishable.
-            const colStart = explicitColStart ?? resolved.colStart ?? null;
-            const colSpan = explicitColSpan ?? resolved.colSpan ?? null;
-            let fontSizeClass = "text-large";
-            if (fontSize) {
-              if (fontSize.includes("small") || fontSize.includes("1.2")) fontSizeClass = "text-small";
-              else if (fontSize.includes("medium") || fontSize.includes("1.8")) fontSizeClass = "text-medium";
-            }
-            // Images default to alt="" — an explicit declaration that they are
-            // decorative, so screen readers skip them rather than announcing the
-            // project name once per image. The surrounding prose carries the
-            // meaning. An authored `alt:` still wins if a specific image needs one.
-            if (type === "image") {
-              const relPath = `${root}/${dir}/${src}`;
-              return { type: "image", src: relPath, alt: alt ?? "", caption, link, colStart, colSpan, size, ar: explicitAr ?? (await intrinsicAr(path.join(dirPath, src))) };
-            }
-            // sharp cannot read video containers, so a video only gets a ratio if the
-            // author states one. Without it the box simply fills its track, as before.
-            if (type === "video") return { type: "video", src: `/${root}/${dir}/${src}`, alt: alt ?? "", caption, link, colStart, colSpan, size, ar: explicitAr ?? null };
-            if (type === "text")
-              return {
-                type: "text",
-                content: md.render(textContent || "").replace(/<a href="(https?:\/\/[^"]*)">/g, '<a href="$1" target="_blank" rel="noopener noreferrer">'),
-                colStart: explicitColStart || resolved.colStart || 2,
-                colSpan: explicitColSpan || resolved.colSpan || 10,
-                fontSizeClass,
-              };
-            if (type === "credits") {
-              const creditsColStart = explicitColStart || resolved.colStart || 1;
-              const creditsColSpan = explicitColSpan || resolved.colSpan || 12;
-              const openInNewTab = (html) => html.replace(/<a href="(https?:\/\/[^"]*)">/g, '<a href="$1" target="_blank" rel="noopener noreferrer">');
-              const groups = [];
-              const byRole = new Map();
-              for (const credit of credits || []) {
-                // Only treat as "Role: value" when the label before the colon is
-                // plain words — never a URL or markdown link (which contain : [ ] ( )).
-                const m = credit.match(/^([^:[\]()]+):\s+(.+)$/);
-                const role = m ? m[1].trim() : "";
-                const value = m ? m[2].trim() : credit.trim();
-                const renderedValue = openInNewTab(md.renderInline(value));
-                if (byRole.has(role)) {
-                  byRole.get(role).values.push(renderedValue);
-                } else {
-                  const group = { role, values: [renderedValue] };
-                  byRole.set(role, group);
-                  groups.push(group);
-                }
-              }
-              const grouped = groups.map(({ role, values }) => (role ? `${role}: ` : "") + values.join(", "));
-              return { type: "credits", credits: grouped, colStart: creditsColStart, colSpan: creditsColSpan };
-            }
-            return null;
-          }))).filter(Boolean);
-
-        // Fold neighbouring media into one row, so their widths can be split by
-        // aspect ratio and their heights match by construction rather than by the
-        // author matching source ratios by eye.
-        //
-        // Two ways in. An authored half-left/half-right pair, as before; and any
-        // run of upright neighbours the author did not place, automatically —
-        // stacked, those read as one tall column of narrow pictures and a beat of
-        // the story costs several screens. Side by side they read as a row.
-        const ROW_MAX = 4;
-
-        const makeRow = (items) => ({
-          type: "row",
-          items,
-          arSum: +items.reduce((sum, it) => sum + it.ar, 0).toFixed(4),
-          // The track has one gutter fewer than it has pictures; the CSS ceiling
-          // needs the count because it adds them back onto the ratio sum.
-          gutters: items.length - 1,
-        });
-
-        // Balanced rather than greedy: five uprights make 3+2, not 4+1, so a run
-        // never ends on an orphan.
-        const chunk = (items) => {
-          const rows = Math.ceil(items.length / ROW_MAX);
-          const size = Math.ceil(items.length / rows);
-          const out = [];
-          for (let k = 0; k < items.length; k += size) out.push(items.slice(k, k + size));
-          return out;
-        };
-
-        // The hero is never folded (i > 0), nor is anything carrying an authored
-        // size or column placement — those are deliberate and stay put.
-        const foldable = (b, i) =>
-          i > 0 && b?.type === "image" && !b.size && !b.colStart && b.ar && b.ar <= 1;
-
-        const paired = [];
-        for (let i = 0; i < content.length; i++) {
-          const a = content[i];
-          const b = content[i + 1];
-          if (a?.size === "half-left" && b?.size === "half-right" && a.ar && b.ar) {
-            paired.push(makeRow([a, b]));
-            i++;
-            continue;
-          }
-          if (foldable(a, i)) {
-            let j = i;
-            while (foldable(content[j + 1], j + 1)) j++;
-            if (j > i) {
-              for (const items of chunk(content.slice(i, j + 1))) paired.push(makeRow(items));
-              i = j;
-              continue;
-            }
-          }
-          paired.push(a);
-        }
-
-        // Process hero image for OG tags
-        const firstImageSrc = findFirstImageInDir(root, dir, dataMdPath);
-        let heroImage = null;
-        let ogImage = null;
-        if (firstImageSrc) {
-          heroImage = await processImageForStrips(firstImageSrc);
-          ogImage = await processOgImage(firstImageSrc, dir);
-        }
-
-        const presskit =
-          typeof presskitRaw === "string" && /^https?:\/\//i.test(presskitRaw.trim())
-            ? presskitRaw.trim()
-            : null;
-
-        projectContent[dir] = { title: projectTitle, tags, year, date: isoDate, content: paired, printable, heroImage, ogImage, presskit };
-      } catch (err) {}
-    }
-    return projectContent;
-  });
-
-  eleventyConfig.addFilter("findFirstText", (content) => content?.find?.((b) => b.type === "text")?.content || null);
-  eleventyConfig.addFilter("stripHtml", (str) => {
-    if (!str) return "";
-    // Remove HTML tags and decode HTML entities
-    return str.replace(/<[^>]*>/g, "").replace(/&nbsp;/g, " ").replace(/&amp;/g, "&").replace(/&lt;/g, "<").replace(/&gt;/g, ">").replace(/&quot;/g, '"').replace(/&#39;/g, "'").trim();
-  });
-  eleventyConfig.addFilter("truncate", (str, length = 160) => (str && str.length > length ? str.substring(0, length) + "..." : str || ""));
-  
-  // Minify HTML in production builds only
-  const isBuild = process.env.ELEVENTY_RUN_MODE === "build";
-  if (isBuild) {
-    eleventyConfig.addTransform("htmlmin", async (content, outputPath) => {
-      // outputPath is relative to output directory (dist) or absolute path
-      const isHtmlFile = outputPath && (outputPath.endsWith(".html") || outputPath.includes("/index.html"));
-      if (isHtmlFile) {
-        try {
-          const minified = await htmlMinifier.minify(content, {
-            useShortDoctype: true,
-            removeComments: true,
-            collapseWhitespace: true,
-            minifyCSS: true,
-            minifyJS: false, // JS is already minified by Vite
-            removeEmptyAttributes: true,
-            removeRedundantAttributes: true,
-            removeScriptTypeAttributes: true,
-            removeStyleLinkTypeAttributes: true,
-            sortAttributes: true,
-            sortClassName: true,
-          });
-          return minified;
-        } catch (err) {
-          console.warn(`HTML minification failed for ${outputPath}:`, err.message);
-          return content;
-        }
-      }
-      return content;
+  if (process.env.ELEVENTY_RUN_MODE === 'build') {
+    eleventyConfig.addTransform('htmlmin', async (content, outputPath) => {
+      if (!outputPath?.endsWith('.html')) return content;
+      return htmlMinifier.minify(content, { useShortDoctype: true, removeComments: true, collapseWhitespace: true, minifyCSS: true, minifyJS: false, removeEmptyAttributes: true, removeRedundantAttributes: true });
     });
   }
-  
-  eleventyConfig.setWatchThrottleWaitTime(0);
-
-  // Ensure output directories exist before Eleventy writes
-  eleventyConfig.on("beforeBuild", () => {
-    _projectsCache = null; // Reset cache for fresh scan
-    const outputDir = "dist";
-    if (!existsSync(outputDir)) {
-      mkdirSync(outputDir, { recursive: true });
-    }
-    // Ensure common subdirectories exist
-    const subdirs = ["img", "work"];
-    subdirs.forEach((subdir) => {
-      const dirPath = path.join(outputDir, subdir);
-      if (!existsSync(dirPath)) {
-        mkdirSync(dirPath, { recursive: true });
-      }
-    });
-    
-    // Ensure work subdirectories exist for all projects
-    const projectsRoot = "projects";
-    if (existsSync(projectsRoot)) {
-      const projectDirs = readdirSync(projectsRoot, { withFileTypes: true })
-        .filter((d) => d.isDirectory())
-        .map((d) => d.name);
-      
-      projectDirs.forEach((projectDir) => {
-        const workProjectPath = path.join(outputDir, "work", projectDir);
-        if (!existsSync(workProjectPath)) {
-          mkdirSync(workProjectPath, { recursive: true });
-        }
-      });
-    }
-  });
-
+  eleventyConfig.on('eleventy.before', () => { siteData = null; });
+  eleventyConfig.on('eleventy.after', () => publishImages());
   return {
-    dir: { input: ".", includes: "_includes", layouts: "_includes/layouts", output: "dist" },
-    pathPrefix: process.env.PATH_PREFIX || "/",
-    templateFormats: ["njk", "md", "html"],
-    markdownTemplateEngine: "njk",
-    htmlTemplateEngine: "njk",
-    dataTemplateEngine: "njk",
-    passthroughFileCopy: true,
+    dir: { input: '.', includes: '_includes', layouts: '_includes/layouts', output: 'dist' },
+    pathPrefix: prefix || '/', templateFormats: ['njk', 'md', 'html'],
+    markdownTemplateEngine: 'njk', htmlTemplateEngine: 'njk', dataTemplateEngine: 'njk',
   };
 }

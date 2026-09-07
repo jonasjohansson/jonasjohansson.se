@@ -1,5 +1,6 @@
 ---
 title: Heroes
+color: "#727171"
 date: '2022-01-01'
 tags:
   - av
@@ -7,6 +8,7 @@ tags:
 blocks:
   - type: image
     src: 01.jpg
+    alt: "A monochrome projection of sculpted figures covers the Great Synagogue as visitors watch from the street."
   - type: text
     content: >-
       Real-life statues, drone-scanned architecture, projected onto Stockholm's Great Synagogue.
@@ -35,6 +37,9 @@ blocks:
     src: 03.png
   - type: video
     src: 01.mp4
+    alt: "From scanning architecture and figures to projecting the assembled imagery onto the Great Synagogue."
+    ar: 0.5625
+    poster: 01-poster.jpg
   - type: credits
     credits:
       - "Made with: [Smash Studio](https://www.smash.studio/)"

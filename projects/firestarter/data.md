@@ -1,5 +1,6 @@
 ---
 title: Firestarter
+color: "#005d80"
 date: '2024-01-01'
 tags:
   - installation
@@ -7,6 +8,7 @@ tags:
 blocks:
   - type: image
     src: 01.jpg
+    alt: "A giant patterned lighter burns in an open field at night as a lightning bolt illuminates the sky behind it."
   - type: text
     content: >-
       A supersized Zippo lighter that visitors ignite with their own flame.

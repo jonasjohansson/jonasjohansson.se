@@ -6,14 +6,18 @@ tags:
   - av
   - mixed reality
 blocks:
-  - type: image
-    src: 01.jpg
+  - type: video
+    src: 02-2x.webm
+    alt: "An immense alien craft emerges from clouds above Stockholm in the installation’s invasion scene."
+    ar: 1.498829
+    poster: 02-2x-first-frame.jpg
   - type: text
     content: >-
       In Kungsträdgården, facing the Royal Castle, a screen pulled everyone who
       walked past into an alien invasion of Stockholm.
-  - type: video
-    src: 02.webm
+  - type: image
+    src: 01.jpg
+    alt: "A freestanding screen stands in front of the Royal Castle, showing an altered view of the square."
   - type: text
     fontSize: small
     content: >-
@@ -49,13 +53,15 @@ blocks:
     colSpan: 4
   - type: video
     src: 07.webm
+    alt: "The vertical screen places the live street view beneath the alien craft above the Royal Castle."
+    hideDescription: true
     ar: 0.5625
+    poster: 07-poster.jpg
     colStart: 9
     colSpan: 4
   - type: image
-    src: 08.jpg
-  - type: image
-    src: 09.jpg
+    src: 09-wide.png
+    alt: "A laptop running the alien invasion scene in Resolume overlooks the softly lit Stockholm waterfront at night."
   - type: credits
     credits:
       - "Made with: [Smash Studio](https://www.smash.studio/)"

@@ -98,25 +98,21 @@ figure {
   padding: var(--spacing-xl);
 }
 
-/* Hero media items — full bleed. Two paddings sit between the grid and the
-   viewport: .project-grid's own --spacing-xl and #content's --spacing-lg. The
-   hero has to clear both, hence the sum in --bleed; clearing only the grid's
-   left a 24px gutter and the image read as a card rather than the page. */
+/* Heroes sit inside the page gutter, with the earlier rounded card shape. */
 .project-grid > .media-item:first-child,
 .project-grid > .media-item.hero {
-  --bleed: calc(var(--spacing-lg) + var(--spacing-xl));
   overflow: hidden;
-  border-radius: 0;
-  height: 100vh;
-  height: 100dvh;
-  min-height: 100vh;
-  min-height: 100dvh;
-  max-height: 100vh;
-  max-height: 100dvh;
-  margin-top: calc(-1 * var(--bleed));
-  margin-left: calc(-1 * var(--bleed));
-  margin-right: calc(-1 * var(--bleed));
-  width: calc(100% + 2 * var(--bleed));
+  border-radius: var(--radius-md);
+  height: calc(100vh - var(--spacing-lg) * 2);
+  height: calc(100dvh - var(--spacing-lg) * 2);
+  min-height: calc(100vh - var(--spacing-lg) * 2);
+  min-height: calc(100dvh - var(--spacing-lg) * 2);
+  max-height: calc(100vh - var(--spacing-lg) * 2);
+  max-height: calc(100dvh - var(--spacing-lg) * 2);
+  margin-top: calc(-1 * var(--spacing-xl));
+  margin-left: calc(-1 * var(--spacing-xl));
+  margin-right: calc(-1 * var(--spacing-xl));
+  width: calc(100% + 2 * var(--spacing-xl));
   max-width: none;
   position: relative;
   scroll-snap-align: start;
@@ -132,7 +128,7 @@ figure {
   width: 100%;
   height: 100%;
   object-fit: cover;
-  object-position: center;
+  object-position: var(--focal, center);
   display: block;
   /* Prevent image dimensions from affecting container */
   min-height: 100%;
@@ -183,7 +179,8 @@ figure {
 }
 
 .text-block {
-  max-width: 65ch;
+  width: 100%;
+  max-width: 56rem;
   margin-inline: auto;
   /* Images keep the tight grid gutter (row-gap); text blocks get a larger
      break on both sides so they read as a separate beat. */
@@ -218,6 +215,9 @@ figure {
 html[data-theme="dark"] .text-block a {
   color: color-mix(in srgb, var(--project-color, var(--text-primary)) 45%, white);
 }
+@media (prefers-color-scheme: dark) {
+  html:not([data-theme="light"]) .text-block a { color: color-mix(in srgb, var(--project-color, var(--text-primary)) 45%, white); }
+}
 
 .text-block.text-medium {
   line-height: var(--line-height-snug);
@@ -225,7 +225,7 @@ html[data-theme="dark"] .text-block a {
 
 /* Statement text: wider column, tighter leading */
 .text-block.text-large {
-  max-width: 40ch;
+  max-width: 56rem;
   text-align: left;
   line-height: var(--line-height-tight);
 }
@@ -294,6 +294,7 @@ html[data-theme="dark"] .text-block a {
    The ceiling adds the gutters back on because --ar-sum only describes the
    pictures: a row of n carries n-1 of them. */
 .media-row {
+  width: 100%;
   grid-column: 1 / -1;
   display: flex;
   gap: var(--gutter-pair);
@@ -348,17 +349,6 @@ html[data-theme="dark"] .text-block a {
     grid-column: 2 / 12;
   }
 
-  /* More breathing room around text blocks on large screens */
-  .text-block {
-    grid-column: 1 / -1;
-    max-width: 80ch;
-    margin-block: var(--spacing-3xl);
-  }
-
-  .text-block.text-large {
-    grid-column: 1 / -1;
-    max-width: 60ch;
-  }
 
 }
 
@@ -373,21 +363,25 @@ html[data-theme="dark"] .text-block a {
     padding-inline: 0;
   }
 
-  /* Grid padding-inline is 0 here, so #content's gutter is the only thing left
-     between the hero and the screen edge. In-body images keep that gutter; the
-     hero alone breaks through it. */
+  /* The mobile grid already shares the page gutter. */
   .project-grid > .media-item:first-child,
   .project-grid > .media-item.hero {
-    --bleed: var(--spacing-lg);
-    margin-left: calc(-1 * var(--bleed));
-    margin-right: calc(-1 * var(--bleed));
-    width: calc(100% + 2 * var(--bleed));
+    margin-left: 0;
+    margin-right: 0;
+    width: 100%;
   }
 
   .media-row {
+    align-items: stretch;
     flex-direction: column;
     gap: var(--gutter-row);
     max-width: none;
+  }
+
+  .media-row > .media-item,
+  .media-row > .media-item:not(.hero):not(:first-child) {
+    flex: none;
+    width: 100%;
   }
 
   [style*="--col-start"] {
@@ -438,9 +432,18 @@ html[data-theme="dark"] .text-block a {
     margin-bottom: var(--spacing-xl);
   }
 
-  /* Left-align credits to match the body copy (centred looks off-axis) */
-  .credits-list,
-  .presskit-block {
-    text-align: left;
-  }
+}
+
+/* Authored composition can take priority over a cover crop. */
+.project-grid > .hero.hero-contain :is(img, video) { object-fit: contain; }
+.media-video { aspect-ratio: var(--ar); background: color-mix(in srgb, var(--text-primary) 5%, var(--bg-primary)); }
+.video-description { font-size: 1rem; line-height: 1.5; margin-top: 0.6rem !important; }
+.credits-block { width: 100%; max-width: 56rem; margin-inline: auto; }
+@media (max-width: 768px) {
+  .project-grid > .media-item.hero { height: min(85svh, calc((100vw - 2 * var(--spacing-lg)) / var(--mobile-ar, var(--ar)))); min-height: 0; max-height: none; }
+  .project-grid > .media-item.hero :is(img, video) { object-position: var(--mobile-focal, var(--focal, center)); }
+}
+@media print {
+  .project-grid > .media-item.hero { height: auto; min-height: 0; max-height: none; margin: 0; width: 100%; aspect-ratio: var(--ar); }
+  .project-grid > .media-item.hero img { object-fit: contain; }
 }

@@ -1,5 +1,6 @@
 ---
 title: Tiny/Massive
+color: "#00338e"
 date: '2019-01-01'
 tags:
   - installation
@@ -8,6 +9,7 @@ tags:
 blocks:
   - type: image
     src: 01.jpg
+    alt: "A visitor watches colourful patterns illuminate the glass panels of Harpa Concert Hall."
   - type: text
     content: >-
       An open call for artists to illuminate the facade of

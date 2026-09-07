@@ -3,7 +3,9 @@
 {% if project %}
 {% set projectTitle = projectContent[project.slug].title %}
 {% set projectDescription = projectContent[project.slug].content | findFirstText | stripHtml | truncate(160) %}
-<title>{{ site.title }} – {{ projectTitle }}</title>
+{% set hero = projectContent[project.slug].content[0] %}
+{% if hero.type == 'video' %}<link rel="preload" as="image" href="{{ hero.poster }}" fetchpriority="high" data-hero-preload>{% endif %}
+<title>{{ projectTitle }} — {{ site.title }}</title>
 <meta
   name="description"
   content="{{ projectDescription or site.description }}" />
@@ -36,14 +38,10 @@
   href="{{ 'SeasonMix-Regular.woff' | viteAsset | url }}"
   crossorigin />
 
-{# Strip images are loaded by JS via data-bg-image, not by the browser's
-   image loader, so preloading them here just competes with the font and
-   delays the text LCP. Removed to improve Lighthouse performance score. #}
-
 <!-- Canonical URL -->
 <link
   rel="canonical"
-  href="{{ site.url }}{{ page.url }}" />
+  href="{{ site.url }}{{ page.url | url }}" />
 
 <!-- SEO and Performance -->
 <meta
@@ -59,16 +57,16 @@
 <!-- Open Graph / Facebook -->
 {% if project %}
 {% set projectOgImage = projectContent[project.slug].ogImage %}
-{% set ogTitle = site.title ~ ' – ' ~ projectTitle %}
+{% set ogTitle = projectTitle ~ ' — ' ~ site.title %}
 {% set ogDescription = projectDescription or site.description %}
-{% set ogUrl = site.url ~ page.url %}
+{% set ogUrl = site.url ~ (page.url | url) %}
 {% set ogImagePath = projectOgImage or siteOgImage or site.meta.ogImage %}
 {% set ogImage = site.url ~ ogImagePath %}
 {% set ogType = "article" %}
 {% else %}
 {% set ogTitle = site.title %}
 {% set ogDescription = description or site.description %}
-{% set ogUrl = site.url ~ page.url %}
+{% set ogUrl = site.url ~ (page.url | url) %}
 {% set ogImagePath = siteOgImage or site.meta.ogImage %}
 {% set ogImage = site.url ~ ogImagePath %}
 {% set ogType = "website" %}
@@ -122,155 +120,28 @@
   content="{{ ogImage }}" />
 
 <!-- Performance and Security -->
-<meta
-  http-equiv="X-Content-Type-Options"
-  content="nosniff" />
 <!-- Favicon and App Icons -->
 <link
   rel="icon"
   type="image/png"
-  href="/favicon/favicon-96x96.png"
+  href="{{ '/favicon/favicon-96x96.png' | url }}"
   sizes="96x96" />
 <link
   rel="icon"
   type="image/svg+xml"
-  href="/favicon/favicon.svg" />
+  href="{{ '/favicon/favicon.svg' | url }}" />
 <link
   rel="shortcut icon"
-  href="/favicon/favicon.ico" />
+  href="{{ '/favicon/favicon.ico' | url }}" />
 <link
   rel="apple-touch-icon"
   sizes="180x180"
-  href="/favicon/apple-touch-icon.png" />
+  href="{{ '/favicon/apple-touch-icon.png' | url }}" />
 <meta
   name="apple-mobile-web-app-title"
   content="Jonas Johansson" />
 <link
   rel="manifest"
-  href="/favicon/site.webmanifest" />
+  href="{{ '/favicon/site.webmanifest' | url }}" />
 
-<!-- Structured Data (JSON-LD) for Rich Snippets -->
-<script type="application/ld+json">
-{
-  "@context": "https://schema.org",
-  "@type": "Person",
-  "@id": "{{ site.url }}/#person",
-  "name": "{{ site.author }}",
-  "alternateName": "{{ site.title }}",
-  "url": "{{ site.url }}",
-  "jobTitle": "{{ site.jobTitle or 'Artist, Educator, Designer' }}",
-  "description": "{{ site.description }}",
-  "email": "{{ site.contact.email or site.email }}",
-  "image": "{{ site.url }}{{ site.meta.ogImage }}",
-  "sameAs": [
-    {% if site.contact.sameAs %}{% for link in site.contact.sameAs %}"{{ link }}"{% if not loop.last %},{% endif %}{% endfor %}{% else %}
-    "https://instagram.com/jonasjohansson"
-    {% endif %}
-  ]{% if site.location %},
-  "address": {
-    "@type": "PostalAddress",
-    "streetAddress": "{{ site.location.address or '' }}",
-    "addressLocality": "{{ site.location.addressLocality or 'Stockholm' }}",
-    "addressRegion": "{{ site.location.addressRegion or '' }}",
-    "addressCountry": "{{ site.location.addressCountry or 'SE' }}"
-  }{% endif %},
-  "knowsAbout": [
-    {% for tag in site.tags %}"{{ tag }}"{% if not loop.last %},{% endif %}{% endfor %}
-  ],
-  "worksFor": {
-    "@type": "Organization",
-    "name": "Visualia",
-    "url": "https://visualia.se"
-  },
-  "alumniOf": [
-    {
-      "@type": "Organization",
-      "name": "Svenska Tecknare"
-    },
-    {
-      "@type": "EducationalOrganization",
-      "name": "Beckmans"
-    },
-    {
-      "@type": "EducationalOrganization",
-      "name": "Hyper Island"
-    }
-  ],
-  "memberOf": [
-    {
-      "@type": "Organization",
-      "name": "Nordic Audiovisual Artists",
-      "url": "https://nava.community"
-    },
-    {
-      "@type": "Organization",
-      "name": "Svartljus",
-      "url": "https://svartljus.se"
-    }
-  ]
-}
-</script>
-
-<!-- WebSite Schema -->
-<script type="application/ld+json">
-{
-  "@context": "https://schema.org",
-  "@type": "WebSite",
-  "name": "{{ site.title }}",
-  "url": "{{ site.url }}",
-  "description": "{{ site.description }}",
-  "author": { "@id": "{{ site.url }}/#person" }
-}
-</script>
-
-{% if site.location and site.location.address %}
-<!-- LocalBusiness/Organization Schema for Location and Map -->
-<script type="application/ld+json">
-{
-  "@context": "https://schema.org",
-  "@type": "Organization",
-  "name": "{{ site.title }}",
-  "url": "{{ site.url }}",
-  "description": "{{ site.description }}",
-  "address": {
-    "@type": "PostalAddress",
-    "streetAddress": "{{ site.location.address }}",
-    "addressLocality": "{{ site.location.addressLocality }}",
-    "addressRegion": "{{ site.location.addressRegion }}",
-    "addressCountry": "{{ site.location.addressCountry }}"
-  }{% if site.location.geo %},
-  "geo": {
-    "@type": "GeoCoordinates",
-    "latitude": "{{ site.location.geo.latitude }}",
-    "longitude": "{{ site.location.geo.longitude }}"
-  }{% endif %},
-  "contactPoint": {
-    "@type": "ContactPoint",
-    "email": "{{ site.contact.email or site.email }}",
-    "contactType": "artist, educator, designer"
-  }
-}
-</script>
-{% endif %}
-
-{% if project %}
-<!-- CreativeWork Schema for Project Pages -->
-<script type="application/ld+json">
-{
-  "@context": "https://schema.org",
-  "@type": "CreativeWork",
-  "name": "{{ projectContent[project.slug].title }}",
-  "description": "{{ projectContent[project.slug].content | findFirstText | stripHtml | truncate(160) }}",
-  "url": "{{ site.url }}{{ page.url }}",
-  "image": "{{ ogImage }}",
-  "creator": { "@id": "{{ site.url }}/#person" },
-  {% set cwDate = projectContent[project.slug].date or project.date %}
-  {% if cwDate %}"datePublished": "{{ cwDate }}",
-  {% endif %}{% set cwKeywords = projectContent[project.slug].tags | join(', ') %}
-  {% if cwKeywords %}"keywords": "{{ cwKeywords }}",
-  {% endif %}"inLanguage": "en"
-}
-</script>
-{% endif %}
-
-<!-- External preconnects removed - not using external fonts -->
+{% include './structured-data.njk' %}
