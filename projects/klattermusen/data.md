@@ -5,18 +5,20 @@ tags:
   - installation
 blocks:
   - type: image
-    src: 01.jpg
-    alt: "A large gold and purple tufted textile hangs above chairs in a bright studio, with flowers in the foreground."
-    focal: "50% 42%"
+    src: finished-rug.jpg
+    alt: "The finished square rug hangs on the Verkstad wall, with pink Klättermusen lettering and a sewing mouse over an ochre, salmon and plum botanical design."
+    focal: "50% 50%"
   - type: text
     content: >-
       A two-metre hand-tufted wall piece for Klättermusens Verkstad, the outdoor
       brand's mark drawn over a botanical landscape of mine.
   - type: image
-    src: 02.jpg
+    src: verkstad-detail.jpg
+    alt: "Raised pink Verkstad lettering crosses dense plum, sand and ochre cut pile."
     size: half-left
   - type: image
-    src: 03.jpg
+    src: mouse-detail.jpg
+    alt: "The pink outline of Klättermusen's sewing mouse is drawn in tufted wool over the botanical pattern."
     size: half-right
   - type: text
     fontSize: small
@@ -41,9 +43,13 @@ blocks:
       headed for. The rest of the palette was settled by playing with it: Salmon,
       Aubergine Purple and Maple Brown.
   - type: image
-    src: 04.jpg
+    src: 02.jpg
+    alt: "The original circular botanical illustration, with seed heads, reeds and a low sun."
+    size: half-left
   - type: image
-    src: 05.jpg
+    src: 03.jpg
+    alt: "The tufting preview combines the Klättermusen mark with the botanical design and a five-colour yarn palette."
+    size: half-right
   - type: text
     fontSize: small
     content: >-
@@ -56,11 +62,16 @@ blocks:
       tufting gun punches from the back and every letter has to be drawn in
       reverse. Then 14 mm of cut pile, glued and trimmed.
   - type: image
-    src: 06.jpg
+    src: 05.jpg
+    alt: "Rose traces the mirrored design onto the stretched cloth in the shop window."
+    size: half-left
   - type: image
-    src: 08.jpg
+    src: 06.jpg
+    alt: "Rose guides a blue tufting gun through the cloth, following the pink yarn outlines."
+    size: half-right
   - type: image
     src: 07.jpg
+    alt: "Rose stands on wooden benches to reach the upper edge of the two-metre rug on its tufting frame."
   - type: text
     fontSize: small
     content: >-
@@ -74,10 +85,20 @@ blocks:
       to correct it.
   - type: image
     src: 09.jpg
+    alt: "Hands stitch the linen backing along the rug's edge beside a folding ruler and mounting clip."
+    size: half-left
   - type: image
     src: 10.jpg
+    alt: "White 3D-printed mounting saddles lie on blue fabric before installation."
+    size: half-right
   - type: image
-    src: 11.jpg
+    src: store-interior.jpg
+    alt: "The finished rug hangs above a table of books in Klättermusen's Verkstad, with the park visible through the open door."
+    size: half-left
+  - type: image
+    src: shopfront.jpg
+    alt: "The rug and workshop table are visible through the shopfront glass, layered with reflections of trees and the street."
+    size: half-right
   - type: credits
     credits:
       - "Made with: [Rose Hallgren](https://rosehallgren.se/)"

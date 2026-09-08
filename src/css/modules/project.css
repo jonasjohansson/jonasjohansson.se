@@ -423,6 +423,18 @@ html[data-theme="dark"] .text-block a {
 
 /* Authored composition can take priority over a cover crop. */
 .project-grid > .hero.hero-contain :is(img, video) { object-fit: contain; }
+/* Keep the complete Klättermusen piece visible inside its rounded frame. */
+@media (min-width: 769px) {
+  #klattermusen .project-grid > .hero {
+    width: min(calc(100% + 2 * var(--spacing-xl)), calc((100dvh - 2 * var(--spacing-lg)) * var(--ar)));
+    height: auto;
+    min-height: 0;
+    max-height: none;
+    aspect-ratio: var(--ar);
+    margin-inline: 0;
+    justify-self: center;
+  }
+}
 .media-video { aspect-ratio: var(--ar); background: color-mix(in srgb, var(--text-primary) 5%, var(--bg-primary)); }
 .credits-block { width: 100%; max-width: 56rem; margin-inline: auto; }
 @media (max-width: 768px) {
