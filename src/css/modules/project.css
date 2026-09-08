@@ -157,6 +157,11 @@ figure {
   display: contents;
 }
 
+/* Trace the illustration's inset perimeter, hiding its baked-in black surround. */
+.mask-botanical-circle img {
+  clip-path: ellipse(46.2% 46.5% at 50.1% 50.2%);
+}
+
 .media-item img,
 .media-item video {
   width: 100%;
@@ -423,7 +428,7 @@ html[data-theme="dark"] .text-block a {
 
 /* Authored composition can take priority over a cover crop. */
 .project-grid > .hero.hero-contain :is(img, video) { object-fit: contain; }
-/* Keep the complete Klättermusen piece visible inside its rounded frame. */
+/* Preserve the Klättermusen photograph's composition inside its rounded frame. */
 @media (min-width: 769px) {
   #klattermusen .project-grid > .hero {
     width: min(calc(100% + 2 * var(--spacing-xl)), calc((100dvh - 2 * var(--spacing-lg)) * var(--ar)));

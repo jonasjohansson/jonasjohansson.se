@@ -27,14 +27,14 @@ eleventyComputed:
       {% if block.type == 'row' %}
       <div class="media-row" style="--ar-sum: {{ block.arSum }}; --gutters: {{ block.gutters }}">
         {% for item in block.items %}
-        <figure class="media-item{% if item.size %} size-{{ item.size }}{% endif %}" style="--ar: {{ item.ar }}">
+        <figure class="media-item{% if item.size %} size-{{ item.size }}{% endif %}{% if item.mask == 'botanical-circle' %} mask-botanical-circle{% endif %}" style="--ar: {{ item.ar }}">
           {% responsiveImage item.src, item.alt, "media-img", item.sizes %}
         </figure>
         {% endfor %}
       </div>
 
       {% elif block.type == 'image' %}
-      <figure class="media-item{% if loop.first %} hero hero-{{ block.heroFit }}{% endif %}{% if block.size %} size-{{ block.size }}{% endif %}{% if block.ar and block.ar >= 1 and not loop.first %} wide{% endif %}"
+      <figure class="media-item{% if loop.first %} hero hero-{{ block.heroFit }}{% endif %}{% if block.size %} size-{{ block.size }}{% endif %}{% if block.ar and block.ar >= 1 and not loop.first %} wide{% endif %}{% if block.mask == 'botanical-circle' %} mask-botanical-circle{% endif %}"
         style="{% if block.colStart %}--col-start: {{ block.colStart }}; --col-span: {{ block.colSpan }};{% endif %}{% if block.ar %} --ar: {{ block.ar }};{% endif %}{% if loop.first %} --focal: {{ block.focal }}; --mobile-focal: {{ block.mobileFocal }}; --mobile-ar: {{ block.mobileAr }};{% endif %}">
         {% responsiveImage block.src, block.alt, ("media-img lcp" if loop.first else "media-img"), block.sizes, block.mobileSrc %}
       </figure>

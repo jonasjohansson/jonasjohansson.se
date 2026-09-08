@@ -5,21 +5,16 @@ tags:
   - installation
 blocks:
   - type: image
-    src: finished-rug.jpg
-    alt: "The finished square rug hangs on the Verkstad wall, with pink Klättermusen lettering and a sewing mouse over an ochre, salmon and plum botanical design."
+    src: mouse-detail.jpg
+    alt: "The pink outline of Klättermusen's sewing mouse is drawn in tufted wool over the botanical pattern."
     focal: "50% 50%"
   - type: text
     content: >-
       A two-metre hand-tufted wall piece for Klättermusens Verkstad, the outdoor
       brand's mark drawn over a botanical landscape of mine.
   - type: image
-    src: verkstad-detail.jpg
-    alt: "Raised pink Verkstad lettering crosses dense plum, sand and ochre cut pile."
-    size: half-left
-  - type: image
-    src: mouse-detail.jpg
-    alt: "The pink outline of Klättermusen's sewing mouse is drawn in tufted wool over the botanical pattern."
-    size: half-right
+    src: marking-in-progress.jpg
+    alt: "Rose marks the sewing-mouse outline on the back of the partly tufted rug, with pink, plum and yellow yarn surrounding the unfinished cloth."
   - type: text
     fontSize: small
     content: >-
@@ -46,6 +41,7 @@ blocks:
     src: 02.jpg
     alt: "The original circular botanical illustration, with seed heads, reeds and a low sun."
     size: half-left
+    mask: botanical-circle
   - type: image
     src: 03.jpg
     alt: "The tufting preview combines the Klättermusen mark with the botanical design and a five-colour yarn palette."
@@ -62,16 +58,13 @@ blocks:
       tufting gun punches from the back and every letter has to be drawn in
       reverse. Then 14 mm of cut pile, glued and trimmed.
   - type: image
-    src: 05.jpg
-    alt: "Rose traces the mirrored design onto the stretched cloth in the shop window."
+    src: flower-detail.jpg
+    alt: "Pink tufted lettering and a flower motif cross ochre, salmon and plum wool, showing the texture and depth of the cut pile."
     size: half-left
   - type: image
     src: 06.jpg
     alt: "Rose guides a blue tufting gun through the cloth, following the pink yarn outlines."
     size: half-right
-  - type: image
-    src: 07.jpg
-    alt: "Rose stands on wooden benches to reach the upper edge of the two-metre rug on its tufting frame."
   - type: text
     fontSize: small
     content: >-

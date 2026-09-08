@@ -18,6 +18,7 @@ const photographs = [
   ['Aplus_DSCF8998.JPG', 'finished-rug.jpg', 0.70, 0.018],
   ['Aplus_DSCF8997.JPG', 'verkstad-detail.jpg', 0.76, 0.015],
   ['Aplus_DSCF8992.JPG', 'mouse-detail.jpg', 0.74, 0.015],
+  ['A_DSCF8995.JPG', 'flower-detail.jpg', 0.74, 0.015],
   ['Aplus_DSCF9005.JPG', 'store-interior.jpg', 0.68, 0.020],
   ['A_DSCF9001.JPG', 'shopfront.jpg', 0.82, 0.010],
 ];

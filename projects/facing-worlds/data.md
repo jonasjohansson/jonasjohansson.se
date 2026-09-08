@@ -6,80 +6,102 @@ tags:
   - installation
 blocks:
   - type: image
-    src: 01.jpg
-    alt: "A circular yellow and blue Facing Worlds sticker combines the game’s opposing towers with two sun symbols."
-    heroFit: contain
+    src: current-arena.jpg
+    mobileSrc: current-arena-mobile.jpg
+    alt: "The blue and red towers of Facing Worlds rise from opposite ends of an asteroid bridge in space."
   - type: text
     content: >-
-      A sticker you point a phone at, and the most famous map in Unreal
-      Tournament is playing on the table in front of you.
+      Facing Worlds has grown into a browser-native desktop 5v5 capture-the-flag
+      game, rebuilt from the data, rules and assets of Unreal Tournament’s
+      most famous map.
   - type: text
     fontSize: small
     content: >-
-      I brought this to Unreal Fest in Stockholm in September 2025, the Epic
-      Games event produced by [Happy Times](https://happytimes.se) where I was
-      working on light and installation. It was not part of the brief. I have
-      loved this game since I was a teenager and wanted to hand people a piece
-      of 1999 they could actually play, so I made a sheet of AR stickers — each
-      one a portal into Facing Worlds, or a weapon pickup, or a powerup.
+      Open [facingworlds.org](https://facingworlds.org) on a computer and you
+      drop straight into the match. A WebSocket server fills two five-player teams with
+      bots, makes room as people join, and keeps the shots, damage, deaths,
+      flags and score in sync. Six weapons, pickups, character animation, the
+      UT99 HUD, original sounds and announcer, and a live scoreboard now make
+      it a game rather than a map viewer.
   - type: image
-    src: 02.jpg
+    src: current-gameplay.jpg
+    alt: "A first-person player aims an Enforcer across the bridge at the red tower while the UT99-style HUD shows health, ammunition and both flags."
   - type: text
     fontSize: small
     content: >-
-      Facing Worlds is the most iconic Unreal Tournament map: two towers on
-      asteroids facing each other across a narrow bridge, with Earth looming in
-      the background. Its simple, symmetrical design and high-risk layout made
-      it legendary for Capture the Flag, where every crossing turned into a
-      dramatic showdown.
-  - type: video
-    src: 03.webm
-    alt: "A first-person view moving between the opposing towers of the Facing Worlds game map."
-    ar: 1.777778
-    poster: 03-poster.jpg
+      The firing cadence, weapon poses, projectiles, muzzle flashes and impact
+      effects follow the original UnrealScript wherever the browser can. The
+      characters carry the right weapons, move through the original animation
+      sets and stay in the match through hits, deaths and respawns. It is still
+      deliberately rough and immediate: click the page, grab a flag and run.
   - type: text
-    fontSize: small
     content: >-
-      It runs at [facingworlds.org](https://facingworlds.org), in a browser, on
-      whatever you already have in your pocket. No install and no app store —
-      you open a link and you are in the match, against whoever else has the
-      link open. A WebSocket server owns the score, the flags and every shot, so
-      nobody's phone gets to decide who won.
+      On a phone, the same live match becomes a miniature arena you can walk
+      around on the table.
   - type: image
-    src: 04.jpg
+    src: ar-live.jpg
+    alt: "The live Facing Worlds AR spectator view places the arena and ten players on the printed tracker, with the score and both team rosters above it."
+  - type: text
+    fontSize: small
+    content: >-
+      The mobile AR view is a spectator companion to the desktop game. The
+      phone camera uses six-degree image tracking to hold the arena still on
+      the print, while a read-only connection brings in the match: players run,
+      carry the correct weapons and flags, fire and fall in the same positions
+      seen by everyone playing first-person. You can move the phone around the
+      table, crouch beside a tower and watch the score and both team rosters
+      update on screen.
+  - type: image
+    src: marker.jpg
     size: half-left
+    alt: "The full circular Facing Worlds image-tracking marker, built from the opposing towers and two sun symbols."
   - type: image
-    src: 05.jpg
+    src: red-tower-square.jpg
     size: half-right
+    alt: "The red tower stands in front of Earth while players cross the asteroid bridge below."
   - type: text
     fontSize: small
     content: >-
-      The map is rebuilt from the original level's own data rather than eyeballed
-      from screenshots. A 1999 map is not a model — it is geometry plus a table
-      of actors — so the two flag bases, all twenty player starts, the pickups
-      and the 166 waypoints come straight out of that table. The fan model I started
-      from turned out to be 43% of the real thing: the towers read as 30 metres
-      instead of 71, and a flag run took eight seconds instead of nineteen.
-      Correcting that one number is most of what makes it feel like the map you
-      remember.
+      The project began as a sheet of AR stickers I brought to Unreal Fest in
+      Stockholm in September 2025. I was working on light and installation for
+      the Epic Games event, produced by [Happy Times](https://happytimes.se),
+      and made this outside the brief. Pointing a phone at a sticker placed the
+      whole arena on the table: a small portal back to a game I had loved since
+      I was a teenager.
+  - type: text
+    content: >-
+      Everything begins with Unreal Tournament (1999) and the people who made
+      it.
+  - type: text
+    fontSize: small
+    content: >-
+      CTF-Face was designed by Cédric “Inoxx” Fiorentino. Unreal Tournament was
+      made by Epic Games and Digital Extremes, and “Foregone Destruction” was
+      written by Michiel van den Bos. I went back to my retail copy and
+      extracted its actor table, bot paths, UnrealScript rules, character and
+      weapon models, HUD textures, effects and sounds. This is a non-commercial
+      fan recreation and a study of their work; those assets and ideas remain
+      theirs.
   - type: image
     src: 06.jpg
+    alt: "The original CTF-Face navigation network is drawn as hundreds of connected lines across the two towers and bridge."
   - type: text
     fontSize: small
     content: >-
-      The bots walk Epic's own path network — the 592 connections above are the
-      ones the 1999 game's bots used, decoded out of the map file and drawn back
-      into the scene. There is also an AR spectator view: point a phone at the
-      sticker and the live match plays out on it, flags and all, while everyone
-      else is playing it first-person somewhere else.
-  - type: video
-    src: 07.webm
-    alt: "The two towers of Facing Worlds stand on a small rocky world against a starry sky."
-    ar: 1.777778
-    poster: 07-poster.jpg
+      The level is placed from the original map data rather than eyeballed from
+      screenshots: two flag bases, twenty player starts, 56 pickups, 166
+      navigation points and 592 path connections. The model I started from had
+      also compressed the arena to 43% of its real scale. Restoring the
+      71-metre towers and grounding the old path network against a new
+      navigation surface brought back the long, exposed crossings that give
+      Facing Worlds its rhythm.
   - type: credits
     credits:
       - "Shown at: Unreal Fest, Stockholm, September 2025"
       - "Event produced by: [Happy Times](https://happytimes.se)"
-      - "Facing Worlds and Unreal Tournament are Epic Games'. This is a fan recreation."
+      - "Original game: Unreal Tournament (1999), Epic Games and Digital Extremes"
+      - "Original CTF-Face level design: Cédric “Inoxx” Fiorentino"
+      - "Original music: “Foregone Destruction”, Michiel van den Bos"
+      - "3D map model: Harry Clark"
+      - "Facing Worlds is a non-commercial fan recreation. Original UT99 assets remain copyright Epic Games."
 ---
