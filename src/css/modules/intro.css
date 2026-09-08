@@ -87,8 +87,8 @@ html[data-theme="dark"] .intro-text a {
   text-underline-offset: 2px;
 }
 
-.intro-links { display: flex; flex-wrap: wrap; align-items: center; justify-content: space-between; gap: 1.5rem; margin-top: 2rem; padding-block: 1.5rem; font-size: 1rem; }
+.intro-links { display: flex; flex-wrap: wrap; align-items: center; justify-content: center; gap: 1.5rem; margin-top: 2rem; padding-block: 1.5rem; font-size: 1rem; text-align: center; }
 .footer-links p { margin: 0; line-height: 2; }
 @media (max-width: 768px) {
-  .intro-links { align-items: flex-start; flex-direction: column; }
+  .intro-links { align-items: center; flex-direction: column; }
 }

@@ -38,9 +38,6 @@ blocks:
     content: >-
       On a phone, the same live match becomes a miniature arena you can walk
       around on the table.
-  - type: image
-    src: ar-live.jpg
-    alt: "The live Facing Worlds AR spectator view places the arena and ten players on the printed tracker, with the score and both team rosters above it."
   - type: text
     fontSize: small
     content: >-
