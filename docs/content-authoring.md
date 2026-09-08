@@ -1,6 +1,6 @@
 # Editing the portfolio
 
-Each project lives in `projects/<slug>/data.md`, alongside its images and videos. Published work uses `type: work`; `type: placeholder` adds a non-clickable “In progress” entry to the project index. Work is ordered by date, newest first, with the slug breaking ties. The text index is the only collection view on every screen size.
+Each project lives in `projects/<slug>/data.md`, alongside its images and videos. Published work uses `type: work`; `type: placeholder` adds a non-clickable “In progress” entry. Work is ordered by date, newest first, with the slug breaking ties. The landing page uses image strips and keeps its introduction and about text. Project pages use the text index. View and filter controls are not shown.
 
 Run `npm run build` after editing. Required data and local media paths are validated; errors identify the project and field. Source images are encoded into `.cache/images`, and only assets referenced by the current build are copied to `dist/img`. `npm run clean:dist` preserves the cache; `npm run clean:img` clears it. Share-image filenames change automatically when their source changes.
 
@@ -39,7 +39,7 @@ Image dimensions and responsive sources are generated during the build. Leave `a
 
 Set `ar` to width divided by height so the page reserves space before downloading the video. Supply a representative poster image and a concise description; the description is displayed below the player. Set `hideDescription: true` to keep it available only to screen readers. Videos in the page body have native controls. Muted previews play when visible unless the visitor prefers reduced motion, and stop when offscreen. Interacting with the controls gives the visitor control of subsequent playback.
 
-A video can be the first block. Hero videos have no visible player controls and show their poster when reduced motion is preferred. The poster supplies the sharing preview and initial hero frame. The project index is text only. Hero descriptions are available to assistive technology without covering the video. Authored hero crop settings also apply to videos. To use the exact first frame, export it with `ffmpeg -i sequence.webm -frames:v 1 -q:v 1 sequence-first-frame.jpg` and reference that file as `poster`.
+A video can be the first block. Hero videos have no visible player controls and show their poster when reduced motion is preferred. The poster supplies the landing-page strip thumbnail, sharing preview and initial hero frame. The project-page index is text only. Hero descriptions are available to assistive technology without covering the video. Authored hero crop settings also apply to videos. To use the exact first frame, export it with `ffmpeg -i sequence.webm -frames:v 1 -q:v 1 sequence-first-frame.jpg` and reference that file as `poster`.
 
 ## Verification
 

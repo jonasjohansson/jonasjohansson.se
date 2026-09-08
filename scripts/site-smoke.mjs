@@ -178,7 +178,9 @@ try {
     await page.waitForFunction(() => document.body.dataset.route === 'home');
     assert.equal(await page.locator('link[data-hero-preload]').count(), 0);
     const strip = page.locator('#strip-vi-kommer-i-fred');
-    assert.equal(await strip.locator('img, video').count(), 0);
+    const posterHash = poster.match(/\/([^/]+)-\d+\.webp$/)[1];
+    assert.ok((await strip.locator('img').getAttribute('src')).includes(posterHash));
+    assert.equal(await strip.locator('video').count(), 0);
     await strip.tap();
     await page.waitForSelector('#projects #vi-kommer-i-fred');
     assert.equal(await hero.getAttribute('poster'), poster);
@@ -192,22 +194,30 @@ try {
     await page.waitForFunction(() => document.querySelector('.hero video').paused);
   });
 
-  await check('project index preserves order, focus and return position', mobile, async page => {
+  await check('returning home restores image strips, about text, focus and position', mobile, async page => {
     await visit(page);
     const order = await page.locator('.strip').evaluateAll(entries => entries.map(entry => entry.id));
     await page.reload();
     assert.deepEqual(await page.locator('.strip').evaluateAll(entries => entries.map(entry => entry.id)), order);
+    const about = await page.locator('.intro-text').innerHTML();
+    assert.equal(await page.locator('#about').isVisible(), true);
+    assert.equal(await page.locator('#intro details, #intro summary').count(), 0);
     const chosen = page.locator('a.strip:visible').nth(10);
     await chosen.scrollIntoViewIfNeeded();
     const id = await chosen.getAttribute('id');
     const y = await page.evaluate(() => scrollY);
     await chosen.tap(); await page.waitForSelector('#projects .project');
-    await page.goBack(); await page.waitForFunction(() => document.body.dataset.route === 'home');
     assert.equal(await page.locator('#collection').getAttribute('data-view'), 'index');
+    assert.equal(await page.locator('#strips img').count(), 0);
+    await page.goBack(); await page.waitForFunction(() => document.body.dataset.route === 'home');
+    assert.equal(await page.locator('#collection').getAttribute('data-view'), 'wall');
+    assert.ok(await page.locator('#strips img').count() > 0);
+    assert.equal(await page.locator('#about').isVisible(), true);
+    assert.equal(await page.locator('.intro-text').innerHTML(), about);
     assert.deepEqual(await page.locator('.strip').evaluateAll(entries => entries.map(entry => entry.id)), order);
     assert.equal(await page.evaluate(() => document.activeElement.id), id);
     assert.ok(Math.abs(await page.evaluate(() => scrollY) - y) < 2);
-    await page.screenshot({ path: `${output}/mobile-index.png` });
+    await page.screenshot({ path: `${output}/mobile-restored-strips.png` });
   });
 
   await check('theme follows the system without preference controls', { ...desktop, colorScheme: 'dark' }, async page => {
@@ -231,9 +241,19 @@ try {
     assert.equal(await page.locator('#strip-jagad').isVisible(), false);
     assert.equal(await page.locator('a.strip:visible').count(), count - 1);
     assert.equal(await page.locator('#collection').getAttribute('data-view'), 'index');
+    assert.equal(await page.locator('#strips img').count(), 0);
     await page.locator('#collection').scrollIntoViewIfNeeded();
     assert.equal(await page.locator('#header').evaluate(header => header.getBoundingClientRect().bottom < 0), true);
     await page.screenshot({ path: `${output}/desktop-project-index.png` });
+    await page.locator('#strip-vi-kommer-i-fred').click();
+    await page.waitForSelector('#projects #vi-kommer-i-fred');
+    assert.equal(await page.locator('#collection').getAttribute('data-view'), 'index');
+    assert.equal(await page.locator('#strips img').count(), 0);
+    await page.locator('#header-toggle').click();
+    await page.waitForFunction(() => document.body.dataset.route === 'home');
+    assert.equal(await page.locator('#collection').getAttribute('data-view'), 'wall');
+    await page.locator('#strip-jagad').focus();
+    await page.locator('#strip-jagad img').evaluate(image => image.decode());
   });
 
   await check('static HTML works without JavaScript', { ...desktop, javaScriptEnabled: false }, async page => {
@@ -241,16 +261,18 @@ try {
     assert.ok(await page.locator('main #intro h1').isVisible());
     assert.ok(await page.locator('.strip-label').first().isVisible());
     await page.locator('.strip').first().scrollIntoViewIfNeeded();
-    assert.equal(await page.locator('.strip').first().evaluate(entry => getComputedStyle(entry).display), 'grid');
-    assert.equal(await page.locator('#strips img, #strips video').count(), 0);
+    assert.equal(await page.locator('#collection').getAttribute('data-view'), 'wall');
+    await page.locator('.strip img').first().evaluate(image => image.decode());
     await page.goto(base + '/dome-dreaming/');
     assert.equal(await page.locator('#intro').isVisible(), false);
     assert.equal(await page.locator('#header').isVisible(), true);
     assert.equal(await page.locator('.project-next').count(), 0);
     assert.equal(await page.locator('main .project').count(), 1);
+    assert.equal(await page.locator('#collection').getAttribute('data-view'), 'index');
+    assert.equal(await page.locator('#strips img').count(), 0);
   });
 
-  await check('index needs no thumbnails and footer has no divider', desktop, async page => {
+  await check('home image wall stays light and footer has no divider', desktop, async page => {
     await visit(page);
     const upcoming = page.locator('.strip-upcoming');
     assert.ok(await upcoming.count() > 0);
@@ -261,15 +283,18 @@ try {
     await page.waitForTimeout(400);
     const images = await page.evaluate(() => performance.getEntriesByType('resource').filter(entry => /\/img\/.*\.(avif|webp)$/.test(entry.name)));
     const bytes = images.reduce((sum, image) => sum + image.transferSize, 0);
-    assert.equal(bytes, 0, 'the text index should not download project thumbnails');
-    assert.equal(await page.locator('#strips img, #strips video').count(), 0);
+    assert.ok(bytes < 2_000_000, `homepage images transferred ${bytes} bytes`);
+    assert.ok(await page.locator('#strips img').count() > 0);
+    assert.equal(await page.locator('#strips video').count(), 0);
     assert.equal(await page.locator('#intro-links').evaluate(footer => getComputedStyle(footer).borderTopWidth), '0px');
     assert.equal(await page.locator('.strip').last().evaluate(entry => getComputedStyle(entry).borderBottomWidth), '0px');
     results.push({ metric: 'desktop home image transfer bytes', value: bytes });
+    await page.evaluate(() => scrollTo({ top: 0, behavior: 'instant' }));
     await page.screenshot({ path: `${output}/desktop-home.png`, fullPage: true });
     await page.locator('#strip-dome-dreaming').hover();
     await page.waitForTimeout(400);
-    await page.screenshot({ path: `${output}/desktop-index.png` });
+    await page.locator('#strip-dome-dreaming img').evaluate(image => image.decode());
+    await page.screenshot({ path: `${output}/desktop-wall-hover.png` });
   });
 
   await check('mobile project media stays lazy', mobile, async page => {

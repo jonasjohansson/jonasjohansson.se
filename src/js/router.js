@@ -8,8 +8,9 @@ const normalized = path => path === `${prefix}/index.html` || path === prefix ? 
 
 function snapshot(doc) {
   const projectsElement = doc.querySelector('#projects');
-  if (!projectsElement || !doc.querySelector('#intro') || !doc.querySelector('link[rel="canonical"]')) throw new Error('This page could not be loaded.');
-  return { content: projectsElement.innerHTML, metadata: [...doc.querySelectorAll(metadataSelector)].map(el => el.outerHTML).join('') };
+  const collection = doc.querySelector('#strips');
+  if (!projectsElement || !collection || !doc.querySelector('#intro') || !doc.querySelector('link[rel="canonical"]')) throw new Error('This page could not be loaded.');
+  return { content: projectsElement.innerHTML, collection: collection.innerHTML, metadata: [...doc.querySelectorAll(metadataSelector)].map(el => el.outerHTML).join('') };
 }
 
 class Router {
@@ -60,7 +61,6 @@ class Router {
   position() {
     return {
       scrollY, focusId: document.activeElement?.id || '',
-      aboutOpen: document.getElementById('about').open,
     };
   }
 
@@ -108,6 +108,7 @@ class Router {
       const project = projects.get(path);
       const container = document.getElementById('projects');
       container.innerHTML = page.content;
+      document.getElementById('strips').innerHTML = page.collection;
       const metadata = document.createElement('template');
       metadata.innerHTML = page.metadata;
       document.querySelectorAll(metadataSelector).forEach(el => el.remove());
@@ -123,7 +124,6 @@ class Router {
       else delete document.documentElement.dataset.project;
       if (project?.color) document.documentElement.style.setProperty('--project-color', project.color);
       else document.documentElement.style.removeProperty('--project-color');
-      document.getElementById('about').open = restore?.aboutOpen ?? false;
       this.onCommit(project?.slug);
       mountMedia(container);
       this.pending = false;

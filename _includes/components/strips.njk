@@ -1,11 +1,11 @@
-<section id="collection" class="collection" aria-labelledby="collection-title" data-view="index">
+<section id="collection" class="collection" aria-labelledby="collection-title" data-view="{{ 'index' if project else 'wall' }}">
   <h2 id="collection-title" class="sr-only" tabindex="-1">{% if project %}More projects{% else %}Projects{% endif %}</h2>
   <nav id="strips" aria-label="Projects">
     {% for item in collectionItems %}
     {% if item.upcoming %}
     <div class="strip strip-upcoming" id="strip-{{ item.slug }}" aria-disabled="true"
       data-project="{{ item.slug }}">
-      <span class="strip-label">{{ item.title }}</span>
+      <span class="strip-label">{{ item.title }}{% if not project %}<span class="strip-status">In progress</span>{% endif %}</span>
       <span class="strip-meta">In progress</span>
     </div>
     {% else %}
@@ -13,6 +13,15 @@
       href="{{ ('/' ~ item.slug ~ '/') | url }}"
       data-project="{{ item.slug }}"{% if item.color %} style="--project-color: {{ item.color }}"{% endif %}
       {% if project and project.slug == item.slug %} hidden{% endif %}>
+      {% if not project %}
+      <picture class="strip-picture">
+        <source class="strip-wall-source" media="not all" type="image/avif" srcset="{{ item.thumbnail.wallAvif }}">
+        <source class="strip-wall-source" media="not all" type="image/webp" srcset="{{ item.thumbnail.wallWebp }}">
+        <source type="image/avif" srcset="{{ item.thumbnail.avif }}" sizes="(hover: none) calc(100vw - 48px), (max-width: 900px) calc(100vw - 48px), 80px">
+        <source type="image/webp" srcset="{{ item.thumbnail.webp }}" sizes="(hover: none) calc(100vw - 48px), (max-width: 900px) calc(100vw - 48px), 80px">
+        <img class="strip-image" src="{{ item.thumbnail.src }}" alt="" width="{{ item.thumbnail.width }}" height="{{ item.thumbnail.height }}" loading="lazy" decoding="async">
+      </picture>
+      {% endif %}
       <span class="strip-label">{{ item.title }}</span>
       <span class="strip-meta">{{ item.tags | join(' · ') }}<span class="strip-year">{{ item.year }}</span></span>
     </a>

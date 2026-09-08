@@ -6,7 +6,7 @@ import sharp from 'sharp';
 import nunjucks from 'nunjucks';
 import htmlMinifier from 'html-minifier-terser';
 import { readProjects, SIZE_MAP, groupMedia } from './scripts/project-data.js';
-import { responsiveImage, ogImage, imageMetadata, publishImages } from './scripts/images.js';
+import { responsiveImage, stripImage, ogImage, imageMetadata, publishImages } from './scripts/images.js';
 
 const projectRoot = path.dirname(fileURLToPath(import.meta.url));
 const md = markdownIt({ html: true, breaks: false, linkify: true });
@@ -71,10 +71,10 @@ async function buildProject(project) {
     }
   }
   const firstImage = content[0].type === 'video' ? `${project.directory}/${project.blocks[0].poster}` : content[0].src;
-  const og = await ogImage(firstImage, project.slug);
+  const [thumbnail, og] = await Promise.all([stripImage(firstImage), ogImage(firstImage, project.slug)]);
   const { slug, title, date, tags, color = null } = project;
   return { slug, title, date, tags, color, year: new Date(date).getFullYear(), type: 'work',
-    content: grouped, ogImage: og, presskit: project.presskit || null,
+    content: grouped, thumbnail, ogImage: og, presskit: project.presskit || null,
     description: stripHtml(content.find(block => block.type === 'text')?.content).slice(0, 160) };
 }
 

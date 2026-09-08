@@ -41,11 +41,11 @@ try {
       await capture(page, `${name}--${slug}`);
       if (route === '/') {
         await page.locator('#collection').scrollIntoViewIfNeeded();
-        await capture(page, `${name}--index`);
+        await capture(page, `${name}--wall`);
         await page.emulateMedia({ colorScheme: 'dark' });
         await page.waitForFunction(() => getComputedStyle(document.body).backgroundColor === 'rgb(34, 31, 28)');
         await page.evaluate(() => new Promise(resolve => requestAnimationFrame(() => requestAnimationFrame(resolve))));
-        await capture(page, `${name}--index-dark`);
+        await capture(page, `${name}--wall-dark`);
         await page.emulateMedia({ colorScheme: 'light' });
         await page.waitForFunction(() => getComputedStyle(document.body).backgroundColor === 'rgb(232, 228, 221)');
       } else {
