@@ -67,6 +67,9 @@ try {
         alt: document.querySelector('.hero img')?.alt || document.querySelector('.hero video')?.getAttribute('aria-label'),
         videoControls: [...document.querySelectorAll('#projects video')].every(video => video.controls === !video.closest('.hero') && video.getAttribute('aria-hidden') !== 'true'),
         creditsCentered: [...document.querySelectorAll('.credits-list')].every(list => getComputedStyle(list).textAlign === 'center'),
+        captions: document.querySelectorAll('#projects figcaption, #projects .video-description').length,
+        videoDescriptions: [...document.querySelectorAll('#projects video')].every(video => video.getAttribute('aria-label')?.length > 15),
+        stripSlugs: [...document.querySelectorAll('#strips .strip:not([hidden])')].map(strip => strip.dataset.project),
         extraNavigation: !!document.querySelector('.project-next'),
         schemas: [...document.querySelectorAll('script[type="application/ld+json"]')].map(script => JSON.parse(script.textContent)),
       }));
@@ -78,6 +81,9 @@ try {
       assert.equal(state.title, `${state.floatingTitle} — Jonas Johansson`, `${slug} floating title`);
       assert.equal(state.videoControls, true, `${slug} video controls`);
       assert.equal(state.creditsCentered, true, `${slug} credits alignment`);
+      assert.equal(state.captions, 0, `${slug} has no visible media captions`);
+      assert.equal(state.videoDescriptions, true, `${slug} retains video descriptions`);
+      assert.deepEqual(state.stripSlugs, slugs.filter(project => project !== slug), `${slug} shows only other published projects`);
       assert.equal(state.extraNavigation, false, `${slug} extra navigation`);
       assert.equal(state.schemas.at(-1)['@type'], 'CreativeWork');
     }
@@ -91,7 +97,7 @@ try {
     })));
     assert.ok(rects.every(rect => rect.width > 300 && rect.height >= 44 && rect.label !== 'none'));
     await page.locator('#collection').scrollIntoViewIfNeeded();
-    await page.screenshot({ path: `${output}/landscape-index.png` });
+    await page.screenshot({ path: `${output}/landscape-wall.png` });
   });
 
   await check('keyboard navigation and metadata', desktop, async page => {
@@ -172,7 +178,7 @@ try {
     assert.equal(await page.locator('link[data-hero-preload]').getAttribute('href'), poster);
     assert.equal(await page.locator('#projects video[src$="/02-2x.webm"]').count(), 1);
     assert.ok(await page.locator('#projects img').first().getAttribute('alt').then(alt => alt.includes('freestanding screen')));
-    assert.equal(await page.locator('video[src$="/07.webm"] + .video-description').evaluate(description => getComputedStyle(description).position), 'absolute');
+    assert.ok((await page.locator('video[src$="/07.webm"]').getAttribute('aria-label')).includes('live street view'));
     await page.screenshot({ path: `${output}/vi-kommer-i-fred-mobile-hero.png` });
     await page.goBack();
     await page.waitForFunction(() => document.body.dataset.route === 'home');
@@ -207,10 +213,8 @@ try {
     const id = await chosen.getAttribute('id');
     const y = await page.evaluate(() => scrollY);
     await chosen.tap(); await page.waitForSelector('#projects .project');
-    assert.equal(await page.locator('#collection').getAttribute('data-view'), 'index');
-    assert.equal(await page.locator('#strips img').count(), 0);
+    assert.ok(await page.locator('#strips img').count() > 0);
     await page.goBack(); await page.waitForFunction(() => document.body.dataset.route === 'home');
-    assert.equal(await page.locator('#collection').getAttribute('data-view'), 'wall');
     assert.ok(await page.locator('#strips img').count() > 0);
     assert.equal(await page.locator('#about').isVisible(), true);
     assert.equal(await page.locator('.intro-text').innerHTML(), about);
@@ -226,13 +230,13 @@ try {
     assert.equal(await page.locator('body').evaluate(body => getComputedStyle(body).backgroundColor), 'rgb(34, 31, 28)');
     assert.equal(await page.locator('#sound-toggle, #theme-preference').count(), 0);
     await page.emulateMedia({ colorScheme: 'light' });
-    await page.waitForFunction(() => document.documentElement.dataset.theme === 'light' && getComputedStyle(document.body).backgroundColor === 'rgb(232, 228, 221)');
+    await page.waitForFunction(() => document.documentElement.dataset.theme === 'light' && getComputedStyle(document.body).backgroundColor === 'rgb(255, 255, 255)');
     assert.equal(await page.locator('html').getAttribute('data-theme'), 'light');
     await page.reload();
     assert.equal(await page.locator('html').getAttribute('data-theme'), 'light');
   });
 
-  await check('project navigation remains indexed and excludes the open project', desktop, async page => {
+  await check('project image strips exclude the open project and support navigation', desktop, async page => {
     await visit(page);
     const count = await page.locator('a.strip:visible').count();
     assert.equal(await page.locator('.collection-toolbar, .collection-controls, #project-filter, #shuffle-projects').count(), 0);
@@ -240,18 +244,18 @@ try {
     await page.waitForSelector('#projects #jagad');
     assert.equal(await page.locator('#strip-jagad').isVisible(), false);
     assert.equal(await page.locator('a.strip:visible').count(), count - 1);
-    assert.equal(await page.locator('#collection').getAttribute('data-view'), 'index');
-    assert.equal(await page.locator('#strips img').count(), 0);
+    assert.ok(await page.locator('#strips img').count() > 0);
     await page.locator('#collection').scrollIntoViewIfNeeded();
     assert.equal(await page.locator('#header').evaluate(header => header.getBoundingClientRect().bottom < 0), true);
-    await page.screenshot({ path: `${output}/desktop-project-index.png` });
+    assert.equal(await page.locator('#strips').evaluate(strips => getComputedStyle(strips).display), 'flex');
+    await page.locator('#strip-vi-kommer-i-fred').hover();
+    await page.locator('#strip-vi-kommer-i-fred img').evaluate(image => image.decode());
+    await page.screenshot({ path: `${output}/desktop-project-strips.png` });
     await page.locator('#strip-vi-kommer-i-fred').click();
     await page.waitForSelector('#projects #vi-kommer-i-fred');
-    assert.equal(await page.locator('#collection').getAttribute('data-view'), 'index');
-    assert.equal(await page.locator('#strips img').count(), 0);
+    assert.ok(await page.locator('#strips img').count() > 0);
     await page.locator('#header-toggle').click();
     await page.waitForFunction(() => document.body.dataset.route === 'home');
-    assert.equal(await page.locator('#collection').getAttribute('data-view'), 'wall');
     await page.locator('#strip-jagad').focus();
     await page.locator('#strip-jagad img').evaluate(image => image.decode());
   });
@@ -261,23 +265,21 @@ try {
     assert.ok(await page.locator('main #intro h1').isVisible());
     assert.ok(await page.locator('.strip-label').first().isVisible());
     await page.locator('.strip').first().scrollIntoViewIfNeeded();
-    assert.equal(await page.locator('#collection').getAttribute('data-view'), 'wall');
     await page.locator('.strip img').first().evaluate(image => image.decode());
     await page.goto(base + '/dome-dreaming/');
     assert.equal(await page.locator('#intro').isVisible(), false);
     assert.equal(await page.locator('#header').isVisible(), true);
     assert.equal(await page.locator('.project-next').count(), 0);
     assert.equal(await page.locator('main .project').count(), 1);
-    assert.equal(await page.locator('#collection').getAttribute('data-view'), 'index');
-    assert.equal(await page.locator('#strips img').count(), 0);
+    assert.ok(await page.locator('#strips img').count() > 0);
   });
 
   await check('home image wall stays light and footer has no divider', desktop, async page => {
     await visit(page);
-    const upcoming = page.locator('.strip-upcoming');
-    assert.ok(await upcoming.count() > 0);
-    assert.equal(await upcoming.locator('a, button, [tabindex]').count(), 0);
-    await upcoming.first().click();
+    assert.equal(await page.locator('.strip-upcoming, .strip-status, .strip-meta, #collection [data-view]').count(), 0);
+    const published = await page.evaluate(() => window.__PROJECTS_DATA__.map(project => project.slug));
+    assert.deepEqual(await page.locator('#strips .strip').evaluateAll(strips => strips.map(strip => strip.dataset.project)), published);
+    await page.locator('#collection').scrollIntoViewIfNeeded();
     assert.equal(await page.locator('body').getAttribute('data-route'), 'home');
     await page.evaluate(() => document.activeElement?.blur());
     await page.waitForTimeout(400);

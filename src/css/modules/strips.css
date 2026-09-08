@@ -1,43 +1,23 @@
 .collection { scroll-margin-top: 4rem; }
-#strips { display: block; }
-.strip { display: grid; grid-template-columns: 1fr 1fr; align-items: baseline; min-width: 0; gap: 1.5rem; padding: 0.9rem 0; color: inherit; text-decoration: none; border-bottom: 1px solid color-mix(in srgb, var(--text-primary) 20%, transparent); }
-.strip:last-child { border-bottom: 0; }
-.strip-label { min-width: 0; font-size: var(--font-size-small); line-height: 1.2; overflow-wrap: anywhere; color: color-mix(in srgb, var(--project-color, var(--text-primary)) 70%, black); }
+#strips { display: grid; grid-template-columns: repeat(auto-fit, minmax(min(100%, 280px), 1fr)); gap: 1rem; border-radius: var(--radius-md); overflow: hidden; position: relative; }
+.strip { display: block; min-width: 0; color: inherit; text-decoration: none; height: 220px; position: relative; overflow: hidden; padding: 0; border: 0; background: color-mix(in srgb, var(--text-primary) 6%, var(--bg-primary)); }
+.strip-picture { display: contents; }
+.strip-image { position: absolute; width: 100%; height: 100%; object-fit: cover; object-position: var(--bg-x, 50%) var(--bg-y, 50%); }
+.strip-label { display: block; min-width: 0; line-height: 1.2; overflow-wrap: anywhere; color: color-mix(in srgb, var(--project-color, var(--text-primary)) 70%, black); position: absolute; bottom: 0; left: 0; max-width: 100%; padding: 0.55rem 0.75rem; border-top-right-radius: 6px; background: var(--bg-primary); font-size: 0.95rem; }
+.strip:focus-visible { outline: 2px solid var(--text-primary); outline-offset: -3px; }
+@media (hover: hover) and (min-width: 901px) {
+  .enhanced #strips { display: flex; gap: 0; height: calc(100dvh - var(--spacing-lg) * 2); min-height: 0; }
+  .enhanced .strip { flex: 1 1 0; height: 100%; transition: flex-grow 0.25s ease; }
+  .enhanced .strip:is(:hover, :focus-visible) { flex-grow: 12; }
+  .enhanced .strip-label { opacity: 0; white-space: nowrap; }
+  .enhanced .strip:is(:hover, :focus-visible) .strip-label { opacity: 1; }
+}
+@media (hover: none), (max-width: 900px) {
+  #strips { display: flex; flex-direction: column; gap: 0; touch-action: pan-y; border-radius: var(--strip-mobile-radius); }
+  .strip { height: var(--strip-mobile-height); flex: none; border-top-left-radius: var(--strip-mobile-radius); }
+  .strip-label { padding: var(--spacing-sm) calc(var(--spacing-sm) * 1.5) var(--spacing-sm) var(--spacing-sm); border-top-right-radius: calc(var(--strip-mobile-radius) - 1px); font-size: var(--font-size-xs); letter-spacing: var(--letter-spacing-wide); text-transform: uppercase; line-height: var(--line-height-tight); white-space: nowrap; overflow: hidden; text-overflow: ellipsis; }
+}
 html[data-theme="dark"] .strip-label { color: color-mix(in srgb, var(--project-color, var(--text-primary)) 45%, white); }
 @media (prefers-color-scheme: dark) {
   html:not([data-theme="light"]) .strip-label { color: color-mix(in srgb, var(--project-color, var(--text-primary)) 45%, white); }
-}
-.strip-meta { display: flex; justify-content: space-between; gap: 1rem; font-size: 1rem; }
-.strip-year { margin-left: auto; font-variant-numeric: tabular-nums; }
-.strip:focus-visible { outline: 2px solid var(--text-primary); outline-offset: 2px; }
-.strip-upcoming { cursor: default; }
-@media (max-width: 600px) {
-  .strip { grid-template-columns: 1fr; gap: 0.4rem; }
-}
-
-/* The landing page keeps the image wall; project pages keep the text index. */
-.collection[data-view="wall"] #strips { display: grid; grid-template-columns: repeat(auto-fit, minmax(min(100%, 280px), 1fr)); gap: 1rem; border-radius: var(--radius-md); overflow: hidden; position: relative; }
-.collection[data-view="wall"] .strip { display: block; height: 220px; position: relative; overflow: hidden; padding: 0; border: 0; background: color-mix(in srgb, var(--text-primary) 6%, var(--bg-primary)); }
-.strip-picture { display: contents; }
-.strip-image { position: absolute; width: 100%; height: 100%; object-fit: cover; object-position: var(--bg-x, 50%) var(--bg-y, 50%); }
-.collection[data-view="wall"] .strip-label { display: block; position: absolute; bottom: 0; left: 0; max-width: 100%; padding: 0.55rem 0.75rem; border-top-right-radius: 6px; background: var(--bg-primary); font-size: 0.95rem; }
-.collection[data-view="wall"] .strip-meta { display: none; }
-.collection[data-view="wall"] .strip:focus-visible { outline-offset: -3px; }
-.strip-status { display: block; margin-top: 0.35rem; font-size: 0.8rem; color: var(--text-primary); opacity: 0.7; }
-@media (hover: hover) and (min-width: 901px) {
-  .enhanced .collection[data-view="wall"] #strips { display: flex; gap: 0; height: calc(100dvh - var(--spacing-lg) * 2); min-height: 0; }
-  .enhanced .collection[data-view="wall"] .strip { flex: 1 1 0; height: 100%; transition: flex-grow 0.25s ease; }
-  .enhanced .collection[data-view="wall"] .strip:is(:hover, :focus-visible) { flex-grow: 12; }
-  .enhanced .collection[data-view="wall"] .strip-label { opacity: 0; white-space: nowrap; }
-  .enhanced .collection[data-view="wall"] .strip:is(:hover, :focus-visible) .strip-label { opacity: 1; }
-  .enhanced .collection[data-view="wall"] .strip-upcoming { border-left: 1px solid color-mix(in srgb, var(--text-primary) 12%, transparent); }
-  .enhanced .collection[data-view="wall"] .strip-upcoming .strip-label { opacity: 1; writing-mode: vertical-rl; top: 0; bottom: auto; background: none; padding: 1rem 0.55rem; font-size: 0.85rem; }
-  .enhanced .collection[data-view="wall"] .strip-status { display: inline; margin: 0; font-size: inherit; }
-  .enhanced .collection[data-view="wall"] .strip-status::before { content: ' · '; }
-}
-@media (hover: none), (max-width: 900px) {
-  .collection[data-view="wall"] #strips { display: flex; flex-direction: column; gap: 0; touch-action: pan-y; border-radius: var(--strip-mobile-radius); }
-  .collection[data-view="wall"] .strip { height: var(--strip-mobile-height); flex: none; border-top-left-radius: var(--strip-mobile-radius); }
-  .collection[data-view="wall"] .strip-label { padding: var(--spacing-sm) calc(var(--spacing-sm) * 1.5) var(--spacing-sm) var(--spacing-sm); border-top-right-radius: calc(var(--strip-mobile-radius) - 1px); font-size: var(--font-size-xs); letter-spacing: var(--letter-spacing-wide); text-transform: uppercase; line-height: var(--line-height-tight); white-space: nowrap; overflow: hidden; text-overflow: ellipsis; }
-  .collection[data-view="wall"] .strip-upcoming + .strip-upcoming { box-shadow: inset 0 1px 0 color-mix(in srgb, var(--text-primary) 14%, transparent); }
 }

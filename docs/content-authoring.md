@@ -1,12 +1,12 @@
 # Editing the portfolio
 
-Each project lives in `projects/<slug>/data.md`, alongside its images and videos. Published work uses `type: work`; `type: placeholder` adds a non-clickable “In progress” entry. Work is ordered by date, newest first, with the slug breaking ties. The landing page uses image strips and keeps its introduction and about text. Project pages use the text index. View and filter controls are not shown.
+Each project lives in `projects/<slug>/data.md`, alongside its images and videos. Published work uses `type: work`; `type: placeholder` keeps unfinished work out of the public strips and project pages. Work is ordered by date, newest first, with the slug breaking ties. The landing page and project pages use image strips. The open project is omitted from its own strips. The landing page keeps its original introduction and about text. There is no index, view selector or filter toolbar.
 
 Run `npm run build` after editing. Required data and local media paths are validated; errors identify the project and field. Source images are encoded into `.cache/images`, and only assets referenced by the current build are copied to `dist/img`. `npm run clean:dist` preserves the cache; `npm run clean:img` clears it. Share-image filenames change automatically when their source changes.
 
 ## Images
 
-The first block must be an image or video with a meaningful `alt` description. Video heroes also require a local poster image (see below). Describe the visible artwork, material, setting or interaction that matters beyond the surrounding prose. Add descriptions to other informative views too; use `alt: ""` for redundant views or decoration.
+The first block must be an image or video with a meaningful `alt` description. Video heroes also require a local poster image (see below). Describe the visible artwork, material, setting or interaction that matters beyond the surrounding prose. Add descriptions to other informative views too; use `alt: ""` for redundant views or decoration. Descriptions stay in image `alt` attributes and video `aria-label` attributes. Media captions are not rendered.
 
 ```yaml
 title: Example project
@@ -37,9 +37,9 @@ Image dimensions and responsive sources are generated during the build. Leave `a
     alt: "Bands of blue light travel across the suspended tubes."
 ```
 
-Set `ar` to width divided by height so the page reserves space before downloading the video. Supply a representative poster image and a concise description; the description is displayed below the player. Set `hideDescription: true` to keep it available only to screen readers. Videos in the page body have native controls. Muted previews play when visible unless the visitor prefers reduced motion, and stop when offscreen. Interacting with the controls gives the visitor control of subsequent playback.
+Set `ar` to width divided by height so the page reserves space before downloading the video. Supply a representative poster image and a concise `alt` description; this labels the video for assistive technology without displaying text below the player. Videos in the page body have native controls. Muted previews play when visible unless the visitor prefers reduced motion, and stop when offscreen. Interacting with the controls gives the visitor control of subsequent playback.
 
-A video can be the first block. Hero videos have no visible player controls and show their poster when reduced motion is preferred. The poster supplies the landing-page strip thumbnail, sharing preview and initial hero frame. The project-page index is text only. Hero descriptions are available to assistive technology without covering the video. Authored hero crop settings also apply to videos. To use the exact first frame, export it with `ffmpeg -i sequence.webm -frames:v 1 -q:v 1 sequence-first-frame.jpg` and reference that file as `poster`.
+A video can be the first block. Hero videos have no visible player controls and show their poster when reduced motion is preferred. The poster supplies the strip thumbnail on every page, sharing preview and initial hero frame. Hero descriptions are available to assistive technology without covering the video. Authored hero crop settings also apply to videos. To use the exact first frame, export it with `ffmpeg -i sequence.webm -frames:v 1 -q:v 1 sequence-first-frame.jpg` and reference that file as `poster`.
 
 ## Verification
 

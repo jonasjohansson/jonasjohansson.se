@@ -1,7 +1,7 @@
 const motion = matchMedia('(prefers-reduced-motion: reduce)');
 
 export function initAnimation(container, signal) {
-  const images = [...container.querySelectorAll('.strip-image')];
+  const images = [...container.querySelectorAll('.strip:not([hidden]) .strip-image')];
   if (!images.length) return;
   let frame = null;
   let x = 0.5, y = 0.5, targetX = x, targetY = y;

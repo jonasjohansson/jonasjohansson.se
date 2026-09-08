@@ -1,7 +1,7 @@
 /* CSS Variables */
 :root {
   /* Colors */
-  --color-white: #e8e4dd;
+  --color-white: #ffffff;
   --color-black: #221f1c;
   --color-gray: #565049;
   --bg-primary: var(--color-white);

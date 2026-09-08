@@ -54,7 +54,6 @@ blocks:
   - type: video
     src: 07.webm
     alt: "The vertical screen places the live street view beneath the alien craft above the Royal Castle."
-    hideDescription: true
     ar: 0.5625
     poster: 07-poster.jpg
     colStart: 9

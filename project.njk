@@ -29,11 +29,6 @@ eleventyComputed:
         {% for item in block.items %}
         <figure class="media-item{% if item.size %} size-{{ item.size }}{% endif %}" style="--ar: {{ item.ar }}">
           {% responsiveImage item.src, item.alt, "media-img", item.sizes %}
-          {% if item.caption %}
-          <figcaption class="media-caption">
-            {% if item.link %}<a href="{{ item.link }}" target="_blank" rel="noopener">{{ item.caption | safe }}</a>{% else %}{{ item.caption | safe }}{% endif %}
-          </figcaption>
-          {% endif %}
         </figure>
         {% endfor %}
       </div>
@@ -42,11 +37,6 @@ eleventyComputed:
       <figure class="media-item{% if loop.first %} hero hero-{{ block.heroFit }}{% endif %}{% if block.size %} size-{{ block.size }}{% endif %}{% if block.ar and block.ar >= 1 and not loop.first %} wide{% endif %}"
         style="{% if block.colStart %}--col-start: {{ block.colStart }}; --col-span: {{ block.colSpan }};{% endif %}{% if block.ar %} --ar: {{ block.ar }};{% endif %}{% if loop.first %} --focal: {{ block.focal }}; --mobile-focal: {{ block.mobileFocal }}; --mobile-ar: {{ block.mobileAr }};{% endif %}">
         {% responsiveImage block.src, block.alt, ("media-img lcp" if loop.first else "media-img"), block.sizes, block.mobileSrc %}
-        {% if block.caption %}
-        <figcaption class="media-caption">
-          {% if block.link %}<a href="{{ block.link }}" target="_blank" rel="noopener">{{ block.caption | safe }}</a>{% else %}{{ block.caption | safe }}{% endif %}
-        </figcaption>
-        {% endif %}
       </figure>
 
       {% elif block.type == 'video' %}
@@ -63,12 +53,6 @@ eleventyComputed:
           {% if block.poster %}poster="{{ block.poster }}"{% endif %}
           aria-label="{{ block.alt }}"
           data-preview></video>
-        <p class="video-description{% if loop.first or block.hideDescription %} sr-only{% endif %}">{{ block.alt }}</p>
-        {% if block.caption %}
-        <figcaption class="media-caption">
-          {% if block.link %}<a href="{{ block.link }}" target="_blank" rel="noopener">{{ block.caption | safe }}</a>{% else %}{{ block.caption | safe }}{% endif %}
-        </figcaption>
-        {% endif %}
       </figure>
 
       {% elif block.type == 'text' %}

@@ -47,7 +47,7 @@ try {
         await page.evaluate(() => new Promise(resolve => requestAnimationFrame(() => requestAnimationFrame(resolve))));
         await capture(page, `${name}--wall-dark`);
         await page.emulateMedia({ colorScheme: 'light' });
-        await page.waitForFunction(() => getComputedStyle(document.body).backgroundColor === 'rgb(232, 228, 221)');
+        await page.waitForFunction(() => getComputedStyle(document.body).backgroundColor === 'rgb(255, 255, 255)');
       } else {
         const detail = page.locator('.media-row, .project-grid > .media-item:not(.hero)').first();
         if (await detail.count()) {

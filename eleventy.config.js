@@ -110,15 +110,14 @@ export default function (eleventyConfig) {
     if (!siteData) siteData = (async () => {
       const all = readProjects();
       const work = await Promise.all(all.filter(project => project.type === 'work').map(buildProject));
-      const upcoming = all.filter(project => project.type === 'placeholder').map(({ slug, title, tags }) => ({ slug, title, tags, upcoming: true }));
-      return { work, collection: [...work, ...upcoming] };
+      return { work };
     })();
     return siteData;
   }
   eleventyConfig.addGlobalData('projects', async () => (await getSiteData()).work.map(({ slug, title, date, tags, color }) => ({ slug, title, date, tags, color })));
   eleventyConfig.addGlobalData('projectContent', async () => Object.fromEntries((await getSiteData()).work.map(project => [project.slug, project])));
   eleventyConfig.addGlobalData('projectsForJS', async () => (await getSiteData()).work.map(({ slug, title, color }) => ({ slug, title, color })));
-  eleventyConfig.addGlobalData('collectionItems', async () => (await getSiteData()).collection);
+  eleventyConfig.addGlobalData('collectionItems', async () => (await getSiteData()).work);
 
   eleventyConfig.addFilter("viteAsset", (filename) => {
     const isJS = filename.endsWith(".js");
