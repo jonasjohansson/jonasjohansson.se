@@ -38,6 +38,11 @@
   .print-bio p { margin: 0 0 4mm; }
   .print-contact { position: absolute; bottom: 16mm; font-size: 9pt; line-height: 1.6; }
 
+  .print-contact p { margin: 0 0 3mm; }
+  .print-profile-links { margin-top: 5mm; }
+  .print-profile-links p { margin: 0; }
+  .print-profile-links a { text-decoration: underline; text-decoration-thickness: 0.4pt; text-underline-offset: 0.8mm; }
+
   /* Route selection also works on direct visits without JavaScript. */
   body[data-route="project"] .print-cover,
   body[data-route="project"] .print-project { display: none; }

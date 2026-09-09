@@ -11,6 +11,7 @@
     <div class="print-contact">
       <a href="{{ site.url }}">{{ site.url | replace('https://', '') }}</a><br>
       <a href="mailto:{{ site.email }}">{{ site.email }}</a>
+      <div class="print-profile-links">{{ site.links | markdown | safe }}</div>
     </div>
   </section>
   {% for item in collectionItems %}
