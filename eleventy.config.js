@@ -6,7 +6,7 @@ import sharp from 'sharp';
 import nunjucks from 'nunjucks';
 import htmlMinifier from 'html-minifier-terser';
 import { readProjects, SIZE_MAP, groupMedia } from './scripts/project-data.js';
-import { responsiveImage, stripImage, ogImage, imageMetadata, publishImages } from './scripts/images.js';
+import { responsiveImage, stripImage, ogImage, imageMetadata, publishImages, printImage } from './scripts/images.js';
 
 const projectRoot = path.dirname(fileURLToPath(import.meta.url));
 const md = markdownIt({ html: true, breaks: false, linkify: true });
@@ -72,9 +72,17 @@ async function buildProject(project) {
   }
   const firstImage = content[0].type === 'video' ? `${project.directory}/${project.blocks[0].poster}` : content[0].src;
   const [thumbnail, og] = await Promise.all([stripImage(firstImage), ogImage(firstImage, project.slug)]);
+  // One full-bleed page per project: opening statement, introduction and hero.
+  const printMedia = await Promise.all(project.blocks
+    .filter(block => block.type === 'image' || (block.type === 'video' && block.poster))
+    .slice(0, 1).map(async block => ({
+      ...await printImage(`${project.directory}/${block.type === 'video' ? block.poster : block.src}`, block.focal),
+      alt: block.alt || '',
+    })));
+  const printCopy = content.filter(block => block.type === 'text').slice(0, 2);
   const { slug, title, date, tags, color = null } = project;
   return { slug, title, date, tags, color, year: new Date(date).getFullYear(), type: 'work',
-    content: grouped, thumbnail, ogImage: og, presskit: project.presskit || null,
+    content: grouped, thumbnail, ogImage: og, printMedia, printCopy, presskit: project.presskit || null,
     description: stripHtml(content.find(block => block.type === 'text')?.content).slice(0, 160) };
 }
 

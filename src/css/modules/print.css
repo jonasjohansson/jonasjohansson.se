@@ -1,0 +1,36 @@
+/* Physical widescreen pages; real image and SVG content prints even with
+   browser background graphics disabled. Keep this stylesheet last. */
+.print-portfolio { display: none; }
+
+@media print {
+  @page { size: 338.667mm 190.5mm; margin: 0; }
+
+  html, body { margin: 0; padding: 0; background: white !important; color: black !important; color-scheme: light; }
+  body > :not(.print-portfolio) { display: none !important; }
+  .print-portfolio { display: block; font-size: 9pt; line-height: 1.5; print-color-adjust: exact; -webkit-print-color-adjust: exact; }
+  .print-portfolio * { animation: none !important; transition: none !important; text-shadow: none !important; }
+  .print-portfolio a { color: inherit !important; text-decoration: none; }
+  .print-page { position: relative; height: 190.5mm; overflow: hidden; break-after: page; break-inside: avoid; }
+  .print-project:last-child .print-page { break-after: auto; }
+  .print-project-page { color: white; }
+  .print-hero, .print-shade { position: absolute; inset: 0; display: block; width: 100%; height: 100%; max-width: none; }
+  .print-hero { object-fit: cover; }
+  .print-shade { pointer-events: none; }
+  .print-project-text { position: relative; width: 112mm; margin: 16mm 0 0 16mm; }
+  .print-project-text h2 { font-size: 24pt; font-weight: normal; line-height: 1.08; letter-spacing: -0.015em; margin: 0 0 7mm; text-wrap: balance; }
+  .print-copy { max-width: 102mm; }
+  .print-copy p { margin: 0 0 3.5mm; }
+  .print-lead { font-size: 11pt; line-height: 1.32; }
+  .print-lead p { margin-bottom: 5mm; }
+  .print-project-link { margin: 6mm 0 0; font-size: 8.5pt; line-height: 1.4; }
+  .print-project-link a { text-decoration: underline; text-decoration-thickness: 0.4pt; text-underline-offset: 1mm; }
+  .print-cover { padding: 22mm 16mm 16mm; color: black; }
+  .print-cover h1 { font-size: 32pt; font-weight: normal; line-height: 1.1; margin: 0 0 15mm; }
+  .print-bio { max-width: 156mm; font-size: 10pt; }
+  .print-bio p { margin: 0 0 4mm; }
+  .print-contact { position: absolute; bottom: 16mm; font-size: 9pt; line-height: 1.6; }
+
+  /* Route selection also works on direct visits without JavaScript. */
+  body[data-route="project"] .print-cover,
+  body[data-route="project"] .print-project { display: none; }
+}

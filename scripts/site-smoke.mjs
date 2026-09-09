@@ -66,7 +66,7 @@ try {
         floatingTitle: document.getElementById('header-toggle').textContent.trim(),
         alt: document.querySelector('.hero img')?.alt || document.querySelector('.hero video')?.getAttribute('aria-label'),
         videoControls: [...document.querySelectorAll('#projects video')].every(video => video.controls === !video.closest('.hero') && video.getAttribute('aria-hidden') !== 'true'),
-        creditsCentered: [...document.querySelectorAll('.credits-list')].every(list => getComputedStyle(list).textAlign === 'center'),
+        creditsAligned: [...document.querySelectorAll('.credits-list')].every(list => getComputedStyle(list).textAlign === 'left'),
         captions: document.querySelectorAll('#projects figcaption, #projects .video-description').length,
         videoDescriptions: [...document.querySelectorAll('#projects video')].every(video => video.getAttribute('aria-label')?.length > 15),
         stripSlugs: [...document.querySelectorAll('#strips .strip:not([hidden])')].map(strip => strip.dataset.project),
@@ -80,7 +80,7 @@ try {
       assert.ok(Math.abs(state.hero - state.gutter) < 1, `${slug} hero starts at ${state.hero}`);
       assert.equal(state.title, `${state.floatingTitle} — Jonas Johansson`, `${slug} floating title`);
       assert.equal(state.videoControls, true, `${slug} video controls`);
-      assert.equal(state.creditsCentered, true, `${slug} credits alignment`);
+      assert.equal(state.creditsAligned, true, `${slug} credits alignment`);
       assert.equal(state.captions, 0, `${slug} has no visible media captions`);
       assert.equal(state.videoDescriptions, true, `${slug} retains video descriptions`);
       assert.deepEqual(state.stripSlugs, slugs.filter(project => project !== slug), `${slug} shows only other published projects`);

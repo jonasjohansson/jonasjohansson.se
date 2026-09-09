@@ -446,7 +446,3 @@ html[data-theme="dark"] .text-block a {
   .project-grid > .media-item.hero { height: min(85svh, calc((100vw - 2 * var(--spacing-lg)) / var(--mobile-ar, var(--ar)))); min-height: 0; max-height: none; }
   .project-grid > .media-item.hero :is(img, video) { object-position: var(--mobile-focal, var(--focal, center)); }
 }
-@media print {
-  .project-grid > .media-item.hero { height: auto; min-height: 0; max-height: none; margin: 0; width: 100%; aspect-ratio: var(--ar); }
-  .project-grid > .media-item.hero img { object-fit: contain; }
-}

@@ -1,0 +1,46 @@
+{# Present at build time so browser-menu printing also works without JavaScript. #}
+<style media="print">
+  {% for item in collectionItems %}
+  html[data-project="{{ item.slug }}"] body .print-project[data-print-project="{{ item.slug }}"] { display: block; }
+  {% endfor %}
+</style>
+<div class="print-portfolio">
+  <section class="print-page print-cover">
+    <h1>{{ site.author }}</h1>
+    <div class="print-bio">{{ site.intro | markdown | safe }}</div>
+    <div class="print-contact">
+      <a href="{{ site.url }}">{{ site.url | replace('https://', '') }}</a><br>
+      <a href="mailto:{{ site.email }}">{{ site.email }}</a>
+    </div>
+  </section>
+  {% for item in collectionItems %}
+  <article class="print-project" data-print-project="{{ item.slug }}">
+    <section class="print-page print-project-page">
+      <img class="print-hero" src="{{ item.printMedia[0].src }}" alt="{{ item.printMedia[0].alt }}" width="{{ item.printMedia[0].width }}" height="{{ item.printMedia[0].height }}" style="object-position: {{ item.content[0].focal }}" loading="lazy" decoding="async">
+      {# SVG is printed content: the shade survives Background graphics being off. #}
+      {% if item.printMedia[0].shade %}
+      <svg class="print-shade" viewBox="0 0 1280 720" preserveAspectRatio="none" aria-hidden="true">
+        <defs>
+          <linearGradient id="print-shade-{{ item.slug }}">
+            <stop offset="0" stop-color="{{ item.printMedia[0].tint }}" stop-opacity="{{ item.printMedia[0].shade }}" />
+            <stop offset="0.35" stop-color="{{ item.printMedia[0].tint }}" stop-opacity="{{ item.printMedia[0].shade }}" />
+            <stop offset="0.62" stop-color="{{ item.printMedia[0].tint }}" stop-opacity="0" />
+            <stop offset="1" stop-color="{{ item.printMedia[0].tint }}" stop-opacity="0" />
+          </linearGradient>
+        </defs>
+        <rect width="1280" height="720" fill="url(#print-shade-{{ item.slug }})" />
+      </svg>
+      {% endif %}
+      <div class="print-project-text">
+        <h2><a href="{{ site.url }}{{ ('/' ~ item.slug ~ '/') | url }}">{{ item.title }}</a></h2>
+        <div class="print-copy">
+          {% for block in item.printCopy %}
+          <div{% if loop.first %} class="print-lead"{% endif %}>{{ block.content | safe }}</div>
+          {% endfor %}
+        </div>
+        <p class="print-project-link"><a href="{{ site.url }}{{ ('/' ~ item.slug ~ '/') | url }}">View full project ↗</a></p>
+      </div>
+    </section>
+  </article>
+  {% endfor %}
+</div>

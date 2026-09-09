@@ -43,9 +43,27 @@ A video can be the first block. Hero videos have no visible player controls and 
 
 ## Verification
 
+Cmd/Ctrl+P on the homepage exports a widescreen portfolio with a cover and all
+published work, in the site's project order. On a project route it exports only
+that project, including after client-side navigation. Each project occupies one
+edge-to-edge hero page with its title and first two text blocks over the image.
+The title and a visible “View full project” link open the full project. Video heroes use their poster still.
+The hero crop is sampled behind the text: dark images print without an overlay; brighter images get a local, nearly black tinted SVG gradient that fades out before the right side. This also prints with Background graphics off.
+The cover contains the name, biography and contact details; project pages have
+no footers or separate galleries. Content comes from the existing project data.
+
+Print images are 1600px JPEGs, cropped to fill the widescreen page using the hero’s focal point. They stay lazy
+on screen; Cmd/Ctrl+P waits for them and the font before opening the dialog.
+Browser-menu printing starts image loading in `beforeprint`, but cannot wait
+asynchronously; use the shortcut for reliable first-visit exports. Choose Save
+as PDF and disable browser headers/footers. Background graphics are optional.
+The CSS requests 338.667 × 190.5mm pages; browsers that ignore custom page sizes
+need that paper size selected in their print dialog.
+
 - `npm test` checks project validation, image grouping and sharing-image cache invalidation.
 - `npm run build` produces the publishable site in `dist`.
 - `npm run test:browser` starts a temporary preview server and checks all project routes, loading geometry, navigation, focus, preferences, touch layouts and the no-JavaScript fallback. It saves results and screenshots under `screenshots/site-smoke`.
 - `npm run audit:visual` captures representative pages and detail views at five viewport sizes under `screenshots/visual-audit`, preserving earlier review evidence.
+- `npm run test:print` checks image loading, copy fit, theme independence and route selection, and exports review PDFs under `screenshots/print`.
 
 Browser scripts use installed Playwright Chromium or local Google Chrome. Run `npx playwright install chromium` if neither is installed. `AUDIT_BASE_URL` can point the scripts at another preview. For a subdirectory deployment, use the same `PATH_PREFIX` for the build and verification commands. CI runs the build and regression checks before publishing.

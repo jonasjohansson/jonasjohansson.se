@@ -2,8 +2,10 @@ import { initializeStrips, updateStrips } from './strips.js';
 import { router } from './router.js';
 import { mountMedia } from './media.js';
 import { initTheme } from './theme.js';
+import { initPrint } from './print.js';
 
 initTheme();
+initPrint();
 initializeStrips();
 router.init(updateStrips);
 mountMedia(document.getElementById('projects'));

@@ -10,6 +10,7 @@
     "build": "npm run clean:dist && ELEVENTY_RUN_MODE=build npx vite build && ELEVENTY_RUN_MODE=build npx eleventy && echo '\u2713 Build complete - HTML files generated in dist/'",
     "test": "node --test tests/*.test.js",
     "test:browser": "node scripts/site-smoke.mjs",
+    "test:print": "node scripts/print-smoke.mjs",
     "audit:visual": "node scripts/visual-audit.mjs"
   },
   "devDependencies": {
