@@ -40,10 +40,43 @@ export async function printImage(src, focal = '50% 50%') {
   const shade = high <= 70 ? 0 : +Math.min(0.82, 1 - 60 / high).toFixed(2);
   const { dominant } = await sharp(src).rotate().resize(64, 64, { fit: 'inside' }).removeAlpha().stats();
   const channels = [dominant.r, dominant.g, dominant.b];
-  const peak = Math.max(...channels, 1);
-  // No lifted grey floor: retain a trace of hue in an almost-black ink.
-  const tint = '#' + channels.map(value => Math.round(value / peak * 12).toString(16).padStart(2, '0')).join('');
-  return { src: image.url, width: image.width, height: image.height, tint, shade };
+  // Remove some neutral grey before darkening, so the sampled hue remains
+  // visible without lifting the shadows. Never add a grey floor.
+  const neutral = Math.min(...channels) * 0.65;
+  const peak = Math.max(...channels.map(value => value - neutral), 1);
+  const tint = '#' + channels.map(value => Math.round((value - neutral) / peak * 24).toString(16).padStart(2, '0')).join('');
+  const overlays = shade ? await printShade(tint, shade) : {};
+  return { src: image.url, width: image.width, height: image.height, tint, shade, ...overlays };
+}
+
+// Bake both fades into PNG alpha rather than exporting nested SVG/CSS masks.
+// One continuous image avoids seams where PDF renderers join alpha tiles.
+async function printShade(tint, opacity) {
+  const key = createHash('sha256').update(`${tint}-${opacity}-rgba-shade-v2`).digest('hex').slice(0, 12);
+  const rgb = [1, 3, 5].map(start => parseInt(tint.slice(start, start + 2), 16));
+  const urls = {};
+  for (const [name, height] of [['shadeBody', 800]]) {
+    const filename = `print-shade/${key}-${name}.png`;
+    const output = path.join(imageCache, filename);
+    if (!existsSync(output)) {
+      const width = 800;
+      const pixels = Buffer.alloc(width * height * 4);
+      for (let y = 0; y < height; y++) {
+        const t = Math.max(0, (y / (height - 1) - 0.8) / 0.2);
+        const vertical = 1 - t * t * (3 - 2 * t);
+        for (let x = 0; x < width; x++) {
+          const horizontal = Math.min(1, (1 - x / (width - 1)) / (1 - 0.565));
+          const offset = (y * width + x) * 4;
+          pixels[offset] = rgb[0]; pixels[offset + 1] = rgb[1]; pixels[offset + 2] = rgb[2];
+          pixels[offset + 3] = Math.round(255 * opacity * horizontal * vertical);
+        }
+      }
+      mkdirSync(path.dirname(output), { recursive: true });
+      await sharp(pixels, { raw: { width, height, channels: 4 } }).png().toFile(output);
+    }
+    urls[name] = `${prefix}/img/${filename}`;
+  }
+  return urls;
 }
 
 export async function imageMetadata(src, widths = [640, 1280, 1920]) {

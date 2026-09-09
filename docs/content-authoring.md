@@ -48,7 +48,7 @@ published work, in the site's project order. On a project route it exports only
 that project, including after client-side navigation. Each project occupies one
 edge-to-edge hero page with its title and first two text blocks over the image.
 The title and a visible “View full project” link open the full project. Video heroes use their poster still.
-The hero crop is sampled behind the text: dark images print without an overlay; brighter images get a local, nearly black tinted SVG gradient that fades out before the right side. This also prints with Background graphics off.
+The hero crop is sampled behind the text: dark images print without an overlay; brighter images get a local, nearly black tinted PNG gradient that fades out before the right side. The overlay follows the actual text block height and fades to clear below the project link, over a quarter of the text area’s height, leaving the lower photograph unshaded. The fades are baked into PNG transparency to avoid nested-mask rendering artifacts in PDF viewers. This also prints with Background graphics off.
 The cover contains the name, biography and contact details; project pages have
 no footers or separate galleries. Content comes from the existing project data.
 

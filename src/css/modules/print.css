@@ -1,4 +1,4 @@
-/* Physical widescreen pages; real image and SVG content prints even with
+/* Physical widescreen pages; real image content prints even with
    browser background graphics disabled. Keep this stylesheet last. */
 .print-portfolio { display: none; }
 
@@ -13,10 +13,18 @@
   .print-page { position: relative; height: 190.5mm; overflow: hidden; break-after: page; break-inside: avoid; }
   .print-project:last-child .print-page { break-after: auto; }
   .print-project-page { color: white; }
-  .print-hero, .print-shade { position: absolute; inset: 0; display: block; width: 100%; height: 100%; max-width: none; }
+  .print-hero { position: absolute; inset: 0; display: block; width: 100%; height: 100%; max-width: none; }
   .print-hero { object-fit: cover; }
-  .print-shade { pointer-events: none; }
-  .print-project-text { position: relative; width: 112mm; margin: 16mm 0 0 16mm; }
+  /* Anchor to the copy, not the page: full strength through the link, then
+     a proportional vertical fade. The horizontal fade still clears the right. */
+  .print-shade {
+    position: absolute; top: -16mm; left: -16mm;
+    width: 210mm; height: calc((100% + 16mm) * 1.25); max-width: none;
+    pointer-events: none; display: block;
+  }
+  .print-shade img { display: block; width: 100%; height: 100%; min-height: 0; object-fit: fill; }
+  .print-project-text > :not(.print-shade) { position: relative; }
+  .print-project-text { display: flow-root; position: relative; width: 112mm; margin: 16mm 0 0 16mm; }
   .print-project-text h2 { font-size: 24pt; font-weight: normal; line-height: 1.08; letter-spacing: -0.015em; margin: 0 0 7mm; text-wrap: balance; }
   .print-copy { max-width: 102mm; }
   .print-copy p { margin: 0 0 3.5mm; }

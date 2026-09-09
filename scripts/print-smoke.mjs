@@ -28,6 +28,14 @@ try {
       ? [page.textContent.slice(0, 100)] : [];
   }));
   assert.deepEqual(overflow, [], 'copy must fit inside each page');
+  const shading = await page.locator('.print-shade').evaluateAll(shades => shades.map(shade => {
+    const box = shade.getBoundingClientRect();
+    const text = shade.closest('.print-project-text').getBoundingClientRect();
+    return { expectedFade: (text.height + 16 * 96 / 25.4) * 0.25, width: box.width, fade: box.bottom - text.bottom, height: box.height, raster: shade.querySelectorAll('img').length === 1 && getComputedStyle(shade).maskImage === 'none' };
+  }));
+  assert.ok(shading.every(shade => Math.abs(shade.width - 210 * 96 / 25.4) < 1), 'shade is confined to the left 210mm, never the full page');
+  assert.ok(shading.every(shade => shade.raster && Math.abs(shade.fade - shade.expectedFade) < 1), 'shade fades smoothly below each text block');
+  assert.ok(new Set(shading.map(shade => Math.round(shade.height))).size > 1, 'shade height follows variable copy lengths');
   const projectLinks = await page.locator('.print-project-link a').evaluateAll(links => links.map(link => link.href));
   assert.equal(projectLinks.length, pages - 1);
   assert.equal(new Set(projectLinks).size, pages - 1, 'each project has its own online destination');
