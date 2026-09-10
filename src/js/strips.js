@@ -4,9 +4,18 @@ import { homeScrollTop } from './home.js';
 let entries = [];
 let controller;
 let resizeFrame;
-let activeFilter = '';
 const projects = new Map(window.__PROJECTS_DATA__.map(project => [project.slug, project]));
+const counts = new Map();
+projects.forEach(project => project.tags.forEach(tag => counts.set(tag, (counts.get(tag) || 0) + 1)));
+const tags = [...counts.keys()].filter(tag => tag !== 'installation').sort((a, b) => counts.get(b) - counts.get(a) || a.localeCompare(b));
+const activeTags = new Set(tags);
 const pendingImages = new WeakMap();
+let hoveredEntry;
+
+function updatePreviewName() {
+  const focused = document.activeElement?.closest('#strips .strip:not([hidden])');
+  document.getElementById('project-preview-name').textContent = (hoveredEntry || focused)?.getAttribute('aria-label') || '';
+}
 
 function setImageSize(entry, width) {
   const picture = entry.querySelector('picture');
@@ -55,20 +64,35 @@ function updateImages() {
 export function updateStrips(slug) {
   controller?.abort();
   controller = new AbortController();
+  hoveredEntry = null;
   entries = [...document.querySelectorAll('#strips .strip')];
   let count = 0;
+  // With every tag on, include projects whose only tag is the omitted
+  // Installation category too. Otherwise, match any enabled category.
+  const showAll = activeTags.size === tags.length;
   for (const entry of entries) {
-    entry.hidden = entry.dataset.project === slug || (!slug && activeFilter !== '' && !projects.get(entry.dataset.project)?.tags.includes(activeFilter));
+    const matches = showAll || projects.get(entry.dataset.project)?.tags.some(tag => activeTags.has(tag));
+    entry.hidden = entry.dataset.project === slug || (!slug && !matches);
     if (!entry.hidden) count++;
     if (entry.hidden || !entry.querySelector('img')) continue;
     const upgradeImage = () => {
       if (!matchMedia('(hover: hover)').matches) return;
       setWideImage(entry);
     };
-    entry.addEventListener('pointerenter', upgradeImage, { signal: controller.signal });
-    entry.addEventListener('focus', upgradeImage, { signal: controller.signal });
+    entry.addEventListener('pointerenter', event => {
+      if (event.pointerType === 'mouse') { hoveredEntry = entry; updatePreviewName(); }
+      upgradeImage();
+    }, { signal: controller.signal });
+    entry.addEventListener('pointerleave', () => {
+      if (hoveredEntry === entry) hoveredEntry = null;
+      updatePreviewName();
+    }, { signal: controller.signal });
+    entry.addEventListener('focus', () => { upgradeImage(); updatePreviewName(); }, { signal: controller.signal });
+    entry.addEventListener('blur', updatePreviewName, { signal: controller.signal });
   }
   document.getElementById('project-count').textContent = `${count} ${count === 1 ? 'project' : 'projects'}`;
+  document.getElementById('strips-empty').hidden = count > 0;
+  updatePreviewName();
   updateImages();
   initAnimation(document.getElementById('strips'), controller.signal);
 }
@@ -76,23 +100,23 @@ export function updateStrips(slug) {
 export function initializeStrips() {
   document.documentElement.classList.add('enhanced');
   const filters = document.getElementById('project-filters');
-  const counts = new Map();
-  projects.forEach(project => project.tags.forEach(tag => counts.set(tag, (counts.get(tag) || 0) + 1)));
-  const tags = [...counts.keys()].filter(tag => tag !== 'installation').sort((a, b) => counts.get(b) - counts.get(a) || a.localeCompare(b));
-  for (const tag of ['', ...tags]) {
+  for (const tag of tags) {
     const button = document.createElement('button');
     button.type = 'button';
     button.dataset.filter = tag;
-    button.textContent = tag === '' ? 'All' : tag === 'av' ? 'Audiovisual' : tag[0].toUpperCase() + tag.slice(1);
-    button.setAttribute('aria-pressed', String(tag === activeFilter));
+    button.textContent = tag === 'av' ? 'Audiovisual' : tag[0].toUpperCase() + tag.slice(1);
+    button.setAttribute('aria-pressed', String(activeTags.has(tag)));
+    button.setAttribute('aria-controls', 'strips');
     filters.append(button);
   }
   filters.hidden = false;
   filters.addEventListener('click', event => {
     const button = event.target.closest('button[data-filter]');
     if (!button) return;
-    activeFilter = button.dataset.filter;
-    filters.querySelectorAll('button').forEach(option => option.setAttribute('aria-pressed', String(option === button)));
+    const tag = button.dataset.filter;
+    if (activeTags.has(tag)) activeTags.delete(tag);
+    else activeTags.add(tag);
+    button.setAttribute('aria-pressed', String(activeTags.has(tag)));
     updateStrips();
     document.getElementById('strips').scrollLeft = 0;
     scrollTo({ top: homeScrollTop(), behavior: matchMedia('(prefers-reduced-motion: reduce)').matches ? 'instant' : 'smooth' });

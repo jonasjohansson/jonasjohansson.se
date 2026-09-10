@@ -50,7 +50,8 @@ async function checkFooter(page) {
     return { x: rect.x, top: rect.top, right: rect.right, bottom: rect.bottom };
   }));
   assert.equal(links.length, 6);
-  assert.equal(links[0].x, wall.x, 'footer links align with the strips');
+  assert.ok(Math.abs(links.at(-1).right - wall.x - wall.width) < 1, 'footer links align with the right edge of the strips');
+  assert.equal((await page.locator('#project-preview-name').boundingBox()).x, wall.x, 'project preview name aligns with the left edge');
   assert.ok(links.every(link => link.top >= footer.y && link.bottom <= footer.y + footer.height + 1 && link.right <= wall.x + wall.width), 'all footer links fit, including on narrow screens');
   assert.equal(await page.locator('#intro a[href^="mailto:"]').count(), 0, 'contact links have moved out of About');
   assert.ok(await page.locator('#intro-links a[href^="mailto:"]').isVisible());
@@ -168,6 +169,7 @@ try {
       assert.ok(Math.abs(aboutHeader.y - intro.height) < 1, 'the name and filters scroll with the strips');
       assert.ok(Math.abs((await page.locator('#strips').boundingBox()).y - aboutHeader.y - aboutHeader.height) < 1, 'header stays attached to the wall');
       const text = await page.locator('.intro-text').boundingBox();
+      assert.equal(text.x, wall.x, 'About shares the strips’ left edge');
       assert.ok(aboutHeader.y - text.y - text.height <= 81, 'About ends after its content without an empty viewport');
       assert.equal(await page.locator('#home-link').textContent(), 'Jonas Johansson');
       assert.equal(await page.locator('#home-link').getAttribute('aria-label'), 'Jonas Johansson — Projects');
@@ -231,28 +233,46 @@ try {
     await page.locator('#home-link').focus();
     await page.keyboard.press('Enter');
     await page.waitForFunction(() => scrollY < 1 && document.activeElement.id === 'intro');
+    assert.equal((await page.locator('.intro-text').boundingBox()).x, 24, 'About stays left aligned on wide screens');
     await page.locator('#home-link').click();
     await waitForHomeWall(page);
   });
 
   for (const [name, options] of [['desktop', desktop], ['mobile', mobile]]) {
-    await check(`${name} filters projects and preserves the selection after Back`, options, async page => {
+    await check(`${name} toggles multiple tags and preserves the selection after Back`, options, async page => {
       await visit(page);
       const projects = await page.evaluate(() => window.__PROJECTS_DATA__);
       const tags = await page.locator('#project-filters button').evaluateAll(buttons => buttons.map(button => button.dataset.filter));
-      assert.deepEqual(new Set(tags.filter(Boolean)), new Set(projects.flatMap(project => project.tags).filter(tag => tag !== 'installation')));
+      assert.deepEqual(new Set(tags), new Set(projects.flatMap(project => project.tags).filter(tag => tag !== 'installation')));
+      assert.equal(tags.includes(''), false, 'there is no All button');
       assert.ok(projects.find(project => project.slug === 'visualia').tags.includes('community'), 'Visualia belongs to Community');
-      for (const tag of tags) {
-        const button = page.locator('#project-filters button').nth(tags.indexOf(tag));
-        await button.click();
-        const expected = projects.filter(project => !tag || project.tags.includes(tag)).map(project => project.slug);
-        assert.deepEqual(await page.locator('.strip:not([hidden])').evaluateAll(strips => strips.map(strip => strip.dataset.project)), expected);
-        assert.equal(await button.getAttribute('aria-pressed'), 'true');
-        assert.equal(await page.locator('#project-filters [aria-pressed="true"]').count(), 1);
+      const selected = new Set(tags);
+      const visibleSlugs = () => page.locator('.strip:not([hidden])').evaluateAll(strips => strips.map(strip => strip.dataset.project));
+      const checkSelection = async () => {
+        const expected = projects.filter(project => selected.size === tags.length || project.tags.some(tag => selected.has(tag))).map(project => project.slug);
+        assert.deepEqual(await visibleSlugs(), expected, 'show projects matching any enabled tag');
+        assert.deepEqual(await page.locator('#project-filters [aria-pressed="true"]').evaluateAll(buttons => buttons.map(button => button.dataset.filter)), tags.filter(tag => selected.has(tag)));
+        assert.equal(await page.locator('#strips-empty').isVisible(), expected.length === 0);
         assert.equal((await page.locator('#strips').boundingBox()).height, options.viewport.height - (await page.locator('#home-header').boundingBox()).height - (await page.locator('#intro-links').boundingBox()).height);
+      };
+      const toggle = async tag => {
+        await page.locator('#project-filters button').nth(tags.indexOf(tag)).click();
+        if (selected.has(tag)) selected.delete(tag);
+        else selected.add(tag);
+        await checkSelection();
+      };
+      await checkSelection();
+      assert.equal(await page.locator('.strip:not([hidden])').count(), projects.length, 'all tags start on, including projects tagged only Installation');
+      for (const tag of tags) await toggle(tag);
+      assert.equal(await page.locator('#project-count').textContent(), '0 projects');
+      await checkFooter(page);
+      for (const tag of tags) {
+        await toggle(tag);
+        await toggle(tag);
       }
-      await page.locator('#project-filters [data-filter="mixed reality"]').click();
-      const expected = await page.locator('.strip:not([hidden])').evaluateAll(strips => strips.map(strip => strip.dataset.project));
+      await toggle('mixed reality');
+      await toggle('av');
+      const expected = await visibleSlugs();
       const chosen = page.locator('.strip:not([hidden])').first();
       const id = await chosen.getAttribute('id');
       await chosen.click();
@@ -260,16 +280,23 @@ try {
       assert.equal(await page.locator('.strip:not([hidden])').count(), projects.length - 1, 'project pages show all other projects');
       await page.goBack();
       await waitForHomeWall(page);
-      assert.deepEqual(await page.locator('.strip:not([hidden])').evaluateAll(strips => strips.map(strip => strip.dataset.project)), expected);
+      assert.deepEqual(await visibleSlugs(), expected);
       assert.equal(await page.evaluate(() => document.activeElement.id), id);
-      assert.equal(await page.locator('#project-filters [data-filter="mixed reality"]').getAttribute('aria-pressed'), 'true');
-      await page.locator('#project-filters [data-filter=""]').click();
+      await checkSelection();
+      await toggle('mixed reality');
+      await toggle('av');
+      const education = page.locator('#project-filters [data-filter="education"]');
+      await education.focus();
+      await page.keyboard.press('Space');
+      selected.add('education');
+      await checkSelection();
+      assert.equal(await page.locator('#project-count').textContent(), '1 project');
+      for (const tag of tags.filter(tag => !selected.has(tag))) await toggle(tag);
       assert.equal(await page.locator('.strip:not([hidden])').count(), projects.length);
       await page.locator('#home-link').click();
       await page.waitForFunction(() => scrollY < 1);
-      await page.locator('#project-filters [data-filter="education"]').click();
+      await toggle('education');
       await waitForHomeWall(page);
-      assert.equal(await page.locator('#project-count').textContent(), '1 project');
     });
   }
 
@@ -293,6 +320,7 @@ try {
         const wall = await page.locator('#strips').boundingBox();
         const image = page.locator('.strip:not([hidden]) .strip-image').first();
         await page.mouse.move(wall.x + 10, wall.y + wall.height / 2);
+        assert.equal(await page.locator('#project-preview-name').textContent(), await image.locator('..').locator('..').getAttribute('aria-label'), 'hover shows the project name on both home and project pages');
         await page.waitForFunction(() => parseFloat(getComputedStyle(document.querySelector('.strip:not([hidden]) .strip-image')).objectPosition) < 10);
         await page.mouse.move(wall.x + wall.width - 10, wall.y + wall.height / 2);
         await page.waitForFunction(() => parseFloat(getComputedStyle(document.querySelector('.strip:not([hidden]) .strip-image')).objectPosition) > 90);
@@ -333,11 +361,16 @@ try {
       assert.ok((await strip.boundingBox()).width > width * 4, 'hover expands before download completes');
       assert.equal(await renderedHeight(), initialHeight, 'preview stays at the same scale while the strip opens');
       assert.equal(await strip.getAttribute('aria-label'), 'Dome Dreaming');
+      assert.equal(await page.locator('#project-preview-name').textContent(), 'Dome Dreaming');
       await page.mouse.move(0, 0);
+      assert.equal(await page.locator('#project-preview-name').textContent(), '', 'name clears when leaving the strips');
       await strip.focus();
+      assert.equal(await page.locator('#project-preview-name').textContent(), 'Dome Dreaming', 'keyboard focus also previews the name');
       await page.keyboard.press('Tab');
       await page.waitForTimeout(350);
       assert.ok((await page.locator('.strip:focus-visible').boundingBox()).width > width * 4, 'keyboard focus expands before download completes');
+      assert.equal(await page.locator('#project-preview-name').textContent(), await page.locator('.strip:focus-visible').getAttribute('aria-label'));
+      await checkFooter(page);
     } finally {
       release();
       await page.unrouteAll({ behavior: 'wait' });

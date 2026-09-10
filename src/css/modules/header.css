@@ -31,5 +31,9 @@
 .home-header a:hover { text-decoration: underline; text-underline-offset: 0.3em; }
 .project-filters { display: flex; flex: 1; min-width: 0; align-items: stretch; gap: 1.25rem; height: 100%; overflow-x: auto; scrollbar-width: none; }
 .project-filters::-webkit-scrollbar { display: none; }
-.project-filters button { flex: none; padding: 0.5rem 0; border: 0; border-radius: 0; background: none; color: inherit; font: inherit; letter-spacing: 0; text-transform: none; white-space: nowrap; }
-.project-filters button:hover, .project-filters button[aria-pressed="true"] { background: none; color: inherit; text-decoration: underline; text-underline-offset: 0.3em; }
+.project-filters button { display: inline-flex; align-items: center; gap: 0.4rem; flex: none; padding: 0.5rem 0; border: 0; border-radius: 0; background: none; color: inherit; font: inherit; letter-spacing: 0; text-transform: none; white-space: nowrap; }
+.project-filters button::before { content: ""; flex: none; width: 0.5rem; height: 0.5rem; border: 1px solid currentColor; border-radius: 50%; }
+.project-filters button[aria-pressed="true"] { background: none; color: inherit; }
+.project-filters button[aria-pressed="true"]::before { background: currentColor; }
+.project-filters button[aria-pressed="false"] { color: color-mix(in srgb, var(--text-primary) 60%, var(--bg-primary)); }
+.project-filters button:hover { background: none; text-decoration: underline; text-underline-offset: 0.3em; }
