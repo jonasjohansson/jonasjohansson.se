@@ -13,7 +13,8 @@
     "actualSize": {
       "width": 1672,
       "height": 941
-    }
+    },
+    "projectAsset": "projects/kagora/woodland-mist-ai.png"
   },
   {
     "name": "02-woven-entrance",
@@ -28,7 +29,8 @@
     "actualSize": {
       "width": 1672,
       "height": 941
-    }
+    },
+    "projectAsset": "projects/kagora/entrance-ai.png"
   },
   {
     "name": "03-canopy-detail",
@@ -44,6 +46,53 @@
     "actualSize": {
       "width": 1672,
       "height": 941
+    },
+    "projectAsset": "projects/kagora/canopy-ai.png"
+  },
+  {
+    "name": "04-finished-pavilion",
+    "sources": [
+      "projects/kagora/finished-pavilion.jpg"
+    ],
+    "prompt": "Edit this photograph of the actual Kagora woven LED pavilion in the woods. Make a beautifully focused architectural night photograph, in landscape 16:9 at the highest native resolution available. Preserve the real low, broad form, the exact arch groups, number of ribs, tube thickness, crossings, ground supports, tree positions and the few visitors inside; do not redesign or idealize the architecture or change people. Tighten and level the composition so the complete structure fills roughly 80% of the frame width, with comfortable edges and less empty ground below. Preserve the original white, cyan, blue, violet and warm yellow light pattern. Recover clear separation between glowing tubes, with controlled highlights and realistically diffused LEDs, a clean dark woodland background, sharp natural bark and leaf-litter texture, balanced shadows, subtle luminous color spilling on the floor. Refine noise and focus without crunchy halos or plastic surfaces. Keep the photograph's atmosphere and honest construction details, including visible joints. The goal is a polished photographic AI alternate with clearer focus and stronger framing. No extra ribs, no invented lights, mist, ornaments, stars, lasers, objects or people; no text, watermark, graphic overlay or collage.",
+    "output": "04-finished-pavilion.png",
+    "projectAsset": "projects/kagora/finished-pavilion-ai.png",
+    "mode": "built-in image_gen.imagegen",
+    "generatedAt": "2026-09-10",
+    "actualSize": {
+      "width": 1672,
+      "height": 941
+    }
+  },
+  {
+    "name": "05-woven-detail",
+    "sources": [
+      "projects/kagora/woven-detail.jpg"
+    ],
+    "prompt": "Edit the supplied close-up photograph of Kagora's actual woven LED tubes. Produce an impressive, precisely focused architectural detail, portrait 3:4 composition at highest native resolution available. Keep this exact diagonal weave, the number and position of tubes, crossing order, existing connector locations, thickness, slight physical bends and the black spaces between them. Keep the same perspective and overall framing, with tubes continuing beyond frame edges. Preserve the dark cobalt blue, violet, pink and cyan palette and the rainbow gradient along the tube at the lower right. Refine the focus and translucent material detail so the diffusers and real small joints are crisp, each luminous edge well separated, rich colored light against deep black. Smooth only image noise and compression artifacts, not genuine construction detail. Keep realistic light falloff and a restrained photographic finish. Match a sophisticated portfolio of a real light installation, not a perfect CGI lattice. Do not add, remove, rearrange or straighten structural lines, invent markings or light points, make tubes thicker, add bloom halos, people, scenery, text or logos. One image, not a collage.",
+    "output": "05-woven-detail.png",
+    "projectAsset": "projects/kagora/woven-detail-ai.png",
+    "mode": "built-in image_gen.imagegen",
+    "generatedAt": "2026-09-10",
+    "actualSize": {
+      "width": 1086,
+      "height": 1448
+    }
+  },
+  {
+    "name": "06-curved-interior",
+    "sources": [
+      "projects/kagora/curved-interior.jpg"
+    ],
+    "prompt": "Refine this photograph of the actual curved interior of Kagora, a woven LED pavilion in the woods. Create a sharper and more striking portrait 3:4 architectural detail at the highest native resolution available. Preserve the exact viewpoint and all actual arch and rib paths: the sweeping cyan-blue outer curve above, magenta curves at the left, and thin interlaced diagonal bands through the center. Keep the real ground supports, connector positions, tube thickness, natural asymmetries and background tree. Frame slightly tighter to concentrate on the central sweep and crossing, cropping the umbrella at lower right and the distracting blurred foreground tube out of the frame naturally if possible, without changing the artwork. Keep electric cyan, cobalt, violet, pink and pale green in the existing pattern, precise tube diffusion and clean highlight separation. Improve low-light focus, reduce noise, reveal subtle floor reflections and dark woodland depth, avoiding oversharpened halos or waxy surfaces. This should look like a carefully exposed real architectural photograph of this same work. Do not redesign the weave, add or remove structural ribs, invent new supports or arches, add people, stars, mist, light rays or decoration. No text or logos, no collage.",
+    "output": "06-curved-interior.png",
+    "projectAsset": "projects/kagora/curved-interior-ai.png",
+    "mode": "built-in image_gen.imagegen",
+    "generatedAt": "2026-09-10",
+    "refinementPrompt": "Make one precise photographic cleanup to this image: remove the two black boots standing on the floor at the lower center, immediately in front of the wooden arch base. Fill only their footprints and silhouettes with a seamless continuation of the existing dark interlocking floor mats, the visible wood support behind them and the naturally colored light reflections. Preserve all LED tube geometry, the complete light weave, all supports, tree, colors, shadows, composition, crop and focus exactly. Add no objects or people. Keep the same portrait 3:4 image, at the highest native resolution available. This is a localized cleanup only.",
+    "actualSize": {
+      "width": 1086,
+      "height": 1448
     }
   }
 ]

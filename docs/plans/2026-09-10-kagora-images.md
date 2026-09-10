@@ -2,10 +2,11 @@
 
 Kagora is the woodland light installation at Borderland 2026. Its new page
 is `projects/kagora/data.md`, dated 25 July 2026 and tagged Light, Community,
-and Installation. It uses thirteen images and one ten-second video. The misty
-woodland photograph opens the page with a tighter, levelled framing in CSS
-(1.35× scale and −2° rotation, fixed rather than animated). The original photo
-is unchanged. Finished views lead the gallery, including the entrance, woven
+and Installation. It uses thirteen images and one ten-second video. Six finished
+views now use AI refinements approved by the user. The woodland hero uses a
+fixed 1.5× crop of the levelled AI image, with no rotation. Tall tablet and
+desktop windows use a wider hero frame to keep the full pavilion in view.
+Finished views lead the gallery, including the entrance, woven
 details and interior canopy. Lighting tests follow later, with the wider
 blue-hour woodland view at the end.
 
@@ -20,13 +21,13 @@ originals supply four additional night views.
 
 | Website asset | Source | Role |
 | --- | --- | --- |
-| `finished-pavilion.jpg` | Album: `IMG_7117.jpeg` | Complete illuminated piece in the body gallery |
+| `finished-pavilion-ai.png` | AI refinement of album `IMG_7117.jpeg` via `finished-pavilion.jpg` | Complete illuminated piece in the body gallery |
 | `hero.jpg` | `2026-07-25/JPG/DSCF8599.JPG` | Blue-hour view of the pavilion with visitors |
-| `entrance.jpg` | Album: `IMG_8970.jpeg` | Frontal view through the woven entrance |
-| `woven-detail.jpg` | Album: `IMG_8898.jpeg` | Close view of the illuminated weave |
-| `curved-interior.jpg` | Album: `IMG_8900.jpeg` | Sweeping interior curves, paired with the weave |
-| `canopy.jpg` | Album: `IMG_8978.jpeg` | Upward view of the canopy around a tree |
-| `woodland-mist.jpg` | Album: `IMG_8974.jpeg` | Opening, strips and sharing image: warm light in mist |
+| `entrance-ai.png` | AI refinement of album `IMG_8970.jpeg` via `entrance.jpg` | Frontal view through the woven entrance |
+| `woven-detail-ai.png` | AI refinement of album `IMG_8898.jpeg` via `woven-detail.jpg` | Close view of the illuminated weave |
+| `curved-interior-ai.png` | AI refinement of album `IMG_8900.jpeg` via `curved-interior.jpg` | Sweeping interior curves, paired with the weave |
+| `canopy-ai.png` | AI refinement of album `IMG_8978.jpeg` via `canopy.jpg` | Upward view of the canopy around a tree |
+| `woodland-mist-ai.png` | AI refinement of album `IMG_8974.jpeg` via `woodland-mist.jpg` | Opening, strips and sharing image: warm light in mist |
 | `motion.mp4` | Album: `IMG_8996.mov`, 0.5–10.5 seconds | Moving light across the completed pavilion |
 | `motion-poster.jpg` | First frame of `motion.mp4` | Static video preview |
 | `first-arch.jpg` | Album: `IMG_8759.jpeg` | Early illuminated section |
@@ -40,10 +41,19 @@ The user removed `design-model.jpg` (album `IMG_8208.jpeg`) and `assembly.jpg`
 (album `IMG_8830.jpeg`) from the page. Their source files remain available;
 they are not referenced by the published gallery.
 
-Images retain their camera colour. Website source exports
+The original photographic exports retain their camera colour. They
 are at most 3200 px on the long edge, with orientation baked in, converted
 to sRGB, and saved as JPEG quality 93 without upscaling. The existing build
 produces responsive AVIF and WebP derivatives. Originals are unchanged.
+
+The six AI refinements are saved as separate PNG assets. Landscape outputs are
+1672 × 941; the two portrait details are 1086 × 1448. They contain reconstructed
+detail and are not higher-resolution camera originals. The page acknowledges
+AI refinement alongside the photography. Source references and the exact
+built-in image-generation prompts, including the curved-interior cleanup, are
+in `docs/visuals/kagora-alternates/prompts.json`. The adjacent `index.html`
+compares all six refinements with their source photographs. The normal AVIF/WebP
+pipeline publishes them, and the hero also updates the strips and sharing image.
 
 The video is a 1920 × 1080, 30 fps H.264 MP4 (CRF 22, medium preset,
 YUV 4:2:0, faststart), with no audio track. It preserves the source colour

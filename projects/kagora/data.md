@@ -8,9 +8,9 @@ tags:
   - installation
 blocks:
   - type: image
-    src: woodland-mist.jpg
+    src: woodland-mist-ai.png
     alt: "Kagora glows warm gold between dark tree trunks, with mist drifting through the woodland and blue light in the foreground."
-    focal: "50% 58%"
+    focal: "52% 60%"
   - type: text
     content: >-
       A woven pavilion of moving light, built as a place to gather in the
@@ -33,10 +33,10 @@ blocks:
     ar: 1.777778
     alt: "Bands of pink, blue, yellow and green light travel along Kagora's curved ribs in a woodland clearing."
   - type: image
-    src: finished-pavilion.jpg
+    src: finished-pavilion-ai.png
     alt: "Kagora's illuminated arches spread across a woodland clearing, with white, cyan and yellow light tracing the woven pavilion."
   - type: image
-    src: entrance.jpg
+    src: entrance-ai.png
     alt: "Looking through Kagora's entrance, turquoise and blue arches overlap above people resting on cushions, with pink light deeper inside."
   - type: text
     fontSize: small
@@ -47,16 +47,16 @@ blocks:
       weave, different curves emerge and recede, changing the space around
       the people sitting and lying beneath it.
   - type: image
-    src: woven-detail.jpg
+    src: woven-detail-ai.png
     size: half-left
     alt: "A close view of diagonal tubes crossing in a dense weave of pink, violet, blue and green light against the dark."
   - type: image
-    src: curved-interior.jpg
+    src: curved-interior-ai.png
     size: half-right
     alt: "Cyan and violet ribs sweep around an opening inside Kagora, with pink light behind the curved layers."
   - type: image
-    src: canopy.jpg
-    alt: "Looking up through Kagora, multicoloured ribs weave around a tree trunk against the pale evening sky."
+    src: canopy-ai.png
+    alt: "Looking up through Kagora, multicoloured ribs weave around a tree trunk against the deep blue evening sky."
   - type: image
     src: interior.jpg
     alt: "Looking up from inside Kagora, multicoloured light curves cross above visitors beneath the evening sky."
@@ -90,4 +90,5 @@ blocks:
     content: >-
       [Rose Hallgren](https://rosehallgren.se/) and I photographed the piece,
       from the changing light inside the weave to its wider setting in the woods.
+      Selected images have been refined with AI.
 ---

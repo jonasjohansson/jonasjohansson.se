@@ -443,9 +443,17 @@ html[data-theme="dark"] .text-block a {
   .project-grid > .media-item.hero :is(img, video) { object-position: var(--mobile-focal, var(--focal, center)); }
 }
 
-/* Fixed framing for Kagora's woodland photograph; the strip images retain
-   their existing scale and cursor movement. */
-#kagora .hero img { transform: rotate(-2deg) scale(1.35); transform-origin: 50% 56%; }
+/* Bring the pavilion forward within the already levelled woodland image. */
+#kagora .hero img { transform: scale(1.5); transform-origin: 52% 60%; }
+
+/* Keep the complete pavilion visible on tall tablet and desktop windows. */
+@media (min-width: 769px) and (max-aspect-ratio: 4/3) {
+  #kagora .project-grid > .hero {
+    height: calc(100vw * 2 / 3);
+    min-height: 0;
+    max-height: none;
+  }
+}
 
 /* Uncropped heroes fill the width by sizing their frame to the image itself. */
 .project-grid > .hero.hero-contain { height: auto; min-height: 0; max-height: none; aspect-ratio: var(--ar); }

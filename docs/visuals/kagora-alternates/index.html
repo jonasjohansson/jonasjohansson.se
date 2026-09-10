@@ -23,14 +23,15 @@
   .stage { width: 100%; aspect-ratio: 1672 / 941; display: grid; background: #141210; }
   .stage img { grid-area: 1 / 1; width: 100%; height: 100%; object-fit: contain; min-height: 0; min-width: 0; }
   .stage img[hidden] { display: none; }
+  .stage.portrait { aspect-ratio: 3 / 4; max-width: 720px; }
   .note { color: #cbc3ba; font-size: 16px; }
   footer { max-width: 1672px; margin: 0 auto; padding-top: 24px; border-top: 1px solid #5a524a; }
 </style>
 <header>
   <h1>Kagora</h1>
-  <p>Three AI image alternatives based on the existing photographs: a closer woodland view, a clearer entrance and a tighter study of the weave. Switch each view to compare it with its source.</p>
-  <p class="note">These are generated interpretations. Native output is 1672 × 941 pixels, smaller than the original photographs; the apparent sharpness includes reconstructed detail. Saved for review, with the published photographs unchanged.</p>
-  <nav aria-label="Image alternatives"><a href="#woodland">01 Woodland</a><a href="#entrance">02 Entrance</a><a href="#canopy">03 Canopy</a></nav>
+  <p>Six AI refinements used on the Kagora page. Switch each view to compare it with its source photograph. The project page uses an even tighter crop of the woodland image as its hero.</p>
+  <p class="note">These images include reconstructed detail. Native output is 1672 × 941 pixels for the landscapes and 1086 × 1448 for the portrait details.</p>
+  <nav aria-label="Image alternatives"><a href="#woodland">01 Woodland</a><a href="#entrance">02 Entrance</a><a href="#canopy">03 Canopy</a><a href="#pavilion">04 Pavilion</a><a href="#weave">05 Weave</a><a href="#curves">06 Curves</a></nav>
 </header>
 <main>
   <section id="woodland" aria-labelledby="woodland-title">
@@ -77,6 +78,51 @@
       <img id="canopy-alternate" data-view="alternate" src="03-canopy-detail.png" width="1672" height="941" alt="AI alternate: a tighter upward view concentrating on the coloured weave against the tree canopy." loading="lazy">
     </div>
     <p class="note">The tighter crop concentrates on the weave and removes the containers from the composition. Fine tube connections and foliage are reconstructed.</p>
+  </section>
+  <section id="pavilion" aria-labelledby="pavilion-title">
+    <div class="toolbar">
+      <h2 id="pavilion-title">04 — Pavilion</h2>
+      <div class="controls" role="group" aria-label="Pavilion comparison">
+        <button type="button" data-view="original" aria-pressed="false" aria-controls="pavilion-original">Original</button>
+        <button type="button" data-view="alternate" aria-pressed="true" aria-controls="pavilion-alternate">AI alternate</button>
+        <a href="04-finished-pavilion.png" download>Download PNG</a>
+      </div>
+    </div>
+    <div class="stage">
+      <img id="pavilion-original" data-view="original" src="../../../projects/kagora/finished-pavilion.jpg" alt="Original photograph: the complete pavilion glows white, yellow and cyan among trees." hidden loading="lazy">
+      <img id="pavilion-alternate" data-view="alternate" src="04-finished-pavilion.png" width="1672" height="941" alt="AI refinement: a closer landscape view with clear light tubes and a richly lit woodland floor." loading="lazy">
+    </div>
+    <p class="note">A tighter composition with less empty foreground and clearer separation between the illuminated ribs.</p>
+  </section>
+  <section id="weave" aria-labelledby="weave-title">
+    <div class="toolbar">
+      <h2 id="weave-title">05 — Weave</h2>
+      <div class="controls" role="group" aria-label="Weave comparison">
+        <button type="button" data-view="original" aria-pressed="false" aria-controls="weave-original">Original</button>
+        <button type="button" data-view="alternate" aria-pressed="true" aria-controls="weave-alternate">AI alternate</button>
+        <a href="05-woven-detail.png" download>Download PNG</a>
+      </div>
+    </div>
+    <div class="stage portrait">
+      <img id="weave-original" data-view="original" src="../../../projects/kagora/woven-detail.jpg" alt="Original photograph: diagonal blue, violet and rainbow light tubes cross against black." hidden loading="lazy">
+      <img id="weave-alternate" data-view="alternate" src="05-woven-detail.png" width="1086" height="1448" alt="AI refinement: crisp diagonal tubes with softly diffused colour and visible connectors." loading="lazy">
+    </div>
+    <p class="note">Cleaner light gradients and sharper tube edges, keeping the diagonal composition.</p>
+  </section>
+  <section id="curves" aria-labelledby="curves-title">
+    <div class="toolbar">
+      <h2 id="curves-title">06 — Curves</h2>
+      <div class="controls" role="group" aria-label="Curves comparison">
+        <button type="button" data-view="original" aria-pressed="false" aria-controls="curves-original">Original</button>
+        <button type="button" data-view="alternate" aria-pressed="true" aria-controls="curves-alternate">AI alternate</button>
+        <a href="06-curved-interior.png" download>Download PNG</a>
+      </div>
+    </div>
+    <div class="stage portrait">
+      <img id="curves-original" data-view="original" src="../../../projects/kagora/curved-interior.jpg" alt="Original photograph: cyan and violet arches curve around a dark woodland opening." hidden loading="lazy">
+      <img id="curves-alternate" data-view="alternate" src="06-curved-interior.png" width="1086" height="1448" alt="AI refinement: the sweeping weave and its coloured reflections fill a clear portrait composition." loading="lazy">
+    </div>
+    <p class="note">The central sweep is more distinct, with cleaner framing and visible reflections across the floor.</p>
   </section>
 </main>
 <footer><p class="note">Built-in image generation · 10 September 2026 · <a href="prompts.json">Source files and prompts</a></p></footer>
