@@ -96,8 +96,9 @@ try {
     ['touch landscape', { ...mobile, viewport: { width: 844, height: 390 } }],
     ['touch tablet', { ...mobile, viewport: { width: 1024, height: 768 } }],
   ]) {
-    await check(`${name} has two columns of named project cards`, options, async page => {
+    await check(`${name} has continuous full-width project bands`, options, async page => {
       await visit(page);
+      const collectionWidth = (await page.locator('#strips').boundingBox()).width;
       const rects = await page.locator('.strip').evaluateAll(strips => strips.map(strip => {
         const rect = strip.getBoundingClientRect();
         const label = strip.querySelector('.strip-label');
@@ -107,14 +108,15 @@ try {
           labelFits: label.scrollWidth <= label.clientWidth && labelRect.height < rect.height && labelRect.right <= rect.right + 1 };
       }));
       assert.equal(await page.evaluate(() => document.documentElement.scrollWidth > innerWidth), false);
-      assert.ok(rects.every(rect => rect.width > 100 && rect.height >= 160 && rect.labelVisible && rect.labelFits));
-      assert.equal(rects[0].y, rects[1].y, 'first two cards share a row');
-      assert.equal(rects[0].x, rects[2].x, 'third card starts the next row');
-      assert.ok(rects[1].x > rects[0].x + rects[0].width, 'columns have a gutter');
-      assert.ok(rects[2].y > rects[0].y + rects[0].height, 'rows have a gutter');
-      await page.locator('#collection').scrollIntoViewIfNeeded();
+      assert.ok(rects.every(rect => Math.abs(rect.width - collectionWidth) < 1 && rect.height >= 192 && rect.labelVisible && rect.labelFits));
+      for (let index = 1; index < rects.length; index++) {
+        assert.equal(rects[index].x, rects[0].x, 'bands share an alignment');
+        assert.ok(Math.abs(rects[index].y - rects[index - 1].y - rects[index - 1].height) < 1, 'images touch vertically');
+      }
+      assert.ok(new Set(rects.slice(0, 3).map(rect => rect.height)).size > 1, 'image heights vary');
+      await page.locator('#collection').evaluate(collection => collection.scrollIntoView({ block: 'start' }));
       await page.locator('.strip-image').evaluateAll(images => Promise.all(images.slice(0, 4).map(image => image.decode())));
-      await page.screenshot({ path: `${output}/${name.replaceAll(' ', '-')}-cards.png` });
+      await page.screenshot({ path: `${output}/${name.replaceAll(' ', '-')}-bands.png` });
     });
   }
 

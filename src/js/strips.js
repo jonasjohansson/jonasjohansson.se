@@ -4,7 +4,7 @@ let entries = [];
 let controller;
 let resizeFrame;
 const wallQuery = '(hover: hover) and (min-width: 901px)';
-const cardSizes = '(hover: none) calc((100vw - 56px) / 2), (max-width: 900px) calc((100vw - 56px) / 2)';
+const bandSizes = '(hover: none) calc(100vw - 48px), (max-width: 900px) calc(100vw - 48px)';
 
 function setWideImage(entry) {
   const image = entry.querySelector('img');
@@ -32,7 +32,7 @@ function updateImages() {
     const ratio = Number(image.getAttribute('width')) / Number(image.getAttribute('height'));
     entry.querySelectorAll('source').forEach(source => {
       if (source.classList.contains('strip-wall-source')) source.media = narrow ? wallQuery : 'not all';
-      else source.sizes = `${cardSizes}, ${wall && !narrow ? Math.ceil(Math.max(width, height * ratio)) : 80}px`;
+      else source.sizes = `${bandSizes}, ${wall && !narrow ? Math.ceil(Math.max(width, height * ratio)) : 80}px`;
     });
     if (wall && entry.matches(':hover, :focus-visible')) setWideImage(entry);
   }

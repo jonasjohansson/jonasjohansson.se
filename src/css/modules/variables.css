@@ -28,11 +28,7 @@
   --radius-media: 4px;
 
   /* Strips */
-  --strip-row-min: 6rem; /* floor on a stacked strip row: short (filtered) lists still
-                            grow to fill the screen, long ones scroll past it */
-  --strip-card-min-height: 10rem; /* minimum image height in the two-column project grid */
-  --strip-card-radius: 6px; /* corner rounding on project cards and their title labels */
-  --strip-placeholder-height-scale: 0.55; /* unmade projects sit as shorter rows than finished work */
+  --strip-band-height: clamp(12rem, 24vw, 19rem); /* taller accents are set on individual bands */
 
   /* Typography */
   --font-family: "SeasonMix", system-ui, -apple-system, Segoe UI, Roboto, Helvetica, Arial, sans-serif;
