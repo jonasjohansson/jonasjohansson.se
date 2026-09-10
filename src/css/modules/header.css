@@ -34,7 +34,6 @@
 .header-contacts p { margin: 0; white-space: nowrap; }
 .header-contacts a { display: inline-block; padding: 0.5rem 0; text-decoration: underline; text-underline-offset: 0.15em; }
 .project-filters { display: flex; flex: 0 1 auto; min-width: 0; max-width: calc(100% - 8rem); align-items: stretch; gap: 1.25rem; height: 100%; overflow-x: auto; scrollbar-width: none; }
-body[data-route="project"] .project-filters { display: none; }
 .project-filters::-webkit-scrollbar { display: none; }
 .project-filters button { display: inline-flex; align-items: center; gap: 0.4rem; flex: none; padding: 0.5rem 0; border: 0; border-radius: 0; background: none; color: inherit; font: inherit; letter-spacing: 0; text-transform: none; white-space: nowrap; }
 .project-filters button::before { content: ""; flex: none; width: 0.5rem; height: 0.5rem; border: 1px solid currentColor; border-radius: 50%; }

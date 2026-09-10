@@ -1,4 +1,8 @@
 <section id="collection" class="collection" aria-labelledby="collection-title">
+  <div id="collection-header" class="collection-header">
+    <a class="collection-home-link" href="{{ '/' | url }}#collection" data-home-link>{{ site.title }}</a>
+    {% include "./contact-links.njk" %}
+  </div>
   <h2 id="collection-title" class="sr-only" tabindex="-1">{% if project %}More projects{% else %}Projects{% endif %}</h2>
   <nav id="strips" aria-label="Projects">
     {% for item in collectionItems %}

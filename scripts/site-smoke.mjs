@@ -47,29 +47,33 @@ async function checkFooter(page) {
   assert.ok(Math.abs(footer.y + footer.height - page.viewportSize().height) < 1, 'footer fits within the strip viewport');
   assert.equal((await page.locator('#project-preview-name').boundingBox()).x, wall.x, 'project preview name aligns with the left edge');
   const home = await page.locator('body').getAttribute('data-route') === 'home';
-  const header = page.locator(home ? '#home-header' : '#header');
-  const contacts = home ? header.locator('.header-contacts') : page.locator('#intro-links .footer-links');
+  const header = page.locator(home ? '#home-header' : '#collection-header');
+  const contacts = header.locator('.header-contacts');
   const contactBox = await contacts.boundingBox();
-  const contactRow = home ? await header.boundingBox() : footer;
+  const contactRow = await header.boundingBox();
   assert.deepEqual(await contacts.locator('a').allTextContents(), ['Labs', 'Instagram', 'CV', 'Email'], 'contact links stay concise');
   assert.ok(Math.abs(contactBox.x + contactBox.width - wall.x - wall.width) < 1, 'contact links align with the right edge of the strips');
-  assert.ok(contactBox.y >= contactRow.y && contactBox.y + contactBox.height <= contactRow.y + contactRow.height + 1, 'contacts fit in their home header or project footer');
-  const title = await header.locator(home ? '#home-link' : '#header-toggle').boundingBox();
-  if (home) assert.ok(title.x + title.width <= contactBox.x, 'contact links do not overlap the name');
-  else {
+  assert.ok(contactBox.y >= contactRow.y && contactBox.y + contactBox.height <= contactRow.y + contactRow.height + 1, 'contacts fit in the row above the strips');
+  const name = await header.locator(home ? '#home-link' : '.collection-home-link').boundingBox();
+  assert.ok(name.x + name.width <= contactBox.x, 'contact links do not overlap the name');
+  assert.equal(name.x, wall.x, 'name aligns with the strips');
+  assert.ok(Math.abs(contactRow.y + contactRow.height - wall.y) < 1, 'header sits immediately above the strips');
+  if (!home) {
+    const title = await page.locator('#header-toggle').boundingBox();
     assert.ok(Math.abs(title.x + title.width / 2 - page.viewportSize().width / 2) < 1, 'project title remains centered');
-    assert.equal(await header.locator('.header-contacts').count(), 0, 'project header contains only the title');
+    assert.equal(await page.locator('#header .header-contacts').count(), 0, 'project hero header contains only the title');
   }
   await contacts.evaluate(nav => { nav.scrollLeft = nav.scrollWidth; });
   const email = await contacts.locator('a[href^="mailto:"]').boundingBox();
   assert.ok(email.x >= contactBox.x && email.x + email.width <= contactBox.x + contactBox.width + 1, 'Email remains reachable in the scrolling contact row on phones');
   await contacts.evaluate(nav => { nav.scrollLeft = 0; });
   assert.equal(await page.locator('#intro a[href^="mailto:"]').count(), 0, 'contacts stay outside About');
-  assert.equal(await page.locator('#project-filters').isVisible(), home, 'tag filters stay available on the homepage');
-  if (home) {
-    const filters = await page.locator('#intro-links #project-filters').boundingBox();
-    assert.ok(filters.y >= footer.y && filters.y + filters.height <= footer.y + footer.height + 1, 'filters fit inside the footer');
-  }
+  assert.equal(await page.locator('#project-filters').isVisible(), true, 'tag filters are available on both strip walls');
+  const filterBounds = await page.locator('#project-filters').evaluate(filters => {
+    const rect = filters.getBoundingClientRect(), footer = filters.closest('footer').getBoundingClientRect();
+    return { top: rect.top - footer.top, bottom: footer.bottom - rect.bottom };
+  });
+  assert.ok(filterBounds.top >= -1 && filterBounds.bottom >= -1, 'filters fit inside the footer');
 }
 
 try {
@@ -204,7 +208,7 @@ try {
       assert.equal(wall.x, 24);
       assert.equal(wall.x, (await page.locator('.hero').boundingBox()).x, 'strips share the project media gutter');
       assert.equal(wall.width, options.viewport.width - 48);
-      assert.equal(wall.height, options.viewport.height - 24 - (await page.locator('#intro-links').boundingBox()).height);
+      assert.equal(wall.height, options.viewport.height - (await page.locator('#collection-header').boundingBox()).height - (await page.locator('#intro-links').boundingBox()).height);
       assert.ok((await page.locator('#projects').boundingBox()).y < wall.y);
       const rects = await page.locator('.strip:not([hidden])').evaluateAll(strips => strips.map(strip => {
         const rect = strip.getBoundingClientRect();
@@ -323,6 +327,42 @@ try {
       await page.waitForFunction(() => scrollY < 1);
       await toggle('education');
       await waitForHomeWall(page);
+    });
+  }
+
+  for (const [name, options] of [['desktop', desktop], ['mobile', mobile]]) {
+    await check(`${name} filters other projects without leaving the project wall`, options, async page => {
+      await visit(page, '/emerging-sensation/');
+      await page.locator('#collection').evaluate(collection => collection.scrollIntoView({ block: 'start' }));
+      await checkFooter(page);
+      // Education belongs only to the open project. Keep another usable tag
+      // active when the remaining toggles would otherwise leave no strips.
+      for (const button of await page.locator('#project-filters button:not([data-filter="education"])').all()) {
+        await button.click({ force: true });
+      }
+      assert.ok(await page.locator('.strip:not([hidden])').count() > 0, 'cannot filter down to only the excluded project');
+      const before = await page.locator('.strip:not([hidden])').evaluateAll(strips => strips.map(strip => strip.dataset.project));
+      await page.locator('#project-filters [aria-disabled="true"]').click({ force: true });
+      assert.deepEqual(await page.locator('.strip:not([hidden])').evaluateAll(strips => strips.map(strip => strip.dataset.project)), before);
+      const community = page.locator('#project-filters [data-filter="community"]');
+      if (await community.getAttribute('aria-pressed') !== 'true') await community.click();
+      for (const button of await page.locator('#project-filters [aria-pressed="true"]:not([data-filter="community"])').all()) await button.click();
+      const expected = await page.evaluate(() => window.__PROJECTS_DATA__.filter(project => project.slug !== 'emerging-sensation' && project.tags.includes('community')).map(project => project.slug));
+      assert.deepEqual(await page.locator('.strip:not([hidden])').evaluateAll(strips => strips.map(strip => strip.dataset.project)), expected);
+      assert.equal(new URL(page.url()).pathname, `${prefix}/emerging-sensation/`, 'filtering stays on the project');
+      assert.equal(await page.locator('#strip-emerging-sensation').isVisible(), false, 'open project stays excluded');
+      await page.waitForFunction(() => Math.abs(document.getElementById('collection').getBoundingClientRect().top) < 1);
+      await checkFooter(page);
+      await page.locator('.strip:not([hidden])').first().click();
+      await page.waitForFunction(() => document.documentElement.dataset.project !== 'emerging-sensation');
+      await page.goBack();
+      await page.waitForFunction(() => document.documentElement.dataset.project === 'emerging-sensation');
+      assert.deepEqual(await page.locator('#project-filters [aria-pressed="true"]').evaluateAll(buttons => buttons.map(button => button.dataset.filter)), ['community']);
+      assert.deepEqual(await page.locator('.strip:not([hidden])').evaluateAll(strips => strips.map(strip => strip.dataset.project)), expected);
+      await page.locator('.collection-home-link').click();
+      await waitForHomeWall(page);
+      assert.equal(await page.locator('#project-filters [aria-pressed="false"]').count(), 0, 'project filters do not change the homepage selection');
+      await checkFooter(page);
     });
   }
 

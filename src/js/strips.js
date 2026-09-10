@@ -8,7 +8,9 @@ const projects = new Map(window.__PROJECTS_DATA__.map(project => [project.slug, 
 const counts = new Map();
 projects.forEach(project => project.tags.forEach(tag => counts.set(tag, (counts.get(tag) || 0) + 1)));
 const tags = [...counts.keys()].filter(tag => tag !== 'installation').sort((a, b) => counts.get(b) - counts.get(a) || a.localeCompare(b));
-const activeTags = new Set(tags);
+let activeTags = new Set(tags);
+const filterSelections = new Map([['', activeTags]]);
+let currentSlug = '';
 const pendingImages = new WeakMap();
 let hoveredEntry;
 
@@ -17,11 +19,16 @@ function updatePreviewName() {
   document.getElementById('project-preview-name').textContent = (hoveredEntry || focused)?.getAttribute('aria-label') || '';
 }
 
+function canRemoveTag(tag) {
+  return activeTags.size > 1 && [...projects.values()].some(project =>
+    project.slug !== currentSlug && project.tags.some(candidate => candidate !== tag && activeTags.has(candidate)));
+}
+
 function updateFilterStates() {
   document.querySelectorAll('#project-filters button').forEach(button => {
     const active = activeTags.has(button.dataset.filter);
     button.setAttribute('aria-pressed', String(active));
-    button.setAttribute('aria-disabled', String(active && activeTags.size === 1));
+    button.setAttribute('aria-disabled', String(active && !canRemoveTag(button.dataset.filter)));
   });
 }
 
@@ -76,6 +83,10 @@ function updateImages() {
 }
 
 export function updateStrips(slug) {
+  currentSlug = slug || '';
+  if (!filterSelections.has(currentSlug)) filterSelections.set(currentSlug, new Set(tags));
+  activeTags = filterSelections.get(currentSlug);
+  updateFilterStates();
   controller?.abort();
   controller = new AbortController();
   hoveredEntry = null;
@@ -86,7 +97,7 @@ export function updateStrips(slug) {
   const showAll = activeTags.size === tags.length;
   for (const entry of entries) {
     const matches = showAll || projects.get(entry.dataset.project)?.tags.some(tag => activeTags.has(tag));
-    entry.hidden = entry.dataset.project === slug || (!slug && !matches);
+    entry.hidden = entry.dataset.project === currentSlug || !matches;
     if (!entry.hidden) count++;
     if (entry.hidden || !entry.querySelector('img')) continue;
     const upgradeImage = () => {
@@ -128,13 +139,14 @@ export function initializeStrips() {
     const button = event.target.closest('button[data-filter]');
     if (!button) return;
     const tag = button.dataset.filter;
-    if (activeTags.has(tag) && activeTags.size === 1) return;
+    if (activeTags.has(tag) && !canRemoveTag(tag)) return;
     if (activeTags.has(tag)) activeTags.delete(tag);
     else activeTags.add(tag);
     updateFilterStates();
-    updateStrips();
+    updateStrips(currentSlug);
     document.getElementById('strips').scrollLeft = 0;
-    scrollTo({ top: homeScrollTop(), behavior: matchMedia('(prefers-reduced-motion: reduce)').matches ? 'instant' : 'smooth' });
+    const top = currentSlug ? document.getElementById('collection').getBoundingClientRect().top + scrollY : homeScrollTop();
+    scrollTo({ top, behavior: matchMedia('(prefers-reduced-motion: reduce)').matches ? 'instant' : 'smooth' });
   });
   updateStrips(document.documentElement.dataset.project);
   addEventListener('resize', () => {
