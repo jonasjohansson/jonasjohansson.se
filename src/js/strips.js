@@ -17,6 +17,14 @@ function updatePreviewName() {
   document.getElementById('project-preview-name').textContent = (hoveredEntry || focused)?.getAttribute('aria-label') || '';
 }
 
+function updateFilterStates() {
+  document.querySelectorAll('#project-filters button').forEach(button => {
+    const active = activeTags.has(button.dataset.filter);
+    button.setAttribute('aria-pressed', String(active));
+    button.setAttribute('aria-disabled', String(active && activeTags.size === 1));
+  });
+}
+
 function setImageSize(entry, width) {
   const picture = entry.querySelector('picture');
   if (!picture || parseFloat(picture.querySelector('source').sizes) >= width || pendingImages.get(entry)?.width >= width) return;
@@ -38,8 +46,8 @@ function setImageSize(entry, width) {
 function setWideImage(entry) {
   const image = entry.querySelector('img');
   if (!image) return;
-  const ratio = Number(image.getAttribute('width')) / Number(image.getAttribute('height'));
-  const width = Math.max(innerWidth * 0.45, document.getElementById('strips').clientHeight * ratio);
+  const width = parseFloat(entry.style.getPropertyValue('--strip-image-width'));
+  if (!width) return;
   setImageSize(entry, Math.ceil(width));
 }
 
@@ -49,14 +57,20 @@ function updateImages() {
   const visible = entries.filter(entry => !entry.hidden);
   const minWidth = visible.length ? parseFloat(getComputedStyle(visible[0]).minWidth) : 0;
   const width = Math.max(minWidth, strips.clientWidth / Math.max(1, visible.length));
+  // Size the image for the widest this strip can open, then reveal it through
+  // the changing strip width. Hover must never resize the photograph itself.
+  const grow = matchMedia('(hover: hover)').matches ? 12 : 1;
+  const openWidth = Math.max(minWidth, Math.min(strips.clientWidth * grow / (visible.length + grow - 1), strips.clientWidth - (visible.length - 1) * minWidth));
   const narrow = width <= height * 0.16;
   for (const entry of visible) {
     const image = entry.querySelector('img');
     if (!image) continue;
     const ratio = Number(image.getAttribute('width')) / Number(image.getAttribute('height'));
+    const imageWidth = Math.max(height * ratio, openWidth);
+    entry.style.setProperty('--strip-image-width', `${imageWidth}px`);
     // Keep the same composition at every resolution so opening a strip cannot
     // stretch a narrow preview while the larger image is still downloading.
-    setImageSize(entry, narrow ? 640 : Math.ceil(Math.max(width, height * ratio)));
+    setImageSize(entry, narrow ? 640 : Math.ceil(imageWidth));
     if (matchMedia('(hover: hover)').matches && entry.matches(':hover, :focus-visible')) setWideImage(entry);
   }
 }
@@ -91,7 +105,6 @@ export function updateStrips(slug) {
     entry.addEventListener('blur', updatePreviewName, { signal: controller.signal });
   }
   document.getElementById('project-count').textContent = `${count} ${count === 1 ? 'project' : 'projects'}`;
-  document.getElementById('strips-empty').hidden = count > 0;
   updatePreviewName();
   updateImages();
   initAnimation(document.getElementById('strips'), controller.signal);
@@ -110,13 +123,15 @@ export function initializeStrips() {
     filters.append(button);
   }
   filters.hidden = false;
+  updateFilterStates();
   filters.addEventListener('click', event => {
     const button = event.target.closest('button[data-filter]');
     if (!button) return;
     const tag = button.dataset.filter;
+    if (activeTags.has(tag) && activeTags.size === 1) return;
     if (activeTags.has(tag)) activeTags.delete(tag);
     else activeTags.add(tag);
-    button.setAttribute('aria-pressed', String(activeTags.has(tag)));
+    updateFilterStates();
     updateStrips();
     document.getElementById('strips').scrollLeft = 0;
     scrollTo({ top: homeScrollTop(), behavior: matchMedia('(prefers-reduced-motion: reduce)').matches ? 'instant' : 'smooth' });

@@ -246,13 +246,15 @@ try {
       assert.deepEqual(new Set(tags), new Set(projects.flatMap(project => project.tags).filter(tag => tag !== 'installation')));
       assert.equal(tags.includes(''), false, 'there is no All button');
       assert.ok(projects.find(project => project.slug === 'visualia').tags.includes('community'), 'Visualia belongs to Community');
+      assert.ok(projects.find(project => project.slug === 'svartljus').tags.includes('community'), 'Svartljus belongs to Community');
       const selected = new Set(tags);
       const visibleSlugs = () => page.locator('.strip:not([hidden])').evaluateAll(strips => strips.map(strip => strip.dataset.project));
       const checkSelection = async () => {
         const expected = projects.filter(project => selected.size === tags.length || project.tags.some(tag => selected.has(tag))).map(project => project.slug);
         assert.deepEqual(await visibleSlugs(), expected, 'show projects matching any enabled tag');
         assert.deepEqual(await page.locator('#project-filters [aria-pressed="true"]').evaluateAll(buttons => buttons.map(button => button.dataset.filter)), tags.filter(tag => selected.has(tag)));
-        assert.equal(await page.locator('#strips-empty').isVisible(), expected.length === 0);
+        assert.ok(selected.size > 0 && expected.length > 0, 'at least one tag and its projects stay visible');
+        assert.equal(await page.locator('#project-filters [aria-disabled="true"]').count(), selected.size === 1 ? 1 : 0);
         assert.equal((await page.locator('#strips').boundingBox()).height, options.viewport.height - (await page.locator('#home-header').boundingBox()).height - (await page.locator('#intro-links').boundingBox()).height);
       };
       const toggle = async tag => {
@@ -263,15 +265,24 @@ try {
       };
       await checkSelection();
       assert.equal(await page.locator('.strip:not([hidden])').count(), projects.length, 'all tags start on, including projects tagged only Installation');
-      for (const tag of tags) await toggle(tag);
-      assert.equal(await page.locator('#project-count').textContent(), '0 projects');
+      for (const tag of tags.slice(0, -1)) await toggle(tag);
+      const last = page.locator('#project-filters [aria-pressed="true"]');
+      await last.click({ force: true });
+      await checkSelection();
+      await last.focus();
+      await page.keyboard.press('Space');
+      await checkSelection();
+      await page.keyboard.press('Enter');
+      await checkSelection();
       await checkFooter(page);
+      const select = async wanted => {
+        for (const tag of wanted.filter(tag => !selected.has(tag))) await toggle(tag);
+        for (const tag of [...selected].filter(tag => !wanted.includes(tag))) await toggle(tag);
+      };
       for (const tag of tags) {
-        await toggle(tag);
-        await toggle(tag);
+        await select([tag]);
       }
-      await toggle('mixed reality');
-      await toggle('av');
+      await select(['mixed reality', 'av']);
       const expected = await visibleSlugs();
       const chosen = page.locator('.strip:not([hidden])').first();
       const id = await chosen.getAttribute('id');
@@ -283,13 +294,13 @@ try {
       assert.deepEqual(await visibleSlugs(), expected);
       assert.equal(await page.evaluate(() => document.activeElement.id), id);
       await checkSelection();
-      await toggle('mixed reality');
-      await toggle('av');
       const education = page.locator('#project-filters [data-filter="education"]');
       await education.focus();
       await page.keyboard.press('Space');
       selected.add('education');
       await checkSelection();
+      await toggle('mixed reality');
+      await toggle('av');
       assert.equal(await page.locator('#project-count').textContent(), '1 project');
       for (const tag of tags.filter(tag => !selected.has(tag))) await toggle(tag);
       assert.equal(await page.locator('.strip:not([hidden])').count(), projects.length);
@@ -337,10 +348,49 @@ try {
     });
   }
 
+  await check('strip images keep their scale throughout hover and keyboard expansion', { viewport: { width: 1800, height: 420 } }, async page => {
+    for (const route of ['/', '/jagad/']) {
+      await visit(page, route);
+      if (route === '/') {
+        for (const button of await page.locator('#project-filters button:not([data-filter="mixed reality"])').all()) await button.click();
+      }
+      await page.locator('#collection').scrollIntoViewIfNeeded();
+      await page.mouse.move(0, 0);
+      const strip = page.locator('.strip:not([hidden])').first();
+      const image = strip.locator('img');
+      await image.evaluate(image => image.decode());
+      const width = (await strip.boundingBox()).width;
+      const imageWidth = (await image.boundingBox()).width;
+      const samples = page.evaluate(() => new Promise(resolve => {
+        const sizes = [], start = performance.now();
+        function sample() {
+          const strip = document.querySelector('.strip:not([hidden])');
+          sizes.push(strip.querySelector('img').getBoundingClientRect().width);
+          if (performance.now() - start < 550) requestAnimationFrame(sample);
+          else resolve(sizes);
+        }
+        requestAnimationFrame(sample);
+      }));
+      await strip.hover();
+      assert.ok((await samples).every(value => Math.abs(value - imageWidth) < 0.1), 'photograph width stays fixed for every expansion frame');
+      assert.ok((await strip.boundingBox()).width > width * 1.8, 'the strip still opens');
+      await page.mouse.move(0, 0);
+      await page.waitForTimeout(300);
+      await strip.focus();
+      await page.waitForTimeout(300);
+      assert.ok(Math.abs((await image.boundingBox()).width - imageWidth) < 0.1, 'keyboard expansion keeps the same image scale');
+      const bounds = await strip.evaluate(strip => {
+        const frame = strip.getBoundingClientRect(), image = strip.querySelector('img').getBoundingClientRect();
+        return { covered: image.left <= frame.left + 1 && image.right >= frame.right - 1 };
+      });
+      assert.ok(bounds.covered, 'the open strip remains covered by the image');
+    }
+  });
+
   await check('desktop strips respond while larger images are still downloading', desktop, async page => {
     await visit(page);
     await page.locator('#collection').scrollIntoViewIfNeeded();
-    const strip = page.locator('#strip-dome-dreaming');
+    const strip = page.locator('#strip-society-expo');
     const image = strip.locator('img');
     await image.evaluate(image => image.decode());
     const narrowSrc = await image.evaluate(image => image.currentSrc);
@@ -360,12 +410,12 @@ try {
       assert.ok(pending > 0, 'larger image download is pending');
       assert.ok((await strip.boundingBox()).width > width * 4, 'hover expands before download completes');
       assert.equal(await renderedHeight(), initialHeight, 'preview stays at the same scale while the strip opens');
-      assert.equal(await strip.getAttribute('aria-label'), 'Dome Dreaming');
-      assert.equal(await page.locator('#project-preview-name').textContent(), 'Dome Dreaming');
+      assert.equal(await strip.getAttribute('aria-label'), 'Society Expo');
+      assert.equal(await page.locator('#project-preview-name').textContent(), 'Society Expo');
       await page.mouse.move(0, 0);
       assert.equal(await page.locator('#project-preview-name').textContent(), '', 'name clears when leaving the strips');
       await strip.focus();
-      assert.equal(await page.locator('#project-preview-name').textContent(), 'Dome Dreaming', 'keyboard focus also previews the name');
+      assert.equal(await page.locator('#project-preview-name').textContent(), 'Society Expo', 'keyboard focus also previews the name');
       await page.keyboard.press('Tab');
       await page.waitForTimeout(350);
       assert.ok((await page.locator('.strip:focus-visible').boundingBox()).width > width * 4, 'keyboard focus expands before download completes');
@@ -375,7 +425,7 @@ try {
       release();
       await page.unrouteAll({ behavior: 'wait' });
     }
-    await page.waitForFunction(src => document.querySelector('#strip-dome-dreaming img').currentSrc !== src, narrowSrc);
+    await page.waitForFunction(src => document.querySelector('#strip-society-expo img').currentSrc !== src, narrowSrc);
     await image.evaluate(image => image.decode());
     assert.equal(await renderedHeight(), initialHeight, 'larger image keeps the preview scale');
     const fullSrc = await image.evaluate(image => image.currentSrc);
