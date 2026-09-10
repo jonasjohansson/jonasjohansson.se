@@ -47,10 +47,5 @@ blocks:
     alt: "Behind the scenes and stage visuals for Danny Saucedo’s Happy That You Found Me."
     ar: 0.5625
     poster: 01-poster.jpg
-  - type: credits
-    credits:
-      - "Technical director: Jonas Johansson"
-      - "Co-design, 3D modelling and animation: [Smash Studio](https://www.smash.studio/)"
-      - "Architect: [Rose Hallgren](https://rosehallgren.se/)"
 ---
 

@@ -42,9 +42,9 @@ blocks:
   - type: text
     fontSize: small
     content: >-
-      I coded visualisations and animations for the facade, and took on much
-      of the project management, from writing funding applications to running
-      meetings and coordinating the group. The scale was hard to grasp.
+      As artistic lead, I coded visualisations and animations for the facade,
+      and took on much of the project management, from writing funding
+      applications to running meetings and coordinating the group. The scale was hard to grasp.
       Harpa is an enormous
       building set against the harbour in a small city, and when your
       animation fills that facade it's visible across half of Reykjavík.
@@ -75,8 +75,9 @@ blocks:
     content: >-
       In 2019, as [Tiny/Massive](/tinymassive/), we opened the facade to
       artists worldwide during the Reykjavík Winter Lights Festival.
-      [Loney Dear](https://youtu.be/wAKno0pe4UQ) performed a live concert
-      controlling the visuals with [Teenage Engineering](https://teenage.engineering/)'s
+      [Loney Dear](https://youtu.be/wAKno0pe4UQ) and
+      [Teenage Engineering](https://teenage.engineering/) performed a live
+      concert controlling the visuals with the
       [OP-Z](https://teenage.engineering/store/op-z/), ten storeys of
       light on the harbour, driven from inside a city bus.
   - type: text
@@ -93,13 +94,4 @@ blocks:
       Skaðablót.
   - type: image
     src: 03.jpg
-  - type: credits
-    credits:
-      - "Artistic lead: Jonas Johansson"
-      - "[Atlí Bollason](https://atlibollason.com/)"
-      - "[Owen Hindley](https://www.owenhindley.co.uk/)"
-      - "[Rasmus Stride](https://www.instagram.com/rasmus.stride/)"
-      - "Physical models: [Rose Hallgren](https://rosehallgren.se/)"
-      - "Hardware coding: Johanna Tano"
-      - "Performance: [Loney Dear](https://youtu.be/wAKno0pe4UQ) and [Teenage Engineering](https://teenage.engineering/)"
 ---

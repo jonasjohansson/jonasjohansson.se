@@ -102,7 +102,8 @@ blocks:
     content: >-
       I designed and built the festival website at
       [domedreaming.com](https://www.domedreaming.com) and the surrounding
-      visual identity, with Linn Willebrand on graphics and animation. To help
+      visual identity, with Linn Willebrand on graphics, animation and
+      communication. To help
       artists prepare for the dome geometry, I also built a
       [browser-based preview tool](https://preview.domedreaming.com) that maps
       any image or video onto a 3D model of Wisdome Stockholm, so they could
@@ -112,9 +113,8 @@ blocks:
   - type: text
     fontSize: small
     content: >-
-      Documentation and communication by
-      [Rose Hallgren](https://rosehallgren.se/). Festival photography by
-      Glidephotos. Produced in collaboration with
+      Festival photography by [Rose Hallgren](https://rosehallgren.se/) and
+      Glidephotos, with Rose also handling documentation and communication. Produced in collaboration with
       [Aavistus](https://www.aavistusfestival.fi/),
       [Kokong](https://www.instagram.com/kokongfestival/),
       [Baltic Analog Lab](https://www.balticanaloglab.lv/) and
@@ -169,9 +169,4 @@ blocks:
   - type: image
     src: 34.jpg
     size: half-right
-  - type: credits
-    credits:
-      - "Production: Jonas Johansson, [Fredrik Edström](https://www.ivar.studio/) and [Sebastian Häger](https://www.linkedin.com/in/sebastian-h%C3%A4ger-53054b155/)"
-      - "Communication and graphic design: Linn Willebrand"
-      - "Photography: [Rose Hallgren](https://rosehallgren.se/) and Glidephotos"
 ---

@@ -101,13 +101,8 @@ blocks:
       connections and sensors. They brought the same care to guiding the
       scenography students and making it all come together on site. I hope
       we get to do it again, and I look forward to many more visits to their
-      beautiful office in Skellefteå. Find more images and videos from the
-      exhibition on their [press page](https://trynewthings.fail/press/society-expo-2026/).
-  - type: credits
-    credits:
-      - "Lighting: Jonas Johansson"
-      - "Cloud: [Rose Hallgren](https://rosehallgren.se/)"
-      - "With: [Try New Things](https://trynewthings.fail/)"
-      - "Photos: Jonas Westling, Pär Olofsson"
-      - "Film: Try New Things"
+      beautiful office in Skellefteå. Jonas Westling and Pär Olofsson
+      photographed the exhibition, and Try New Things made the film. Find more
+      images and videos on their
+      [press page](https://trynewthings.fail/press/society-expo-2026/).
 ---

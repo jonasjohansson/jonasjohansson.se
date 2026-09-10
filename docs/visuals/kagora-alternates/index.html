@@ -1,0 +1,94 @@
+<!doctype html>
+<html lang="en">
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Kagora — image alternatives</title>
+<style>
+  :root { color-scheme: dark; font-family: Georgia, serif; background: #221f1c; color: #f6f2e9; }
+  * { box-sizing: border-box; }
+  body { margin: 0; padding: clamp(20px, 4vw, 64px); }
+  header, main { max-width: 1672px; margin-inline: auto; }
+  header { margin-bottom: 48px; }
+  h1 { font-size: clamp(36px, 5vw, 72px); font-weight: normal; margin: 0 0 16px; }
+  h2 { font-size: 24px; font-weight: normal; margin: 0; }
+  p { max-width: 68ch; line-height: 1.5; font-size: 18px; }
+  a { color: inherit; text-underline-offset: 4px; }
+  nav { display: flex; flex-wrap: wrap; gap: 24px; margin-top: 24px; }
+  section { margin-bottom: 64px; }
+  .toolbar { display: flex; justify-content: space-between; align-items: baseline; flex-wrap: wrap; gap: 16px; margin-bottom: 16px; }
+  .controls { display: flex; flex-wrap: wrap; align-items: center; gap: 20px; }
+  button { border: 0; border-bottom: 1px solid transparent; border-radius: 0; background: none; color: #b8b1a9; font: inherit; font-size: 16px; padding: 8px 0; cursor: pointer; }
+  button[aria-pressed="true"] { border-bottom-color: currentColor; color: #f6f2e9; }
+  :focus-visible { outline: 2px solid #dba76b; outline-offset: 5px; }
+  .stage { width: 100%; aspect-ratio: 1672 / 941; display: grid; background: #141210; }
+  .stage img { grid-area: 1 / 1; width: 100%; height: 100%; object-fit: contain; min-height: 0; min-width: 0; }
+  .stage img[hidden] { display: none; }
+  .note { color: #cbc3ba; font-size: 16px; }
+  footer { max-width: 1672px; margin: 0 auto; padding-top: 24px; border-top: 1px solid #5a524a; }
+</style>
+<header>
+  <h1>Kagora</h1>
+  <p>Three AI image alternatives based on the existing photographs: a closer woodland view, a clearer entrance and a tighter study of the weave. Switch each view to compare it with its source.</p>
+  <p class="note">These are generated interpretations. Native output is 1672 × 941 pixels, smaller than the original photographs; the apparent sharpness includes reconstructed detail. Saved for review, with the published photographs unchanged.</p>
+  <nav aria-label="Image alternatives"><a href="#woodland">01 Woodland</a><a href="#entrance">02 Entrance</a><a href="#canopy">03 Canopy</a></nav>
+</header>
+<main>
+  <section id="woodland" aria-labelledby="woodland-title">
+    <div class="toolbar">
+      <h2 id="woodland-title">01 — Woodland</h2>
+      <div class="controls" role="group" aria-label="Woodland comparison">
+        <button type="button" data-view="original" aria-pressed="false" aria-controls="woodland-original">Original</button>
+        <button type="button" data-view="alternate" aria-pressed="true" aria-controls="woodland-alternate">AI alternate</button>
+        <a href="01-woodland-hero.png" download>Download PNG</a>
+      </div>
+    </div>
+    <div class="stage">
+      <img id="woodland-original" data-view="original" src="../../../projects/kagora/woodland-mist.jpg" alt="Original photograph: the amber-lit Kagora pavilion in a misty woodland clearing." hidden>
+      <img id="woodland-alternate" data-view="alternate" src="01-woodland-hero.png" width="1672" height="941" alt="AI alternate: a closer, warmer view of the glowing pavilion framed by blue-lit trees.">
+    </div>
+    <p class="note">The strongest hero candidate of the three: closer framing and clearer separation between the pavilion and the woods. Foliage, ground texture and fine rib detail are reconstructed.</p>
+  </section>
+  <section id="entrance" aria-labelledby="entrance-title">
+    <div class="toolbar">
+      <h2 id="entrance-title">02 — Entrance</h2>
+      <div class="controls" role="group" aria-label="Entrance comparison">
+        <button type="button" data-view="original" aria-pressed="false" aria-controls="entrance-original">Original</button>
+        <button type="button" data-view="alternate" aria-pressed="true" aria-controls="entrance-alternate">AI alternate</button>
+        <a href="02-woven-entrance.png" download>Download PNG</a>
+      </div>
+    </div>
+    <div class="stage">
+      <img id="entrance-original" data-view="original" src="../../../projects/kagora/entrance.jpg" alt="Original photograph: visitors rest inside Kagora's cyan, green and pink woven arches." hidden loading="lazy">
+      <img id="entrance-alternate" data-view="alternate" src="02-woven-entrance.png" width="1672" height="941" alt="AI alternate: a level landscape composition with clearer light tubes and cushions inside the entrance." loading="lazy">
+    </div>
+    <p class="note">A more level, tightly framed view of the completed structure. The people, cushions and small construction details have been reinterpreted by the generator.</p>
+  </section>
+  <section id="canopy" aria-labelledby="canopy-title">
+    <div class="toolbar">
+      <h2 id="canopy-title">03 — Canopy</h2>
+      <div class="controls" role="group" aria-label="Canopy comparison">
+        <button type="button" data-view="original" aria-pressed="false" aria-controls="canopy-original">Original</button>
+        <button type="button" data-view="alternate" aria-pressed="true" aria-controls="canopy-alternate">AI alternate</button>
+        <a href="03-canopy-detail.png" download>Download PNG</a>
+      </div>
+    </div>
+    <div class="stage">
+      <img id="canopy-original" data-view="original" src="../../../projects/kagora/canopy.jpg" alt="Original photograph: multicoloured light tubes cross around a tree, with service containers at the bottom of the frame." hidden loading="lazy">
+      <img id="canopy-alternate" data-view="alternate" src="03-canopy-detail.png" width="1672" height="941" alt="AI alternate: a tighter upward view concentrating on the coloured weave against the tree canopy." loading="lazy">
+    </div>
+    <p class="note">The tighter crop concentrates on the weave and removes the containers from the composition. Fine tube connections and foliage are reconstructed.</p>
+  </section>
+</main>
+<footer><p class="note">Built-in image generation · 10 September 2026 · <a href="prompts.json">Source files and prompts</a></p></footer>
+<script>
+  document.querySelectorAll('section').forEach(section => {
+    section.querySelectorAll('button[data-view]').forEach(button => {
+      button.addEventListener('click', () => {
+        const selected = button.dataset.view;
+        section.querySelectorAll('button[data-view]').forEach(control => control.setAttribute('aria-pressed', String(control.dataset.view === selected)));
+        section.querySelectorAll('img[data-view]').forEach(img => { img.hidden = img.dataset.view !== selected; });
+      });
+    });
+  });
+</script>
+</html>

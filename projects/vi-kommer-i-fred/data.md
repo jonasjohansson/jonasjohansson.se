@@ -61,7 +61,4 @@ blocks:
   - type: image
     src: 09-wide.png
     alt: "A laptop running the alien invasion scene in Resolume overlooks the softly lit Stockholm waterfront at night."
-  - type: credits
-    credits:
-      - "Made with: [Smash Studio](https://www.smash.studio/)"
 ---

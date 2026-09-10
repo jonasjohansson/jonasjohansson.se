@@ -16,15 +16,12 @@ blocks:
   - type: text
     fontSize: small
     content: >-
-      Embed was a collaboration with [Barkas](https://barkas.com/) and
-      [Vitali Poluzhnikov](https://www.vitali.xyz/), built in 2021. Three
+      I initiated and built Embed with [Barkas](https://barkas.com/) and
+      [Vitali Poluzhnikov](https://www.vitali.xyz/) in 2021. Three
       short-throw projectors were installed in a small hotel room at Hobo
       Hotel in Stockholm,
       with an elaborate speaker system and a custom control
       interface on a tablet. Guests could book the room and browse curated films
       and generative graphics, surrounded by visuals on every wall.
-  - type: credits
-    credits:
-      - "Initiated and made with: [Barkas](https://barkas.com/), [Vitali Poluzhnikov](https://www.vitali.xyz/)"
 ---
 

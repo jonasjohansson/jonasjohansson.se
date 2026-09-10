@@ -40,9 +40,5 @@ blocks:
     alt: "From scanning architecture and figures to projecting the assembled imagery onto the Great Synagogue."
     ar: 0.5625
     poster: 01-poster.jpg
-  - type: credits
-    credits:
-      - "Made with: [Smash Studio](https://www.smash.studio/)"
-      - "Music: [Joseph Wilkinson](https://www.josephwilkinson.com)"
 ---
 

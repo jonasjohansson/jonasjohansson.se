@@ -54,14 +54,10 @@ blocks:
     content: >-
       I designed the open call, the
       [website](https://tinymassive.io/), and the visual identity, project
-      managed the whole thing through NAVA, and coded visualisations for the
+      managed the whole thing through [NAVA](/nava/), and coded visualisations for the
       building. We had funding from the
       [Nordic Culture Fund](https://nordiskkulturfond.org/) through their
       Opstart grant. The collective behind Tiny/Massive was myself,
       [Atlí Bollason](https://atlibollason.com/) and
       [Owen Hindley](https://www.owenhindley.co.uk/).
-  - type: credits
-    credits:
-      - "Collective: Jonas Johansson, [Atlí Bollason](https://atlibollason.com/), [Owen Hindley](https://www.owenhindley.co.uk/)"
-      - "A [NAVA](/nava/) project"
 ---

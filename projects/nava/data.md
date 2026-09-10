@@ -16,7 +16,7 @@ blocks:
   - type: text
     fontSize: small
     content: >-
-      It started during a project at
+      I co-founded NAVA during a project at
       [Harpa](/harpa/) in Reykjavík with
       [Atlí Bollason](https://atlibollason.com/),
       [Owen Hindley](https://www.owenhindley.co.uk/) and
@@ -145,7 +145,4 @@ blocks:
       [Nordic Culture Fund](https://nordiskkulturfond.org/),
       [Nordic Culture Point](https://www.nordiskkulturkontakt.org/) and
       [NAPA](https://napa.gl/).
-  - type: credits
-    credits:
-      - "Co-founders: Jonas Johansson, [Atlí Bollason](https://atlibollason.com/), [Owen Hindley](https://www.owenhindley.co.uk/), [Rasmus Stride](https://www.instagram.com/rasmus.stride/)"
 ---

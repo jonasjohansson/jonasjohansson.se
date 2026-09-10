@@ -36,15 +36,12 @@ blocks:
       joined by micro-residents Erik Natanael, Murilo Polese, and Hara Alonso.
       Visualia is a registered non-profit, run together with
       [Rose Hallgren](https://rosehallgren.se/) and
-      [Bengt Johansson](https://www.bengtjohansson.se).
+      [Bengt Johansson](https://www.bengtjohansson.se), with support from
+      Region Halland.
   - type: image
     src: 03.jpg
     size: half-left
   - type: image
     src: 04.jpg
     size: half-right
-  - type: credits
-    credits:
-      - "Run with: [Rose Hallgren](https://rosehallgren.se/), [Bengt Johansson](https://www.bengtjohansson.se)"
-      - "<span class=\"credit-support\">Supported by Region Halland</span>"
 ---

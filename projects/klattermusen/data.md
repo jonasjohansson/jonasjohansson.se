@@ -92,7 +92,4 @@ blocks:
     src: shopfront.jpg
     alt: "The rug and workshop table are visible through the shopfront glass, layered with reflections of trees and the street."
     size: half-right
-  - type: credits
-    credits:
-      - "Made with: [Rose Hallgren](https://rosehallgren.se/)"
 ---

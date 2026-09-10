@@ -78,7 +78,7 @@ blocks:
       extracted its actor table, bot paths, UnrealScript rules, character and
       weapon models, HUD textures, effects and sounds. This is a non-commercial
       fan recreation and a study of their work; those assets and ideas remain
-      theirs.
+      theirs. Original UT99 assets remain copyright Epic Games.
   - type: image
     src: 06.jpg
     alt: "The original CTF-Face navigation network is drawn as hundreds of connected lines across the two towers and bridge."
@@ -87,18 +87,9 @@ blocks:
     content: >-
       The level is placed from the original map data rather than eyeballed from
       screenshots: two flag bases, twenty player starts, 56 pickups, 166
-      navigation points and 592 path connections. The model I started from had
-      also compressed the arena to 43% of its real scale. Restoring the
-      71-metre towers and grounding the old path network against a new
+      navigation points and 592 path connections. I started from a 3D map model
+      by Harry Clark, which had compressed the arena to 43% of its real scale.
+      Restoring the 71-metre towers and grounding the old path network against a new
       navigation surface brought back the long, exposed crossings that give
       Facing Worlds its rhythm.
-  - type: credits
-    credits:
-      - "Shown at: Unreal Fest, Stockholm, September 2025"
-      - "Event produced by: [Happy Times](https://happytimes.se)"
-      - "Original game: Unreal Tournament (1999), Epic Games and Digital Extremes"
-      - "Original CTF-Face level design: Cédric “Inoxx” Fiorentino"
-      - "Original music: “Foregone Destruction”, Michiel van den Bos"
-      - "3D map model: Harry Clark"
-      - "Facing Worlds is a non-commercial fan recreation. Original UT99 assets remain copyright Epic Games."
 ---

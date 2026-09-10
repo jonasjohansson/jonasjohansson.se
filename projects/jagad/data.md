@@ -18,7 +18,8 @@ blocks:
   - type: text
     fontSize: small
     content: >-
-      Made with [Smash Studio](https://www.smash.studio/) to mark the launch of
+      Made with [Smash Studio](https://www.smash.studio/) and
+      [Platon Marko](https://platon.design/) to mark the launch of
       Kanal 5's show "Jagad". We rebuilt a classic top-down chase game onto the
       building itself: the windows became the blocks, the gaps between them
       became the streets. Players worked custom arcade controllers down on the
@@ -63,7 +64,4 @@ blocks:
     size: half-right
   - type: image
     src: 08.jpg
-  - type: credits
-    credits:
-      - "Made with: [Smash Studio](https://www.smash.studio/), [Platon Marko](https://platon.design/)"
 ---

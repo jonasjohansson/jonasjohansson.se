@@ -16,8 +16,9 @@ blocks:
   - type: text
     fontSize: small
     content: >-
-      Lyra was my first foray into interactive light art, made while I was
-      working at [Moment Factory](https://momentfactory.com/) in Montreal
+      Lyra was my first foray into interactive light art, made with
+      Melanie Le Guen while I was working at
+      [Moment Factory](https://momentfactory.com/) in Montreal
       and shown at [C2 Montreal](https://www.c2montreal.com/). A set of
       fishing wire strings was strung tightly from floor to ceiling, each
       fitted with an accelerometer. When a visitor plucked a string, the
@@ -26,7 +27,4 @@ blocks:
       along the walls and ceiling, turning the room into a kind of
       circuitry. The more people played, the richer it got. Built on
       [Arduino](https://www.arduino.cc/).
-  - type: credits
-    credits:
-      - "Made with: Melanie Le Guen"
 ---

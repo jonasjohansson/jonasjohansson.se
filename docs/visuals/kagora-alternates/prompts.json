@@ -1,0 +1,49 @@
+[
+  {
+    "name": "01-woodland-hero",
+    "sources": [
+      "projects/kagora/woodland-mist.jpg",
+      "projects/kagora/entrance.jpg"
+    ],
+    "prompt": "Use case: photorealistic-natural, photographic alternate based on an existing photograph.\nAsset type: landscape portfolio hero photograph, ideally 3840 × 2160, highest available native resolution.\nInput image 1 is the primary edit target: the actual Kagora light pavilion glowing amber in a misty forest. Input image 2 is a structural reference only, showing the same pavilion from its entrance.\nCreate an impressive but faithful photographic refinement of input 1. Keep the same real installation: four interwoven arch groups with multiple thin LED tube ribs, its low broad proportions and original pattern of crossings, grounded among these trees. Preserve the forest location, tree arrangement, blue ambient light on the left and warm amber/copper LED lighting. Level the photograph and crop in moderately so the complete pavilion occupies about 55–60% of the frame width; retain mist above it and a little dark foreground. Crisp accurately focused tubes, natural foliage and bark detail, clean shadows with subtle texture, carefully controlled highlights so individual luminous lines stay separate rather than blowing out to white. A sophisticated architectural night photograph, with depth and atmosphere, restrained natural contrast, no HDR halos. Preserve any visible people exactly as in the target; do not introduce people.\nDo not redesign the structure, add tubes or ornamental architecture, enlarge the physical installation, change its number of arches, introduce lasers/stars/moon/text/logos, or produce a collage. This is an AI alternate for review, so prioritize faithful geometry over decorative invention. One complete landscape image.",
+    "output": "01-woodland-hero.png",
+    "mode": "built-in image_gen.imagegen",
+    "generatedAt": "2026-09-10",
+    "requestedSize": "3840×2160; highest native resolution available",
+    "actualSize": {
+      "width": 1672,
+      "height": 941
+    }
+  },
+  {
+    "name": "02-woven-entrance",
+    "sources": [
+      "projects/kagora/entrance.jpg"
+    ],
+    "prompt": "Use case: photorealistic-natural, faithful photographic refinement.\nAsset type: landscape architectural portfolio photograph, ideally 3840 × 2160, highest available native resolution.\nInput image 1 is the edit target: the actual Kagora pavilion viewed from its entrance. Generate a refined alternate of this same photo with exceptional focus and optical clarity. Keep the existing arch geometry, thin tube thickness, woven crossings, door openings, ground-level supports, cushions and all visible people in their existing positions. Retain the cyan, blue, emerald and small coral/violet light transitions seen in the reference.\nCompose a level frontal landscape image with a slightly tighter, balanced crop, keeping both outer entrance arches readable. Show depth through the layered weave to the far doorway. Simulate a well-exposed tripod photograph with the entire architectural form in sharp focus, realistic tube diffusion and subtle light spill onto the existing floor. Preserve dark woodland and tactile ground detail. Reduce low-light noise and compression softness without waxy smoothing, artificial edge halos or plastic rendering. Control highlights to preserve individual LED lines and restrained color separation. Keep the scale and topology of the real structure; no extra arches or ribs, no added spectators, no changes to people or faces, no embellishments, text or watermark. Produce one image, not a comparison or collage.",
+    "output": "02-woven-entrance.png",
+    "mode": "built-in image_gen.imagegen",
+    "generatedAt": "2026-09-10",
+    "requestedSize": "3840×2160; highest native resolution available",
+    "actualSize": {
+      "width": 1672,
+      "height": 941
+    }
+  },
+  {
+    "name": "03-canopy-detail",
+    "sources": [
+      "projects/kagora/canopy.jpg",
+      "projects/kagora/entrance.jpg"
+    ],
+    "prompt": "Use case: photorealistic-natural, photographic alternate preserving a real artwork.\nAsset type: landscape editorial architectural detail photograph, ideally 3840 × 2160 at the highest available native resolution.\nInput image 1 is the primary edit target, an upward view inside the actual Kagora light pavilion. Input image 2 is supporting reference for the structure, not a second scene to combine.\nCreate a more striking, sharply focused alternate of this upward photograph. Preserve the actual curved tube paths, layered crossing order, joint positions, tube thickness, colored light segments and central tree trunk as closely as possible. Frame a slightly tighter landscape crop of the luminous weave overhead, allowing the sweeping curves to reach the frame edges and cropping the very bottom service structures out naturally. Keep the woodland canopy and patches of deep blue evening sky between the arches.\nBring out precise architectural detail and the translucent diffusers, with rich but credible cyan, pink, violet and pale warm light. Crisp depth of field throughout the tubes, subtle photographic texture, controlled highlights, dark natural foliage with readable depth. Strong graphic composition from the existing curves, not a redesigned pattern. Do not add, remove or remap structural ribs or invent starbursts, light beams, stars, people, text or logos. No excessive glow, painterly smoothing, CGI finish or collage. One complete landscape image.",
+    "output": "03-canopy-detail.png",
+    "mode": "built-in image_gen.imagegen",
+    "generatedAt": "2026-09-10",
+    "requestedSize": "3840×2160; highest native resolution available",
+    "actualSize": {
+      "width": 1672,
+      "height": 941
+    }
+  }
+]

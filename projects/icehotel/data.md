@@ -84,8 +84,4 @@ blocks:
     size: half-right
   - type: image
     src: 08.jpg
-  - type: credits
-    credits:
-      - "Sculptor: Jonas Johansson, [Jordi Claramunt](https://www.instagram.com/jordi.claramunt.art/), Lukas Petko, [Abel Pruñonosa](https://www.abelprunyonosa.com/)"
-      - "Music: Francesco Torelli, Nikita Dudnik"
 ---

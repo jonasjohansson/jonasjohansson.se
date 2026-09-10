@@ -27,7 +27,4 @@ blocks:
     alt: "Animated projections transform the curved facade for Sala’s 400-year celebration."
     ar: 0.5625
     poster: 01-poster.jpg
-  - type: credits
-    credits:
-      - "3D modelling and animation: [Smash Studio](https://www.smash.studio/)"
 ---

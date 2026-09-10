@@ -27,6 +27,13 @@ blocks:
 
 Image dimensions and responsive sources are generated during the build. Leave `ar` unset unless you deliberately need a layout ratio override. Optional `size` values are `full`, `large`, `left`, `right`, `half-left`, `half-right`, `small-left` and `small-right`. You can also set `colStart` and `colSpan` within the 12-column grid. Unplaced portrait images are grouped into balanced rows; an authored `half-left` followed by `half-right` forms a pair. Media stacks on mobile.
 
+## Collaborators and attribution
+
+Introduce collaborators in the paragraphs describing their contribution. Avoid a
+separate credit list when it repeats the story. Keep photography, film, music,
+support and source-asset attribution in the relevant text, including links and
+any required copyright wording. Use the first person for Jonas's own role.
+
 ## Videos
 
 ```yaml
