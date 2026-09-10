@@ -1,11 +1,9 @@
 .intro {
   position: relative;
-  z-index: var(--z-content);
   padding: var(--spacing-xl) var(--spacing-lg) var(--spacing-2xl);
   max-width: calc(8 / 12 * 100%);
   margin: 0 auto;
   flex-shrink: 0;
-  transition: opacity 0.4s ease;
 }
 
 @media (orientation: portrait), (max-width: 1440px) {
@@ -13,11 +11,6 @@
     max-width: none;
     padding: 0 0 var(--spacing-xl);
   }
-}
-
-.intro.intro-hidden {
-  opacity: 0;
-  pointer-events: none;
 }
 
 .intro-text {
@@ -42,15 +35,13 @@
 }
 
 .home-links { display: none; }
-.enhanced body[data-route="home"] #content { --home-reveal: 0; padding: 0; height: calc(100dvh + var(--home-reveal-distance)); }
-.enhanced body[data-route="home"] #main { position: sticky; top: 0; height: 100dvh; overflow: hidden; isolation: isolate; }
-.enhanced body[data-route="home"] .home-header { position: absolute; inset: 0 0 auto; height: var(--home-header-height); z-index: 3; }
-.enhanced body[data-route="home"] .intro { position: absolute; inset: var(--home-header-height) 0 var(--home-strip-peek); z-index: 0; max-width: none; margin: 0; padding: clamp(1.5rem, 5vw, 5rem); overflow-y: auto; opacity: clamp(0, var(--home-reveal) * 2, 1); transition: none; }
+.enhanced body[data-route="home"] #content { padding: var(--home-top-height) 0 0; }
+.enhanced body[data-route="home"] .home-header { position: fixed; inset: 0 0 auto; z-index: 3; }
+.enhanced body[data-route="home"] .intro { position: static; min-height: calc(100dvh - var(--home-top-height)); max-width: none; margin: 0; padding: clamp(1.5rem, 5vw, 5rem); }
 .enhanced body[data-route="home"] .intro-text, .enhanced body[data-route="home"] .home-links { max-width: 56rem; margin-inline: auto; }
 .enhanced body[data-route="home"] .home-links { display: block; margin-top: 2rem; line-height: 1.8; }
 .enhanced body[data-route="home"] .home-links p { margin: 0; }
 .enhanced body[data-route="home"] #intro-links { display: none; }
-.enhanced body[data-route="home"] #intro[inert] .name > span { animation-play-state: paused; }
 
 /* Dark mode: colored name with staggered color + wave animation */
 html[data-theme="dark"] .intro-text .name > span {

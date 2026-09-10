@@ -1,4 +1,5 @@
 import { mountMedia } from './media.js';
+import { homeScrollTop } from './home.js';
 
 const prefix = window.__PATH_PREFIX__ || '';
 const homePath = `${prefix}/`;
@@ -136,8 +137,8 @@ class Router {
       focus ||= document.getElementById('home-title');
       focus.focus({ preventScroll: true });
       if (restore && typeof restore.scrollY === 'number') scrollTo({ top: restore.scrollY, behavior: 'instant' });
-      else if (!project && options.returnToCollection) scrollTo({ top: 0, behavior: 'instant' });
-      else if (url.hash === '#collection' || (options.returnToCollection && !project)) {
+      else if (!project) scrollTo({ top: homeScrollTop(['#about', '#intro'].includes(url.hash) ? 'about' : 'projects'), behavior: 'instant' });
+      else if (url.hash === '#collection') {
         (focus.classList.contains('strip') ? focus : document.getElementById('collection')).scrollIntoView({ block: 'start' });
       } else scrollTo({ top: 0, behavior: 'instant' });
       if (restore && typeof restore.stripScrollLeft === 'number') document.getElementById('strips').scrollLeft = restore.stripScrollLeft;

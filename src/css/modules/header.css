@@ -24,12 +24,17 @@
   border-radius: inherit;
 }
 
-.home-header { display: flex; align-items: center; justify-content: space-between; gap: 1rem; min-height: var(--home-header-height); padding: 0 1rem; background: var(--bg-primary); color: var(--text-primary); font-size: 0.875rem; line-height: 1; letter-spacing: 0.06em; text-transform: uppercase; }
+.home-header { background: var(--bg-primary); color: var(--text-primary); font-size: 0.875rem; line-height: 1; letter-spacing: 0.06em; text-transform: uppercase; }
+.home-header-row { display: flex; align-items: center; justify-content: space-between; gap: 1rem; height: var(--home-header-height); padding: 0 1rem; }
 .home-header h1, .home-header p { margin: 0; font: inherit; }
 .home-header a { text-decoration: none; }
 .home-motto { flex: 1; }
 #about-toggle { border: 0; border-radius: 0; padding: 0.5rem 0; background: none; letter-spacing: inherit; text-transform: inherit; }
 #about-toggle:hover { text-decoration: underline; }
+.project-filters { display: flex; align-items: stretch; gap: 1.25rem; height: var(--home-filter-height); padding: 0 1rem; overflow-x: auto; scrollbar-width: none; border-top: 1px solid color-mix(in srgb, var(--text-primary) 12%, var(--bg-primary)); }
+.project-filters::-webkit-scrollbar { display: none; }
+.project-filters button { flex: none; padding: 0.5rem 0; border: 0; border-radius: 0; background: none; color: inherit; font: inherit; letter-spacing: 0; text-transform: none; white-space: nowrap; }
+.project-filters button:hover, .project-filters button[aria-pressed="true"] { background: none; color: inherit; text-decoration: underline; text-underline-offset: 0.3em; }
 @media (max-width: 600px) {
   .home-motto { display: none; }
 }

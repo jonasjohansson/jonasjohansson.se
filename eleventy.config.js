@@ -124,7 +124,7 @@ export default function (eleventyConfig) {
   }
   eleventyConfig.addGlobalData('projects', async () => (await getSiteData()).work.map(({ slug, title, date, tags, color }) => ({ slug, title, date, tags, color })));
   eleventyConfig.addGlobalData('projectContent', async () => Object.fromEntries((await getSiteData()).work.map(project => [project.slug, project])));
-  eleventyConfig.addGlobalData('projectsForJS', async () => (await getSiteData()).work.map(({ slug, title, color }) => ({ slug, title, color })));
+  eleventyConfig.addGlobalData('projectsForJS', async () => (await getSiteData()).work.map(({ slug, title, color, tags }) => ({ slug, title, color, tags })));
   eleventyConfig.addGlobalData('collectionItems', async () => (await getSiteData()).work);
 
   eleventyConfig.addFilter("viteAsset", (filename) => {

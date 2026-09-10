@@ -1,10 +1,11 @@
 import { initAnimation } from './stripAnimation.js';
+import { homeScrollTop } from './home.js';
 
 let entries = [];
 let controller;
 let resizeFrame;
-const wallQuery = '(hover: hover) and (min-width: 901px)';
-const isWall = () => document.body.dataset.route === 'home' || matchMedia(wallQuery).matches;
+let activeFilter = '';
+const projects = new Map(window.__PROJECTS_DATA__.map(project => [project.slug, project]));
 
 function setWideImage(entry) {
   const image = entry.querySelector('img');
@@ -21,22 +22,20 @@ function setWideImage(entry) {
 
 function updateImages() {
   const strips = document.getElementById('strips');
-  const wall = isWall();
-  const bandWidth = document.body.dataset.route === 'home' ? '100vw' : 'calc(100vw - 48px)';
-  const bandSizes = `(hover: none) ${bandWidth}, (max-width: 900px) ${bandWidth}`;
   const height = strips.clientHeight;
   const visible = entries.filter(entry => !entry.hidden);
-  const width = strips.clientWidth / Math.max(1, visible.length);
-  const narrow = wall && width <= height * 0.16;
+  const minWidth = visible.length ? parseFloat(getComputedStyle(visible[0]).minWidth) : 0;
+  const width = Math.max(minWidth, strips.clientWidth / Math.max(1, visible.length));
+  const narrow = width <= height * 0.16;
   for (const entry of visible) {
     const image = entry.querySelector('img');
     if (!image) continue;
     const ratio = Number(image.getAttribute('width')) / Number(image.getAttribute('height'));
     entry.querySelectorAll('source').forEach(source => {
       if (source.classList.contains('strip-wall-source')) source.media = narrow ? 'all' : 'not all';
-      else source.sizes = `${bandSizes}, ${wall && !narrow ? Math.ceil(Math.max(width, height * ratio)) : 80}px`;
+      else source.sizes = `${narrow ? 80 : Math.ceil(Math.max(width, height * ratio))}px`;
     });
-    if (wall && matchMedia('(hover: hover)').matches && entry.matches(':hover, :focus-visible')) setWideImage(entry);
+    if (matchMedia('(hover: hover)').matches && entry.matches(':hover, :focus-visible')) setWideImage(entry);
   }
 }
 
@@ -46,23 +45,45 @@ export function updateStrips(slug) {
   entries = [...document.querySelectorAll('#strips .strip')];
   let count = 0;
   for (const entry of entries) {
-    entry.hidden = entry.dataset.project === slug;
+    entry.hidden = entry.dataset.project === slug || (!slug && activeFilter !== '' && !projects.get(entry.dataset.project)?.tags.includes(activeFilter));
     if (!entry.hidden) count++;
     if (entry.hidden || !entry.querySelector('img')) continue;
     const upgradeImage = () => {
-      if (!isWall() || !matchMedia('(hover: hover)').matches) return;
+      if (!matchMedia('(hover: hover)').matches) return;
       setWideImage(entry);
     };
     entry.addEventListener('pointerenter', upgradeImage, { signal: controller.signal });
     entry.addEventListener('focus', upgradeImage, { signal: controller.signal });
   }
-  document.getElementById('project-count').textContent = `${count} projects`;
+  document.getElementById('project-count').textContent = `${count} ${count === 1 ? 'project' : 'projects'}`;
   updateImages();
   initAnimation(document.getElementById('strips'), controller.signal);
 }
 
 export function initializeStrips() {
   document.documentElement.classList.add('enhanced');
+  const filters = document.getElementById('project-filters');
+  const counts = new Map();
+  projects.forEach(project => project.tags.forEach(tag => counts.set(tag, (counts.get(tag) || 0) + 1)));
+  const tags = [...counts.keys()].sort((a, b) => counts.get(b) - counts.get(a) || a.localeCompare(b));
+  for (const tag of ['', ...tags]) {
+    const button = document.createElement('button');
+    button.type = 'button';
+    button.dataset.filter = tag;
+    button.textContent = tag === '' ? 'All' : tag === 'av' ? 'Audiovisual' : tag[0].toUpperCase() + tag.slice(1);
+    button.setAttribute('aria-pressed', String(tag === activeFilter));
+    filters.append(button);
+  }
+  filters.hidden = false;
+  filters.addEventListener('click', event => {
+    const button = event.target.closest('button[data-filter]');
+    if (!button) return;
+    activeFilter = button.dataset.filter;
+    filters.querySelectorAll('button').forEach(option => option.setAttribute('aria-pressed', String(option === button)));
+    updateStrips();
+    document.getElementById('strips').scrollLeft = 0;
+    scrollTo({ top: homeScrollTop(), behavior: matchMedia('(prefers-reduced-motion: reduce)').matches ? 'instant' : 'smooth' });
+  });
   updateStrips(document.documentElement.dataset.project);
   addEventListener('resize', () => {
     if (resizeFrame) return;

@@ -6,25 +6,18 @@
 .strip::after { content: ""; position: absolute; inset: auto 0 0; height: min(65%, 8rem); background: linear-gradient(transparent, rgb(0 0 0 / 0.68)); pointer-events: none; }
 .strip-label { display: block; min-width: 0; line-height: 1.2; overflow-wrap: anywhere; color: var(--color-white); position: absolute; z-index: 1; bottom: 0; left: 0; max-width: 100%; padding: 1rem 1.25rem; font-size: clamp(1.125rem, 2.4vw, 1.5rem); text-shadow: 0 1px 8px rgb(0 0 0 / 0.4); pointer-events: none; }
 .strip:focus-visible { outline: 2px solid var(--text-primary); outline-offset: -3px; }
-.enhanced body[data-route="home"] #collection { position: absolute; inset: auto 0 0; z-index: 1; height: calc((100dvh - var(--home-header-height)) * (1 - var(--home-reveal)) + var(--home-strip-peek) * var(--home-reveal)); scroll-margin: 0; }
-.enhanced body[data-route="home"] #strips { flex-direction: row; height: 100%; min-height: 0; overflow-x: auto; scrollbar-width: none; }
-.enhanced body[data-route="home"] #strips::-webkit-scrollbar { display: none; }
-.enhanced body[data-route="home"] .strip { flex: 1 1 0; width: auto; height: 100%; min-height: 0; transition: flex-grow 0.25s ease; }
-.enhanced body[data-route="home"] .strip-label, .enhanced body[data-route="home"] .strip::after { opacity: 0; }
+.enhanced #collection { height: 100dvh; margin-inline: calc(-1 * var(--spacing-lg)); scroll-margin: 0; }
+.enhanced body[data-route="home"] #collection { height: calc(100dvh - var(--home-top-height)); margin: 0; scroll-margin: 0; }
+.enhanced #strips { flex-direction: row; height: 100%; min-height: 0; overflow-x: auto; scrollbar-width: none; }
+.enhanced #strips::-webkit-scrollbar { display: none; }
+.enhanced .strip { flex: 1 1 0; width: auto; height: 100%; min-width: 1.125rem; min-height: 0; transition: flex-grow 0.25s ease; }
+.enhanced .strip-label { writing-mode: vertical-rl; transform: rotate(180deg); white-space: nowrap; max-height: 100%; padding: 1rem 0.125rem; font-size: 0.875rem; line-height: 1; }
+.enhanced .strip::after { height: 60%; }
 @media (hover: hover) {
-  .enhanced body[data-route="home"] .strip:is(:hover, :focus-visible) { flex-grow: 12; }
-  .enhanced body[data-route="home"] .strip:is(:hover, :focus-visible) .strip-label, .enhanced body[data-route="home"] .strip:is(:hover, :focus-visible)::after { opacity: calc(1 - var(--home-reveal)); }
+  .enhanced .strip:is(:hover, :focus-visible) { flex-grow: 12; }
 }
 @media (hover: none) {
-  .enhanced body[data-route="home"] #strips { touch-action: pan-x pan-y; }
-  .enhanced body[data-route="home"] .strip { min-width: 3.5rem; }
-  .enhanced body[data-route="home"] .strip-label { writing-mode: vertical-rl; transform: rotate(180deg); white-space: nowrap; max-height: 100%; padding: 1rem; font-size: 0.875rem; opacity: calc(1 - var(--home-reveal)); }
-  .enhanced body[data-route="home"] .strip::after { height: 60%; opacity: calc(1 - var(--home-reveal)); }
-}
-@media (hover: hover) and (min-width: 901px) {
-  .enhanced #strips { flex-direction: row; height: calc(100dvh - var(--spacing-lg) * 2); min-height: 0; }
-  .enhanced .strip { flex: 1 1 0; width: auto; height: 100%; transition: flex-grow 0.25s ease; }
-  .enhanced .strip:is(:hover, :focus-visible) { flex-grow: 12; }
-  .enhanced .strip-label, .enhanced .strip::after { opacity: 0; }
-  .enhanced .strip:is(:hover, :focus-visible) .strip-label, .enhanced .strip:is(:hover, :focus-visible)::after { opacity: 1; }
+  .enhanced #strips { touch-action: pan-x pan-y; }
+  .enhanced .strip { min-width: 3.5rem; }
+  .enhanced .strip-label { padding: 1rem; }
 }

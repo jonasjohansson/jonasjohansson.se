@@ -33,6 +33,11 @@ async function check(name, options, callback) {
 async function visit(page, route = '/') {
   await page.goto(base + route);
   await page.waitForFunction(() => document.documentElement.classList.contains('enhanced'));
+  if (route === '/') await waitForHomeWall(page);
+}
+
+async function waitForHomeWall(page) {
+  await page.waitForFunction(() => document.body.dataset.route === 'home' && document.body.dataset.homeView === 'projects' && Math.abs(document.getElementById('strips').getBoundingClientRect().bottom - innerHeight) < 1);
 }
 
 try {
@@ -96,89 +101,135 @@ try {
     ['touch landscape', { ...mobile, viewport: { width: 844, height: 390 } }],
     ['touch tablet', { ...mobile, viewport: { width: 1024, height: 768 } }],
   ]) {
-    await check(`${name} opens with a full-screen wall and reveals the biography`, options, async page => {
+    await check(`${name} opens on the wall with About above it`, options, async page => {
       await visit(page);
       const wall = await page.locator('#strips').boundingBox();
       const header = await page.locator('#home-header').boundingBox();
       assert.equal(wall.x, 0);
       assert.equal(wall.width, options.viewport.width);
-      assert.equal(wall.y, header.height);
-      assert.equal(wall.y + wall.height, options.viewport.height);
+      assert.ok(Math.abs(wall.y - header.height) < 1, 'wall starts below the header');
+      assert.ok(Math.abs(wall.y + wall.height - options.viewport.height) < 1, 'wall fills the viewport');
       assert.equal(await page.evaluate(() => document.documentElement.scrollWidth > innerWidth), false);
-      assert.equal(await page.locator('#intro').evaluate(intro => intro.inert), true);
-      if (options.hasTouch) {
-        const entries = await page.locator('.strip').evaluateAll(strips => strips.map(strip => ({
-          width: strip.getBoundingClientRect().width,
-          height: strip.getBoundingClientRect().height,
-          label: getComputedStyle(strip.querySelector('.strip-label')).opacity,
-        })));
-        assert.ok(entries.every(entry => entry.width >= 44 && entry.height === wall.height && entry.label === '1'));
-      }
+      const intro = await page.locator('#intro').boundingBox();
+      assert.ok(intro.y < 0 && Math.abs(intro.y + intro.height - wall.y) < 1, 'About is physically above the strips');
+      const entries = await page.locator('.strip').evaluateAll(strips => strips.map(strip => ({
+        width: strip.getBoundingClientRect().width,
+        height: strip.getBoundingClientRect().height,
+        label: getComputedStyle(strip.querySelector('.strip-label')).opacity,
+        vertical: getComputedStyle(strip.querySelector('.strip-label')).writingMode === 'vertical-rl',
+      })));
+      assert.ok(entries.every(entry => entry.width >= (options.hasTouch ? 44 : 18) && entry.height === wall.height && entry.label === '1' && entry.vertical));
       await page.locator('.strip:not([hidden]) .strip-image').evaluateAll(images => Promise.all(images.slice(0, 4).map(image => image.decode())));
       await page.screenshot({ path: `${output}/${name.replaceAll(' ', '-')}-home-wall.png` });
       await page.locator('#about-toggle').click();
-      await page.waitForFunction(() => document.getElementById('about-toggle').getAttribute('aria-expanded') === 'true');
+      await page.waitForFunction(() => scrollY < 1 && document.activeElement.id === 'intro');
       assert.equal(await page.locator('#intro').evaluate(intro => intro.inert), false);
       assert.equal(await page.evaluate(() => document.activeElement.id), 'intro');
-      assert.ok((await page.locator('#strips').boundingBox()).height < wall.height / 2);
+      assert.equal((await page.locator('#strips').boundingBox()).height, wall.height, 'the wall keeps its height when scrolling');
+      assert.equal(await page.locator('#intro').evaluate(intro => getComputedStyle(intro).opacity), '1');
       assert.ok(await page.locator('#intro a[href^="mailto:"]').isVisible());
-      await page.screenshot({ path: `${output}/${name.replaceAll(' ', '-')}-about-revealed.png` });
+      await page.screenshot({ path: `${output}/${name.replaceAll(' ', '-')}-about-above.png` });
       await page.keyboard.press('Escape');
-      await page.waitForFunction(() => scrollY < 1);
-      assert.equal(await page.locator('#intro').evaluate(intro => intro.inert), true);
+      await waitForHomeWall(page);
       assert.equal(await page.evaluate(() => document.activeElement.id), 'about-toggle');
     });
 
-    await check(`${name} has uniform project bands below project pages`, options, async page => {
+    await check(`${name} has the same vertical strip wall below project pages`, options, async page => {
       await visit(page, '/jagad/');
-      const collectionWidth = (await page.locator('#strips').boundingBox()).width;
+      const wall = await page.locator('#strips').boundingBox();
+      assert.equal(wall.x, 0);
+      assert.equal(wall.width, options.viewport.width);
+      assert.equal(wall.height, options.viewport.height);
+      assert.ok((await page.locator('#projects').boundingBox()).y < wall.y);
       const rects = await page.locator('.strip:not([hidden])').evaluateAll(strips => strips.map(strip => {
         const rect = strip.getBoundingClientRect();
         const label = strip.querySelector('.strip-label');
         const labelRect = label.getBoundingClientRect();
         return { x: rect.x, y: rect.y, width: rect.width, height: rect.height,
-          labelVisible: getComputedStyle(label).display !== 'none' && getComputedStyle(label).opacity === '1',
+          labelVisible: getComputedStyle(label).writingMode === 'vertical-rl' && getComputedStyle(label).opacity === '1',
           labelFits: label.scrollWidth <= label.clientWidth && labelRect.height < rect.height && labelRect.right <= rect.right + 1 };
       }));
       assert.equal(await page.evaluate(() => document.documentElement.scrollWidth > innerWidth), false);
-      assert.ok(rects.every(rect => Math.abs(rect.width - collectionWidth) < 1 && rect.height >= 192 && rect.labelVisible && rect.labelFits));
+      assert.ok(rects.every(rect => rect.width >= (options.hasTouch ? 44 : 18) && rect.height === wall.height && rect.labelVisible && rect.labelFits));
       for (let index = 1; index < rects.length; index++) {
-        assert.equal(rects[index].x, rects[0].x, 'bands share an alignment');
-        assert.ok(Math.abs(rects[index].y - rects[index - 1].y - rects[index - 1].height) < 1, 'images touch vertically');
+        assert.equal(rects[index].y, rects[0].y, 'strips share an alignment');
+        assert.ok(Math.abs(rects[index].x - rects[index - 1].x - rects[index - 1].width) < 1, 'images touch horizontally');
       }
       assert.equal(new Set(rects.map(rect => rect.height)).size, 1, 'image heights are uniform');
       await page.locator('#collection').evaluate(collection => collection.scrollIntoView({ block: 'start' }));
       await page.locator('.strip:not([hidden]) .strip-image').evaluateAll(images => Promise.all(images.slice(0, 4).map(image => image.decode())));
-      await page.screenshot({ path: `${output}/${name.replaceAll(' ', '-')}-bands.png` });
+      await page.screenshot({ path: `${output}/${name.replaceAll(' ', '-')}-project-wall.png` });
     });
   }
 
-  await check('scroll reveals the biography and reverses back to the full wall', desktop, async page => {
+  await check('scroll up reaches About without fading or resizing the strips', desktop, async page => {
     await visit(page);
+    const height = (await page.locator('#strips').boundingBox()).height;
     await page.mouse.move(700, 400);
-    await page.mouse.wheel(0, 2000);
-    await page.waitForFunction(() => document.getElementById('about-toggle').getAttribute('aria-expanded') === 'true');
-    assert.equal(await page.locator('#intro').evaluate(intro => intro.inert), false);
+    await page.mouse.wheel(0, -250);
+    await page.waitForFunction(() => document.body.dataset.homeView === 'about');
+    assert.equal(await page.locator('#intro').evaluate(intro => getComputedStyle(intro).opacity), '1');
+    assert.ok(await page.locator('.strip-label').evaluateAll(labels => labels.every(label => getComputedStyle(label).opacity === '1')));
+    assert.equal((await page.locator('#strips').boundingBox()).height, height);
     await page.mouse.wheel(0, -2000);
     await page.waitForFunction(() => scrollY < 1);
+    assert.equal(await page.locator('#intro').evaluate(intro => intro.inert), false);
+    await page.mouse.wheel(0, 2000);
+    await waitForHomeWall(page);
     const wall = await page.locator('#strips').boundingBox();
     assert.equal(wall.y + wall.height, desktop.viewport.height);
-    assert.equal(await page.locator('#intro').evaluate(intro => intro.inert), true);
   });
 
   await check('About toggle works without motion', { ...desktop, reducedMotion: 'reduce' }, async page => {
     await visit(page);
     await page.locator('#about-toggle').click();
-    await page.waitForFunction(() => !document.getElementById('intro').inert);
+    await page.waitForFunction(() => scrollY < 1 && document.activeElement.id === 'intro');
     await page.locator('#about-toggle').click();
-    await page.waitForFunction(() => scrollY < 1 && document.getElementById('intro').inert);
+    await waitForHomeWall(page);
   });
+
+  for (const [name, options] of [['desktop', desktop], ['mobile', mobile]]) {
+    await check(`${name} filters projects and preserves the selection after Back`, options, async page => {
+      await visit(page);
+      const projects = await page.evaluate(() => window.__PROJECTS_DATA__);
+      const tags = await page.locator('#project-filters button').evaluateAll(buttons => buttons.map(button => button.dataset.filter));
+      assert.deepEqual(new Set(tags.filter(Boolean)), new Set(projects.flatMap(project => project.tags)));
+      for (const tag of tags) {
+        const button = page.locator('#project-filters button').nth(tags.indexOf(tag));
+        await button.click();
+        const expected = projects.filter(project => !tag || project.tags.includes(tag)).map(project => project.slug);
+        assert.deepEqual(await page.locator('.strip:not([hidden])').evaluateAll(strips => strips.map(strip => strip.dataset.project)), expected);
+        assert.equal(await button.getAttribute('aria-pressed'), 'true');
+        assert.equal(await page.locator('#project-filters [aria-pressed="true"]').count(), 1);
+        assert.equal((await page.locator('#strips').boundingBox()).height, options.viewport.height - (await page.locator('#home-header').boundingBox()).height);
+      }
+      await page.locator('#project-filters [data-filter="mixed reality"]').click();
+      const expected = await page.locator('.strip:not([hidden])').evaluateAll(strips => strips.map(strip => strip.dataset.project));
+      const chosen = page.locator('.strip:not([hidden])').first();
+      const id = await chosen.getAttribute('id');
+      await chosen.click();
+      await page.waitForSelector('#projects .project');
+      assert.equal(await page.locator('.strip:not([hidden])').count(), projects.length - 1, 'project pages show all other projects');
+      await page.goBack();
+      await waitForHomeWall(page);
+      assert.deepEqual(await page.locator('.strip:not([hidden])').evaluateAll(strips => strips.map(strip => strip.dataset.project)), expected);
+      assert.equal(await page.evaluate(() => document.activeElement.id), id);
+      assert.equal(await page.locator('#project-filters [data-filter="mixed reality"]').getAttribute('aria-pressed'), 'true');
+      await page.locator('#project-filters [data-filter=""]').click();
+      assert.equal(await page.locator('.strip:not([hidden])').count(), projects.length);
+      await page.locator('#about-toggle').click();
+      await page.waitForFunction(() => scrollY < 1);
+      await page.locator('#project-filters [data-filter="education"]').click();
+      await waitForHomeWall(page);
+      assert.equal(await page.locator('#project-count').textContent(), '1 project');
+    });
+  }
 
   for (const [name, options] of [['desktop', desktop], ['mobile', mobile]]) {
     await check(`${name} returns from a direct project to the full wall`, options, async page => {
       await visit(page, '/lyra/');
       await page.locator('#header-toggle').click();
-      await page.waitForFunction(() => document.body.dataset.route === 'home' && scrollY < 1 && document.getElementById('intro').inert);
+      await waitForHomeWall(page);
       const wall = await page.locator('#strips').boundingBox();
       assert.equal(wall.y + wall.height, options.viewport.height);
       assert.equal(await page.evaluate(() => document.activeElement.id), 'strip-lyra');
@@ -329,7 +380,7 @@ try {
     await page.reload();
     assert.deepEqual(await page.locator('.strip').evaluateAll(entries => entries.map(entry => entry.id)), order);
     const about = await page.locator('.intro-text').innerHTML();
-    assert.equal(await page.locator('#intro').evaluate(intro => intro.inert), true);
+    await waitForHomeWall(page);
     assert.equal(await page.locator('#intro details, #intro summary').count(), 0);
     const chosen = page.locator('a.strip:visible').nth(10);
     await chosen.scrollIntoViewIfNeeded();
@@ -340,7 +391,7 @@ try {
     assert.ok(await page.locator('#strips img').count() > 0);
     await page.goBack(); await page.waitForFunction(() => document.body.dataset.route === 'home');
     assert.ok(await page.locator('#strips img').count() > 0);
-    assert.equal(await page.locator('#intro').evaluate(intro => intro.inert), true);
+    await waitForHomeWall(page);
     assert.equal(await page.locator('.intro-text').innerHTML(), about);
     assert.deepEqual(await page.locator('.strip').evaluateAll(entries => entries.map(entry => entry.id)), order);
     assert.equal(await page.evaluate(() => document.activeElement.id), id);
@@ -416,8 +467,8 @@ try {
     assert.equal(await page.locator('#intro-links').evaluate(footer => getComputedStyle(footer).borderTopWidth), '0px');
     assert.equal(await page.locator('.strip').last().evaluate(entry => getComputedStyle(entry).borderBottomWidth), '0px');
     results.push({ metric: 'desktop home image transfer bytes', value: bytes });
-    await page.evaluate(() => scrollTo({ top: 0, behavior: 'instant' }));
-    await page.screenshot({ path: `${output}/desktop-home.png`, fullPage: true });
+    await waitForHomeWall(page);
+    await page.screenshot({ path: `${output}/desktop-home.png` });
     await page.locator('#strip-dome-dreaming').hover();
     await page.waitForTimeout(400);
     await page.locator('#strip-dome-dreaming img').evaluate(image => image.decode());
@@ -435,7 +486,7 @@ try {
     assert.ok(loaded < await bodyImages.count(), `loaded all ${loaded} body images`);
     await page.screenshot({ path: `${output}/mobile-project.png` });
     await visit(page);
-    await page.screenshot({ path: `${output}/mobile-home.png`, fullPage: true });
+    await page.screenshot({ path: `${output}/mobile-home.png` });
   });
 
   if (!process.env.AUDIT_BASE_URL) {

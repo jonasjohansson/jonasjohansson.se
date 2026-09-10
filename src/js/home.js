@@ -1,62 +1,76 @@
-const content = document.getElementById('content');
 const intro = document.getElementById('intro');
 const header = document.getElementById('home-header');
 const toggle = document.getElementById('about-toggle');
+const collection = document.getElementById('collection');
 const motion = matchMedia('(prefers-reduced-motion: reduce)');
 let frame;
-let focusIntro = false;
+let focusTarget;
+let atWall = false;
+let previousWallTop = 0;
 
 const isHome = () => document.body.dataset.route === 'home';
-const distance = () => Math.max(1, content.offsetHeight - innerHeight);
+
+export function homeScrollTop(view = 'projects') {
+  return view === 'about' ? 0 : Math.max(0, collection.getBoundingClientRect().top + scrollY - header.offsetHeight);
+}
 
 function render() {
   frame = null;
   if (!isHome()) return;
-  const progress = Math.max(0, Math.min(1, scrollY / distance()));
-  const revealed = progress >= 0.99;
-  content.style.setProperty('--home-reveal', progress);
-  toggle.textContent = progress > 0.01 ? 'Projects' : 'About';
-  toggle.setAttribute('aria-expanded', String(revealed));
-  if (!revealed && intro.contains(document.activeElement)) toggle.focus({ preventScroll: true });
-  intro.inert = !revealed;
-  intro.setAttribute('aria-hidden', String(!revealed));
-  if (revealed && focusIntro) {
-    intro.focus({ preventScroll: true });
-    focusIntro = false;
+  previousWallTop = homeScrollTop();
+  atWall = scrollY >= previousWallTop - 1;
+  document.body.dataset.homeView = atWall ? 'projects' : 'about';
+  toggle.textContent = atWall ? 'About ↑' : 'Projects ↓';
+  toggle.setAttribute('aria-label', atWall ? 'Scroll up to About' : 'Scroll down to projects');
+  toggle.setAttribute('aria-controls', atWall ? 'intro' : 'collection');
+  if (focusTarget && Math.abs(scrollY - homeScrollTop(focusTarget === intro ? 'about' : 'projects')) < 1) {
+    focusTarget.focus({ preventScroll: true });
+    focusTarget = null;
   }
 }
 
-function reveal(open) {
-  focusIntro = open;
-  if (!open && intro.contains(document.activeElement)) toggle.focus({ preventScroll: true });
-  scrollTo({ top: open ? distance() : 0, behavior: motion.matches ? 'instant' : 'smooth' });
+function goTo(view) {
+  focusTarget = view === 'about' ? intro : toggle;
+  scrollTo({ top: homeScrollTop(view), behavior: motion.matches ? 'instant' : 'smooth' });
+  render();
 }
 
 export function updateHome(slug) {
   header.hidden = !!slug;
-  focusIntro = false;
+  focusTarget = null;
   if (slug) {
-    intro.inert = false;
-    intro.removeAttribute('aria-hidden');
-    content.style.removeProperty('--home-reveal');
-  } else render();
+    atWall = false;
+    delete document.body.dataset.homeView;
+  } else {
+    if (frame) cancelAnimationFrame(frame);
+    frame = requestAnimationFrame(render);
+  }
 }
 
 export function initializeHome() {
   toggle.hidden = false;
-  toggle.addEventListener('click', () => reveal(scrollY <= 1));
+  toggle.addEventListener('click', () => goTo(atWall ? 'about' : 'projects'));
   document.getElementById('home-link').addEventListener('click', event => {
     if (!isHome() || event.button !== 0 || event.metaKey || event.ctrlKey || event.shiftKey || event.altKey) return;
     event.preventDefault();
-    reveal(false);
+    goTo('projects');
   });
   document.addEventListener('keydown', event => {
-    if (event.key === 'Escape' && isHome() && scrollY > 0) reveal(false);
+    if (event.key === 'Escape' && isHome() && !atWall) goTo('projects');
   });
   const schedule = () => {
     if (!frame && isHome()) frame = requestAnimationFrame(render);
   };
   addEventListener('scroll', schedule, { passive: true });
-  addEventListener('resize', schedule);
+  new ResizeObserver(() => {
+    if (!isHome()) return;
+    const top = homeScrollTop();
+    if (atWall && !focusTarget && Math.abs(top - previousWallTop) > 1) scrollTo({ top, behavior: 'instant' });
+    render();
+  }).observe(intro);
   updateHome(document.documentElement.dataset.project);
+  if (isHome()) {
+    scrollTo({ top: homeScrollTop(['#about', '#intro'].includes(location.hash) ? 'about' : 'projects'), behavior: 'instant' });
+    render();
+  }
 }

@@ -30,8 +30,8 @@
   /* Strips */
   --strip-band-height: clamp(12rem, 24vw, 19rem); /* uniform rows on narrow and touch displays */
   --home-header-height: 3rem;
-  --home-strip-peek: 5.5rem;
-  --home-reveal-distance: max(24rem, 70dvh);
+  --home-filter-height: 2.75rem;
+  --home-top-height: calc(var(--home-header-height) + var(--home-filter-height));
 
   /* Typography */
   --font-family: "SeasonMix", system-ui, -apple-system, Segoe UI, Roboto, Helvetica, Arial, sans-serif;

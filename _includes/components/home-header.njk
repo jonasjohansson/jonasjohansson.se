@@ -1,5 +1,8 @@
 <header id="home-header" class="home-header"{% if project %} hidden{% endif %}>
-  <h1 id="home-title" tabindex="-1"><a id="home-link" href="{{ '/' | url }}">{{ site.title }}</a></h1>
-  <p class="home-motto">Progress not perfection</p>
-  <button id="about-toggle" type="button" aria-controls="intro" aria-expanded="false" hidden>About</button>
+  <div class="home-header-row">
+    <h1 id="home-title" tabindex="-1"><a id="home-link" href="{{ '/' | url }}">{{ site.title }}</a></h1>
+    <p class="home-motto">Progress not perfection</p>
+    <button id="about-toggle" type="button" aria-controls="intro" aria-label="Scroll up to About" hidden>About ↑</button>
+  </div>
+  <div id="project-filters" class="project-filters" role="group" aria-label="Filter projects" hidden></div>
 </header>
