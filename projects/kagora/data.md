@@ -14,14 +14,14 @@ blocks:
   - type: text
     content: >-
       A woven pavilion of moving light, built as a place to gather in the
-      woods at Borderland 2026.
+      woods.
   - type: text
     fontSize: small
     content: >-
       Designed and built under the direction of
       [Annie Locke Scherer](https://www.instagram.com/annielocke/), Kagora
       brings Japanese basket weaving to an architectural scale. Its name
-      joins kago — basket — with aura. I created the lighting for the
+      combines kago, Japanese for basket, with aura. I created the lighting for the
       nine-metre-wide structure, with sound by Teodor Sundström and
       engineering by Christian Pisano.
   - type: image
@@ -33,11 +33,11 @@ blocks:
     ar: 1.777778
     alt: "Bands of pink, blue, yellow and green light travel along Kagora's curved ribs in a woodland clearing."
   - type: image
-    src: finished-pavilion-ai.png
+    src: finished-pavilion-soft-ai.png
     alt: "Kagora's illuminated arches spread across a woodland clearing, with white, cyan and yellow light tracing the woven pavilion."
   - type: image
-    src: entrance-ai.png
-    alt: "Looking through Kagora's entrance, turquoise and blue arches overlap above people resting on cushions, with pink light deeper inside."
+    src: entrance-empty-ai.png
+    alt: "Looking through Kagora's entrance, turquoise and blue arches overlap above empty blue cushions, with pink light deeper inside."
   - type: text
     fontSize: small
     content: >-
@@ -88,7 +88,7 @@ blocks:
   - type: text
     fontSize: small
     content: >-
-      [Rose Hallgren](https://rosehallgren.se/) and I photographed the piece,
-      from the changing light inside the weave to its wider setting in the woods.
-      Selected images have been refined with AI.
+      Built with David Tollman, Rich Miller, Björn Bergenheim, Matias Peljo,
+      Markku Leppala, Emilia Ferguson, David Correa, Max Hassler,
+      Eero Laaksonen, Cecilia Johansson, Mar Benavides and Tomas Kronvall.
 ---

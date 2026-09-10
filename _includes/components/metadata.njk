@@ -5,7 +5,7 @@
 {% set projectDescription = projectContent[project.slug].content | findFirstText | stripHtml | truncate(160) %}
 {% set hero = projectContent[project.slug].content[0] %}
 {% if hero.type == 'video' %}<link rel="preload" as="image" href="{{ hero.poster }}" fetchpriority="high" data-hero-preload>{% endif %}
-<title>{{ projectTitle }} — {{ site.title }}</title>
+<title>{{ projectTitle }} | {{ site.title }}</title>
 <meta
   name="description"
   content="{{ projectDescription or site.description }}" />
@@ -57,7 +57,7 @@
 <!-- Open Graph / Facebook -->
 {% if project %}
 {% set projectOgImage = projectContent[project.slug].ogImage %}
-{% set ogTitle = projectTitle ~ ' — ' ~ site.title %}
+{% set ogTitle = projectTitle ~ ' | ' ~ site.title %}
 {% set ogDescription = projectDescription or site.description %}
 {% set ogUrl = site.url ~ (page.url | url) %}
 {% set ogImagePath = projectOgImage or siteOgImage or site.meta.ogImage %}

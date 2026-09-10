@@ -94,5 +94,35 @@
       "width": 1086,
       "height": 1448
     }
+  },
+  {
+    "name": "07-pavilion-soft",
+    "sources": [
+      "projects/kagora/finished-pavilion-ai.png"
+    ],
+    "prompt": "Edit this existing image of Kagora's woven light pavilion. The current result feels overly crisp, harsh and synthetic. Give this exact photograph a softer, more beautiful and natural night-photography finish. Preserve the camera position, landscape crop, real arch geometry, all rib paths, thin tube thickness, joints, tree placement and physical setting. Reduce excessive microcontrast and digital sharpening markedly, particularly on the leaf litter, bark and tube edges. Make the background foliage and foreground leaf texture quieter and less individually etched, with gentle optical depth and natural tonal transitions. Lower the harsh white highlights and the aggressive purple ground saturation; retain recognizable cyan, violet, pale gold and warm-white light, subtle colored spill, deep natural forest shadows and a delicate photographic glow close to the tubes. The light should feel luminous and inviting, not clipped or outlined. Keep the structure clearly readable without sharp edge halos. Preserve existing small distant visitors in their positions, with no new facial detail or changed features. Do not invent fog, lights, decorative elements, objects, ribs, architecture or people. No redesign, no new composition, no heavy blur, no painterly or plastic smoothing, no text or watermark. One landscape 16:9 image at the highest native resolution available.",
+    "output": "07-pavilion-soft.png",
+    "projectAsset": "projects/kagora/finished-pavilion-soft-ai.png",
+    "mode": "built-in image_gen.imagegen",
+    "generatedAt": "2026-09-11",
+    "actualSize": {
+      "width": 1672,
+      "height": 941
+    }
+  },
+  {
+    "name": "08-entrance-empty",
+    "sources": [
+      "projects/kagora/entrance-ai.png"
+    ],
+    "prompt": "Edit this exact image of the cyan and blue Kagora woven LED pavilion. Remove every person completely, including the partly visible reclining figure among the cushions on the left, the two people near the center/back doorway, and the reclining person on the right. Remove their entire bodies, heads, faces, limbs and human silhouettes. Fill those areas with believable continuations of the existing empty dark-blue cushions, dark floor mats, woodland and the actual light weave behind them. Keep all blue cushions as empty seating; do not leave body-shaped lumps or fragments of clothing. Preserve the exact overall composition, perspective, existing arch and rib geometry, crossing order, connectors, floor supports, cyan/green/blue/pink lighting, tube thickness, shoes already at the foreground edge, and the natural forest setting. The only substantive scene change should be the absence of people. Use restrained natural photographic texture and light with no added sharpening, synthetic skin, new objects, new ribs, fog, decoration, text or watermark. Show an inviting empty pavilion. One landscape 16:9 image at the highest native resolution available.",
+    "output": "08-entrance-empty.png",
+    "projectAsset": "projects/kagora/entrance-empty-ai.png",
+    "mode": "built-in image_gen.imagegen",
+    "generatedAt": "2026-09-11",
+    "actualSize": {
+      "width": 1672,
+      "height": 941
+    }
   }
 ]

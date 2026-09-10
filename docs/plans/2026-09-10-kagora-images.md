@@ -1,4 +1,4 @@
-# Kagora — project and image selection
+# Kagora: project and image selection
 
 Kagora is the woodland light installation at Borderland 2026. Its new page
 is `projects/kagora/data.md`, dated 25 July 2026 and tagged Light, Community,
@@ -21,9 +21,9 @@ originals supply four additional night views.
 
 | Website asset | Source | Role |
 | --- | --- | --- |
-| `finished-pavilion-ai.png` | AI refinement of album `IMG_7117.jpeg` via `finished-pavilion.jpg` | Complete illuminated piece in the body gallery |
+| `finished-pavilion-soft-ai.png` | AI refinement of album `IMG_7117.jpeg` via `finished-pavilion.jpg` | Complete illuminated piece, with softer detail and highlights |
 | `hero.jpg` | `2026-07-25/JPG/DSCF8599.JPG` | Blue-hour view of the pavilion with visitors |
-| `entrance-ai.png` | AI refinement of album `IMG_8970.jpeg` via `entrance.jpg` | Frontal view through the woven entrance |
+| `entrance-empty-ai.png` | AI refinement of album `IMG_8970.jpeg` via `entrance.jpg` | Frontal view through the woven entrance, with people removed |
 | `woven-detail-ai.png` | AI refinement of album `IMG_8898.jpeg` via `woven-detail.jpg` | Close view of the illuminated weave |
 | `curved-interior-ai.png` | AI refinement of album `IMG_8900.jpeg` via `curved-interior.jpg` | Sweeping interior curves, paired with the weave |
 | `canopy-ai.png` | AI refinement of album `IMG_8978.jpeg` via `canopy.jpg` | Upward view of the canopy around a tree |
@@ -48,11 +48,10 @@ produces responsive AVIF and WebP derivatives. Originals are unchanged.
 
 The six AI refinements are saved as separate PNG assets. Landscape outputs are
 1672 × 941; the two portrait details are 1086 × 1448. They contain reconstructed
-detail and are not higher-resolution camera originals. The page acknowledges
-AI refinement alongside the photography. Source references and the exact
+detail and are not higher-resolution camera originals. Source references and the exact
 built-in image-generation prompts, including the curved-interior cleanup, are
 in `docs/visuals/kagora-alternates/prompts.json`. The adjacent `index.html`
-compares all six refinements with their source photographs. The normal AVIF/WebP
+compares all six current refinements with their source photographs. The normal AVIF/WebP
 pipeline publishes them, and the hero also updates the strips and sharing image.
 
 The video is a 1920 × 1080, 30 fps H.264 MP4 (CRF 22, medium preset,
@@ -63,11 +62,14 @@ The user supplied Annie Locke Scherer’s completed-project Instagram posts and
 Kagora’s Fund33 proposal. These establish Annie’s design and build direction,
 Jonas’s lighting, Teodor Sundström’s sound, Christian Pisano’s engineering,
 the Japanese basket-weaving references, nine-metre scale and over one kilometre
-of LEDs. The user identified Rose’s photography and requested that key
+of LEDs. The user identified Rose's photography and requested that key
 collaborators appear in the prose instead of a separate credits block.
-Photography is acknowledged as Rose Hallgren and Jonas Johansson.
+The source photographs are by Rose Hallgren and Jonas Johansson. At the user's
+request, the page now ends with the full build crew in place of the photography
+and AI-refinement paragraph. The opening statement focuses on the pavilion,
+without the event name. Site copy and interface labels avoid em dashes.
 
-The supplied crew list is retained here as source context: David Tollman,
+The supplied crew list also appears at the end of the project: David Tollman,
 Rich Miller, Björn Bergenheim, Matias Peljo, Markku Leppala, Emilia Ferguson,
 David Correa, Max Hassler, Eero Laaksonen, Cecilia Johansson, Mar Benavides,
 and Tomas Kronvall. Unrelated Instagram project credits, proposed electrical

@@ -119,7 +119,7 @@ class Router {
       document.getElementById('header').hidden = !project;
       const titleLink = document.getElementById('header-toggle');
       titleLink.textContent = project?.title || '';
-      titleLink.setAttribute('aria-label', project ? `${project.title} — Return to projects` : 'Return to projects');
+      titleLink.setAttribute('aria-label', project ? `${project.title}, Return to projects` : 'Return to projects');
       document.getElementById('collection-title').textContent = project ? 'More projects' : 'Projects';
       if (project) document.documentElement.dataset.project = project.slug;
       else delete document.documentElement.dataset.project;

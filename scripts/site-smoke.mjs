@@ -117,9 +117,9 @@ try {
       assert.equal(state.overflow, false, `${slug} overflows`);
       assert.equal(state.zero, false, `${slug} has collapsed media`);
       assert.ok(state.alt.length > 15, `${slug} hero description`);
-      assert.ok(state.title.endsWith(' — Jonas Johansson'), `${slug} document title`);
+      assert.ok(state.title.endsWith(' | Jonas Johansson'), `${slug} document title`);
       assert.ok(Math.abs(state.hero - state.gutter) < 1, `${slug} hero starts at ${state.hero}`);
-      assert.equal(state.title, `${state.floatingTitle} — Jonas Johansson`, `${slug} floating title`);
+      assert.equal(state.title, `${state.floatingTitle} | Jonas Johansson`, `${slug} floating title`);
       assert.equal(state.videoControls, true, `${slug} video controls`);
       assert.equal(state.creditsAligned, true, `${slug} credits alignment`);
       assert.equal(state.captions, 0, `${slug} has no visible media captions`);
@@ -191,7 +191,7 @@ try {
       assert.equal(text.x, wall.x, 'About shares the strips’ left edge');
       assert.ok(aboutHeader.y - text.y - text.height <= 81, 'About ends after its content without an empty viewport');
       assert.equal(await page.locator('#home-link').textContent(), 'Jonas Johansson');
-      assert.equal(await page.locator('#home-link').getAttribute('aria-label'), 'Jonas Johansson — Projects');
+      assert.equal(await page.locator('#home-link').getAttribute('aria-label'), 'Jonas Johansson, Projects');
       assert.equal(await page.locator('#intro').evaluate(intro => intro.inert), false);
       assert.equal(await page.evaluate(() => document.activeElement.id), 'intro');
       assert.equal((await page.locator('#strips').boundingBox()).height, wall.height, 'the wall keeps its height when scrolling');
@@ -248,7 +248,7 @@ try {
 
   await check('name toggles About with keyboard and reduced motion', { ...desktop, reducedMotion: 'reduce' }, async page => {
     await visit(page);
-    assert.equal(await page.locator('#home-link').getAttribute('aria-label'), 'Jonas Johansson — About');
+    assert.equal(await page.locator('#home-link').getAttribute('aria-label'), 'Jonas Johansson, About');
     await page.locator('#home-link').focus();
     await page.keyboard.press('Enter');
     await page.waitForFunction(() => scrollY < 1 && document.activeElement.id === 'intro');
@@ -495,7 +495,7 @@ try {
     await page.locator('#strip-dome-dreaming').focus();
     await page.keyboard.press('Enter');
     await page.waitForSelector('#projects #dome-dreaming');
-    assert.equal(await page.title(), 'Dome Dreaming — Jonas Johansson');
+    assert.equal(await page.title(), 'Dome Dreaming | Jonas Johansson');
     assert.equal(await page.locator('[rel="canonical"]').getAttribute('href'), `https://jonasjohansson.se${prefix}/dome-dreaming/`);
     assert.equal(await page.evaluate(() => document.activeElement.className), 'project-title');
     assert.equal(await page.locator('#intro').getAttribute('hidden'), '');

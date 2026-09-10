@@ -29,6 +29,9 @@ Image dimensions and responsive sources are generated during the build. Leave `a
 
 ## Collaborators and attribution
 
+Avoid em dashes in site copy and interface labels. Lead project descriptions
+with the work itself, and mention the event only where it adds useful context.
+
 Introduce collaborators in the paragraphs describing their contribution. Avoid a
 separate credit list when it repeats the story. Keep photography, film, music,
 support and source-asset attribution in the relevant text, including links and
