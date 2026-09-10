@@ -51,7 +51,7 @@ async function checkFooter(page) {
   const contacts = home ? header.locator('.header-contacts') : page.locator('#intro-links .footer-links');
   const contactBox = await contacts.boundingBox();
   const contactRow = home ? await header.boundingBox() : footer;
-  assert.equal(await contacts.locator('a').count(), 6, 'all contact links are available');
+  assert.deepEqual(await contacts.locator('a').allTextContents(), ['Labs', 'Instagram', 'CV', 'Email'], 'contact links stay concise');
   assert.ok(Math.abs(contactBox.x + contactBox.width - wall.x - wall.width) < 1, 'contact links align with the right edge of the strips');
   assert.ok(contactBox.y >= contactRow.y && contactBox.y + contactBox.height <= contactRow.y + contactRow.height + 1, 'contacts fit in their home header or project footer');
   const title = await header.locator(home ? '#home-link' : '#header-toggle').boundingBox();
