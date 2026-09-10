@@ -1,13 +1,55 @@
-# Summer photographs — Kagora review
+# Kagora — project and image selection
+
+Kagora is the woodland light installation at Borderland 2026. Its new page
+is `projects/kagora/data.md`, dated 25 July 2026 and tagged Light, Community,
+and Installation. It uses nine images and one ten-second video, opening
+with the blue-hour view of the completed pavilion and moving through the
+design, lighting tests, assembly, and experience inside.
+
+The second source folder, `Borderland 2026 - Kagora-20260910_222621`, contains
+148 JPEGs and 72 videos. All JPEGs were reviewed on contact sheets; video
+previews were sampled, with sequences compared for the final motion selection.
+It supplies the model, process, daylight photographs and video. The camera
+originals supply the hero and three other night views.
+
+## Published media
+
+| Website asset | Source | Role |
+| --- | --- | --- |
+| `hero.jpg` | `2026-07-25/JPG/DSCF8599.JPG` | Opening, strips and sharing image |
+| `motion.mp4` | Album: `IMG_8996.mov`, 0.5–10.5 seconds | Moving light across the completed pavilion |
+| `motion-poster.jpg` | First frame of `motion.mp4` | Static video preview |
+| `design-model.jpg` | Album: `IMG_8208.jpeg` | Digital model with a figure for scale |
+| `first-arch.jpg` | Album: `IMG_8759.jpeg` | Early illuminated section |
+| `led-testing.jpg` | Album: `IMG_8391.jpeg` | LED strips tested in the workshop |
+| `assembly.jpg` | Album: `IMG_8830.jpeg` | Joining the ribs in the woods |
+| `daylight.jpg` | Album: `IMG_8908.jpeg` | Completed structure and cushions by day |
+| `interior.jpg` | `2026-07-25/JPG/DSCF8629.JPG` | Looking up from inside |
+| `light-detail.jpg` | `2026-07-25/JPG/DSCF8615.JPG` | Close view of crossing ribs and LEDs |
+| `woodland.jpg` | `2026-07-25/JPG/DSCF8574.JPG` | Closing view from across the stone wall |
+
+Images retain their composition and camera colour. Website source exports
+are at most 3200 px on the long edge, with orientation baked in, converted
+to sRGB, and saved as JPEG quality 93 without upscaling. The existing build
+produces responsive AVIF and WebP derivatives. Originals are unchanged.
+
+The video is a 1920 × 1080, 30 fps H.264 MP4 (CRF 22, medium preset,
+YUV 4:2:0, faststart), with no audio track. It preserves the source colour
+and framing. The normal site video controls and reduced-motion behaviour apply.
+
+The description is based on the confirmed subject and supplied visual material.
+Individual roles and credits have been requested but are not yet supplied;
+none are inferred from the photographs.
+
+## Initial camera review
 
 Reviewed all 227 camera JPEGs supplied from `998_FUJI`: 45 from 23 July,
 10 from 24 July, 68 from 25 July, and 104 from 26 July 2026. Each date
 also has matching RAW files; 23 July contains one MOV. Originals are unchanged.
 
-The photographs show three distinct subjects. Their relationship to Kagora,
-the project description, location, and collaborators still need clarification.
-There is an existing unpublished Borderlan placeholder, and the 24 July
-photographs show a BorderLAN sign. No new public project page has been added.
+The original folders also contain the candlelit computer room and a
+telescope-like object. These are separate from the confirmed Kagora selection.
+The existing Borderlan placeholder is unchanged.
 
 The local visual review is at `screenshots/kagora-review/index.html`.
 It contains an 18-frame shortlist and the six contact sheets covering every
@@ -57,7 +99,3 @@ view suited to the homepage strip. The hand and eyepiece help explain its use.
 | 26 July | DSCF8716.JPG | Hand at the eyepiece |
 | 26 July | DSCF8729.JPG | Circular wooden back and cut-out pattern |
 | 26 July | DSCF8737.JPG | View into the tube |
-
-Before turning a selection into a project page, establish which subject is
-Kagora, what Jonas made, the venue, and the people to credit. The photographs
-alone do not establish those facts.
