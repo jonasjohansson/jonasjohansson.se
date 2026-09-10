@@ -21,6 +21,9 @@ test('invalid content reports the project and field rather than disappearing', (
     assert.throws(() => validateProject({ ...data, blocks: [{ ...data.blocks[0], src: 'missing.jpg' }] }, 'example', directory), /blocks\[0\].src: missing/);
     assert.throws(() => validateProject({ ...data, blocks: [data.blocks[0], { type: 'unknown' }] }, 'example', directory), /blocks\[1\]: unknown/);
     assert.throws(() => validateProject({ ...data, blocks: [{ ...data.blocks[0], alt: '' }] }, 'example', directory), /hero needs/);
+    for (const zoom of [0, 4, '1.8', Infinity]) {
+      assert.throws(() => validateProject({ ...data, blocks: [{ ...data.blocks[0], zoom }] }, 'example', directory), /blocks\[0\].zoom/);
+    }
     assert.throws(() => validateProject({ ...data, blocks: [data.blocks[0], null] }, 'example', directory), /blocks\[1\] must be/);
     assert.throws(() => validateProject({ ...data, blocks: [data.blocks[0], { type: 'text', content: 'Text', fontSize: 12 }] }, 'example', directory), /blocks\[1\].fontSize/);
   } finally { rmSync(directory, { recursive: true, force: true }); }

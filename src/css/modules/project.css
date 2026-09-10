@@ -171,6 +171,10 @@ figure {
   border-radius: var(--radius-media);
 }
 
+/* A fixed crop in the gallery frame, independent of strip interactions. */
+.media-item.media-zoom { overflow: hidden; border-radius: var(--radius-media); }
+.media-item.media-zoom img { transform: scale(var(--image-zoom)); transform-origin: var(--focal, center); border-radius: 0; }
+
 .text-block {
   width: 100%;
   max-width: 56rem;

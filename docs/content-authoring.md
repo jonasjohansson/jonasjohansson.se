@@ -27,6 +27,8 @@ blocks:
 
 Image dimensions and responsive sources are generated during the build. Leave `ar` unset unless you deliberately need a layout ratio override. Optional `size` values are `full`, `large`, `left`, `right`, `half-left`, `half-right`, `small-left` and `small-right`. You can also set `colStart` and `colSpan` within the 12-column grid. Unplaced portrait images are grouped into balanced rows; an authored `half-left` followed by `half-right` forms a pair. Media stacks on mobile.
 
+For a closer view inside a gallery image's existing frame, set `zoom: 1.8` and a `focal` point. Zoom accepts values from 1 to 3 and remains fixed on hover. The source photograph and navigation strips keep their original framing.
+
 ## Collaborators and attribution
 
 Avoid em dashes in site copy and interface labels. Lead project descriptions

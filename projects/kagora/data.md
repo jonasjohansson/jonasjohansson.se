@@ -28,9 +28,6 @@ blocks:
     ar: 1.777778
     alt: "Bands of pink, blue, yellow and green light travel along Kagora's curved ribs in a woodland clearing."
   - type: image
-    src: finished-pavilion-soft-ai.png
-    alt: "Kagora's illuminated arches spread across a woodland clearing, with white, cyan and yellow light tracing the woven pavilion."
-  - type: image
     src: entrance-empty-ai.png
     alt: "Looking through Kagora's entrance, turquoise and blue arches overlap above empty blue cushions, with pink light deeper inside."
   - type: text
@@ -59,6 +56,14 @@ blocks:
     src: light-detail.jpg
     alt: "A close view of Kagora's crossing ribs reveals rows of blue and cyan LEDs running along the curved structure."
   - type: image
+    src: tube-joints.jpg
+    size: half-left
+    alt: "Coloured points of light glow through crossing tubes, revealing the connectors and joints holding the weave together."
+  - type: image
+    src: rib-detail.jpg
+    size: half-right
+    alt: "A close view of blue and warm-white ribs shows the LED strips inside the translucent tubes as they bend and overlap."
+  - type: image
     src: daylight.jpg
     alt: "Kagora in daylight: white arches surround a floor of dark mats and blue cushions in the woodland."
   - type: text
@@ -79,6 +84,8 @@ blocks:
     alt: "Long LED strips are laid out and illuminated on a workshop floor, with wiring gathered at their ends."
   - type: image
     src: woodland.jpg
+    zoom: 1.8
+    focal: "45% 48%"
     alt: "Kagora glows violet and white beyond a low stone wall, surrounded by tree trunks and blue evening light."
   - type: text
     fontSize: small

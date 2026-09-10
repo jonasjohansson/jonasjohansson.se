@@ -2,13 +2,14 @@
 
 Kagora is the woodland light installation at Borderland 2026. Its new page
 is `projects/kagora/data.md`, dated 25 July 2026 and tagged Light, Community,
-and Installation. It uses thirteen images and one ten-second video. Six finished
+and Installation. It uses thirteen images and one ten-second video. Five finished
 views now use AI refinements approved by the user. The woodland hero uses a
 fixed 1.5× crop of the levelled AI image, with no rotation. Tall tablet and
 desktop windows use a wider hero frame to keep the full pavilion in view.
 Finished views lead the gallery, including the entrance, woven
 details and interior canopy. Lighting tests follow later, with the wider
-blue-hour woodland view at the end.
+blue-hour woodland view at the end. This closing view uses a fixed 1.8× crop
+around 45% 48% within its original frame, bringing the pavilion closer.
 
 The second source folder, `Borderland 2026 - Kagora-20260910_222621`, contains
 148 JPEGs and 72 videos. All JPEGs were reviewed on contact sheets; video
@@ -21,8 +22,6 @@ originals supply four additional night views.
 
 | Website asset | Source | Role |
 | --- | --- | --- |
-| `finished-pavilion-soft-ai.png` | AI refinement of album `IMG_7117.jpeg` via `finished-pavilion.jpg` | Complete illuminated piece, with softer detail and highlights |
-| `hero.jpg` | `2026-07-25/JPG/DSCF8599.JPG` | Blue-hour view of the pavilion with visitors |
 | `entrance-empty-ai.png` | AI refinement of album `IMG_8970.jpeg` via `entrance.jpg` | Frontal view through the woven entrance, with people removed |
 | `woven-detail-ai.png` | AI refinement of album `IMG_8898.jpeg` via `woven-detail.jpg` | Close view of the illuminated weave |
 | `curved-interior-ai.png` | AI refinement of album `IMG_8900.jpeg` via `curved-interior.jpg` | Sweeping interior curves, paired with the weave |
@@ -35,10 +34,13 @@ originals supply four additional night views.
 | `daylight.jpg` | Album: `IMG_8908.jpeg` | Completed structure and cushions by day |
 | `interior.jpg` | `2026-07-25/JPG/DSCF8629.JPG` | Looking up from inside |
 | `light-detail.jpg` | `2026-07-25/JPG/DSCF8615.JPG` | Close view of crossing ribs and LEDs |
-| `woodland.jpg` | `2026-07-25/JPG/DSCF8574.JPG` | Wider view from across the stone wall |
+| `tube-joints.jpg` | Album: `IMG_8926.jpeg` | Close view of multicoloured LEDs, tube connectors and joints |
+| `rib-detail.jpg` | Album: `IMG_8959.jpeg` | Blue and warm-white ribs showing the LED strips inside, paired with the joints |
+| `woodland.jpg` | `2026-07-25/JPG/DSCF8574.JPG` | View from across the stone wall, with a fixed closer crop on the page |
 
-The user removed `design-model.jpg` (album `IMG_8208.jpeg`) and `assembly.jpg`
-(album `IMG_8830.jpeg`) from the page. Their source files remain available;
+The user removed `design-model.jpg` (album `IMG_8208.jpeg`), `assembly.jpg`
+(album `IMG_8830.jpeg`), `hero.jpg` (camera `DSCF8599.JPG`) and
+`finished-pavilion-soft-ai.png` from the page. Their source files remain available;
 they are not referenced by the published gallery.
 
 The original photographic exports retain their camera colour. They
