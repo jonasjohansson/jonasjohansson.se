@@ -1,5 +1,4 @@
 <header id="header"{% if not project %} hidden{% endif %}>
   <a class="header-subtitle" id="header-toggle" href="{{ '/' | url }}#collection" data-home-link
     {% if project %}aria-label="{{ project.title }} — Return to projects"{% endif %}>{% if project %}{{ project.title }}{% endif %}</a>
-  {% include "./contact-links.njk" %}
 </header>

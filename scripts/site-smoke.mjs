@@ -48,19 +48,23 @@ async function checkFooter(page) {
   assert.equal((await page.locator('#project-preview-name').boundingBox()).x, wall.x, 'project preview name aligns with the left edge');
   const home = await page.locator('body').getAttribute('data-route') === 'home';
   const header = page.locator(home ? '#home-header' : '#header');
-  const contacts = header.locator('.header-contacts');
+  const contacts = home ? header.locator('.header-contacts') : page.locator('#intro-links .footer-links');
   const contactBox = await contacts.boundingBox();
-  const headerBox = await header.boundingBox();
-  assert.equal(await contacts.locator('a').count(), 6, 'all contact links are in the header');
+  const contactRow = home ? await header.boundingBox() : footer;
+  assert.equal(await contacts.locator('a').count(), 6, 'all contact links are available');
   assert.ok(Math.abs(contactBox.x + contactBox.width - wall.x - wall.width) < 1, 'contact links align with the right edge of the strips');
-  assert.ok(contactBox.y >= headerBox.y && contactBox.y + contactBox.height <= headerBox.y + headerBox.height + 1, 'contacts fit on the same header row');
+  assert.ok(contactBox.y >= contactRow.y && contactBox.y + contactBox.height <= contactRow.y + contactRow.height + 1, 'contacts fit in their home header or project footer');
   const title = await header.locator(home ? '#home-link' : '#header-toggle').boundingBox();
-  assert.ok(title.x + title.width <= contactBox.x, 'contact links do not overlap the title');
+  if (home) assert.ok(title.x + title.width <= contactBox.x, 'contact links do not overlap the name');
+  else {
+    assert.ok(Math.abs(title.x + title.width / 2 - page.viewportSize().width / 2) < 1, 'project title remains centered');
+    assert.equal(await header.locator('.header-contacts').count(), 0, 'project header contains only the title');
+  }
   await contacts.evaluate(nav => { nav.scrollLeft = nav.scrollWidth; });
   const email = await contacts.locator('a[href^="mailto:"]').boundingBox();
   assert.ok(email.x >= contactBox.x && email.x + email.width <= contactBox.x + contactBox.width + 1, 'Email remains reachable in the scrolling contact row on phones');
   await contacts.evaluate(nav => { nav.scrollLeft = 0; });
-  assert.equal(await page.locator('#intro a[href^="mailto:"], #intro-links a').count(), 0, 'contacts have moved to the header');
+  assert.equal(await page.locator('#intro a[href^="mailto:"]').count(), 0, 'contacts stay outside About');
   assert.equal(await page.locator('#project-filters').isVisible(), home, 'tag filters stay available on the homepage');
   if (home) {
     const filters = await page.locator('#intro-links #project-filters').boundingBox();
@@ -95,7 +99,7 @@ try {
         zero: [...document.querySelectorAll('#projects img, #projects video')].some(el => el.getBoundingClientRect().width < 1 || el.getBoundingClientRect().height < 1),
         title: document.title,
         hero: document.querySelector('.hero').getBoundingClientRect().top,
-        gutter: document.getElementById('header').getBoundingClientRect().height + parseFloat(getComputedStyle(document.getElementById('content')).paddingTop),
+        gutter: parseFloat(getComputedStyle(document.getElementById('content')).paddingTop),
         floatingTitle: document.getElementById('header-toggle').textContent.trim(),
         alt: document.querySelector('.hero img')?.alt || document.querySelector('.hero video')?.getAttribute('aria-label'),
         videoControls: [...document.querySelectorAll('#projects video')].every(video => video.controls === !video.closest('.hero') && video.getAttribute('aria-hidden') !== 'true'),
