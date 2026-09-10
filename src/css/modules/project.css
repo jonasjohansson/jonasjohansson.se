@@ -353,7 +353,6 @@ html[data-theme="dark"] .text-block a {
 @media (max-width: 768px) {
   .project-grid {
     column-gap: 0;
-    row-gap: var(--spacing-xl);
     /* Drop the grid's horizontal padding so it doesn't stack on top of
        #content's gutter — text was sitting at 56px (24 + 32) while media
        broke out to 24px. One shared 24px gutter for everything instead. */
@@ -408,8 +407,7 @@ html[data-theme="dark"] .text-block a {
     max-width: none;
   }
 
-  /* The 4rem text break is a desktop beat; on mobile it stacks on the 2rem
-     row-gap (~6rem between media and text). Trim it so blocks sit closer. */
+  /* Keep text breaks compact on mobile while preserving the image gutter. */
   .text-block {
     margin-block: var(--spacing-md);
   }
