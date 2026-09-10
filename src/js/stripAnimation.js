@@ -1,21 +1,21 @@
 const motion = matchMedia('(prefers-reduced-motion: reduce)');
 
 export function initAnimation(container, signal) {
-  const images = [...container.querySelectorAll('.strip:not([hidden]) .strip-image')];
-  if (!images.length) return;
+  const strips = [...container.querySelectorAll('.strip:not([hidden])')];
+  if (!strips.length) return;
   let frame = null;
   let x = 0.5, y = 0.5, targetX = x, targetY = y;
   const reset = () => {
     cancelAnimationFrame(frame);
     frame = null;
-    images.forEach(image => { image.style.removeProperty('--bg-x'); image.style.removeProperty('--bg-y'); });
+    strips.forEach(strip => { strip.style.removeProperty('--bg-x'); strip.style.removeProperty('--bg-y'); });
   };
   const tick = () => {
     x += (targetX - x) * 0.18;
     y += (targetY - y) * 0.18;
-    images.forEach(image => {
-      image.style.setProperty('--bg-x', `${x * 100}%`);
-      image.style.setProperty('--bg-y', `${40 + y * 20}%`);
+    strips.forEach(strip => {
+      strip.style.setProperty('--bg-x', `${x * 100}%`);
+      strip.style.setProperty('--bg-y', `${40 + y * 20}%`);
     });
     frame = Math.abs(targetX - x) + Math.abs(targetY - y) > 0.001 ? requestAnimationFrame(tick) : null;
   };

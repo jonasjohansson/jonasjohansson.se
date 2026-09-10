@@ -4,16 +4,14 @@
     {% for item in collectionItems %}
     <a class="strip" id="strip-{{ item.slug }}" data-project-link
       href="{{ ('/' ~ item.slug ~ '/') | url }}"
+      aria-label="{{ item.title | escape }}"
       data-project="{{ item.slug }}"{% if item.color %} style="--project-color: {{ item.color }}"{% endif %}
       {% if project and project.slug == item.slug %} hidden{% endif %}>
       <picture class="strip-picture">
-        <source class="strip-wall-source" media="not all" type="image/avif" srcset="{{ item.thumbnail.wallAvif }}">
-        <source class="strip-wall-source" media="not all" type="image/webp" srcset="{{ item.thumbnail.wallWebp }}">
-        <source type="image/avif" srcset="{{ item.thumbnail.avif }}" sizes="calc(100vw - 48px)">
-        <source type="image/webp" srcset="{{ item.thumbnail.webp }}" sizes="calc(100vw - 48px)">
+        <source type="image/avif" srcset="{{ item.thumbnail.avif }}" sizes="640px">
+        <source type="image/webp" srcset="{{ item.thumbnail.webp }}" sizes="640px">
         <img class="strip-image" src="{{ item.thumbnail.src }}" alt="" width="{{ item.thumbnail.width }}" height="{{ item.thumbnail.height }}" loading="lazy" decoding="async">
       </picture>
-      <span class="strip-label">{{ item.title }}</span>
     </a>
     {% endfor %}
   </nav>

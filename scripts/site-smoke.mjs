@@ -37,7 +37,7 @@ async function visit(page, route = '/') {
 }
 
 async function waitForHomeWall(page) {
-  await page.waitForFunction(() => document.body.dataset.route === 'home' && document.body.dataset.homeView === 'projects' && Math.abs(document.getElementById('strips').getBoundingClientRect().bottom - innerHeight) < 1);
+  await page.waitForFunction(() => document.body.dataset.route === 'home' && document.body.dataset.homeView === 'projects' && Math.abs(document.getElementById('collection').getBoundingClientRect().bottom - innerHeight) < 1);
 }
 
 try {
@@ -105,27 +105,30 @@ try {
       await visit(page);
       const wall = await page.locator('#strips').boundingBox();
       const header = await page.locator('#home-header').boundingBox();
-      assert.equal(wall.x, 0);
-      assert.equal(wall.width, options.viewport.width);
-      assert.ok(Math.abs(wall.y - header.height) < 1, 'wall starts below the header');
-      assert.ok(Math.abs(wall.y + wall.height - options.viewport.height) < 1, 'wall fills the viewport');
+      assert.equal(wall.x, 24);
+      assert.equal(wall.width, options.viewport.width - 48);
+      assert.equal((await page.locator('#home-link').boundingBox()).x, wall.x, 'name aligns with the strips');
+      assert.ok(Math.abs(wall.y - header.height - 24) < 1, 'wall starts below the header with a gutter');
+      assert.ok(Math.abs(wall.y + wall.height - options.viewport.height + 24) < 1, 'wall leaves the same bottom gutter');
       assert.equal(await page.evaluate(() => document.documentElement.scrollWidth > innerWidth), false);
       const intro = await page.locator('#intro').boundingBox();
       assert.ok(intro.y < 0 && Math.abs(intro.y + intro.height - header.y) < 1, 'About is physically above the header and strips');
       const entries = await page.locator('.strip').evaluateAll(strips => strips.map(strip => ({
         width: strip.getBoundingClientRect().width,
         height: strip.getBoundingClientRect().height,
-        label: getComputedStyle(strip.querySelector('.strip-label')).opacity,
-        vertical: getComputedStyle(strip.querySelector('.strip-label')).writingMode === 'vertical-rl',
+        named: strip.getAttribute('aria-label') === window.__PROJECTS_DATA__.find(project => project.slug === strip.dataset.project).title,
+        visibleText: strip.textContent.trim(),
       })));
-      assert.ok(entries.every(entry => entry.width >= (options.hasTouch ? 44 : 18) && entry.height === wall.height && entry.label === '1' && entry.vertical));
+      assert.ok(entries.every(entry => entry.width >= (options.hasTouch ? 44 : 18) && entry.height === wall.height && entry.named && entry.visibleText === ''));
       await page.locator('.strip:not([hidden]) .strip-image').evaluateAll(images => Promise.all(images.slice(0, 4).map(image => image.decode())));
       await page.screenshot({ path: `${output}/${name.replaceAll(' ', '-')}-home-wall.png` });
       await page.locator('#home-link').click();
       await page.waitForFunction(() => scrollY < 1 && document.activeElement.id === 'intro');
       const aboutHeader = await page.locator('#home-header').boundingBox();
       assert.ok(Math.abs(aboutHeader.y - intro.height) < 1, 'the name and filters scroll with the strips');
-      assert.ok(Math.abs((await page.locator('#strips').boundingBox()).y - aboutHeader.y - aboutHeader.height) < 1, 'header stays attached to the wall');
+      assert.ok(Math.abs((await page.locator('#strips').boundingBox()).y - aboutHeader.y - aboutHeader.height - 24) < 1, 'header keeps the same gap above the wall');
+      const links = await page.locator('.home-links').boundingBox();
+      assert.ok(aboutHeader.y - links.y - links.height <= 81, 'About ends after its content without an empty viewport');
       assert.equal(await page.locator('#home-link').textContent(), 'Jonas Johansson');
       assert.equal(await page.locator('#home-link').getAttribute('aria-label'), 'Jonas Johansson — Projects');
       assert.equal(await page.locator('#intro').evaluate(intro => intro.inert), false);
@@ -142,20 +145,19 @@ try {
     await check(`${name} has the same vertical strip wall below project pages`, options, async page => {
       await visit(page, '/jagad/');
       const wall = await page.locator('#strips').boundingBox();
-      assert.equal(wall.x, 0);
-      assert.equal(wall.width, options.viewport.width);
-      assert.equal(wall.height, options.viewport.height);
+      assert.equal(wall.x, 24);
+      assert.equal(wall.x, (await page.locator('.hero').boundingBox()).x, 'strips share the project media gutter');
+      assert.equal(wall.width, options.viewport.width - 48);
+      assert.equal(wall.height, options.viewport.height - 48);
       assert.ok((await page.locator('#projects').boundingBox()).y < wall.y);
       const rects = await page.locator('.strip:not([hidden])').evaluateAll(strips => strips.map(strip => {
         const rect = strip.getBoundingClientRect();
-        const label = strip.querySelector('.strip-label');
-        const labelRect = label.getBoundingClientRect();
         return { x: rect.x, y: rect.y, width: rect.width, height: rect.height,
-          labelVisible: getComputedStyle(label).writingMode === 'vertical-rl' && getComputedStyle(label).opacity === '1',
-          labelFits: label.scrollWidth <= label.clientWidth && labelRect.height < rect.height && labelRect.right <= rect.right + 1 };
+          named: strip.getAttribute('aria-label') === window.__PROJECTS_DATA__.find(project => project.slug === strip.dataset.project).title,
+          visibleText: strip.textContent.trim() };
       }));
       assert.equal(await page.evaluate(() => document.documentElement.scrollWidth > innerWidth), false);
-      assert.ok(rects.every(rect => rect.width >= (options.hasTouch ? 44 : 18) && rect.height === wall.height && rect.labelVisible && rect.labelFits));
+      assert.ok(rects.every(rect => rect.width >= (options.hasTouch ? 44 : 18) && rect.height === wall.height && rect.named && rect.visibleText === ''));
       for (let index = 1; index < rects.length; index++) {
         assert.equal(rects[index].y, rects[0].y, 'strips share an alignment');
         assert.ok(Math.abs(rects[index].x - rects[index - 1].x - rects[index - 1].width) < 1, 'images touch horizontally');
@@ -174,7 +176,6 @@ try {
     await page.mouse.wheel(0, -250);
     await page.waitForFunction(() => document.body.dataset.homeView === 'about');
     assert.equal(await page.locator('#intro').evaluate(intro => getComputedStyle(intro).opacity), '1');
-    assert.ok(await page.locator('.strip-label').evaluateAll(labels => labels.every(label => getComputedStyle(label).opacity === '1')));
     assert.equal((await page.locator('#strips').boundingBox()).height, height);
     await page.mouse.wheel(0, -2000);
     await page.waitForFunction(() => scrollY < 1);
@@ -182,7 +183,7 @@ try {
     await page.mouse.wheel(0, 2000);
     await waitForHomeWall(page);
     const wall = await page.locator('#strips').boundingBox();
-    assert.equal(wall.y + wall.height, desktop.viewport.height);
+    assert.ok(Math.abs(wall.y + wall.height - desktop.viewport.height + 24) < 1, 'wall retains its bottom gutter within scroll rounding');
   });
 
   await check('name toggles About with keyboard and reduced motion', { ...desktop, reducedMotion: 'reduce' }, async page => {
@@ -209,7 +210,7 @@ try {
         assert.deepEqual(await page.locator('.strip:not([hidden])').evaluateAll(strips => strips.map(strip => strip.dataset.project)), expected);
         assert.equal(await button.getAttribute('aria-pressed'), 'true');
         assert.equal(await page.locator('#project-filters [aria-pressed="true"]').count(), 1);
-        assert.equal((await page.locator('#strips').boundingBox()).height, options.viewport.height - (await page.locator('#home-header').boundingBox()).height);
+        assert.equal((await page.locator('#strips').boundingBox()).height, options.viewport.height - (await page.locator('#home-header').boundingBox()).height - 48);
       }
       await page.locator('#project-filters [data-filter="mixed reality"]').click();
       const expected = await page.locator('.strip:not([hidden])').evaluateAll(strips => strips.map(strip => strip.dataset.project));
@@ -239,7 +240,7 @@ try {
       await page.locator('#header-toggle').click();
       await waitForHomeWall(page);
       const wall = await page.locator('#strips').boundingBox();
-      assert.equal(wall.y + wall.height, options.viewport.height);
+      assert.ok(Math.abs(wall.y + wall.height - options.viewport.height + 24) < 1, 'wall retains its bottom gutter within scroll rounding');
       assert.equal(await page.evaluate(() => document.activeElement.id), 'strip-lyra');
       const project = await page.locator('#strip-lyra').boundingBox();
       assert.ok(project.x >= 0 && project.x + project.width <= options.viewport.width + 1, 'originating project is visible');
@@ -253,9 +254,9 @@ try {
         await page.locator('#collection').scrollIntoViewIfNeeded();
         const wall = await page.locator('#strips').boundingBox();
         const image = page.locator('.strip:not([hidden]) .strip-image').first();
-        await page.mouse.move(10, wall.y + wall.height / 2);
+        await page.mouse.move(wall.x + 10, wall.y + wall.height / 2);
         await page.waitForFunction(() => parseFloat(getComputedStyle(document.querySelector('.strip:not([hidden]) .strip-image')).objectPosition) < 10);
-        await page.mouse.move(options.viewport.width - 10, wall.y + wall.height / 2);
+        await page.mouse.move(wall.x + wall.width - 10, wall.y + wall.height / 2);
         await page.waitForFunction(() => parseFloat(getComputedStyle(document.querySelector('.strip:not([hidden]) .strip-image')).objectPosition) > 90);
         await page.waitForTimeout(700);
         const settled = await image.evaluate(image => getComputedStyle(image).objectPosition);
@@ -263,7 +264,7 @@ try {
         assert.equal(await image.evaluate(image => getComputedStyle(image).objectPosition), settled, 'animation stops when the pointer rests');
         await page.emulateMedia({ reducedMotion: 'reduce' });
         await page.waitForFunction(() => getComputedStyle(document.querySelector('.strip:not([hidden]) .strip-image')).objectPosition === '50% 50%');
-        await page.mouse.move(10, wall.y + wall.height / 2);
+        await page.mouse.move(wall.x + 10, wall.y + wall.height / 2);
         assert.equal(await image.evaluate(image => getComputedStyle(image).objectPosition), '50% 50%', 'reduced motion disables cursor movement');
         await page.emulateMedia({ reducedMotion: 'no-preference' });
       }
@@ -278,6 +279,11 @@ try {
     await image.evaluate(image => image.decode());
     const narrowSrc = await image.evaluate(image => image.currentSrc);
     const width = (await strip.boundingBox()).width;
+    const renderedHeight = () => image.evaluate(image => {
+      const rect = image.getBoundingClientRect();
+      return Math.max(rect.height, rect.width * image.naturalHeight / image.naturalWidth);
+    });
+    const initialHeight = await renderedHeight();
     let release;
     const held = new Promise(resolve => { release = resolve; });
     let pending = 0;
@@ -287,7 +293,8 @@ try {
       await page.waitForTimeout(350);
       assert.ok(pending > 0, 'larger image download is pending');
       assert.ok((await strip.boundingBox()).width > width * 4, 'hover expands before download completes');
-      assert.equal(await strip.locator('.strip-label').evaluate(label => getComputedStyle(label).opacity), '1');
+      assert.equal(await renderedHeight(), initialHeight, 'preview stays at the same scale while the strip opens');
+      assert.equal(await strip.getAttribute('aria-label'), 'Dome Dreaming');
       await page.mouse.move(0, 0);
       await strip.focus();
       await page.keyboard.press('Tab');
@@ -299,6 +306,7 @@ try {
     }
     await page.waitForFunction(src => document.querySelector('#strip-dome-dreaming img').currentSrc !== src, narrowSrc);
     await image.evaluate(image => image.decode());
+    assert.equal(await renderedHeight(), initialHeight, 'larger image keeps the preview scale');
     const fullSrc = await image.evaluate(image => image.currentSrc);
     await strip.hover();
     await page.mouse.move(0, 0);
@@ -471,7 +479,7 @@ try {
   await check('static HTML works without JavaScript', { ...desktop, javaScriptEnabled: false }, async page => {
     await page.goto(base);
     assert.ok(await page.locator('main #home-title').isVisible());
-    assert.ok(await page.locator('.strip-label').first().isVisible());
+    assert.ok(await page.getByRole('link', { name: 'Klättermusen', exact: true }).isVisible());
     await page.locator('.strip').first().scrollIntoViewIfNeeded();
     await page.locator('.strip img').first().evaluate(image => image.decode());
     await page.goto(base + '/dome-dreaming/');

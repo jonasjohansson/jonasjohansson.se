@@ -89,19 +89,12 @@ export async function imageMetadata(src, widths = [640, 1280, 1920]) {
 
 export async function stripImage(src) {
   const metadata = await imageMetadata(src, [320, 640, 1280, 1920]);
-  const wall = await Promise.all([1, 2].map(async density => {
-    const crop = await sharp(src).rotate().resize(160 * density, 1000 * density, { fit: 'cover' }).png().toBuffer();
-    const encoded = await Image(crop, { ...imageOptions, widths: [160 * density] });
-    return { density, encoded };
-  }));
   return {
     src: metadata.webp[0].url,
     avif: srcset(metadata.avif),
     webp: srcset(metadata.webp),
     width: metadata.webp[0].width,
     height: metadata.webp[0].height,
-    wallAvif: wall.map(({ density, encoded }) => `${encoded.avif[0].url} ${density}x`).join(', '),
-    wallWebp: wall.map(({ density, encoded }) => `${encoded.webp[0].url} ${density}x`).join(', '),
   };
 }
 

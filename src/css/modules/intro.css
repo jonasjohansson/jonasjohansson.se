@@ -36,7 +36,7 @@
 
 .home-links { display: none; }
 .enhanced body[data-route="home"] #content { padding: 0; }
-.enhanced body[data-route="home"] .intro { position: static; min-height: calc(100dvh - var(--home-header-height)); max-width: none; margin: 0; padding: clamp(1.5rem, 5vw, 5rem); }
+.enhanced body[data-route="home"] .intro { position: static; max-width: none; margin: 0; padding: clamp(1.5rem, 5vw, 5rem); }
 .enhanced body[data-route="home"] .intro-text, .enhanced body[data-route="home"] .home-links { max-width: 56rem; margin-inline: auto; }
 .enhanced body[data-route="home"] .home-links { display: block; margin-top: 2rem; line-height: 1.8; }
 .enhanced body[data-route="home"] .home-links p { margin: 0; }

@@ -6,18 +6,32 @@ let controller;
 let resizeFrame;
 let activeFilter = '';
 const projects = new Map(window.__PROJECTS_DATA__.map(project => [project.slug, project]));
+const pendingImages = new WeakMap();
+
+function setImageSize(entry, width) {
+  const picture = entry.querySelector('picture');
+  if (!picture || parseFloat(picture.querySelector('source').sizes) >= width || pendingImages.get(entry)?.width >= width) return;
+  // Leave the decoded preview in place until its replacement is ready. The
+  // strip itself can expand immediately, even on a slow connection.
+  const replacement = picture.cloneNode(true);
+  const image = replacement.querySelector('img');
+  image.loading = 'eager';
+  replacement.querySelectorAll('source').forEach(source => { source.sizes = `${width}px`; });
+  const pending = { width };
+  pendingImages.set(entry, pending);
+  image.decode().then(() => {
+    if (entry.isConnected && pendingImages.get(entry) === pending) picture.replaceWith(replacement);
+  }).catch(() => {}).finally(() => {
+    if (pendingImages.get(entry) === pending) pendingImages.delete(entry);
+  });
+}
 
 function setWideImage(entry) {
   const image = entry.querySelector('img');
   if (!image) return;
   const ratio = Number(image.getAttribute('width')) / Number(image.getAttribute('height'));
   const width = Math.max(innerWidth * 0.45, document.getElementById('strips').clientHeight * ratio);
-  entry.querySelectorAll('source:not(.strip-wall-source)').forEach(source => {
-    source.sizes = `${Math.ceil(width)}px`;
-  });
-  entry.querySelectorAll('.strip-wall-source').forEach(source => {
-    source.media = 'not all';
-  });
+  setImageSize(entry, Math.ceil(width));
 }
 
 function updateImages() {
@@ -31,10 +45,9 @@ function updateImages() {
     const image = entry.querySelector('img');
     if (!image) continue;
     const ratio = Number(image.getAttribute('width')) / Number(image.getAttribute('height'));
-    entry.querySelectorAll('source').forEach(source => {
-      if (source.classList.contains('strip-wall-source')) source.media = narrow ? 'all' : 'not all';
-      else source.sizes = `${narrow ? 80 : Math.ceil(Math.max(width, height * ratio))}px`;
-    });
+    // Keep the same composition at every resolution so opening a strip cannot
+    // stretch a narrow preview while the larger image is still downloading.
+    setImageSize(entry, narrow ? 640 : Math.ceil(Math.max(width, height * ratio)));
     if (matchMedia('(hover: hover)').matches && entry.matches(':hover, :focus-visible')) setWideImage(entry);
   }
 }
