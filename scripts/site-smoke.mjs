@@ -89,15 +89,69 @@ try {
     }
   });
 
-  await check('touch landscape has named targets', { ...mobile, viewport: { width: 844, height: 390 } }, async page => {
+  for (const [name, options] of [
+    ['small phone', { ...mobile, viewport: { width: 320, height: 740 } }],
+    ['phone', mobile],
+    ['narrow desktop', { viewport: { width: 860, height: 1000 } }],
+    ['touch landscape', { ...mobile, viewport: { width: 844, height: 390 } }],
+    ['touch tablet', { ...mobile, viewport: { width: 1024, height: 768 } }],
+  ]) {
+    await check(`${name} has two columns of named project cards`, options, async page => {
+      await visit(page);
+      const rects = await page.locator('.strip').evaluateAll(strips => strips.map(strip => {
+        const rect = strip.getBoundingClientRect();
+        const label = strip.querySelector('.strip-label');
+        const labelRect = label.getBoundingClientRect();
+        return { x: rect.x, y: rect.y, width: rect.width, height: rect.height,
+          labelVisible: getComputedStyle(label).display !== 'none' && getComputedStyle(label).opacity === '1',
+          labelFits: label.scrollWidth <= label.clientWidth && labelRect.height < rect.height && labelRect.right <= rect.right + 1 };
+      }));
+      assert.equal(await page.evaluate(() => document.documentElement.scrollWidth > innerWidth), false);
+      assert.ok(rects.every(rect => rect.width > 100 && rect.height >= 160 && rect.labelVisible && rect.labelFits));
+      assert.equal(rects[0].y, rects[1].y, 'first two cards share a row');
+      assert.equal(rects[0].x, rects[2].x, 'third card starts the next row');
+      assert.ok(rects[1].x > rects[0].x + rects[0].width, 'columns have a gutter');
+      assert.ok(rects[2].y > rects[0].y + rects[0].height, 'rows have a gutter');
+      await page.locator('#collection').scrollIntoViewIfNeeded();
+      await page.locator('.strip-image').evaluateAll(images => Promise.all(images.slice(0, 4).map(image => image.decode())));
+      await page.screenshot({ path: `${output}/${name.replaceAll(' ', '-')}-cards.png` });
+    });
+  }
+
+  await check('desktop strips respond while larger images are still downloading', desktop, async page => {
     await visit(page);
-    const rects = await page.locator('.strip').evaluateAll(strips => strips.map(strip => ({
-      width: strip.getBoundingClientRect().width, height: strip.getBoundingClientRect().height,
-      label: getComputedStyle(strip.querySelector('.strip-label')).display,
-    })));
-    assert.ok(rects.every(rect => rect.width > 300 && rect.height >= 44 && rect.label !== 'none'));
     await page.locator('#collection').scrollIntoViewIfNeeded();
-    await page.screenshot({ path: `${output}/landscape-wall.png` });
+    const strip = page.locator('#strip-dome-dreaming');
+    const image = strip.locator('img');
+    await image.evaluate(image => image.decode());
+    const narrowSrc = await image.evaluate(image => image.currentSrc);
+    const width = (await strip.boundingBox()).width;
+    let release;
+    const held = new Promise(resolve => { release = resolve; });
+    let pending = 0;
+    await page.route('**/img/**', async route => { pending++; await held; await route.continue(); });
+    try {
+      await strip.hover();
+      await page.waitForTimeout(350);
+      assert.ok(pending > 0, 'larger image download is pending');
+      assert.ok((await strip.boundingBox()).width > width * 4, 'hover expands before download completes');
+      assert.equal(await strip.locator('.strip-label').evaluate(label => getComputedStyle(label).opacity), '1');
+      await page.mouse.move(0, 0);
+      await strip.focus();
+      await page.keyboard.press('Tab');
+      await page.waitForTimeout(350);
+      assert.ok((await page.locator('.strip:focus-visible').boundingBox()).width > width * 4, 'keyboard focus expands before download completes');
+    } finally {
+      release();
+      await page.unrouteAll({ behavior: 'wait' });
+    }
+    await page.waitForFunction(src => document.querySelector('#strip-dome-dreaming img').currentSrc !== src, narrowSrc);
+    await image.evaluate(image => image.decode());
+    const fullSrc = await image.evaluate(image => image.currentSrc);
+    await strip.hover();
+    await page.mouse.move(0, 0);
+    await page.waitForTimeout(350);
+    assert.equal(await image.evaluate(image => image.currentSrc), fullSrc, 'loaded image is retained after hover');
   });
 
   await check('keyboard navigation and metadata', desktop, async page => {

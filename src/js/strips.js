@@ -4,32 +4,18 @@ let entries = [];
 let controller;
 let resizeFrame;
 const wallQuery = '(hover: hover) and (min-width: 901px)';
-const cardSizes = '(hover: none) calc(100vw - 48px), (max-width: 900px) calc(100vw - 48px)';
-const collapseDelay = 260;
-
-function setWallImage(entry, enabled) {
-  entry.querySelectorAll('.strip-wall-source').forEach(source => {
-    source.media = enabled ? wallQuery : 'not all';
-  });
-}
+const cardSizes = '(hover: none) calc((100vw - 56px) / 2), (max-width: 900px) calc((100vw - 56px) / 2)';
 
 function setWideImage(entry) {
   const image = entry.querySelector('img');
   if (!image) return;
   const ratio = Number(image.getAttribute('width')) / Number(image.getAttribute('height'));
   const width = Math.max(innerWidth * 0.45, document.getElementById('strips').clientHeight * ratio);
-  setWallImage(entry, false);
   entry.querySelectorAll('source:not(.strip-wall-source)').forEach(source => {
     source.sizes = `${Math.ceil(width)}px`;
   });
-}
-
-async function waitForImage(image) {
-  await new Promise(resolve => requestAnimationFrame(() => requestAnimationFrame(resolve)));
-  if (image.complete && image.naturalWidth) return image.decode?.().catch(() => {});
-  return new Promise(resolve => {
-    image.addEventListener('load', resolve, { once: true });
-    image.addEventListener('error', resolve, { once: true });
+  entry.querySelectorAll('.strip-wall-source').forEach(source => {
+    source.media = 'not all';
   });
 }
 
@@ -48,6 +34,7 @@ function updateImages() {
       if (source.classList.contains('strip-wall-source')) source.media = narrow ? wallQuery : 'not all';
       else source.sizes = `${cardSizes}, ${wall && !narrow ? Math.ceil(Math.max(width, height * ratio)) : 80}px`;
     });
+    if (wall && entry.matches(':hover, :focus-visible')) setWideImage(entry);
   }
 }
 
@@ -60,32 +47,12 @@ export function updateStrips(slug) {
     entry.hidden = entry.dataset.project === slug;
     if (!entry.hidden) count++;
     if (entry.hidden || !entry.querySelector('img')) continue;
-    let intent = 0;
-    let collapseTimer;
-    const expand = async () => {
+    const upgradeImage = () => {
       if (!matchMedia(wallQuery).matches) return;
-      clearTimeout(collapseTimer);
-      const currentIntent = ++intent;
-      const image = entry.querySelector('img');
       setWideImage(entry);
-      await waitForImage(image);
-      if (intent === currentIntent) entry.classList.add('is-expanded');
     };
-    const collapse = () => {
-      intent++;
-      entry.classList.remove('is-expanded');
-      clearTimeout(collapseTimer);
-      collapseTimer = setTimeout(() => {
-        if (!entry.matches(':hover, :focus-within') && matchMedia(wallQuery).matches) {
-          setWallImage(entry, true);
-        }
-      }, collapseDelay);
-    };
-    entry.addEventListener('pointerenter', expand, { signal: controller.signal });
-    entry.addEventListener('pointerleave', collapse, { signal: controller.signal });
-    entry.addEventListener('focus', expand, { signal: controller.signal });
-    entry.addEventListener('blur', collapse, { signal: controller.signal });
-    controller.signal.addEventListener('abort', () => clearTimeout(collapseTimer), { once: true });
+    entry.addEventListener('pointerenter', upgradeImage, { signal: controller.signal });
+    entry.addEventListener('focus', upgradeImage, { signal: controller.signal });
   }
   document.getElementById('project-count').textContent = `${count} projects`;
   updateImages();

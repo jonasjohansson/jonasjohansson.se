@@ -30,8 +30,8 @@
   /* Strips */
   --strip-row-min: 6rem; /* floor on a stacked strip row: short (filtered) lists still
                             grow to fill the screen, long ones scroll past it */
-  --strip-mobile-height: 10rem; /* row height for stacked strips on touch devices */
-  --strip-mobile-radius: 6px; /* corner rounding on stacked strips and their title labels */
+  --strip-card-min-height: 10rem; /* minimum image height in the two-column project grid */
+  --strip-card-radius: 6px; /* corner rounding on project cards and their title labels */
   --strip-placeholder-height-scale: 0.55; /* unmade projects sit as shorter rows than finished work */
 
   /* Typography */

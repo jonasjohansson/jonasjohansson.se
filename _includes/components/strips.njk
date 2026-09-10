@@ -9,8 +9,8 @@
       <picture class="strip-picture">
         <source class="strip-wall-source" media="not all" type="image/avif" srcset="{{ item.thumbnail.wallAvif }}">
         <source class="strip-wall-source" media="not all" type="image/webp" srcset="{{ item.thumbnail.wallWebp }}">
-        <source type="image/avif" srcset="{{ item.thumbnail.avif }}" sizes="(hover: none) calc(100vw - 48px), (max-width: 900px) calc(100vw - 48px), 80px">
-        <source type="image/webp" srcset="{{ item.thumbnail.webp }}" sizes="(hover: none) calc(100vw - 48px), (max-width: 900px) calc(100vw - 48px), 80px">
+        <source type="image/avif" srcset="{{ item.thumbnail.avif }}" sizes="(hover: none) calc((100vw - 56px) / 2), (max-width: 900px) calc((100vw - 56px) / 2), 80px">
+        <source type="image/webp" srcset="{{ item.thumbnail.webp }}" sizes="(hover: none) calc((100vw - 56px) / 2), (max-width: 900px) calc((100vw - 56px) / 2), 80px">
         <img class="strip-image" src="{{ item.thumbnail.src }}" alt="" width="{{ item.thumbnail.width }}" height="{{ item.thumbnail.height }}" loading="lazy" decoding="async">
       </picture>
       <span class="strip-label">{{ item.title }}</span>
