@@ -264,6 +264,7 @@ try {
       const tags = await page.locator('#project-filters button').evaluateAll(buttons => buttons.map(button => button.dataset.filter));
       assert.deepEqual(new Set(tags), new Set(projects.flatMap(project => project.tags).filter(tag => tag !== 'installation')));
       assert.equal(tags.includes(''), false, 'there is no All button');
+      assert.equal(tags.includes('education'), false, 'Education is no longer a filter');
       assert.ok(projects.find(project => project.slug === 'visualia').tags.includes('community'), 'Visualia belongs to Community');
       assert.ok(projects.find(project => project.slug === 'svartljus').tags.includes('community'), 'Svartljus belongs to Community');
       const selected = new Set(tags);
@@ -313,10 +314,10 @@ try {
       assert.deepEqual(await visibleSlugs(), expected);
       assert.equal(await page.evaluate(() => document.activeElement.id), id);
       await checkSelection();
-      const education = page.locator('#project-filters [data-filter="education"]');
-      await education.focus();
+      const exhibition = page.locator('#project-filters [data-filter="exhibition"]');
+      await exhibition.focus();
       await page.keyboard.press('Space');
-      selected.add('education');
+      selected.add('exhibition');
       await checkSelection();
       await toggle('mixed reality');
       await toggle('av');
@@ -325,19 +326,19 @@ try {
       assert.equal(await page.locator('.strip:not([hidden])').count(), projects.length);
       await page.locator('#home-link').click();
       await page.waitForFunction(() => scrollY < 1);
-      await toggle('education');
+      await toggle('exhibition');
       await waitForHomeWall(page);
     });
   }
 
   for (const [name, options] of [['desktop', desktop], ['mobile', mobile]]) {
     await check(`${name} filters other projects without leaving the project wall`, options, async page => {
-      await visit(page, '/emerging-sensation/');
+      await visit(page, '/society-expo/');
       await page.locator('#collection').evaluate(collection => collection.scrollIntoView({ block: 'start' }));
       await checkFooter(page);
-      // Education belongs only to the open project. Keep another usable tag
+      // Exhibition belongs only to the open project. Keep another usable tag
       // active when the remaining toggles would otherwise leave no strips.
-      for (const button of await page.locator('#project-filters button:not([data-filter="education"])').all()) {
+      for (const button of await page.locator('#project-filters button:not([data-filter="exhibition"])').all()) {
         await button.click({ force: true });
       }
       assert.ok(await page.locator('.strip:not([hidden])').count() > 0, 'cannot filter down to only the excluded project');
@@ -346,17 +347,18 @@ try {
       assert.deepEqual(await page.locator('.strip:not([hidden])').evaluateAll(strips => strips.map(strip => strip.dataset.project)), before);
       const community = page.locator('#project-filters [data-filter="community"]');
       if (await community.getAttribute('aria-pressed') !== 'true') await community.click();
-      for (const button of await page.locator('#project-filters [aria-pressed="true"]:not([data-filter="community"])').all()) await button.click();
-      const expected = await page.evaluate(() => window.__PROJECTS_DATA__.filter(project => project.slug !== 'emerging-sensation' && project.tags.includes('community')).map(project => project.slug));
+      const otherTags = await page.locator('#project-filters [aria-pressed="true"]:not([data-filter="community"])').evaluateAll(buttons => buttons.map(button => button.dataset.filter));
+      for (const tag of otherTags) await page.locator(`#project-filters [data-filter="${tag}"]`).click();
+      const expected = await page.evaluate(() => window.__PROJECTS_DATA__.filter(project => project.slug !== 'society-expo' && project.tags.includes('community')).map(project => project.slug));
       assert.deepEqual(await page.locator('.strip:not([hidden])').evaluateAll(strips => strips.map(strip => strip.dataset.project)), expected);
-      assert.equal(new URL(page.url()).pathname, `${prefix}/emerging-sensation/`, 'filtering stays on the project');
-      assert.equal(await page.locator('#strip-emerging-sensation').isVisible(), false, 'open project stays excluded');
+      assert.equal(new URL(page.url()).pathname, `${prefix}/society-expo/`, 'filtering stays on the project');
+      assert.equal(await page.locator('#strip-society-expo').isVisible(), false, 'open project stays excluded');
       await page.waitForFunction(() => Math.abs(document.getElementById('collection').getBoundingClientRect().top) < 1);
       await checkFooter(page);
       await page.locator('.strip:not([hidden])').first().click();
-      await page.waitForFunction(() => document.documentElement.dataset.project !== 'emerging-sensation');
+      await page.waitForFunction(() => document.documentElement.dataset.project !== 'society-expo');
       await page.goBack();
-      await page.waitForFunction(() => document.documentElement.dataset.project === 'emerging-sensation');
+      await page.waitForFunction(() => document.documentElement.dataset.project === 'society-expo');
       assert.deepEqual(await page.locator('#project-filters [aria-pressed="true"]').evaluateAll(buttons => buttons.map(button => button.dataset.filter)), ['community']);
       assert.deepEqual(await page.locator('.strip:not([hidden])').evaluateAll(strips => strips.map(strip => strip.dataset.project)), expected);
       await page.locator('.collection-home-link').click();
@@ -402,6 +404,42 @@ try {
       }
     });
   }
+
+  await check('strip previews highlight enabled tags without changing filters', desktop, async page => {
+    const highlighted = () => page.locator('#project-filters .is-preview-tag').evaluateAll(buttons => buttons.map(button => button.dataset.filter));
+    const selected = () => page.locator('#project-filters [aria-pressed="true"]').evaluateAll(buttons => buttons.map(button => button.dataset.filter));
+    for (const route of ['/', '/jagad/']) {
+      await visit(page, route);
+      await page.locator('#collection').evaluate(collection => collection.scrollIntoView({ block: 'start' }));
+      const before = await selected();
+      const footer = await page.locator('#project-filters').boundingBox();
+      await page.locator('#strip-kagora').hover();
+      assert.deepEqual(await highlighted(), ['light', 'community'], 'Kagora highlights its enabled categories');
+      assert.deepEqual(await selected(), before, 'previewing a project does not toggle filters');
+      assert.equal(await page.locator('#project-filters [data-filter="light"]').evaluate(button => getComputedStyle(button).textDecorationLine), 'underline', 'matching tags are visibly underlined');
+      assert.deepEqual(await page.locator('#project-filters').boundingBox(), footer, 'the highlight does not shift the footer');
+      await page.screenshot({ path: `${output}/tag-preview${route === '/' ? '-home' : '-project'}.png` });
+      await page.mouse.move(0, 0);
+      assert.deepEqual(await highlighted(), [], 'highlight clears on pointer leave');
+      await page.locator('#project-filters [data-filter="community"]').click();
+      const filtered = await selected();
+      await page.locator('#strip-kagora').hover();
+      assert.deepEqual(await highlighted(), ['light'], 'disabled categories do not highlight');
+      assert.deepEqual(await selected(), filtered);
+      await page.mouse.move(0, 0);
+      await page.locator('#strip-svartljus').focus();
+      assert.deepEqual(await highlighted(), ['light'], 'keyboard focus previews matching tags too');
+      await page.locator('#project-filters [data-filter="light"]').focus();
+      assert.deepEqual(await highlighted(), [], 'highlight clears on blur');
+      await page.emulateMedia({ reducedMotion: 'reduce' });
+      await page.locator('#strip-kagora').hover();
+      assert.deepEqual(await highlighted(), ['light'], 'reduced motion preserves the static highlight');
+      await page.locator('#strip-kagora').click();
+      await page.waitForFunction(() => document.documentElement.dataset.project === 'kagora');
+      assert.deepEqual(await highlighted(), [], 'navigation clears the previous preview');
+      await page.emulateMedia({ reducedMotion: 'no-preference' });
+    }
+  });
 
   await check('strip images keep their scale throughout hover and keyboard expansion', { viewport: { width: 1800, height: 420 } }, async page => {
     for (const route of ['/', '/jagad/']) {

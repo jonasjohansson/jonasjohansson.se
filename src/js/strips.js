@@ -14,9 +14,15 @@ let currentSlug = '';
 const pendingImages = new WeakMap();
 let hoveredEntry;
 
-function updatePreviewName() {
+function updatePreview() {
   const focused = document.activeElement?.closest('#strips .strip:not([hidden])');
-  document.getElementById('project-preview-name').textContent = (hoveredEntry || focused)?.getAttribute('aria-label') || '';
+  const entry = hoveredEntry || focused;
+  const projectTags = projects.get(entry?.dataset.project)?.tags || [];
+  document.getElementById('project-preview-name').textContent = entry?.getAttribute('aria-label') || '';
+  document.querySelectorAll('#project-filters button').forEach(button => {
+    const tag = button.dataset.filter;
+    button.classList.toggle('is-preview-tag', activeTags.has(tag) && projectTags.includes(tag));
+  });
 }
 
 function canRemoveTag(tag) {
@@ -105,18 +111,18 @@ export function updateStrips(slug) {
       setWideImage(entry);
     };
     entry.addEventListener('pointerenter', event => {
-      if (event.pointerType === 'mouse') { hoveredEntry = entry; updatePreviewName(); }
+      if (event.pointerType === 'mouse') { hoveredEntry = entry; updatePreview(); }
       upgradeImage();
     }, { signal: controller.signal });
     entry.addEventListener('pointerleave', () => {
       if (hoveredEntry === entry) hoveredEntry = null;
-      updatePreviewName();
+      updatePreview();
     }, { signal: controller.signal });
-    entry.addEventListener('focus', () => { upgradeImage(); updatePreviewName(); }, { signal: controller.signal });
-    entry.addEventListener('blur', updatePreviewName, { signal: controller.signal });
+    entry.addEventListener('focus', () => { upgradeImage(); updatePreview(); }, { signal: controller.signal });
+    entry.addEventListener('blur', updatePreview, { signal: controller.signal });
   }
   document.getElementById('project-count').textContent = `${count} ${count === 1 ? 'project' : 'projects'}`;
-  updatePreviewName();
+  updatePreview();
   updateImages();
   initAnimation(document.getElementById('strips'), controller.signal);
 }

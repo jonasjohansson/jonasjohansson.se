@@ -33,7 +33,7 @@
 .header-contacts::-webkit-scrollbar { display: none; }
 .header-contacts p { margin: 0; white-space: nowrap; }
 .header-contacts a { display: inline-block; padding: 0.5rem 0; text-decoration: underline; text-underline-offset: 0.15em; }
-.project-filters { display: flex; flex: 0 1 auto; min-width: 0; max-width: calc(100% - 8rem); align-items: stretch; gap: 1.25rem; height: 100%; overflow-x: auto; scrollbar-width: none; }
+.project-filters { display: flex; flex: 0 1 auto; min-width: 0; max-width: calc(100% - 8rem); align-items: stretch; gap: 1.25rem; height: 100%; padding-left: 3px; overflow-x: auto; scrollbar-width: none; }
 .project-filters::-webkit-scrollbar { display: none; }
 .project-filters button { display: inline-flex; align-items: center; gap: 0.4rem; flex: none; padding: 0.5rem 0; border: 0; border-radius: 0; background: none; color: inherit; font: inherit; letter-spacing: 0; text-transform: none; white-space: nowrap; }
 .project-filters button::before { content: ""; flex: none; width: 0.5rem; height: 0.5rem; border: 1px solid currentColor; border-radius: 50%; }
@@ -41,3 +41,5 @@
 .project-filters button[aria-pressed="true"]::before { background: currentColor; }
 .project-filters button[aria-pressed="false"] { color: color-mix(in srgb, var(--text-primary) 60%, var(--bg-primary)); }
 .project-filters button:hover { background: none; text-decoration: underline; text-underline-offset: 0.3em; }
+.project-filters button.is-preview-tag { text-decoration: underline; text-decoration-thickness: 2px; text-underline-offset: 0.3em; }
+.project-filters button.is-preview-tag::before { box-shadow: 0 0 0 2px var(--bg-primary), 0 0 0 3px currentColor; }
