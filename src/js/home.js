@@ -1,6 +1,6 @@
 const intro = document.getElementById('intro');
 const header = document.getElementById('home-header');
-const toggle = document.getElementById('about-toggle');
+const toggle = document.getElementById('home-link');
 const collection = document.getElementById('collection');
 const motion = matchMedia('(prefers-reduced-motion: reduce)');
 let frame;
@@ -20,8 +20,8 @@ function render() {
   previousWallTop = homeScrollTop();
   atWall = scrollY >= previousWallTop - 1;
   document.body.dataset.homeView = atWall ? 'projects' : 'about';
-  toggle.textContent = atWall ? 'About ↑' : 'Projects ↓';
-  toggle.setAttribute('aria-label', atWall ? 'Scroll up to About' : 'Scroll down to projects');
+  toggle.hash = atWall ? '#about' : '#collection';
+  toggle.setAttribute('aria-label', `${toggle.textContent} — ${atWall ? 'About' : 'Projects'}`);
   toggle.setAttribute('aria-controls', atWall ? 'intro' : 'collection');
   if (focusTarget && Math.abs(scrollY - homeScrollTop(focusTarget === intro ? 'about' : 'projects')) < 1) {
     focusTarget.focus({ preventScroll: true });
@@ -48,12 +48,10 @@ export function updateHome(slug) {
 }
 
 export function initializeHome() {
-  toggle.hidden = false;
-  toggle.addEventListener('click', () => goTo(atWall ? 'about' : 'projects'));
-  document.getElementById('home-link').addEventListener('click', event => {
+  toggle.addEventListener('click', event => {
     if (!isHome() || event.button !== 0 || event.metaKey || event.ctrlKey || event.shiftKey || event.altKey) return;
     event.preventDefault();
-    goTo('projects');
+    goTo(atWall ? 'about' : 'projects');
   });
   document.addEventListener('keydown', event => {
     if (event.key === 'Escape' && isHome() && !atWall) goTo('projects');

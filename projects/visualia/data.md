@@ -3,7 +3,7 @@ title: Visualia
 date: '2022-01-01'
 tags:
   - av
-  - residency
+  - community
 blocks:
   - type: image
     src: 01.jpg

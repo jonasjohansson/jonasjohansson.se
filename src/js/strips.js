@@ -65,7 +65,7 @@ export function initializeStrips() {
   const filters = document.getElementById('project-filters');
   const counts = new Map();
   projects.forEach(project => project.tags.forEach(tag => counts.set(tag, (counts.get(tag) || 0) + 1)));
-  const tags = [...counts.keys()].sort((a, b) => counts.get(b) - counts.get(a) || a.localeCompare(b));
+  const tags = [...counts.keys()].filter(tag => tag !== 'installation').sort((a, b) => counts.get(b) - counts.get(a) || a.localeCompare(b));
   for (const tag of ['', ...tags]) {
     const button = document.createElement('button');
     button.type = 'button';

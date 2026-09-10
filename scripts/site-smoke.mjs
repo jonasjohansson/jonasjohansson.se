@@ -111,7 +111,7 @@ try {
       assert.ok(Math.abs(wall.y + wall.height - options.viewport.height) < 1, 'wall fills the viewport');
       assert.equal(await page.evaluate(() => document.documentElement.scrollWidth > innerWidth), false);
       const intro = await page.locator('#intro').boundingBox();
-      assert.ok(intro.y < 0 && Math.abs(intro.y + intro.height - wall.y) < 1, 'About is physically above the strips');
+      assert.ok(intro.y < 0 && Math.abs(intro.y + intro.height - header.y) < 1, 'About is physically above the header and strips');
       const entries = await page.locator('.strip').evaluateAll(strips => strips.map(strip => ({
         width: strip.getBoundingClientRect().width,
         height: strip.getBoundingClientRect().height,
@@ -121,8 +121,13 @@ try {
       assert.ok(entries.every(entry => entry.width >= (options.hasTouch ? 44 : 18) && entry.height === wall.height && entry.label === '1' && entry.vertical));
       await page.locator('.strip:not([hidden]) .strip-image').evaluateAll(images => Promise.all(images.slice(0, 4).map(image => image.decode())));
       await page.screenshot({ path: `${output}/${name.replaceAll(' ', '-')}-home-wall.png` });
-      await page.locator('#about-toggle').click();
+      await page.locator('#home-link').click();
       await page.waitForFunction(() => scrollY < 1 && document.activeElement.id === 'intro');
+      const aboutHeader = await page.locator('#home-header').boundingBox();
+      assert.ok(Math.abs(aboutHeader.y - intro.height) < 1, 'the name and filters scroll with the strips');
+      assert.ok(Math.abs((await page.locator('#strips').boundingBox()).y - aboutHeader.y - aboutHeader.height) < 1, 'header stays attached to the wall');
+      assert.equal(await page.locator('#home-link').textContent(), 'Jonas Johansson');
+      assert.equal(await page.locator('#home-link').getAttribute('aria-label'), 'Jonas Johansson — Projects');
       assert.equal(await page.locator('#intro').evaluate(intro => intro.inert), false);
       assert.equal(await page.evaluate(() => document.activeElement.id), 'intro');
       assert.equal((await page.locator('#strips').boundingBox()).height, wall.height, 'the wall keeps its height when scrolling');
@@ -131,7 +136,7 @@ try {
       await page.screenshot({ path: `${output}/${name.replaceAll(' ', '-')}-about-above.png` });
       await page.keyboard.press('Escape');
       await waitForHomeWall(page);
-      assert.equal(await page.evaluate(() => document.activeElement.id), 'about-toggle');
+      assert.equal(await page.evaluate(() => document.activeElement.id), 'home-link');
     });
 
     await check(`${name} has the same vertical strip wall below project pages`, options, async page => {
@@ -180,11 +185,13 @@ try {
     assert.equal(wall.y + wall.height, desktop.viewport.height);
   });
 
-  await check('About toggle works without motion', { ...desktop, reducedMotion: 'reduce' }, async page => {
+  await check('name toggles About with keyboard and reduced motion', { ...desktop, reducedMotion: 'reduce' }, async page => {
     await visit(page);
-    await page.locator('#about-toggle').click();
+    assert.equal(await page.locator('#home-link').getAttribute('aria-label'), 'Jonas Johansson — About');
+    await page.locator('#home-link').focus();
+    await page.keyboard.press('Enter');
     await page.waitForFunction(() => scrollY < 1 && document.activeElement.id === 'intro');
-    await page.locator('#about-toggle').click();
+    await page.locator('#home-link').click();
     await waitForHomeWall(page);
   });
 
@@ -193,7 +200,8 @@ try {
       await visit(page);
       const projects = await page.evaluate(() => window.__PROJECTS_DATA__);
       const tags = await page.locator('#project-filters button').evaluateAll(buttons => buttons.map(button => button.dataset.filter));
-      assert.deepEqual(new Set(tags.filter(Boolean)), new Set(projects.flatMap(project => project.tags)));
+      assert.deepEqual(new Set(tags.filter(Boolean)), new Set(projects.flatMap(project => project.tags).filter(tag => tag !== 'installation')));
+      assert.ok(projects.find(project => project.slug === 'visualia').tags.includes('community'), 'Visualia belongs to Community');
       for (const tag of tags) {
         const button = page.locator('#project-filters button').nth(tags.indexOf(tag));
         await button.click();
@@ -217,7 +225,7 @@ try {
       assert.equal(await page.locator('#project-filters [data-filter="mixed reality"]').getAttribute('aria-pressed'), 'true');
       await page.locator('#project-filters [data-filter=""]').click();
       assert.equal(await page.locator('.strip:not([hidden])').count(), projects.length);
-      await page.locator('#about-toggle').click();
+      await page.locator('#home-link').click();
       await page.waitForFunction(() => scrollY < 1);
       await page.locator('#project-filters [data-filter="education"]').click();
       await waitForHomeWall(page);
@@ -235,6 +243,30 @@ try {
       assert.equal(await page.evaluate(() => document.activeElement.id), 'strip-lyra');
       const project = await page.locator('#strip-lyra').boundingBox();
       assert.ok(project.x >= 0 && project.x + project.width <= options.viewport.width + 1, 'originating project is visible');
+    });
+  }
+
+  for (const [name, options] of [['desktop', desktop], ['narrow desktop', { viewport: { width: 860, height: 1000 } }]]) {
+    await check(`${name} images follow the cursor on home and project walls`, options, async page => {
+      for (const route of ['/', '/jagad/']) {
+        await visit(page, route);
+        await page.locator('#collection').scrollIntoViewIfNeeded();
+        const wall = await page.locator('#strips').boundingBox();
+        const image = page.locator('.strip:not([hidden]) .strip-image').first();
+        await page.mouse.move(10, wall.y + wall.height / 2);
+        await page.waitForFunction(() => parseFloat(getComputedStyle(document.querySelector('.strip:not([hidden]) .strip-image')).objectPosition) < 10);
+        await page.mouse.move(options.viewport.width - 10, wall.y + wall.height / 2);
+        await page.waitForFunction(() => parseFloat(getComputedStyle(document.querySelector('.strip:not([hidden]) .strip-image')).objectPosition) > 90);
+        await page.waitForTimeout(700);
+        const settled = await image.evaluate(image => getComputedStyle(image).objectPosition);
+        await page.waitForTimeout(100);
+        assert.equal(await image.evaluate(image => getComputedStyle(image).objectPosition), settled, 'animation stops when the pointer rests');
+        await page.emulateMedia({ reducedMotion: 'reduce' });
+        await page.waitForFunction(() => getComputedStyle(document.querySelector('.strip:not([hidden]) .strip-image')).objectPosition === '50% 50%');
+        await page.mouse.move(10, wall.y + wall.height / 2);
+        assert.equal(await image.evaluate(image => getComputedStyle(image).objectPosition), '50% 50%', 'reduced motion disables cursor movement');
+        await page.emulateMedia({ reducedMotion: 'no-preference' });
+      }
     });
   }
 
