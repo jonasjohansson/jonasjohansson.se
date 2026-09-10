@@ -85,9 +85,10 @@ figure {
   padding: var(--spacing-xl);
 }
 
-/* Heroes sit inside the page gutter, with the earlier rounded card shape. */
+/* Heroes span the full width inside the page gutter. */
 .project-grid > .media-item:first-child,
 .project-grid > .media-item.hero {
+  grid-column: 1 / -1;
   overflow: hidden;
   border-radius: var(--radius-md);
   height: calc(100vh - var(--spacing-lg) * 2);
@@ -426,18 +427,13 @@ html[data-theme="dark"] .text-block a {
 
 }
 
-/* Authored composition can take priority over a cover crop. */
-.project-grid > .hero.hero-contain :is(img, video) { object-fit: contain; }
-/* Preserve the Klättermusen photograph's composition inside its rounded frame. */
+/* Preserve the photograph's composition at the full page width. */
 @media (min-width: 769px) {
   #klattermusen .project-grid > .hero {
-    width: min(calc(100% + 2 * var(--spacing-xl)), calc((100dvh - 2 * var(--spacing-lg)) * var(--ar)));
     height: auto;
     min-height: 0;
     max-height: none;
     aspect-ratio: var(--ar);
-    margin-inline: 0;
-    justify-self: center;
   }
 }
 .media-video { aspect-ratio: var(--ar); background: color-mix(in srgb, var(--text-primary) 5%, var(--bg-primary)); }
@@ -445,4 +441,11 @@ html[data-theme="dark"] .text-block a {
 @media (max-width: 768px) {
   .project-grid > .media-item.hero { height: min(85svh, calc((100vw - 2 * var(--spacing-lg)) / var(--mobile-ar, var(--ar)))); min-height: 0; max-height: none; }
   .project-grid > .media-item.hero :is(img, video) { object-position: var(--mobile-focal, var(--focal, center)); }
+}
+
+/* Uncropped heroes fill the width by sizing their frame to the image itself. */
+.project-grid > .hero.hero-contain { height: auto; min-height: 0; max-height: none; aspect-ratio: var(--ar); }
+.project-grid > .hero.hero-contain :is(img, video) { object-fit: contain; }
+@media (max-width: 768px) {
+  .project-grid > .hero.hero-contain { aspect-ratio: var(--mobile-ar, var(--ar)); }
 }

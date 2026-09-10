@@ -4,8 +4,8 @@
 .strip-picture { display: contents; }
 .strip-image { position: absolute; width: 100%; height: 100%; object-fit: cover; object-position: var(--bg-x, 50%) var(--bg-y, 50%); }
 .strip:focus-visible { outline: 2px solid var(--text-primary); outline-offset: -3px; }
-.enhanced #collection { height: 100dvh; padding-block: var(--spacing-lg); scroll-margin: 0; }
-.enhanced body[data-route="home"] #collection { height: calc(100dvh - var(--home-header-height)); padding-inline: var(--spacing-lg); }
+.enhanced #collection { height: calc(100dvh - var(--footer-height)); padding-top: var(--spacing-lg); scroll-margin: 0; }
+.enhanced body[data-route="home"] #collection { height: calc(100dvh - var(--home-header-height) - var(--footer-height)); padding: 0 var(--spacing-lg); }
 .enhanced #strips { flex-direction: row; height: 100%; min-height: 0; overflow-x: auto; scrollbar-width: none; }
 .enhanced #strips::-webkit-scrollbar { display: none; }
 .enhanced .strip { flex: 1 1 0; width: auto; height: 100%; min-width: 1.125rem; min-height: 0; transition: flex-grow 0.25s ease; }

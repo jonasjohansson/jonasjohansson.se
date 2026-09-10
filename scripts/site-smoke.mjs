@@ -37,7 +37,23 @@ async function visit(page, route = '/') {
 }
 
 async function waitForHomeWall(page) {
-  await page.waitForFunction(() => document.body.dataset.route === 'home' && document.body.dataset.homeView === 'projects' && Math.abs(document.getElementById('collection').getBoundingClientRect().bottom - innerHeight) < 1);
+  await page.waitForFunction(() => document.body.dataset.route === 'home' && document.body.dataset.homeView === 'projects' && Math.abs(document.getElementById('intro-links').getBoundingClientRect().bottom - innerHeight) < 1);
+}
+
+async function checkFooter(page) {
+  const footer = await page.locator('#intro-links').boundingBox();
+  const wall = await page.locator('#strips').boundingBox();
+  assert.ok(Math.abs(footer.y - wall.y - wall.height) < 1, 'footer sits directly below the strips');
+  assert.ok(Math.abs(footer.y + footer.height - page.viewportSize().height) < 1, 'footer fits within the strip viewport');
+  const links = await page.locator('#intro-links a').evaluateAll(links => links.map(link => {
+    const rect = link.getBoundingClientRect();
+    return { x: rect.x, top: rect.top, right: rect.right, bottom: rect.bottom };
+  }));
+  assert.equal(links.length, 6);
+  assert.equal(links[0].x, wall.x, 'footer links align with the strips');
+  assert.ok(links.every(link => link.top >= footer.y && link.bottom <= footer.y + footer.height + 1 && link.right <= wall.x + wall.width), 'all footer links fit, including on narrow screens');
+  assert.equal(await page.locator('#intro a[href^="mailto:"]').count(), 0, 'contact links have moved out of About');
+  assert.ok(await page.locator('#intro-links a[href^="mailto:"]').isVisible());
 }
 
 try {
@@ -94,6 +110,30 @@ try {
     }
   });
 
+  for (const [name, options] of [['wide desktop', { viewport: { width: 1920, height: 1080 } }], ['mobile', mobile]]) {
+    await check(`${name} heroes fill the page width`, options, async page => {
+      for (const slug of ['klattermusen', 'lights-for-ukraine', 'people-in-orbit', 'dome-dreaming', 'vi-kommer-i-fred']) {
+        await visit(page, `/${slug}/`);
+        const hero = await page.locator('.hero').boundingBox();
+        const media = await page.locator('.hero img, .hero video').boundingBox();
+        assert.equal(hero.x, 24, `${slug} hero starts at the page gutter`);
+        assert.equal(hero.width, options.viewport.width - 48, `${slug} hero uses the full content width`);
+        assert.equal(media.width, hero.width, `${slug} image or video fills the hero frame`);
+        const fittedWidth = await page.locator('.hero').evaluate(hero => {
+          if (!hero.classList.contains('hero-contain')) return hero.clientWidth;
+          const style = getComputedStyle(hero);
+          const ratio = Number(style.getPropertyValue(innerWidth <= 768 ? '--mobile-ar' : '--ar'));
+          return Math.min(hero.clientWidth, hero.clientHeight * ratio);
+        });
+        assert.ok(Math.abs(fittedWidth - hero.width) < 1, `${slug} uncropped image has no unused space at its sides`);
+        if (slug === 'klattermusen') {
+          await page.locator('.hero img').evaluate(image => image.decode());
+          await page.screenshot({ path: `${output}/${name.replaceAll(' ', '-')}-full-width-hero.png` });
+        }
+      }
+    });
+  }
+
   for (const [name, options] of [
     ['small phone', { ...mobile, viewport: { width: 320, height: 740 } }],
     ['phone', mobile],
@@ -108,8 +148,8 @@ try {
       assert.equal(wall.x, 24);
       assert.equal(wall.width, options.viewport.width - 48);
       assert.equal((await page.locator('#home-link').boundingBox()).x, wall.x, 'name aligns with the strips');
-      assert.ok(Math.abs(wall.y - header.height - 24) < 1, 'wall starts below the header with a gutter');
-      assert.ok(Math.abs(wall.y + wall.height - options.viewport.height + 24) < 1, 'wall leaves the same bottom gutter');
+      assert.ok(Math.abs(wall.y - header.height) < 1, 'wall starts directly below the header');
+      await checkFooter(page);
       assert.equal(await page.evaluate(() => document.documentElement.scrollWidth > innerWidth), false);
       const intro = await page.locator('#intro').boundingBox();
       assert.ok(intro.y < 0 && Math.abs(intro.y + intro.height - header.y) < 1, 'About is physically above the header and strips');
@@ -126,16 +166,15 @@ try {
       await page.waitForFunction(() => scrollY < 1 && document.activeElement.id === 'intro');
       const aboutHeader = await page.locator('#home-header').boundingBox();
       assert.ok(Math.abs(aboutHeader.y - intro.height) < 1, 'the name and filters scroll with the strips');
-      assert.ok(Math.abs((await page.locator('#strips').boundingBox()).y - aboutHeader.y - aboutHeader.height - 24) < 1, 'header keeps the same gap above the wall');
-      const links = await page.locator('.home-links').boundingBox();
-      assert.ok(aboutHeader.y - links.y - links.height <= 81, 'About ends after its content without an empty viewport');
+      assert.ok(Math.abs((await page.locator('#strips').boundingBox()).y - aboutHeader.y - aboutHeader.height) < 1, 'header stays attached to the wall');
+      const text = await page.locator('.intro-text').boundingBox();
+      assert.ok(aboutHeader.y - text.y - text.height <= 81, 'About ends after its content without an empty viewport');
       assert.equal(await page.locator('#home-link').textContent(), 'Jonas Johansson');
       assert.equal(await page.locator('#home-link').getAttribute('aria-label'), 'Jonas Johansson — Projects');
       assert.equal(await page.locator('#intro').evaluate(intro => intro.inert), false);
       assert.equal(await page.evaluate(() => document.activeElement.id), 'intro');
       assert.equal((await page.locator('#strips').boundingBox()).height, wall.height, 'the wall keeps its height when scrolling');
       assert.equal(await page.locator('#intro').evaluate(intro => getComputedStyle(intro).opacity), '1');
-      assert.ok(await page.locator('#intro a[href^="mailto:"]').isVisible());
       await page.screenshot({ path: `${output}/${name.replaceAll(' ', '-')}-about-above.png` });
       await page.keyboard.press('Escape');
       await waitForHomeWall(page);
@@ -148,7 +187,7 @@ try {
       assert.equal(wall.x, 24);
       assert.equal(wall.x, (await page.locator('.hero').boundingBox()).x, 'strips share the project media gutter');
       assert.equal(wall.width, options.viewport.width - 48);
-      assert.equal(wall.height, options.viewport.height - 48);
+      assert.equal(wall.height, options.viewport.height - 24 - (await page.locator('#intro-links').boundingBox()).height);
       assert.ok((await page.locator('#projects').boundingBox()).y < wall.y);
       const rects = await page.locator('.strip:not([hidden])').evaluateAll(strips => strips.map(strip => {
         const rect = strip.getBoundingClientRect();
@@ -164,6 +203,7 @@ try {
       }
       assert.equal(new Set(rects.map(rect => rect.height)).size, 1, 'image heights are uniform');
       await page.locator('#collection').evaluate(collection => collection.scrollIntoView({ block: 'start' }));
+      await checkFooter(page);
       await page.locator('.strip:not([hidden]) .strip-image').evaluateAll(images => Promise.all(images.slice(0, 4).map(image => image.decode())));
       await page.screenshot({ path: `${output}/${name.replaceAll(' ', '-')}-project-wall.png` });
     });
@@ -182,8 +222,7 @@ try {
     assert.equal(await page.locator('#intro').evaluate(intro => intro.inert), false);
     await page.mouse.wheel(0, 2000);
     await waitForHomeWall(page);
-    const wall = await page.locator('#strips').boundingBox();
-    assert.ok(Math.abs(wall.y + wall.height - desktop.viewport.height + 24) < 1, 'wall retains its bottom gutter within scroll rounding');
+    await checkFooter(page);
   });
 
   await check('name toggles About with keyboard and reduced motion', { ...desktop, reducedMotion: 'reduce' }, async page => {
@@ -210,7 +249,7 @@ try {
         assert.deepEqual(await page.locator('.strip:not([hidden])').evaluateAll(strips => strips.map(strip => strip.dataset.project)), expected);
         assert.equal(await button.getAttribute('aria-pressed'), 'true');
         assert.equal(await page.locator('#project-filters [aria-pressed="true"]').count(), 1);
-        assert.equal((await page.locator('#strips').boundingBox()).height, options.viewport.height - (await page.locator('#home-header').boundingBox()).height - 48);
+        assert.equal((await page.locator('#strips').boundingBox()).height, options.viewport.height - (await page.locator('#home-header').boundingBox()).height - (await page.locator('#intro-links').boundingBox()).height);
       }
       await page.locator('#project-filters [data-filter="mixed reality"]').click();
       const expected = await page.locator('.strip:not([hidden])').evaluateAll(strips => strips.map(strip => strip.dataset.project));
@@ -239,8 +278,7 @@ try {
       await visit(page, '/lyra/');
       await page.locator('#header-toggle').click();
       await waitForHomeWall(page);
-      const wall = await page.locator('#strips').boundingBox();
-      assert.ok(Math.abs(wall.y + wall.height - options.viewport.height + 24) < 1, 'wall retains its bottom gutter within scroll rounding');
+      await checkFooter(page);
       assert.equal(await page.evaluate(() => document.activeElement.id), 'strip-lyra');
       const project = await page.locator('#strip-lyra').boundingBox();
       assert.ok(project.x >= 0 && project.x + project.width <= options.viewport.width + 1, 'originating project is visible');
