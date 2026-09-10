@@ -8,32 +8,69 @@ tags:
   - installation
 blocks:
   - type: image
-    src: hero.jpg
-    alt: "Visitors stand beneath Kagora's overlapping blue, violet and white light arches among trees at dusk."
-    focal: "50% 60%"
+    src: finished-pavilion.jpg
+    alt: "Kagora's illuminated arches spread across a woodland clearing, with white, cyan and yellow light tracing the woven pavilion."
+    focal: "50% 40%"
   - type: text
     content: >-
-      A place to gather beneath moving light, built in the woods for
-      Borderland 2026.
+      A woven pavilion of moving light, built as a place to gather in the
+      woods at Borderland 2026.
   - type: text
     fontSize: small
     content: >-
-      Kagora is a light pavilion made from overlapping curves. Its ribs sweep
-      up from the ground, cross overhead and open into passages between the
-      trees. Inside, cushions invite people to sit or lie down while colour
-      moves around them.
+      Designed and built under the direction of
+      [Annie Locke Scherer](https://www.instagram.com/annielocke/), Kagora
+      brings Japanese basket weaving to an architectural scale. Its name
+      joins kago — basket — with aura. I created the lighting for the
+      nine-metre-wide structure, with sound by Teodor Sundström and
+      engineering by Christian Pisano.
+  - type: image
+    src: hero.jpg
+    alt: "Visitors stand beneath Kagora's overlapping blue, violet and white light arches among trees at dusk."
   - type: video
     src: motion.mp4
     poster: motion-poster.jpg
     ar: 1.777778
     alt: "Bands of pink, blue, yellow and green light travel along Kagora's curved ribs in a woodland clearing."
+  - type: image
+    src: entrance.jpg
+    alt: "Looking through Kagora's entrance, turquoise and blue arches overlap above people resting on cushions, with pink light deeper inside."
   - type: text
     fontSize: small
     content: >-
-      The form repeats a simple arch at different angles, creating a woven
-      canopy. The digital model and an early illuminated section show how
-      those curves come together. LED strips follow the ribs, turning the
-      structure itself into the surface for the moving light.
+      Inspired by Hanakago flower baskets and Kagome weaving, the ribs cross
+      overhead to define a room without closing it off. More than a kilometre
+      of programmable LEDs runs inside the tubes. As colour moves through the
+      weave, different curves emerge and recede, changing the space around
+      the people sitting and lying beneath it.
+  - type: image
+    src: woven-detail.jpg
+    size: half-left
+    alt: "A close view of diagonal tubes crossing in a dense weave of pink, violet, blue and green light against the dark."
+  - type: image
+    src: curved-interior.jpg
+    size: half-right
+    alt: "Cyan and violet ribs sweep around an opening inside Kagora, with pink light behind the curved layers."
+  - type: image
+    src: canopy.jpg
+    alt: "Looking up through Kagora, multicoloured ribs weave around a tree trunk against the pale evening sky."
+  - type: image
+    src: interior.jpg
+    alt: "Looking up from inside Kagora, multicoloured light curves cross above visitors beneath the evening sky."
+  - type: image
+    src: light-detail.jpg
+    alt: "A close view of Kagora's crossing ribs reveals rows of blue and cyan LEDs running along the curved structure."
+  - type: image
+    src: daylight.jpg
+    alt: "Kagora in daylight: white arches surround a floor of dark mats and blue cushions in the woodland."
+  - type: text
+    fontSize: small
+    content: >-
+      The build began with models, joints and tests of individual arches.
+      A crew of collaborators prepared the diffusion for the LEDs and
+      assembled the woven ribs among the trees. In daylight, the white
+      structure frames the woodland; after dark, the light gives it a
+      different presence.
   - type: image
     src: design-model.jpg
     size: half-left
@@ -51,22 +88,14 @@ blocks:
     size: half-right
     alt: "A person on a stepladder fastens white curved ribs together beneath the trees during assembly."
   - type: image
-    src: daylight.jpg
-    alt: "Kagora in daylight: white arches surround a floor of dark mats and blue cushions in the woodland."
+    src: woodland.jpg
+    alt: "Kagora glows violet and white beyond a low stone wall, surrounded by tree trunks and blue evening light."
+  - type: image
+    src: woodland-mist.jpg
+    alt: "Kagora glows warm gold between dark tree trunks, with mist drifting through the woodland and blue light in the foreground."
   - type: text
     fontSize: small
     content: >-
-      In daylight, the white ribs frame the surrounding woodland. After dark,
-      the changing light draws out different layers of the same structure.
-      Seen from inside, the arches become a ceiling of intersecting lines;
-      from further away, a pool of colour among the trees.
-  - type: image
-    src: interior.jpg
-    alt: "Looking up from inside Kagora, multicoloured light curves cross above visitors beneath the evening sky."
-  - type: image
-    src: light-detail.jpg
-    alt: "A close view of Kagora's crossing ribs reveals rows of blue and cyan LEDs running along the curved structure."
-  - type: image
-    src: woodland.jpg
-    alt: "Kagora glows violet and white beyond a low stone wall, surrounded by tree trunks and blue evening light."
+      [Rose Hallgren](https://rosehallgren.se/) and I photographed the piece,
+      from the changing light inside the weave to its wider setting in the woods.
 ---

@@ -91,12 +91,12 @@ figure {
   grid-column: 1 / -1;
   overflow: hidden;
   border-radius: var(--radius-md);
-  height: calc(100vh - var(--spacing-lg) * 2);
-  height: calc(100dvh - var(--spacing-lg) * 2);
-  min-height: calc(100vh - var(--spacing-lg) * 2);
-  min-height: calc(100dvh - var(--spacing-lg) * 2);
-  max-height: calc(100vh - var(--spacing-lg) * 2);
-  max-height: calc(100dvh - var(--spacing-lg) * 2);
+  height: calc(100vh - var(--home-header-height) - var(--spacing-lg) * 2);
+  height: calc(100dvh - var(--home-header-height) - var(--spacing-lg) * 2);
+  min-height: calc(100vh - var(--home-header-height) - var(--spacing-lg) * 2);
+  min-height: calc(100dvh - var(--home-header-height) - var(--spacing-lg) * 2);
+  max-height: calc(100vh - var(--home-header-height) - var(--spacing-lg) * 2);
+  max-height: calc(100dvh - var(--home-header-height) - var(--spacing-lg) * 2);
   margin-top: calc(-1 * var(--spacing-xl));
   margin-left: calc(-1 * var(--spacing-xl));
   margin-right: calc(-1 * var(--spacing-xl));

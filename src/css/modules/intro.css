@@ -86,11 +86,9 @@ html[data-theme="dark"] .intro-text a {
 }
 
 .intro-links { display: flex; align-items: center; gap: var(--spacing-lg); height: var(--footer-height); margin: 0; font-size: 0.875rem; }
-#project-preview-name { flex: 1; min-width: 0; margin: 0; overflow: hidden; white-space: nowrap; text-overflow: ellipsis; line-height: 1.5; }
-.footer-links { margin-left: auto; max-width: 100%; text-align: right; }
-.footer-links p { margin: 0; line-height: 1.5; }
-.footer-links a { white-space: nowrap; }
+#project-preview-name { flex: 1; min-width: 0; min-height: 1.5em; margin: 0; overflow: hidden; white-space: nowrap; text-overflow: ellipsis; line-height: 1.5; }
 @media (max-width: 600px) {
   :root { --footer-height: 4.5rem; }
   .intro-links { display: grid; grid-template-columns: minmax(0, 1fr); grid-template-rows: 1.5em auto; align-content: center; gap: 0.25rem; }
+  .project-filters { max-width: 100%; }
 }

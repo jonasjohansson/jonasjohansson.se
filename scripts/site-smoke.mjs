@@ -45,16 +45,27 @@ async function checkFooter(page) {
   const wall = await page.locator('#strips').boundingBox();
   assert.ok(Math.abs(footer.y - wall.y - wall.height) < 1, 'footer sits directly below the strips');
   assert.ok(Math.abs(footer.y + footer.height - page.viewportSize().height) < 1, 'footer fits within the strip viewport');
-  const links = await page.locator('#intro-links a').evaluateAll(links => links.map(link => {
-    const rect = link.getBoundingClientRect();
-    return { x: rect.x, top: rect.top, right: rect.right, bottom: rect.bottom };
-  }));
-  assert.equal(links.length, 6);
-  assert.ok(Math.abs(links.at(-1).right - wall.x - wall.width) < 1, 'footer links align with the right edge of the strips');
   assert.equal((await page.locator('#project-preview-name').boundingBox()).x, wall.x, 'project preview name aligns with the left edge');
-  assert.ok(links.every(link => link.top >= footer.y && link.bottom <= footer.y + footer.height + 1 && link.right <= wall.x + wall.width), 'all footer links fit, including on narrow screens');
-  assert.equal(await page.locator('#intro a[href^="mailto:"]').count(), 0, 'contact links have moved out of About');
-  assert.ok(await page.locator('#intro-links a[href^="mailto:"]').isVisible());
+  const home = await page.locator('body').getAttribute('data-route') === 'home';
+  const header = page.locator(home ? '#home-header' : '#header');
+  const contacts = header.locator('.header-contacts');
+  const contactBox = await contacts.boundingBox();
+  const headerBox = await header.boundingBox();
+  assert.equal(await contacts.locator('a').count(), 6, 'all contact links are in the header');
+  assert.ok(Math.abs(contactBox.x + contactBox.width - wall.x - wall.width) < 1, 'contact links align with the right edge of the strips');
+  assert.ok(contactBox.y >= headerBox.y && contactBox.y + contactBox.height <= headerBox.y + headerBox.height + 1, 'contacts fit on the same header row');
+  const title = await header.locator(home ? '#home-link' : '#header-toggle').boundingBox();
+  assert.ok(title.x + title.width <= contactBox.x, 'contact links do not overlap the title');
+  await contacts.evaluate(nav => { nav.scrollLeft = nav.scrollWidth; });
+  const email = await contacts.locator('a[href^="mailto:"]').boundingBox();
+  assert.ok(email.x >= contactBox.x && email.x + email.width <= contactBox.x + contactBox.width + 1, 'Email remains reachable in the scrolling contact row on phones');
+  await contacts.evaluate(nav => { nav.scrollLeft = 0; });
+  assert.equal(await page.locator('#intro a[href^="mailto:"], #intro-links a').count(), 0, 'contacts have moved to the header');
+  assert.equal(await page.locator('#project-filters').isVisible(), home, 'tag filters stay available on the homepage');
+  if (home) {
+    const filters = await page.locator('#intro-links #project-filters').boundingBox();
+    assert.ok(filters.y >= footer.y && filters.y + filters.height <= footer.y + footer.height + 1, 'filters fit inside the footer');
+  }
 }
 
 try {
@@ -84,7 +95,7 @@ try {
         zero: [...document.querySelectorAll('#projects img, #projects video')].some(el => el.getBoundingClientRect().width < 1 || el.getBoundingClientRect().height < 1),
         title: document.title,
         hero: document.querySelector('.hero').getBoundingClientRect().top,
-        gutter: parseFloat(getComputedStyle(document.getElementById('content')).paddingTop),
+        gutter: document.getElementById('header').getBoundingClientRect().height + parseFloat(getComputedStyle(document.getElementById('content')).paddingTop),
         floatingTitle: document.getElementById('header-toggle').textContent.trim(),
         alt: document.querySelector('.hero img')?.alt || document.querySelector('.hero video')?.getAttribute('aria-label'),
         videoControls: [...document.querySelectorAll('#projects video')].every(video => video.controls === !video.closest('.hero') && video.getAttribute('aria-hidden') !== 'true'),
@@ -166,7 +177,7 @@ try {
       await page.locator('#home-link').click();
       await page.waitForFunction(() => scrollY < 1 && document.activeElement.id === 'intro');
       const aboutHeader = await page.locator('#home-header').boundingBox();
-      assert.ok(Math.abs(aboutHeader.y - intro.height) < 1, 'the name and filters scroll with the strips');
+      assert.ok(Math.abs(aboutHeader.y - intro.height) < 1, 'the name and contacts scroll with the strips');
       assert.ok(Math.abs((await page.locator('#strips').boundingBox()).y - aboutHeader.y - aboutHeader.height) < 1, 'header stays attached to the wall');
       const text = await page.locator('.intro-text').boundingBox();
       assert.equal(text.x, wall.x, 'About shares the strips’ left edge');
