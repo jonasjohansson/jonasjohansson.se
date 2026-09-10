@@ -3,7 +3,7 @@ html { min-height: 100%; scroll-padding-top: 5rem; }
 body { margin: 0; background: var(--bg-primary); color: var(--text-primary); font-family: var(--font-family); line-height: var(--line-height-base); }
 [hidden] { display: none !important; }
 #content { padding: var(--spacing-lg); }
-#main:focus, .project-title:focus, #home-title:focus, #collection-title:focus { outline: none; }
+#main:focus, .project-title:focus, #home-title:focus, #collection-title:focus, #intro:focus { outline: none; }
 a { color: inherit; text-underline-offset: 0.16em; }
 button, select { font: inherit; color: inherit; }
 button, summary, select { cursor: pointer; }

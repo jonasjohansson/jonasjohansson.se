@@ -28,7 +28,10 @@
   --radius-media: 4px;
 
   /* Strips */
-  --strip-band-height: clamp(12rem, 24vw, 19rem); /* taller accents are set on individual bands */
+  --strip-band-height: clamp(12rem, 24vw, 19rem); /* uniform rows on narrow and touch displays */
+  --home-header-height: 3rem;
+  --home-strip-peek: 5.5rem;
+  --home-reveal-distance: max(24rem, 70dvh);
 
   /* Typography */
   --font-family: "SeasonMix", system-ui, -apple-system, Segoe UI, Roboto, Helvetica, Arial, sans-serif;

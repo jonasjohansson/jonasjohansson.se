@@ -1,13 +1,26 @@
 .collection { scroll-margin-top: 4rem; }
 #strips { display: flex; flex-direction: column; gap: 0; overflow: hidden; position: relative; touch-action: pan-y; }
 .strip { display: block; flex: none; width: 100%; min-width: 0; color: inherit; text-decoration: none; height: var(--strip-band-height); position: relative; overflow: hidden; padding: 0; border: 0; background: color-mix(in srgb, var(--text-primary) 6%, var(--bg-primary)); }
-.strip:nth-child(3n + 1) { --strip-band-height: clamp(16rem, 36vw, 27rem); }
-.strip:nth-child(3n) { --strip-band-height: clamp(14rem, 30vw, 23rem); }
 .strip-picture { display: contents; }
 .strip-image { position: absolute; width: 100%; height: 100%; object-fit: cover; object-position: var(--bg-x, 50%) var(--bg-y, 50%); }
 .strip::after { content: ""; position: absolute; inset: auto 0 0; height: min(65%, 8rem); background: linear-gradient(transparent, rgb(0 0 0 / 0.68)); pointer-events: none; }
 .strip-label { display: block; min-width: 0; line-height: 1.2; overflow-wrap: anywhere; color: var(--color-white); position: absolute; z-index: 1; bottom: 0; left: 0; max-width: 100%; padding: 1rem 1.25rem; font-size: clamp(1.125rem, 2.4vw, 1.5rem); text-shadow: 0 1px 8px rgb(0 0 0 / 0.4); pointer-events: none; }
 .strip:focus-visible { outline: 2px solid var(--text-primary); outline-offset: -3px; }
+.enhanced body[data-route="home"] #collection { position: absolute; inset: auto 0 0; z-index: 1; height: calc((100dvh - var(--home-header-height)) * (1 - var(--home-reveal)) + var(--home-strip-peek) * var(--home-reveal)); scroll-margin: 0; }
+.enhanced body[data-route="home"] #strips { flex-direction: row; height: 100%; min-height: 0; overflow-x: auto; scrollbar-width: none; }
+.enhanced body[data-route="home"] #strips::-webkit-scrollbar { display: none; }
+.enhanced body[data-route="home"] .strip { flex: 1 1 0; width: auto; height: 100%; min-height: 0; transition: flex-grow 0.25s ease; }
+.enhanced body[data-route="home"] .strip-label, .enhanced body[data-route="home"] .strip::after { opacity: 0; }
+@media (hover: hover) {
+  .enhanced body[data-route="home"] .strip:is(:hover, :focus-visible) { flex-grow: 12; }
+  .enhanced body[data-route="home"] .strip:is(:hover, :focus-visible) .strip-label, .enhanced body[data-route="home"] .strip:is(:hover, :focus-visible)::after { opacity: calc(1 - var(--home-reveal)); }
+}
+@media (hover: none) {
+  .enhanced body[data-route="home"] #strips { touch-action: pan-x pan-y; }
+  .enhanced body[data-route="home"] .strip { min-width: 3.5rem; }
+  .enhanced body[data-route="home"] .strip-label { writing-mode: vertical-rl; transform: rotate(180deg); white-space: nowrap; max-height: 100%; padding: 1rem; font-size: 0.875rem; opacity: calc(1 - var(--home-reveal)); }
+  .enhanced body[data-route="home"] .strip::after { height: 60%; opacity: calc(1 - var(--home-reveal)); }
+}
 @media (hover: hover) and (min-width: 901px) {
   .enhanced #strips { flex-direction: row; height: calc(100dvh - var(--spacing-lg) * 2); min-height: 0; }
   .enhanced .strip { flex: 1 1 0; width: auto; height: 100%; transition: flex-grow 0.25s ease; }

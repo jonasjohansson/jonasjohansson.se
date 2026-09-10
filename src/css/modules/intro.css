@@ -41,6 +41,17 @@
   display: inline;
 }
 
+.home-links { display: none; }
+.enhanced body[data-route="home"] #content { --home-reveal: 0; padding: 0; height: calc(100dvh + var(--home-reveal-distance)); }
+.enhanced body[data-route="home"] #main { position: sticky; top: 0; height: 100dvh; overflow: hidden; isolation: isolate; }
+.enhanced body[data-route="home"] .home-header { position: absolute; inset: 0 0 auto; height: var(--home-header-height); z-index: 3; }
+.enhanced body[data-route="home"] .intro { position: absolute; inset: var(--home-header-height) 0 var(--home-strip-peek); z-index: 0; max-width: none; margin: 0; padding: clamp(1.5rem, 5vw, 5rem); overflow-y: auto; opacity: clamp(0, var(--home-reveal) * 2, 1); transition: none; }
+.enhanced body[data-route="home"] .intro-text, .enhanced body[data-route="home"] .home-links { max-width: 56rem; margin-inline: auto; }
+.enhanced body[data-route="home"] .home-links { display: block; margin-top: 2rem; line-height: 1.8; }
+.enhanced body[data-route="home"] .home-links p { margin: 0; }
+.enhanced body[data-route="home"] #intro-links { display: none; }
+.enhanced body[data-route="home"] #intro[inert] .name > span { animation-play-state: paused; }
+
 /* Dark mode: colored name with staggered color + wave animation */
 html[data-theme="dark"] .intro-text .name > span {
   display: inline-block;

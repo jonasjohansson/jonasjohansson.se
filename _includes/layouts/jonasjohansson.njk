@@ -25,6 +25,7 @@
     </div>
     <div id="content">
       <main id="main" tabindex="-1">
+        {% include "../components/home-header.njk" %}
         {% include "../components/intro.njk" %}
         <div id="projects" class="projects-container">{{ content | safe }}</div>
         {% include "../components/strips.njk" %}

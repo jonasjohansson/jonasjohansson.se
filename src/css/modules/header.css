@@ -23,3 +23,13 @@
   overflow-wrap: anywhere;
   border-radius: inherit;
 }
+
+.home-header { display: flex; align-items: center; justify-content: space-between; gap: 1rem; min-height: var(--home-header-height); padding: 0 1rem; background: var(--bg-primary); color: var(--text-primary); font-size: 0.875rem; line-height: 1; letter-spacing: 0.06em; text-transform: uppercase; }
+.home-header h1, .home-header p { margin: 0; font: inherit; }
+.home-header a { text-decoration: none; }
+.home-motto { flex: 1; }
+#about-toggle { border: 0; border-radius: 0; padding: 0.5rem 0; background: none; letter-spacing: inherit; text-transform: inherit; }
+#about-toggle:hover { text-decoration: underline; }
+@media (max-width: 600px) {
+  .home-motto { display: none; }
+}

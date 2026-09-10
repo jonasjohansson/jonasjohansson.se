@@ -60,7 +60,7 @@ class Router {
 
   position() {
     return {
-      scrollY, focusId: document.activeElement?.id || '',
+      scrollY, stripScrollLeft: document.getElementById('strips').scrollLeft, focusId: document.activeElement?.id || '',
     };
   }
 
@@ -136,9 +136,15 @@ class Router {
       focus ||= document.getElementById('home-title');
       focus.focus({ preventScroll: true });
       if (restore && typeof restore.scrollY === 'number') scrollTo({ top: restore.scrollY, behavior: 'instant' });
+      else if (!project && options.returnToCollection) scrollTo({ top: 0, behavior: 'instant' });
       else if (url.hash === '#collection' || (options.returnToCollection && !project)) {
         (focus.classList.contains('strip') ? focus : document.getElementById('collection')).scrollIntoView({ block: 'start' });
       } else scrollTo({ top: 0, behavior: 'instant' });
+      if (restore && typeof restore.stripScrollLeft === 'number') document.getElementById('strips').scrollLeft = restore.stripScrollLeft;
+      else if (!project && focus.classList.contains('strip')) {
+        const strips = document.getElementById('strips');
+        strips.scrollLeft = focus.offsetLeft - (strips.clientWidth - focus.clientWidth) / 2;
+      }
       this.savePosition();
       document.getElementById('route-announcer').textContent = `Opened ${project?.title || 'home'}`;
     } catch (error) {

@@ -1,4 +1,4 @@
-<div id="intro" class="intro"{% if project %} hidden{% endif %}>
-  <h1 id="home-title" class="sr-only" tabindex="-1">{{ site.title }}</h1>
+<div id="intro" class="intro" tabindex="-1" role="region" aria-label="About Jonas Johansson"{% if project %} hidden{% endif %}>
   <div id="about" class="intro-text">{{ site.intro | markdown | safe }}</div>
+  <div class="home-links">{{ site.links | markdown | safe }}</div>
 </div>

@@ -4,7 +4,7 @@ let entries = [];
 let controller;
 let resizeFrame;
 const wallQuery = '(hover: hover) and (min-width: 901px)';
-const bandSizes = '(hover: none) calc(100vw - 48px), (max-width: 900px) calc(100vw - 48px)';
+const isWall = () => document.body.dataset.route === 'home' || matchMedia(wallQuery).matches;
 
 function setWideImage(entry) {
   const image = entry.querySelector('img');
@@ -21,7 +21,9 @@ function setWideImage(entry) {
 
 function updateImages() {
   const strips = document.getElementById('strips');
-  const wall = matchMedia(wallQuery).matches;
+  const wall = isWall();
+  const bandWidth = document.body.dataset.route === 'home' ? '100vw' : 'calc(100vw - 48px)';
+  const bandSizes = `(hover: none) ${bandWidth}, (max-width: 900px) ${bandWidth}`;
   const height = strips.clientHeight;
   const visible = entries.filter(entry => !entry.hidden);
   const width = strips.clientWidth / Math.max(1, visible.length);
@@ -31,10 +33,10 @@ function updateImages() {
     if (!image) continue;
     const ratio = Number(image.getAttribute('width')) / Number(image.getAttribute('height'));
     entry.querySelectorAll('source').forEach(source => {
-      if (source.classList.contains('strip-wall-source')) source.media = narrow ? wallQuery : 'not all';
+      if (source.classList.contains('strip-wall-source')) source.media = narrow ? 'all' : 'not all';
       else source.sizes = `${bandSizes}, ${wall && !narrow ? Math.ceil(Math.max(width, height * ratio)) : 80}px`;
     });
-    if (wall && entry.matches(':hover, :focus-visible')) setWideImage(entry);
+    if (wall && matchMedia('(hover: hover)').matches && entry.matches(':hover, :focus-visible')) setWideImage(entry);
   }
 }
 
@@ -48,7 +50,7 @@ export function updateStrips(slug) {
     if (!entry.hidden) count++;
     if (entry.hidden || !entry.querySelector('img')) continue;
     const upgradeImage = () => {
-      if (!matchMedia(wallQuery).matches) return;
+      if (!isWall() || !matchMedia('(hover: hover)').matches) return;
       setWideImage(entry);
     };
     entry.addEventListener('pointerenter', upgradeImage, { signal: controller.signal });
