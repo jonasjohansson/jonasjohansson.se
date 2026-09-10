@@ -7,7 +7,7 @@
 .strip-label { display: block; min-width: 0; line-height: 1.2; overflow-wrap: anywhere; color: var(--color-white); position: absolute; z-index: 1; bottom: 0; left: 0; max-width: 100%; padding: 1rem 1.25rem; font-size: clamp(1.125rem, 2.4vw, 1.5rem); text-shadow: 0 1px 8px rgb(0 0 0 / 0.4); pointer-events: none; }
 .strip:focus-visible { outline: 2px solid var(--text-primary); outline-offset: -3px; }
 .enhanced #collection { height: 100dvh; margin-inline: calc(-1 * var(--spacing-lg)); scroll-margin: 0; }
-.enhanced body[data-route="home"] #collection { height: calc(100dvh - var(--home-top-height)); margin: 0; scroll-margin: 0; }
+.enhanced body[data-route="home"] #collection { height: calc(100dvh - var(--home-header-height)); margin: 0; scroll-margin: 0; }
 .enhanced #strips { flex-direction: row; height: 100%; min-height: 0; overflow-x: auto; scrollbar-width: none; }
 .enhanced #strips::-webkit-scrollbar { display: none; }
 .enhanced .strip { flex: 1 1 0; width: auto; height: 100%; min-width: 1.125rem; min-height: 0; transition: flex-grow 0.25s ease; }
