@@ -2,10 +2,12 @@
 
 Kagora is the woodland light installation at Borderland 2026. Its new page
 is `projects/kagora/data.md`, dated 25 July 2026 and tagged Light, Community,
-and Installation. It uses fifteen images and one ten-second video. Finished views from Rose’s
-photographs lead the gallery, including the entrance, woven details and
-interior canopy. Models, lighting tests and assembly follow later, before
-a closing view of the pavilion in the mist.
+and Installation. It uses thirteen images and one ten-second video. The misty
+woodland photograph opens the page with a tighter, levelled framing in CSS
+(1.35× scale and −2° rotation, fixed rather than animated). The original photo
+is unchanged. Finished views lead the gallery, including the entrance, woven
+details and interior canopy. Lighting tests follow later, with the wider
+blue-hour woodland view at the end.
 
 The second source folder, `Borderland 2026 - Kagora-20260910_222621`, contains
 148 JPEGs and 72 videos. All JPEGs were reviewed on contact sheets; video
@@ -18,25 +20,27 @@ originals supply four additional night views.
 
 | Website asset | Source | Role |
 | --- | --- | --- |
-| `finished-pavilion.jpg` | Album: `IMG_7117.jpeg` | Opening, strips and sharing image: complete illuminated piece |
+| `finished-pavilion.jpg` | Album: `IMG_7117.jpeg` | Complete illuminated piece in the body gallery |
 | `hero.jpg` | `2026-07-25/JPG/DSCF8599.JPG` | Blue-hour view of the pavilion with visitors |
 | `entrance.jpg` | Album: `IMG_8970.jpeg` | Frontal view through the woven entrance |
 | `woven-detail.jpg` | Album: `IMG_8898.jpeg` | Close view of the illuminated weave |
 | `curved-interior.jpg` | Album: `IMG_8900.jpeg` | Sweeping interior curves, paired with the weave |
 | `canopy.jpg` | Album: `IMG_8978.jpeg` | Upward view of the canopy around a tree |
-| `woodland-mist.jpg` | Album: `IMG_8974.jpeg` | Atmospheric closing view in warm light and mist |
+| `woodland-mist.jpg` | Album: `IMG_8974.jpeg` | Opening, strips and sharing image: warm light in mist |
 | `motion.mp4` | Album: `IMG_8996.mov`, 0.5–10.5 seconds | Moving light across the completed pavilion |
 | `motion-poster.jpg` | First frame of `motion.mp4` | Static video preview |
-| `design-model.jpg` | Album: `IMG_8208.jpeg` | Digital model with a figure for scale |
 | `first-arch.jpg` | Album: `IMG_8759.jpeg` | Early illuminated section |
 | `led-testing.jpg` | Album: `IMG_8391.jpeg` | LED strips tested in the workshop |
-| `assembly.jpg` | Album: `IMG_8830.jpeg` | Joining the ribs in the woods |
 | `daylight.jpg` | Album: `IMG_8908.jpeg` | Completed structure and cushions by day |
 | `interior.jpg` | `2026-07-25/JPG/DSCF8629.JPG` | Looking up from inside |
 | `light-detail.jpg` | `2026-07-25/JPG/DSCF8615.JPG` | Close view of crossing ribs and LEDs |
 | `woodland.jpg` | `2026-07-25/JPG/DSCF8574.JPG` | Wider view from across the stone wall |
 
-Images retain their composition and camera colour. Website source exports
+The user removed `design-model.jpg` (album `IMG_8208.jpeg`) and `assembly.jpg`
+(album `IMG_8830.jpeg`) from the page. Their source files remain available;
+they are not referenced by the published gallery.
+
+Images retain their camera colour. Website source exports
 are at most 3200 px on the long edge, with orientation baked in, converted
 to sRGB, and saved as JPEG quality 93 without upscaling. The existing build
 produces responsive AVIF and WebP derivatives. Originals are unchanged.

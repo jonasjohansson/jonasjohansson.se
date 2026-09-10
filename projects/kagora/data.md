@@ -8,9 +8,9 @@ tags:
   - installation
 blocks:
   - type: image
-    src: finished-pavilion.jpg
-    alt: "Kagora's illuminated arches spread across a woodland clearing, with white, cyan and yellow light tracing the woven pavilion."
-    focal: "50% 40%"
+    src: woodland-mist.jpg
+    alt: "Kagora glows warm gold between dark tree trunks, with mist drifting through the woodland and blue light in the foreground."
+    focal: "50% 58%"
   - type: text
     content: >-
       A woven pavilion of moving light, built as a place to gather in the
@@ -32,6 +32,9 @@ blocks:
     poster: motion-poster.jpg
     ar: 1.777778
     alt: "Bands of pink, blue, yellow and green light travel along Kagora's curved ribs in a woodland clearing."
+  - type: image
+    src: finished-pavilion.jpg
+    alt: "Kagora's illuminated arches spread across a woodland clearing, with white, cyan and yellow light tracing the woven pavilion."
   - type: image
     src: entrance.jpg
     alt: "Looking through Kagora's entrance, turquoise and blue arches overlap above people resting on cushions, with pink light deeper inside."
@@ -72,27 +75,16 @@ blocks:
       structure frames the woodland; after dark, the light gives it a
       different presence.
   - type: image
-    src: design-model.jpg
-    size: half-left
-    alt: "A blue digital model shows Kagora's repeated arches and crossing ribs, with a human figure for scale."
-  - type: image
     src: first-arch.jpg
-    size: half-right
+    size: half-left
     alt: "An early section of Kagora glows green, pink and blue as its curved ribs are tested outdoors."
   - type: image
     src: led-testing.jpg
-    size: half-left
-    alt: "Long LED strips are laid out and illuminated on a workshop floor, with wiring gathered at their ends."
-  - type: image
-    src: assembly.jpg
     size: half-right
-    alt: "A person on a stepladder fastens white curved ribs together beneath the trees during assembly."
+    alt: "Long LED strips are laid out and illuminated on a workshop floor, with wiring gathered at their ends."
   - type: image
     src: woodland.jpg
     alt: "Kagora glows violet and white beyond a low stone wall, surrounded by tree trunks and blue evening light."
-  - type: image
-    src: woodland-mist.jpg
-    alt: "Kagora glows warm gold between dark tree trunks, with mist drifting through the woodland and blue light in the foreground."
   - type: text
     fontSize: small
     content: >-
