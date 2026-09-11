@@ -1,0 +1,632 @@
+[
+  {
+    "name": "room-mix-sandstorm",
+    "seconds": 90,
+    "bpm": 135.98952,
+    "cues": [
+      {
+        "file": "openarena/prepare",
+        "beat": 4,
+        "kind": "voice",
+        "at": 1.77596,
+        "trimmedSeconds": 0.035,
+        "duration": 1.8414791666666666
+      },
+      {
+        "file": "openarena/three",
+        "beat": 12,
+        "kind": "voice",
+        "at": 5.29297,
+        "trimmedSeconds": 0.139,
+        "duration": 0.9500833333333333
+      },
+      {
+        "file": "openarena/two",
+        "beat": 16,
+        "kind": "voice",
+        "at": 7.06893,
+        "trimmedSeconds": 0.015,
+        "duration": 1.0065833333333334
+      },
+      {
+        "file": "openarena/one",
+        "beat": 20,
+        "kind": "voice",
+        "at": 8.82494,
+        "trimmedSeconds": 0.009,
+        "duration": 1.1792916666666666
+      },
+      {
+        "file": "openarena/fight",
+        "beat": 24,
+        "kind": "voice",
+        "at": 10.59592,
+        "trimmedSeconds": 0.071,
+        "duration": 1.0522291666666668
+      },
+      {
+        "file": "cs16/locknload",
+        "beat": 28,
+        "kind": "voice",
+        "at": 12.35692,
+        "trimmedSeconds": 0.015,
+        "duration": 1.2066458333333334
+      },
+      {
+        "file": "aq2/m4a1slide",
+        "beat": 34,
+        "kind": "effect",
+        "at": 15.0059,
+        "trimmedSeconds": 0,
+        "duration": 0.3986875
+      },
+      {
+        "file": "cs16/go",
+        "beat": 40,
+        "kind": "voice",
+        "at": 17.6402,
+        "trimmedSeconds": 0.005,
+        "duration": 1.3632708333333334
+      },
+      {
+        "file": "cs16/ct_fireinhole",
+        "beat": 52,
+        "kind": "voice",
+        "at": 22.94286,
+        "trimmedSeconds": 0.005,
+        "duration": 1.4257083333333334
+      },
+      {
+        "file": "cs16/ak47-1",
+        "beat": 60,
+        "kind": "effect",
+        "at": 26.46984,
+        "trimmedSeconds": 0,
+        "duration": 1.1760208333333333
+      },
+      {
+        "file": "cs16/ak47-1",
+        "beat": 61,
+        "kind": "effect",
+        "at": 26.90884,
+        "trimmedSeconds": 0,
+        "duration": 1.1760208333333333
+      },
+      {
+        "file": "cs16/ak47-1",
+        "beat": 62,
+        "kind": "effect",
+        "at": 27.33787,
+        "trimmedSeconds": 0,
+        "duration": 1.1760208333333333
+      },
+      {
+        "file": "cs16/headshot1",
+        "beat": 68,
+        "kind": "effect",
+        "at": 29.99683,
+        "trimmedSeconds": 0,
+        "duration": 0.8657708333333334
+      },
+      {
+        "file": "openarena/impressive",
+        "beat": 76,
+        "kind": "voice",
+        "at": 33.51383,
+        "trimmedSeconds": 0.045,
+        "duration": 1.2305
+      },
+      {
+        "file": "cs16/bombpl",
+        "beat": 88,
+        "kind": "voice",
+        "at": 38.81179,
+        "trimmedSeconds": 0.009,
+        "duration": 1.5
+      },
+      {
+        "file": "cs16/c4_beep1",
+        "beat": 96,
+        "kind": "effect",
+        "at": 42.33878,
+        "trimmedSeconds": 0.681,
+        "duration": 0.8196041666666667
+      },
+      {
+        "file": "cs16/c4_beep1",
+        "beat": 98,
+        "kind": "effect",
+        "at": 43.22676,
+        "trimmedSeconds": 0.681,
+        "duration": 0.8196041666666667
+      },
+      {
+        "file": "cs16/c4_beep1",
+        "beat": 100,
+        "kind": "effect",
+        "at": 44.10476,
+        "trimmedSeconds": 0.681,
+        "duration": 0.8196041666666667
+      },
+      {
+        "file": "cs16/c4_beep1",
+        "beat": 102,
+        "kind": "effect",
+        "at": 44.98277,
+        "trimmedSeconds": 0.681,
+        "duration": 0.8196041666666667
+      },
+      {
+        "file": "starcraft/sc_advisor_nuclear_launch",
+        "beat": 112,
+        "kind": "voice",
+        "at": 49.39274,
+        "trimmedSeconds": 0.001,
+        "duration": 2.2383333333333333
+      },
+      {
+        "file": "quake2/rocklf1a",
+        "beat": 124,
+        "kind": "effect",
+        "at": 54.70188,
+        "trimmedSeconds": 0.003,
+        "duration": 1.1982291666666667
+      },
+      {
+        "file": "cs16/roger",
+        "beat": 132,
+        "kind": "voice",
+        "at": 58.23156,
+        "trimmedSeconds": 0.025,
+        "duration": 0.8599583333333334
+      },
+      {
+        "file": "mk/mk_get_over_here",
+        "beat": 144,
+        "kind": "voice",
+        "at": 63.52609,
+        "trimmedSeconds": 0.039,
+        "duration": 1.8157083333333333
+      },
+      {
+        "file": "cs16/awp1",
+        "beat": 152,
+        "kind": "effect",
+        "at": 67.05577,
+        "trimmedSeconds": 0,
+        "duration": 1.8292708333333334
+      },
+      {
+        "file": "aq2/headshot",
+        "beat": 160,
+        "kind": "voice",
+        "at": 70.58545,
+        "trimmedSeconds": 0,
+        "duration": 1.0087083333333333
+      },
+      {
+        "file": "cs16/bombdef",
+        "beat": 176,
+        "kind": "voice",
+        "at": 77.64482,
+        "trimmedSeconds": 0.015,
+        "duration": 1.7606041666666667
+      },
+      {
+        "file": "cs16/ctwin",
+        "beat": 184,
+        "kind": "voice",
+        "at": 81.1745,
+        "trimmedSeconds": 0.003,
+        "duration": 1.8737083333333333
+      },
+      {
+        "file": "openarena/perfect",
+        "beat": 192,
+        "kind": "voice",
+        "at": 84.70419,
+        "trimmedSeconds": 0.041,
+        "duration": 1.0836875
+      }
+    ],
+    "peakDb": -3.4360711050517887,
+    "rmsDb": -19.995722165271047,
+    "bytes": 2161291
+  },
+  {
+    "name": "room-mix-kernkraft",
+    "seconds": 90,
+    "bpm": 139.79759,
+    "cues": [
+      {
+        "file": "aq2/lights",
+        "beat": 4,
+        "kind": "voice",
+        "at": 1.71677,
+        "trimmedSeconds": 0.133,
+        "duration": 0.8153958333333333
+      },
+      {
+        "file": "aq2/camera",
+        "beat": 8,
+        "kind": "voice",
+        "at": 3.43354,
+        "trimmedSeconds": 0.205,
+        "duration": 1.0480208333333334
+      },
+      {
+        "file": "aq2/action",
+        "beat": 12,
+        "kind": "voice",
+        "at": 5.1503,
+        "trimmedSeconds": 0.117,
+        "duration": 0.8871875
+      },
+      {
+        "file": "quake2/tele1",
+        "beat": 20,
+        "kind": "effect",
+        "at": 8.59817,
+        "trimmedSeconds": 0,
+        "duration": 0.5966458333333333
+      },
+      {
+        "file": "quake2/pkup",
+        "beat": 28,
+        "kind": "effect",
+        "at": 12.01737,
+        "trimmedSeconds": 0.003,
+        "duration": 0.6854375
+      },
+      {
+        "file": "quake2/pkup",
+        "beat": 30,
+        "kind": "effect",
+        "at": 12.87576,
+        "trimmedSeconds": 0.003,
+        "duration": 0.6854375
+      },
+      {
+        "file": "quake2/blastf1a",
+        "beat": 36,
+        "kind": "effect",
+        "at": 15.46756,
+        "trimmedSeconds": 0,
+        "duration": 0.47379166666666667
+      },
+      {
+        "file": "quake2/blastf1a",
+        "beat": 38,
+        "kind": "effect",
+        "at": 16.30929,
+        "trimmedSeconds": 0,
+        "duration": 0.47379166666666667
+      },
+      {
+        "file": "quake2/railgf1a",
+        "beat": 44,
+        "kind": "effect",
+        "at": 18.88445,
+        "trimmedSeconds": 0.005,
+        "duration": 1.4965
+      },
+      {
+        "file": "openarena/excellent",
+        "beat": 52,
+        "kind": "voice",
+        "at": 22.312,
+        "trimmedSeconds": 0.017,
+        "duration": 0.875
+      },
+      {
+        "file": "aq2/mk23slide",
+        "beat": 64,
+        "kind": "effect",
+        "at": 27.46828,
+        "trimmedSeconds": 0,
+        "duration": 0.3133958333333333
+      },
+      {
+        "file": "aq2/mk23fire",
+        "beat": 68,
+        "kind": "effect",
+        "at": 29.18505,
+        "trimmedSeconds": 0,
+        "duration": 0.9075416666666667
+      },
+      {
+        "file": "aq2/mk23fire",
+        "beat": 70,
+        "kind": "effect",
+        "at": 30.03944,
+        "trimmedSeconds": 0,
+        "duration": 0.9075416666666667
+      },
+      {
+        "file": "aq2/ssgbolt",
+        "beat": 76,
+        "kind": "effect",
+        "at": 32.61859,
+        "trimmedSeconds": 0,
+        "duration": 0.3742083333333333
+      },
+      {
+        "file": "aq2/ssgfire",
+        "beat": 80,
+        "kind": "effect",
+        "at": 34.33536,
+        "trimmedSeconds": 0,
+        "duration": 1.4108958333333332
+      },
+      {
+        "file": "openarena/humiliation",
+        "beat": 88,
+        "kind": "voice",
+        "at": 37.76889,
+        "trimmedSeconds": 0.031,
+        "duration": 1.6137916666666667
+      },
+      {
+        "file": "mk/mk_fight",
+        "beat": 100,
+        "kind": "voice",
+        "at": 42.91919,
+        "trimmedSeconds": 0.161,
+        "duration": 3.3430416666666667
+      },
+      {
+        "file": "aq2/kick",
+        "beat": 108,
+        "kind": "effect",
+        "at": 46.35273,
+        "trimmedSeconds": 0,
+        "duration": 0.30214583333333334
+      },
+      {
+        "file": "aq2/kick",
+        "beat": 110,
+        "kind": "effect",
+        "at": 47.21111,
+        "trimmedSeconds": 0,
+        "duration": 0.30214583333333334
+      },
+      {
+        "file": "mk/mk_toasty",
+        "beat": 116,
+        "kind": "voice",
+        "at": 49.78627,
+        "trimmedSeconds": 0.275,
+        "duration": 0.9016041666666667
+      },
+      {
+        "file": "quake2/damage",
+        "beat": 128,
+        "kind": "effect",
+        "at": 54.93657,
+        "trimmedSeconds": 0.021,
+        "duration": 2.0902083333333334
+      },
+      {
+        "file": "quake2/hyprbf1a",
+        "beat": 136,
+        "kind": "effect",
+        "at": 58.3701,
+        "trimmedSeconds": 0,
+        "duration": 0.09864583333333334
+      },
+      {
+        "file": "quake2/hyprbf1a",
+        "beat": 138,
+        "kind": "effect",
+        "at": 59.22849,
+        "trimmedSeconds": 0,
+        "duration": 0.09864583333333334
+      },
+      {
+        "file": "openarena/denied",
+        "beat": 144,
+        "kind": "voice",
+        "at": 61.80364,
+        "trimmedSeconds": 0.025,
+        "duration": 1.2576458333333334
+      },
+      {
+        "file": "mk/mk_finish_him",
+        "beat": 156,
+        "kind": "voice",
+        "at": 66.95394,
+        "trimmedSeconds": 0.083,
+        "duration": 2.5060416666666665
+      },
+      {
+        "file": "quake2/railgf1a",
+        "beat": 164,
+        "kind": "effect",
+        "at": 70.38748,
+        "trimmedSeconds": 0.005,
+        "duration": 1.4965
+      },
+      {
+        "file": "mk/mk_fatality",
+        "beat": 172,
+        "kind": "voice",
+        "at": 73.82101,
+        "trimmedSeconds": 0.221,
+        "duration": 1.5030833333333333
+      },
+      {
+        "file": "openarena/impressive",
+        "beat": 184,
+        "kind": "voice",
+        "at": 78.97132,
+        "trimmedSeconds": 0.045,
+        "duration": 1.2305
+      },
+      {
+        "file": "mk/mk_flawless_victory",
+        "beat": 196,
+        "kind": "voice",
+        "at": 84.14647,
+        "trimmedSeconds": 0.023,
+        "duration": 1.7533333333333334
+      }
+    ],
+    "peakDb": -4.274893571331641,
+    "rmsDb": -18.587883938922612,
+    "bytes": 2161302
+  },
+  {
+    "name": "room-mix-9pm",
+    "seconds": 90,
+    "bpm": 130.25447,
+    "cues": [
+      {
+        "file": "diablo/d1_cain_stay_awhile_and_listen",
+        "beat": 4,
+        "kind": "voice",
+        "at": 1.81088,
+        "trimmedSeconds": 0.037,
+        "duration": 3.3525416666666668
+      },
+      {
+        "file": "diablo/d2_waypoint_activate",
+        "beat": 16,
+        "kind": "effect",
+        "at": 7.33832,
+        "trimmedSeconds": 0.003,
+        "duration": 2.2857083333333335
+      },
+      {
+        "file": "aoe2/aoe_monk_wololo",
+        "beat": 24,
+        "kind": "voice",
+        "at": 11.03846,
+        "trimmedSeconds": 0.019,
+        "duration": 1.4720833333333334
+      },
+      {
+        "file": "warcraft3/wc3_peon_ready_to_work",
+        "beat": 36,
+        "kind": "voice",
+        "at": 16.5661,
+        "trimmedSeconds": 0.039,
+        "duration": 0.968125
+      },
+      {
+        "file": "warcraft3/wc3_peasant_more_work",
+        "beat": 44,
+        "kind": "voice",
+        "at": 20.24399,
+        "trimmedSeconds": 0.023,
+        "duration": 0.9130208333333333
+      },
+      {
+        "file": "warcraft3/wc3_peon_work_work",
+        "beat": 52,
+        "kind": "voice",
+        "at": 23.93061,
+        "trimmedSeconds": 0.035,
+        "duration": 0.9454166666666667
+      },
+      {
+        "file": "starcraft/sc_advisor_not_enough_minerals",
+        "beat": 64,
+        "kind": "voice",
+        "at": 29.46393,
+        "trimmedSeconds": 0.023,
+        "duration": 1.8497916666666667
+      },
+      {
+        "file": "starcraft/sc_advisor_additional_pylons",
+        "beat": 76,
+        "kind": "voice",
+        "at": 34.97551,
+        "trimmedSeconds": 0.011,
+        "duration": 2.48125
+      },
+      {
+        "file": "aoe2/aoe_taunt04_wood_please",
+        "beat": 88,
+        "kind": "voice",
+        "at": 40.50295,
+        "trimmedSeconds": 0.027,
+        "duration": 1.2289791666666667
+      },
+      {
+        "file": "diablo/d2_levelup",
+        "beat": 100,
+        "kind": "effect",
+        "at": 46.04686,
+        "trimmedSeconds": 0,
+        "duration": 1.2596875
+      },
+      {
+        "file": "starcraft/sc_advisor_research_complete",
+        "beat": 108,
+        "kind": "voice",
+        "at": 49.73195,
+        "trimmedSeconds": 0.015,
+        "duration": 1.3327708333333332
+      },
+      {
+        "file": "warcraft3/wc3_grunt_for_the_horde",
+        "beat": 120,
+        "kind": "voice",
+        "at": 55.25959,
+        "trimmedSeconds": 0.033,
+        "duration": 1.560625
+      },
+      {
+        "file": "starcraft/sc_zealot_my_life_for_aiur",
+        "beat": 132,
+        "kind": "voice",
+        "at": 60.77687,
+        "trimmedSeconds": 0,
+        "duration": 1.7604583333333332
+      },
+      {
+        "file": "diablo/d1_butcher_fresh_meat",
+        "beat": 144,
+        "kind": "voice",
+        "at": 66.30431,
+        "trimmedSeconds": 0.011,
+        "duration": 2.4096875
+      },
+      {
+        "file": "aoe2/aoe_taunt21_nice_town",
+        "beat": 156,
+        "kind": "voice",
+        "at": 71.84172,
+        "trimmedSeconds": 0.029,
+        "duration": 1.6971875
+      },
+      {
+        "file": "aoe2/aoe_taunt11_laugh",
+        "beat": 168,
+        "kind": "voice",
+        "at": 77.36417,
+        "trimmedSeconds": 0.023,
+        "duration": 4.942354166666667
+      },
+      {
+        "file": "diablo/d2_cain_greetings",
+        "beat": 180,
+        "kind": "voice",
+        "at": 82.8978,
+        "trimmedSeconds": 0.011,
+        "duration": 0.8596666666666667
+      },
+      {
+        "file": "diablo/d2_waypoint_activate",
+        "beat": 188,
+        "kind": "effect",
+        "at": 86.58289,
+        "trimmedSeconds": 0.003,
+        "duration": 2.2857083333333335
+      }
+    ],
+    "peakDb": -3.5262828530817076,
+    "rmsDb": -18.790477211727513,
+    "bytes": 2161296
+  }
+]

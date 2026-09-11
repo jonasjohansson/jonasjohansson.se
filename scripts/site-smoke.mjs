@@ -264,6 +264,36 @@ try {
     });
   }
 
+  await check('very large galleries use two columns without reordering content', { viewport: { width: 2560, height: 1440 } }, async page => {
+    await visit(page);
+    const slugs = await page.evaluate(() => window.__PROJECTS_DATA__.map(project => project.slug));
+    for (const slug of slugs) {
+      await visit(page, `/${slug}/`);
+      const geometry = await page.locator('.project-grid').evaluate(grid => {
+        const box = node => {
+          const r = node.getBoundingClientRect();
+          return { x: r.x, y: r.y, width: r.width, right: r.right };
+        };
+        return {
+          width: grid.clientWidth,
+          hero: box(grid.querySelector('.hero')),
+          media: [...grid.querySelectorAll(':scope > .media-item:not(.hero)')].map(box),
+          children: [...grid.children].map(box),
+          overflow: document.documentElement.scrollWidth > innerWidth,
+        };
+      });
+      assert.equal(geometry.overflow, false, `${slug} stays within the viewport`);
+      assert.ok(Math.abs(geometry.hero.width - geometry.width) < 1, `${slug} hero keeps the full width`);
+      for (const media of geometry.media) {
+        assert.ok(media.width <= (geometry.width - 16) / 2 + 1, `${slug} gallery media stays within half the width`);
+        assert.ok(media.x >= 24 && media.right <= 2536 + 1, `${slug} keeps the outer gutter`);
+      }
+      for (let i = 1; i < geometry.children.length; i++) {
+        assert.ok(geometry.children[i].y >= geometry.children[i - 1].y - 1, `${slug} keeps its authored sequence`);
+      }
+    }
+  });
+
   await check('name toggles About with keyboard and reduced motion', { ...desktop, reducedMotion: 'reduce' }, async page => {
     await visit(page);
     await page.evaluate(() => document.fonts.ready);
@@ -627,7 +657,7 @@ try {
       await page.locator('#strip-borderlan').click();
       await page.waitForSelector('#projects #borderlan');
       const samples = page.locator('#projects audio');
-      assert.equal(await samples.count(), 2);
+      assert.equal(await samples.count(), 3);
       assert.equal(await samples.evaluateAll(nodes => nodes.every(audio => audio.paused && !audio.autoplay && audio.preload === 'none' && audio.controls && audio.getAttribute('aria-label'))), true);
       await samples.first().scrollIntoViewIfNeeded();
       assert.equal(downloads.length, 0, 'scrolling to the players does not download audio');
@@ -640,11 +670,12 @@ try {
           return !audio.paused && audio.currentTime > 0;
         }, index);
       };
-      await play(0);
-      assert.ok(await samples.first().evaluate(audio => Math.abs(audio.duration - 90) < 0.1), 'the actual 90-second mix decodes');
-      await play(1);
-      assert.equal(await samples.first().evaluate(audio => audio.paused), true, 'samples cannot overlap');
-      const playing = await samples.nth(1).elementHandle();
+      for (let index = 0; index < 3; index++) {
+        await play(index);
+        assert.ok(await samples.nth(index).evaluate(audio => Math.abs(audio.duration - 90) < 0.1), 'each actual 90-second mix decodes');
+        assert.equal(await samples.evaluateAll((nodes, active) => nodes.every((audio, i) => i === active || audio.paused), index), true, 'samples cannot overlap');
+      }
+      const playing = await samples.nth(2).elementHandle();
       await page.goBack();
       await page.waitForFunction(() => document.body.dataset.route === 'home');
       assert.equal(await playing.evaluate(audio => audio.paused), true, 'detached audio stops when leaving the project');

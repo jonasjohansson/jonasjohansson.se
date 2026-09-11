@@ -46,8 +46,6 @@ blocks:
       A custom launcher and a central controller connected the computers
       to the room's sound, lights and projections, allowing the players'
       activity to reach beyond their screens.
-      The [software](https://github.com/jonasjohansson/borderlan) brings
-      the game stations and the surrounding audiovisual system together.
   - type: image
     src: game-stations.jpg
     alt: "Heroes of Might and Magic III fills two screens above white keyboards, headphones, candles and leafy branches."
@@ -80,33 +78,31 @@ blocks:
       Music and familiar game sounds filled the room around the players.
       These mixes bring together tracks from the playlist with voices,
       spells, weapons, announcements and interface sounds from all nine
-      of the room's game soundbanks.
-  - type: audio
-    src: room-mix-thrown.mp3
-    label: "Kiasmos, Thrown + game soundboard · 1:30"
+      of the room's game soundbanks, arranged to follow the beat.
   - type: audio
     src: room-mix-sandstorm.mp3
     label: "Darude, Sandstorm + game soundboard · 1:30"
-  - type: image
-    src: table-detail.jpg
-    size: half-left
-    alt: "An overhead view of the gaming table shows keyboards, headphones, cables, plants and candles arranged around the screens."
+  - type: audio
+    src: room-mix-kernkraft.mp3
+    label: "Zombie Nation, Kernkraft 400 + game soundboard · 1:30"
+  - type: audio
+    src: room-mix-9pm.mp3
+    label: "ATB, 9PM (Till I Come) + game soundboard · 1:30"
   - type: image
     src: station-overhead.jpg
-    size: half-right
     alt: "A gaming station seen from directly above: white keyboard and mouse, headphones, candlelight and the red wooden seat beside the table."
-  - type: image
-    src: candles.jpg
-    alt: "Candles burn among pooled wax and small glasses on the red gaming table."
   - type: text
     fontSize: small
     content: >-
-      The cellar held a small social world of its own: stone walls, warm
-      light, melting candles and people close enough to talk across the
-      table. The game gave everyone a reason to sit down together.
       The [website](https://borderlan.land/) extended that atmosphere with
       a glowing cellar door, a shelf of games and a place to book a seat.
   - type: image
     src: website.png
     alt: "The BorderLAN website presents a glowing cellar door between ornate panels for the event introduction and booking a seat."
+  - type: text
+    fontSize: small
+    content: >-
+      The cellar held a small social world of its own: stone walls, warm
+      light, melting candles and people close enough to talk across the
+      table. The games gave everyone a reason to sit down together.
 ---

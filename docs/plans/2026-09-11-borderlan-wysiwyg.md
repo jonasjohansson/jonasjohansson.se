@@ -272,3 +272,52 @@ The build and six content tests passed. Targeted Chrome checks at 1440 px and
 mobile pairs use a 16 px gap, all gallery images remain lazy and there is no
 horizontal overflow. Both audio players and the video remain present. The new
 pairs and room views were visually reviewed in `screenshots/borderlan-room/`.
+
+## Three beat-aligned mixes and a tighter ending
+
+Replaced the Kiasmos player with Zombie Nation's Kernkraft 400 and ATB's
+9PM (Till I Come), alongside a new Darude Sandstorm mix. Each sample is 90
+seconds, 48 kHz stereo, encoded as a 192 kbps MP3. They use 75 cues from all
+nine source soundbanks: Counter-Strike, Quake II, Action Quake 2, OpenArena,
+Diablo, Mortal Kombat, Age of Empires II, Warcraft III and StarCraft.
+
+The music excerpts begin at source times 170.17359 s (Darude), 75.3854 s
+(Zombie Nation) and 75.17359 s (ATB). The low-frequency pulse analysis estimates
+135.98952, 139.79759 and 130.25447 BPM respectively. Beat grids preserve a steady
+pulse through breaks and refine nearby detected attacks within 30 ms, at about
+5 ms analysis resolution. These are measured estimates, not authored tempo maps.
+Cues use beat indices, including short rhythmic weapon/beep sequences. Leading
+silence is removed before placing each audible attack; voice cues are checked
+for overlap. Only voices duck the music, with 12 ms attack and 250 ms release.
+The mixes leave headroom and fade out over eight beats.
+
+`docs/visuals/borderlan/analyse-beats.py` reproduces analysis from the read-only
+source recordings using FFmpeg, NumPy and SciPy. `audio-mixes.json` saves the
+selected grids and cues; `mix-audio.mjs` renders the files and writes an exact
+cue/trim/level report. Decoding the final MP3s confirmed exactly 90 seconds each,
+finite samples and no clipping, with peaks between -4.59 and -3.78 dBFS. This
+was signal analysis and browser playback validation, not a listening review.
+
+Removed the BorderLAN repository link. The overhead station photograph
+(`station-overhead.jpg`, published hash `pWHFHRoHNc`) now uses the full gallery
+width at normal desktop sizes. Removed `table-detail.jpg` (`hqptk_i0uZ`) and
+`candles.jpg` (`j0POtXjINy`) from the page, leaving twelve images. Source files
+remain intact. The existing social paragraph now closes the page after the
+website image, ending with: “The games gave everyone a reason to sit down
+together.”
+
+## Very large display galleries
+
+At viewport widths above 1920 CSS pixels, standalone gallery images and videos
+use six of twelve columns, letting consecutive media share a row. This applies
+to all projects. Heroes keep their full width, authored image groups retain their
+proportions, and smaller screens keep their established layouts. Row placement
+preserves the document order, preventing later media from jumping into empty
+space above text. Responsive image sizes match the new half-width tracks.
+
+The build, six content tests and all 49 browser checks passed, including all
+project routes at 2560 px and playback of all three mixes on desktop and mobile.
+Targeted checks at 390, 1440 and 2560 px confirmed twelve decoded images, two
+existing image pairs, expected overhead image widths, no horizontal overflow,
+removed content and the closing paragraph. Desktop, mobile audio and large-screen
+layout screenshots were visually reviewed in `screenshots/borderlan-final/`.
