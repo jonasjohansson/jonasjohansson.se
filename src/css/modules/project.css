@@ -47,6 +47,20 @@
   height: auto;
 }
 
+.media-item:has(> .media-controls-reveal) { position: relative; }
+.media-controls-reveal {
+  position: absolute;
+  inset: 0;
+  width: 100%;
+  height: 100%;
+  padding: 0;
+  border: 0;
+  border-radius: var(--radius-media);
+  background: transparent;
+  cursor: pointer;
+}
+.media-controls-reveal:hover { background: transparent; }
+
 #projects {
   display: block;
   width: 100%;

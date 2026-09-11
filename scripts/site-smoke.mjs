@@ -106,7 +106,7 @@ try {
         gutter: parseFloat(getComputedStyle(document.getElementById('content')).paddingTop),
         floatingTitle: document.getElementById('header-toggle').textContent.trim(),
         alt: document.querySelector('.hero img')?.alt || document.querySelector('.hero video')?.getAttribute('aria-label'),
-        videoControls: [...document.querySelectorAll('#projects video')].every(video => video.controls === !video.closest('.hero') && video.getAttribute('aria-hidden') !== 'true'),
+        videoControls: [...document.querySelectorAll('#projects video')].every(video => !video.controls && video.getAttribute('aria-hidden') !== 'true' && (video.closest('.hero') || video.nextElementSibling?.matches('button.media-controls-reveal:not([hidden])'))),
         creditsAligned: [...document.querySelectorAll('.credits-list')].every(list => getComputedStyle(list).textAlign === 'left'),
         captions: document.querySelectorAll('#projects figcaption, #projects .video-description').length,
         videoDescriptions: [...document.querySelectorAll('#projects video')].every(video => video.getAttribute('aria-label')?.length > 15),
@@ -589,9 +589,54 @@ try {
     assert.equal(await page.locator('#navigation-status').getAttribute('hidden'), '');
   });
 
+  await check('mobile video controls appear on tap without changing playback', mobile, async page => {
+    await visit(page, '/kagora/');
+    const video = page.locator('#projects video').first();
+    const reveal = page.getByRole('button', { name: /^Show video controls:/ }).first();
+    await video.scrollIntoViewIfNeeded();
+    await page.waitForFunction(() => !document.querySelector('#projects video').paused);
+    assert.equal(await video.evaluate(video => video.controls), false, 'autoplay does not show controls');
+    await reveal.tap();
+    assert.equal(await video.evaluate(video => video.controls && !video.paused), true, 'first tap reveals controls without pausing');
+    assert.equal(await reveal.isVisible(), false, 'native controls receive subsequent taps');
+    await video.press('Space');
+    await page.waitForFunction(() => document.querySelector('#projects video').paused);
+    await page.locator('.project-grid > .media-item').last().scrollIntoViewIfNeeded();
+    await page.waitForFunction(() => !document.querySelector('#projects video').controls);
+    await video.scrollIntoViewIfNeeded();
+    assert.equal(await video.evaluate(video => video.paused), true, 'manual pause survives scrolling away and back');
+    await reveal.focus();
+    await page.keyboard.press('Enter');
+    assert.equal(await video.evaluate(video => video.controls && video.paused), true, 'keyboard can reveal controls without resuming');
+  });
+
+  await check('mobile video controls respect reduced motion and client navigation', { ...mobile, reducedMotion: 'reduce' }, async page => {
+    await visit(page);
+    await page.locator('#strip-kagora').tap();
+    await page.waitForSelector('#projects #kagora');
+    const video = page.locator('#projects video').first();
+    const reveal = page.getByRole('button', { name: /^Show video controls:/ }).first();
+    await video.scrollIntoViewIfNeeded();
+    assert.equal(await video.evaluate(video => video.paused && !video.controls), true);
+    await reveal.tap();
+    assert.equal(await video.evaluate(video => video.controls && video.paused), true, 'revealing controls does not autoplay with reduced motion');
+    await page.goBack();
+    await page.waitForFunction(() => document.body.dataset.route === 'home');
+    await page.locator('#strip-kagora').tap();
+    await page.waitForSelector('#projects #kagora');
+    assert.equal(await page.locator('#projects .media-controls-reveal').count(), 1, 'remount does not duplicate the tap target');
+    assert.equal(await video.evaluate(video => video.paused && !video.controls), true, 'returning starts with controls hidden');
+  });
+
+  await check('native gallery controls remain available without JavaScript', { ...mobile, javaScriptEnabled: false }, async page => {
+    await page.goto(base + '/kagora/');
+    assert.equal(await page.locator('#projects video').evaluate(video => video.controls), true);
+  });
+
   await check('motion preference applies to every mount and can change', { ...desktop, reducedMotion: 'reduce' }, async page => {
     await visit(page, '/jagad/');
     const video = page.locator('#projects video').first();
+    assert.equal(await video.evaluate(video => video.controls), true, 'desktop keeps native controls');
     await video.scrollIntoViewIfNeeded();
     await page.waitForTimeout(200);
     assert.equal(await video.evaluate(video => video.paused && !video.autoplay), true);
