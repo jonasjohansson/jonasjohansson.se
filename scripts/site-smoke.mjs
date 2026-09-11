@@ -419,16 +419,21 @@ try {
   await check('strip previews highlight enabled tags without changing filters', desktop, async page => {
     const highlighted = () => page.locator('#project-filters .is-preview-tag').evaluateAll(buttons => buttons.map(button => button.dataset.filter));
     const selected = () => page.locator('#project-filters [aria-pressed="true"]').evaluateAll(buttons => buttons.map(button => button.dataset.filter));
+    const footerLayout = () => page.locator('#project-filters').evaluate(filters => {
+      const rect = filters.getBoundingClientRect();
+      const collection = document.getElementById('collection').getBoundingClientRect();
+      return { x: rect.x - collection.x, y: rect.y - collection.y, width: rect.width, height: rect.height };
+    });
     for (const route of ['/', '/jagad/']) {
       await visit(page, route);
       await page.locator('#collection').evaluate(collection => collection.scrollIntoView({ block: 'start' }));
       const before = await selected();
-      const footer = await page.locator('#project-filters').boundingBox();
+      const footer = await footerLayout();
       await page.locator('#strip-kagora').hover();
       assert.deepEqual(await highlighted(), ['light', 'community'], 'Kagora highlights its enabled categories');
       assert.deepEqual(await selected(), before, 'previewing a project does not toggle filters');
       assert.equal(await page.locator('#project-filters [data-filter="light"]').evaluate(button => getComputedStyle(button).textDecorationLine), 'underline', 'matching tags are visibly underlined');
-      assert.deepEqual(await page.locator('#project-filters').boundingBox(), footer, 'the highlight does not shift the footer');
+      assert.deepEqual(await footerLayout(), footer, 'the highlight does not shift the footer within the collection');
       await page.screenshot({ path: `${output}/tag-preview${route === '/' ? '-home' : '-project'}.png` });
       await page.mouse.move(0, 0);
       assert.deepEqual(await highlighted(), [], 'highlight clears on pointer leave');
