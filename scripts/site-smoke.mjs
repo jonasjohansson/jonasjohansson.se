@@ -246,7 +246,7 @@ try {
     await checkFooter(page);
   });
 
-  for (const [name, options] of [['desktop', desktop], ['wide desktop', { viewport: { width: 1920, height: 1080 } }], ['mobile', mobile]]) {
+  for (const [name, options] of [['narrow desktop', { viewport: { width: 1280, height: 900 } }], ['below desktop breakpoint', { viewport: { width: 1439, height: 900 } }], ['mobile', mobile]]) {
     await check(`${name} gallery images share the hero margins`, options, async page => {
       for (const slug of ['borderlan', 'wysiwyg', 'kagora', 'dome-dreaming']) {
         await visit(page, `/${slug}/`);
@@ -264,35 +264,47 @@ try {
     });
   }
 
-  await check('very large galleries use two columns without reordering content', { viewport: { width: 2560, height: 1440 } }, async page => {
-    await visit(page);
-    const slugs = await page.evaluate(() => window.__PROJECTS_DATA__.map(project => project.slug));
-    for (const slug of slugs) {
-      await visit(page, `/${slug}/`);
-      const geometry = await page.locator('.project-grid').evaluate(grid => {
-        const box = node => {
-          const r = node.getBoundingClientRect();
-          return { x: r.x, y: r.y, width: r.width, right: r.right };
-        };
-        return {
-          width: grid.clientWidth,
-          hero: box(grid.querySelector('.hero')),
-          media: [...grid.querySelectorAll(':scope > .media-item:not(.hero)')].map(box),
-          children: [...grid.children].map(box),
-          overflow: document.documentElement.scrollWidth > innerWidth,
-        };
-      });
-      assert.equal(geometry.overflow, false, `${slug} stays within the viewport`);
-      assert.ok(Math.abs(geometry.hero.width - geometry.width) < 1, `${slug} hero keeps the full width`);
-      for (const media of geometry.media) {
-        assert.ok(media.width <= (geometry.width - 16) / 2 + 1, `${slug} gallery media stays within half the width`);
-        assert.ok(media.x >= 24 && media.right <= 2536 + 1, `${slug} keeps the outer gutter`);
+  for (const width of [1440, 1850, 2560]) {
+    await check(`${width}px galleries use two columns without reordering content`, { viewport: { width, height: 1000 } }, async page => {
+      await visit(page);
+      const slugs = await page.evaluate(() => window.__PROJECTS_DATA__.map(project => project.slug));
+      for (const slug of slugs) {
+        await visit(page, `/${slug}/`);
+        const geometry = await page.locator('.project-grid').evaluate(grid => {
+          const box = node => {
+            const r = node.getBoundingClientRect();
+            return { x: r.x, y: r.y, width: r.width, right: r.right };
+          };
+          return {
+            width: grid.clientWidth,
+            hero: box(grid.querySelector('.hero')),
+            media: [...grid.querySelectorAll(':scope > .media-item:not(.hero)')].map(box),
+            children: [...grid.children].map(box),
+            overflow: document.documentElement.scrollWidth > innerWidth,
+          };
+        });
+        assert.equal(geometry.overflow, false, `${slug} stays within the viewport`);
+        assert.ok(Math.abs(geometry.hero.width - geometry.width) < 1, `${slug} hero keeps the full width`);
+        for (const media of geometry.media) {
+          assert.ok(media.width <= (geometry.width - 16) / 2 + 1, `${slug} gallery media stays within half the width`);
+          assert.ok(media.x >= 24 && media.right <= width - 24 + 1, `${slug} keeps the outer gutter`);
+        }
+        for (let i = 1; i < geometry.children.length; i++) {
+          assert.ok(geometry.children[i].y >= geometry.children[i - 1].y - 1, `${slug} keeps its authored sequence`);
+        }
       }
-      for (let i = 1; i < geometry.children.length; i++) {
-        assert.ok(geometry.children[i].y >= geometry.children[i - 1].y - 1, `${slug} keeps its authored sequence`);
-      }
-    }
-  });
+      await visit(page, '/borderlan/');
+      const entrance = page.locator('img[alt^="An illuminated BorderLAN sign"]');
+      const doorway = page.locator('img[alt^="A view through the blue cellar doorway"]');
+      const first = await entrance.boundingBox(), second = await doorway.boundingBox();
+      assert.ok(Math.abs(first.y - second.y) < 1, 'the entrance and Counter-Strike room photograph share a row');
+      assert.ok(Math.abs(second.x - first.x - first.width - 16) < 1, 'the two photographs have the normal gutter');
+      await entrance.scrollIntoViewIfNeeded();
+      await entrance.evaluate(image => image.decode());
+      await doorway.evaluate(image => image.decode());
+      await page.screenshot({ path: `${output}/borderlan-two-images-${width}.png` });
+    });
+  }
 
   await check('name toggles About with keyboard and reduced motion', { ...desktop, reducedMotion: 'reduce' }, async page => {
     await visit(page);

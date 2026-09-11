@@ -359,9 +359,9 @@ html[data-theme="dark"] .text-block a {
 .media-item.size-small-left  { grid-column: 1 / span 5; }
 .media-item.size-small-right { grid-column: 8 / span 5; }
 
-/* On very large screens, consecutive gallery plates share a row. Preserve
+/* On large desktop screens, consecutive gallery images share a row. Preserve
    document order so later photographs never fill holes above intervening text. */
-@media (min-width: 1921px) {
+@media (min-width: 1440px) {
   .project-grid {
     column-gap: var(--gutter-pair);
     grid-auto-flow: row;

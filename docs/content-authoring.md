@@ -40,7 +40,7 @@ Image dimensions and responsive sources are generated during the build. Leave `a
 
 For a closer view inside a gallery image's existing frame, set `zoom: 1.8` and a `focal` point. Zoom accepts values from 1 to 3 and remains fixed on hover. The source photograph and navigation strips keep their original framing.
 
-Above 1920 CSS pixels, individual gallery images and videos use half the content
+At 1440 CSS pixels and wider, individual gallery images and videos use half the content
 width and consecutive items share a row. Heroes remain full width. Existing
 image groups keep their shared row and aspect-ratio proportions. Content order
 is preserved across intervening text; smaller screens keep their existing layout.

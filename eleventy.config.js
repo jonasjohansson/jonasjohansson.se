@@ -93,7 +93,7 @@ function mediaSizes(span, ar) {
   const track = span && span < 12 ? `calc(${+(span / 12 * 100).toFixed(3)}vw - ${+(48 * span / 12 + 32 * (1 - span / 12)).toFixed(3)}px)` : 'calc(100vw - 48px)';
   const desktop = ar < 1 ? `min(${track}, calc((100vh - 192px) * ${+ar.toFixed(4)}))` : track;
   const large = ar < 1 ? `min(calc(50vw - 32px), calc((100vh - 192px) * ${+ar.toFixed(4)}))` : 'calc(50vw - 32px)';
-  return `(min-width: 1921px) ${large}, (max-width: 768px) calc(100vw - 48px), ${desktop}`;
+  return `(min-width: 1440px) ${large}, (max-width: 768px) calc(100vw - 48px), ${desktop}`;
 }
 
 export default function (eleventyConfig) {
