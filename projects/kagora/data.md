@@ -40,6 +40,9 @@ blocks:
       the weave, different curves emerge and recede, changing the space
       around the people sitting and lying beneath it.
   - type: image
+    src: pavilion-front.jpg
+    alt: "A frontal view of Kagora at dusk, with pink, green and white light tracing the woven arches above visitors resting on cushions."
+  - type: image
     src: woven-detail-ai.png
     size: half-left
     alt: "A close view of diagonal tubes crossing in a dense weave of pink, violet, blue and green light against the dark."
@@ -83,6 +86,9 @@ blocks:
       to plan the power and wiring, and
       [LED Zeppelin](https://github.com/jonasjohansson/ledzeppelin)
       to map visuals onto the tubes and control them in real time.
+  - type: image
+    src: lighting-control.jpg
+    alt: "Hands at a laptop showing a digital model of Kagora, with the illuminated pavilion glowing blue among the trees behind it."
   - type: image
     src: first-arch.jpg
     size: half-left

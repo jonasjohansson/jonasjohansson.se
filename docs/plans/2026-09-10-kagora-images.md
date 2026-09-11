@@ -2,7 +2,7 @@
 
 Kagora is the woodland light installation at Borderland 2026. Its new page
 is `projects/kagora/data.md`, dated 25 July 2026 and tagged Light, Community,
-and Installation. It uses thirteen images and one ten-second video. Five finished
+and Installation. It uses fifteen images and one ten-second video. Five finished
 views now use AI refinements approved by the user. The woodland hero uses a
 fixed 1.5× crop of the levelled AI image, with no rotation. Tall tablet and
 desktop windows use a wider hero frame to keep the full pavilion in view.
@@ -37,6 +37,19 @@ originals supply four additional night views.
 | `tube-joints.jpg` | Album: `IMG_8926.jpeg` | Close view of multicoloured LEDs, tube connectors and joints |
 | `rib-detail.jpg` | Album: `IMG_8959.jpeg` | Blue and warm-white ribs showing the LED strips inside, paired with the joints |
 | `woodland.jpg` | `2026-07-25/JPG/DSCF8574.JPG` | View from across the stone wall, with a fixed closer crop on the page |
+| `pavilion-front.jpg` | `2026-07-25/RAF/DSCF8637.RAF` | Frontal view of the woven structure after the lighting-scale paragraph |
+| `lighting-control.jpg` | `2026-07-25/RAF/DSCF8609.RAF` | Laptop and illuminated pavilion, following the software paragraph |
+
+On 11 September, reviewed the RAF originals for DSCF8609, DSCF8610, DSCF8637,
+DSCF8638 and DSCF8639 before choosing the two additional photographs. DSCF8637
+has the clearest frontal composition; DSCF8609 gives the laptop and physical
+installation space within a landscape frame. The alternatives remain unused.
+These two exports were decoded directly from the RAW sensor data with macOS
+Core Image `CIRAWFilter.outputImage`, using camera white balance, default tone
+and noise settings, zero added exposure (baseline +0.12 EV), no crop and no
+generative editing. Review previews were 1600 px; final sRGB JPEGs are
+3200 × 2134 at quality 0.94. White balance was 8672 K / tint 18.685 for
+DSCF8637 and 3516 K / tint 3.951 for DSCF8609. Originals are unchanged.
 
 The user removed `design-model.jpg` (album `IMG_8208.jpeg`), `assembly.jpg`
 (album `IMG_8830.jpeg`), `hero.jpg` (camera `DSCF8599.JPG`) and
