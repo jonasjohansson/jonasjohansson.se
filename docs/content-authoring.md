@@ -13,7 +13,8 @@ source filename and development settings for selected exports.
 
 BorderLAN must not show unaltered faces. Prefer photographs of the empty room,
 entrance and equipment. The user also permits people with faces fully obscured,
-preferably replaced by Diablo II character portraits. Check every face, including
+replaced by character portraits from the games, including Counter-Strike 1.6
+and Diablo II. Represent the wider game selection in images and copy. Check every face, including
 partly hidden people and reflections. Keep untouched photographs out of the site.
 
 The first block must be an image or video with a meaningful `alt` description. Video heroes also require a local poster image (see below). Describe the visible artwork, material, setting or interaction that matters beyond the surrounding prose. Add descriptions to other informative views too; use `alt: ""` for redundant views or decoration. Descriptions stay in image `alt` attributes and video `aria-label` attributes. Media captions are not rendered.

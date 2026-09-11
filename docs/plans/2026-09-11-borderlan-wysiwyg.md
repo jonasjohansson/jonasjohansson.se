@@ -169,7 +169,7 @@ full range of soundbanks, and gallery images as wide as the hero.
 - `players-diablo.png` now uses the reviewed five-person collage as BorderLAN's
   hero, navigation preview and sharing image. Its complete composition is kept.
 - `doorway-diablo.png` is a second built-in imagegen edit, made from the
-  RAW-developed `2026-07-24/RAF/DSCF8538.RAF`. The four visible heads are covered
+  RAW-developed `2026-07-23/RAF/DSCF8538.RAF`. The four visible heads are covered
   by Barbarian, Necromancer, Sorceress and Druid portraits. The complete frame was
   reviewed, including the partially concealed standing person. Its exact prompt
   is in `docs/visuals/borderlan/doorway-prompt.txt`. Untouched faces remain absent
@@ -205,3 +205,36 @@ desktop widths, actual moving frames in the flock recording, both 90-second
 audio files and toggling About immediately after a scroll. Final visual checks
 at 1440 px and 390 px confirmed all media decoded without horizontal overflow.
 Captures are in `screenshots/summer-media-final/` (ignored).
+
+## Broader game selection
+
+The user clarified that Counter-Strike was a substantial part of the event and
+that the page gave Diablo II too much emphasis. The red-table hero remains;
+the second people photograph now uses classic Counter-Strike 1.6 character
+heads. `doorway-counter-strike.png` was made with the built-in image tool using
+the RAW-developed `2026-07-23/RAF/DSCF8538.RAF` export as the target and the
+previous collage as a style reference. The exact prompt is saved beside this
+project's other prompts in `docs/visuals/borderlan/counter-strike-prompt.txt`.
+All four visible heads, including the partially concealed standing person,
+were visually reviewed. Originals remain untouched.
+
+The introduction now names the eight public games in `launcher/games.list`.
+The new `launcher-games.png` capture shows all eight with Counter-Strike
+selected. `docs/visuals/borderlan/capture-launcher.mjs` reproduces the capture
+with launch actions, hardware actions and remote requests blocked.
+
+The Diablo II cinematic is replaced by an 18-second reel of existing launcher
+gameplay previews, with six seconds each of Counter-Strike 1.6 (source 4–10 s),
+Action Quake 2 (6–12 s) and OpenArena (4–10 s). It uses straight cuts, native
+1280 × 720 frames, H.264 at 30 fps and no audio. The poster is the first frame.
+`docs/visuals/borderlan/build-game-reel.mjs` reproduces both files. These are
+launcher previews, not recordings of visitors' sessions. Source entries are in
+the read-only BorderLAN repo's `launcher/trailers.list`: `ayXdSIPFO3Q`,
+`6m-P3MmhDc0` and `OuJ-ngmzLPU` respectively. All three were inspected locally.
+The existing music samples already use all nine soundbanks and are retained.
+
+The production build, all six content tests and all 48 browser checks passed.
+Additional checks at 1440 px and 390 px confirmed all seven images decoded,
+no horizontal overflow, both existing audio players, and actual 1280 × 720
+playback of the 18-second reel. The new photo, launcher and all three video
+sections were visually reviewed; captures are in `screenshots/borderlan-games/`.

@@ -18,15 +18,16 @@ blocks:
     fontSize: small
     content: >-
       Hosted with [Rose Hallgren](https://rosehallgren.se/), BorderLAN brought
-      people together around games including Diablo II, Quake II and
-      Heroes of Might and Magic III. Players chose what to play together,
+      people together around Counter-Strike 1.6, Quake II, Unreal Tournament,
+      Heroes of Might and Magic III, Diablo and Diablo II, with Action Quake 2
+      and OpenArena also on the shelf. Players chose what to play together,
       with music, food and drinks accompanying each sitting.
   - type: image
     src: entrance.jpg
     alt: "An illuminated BorderLAN sign above the cellar entrance reads 'stay a while and listen', surrounded by foliage and small lights."
   - type: image
-    src: doorway-diablo.png
-    alt: "A view through the blue cellar doorway into the red gaming room, with Diablo II portraits covering every visible player's head."
+    src: doorway-counter-strike.png
+    alt: "A view through the blue cellar doorway into the red gaming room, with classic Counter-Strike character heads covering every visible player's head."
   - type: text
     fontSize: small
     content: >-
@@ -37,19 +38,20 @@ blocks:
       The [software](https://github.com/jonasjohansson/borderlan) brings
       the game stations and the surrounding audiovisual system together.
   - type: image
-    src: launcher.png
-    alt: "The custom BorderLAN game launcher, with Diablo II: Lord of Destruction selected among eight game covers."
+    src: launcher-games.png
+    alt: "The custom BorderLAN launcher shows all eight game covers, with Counter-Strike 1.6 selected."
   - type: text
     fontSize: small
     content: >-
-      The launcher borrowed the atmosphere of the games themselves. Its
-      Diablo II: Lord of Destruction cinematic preview set the scene before
-      anyone entered the game.
+      The launcher borrowed the atmosphere of the games themselves, moving
+      between their worlds as players browsed the shelf. This reel brings
+      together its gameplay previews for Counter-Strike 1.6, Action Quake 2
+      and OpenArena.
   - type: video
-    src: diablo-preview.mp4
-    poster: diablo-preview.jpg
+    src: game-previews.mp4
+    poster: game-previews.jpg
     ar: 1.7777777778
-    alt: "An excerpt from the Diablo II: Lord of Destruction cinematic used as a preview in the BorderLAN launcher."
+    alt: "A reel of the launcher's Counter-Strike 1.6, Action Quake 2 and OpenArena gameplay previews."
   - type: text
     fontSize: small
     content: >-
