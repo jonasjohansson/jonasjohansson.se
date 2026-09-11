@@ -594,6 +594,41 @@ try {
     assert.equal(await page.locator('#navigation-status').getAttribute('hidden'), '');
   });
 
+  for (const [name, options] of [['desktop', desktop], ['mobile', mobile]]) {
+    await check(`${name} audio samples load on demand and stop on navigation`, options, async page => {
+      const downloads = [];
+      page.on('request', request => { if (/room-mix-.*\.mp3$/.test(request.url())) downloads.push(request.url()); });
+      await visit(page);
+      await page.locator('#strip-borderlan').click();
+      await page.waitForSelector('#projects #borderlan');
+      const samples = page.locator('#projects audio');
+      assert.equal(await samples.count(), 2);
+      assert.equal(await samples.evaluateAll(nodes => nodes.every(audio => audio.paused && !audio.autoplay && audio.preload === 'none' && audio.controls && audio.getAttribute('aria-label'))), true);
+      await samples.first().scrollIntoViewIfNeeded();
+      assert.equal(downloads.length, 0, 'scrolling to the players does not download audio');
+      const play = async index => {
+        const player = samples.nth(index);
+        const box = await player.boundingBox();
+        await player.click({ position: { x: 20, y: box.height / 2 } });
+        await page.waitForFunction(index => {
+          const audio = document.querySelectorAll('#projects audio')[index];
+          return !audio.paused && audio.currentTime > 0;
+        }, index);
+      };
+      await play(0);
+      assert.ok(await samples.first().evaluate(audio => Math.abs(audio.duration - 18) < 0.1), 'the actual short sample decodes');
+      await play(1);
+      assert.equal(await samples.first().evaluate(audio => audio.paused), true, 'samples cannot overlap');
+      const playing = await samples.nth(1).elementHandle();
+      await page.goBack();
+      await page.waitForFunction(() => document.body.dataset.route === 'home');
+      assert.equal(await playing.evaluate(audio => audio.paused), true, 'detached audio stops when leaving the project');
+      await page.goForward();
+      await page.waitForSelector('#projects #borderlan');
+      assert.equal(await samples.evaluateAll(nodes => nodes.every(audio => audio.paused)), true, 'returning does not resume playback');
+    });
+  }
+
   await check('mobile video controls appear on tap without changing playback', mobile, async page => {
     await visit(page, '/kagora/');
     const video = page.locator('#projects video').first();

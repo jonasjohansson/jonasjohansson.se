@@ -3,6 +3,7 @@ const touch = matchMedia('(any-pointer: coarse)');
 let observer;
 let controller;
 let records = [];
+let audioSamples = [];
 
 function resetControls(record) {
   if (!record.reveal) return;
@@ -23,7 +24,14 @@ export function mountMedia(root) {
   observer?.disconnect();
   controller?.abort();
   records.forEach(({ video, reveal }) => { video.pause(); reveal?.remove(); });
+  audioSamples.forEach(audio => audio.pause());
   controller = new AbortController();
+  audioSamples = [...root.querySelectorAll('audio')];
+  for (const audio of audioSamples) {
+    audio.addEventListener('play', () => {
+      audioSamples.forEach(other => { if (other !== audio) other.pause(); });
+    }, { signal: controller.signal });
+  }
   records = [...root.querySelectorAll('video[data-preview]')].map(video => ({ video, visible: false, manual: false }));
   const byVideo = new Map(records.map(record => [record.video, record]));
   observer = new IntersectionObserver(entries => {
@@ -67,4 +75,7 @@ motion.addEventListener('change', () => {
   }
 });
 touch.addEventListener('change', () => records.forEach(resetControls));
-document.addEventListener('visibilitychange', () => records.forEach(update));
+document.addEventListener('visibilitychange', () => {
+  records.forEach(update);
+  if (document.hidden) audioSamples.forEach(audio => audio.pause());
+});

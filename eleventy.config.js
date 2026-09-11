@@ -53,6 +53,9 @@ async function buildProject(project) {
         mobileAr: block.ar, focal: block.focal || '50% 50%',
         mobileFocal: block.mobileFocal || block.focal || '50% 50%', heroFit: block.heroFit || 'cover' };
     }
+    if (block.type === 'audio') {
+      return { ...block, src: `/${project.directory}/${block.src}`, colStart: colStart || 2, colSpan: colSpan || 10 };
+    }
     if (block.type === 'text') {
       return { type: 'text', content: renderMarkdown(block.content), colStart: colStart || 2, colSpan: colSpan || 10,
         fontSizeClass: block.fontSize?.includes('small') || block.fontSize?.includes('1.2') ? 'text-small' : block.fontSize ? 'text-medium' : 'text-large' };
@@ -101,7 +104,7 @@ export default function (eleventyConfig) {
   eleventyConfig.setWatchJavaScriptDependencies(false);
   eleventyConfig.addPassthroughCopy({ 'src/favicon': 'favicon', 'src/img': 'assets/img' });
   eleventyConfig.addPassthroughCopy('CNAME');
-  eleventyConfig.addPassthroughCopy('projects/**/*.{mp4,webm,mov}');
+  eleventyConfig.addPassthroughCopy('projects/**/*.{mp4,webm,mov,mp3,m4a,ogg,wav}');
   eleventyConfig.setLibrary('njk', nunjucks.configure({ autoescape: true, trimBlocks: true, lstripBlocks: true }));
   eleventyConfig.addGlobalData('buildYear', new Date().getFullYear());
   eleventyConfig.addFilter('isoDate', value => value && !Number.isNaN(new Date(value).getTime()) ? new Date(value).toISOString().slice(0, 10) : '');

@@ -21,6 +21,20 @@ blocks:
       towering figures within the camera's view of their surroundings.
       Turning the telescope lets them explore this other layer of the
       landscape.
+  - type: text
+    fontSize: small
+    content: >-
+      Flocks gather and scatter while luminous figures pass through the
+      view. These renders isolate the creatures against darkness, revealing
+      the individual birds and particles that make up their bodies.
+  - type: image
+    src: flock-render.png
+    size: half-left
+    alt: "A render from WYSIWYG shows a dense flock of mint, green and pale yellow birds against a dark background."
+  - type: image
+    src: giant-render.png
+    size: half-right
+    alt: "A render from WYSIWYG shows a walking figure formed from tiny luminous blue particles, with gaps dissolving its outline."
   - type: image
     src: desert-viewer.jpg
     alt: "A visitor sits on a small wooden bench and looks through WYSIWYG in an open desert setting."

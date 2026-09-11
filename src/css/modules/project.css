@@ -239,6 +239,12 @@ html[data-theme="dark"] .text-block a {
   line-height: var(--line-height-snug);
 }
 
+.audio-block audio {
+  display: block;
+  width: 100%;
+  color-scheme: dark;
+}
+
 /* Statement text: wider column, tighter leading */
 .text-block.text-large {
   max-width: 56rem;

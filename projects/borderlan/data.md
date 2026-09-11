@@ -34,6 +34,32 @@ blocks:
       The [software](https://github.com/jonasjohansson/borderlan) brings
       the game stations and the surrounding audiovisual system together.
   - type: image
+    src: launcher.png
+    alt: "The custom BorderLAN game launcher, with Diablo II: Lord of Destruction selected among eight game covers."
+  - type: text
+    fontSize: small
+    content: >-
+      The launcher borrowed the atmosphere of the games themselves. Its
+      Diablo II: Lord of Destruction cinematic preview set the scene before
+      anyone entered the game.
+  - type: video
+    src: diablo-preview.mp4
+    poster: diablo-preview.jpg
+    ar: 1.7777777778
+    alt: "An excerpt from the Diablo II: Lord of Destruction cinematic used as a preview in the BorderLAN launcher."
+  - type: text
+    fontSize: small
+    content: >-
+      Music and familiar game sounds filled the room around the players.
+      These short mixes bring together tracks from the playlist with
+      Deckard Cain's voice, a waypoint and the level-up sound from Diablo II.
+  - type: audio
+    src: room-mix-thrown.mp3
+    label: "Kiasmos, Thrown + Diablo II · 18 sec"
+  - type: audio
+    src: room-mix-sandstorm.mp3
+    label: "Darude, Sandstorm + Diablo II · 18 sec"
+  - type: image
     src: table-detail.jpg
     size: half-left
     alt: "An overhead view of the gaming table shows keyboards, headphones, cables, plants and candles arranged around the screens."
@@ -47,4 +73,9 @@ blocks:
       The cellar held a small social world of its own: stone walls, warm
       light, melting candles and people close enough to talk across the
       table. The game gave everyone a reason to sit down together.
+      The [website](https://borderlan.land/) extended that atmosphere with
+      a glowing cellar door, a shelf of games and a place to book a seat.
+  - type: image
+    src: website.png
+    alt: "The BorderLAN website presents a glowing cellar door between ornate panels for the event introduction and booking a seat."
 ---

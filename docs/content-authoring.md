@@ -11,10 +11,10 @@ For the Fujifilm camera folders, inspect the matching `RAF` files first, then
 compare the camera JPEGs if useful. Keep originals unchanged and record the
 source filename and development settings for selected exports.
 
-BorderLAN must not show any people. Use only photographs of the empty room,
-entrance and equipment, including its hero, navigation strip and sharing image.
-Check the complete frame, including doorways and reflections, before adding a
-BorderLAN photograph.
+BorderLAN must not show unaltered faces. Prefer photographs of the empty room,
+entrance and equipment. The user also permits people with faces fully obscured,
+preferably replaced by Diablo II character portraits. Check every face, including
+partly hidden people and reflections. Keep untouched photographs out of the site.
 
 The first block must be an image or video with a meaningful `alt` description. Video heroes also require a local poster image (see below). Describe the visible artwork, material, setting or interaction that matters beyond the surrounding prose. Add descriptions to other informative views too; use `alt: ""` for redundant views or decoration. Descriptions stay in image `alt` attributes and video `aria-label` attributes. Media captions are not rendered.
 
@@ -49,7 +49,11 @@ separate credit list when it repeats the story. Keep photography, film, music,
 support and source-asset attribution in the relevant text, including links and
 any required copyright wording. Use the first person for Jonas's own role.
 
-## Videos
+## Video and audio
+
+Audio excerpts use `type: audio`, a local `src` and a descriptive `label` that
+identifies the music and game samples. They have native controls, load on demand,
+and never autoplay. Starting another excerpt or leaving the page pauses playback.
 
 ```yaml
   - type: video

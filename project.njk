@@ -55,6 +55,12 @@ eleventyComputed:
           data-preview></video>
       </figure>
 
+      {% elif block.type == 'audio' %}
+      <div class="text-block text-small audio-block" style="--col-start: {{ block.colStart }}; --col-span: {{ block.colSpan }}">
+        <p>{{ block.label }}</p>
+        <audio controls preload="none" aria-label="{{ block.label }}" src="{{ block.src | url }}"></audio>
+      </div>
+
       {% elif block.type == 'text' %}
       <div
         class="text-block {{ block.fontSizeClass or 'text-medium' }}"

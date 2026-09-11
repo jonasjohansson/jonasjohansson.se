@@ -68,3 +68,22 @@ test('sharing image cache keys change when the source changes', () => {
     assert.notEqual(first, ogFingerprint(source));
   } finally { rmSync(directory, { recursive: true, force: true }); }
 });
+
+test('audio samples require an accessible label and an existing project asset', () => {
+  const directory = mkdtempSync(path.join(tmpdir(), 'site-audio-'));
+  try {
+    writeFileSync(path.join(directory, 'hero.jpg'), 'image fixture');
+    writeFileSync(path.join(directory, 'sample.mp3'), 'audio fixture');
+    const hero = { type: 'image', src: 'hero.jpg', alt: 'The installation.' };
+    const audio = { type: 'audio', src: 'sample.mp3', label: 'Music and game sounds, 18 seconds' };
+    const data = { title: 'Example', date: '2026-01-01', blocks: [hero, audio] };
+    assert.doesNotThrow(() => validateProject(data, 'example', directory));
+    for (const label of ['', undefined, 42]) {
+      assert.throws(() => validateProject({ ...data, blocks: [hero, { ...audio, label }] }, 'example', directory), /blocks\[1\].label/);
+    }
+    for (const src of ['missing.mp3', '../sample.mp3', 'https://example.com/sample.mp3']) {
+      assert.throws(() => validateProject({ ...data, blocks: [hero, { ...audio, src }] }, 'example', directory), /blocks\[1\].src/);
+    }
+    assert.deepEqual(groupMedia([hero, audio, hero]), [hero, audio, hero], 'audio keeps its authored place between images');
+  } finally { rmSync(directory, { recursive: true, force: true }); }
+});

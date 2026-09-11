@@ -36,7 +36,7 @@ export function validateProject(data, slug, directory) {
   data.blocks.forEach((block, index) => {
     const label = `blocks[${index}]`;
     if (!block || typeof block !== 'object') fail(`${label} must be a content block`);
-    if (!['image', 'video', 'text', 'credits'].includes(block.type)) fail(`${label}: unknown type ${block.type}`);
+    if (!['image', 'video', 'audio', 'text', 'credits'].includes(block.type)) fail(`${label}: unknown type ${block.type}`);
     if (block.size && !SIZE_MAP[block.size]) fail(`${label}.size: unknown size ${block.size}`);
     for (const field of ['colStart', 'colSpan']) {
       if (block[field] !== undefined && (!Number.isInteger(block[field]) || block[field] < 1 || block[field] > 12)) fail(`${label}.${field} must be an integer from 1 to 12`);
@@ -57,6 +57,10 @@ export function validateProject(data, slug, directory) {
       if (block.heroFit && !['cover', 'contain'].includes(block.heroFit)) fail(`${label}.heroFit must be cover or contain`);
     }
     if (block.type === 'text' && typeof block.content !== 'string') fail(`${label}.content must be text`);
+    if (block.type === 'audio') {
+      asset(block.src, `${label}.src`);
+      if (typeof block.label !== 'string' || !block.label.trim()) fail(`${label}.label must describe the audio sample`);
+    }
     if (block.fontSize !== undefined && typeof block.fontSize !== 'string') fail(`${label}.fontSize must be text`);
     if (block.type === 'credits' && (!Array.isArray(block.credits) || block.credits.some(value => typeof value !== 'string'))) fail(`${label}.credits must be a list of text`);
   });
