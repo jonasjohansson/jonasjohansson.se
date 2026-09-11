@@ -187,9 +187,14 @@ figure {
   text-wrap: pretty;
 }
 
-/* Consecutive text blocks (e.g. statement + body) stay tight */
+/* Body paragraphs share the normal row gap. */
 .text-block + .text-block {
   margin-top: 0;
+}
+
+/* Give the large preamble its own break before the smaller body copy. */
+.text-block.text-large + .text-block {
+  margin-top: var(--spacing-xl);
 }
 
 /* Drop the trailing margin when a text block is the last thing before the
@@ -352,6 +357,8 @@ html[data-theme="dark"] .text-block a {
 /* Mobile override: force full-width */
 @media (max-width: 768px) {
   .project-grid {
+    /* Stacked images use one gutter, including breaks between desktop rows. */
+    --gutter-row: var(--gutter-pair);
     column-gap: 0;
     /* Drop the grid's horizontal padding so it doesn't stack on top of
        #content's gutter — text was sitting at 56px (24 + 32) while media
@@ -410,6 +417,10 @@ html[data-theme="dark"] .text-block a {
   /* Keep text breaks compact on mobile while preserving the image gutter. */
   .text-block {
     margin-block: var(--spacing-md);
+  }
+
+  .text-block.text-large + .text-block {
+    margin-top: var(--spacing-md);
   }
 
   /* The 7.5rem breaks above credits and below the project are too much on
