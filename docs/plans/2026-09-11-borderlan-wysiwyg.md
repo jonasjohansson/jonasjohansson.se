@@ -238,3 +238,37 @@ Additional checks at 1440 px and 390 px confirmed all seven images decoded,
 no horizontal overflow, both existing audio players, and actual 1280 × 720
 playback of the 18-second reel. The new photo, launcher and all three video
 sections were visually reviewed; captures are in `screenshots/borderlan-games/`.
+
+## More room photographs and close-ups
+
+The user requested a more generous gallery of the room and its details. Seven
+additional RAW photographs bring the page from seven to fourteen images.
+Wide views establish the table and cellar, with paired portraits showing the
+handmade seat, candles, plants and hands playing Heroes III. An overhead station
+view joins the existing table photograph; the existing candle image is now full
+width. The hero, game overlays, launcher, video and audio remain in the sequence.
+
+All sources are in `Downloads/Camera/998_FUJI/2026-07-26/RAF/`. RAW previews
+were reviewed before developing new 3200 px sRGB JPEGs at quality 0.94 using
+macOS Core Image `CIRAWFilter.outputImage`. Camera white balance and default
+tone/noise processing are preserved, with zero added exposure and the decoder's
++0.12 EV baseline. There is no crop, added sharpening or generative editing.
+All final exports were visually inspected, including frame edges and screens;
+the two photographs with players show hands and bodies without visible faces.
+Camera originals remain unchanged.
+
+| Website asset | RAW source | White balance |
+| --- | --- | --- |
+| `game-stations.jpg` | `DSCF8643.RAF` | 4352.515 K / tint 7.511 |
+| `station-overhead.jpg` | `DSCF8644.RAF` | 3701.316 K / tint 6.064 |
+| `room-seat.jpg` | `DSCF8651.RAF` | 4242.065 K / tint 8.392 |
+| `candle-closeup.jpg` | `DSCF8656.RAF` | 3702.386 K / tint 13.349 |
+| `room-wide.jpg` | `DSCF8659.RAF` | 3151.316 K / tint 3.266 |
+| `heroes-session.jpg` | `DSCF8663.RAF` | 3716.161 K / tint -2.132 |
+| `mouse-closeup.jpg` | `DSCF8690.RAF` | 4224.165 K / tint 10.289 |
+
+The build and six content tests passed. Targeted Chrome checks at 1440 px and
+390 px confirmed all fourteen images decode, three image pairs align on desktop,
+mobile pairs use a 16 px gap, all gallery images remain lazy and there is no
+horizontal overflow. Both audio players and the video remain present. The new
+pairs and room views were visually reviewed in `screenshots/borderlan-room/`.

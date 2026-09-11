@@ -28,6 +28,17 @@ blocks:
   - type: image
     src: doorway-counter-strike.png
     alt: "A view through the blue cellar doorway into the red gaming room, with classic Counter-Strike character heads covering every visible player's head."
+  - type: image
+    src: room-wide.jpg
+    alt: "The empty cellar glows orange around a handmade red gaming table, with four seats, back-to-back screens, candles and a projection on the stone wall."
+  - type: image
+    src: room-seat.jpg
+    size: half-left
+    alt: "A red wooden seat extends from the gaming table beneath the vaulted cellar ceiling, with a projector tucked below the tabletop."
+  - type: image
+    src: candle-closeup.jpg
+    size: half-right
+    alt: "Candles and stems of grass sit between the wooden monitor supports on the red tabletop."
   - type: text
     fontSize: small
     content: >-
@@ -37,6 +48,9 @@ blocks:
       activity to reach beyond their screens.
       The [software](https://github.com/jonasjohansson/borderlan) brings
       the game stations and the surrounding audiovisual system together.
+  - type: image
+    src: game-stations.jpg
+    alt: "Heroes of Might and Magic III fills two screens above white keyboards, headphones, candles and leafy branches."
   - type: image
     src: launcher-games.png
     alt: "The custom BorderLAN launcher shows all eight game covers, with Counter-Strike 1.6 selected."
@@ -52,6 +66,14 @@ blocks:
     poster: game-previews.jpg
     ar: 1.7777777778
     alt: "A reel of the launcher's Counter-Strike 1.6, Action Quake 2 and OpenArena gameplay previews."
+  - type: image
+    src: heroes-session.jpg
+    size: half-left
+    alt: "An overhead view of a player's hands at the keyboard and mouse, with Heroes of Might and Magic III on the screen and candles between the stations."
+  - type: image
+    src: mouse-closeup.jpg
+    size: half-right
+    alt: "A hand rests on a white mouse beside candles and plants, with a game screen and the projected cellar doorway in the background."
   - type: text
     fontSize: small
     content: >-
@@ -70,8 +92,11 @@ blocks:
     size: half-left
     alt: "An overhead view of the gaming table shows keyboards, headphones, cables, plants and candles arranged around the screens."
   - type: image
-    src: candles.jpg
+    src: station-overhead.jpg
     size: half-right
+    alt: "A gaming station seen from directly above: white keyboard and mouse, headphones, candlelight and the red wooden seat beside the table."
+  - type: image
+    src: candles.jpg
     alt: "Candles burn among pooled wax and small glasses on the red gaming table."
   - type: text
     fontSize: small
