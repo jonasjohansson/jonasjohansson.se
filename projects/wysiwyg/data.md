@@ -25,8 +25,13 @@ blocks:
     fontSize: small
     content: >-
       Flocks gather and scatter while luminous figures pass through the
-      view. These renders isolate the creatures against darkness, revealing
-      the individual birds and particles that make up their bodies.
+      view. The recording and renders isolate the creatures against darkness,
+      revealing the individual birds and particles that make up their bodies.
+  - type: video
+    src: flock-motion.mp4
+    poster: flock-motion.jpg
+    ar: 1.7777777778
+    alt: "A recording of WYSIWYG's bird simulation: a dense flock wheels, folds and changes colour as individual birds move together."
   - type: image
     src: flock-render.png
     size: half-left

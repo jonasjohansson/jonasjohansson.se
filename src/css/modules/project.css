@@ -96,7 +96,7 @@ figure {
   grid-auto-flow: dense;
   width: 100%;
   max-width: 100%;
-  padding: var(--spacing-xl);
+  padding: var(--spacing-xl) 0;
 }
 
 /* Heroes span the full width inside the page gutter. */
@@ -112,9 +112,9 @@ figure {
   max-height: calc(100vh - var(--spacing-lg) * 2);
   max-height: calc(100dvh - var(--spacing-lg) * 2);
   margin-top: calc(-1 * var(--spacing-xl));
-  margin-left: calc(-1 * var(--spacing-xl));
-  margin-right: calc(-1 * var(--spacing-xl));
-  width: calc(100% + 2 * var(--spacing-xl));
+  margin-left: 0;
+  margin-right: 0;
+  width: 100%;
   max-width: none;
   position: relative;
   scroll-snap-align: start;
@@ -313,17 +313,14 @@ html[data-theme="dark"] .text-block a {
    split by aspect ratio, so every height in the row is equal by construction and
    nothing is cropped. Previously a pair sat in fixed 6-column tracks and any
    ratio mismatch left one short — up to 167px of ragged bottom.
-   The ceiling adds the gutters back on because --ar-sum only describes the
-   pictures: a row of n carries n-1 of them. */
+   The row shares the hero's outer edges, with the normal gutter between images. */
 .media-row {
   width: 100%;
   grid-column: 1 / -1;
   display: flex;
   gap: var(--gutter-pair);
   align-items: flex-start;
-  max-width: calc(
-    var(--media-max-h) * var(--ar-sum) + var(--gutter-pair) * var(--gutters, 1)
-  );
+  max-width: none;
   margin-inline: auto;
 }
 
@@ -362,36 +359,12 @@ html[data-theme="dark"] .text-block a {
 .media-item.size-small-left  { grid-column: 1 / span 5; }
 .media-item.size-small-right { grid-column: 8 / span 5; }
 
-/* Large screens: narrower media + bigger typography */
-@media (min-width: 1800px) {
-  /* Only un-authored media narrows. Without the [style*="--col-"] guard this
-     rule's (0,4,0) beat the inline placement rule's (0,1,0) and flattened every
-     authored layout: vi-kommer-i-fred's triptych, dome-dreaming/04, vista/06. */
-  .project-grid > .media-item:not(:first-child):not([class*="size-"]):not([style*="--col-"]) {
-    grid-column: 2 / 12;
-  }
-
-
-}
-
 /* Mobile override: force full-width */
 @media (max-width: 768px) {
   .project-grid {
     /* Stacked images use one gutter, including breaks between desktop rows. */
     --gutter-row: var(--gutter-pair);
     column-gap: 0;
-    /* Drop the grid's horizontal padding so it doesn't stack on top of
-       #content's gutter — text was sitting at 56px (24 + 32) while media
-       broke out to 24px. One shared 24px gutter for everything instead. */
-    padding-inline: 0;
-  }
-
-  /* The mobile grid already shares the page gutter. */
-  .project-grid > .media-item:first-child,
-  .project-grid > .media-item.hero {
-    margin-left: 0;
-    margin-right: 0;
-    width: 100%;
   }
 
   .media-row {

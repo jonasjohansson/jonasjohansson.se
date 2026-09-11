@@ -51,7 +51,9 @@ export function initializeHome() {
   toggle.addEventListener('click', event => {
     if (!isHome() || event.button !== 0 || event.metaKey || event.ctrlKey || event.shiftKey || event.altKey) return;
     event.preventDefault();
-    goTo(atWall ? 'about' : 'projects');
+    // Focus and pointer scrolling can arrive before the next scroll frame.
+    // Read the current position so the toggle follows what is visible now.
+    goTo(scrollY >= homeScrollTop() - 1 ? 'about' : 'projects');
   });
   document.addEventListener('keydown', event => {
     if (event.key === 'Escape' && isHome() && !atWall) goTo('projects');

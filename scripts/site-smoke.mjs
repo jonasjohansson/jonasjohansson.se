@@ -137,7 +137,7 @@ try {
         const hero = await page.locator('.hero').boundingBox();
         const media = await page.locator('.hero img, .hero video').boundingBox();
         assert.equal(hero.x, 24, `${slug} hero starts at the page gutter`);
-        assert.equal(hero.width, options.viewport.width - 48, `${slug} hero uses the full content width`);
+        assert.ok(Math.abs(hero.width - (options.viewport.width - 48)) < 1, `${slug} hero uses the full content width`);
         assert.equal(media.width, hero.width, `${slug} image or video fills the hero frame`);
         const fittedWidth = await page.locator('.hero').evaluate(hero => {
           if (!hero.classList.contains('hero-contain')) return hero.clientWidth;
@@ -246,14 +246,39 @@ try {
     await checkFooter(page);
   });
 
+  for (const [name, options] of [['desktop', desktop], ['wide desktop', { viewport: { width: 1920, height: 1080 } }], ['mobile', mobile]]) {
+    await check(`${name} gallery images share the hero margins`, options, async page => {
+      for (const slug of ['borderlan', 'wysiwyg', 'kagora', 'dome-dreaming']) {
+        await visit(page, `/${slug}/`);
+        const geometry = await page.evaluate(() => {
+          const hero = document.querySelector('.hero').getBoundingClientRect();
+          const images = [...document.querySelectorAll('.project-grid > .media-item.wide:not([class*="size-"]):not([style*="--col-start"]), .project-grid > .media-row')];
+          return { hero: { x: hero.x, width: hero.width }, images: images.map(image => { const r = image.getBoundingClientRect(); return { x: r.x, width: r.width }; }) };
+        });
+        assert.ok(geometry.images.length > 0, `${slug} has gallery media to check`);
+        for (const image of geometry.images) {
+          assert.ok(Math.abs(image.x - geometry.hero.x) < 1, `${slug} gallery starts at the hero's left edge`);
+          assert.ok(Math.abs(image.width - geometry.hero.width) < 1, `${slug} gallery uses the hero's width`);
+        }
+      }
+    });
+  }
+
   await check('name toggles About with keyboard and reduced motion', { ...desktop, reducedMotion: 'reduce' }, async page => {
     await visit(page);
+    await page.evaluate(() => document.fonts.ready);
+    await waitForHomeWall(page);
     assert.equal(await page.locator('#home-link').getAttribute('aria-label'), 'Jonas Johansson, About');
     await page.locator('#home-link').focus();
     await page.keyboard.press('Enter');
     await page.waitForFunction(() => scrollY < 1 && document.activeElement.id === 'intro');
     assert.equal((await page.locator('.intro-text').boundingBox()).x, 24, 'About stays left aligned on wide screens');
     await page.locator('#home-link').click();
+    await waitForHomeWall(page);
+    await page.evaluate(() => {
+      scrollTo({ top: 0, behavior: 'instant' });
+      document.getElementById('home-link').click();
+    });
     await waitForHomeWall(page);
   });
 
@@ -616,7 +641,7 @@ try {
         }, index);
       };
       await play(0);
-      assert.ok(await samples.first().evaluate(audio => Math.abs(audio.duration - 18) < 0.1), 'the actual short sample decodes');
+      assert.ok(await samples.first().evaluate(audio => Math.abs(audio.duration - 90) < 0.1), 'the actual 90-second mix decodes');
       await play(1);
       assert.equal(await samples.first().evaluate(audio => audio.paused), true, 'samples cannot overlap');
       const playing = await samples.nth(1).elementHandle();
@@ -628,6 +653,25 @@ try {
       assert.equal(await samples.evaluateAll(nodes => nodes.every(audio => audio.paused)), true, 'returning does not resume playback');
     });
   }
+
+  await check('WYSIWYG flock recording plays real moving frames', desktop, async page => {
+    await visit(page, '/wysiwyg/');
+    const video = page.locator('video[src$="/flock-motion.mp4"]');
+    await video.scrollIntoViewIfNeeded();
+    await page.waitForFunction(() => {
+      const v = document.querySelector('video[src$="/flock-motion.mp4"]');
+      return !v.paused && v.currentTime > 1;
+    });
+    assert.ok(await video.evaluate(v => v.videoWidth === 1920 && v.videoHeight === 1080 && v.duration > 10 && v.duration < 20));
+    const frame = () => video.evaluate(v => {
+      const canvas = document.createElement('canvas'); canvas.width = 160; canvas.height = 90;
+      const ctx = canvas.getContext('2d'); ctx.drawImage(v, 0, 0, 160, 90);
+      return canvas.toDataURL();
+    });
+    const first = await frame();
+    await page.waitForTimeout(800);
+    assert.notEqual(await frame(), first, 'the recording contains movement');
+  });
 
   await check('mobile video controls appear on tap without changing playback', mobile, async page => {
     await visit(page, '/kagora/');

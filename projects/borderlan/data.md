@@ -7,9 +7,9 @@ tags:
   - av
 blocks:
   - type: image
-    src: stations.jpg
-    alt: "Four empty gaming stations with screens, keyboards and headphones surround a candlelit red table in a stone cellar."
-    focal: "50% 65%"
+    src: players-diablo.png
+    heroFit: contain
+    alt: "Players gather around BorderLAN's candlelit red table, with their heads replaced by pixel-art Diablo II character portraits."
   - type: text
     content: >-
       A LAN party in an earth cellar. Four seats, a shared table and a
@@ -24,6 +24,9 @@ blocks:
   - type: image
     src: entrance.jpg
     alt: "An illuminated BorderLAN sign above the cellar entrance reads 'stay a while and listen', surrounded by foliage and small lights."
+  - type: image
+    src: doorway-diablo.png
+    alt: "A view through the blue cellar doorway into the red gaming room, with Diablo II portraits covering every visible player's head."
   - type: text
     fontSize: small
     content: >-
@@ -51,14 +54,15 @@ blocks:
     fontSize: small
     content: >-
       Music and familiar game sounds filled the room around the players.
-      These short mixes bring together tracks from the playlist with
-      Deckard Cain's voice, a waypoint and the level-up sound from Diablo II.
+      These mixes bring together tracks from the playlist with voices,
+      spells, weapons, announcements and interface sounds from all nine
+      of the room's game soundbanks.
   - type: audio
     src: room-mix-thrown.mp3
-    label: "Kiasmos, Thrown + Diablo II · 18 sec"
+    label: "Kiasmos, Thrown + game soundboard · 1:30"
   - type: audio
     src: room-mix-sandstorm.mp3
-    label: "Darude, Sandstorm + Diablo II · 18 sec"
+    label: "Darude, Sandstorm + game soundboard · 1:30"
   - type: image
     src: table-detail.jpg
     size: half-left

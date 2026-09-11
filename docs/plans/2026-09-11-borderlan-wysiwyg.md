@@ -159,3 +159,49 @@ initial display, actual MP3 decoding, mutually exclusive playback and pausing
 across client navigation. Additional 1440 px and 390 px visual checks confirmed
 eight WYSIWYG images and six BorderLAN images, one video and two audio samples,
 with no overflow. Captures are in `screenshots/summer-media/` (ignored).
+
+## Expanded media and full-width galleries
+
+The user subsequently approved publishing the photographs containing people
+with Diablo II heads, requested a moving flock recording, longer mixes with the
+full range of soundbanks, and gallery images as wide as the hero.
+
+- `players-diablo.png` now uses the reviewed five-person collage as BorderLAN's
+  hero, navigation preview and sharing image. Its complete composition is kept.
+- `doorway-diablo.png` is a second built-in imagegen edit, made from the
+  RAW-developed `2026-07-24/RAF/DSCF8538.RAF`. The four visible heads are covered
+  by Barbarian, Necromancer, Sorceress and Druid portraits. The complete frame was
+  reviewed, including the partially concealed standing person. Its exact prompt
+  is in `docs/visuals/borderlan/doorway-prompt.txt`. Untouched faces remain absent
+  from the published photos.
+- `flock-motion.mp4` records 16 seconds of the real WYSIWYG simulation at
+  1920 × 1080. A separate camera follows the flock against the same dark
+  background as the stills. Camera position follows the simulation and framing
+  is gently tracked; the birds and their movement come from the app. The final
+  H.264 file uses 30 fps, CRF 24, a 4 Mbps rate ceiling and fast-start metadata.
+  The JPEG poster is from the recording. Gallery playback follows the existing
+  viewport, reduced-motion and touch-control behavior.
+- The two music mixes now last 90 seconds each. They contain 21 and 29 timed
+  cues respectively, drawn from all nine soundbanks: Diablo, Age of Empires II,
+  StarCraft, Warcraft III, Counter-Strike 1.6, Quake II, Action Quake II,
+  OpenArena and Mortal Kombat. Exact source files and cue times are recorded in
+  `docs/visuals/borderlan/audio-mixes.json`; `mix-audio.mjs` beside it reproduces
+  the mixes from the local source library. Music starts at 60 s for Thrown and
+  50 s for Sandstorm. They are mixed as 48 kHz stereo PCM with normalized source
+  gains, music ducking around the effects, a one-second fade-in, a four-second
+  fade-out and peak headroom, then encoded at 192 kbps. These remain constructed
+  soundboard examples, not field recordings.
+- Default landscape images, videos and grouped image rows now use the same
+  24 px outer gutters as the hero at all viewport widths. Deliberately authored
+  column placements and standalone portrait height limits are retained. Image
+  `sizes` attributes reflect the wider layout.
+
+The preceding 18-second mix settings and preview-only image status describe the
+earlier version and are superseded by these choices.
+
+The final production build, six content tests and all 48 browser checks passed.
+The added checks cover equal hero/gallery gutters at phone, desktop and large
+desktop widths, actual moving frames in the flock recording, both 90-second
+audio files and toggling About immediately after a scroll. Final visual checks
+at 1440 px and 390 px confirmed all media decoded without horizontal overflow.
+Captures are in `screenshots/summer-media-final/` (ignored).

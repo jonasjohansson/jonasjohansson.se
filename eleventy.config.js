@@ -66,11 +66,11 @@ async function buildProject(project) {
   for (const block of grouped) {
     if (block.type !== 'row') continue;
     for (const item of block.items) {
-      // The desktop row fills the available track up to its height ceiling.
+      // Each image takes its aspect-ratio share of the full-width row.
       const fraction = item.ar / block.arSum;
       const vw = +(fraction * 100).toFixed(3);
-      const inset = +((112 + 16 * block.gutters) * fraction).toFixed(3);
-      item.sizes = `(max-width: 768px) calc(100vw - 48px), min(calc(${vw}vw - ${inset}px), calc((100vh - 192px) * ${+item.ar.toFixed(4)}))`;
+      const inset = +((48 + 16 * block.gutters) * fraction).toFixed(3);
+      item.sizes = `(max-width: 768px) calc(100vw - 48px), calc(${vw}vw - ${inset}px)`;
     }
   }
   const firstImage = content[0].type === 'video' ? `${project.directory}/${project.blocks[0].poster}` : content[0].src;
@@ -90,7 +90,7 @@ async function buildProject(project) {
 }
 
 function mediaSizes(span, ar) {
-  const track = span && span < 12 ? `calc(${+(span / 12 * 100).toFixed(3)}vw - ${+(112 * span / 12 + 32 * (1 - span / 12)).toFixed(3)}px)` : 'calc(100vw - 112px)';
+  const track = span && span < 12 ? `calc(${+(span / 12 * 100).toFixed(3)}vw - ${+(48 * span / 12 + 32 * (1 - span / 12)).toFixed(3)}px)` : 'calc(100vw - 48px)';
   const desktop = ar < 1 ? `min(${track}, calc((100vh - 192px) * ${+ar.toFixed(4)}))` : track;
   return `(max-width: 768px) calc(100vw - 48px), ${desktop}`;
 }
