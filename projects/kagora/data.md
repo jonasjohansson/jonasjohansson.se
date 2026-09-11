@@ -34,10 +34,11 @@ blocks:
     fontSize: small
     content: >-
       Inspired by Hanakago flower baskets and Kagome weaving, the ribs cross
-      overhead to define a room without closing it off. More than a kilometre
-      of programmable LEDs runs inside the tubes. As colour moves through the
-      weave, different curves emerge and recede, changing the space around
-      the people sitting and lying beneath it.
+      overhead to define a room without closing it off. Across 120 woven
+      tubes, more than a kilometre of LED strip carries around 32,000
+      individually controllable points of light. As colour moves through
+      the weave, different curves emerge and recede, changing the space
+      around the people sitting and lying beneath it.
   - type: image
     src: woven-detail-ai.png
     size: half-left
@@ -74,6 +75,14 @@ blocks:
       assembled the woven ribs among the trees. In daylight, the white
       structure frames the woodland; after dark, the light gives it a
       different presence.
+  - type: text
+    fontSize: small
+    content: >-
+      Twelve networked controllers coordinate the light across the pavilion.
+      I used my tools [LEDger](https://github.com/jonasjohansson/LEDger)
+      to plan the power and wiring, and
+      [LED Zeppelin](https://github.com/jonasjohansson/ledzeppelin)
+      to map visuals onto the tubes and control them in real time.
   - type: image
     src: first-arch.jpg
     size: half-left

@@ -77,6 +77,25 @@ David Correa, Max Hassler, Eero Laaksonen, Cecilia Johansson, Mar Benavides,
 and Tomas Kronvall. Unrelated Instagram project credits, proposed electrical
 loads, grant finances and future relocation plans are not used in the page.
 
+## Lighting scale
+
+Verified against the local project repositories on 11 September 2026:
+
+- `LEDger` at `59c4baf`, `src/presets/kagora.json` (preset version 22):
+  120 physical strip instances, 12 controllers, 31,830 individually addressable
+  WS2815 pixels and 1,060.98 metres of strip, summed from the referenced fixture
+  types. The 120 tube curves total about 1,045 metres. The README's older
+  32,760-pixel / 1,092-metre figures predate the actual cut lengths.
+- `ledzeppelin` at `7b17f27`, `examples/projects/kagora.json`: 120 fixtures,
+  12 controller devices and 32,189 mapped pixels. Its 25 July tube-mapper notes
+  document the mapping adjustments during installation. Imported fixture
+  lengths use a default density, so the physical metre count comes from LEDger.
+
+The page uses “around 32,000” and “more than a kilometre” to represent the
+planning and show presets without claiming a single exact installed count.
+The linked tools cover power/wiring design (LEDger) and live visual mapping
+and playback (LED Zeppelin), as documented in their READMEs and Kagora presets.
+
 ## Initial camera review
 
 Reviewed all 227 camera JPEGs supplied from `998_FUJI`: 45 from 23 July,
