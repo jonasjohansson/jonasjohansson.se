@@ -11,6 +11,11 @@ For the Fujifilm camera folders, inspect the matching `RAF` files first, then
 compare the camera JPEGs if useful. Keep originals unchanged and record the
 source filename and development settings for selected exports.
 
+BorderLAN must not show any people. Use only photographs of the empty room,
+entrance and equipment, including its hero, navigation strip and sharing image.
+Check the complete frame, including doorways and reflections, before adding a
+BorderLAN photograph.
+
 The first block must be an image or video with a meaningful `alt` description. Video heroes also require a local poster image (see below). Describe the visible artwork, material, setting or interaction that matters beyond the surrounding prose. Add descriptions to other informative views too; use `alt: ""` for redundant views or decoration. Descriptions stay in image `alt` attributes and video `aria-label` attributes. Media captions are not rendered.
 
 ```yaml

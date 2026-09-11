@@ -5,11 +5,19 @@ RAW-first preference. The review covered 500 files: 45 from 23 July, 10 from
 24 July, 3 from 8 July, 173 from 9 July, 44 from 10 July, 121 from 11 July,
 and 104 from 26 July 2026. The 26 July folder contains both projects.
 
-Eight photographs were selected for each page. BorderLAN starts with people
-playing together, then shows the cellar, entrance and table details. WYSIWYG
-starts with the instrument at sunset and alternates visitors, physical details
-and its desert and woodland settings. Repeated views and unrelated installations
-were excluded.
+BorderLAN now uses four photographs showing the empty cellar, entrance,
+equipment and candles. The user clarified that no people may be shown, so
+DSCF8556, DSCF8538, DSCF8695 and DSCF8560 were removed from the page and their
+exported website assets deleted. DSCF8658 now supplies the hero, strips and
+sharing image. Each retained photograph was reviewed again from its RAW-derived
+preview, including the frame edges and doorway. Camera originals remain intact.
+
+WYSIWYG uses six photographs, starting with the instrument at sunset and
+alternating visitors, physical details and its desert and woodland settings.
+The user rejected DSCF8212 (dusty visitor portrait) and DSCF8744 (wide grassy
+setting) in favour of a tighter selection of the strongest photographs. Both
+were removed from the page and their website assets deleted. Repeated views
+and unrelated installations were excluded.
 
 ## Development
 
@@ -28,14 +36,10 @@ Source paths below are relative to `Downloads/Camera/998_FUJI`.
 
 | Website asset | RAW source | White balance |
 | --- | --- | --- |
-| `projects/borderlan/hero.jpg` | `2026-07-23/RAF/DSCF8556.RAF` | 3516 K / tint 3.951 |
-| `projects/borderlan/doorway.jpg` | `2026-07-23/RAF/DSCF8538.RAF` | 3516 K / tint 3.951 |
 | `projects/borderlan/entrance.jpg` | `2026-07-24/RAF/DSCF8563.RAF` | 3516 K / tint 3.951 |
 | `projects/borderlan/stations.jpg` | `2026-07-26/RAF/DSCF8658.RAF` | 4292 K / tint 5.889 |
-| `projects/borderlan/playing.jpg` | `2026-07-26/RAF/DSCF8695.RAF` | 3555 K / tint 4.726 |
 | `projects/borderlan/table-detail.jpg` | `2026-07-26/RAF/DSCF8647.RAF` | 3252 K / tint 5.826 |
 | `projects/borderlan/candles.jpg` | `2026-07-26/RAF/DSCF8652.RAF` | 3547 K / tint -0.261 |
-| `projects/borderlan/together.jpg` | `2026-07-23/RAF/DSCF8560.RAF` | 3516 K / tint 3.951 |
 
 ## WYSIWYG
 
@@ -43,8 +47,6 @@ Source paths below are relative to `Downloads/Camera/998_FUJI`.
 | --- | --- | --- |
 | `projects/wysiwyg/hero.jpg` | `2026-07-11/RAF/DSCF8453.RAF` | 5917 K / tint 6.666 |
 | `projects/wysiwyg/desert-viewer.jpg` | `2026-07-09/RAF/DSCF8334.RAF` | 9884 K / tint 0.828 |
-| `projects/wysiwyg/dust.jpg` | `2026-07-09/RAF/DSCF8212.RAF` | 10830 K / tint 4.198 |
-| `projects/wysiwyg/woodland.jpg` | `2026-07-26/RAF/DSCF8744.RAF` | 6261 K / tint 9.709 |
 | `projects/wysiwyg/phone.jpg` | `2026-07-11/RAF/DSCF8456.RAF` | 5396 K / tint 9.512 |
 | `projects/wysiwyg/housing.jpg` | `2026-07-11/RAF/DSCF8460.RAF` | 6043 K / tint 6.079 |
 | `projects/wysiwyg/eyepiece.jpg` | `2026-07-26/RAF/DSCF8710.RAF` | 6406 K / tint 11.834 |
@@ -74,9 +76,17 @@ further background. Neither source repository was modified.
 
 ## Validation
 
-The production build and all 42 existing browser checks passed. Additional
+At initial publication, the production build and all 42 existing browser checks passed. Additional
 Chrome checks at 1440 px and 390 px confirmed eight loaded images per page,
 full-width heroes within the shared 24 px gutter, no horizontal overflow,
 48 px desktop / 32 px mobile preamble spacing and 16 px mobile image gaps.
 The desktop sequences and mobile portrait pair were visually reviewed.
 Review captures are in the ignored `screenshots/summer-projects/` directory.
+
+After the removals, the production build and targeted Chrome checks at 1440 px
+and 390 px passed with four BorderLAN images and six WYSIWYG images. All loaded,
+the shared gutters and mobile gaps remained correct, and the home strips used
+the current heroes. The removed BorderLAN photographs' 24 gallery derivatives
+and previous sharing image are absent from both the image manifest and build
+output. In total, 41 retired derivatives were excluded from deployment. Updated
+visual checks are in `screenshots/summer-projects-curated/`.

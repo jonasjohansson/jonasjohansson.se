@@ -24,14 +24,6 @@ blocks:
   - type: image
     src: desert-viewer.jpg
     alt: "A visitor sits on a small wooden bench and looks through WYSIWYG in an open desert setting."
-  - type: image
-    src: dust.jpg
-    size: half-left
-    alt: "A visitor leans into the telescope as wind-blown dust softens the surrounding desert."
-  - type: image
-    src: woodland.jpg
-    size: half-right
-    alt: "The complete telescope and wooden tripod stand in a grassy clearing beneath a cloudy sky."
   - type: text
     fontSize: small
     content: >-
