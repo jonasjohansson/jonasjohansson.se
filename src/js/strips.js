@@ -30,11 +30,18 @@ function canRemoveTag(tag) {
     project.slug !== currentSlug && project.tags.some(candidate => candidate !== tag && activeTags.has(candidate)));
 }
 
+function canSelectOnlyTag(tag) {
+  return [...projects.values()].some(project => project.slug !== currentSlug && project.tags.includes(tag));
+}
+
 function updateFilterStates() {
   document.querySelectorAll('#project-filters button').forEach(button => {
     const active = activeTags.has(button.dataset.filter);
     button.setAttribute('aria-pressed', String(active));
-    button.setAttribute('aria-disabled', String(active && !canRemoveTag(button.dataset.filter)));
+    const disabled = activeTags.size === tags.length
+      ? !canSelectOnlyTag(button.dataset.filter)
+      : active && !canRemoveTag(button.dataset.filter);
+    button.setAttribute('aria-disabled', String(disabled));
   });
 }
 
@@ -145,9 +152,15 @@ export function initializeStrips() {
     const button = event.target.closest('button[data-filter]');
     if (!button) return;
     const tag = button.dataset.filter;
-    if (activeTags.has(tag) && !canRemoveTag(tag)) return;
-    if (activeTags.has(tag)) activeTags.delete(tag);
-    else activeTags.add(tag);
+    if (activeTags.size === tags.length) {
+      if (!canSelectOnlyTag(tag)) return;
+      activeTags.clear();
+      activeTags.add(tag);
+    } else {
+      if (activeTags.has(tag) && !canRemoveTag(tag)) return;
+      if (activeTags.has(tag)) activeTags.delete(tag);
+      else activeTags.add(tag);
+    }
     updateFilterStates();
     updateStrips(currentSlug);
     document.getElementById('strips').scrollLeft = 0;
