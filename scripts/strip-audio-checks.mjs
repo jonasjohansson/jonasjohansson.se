@@ -2,17 +2,6 @@ import assert from 'node:assert/strict';
 
 async function observeAudio(page) {
   await page.addInitScript(() => {
-    // TEMP diagnostics for the CI-only repeat-note failure.
-    window.__log = [];
-    const log = (type, extra = {}) => window.__log.push({ t: Math.round(performance.now()), type, ...extra });
-    document.addEventListener('pointermove', e => { const strip = document.elementFromPoint(e.clientX, e.clientY)?.closest('.strip'); log('move', { x: e.clientX, y: e.clientY, strip: strip?.id, n: e.getCoalescedEvents?.().length }); }, true);
-    document.addEventListener('pointerleave', e => log('leave', { target: e.target.id || e.target.nodeName }), true);
-    addEventListener('scroll', () => log('scroll', { y: scrollY }), true);
-    addEventListener('resize', () => log('resize', { w: innerWidth, h: innerHeight }));
-    document.fonts?.ready.then(() => log('fonts-ready'));
-    addEventListener('load', () => log('load'));
-    const observe = () => new MutationObserver(m => log('mutation', { n: m.length, target: m[0].target.id || m[0].target.className })).observe(document.documentElement, { childList: true, subtree: true, attributes: true, attributeFilter: ['class', 'style'] });
-    if (document.documentElement) observe(); else document.addEventListener('DOMContentLoaded', observe);
     const NativeAudio = window.AudioContext;
     window.__stripSound = { contexts: [], notes: [], active: 0 };
     window.AudioContext = class extends NativeAudio {
@@ -82,7 +71,7 @@ export async function checkStripAudio({ check, visit, desktop, mobile }) {
     await page.mouse.move(box.x + box.width / 2, box.y + box.height / 2);
     await page.mouse.move(box.x + box.width / 2 + 1, box.y + box.height / 2);
     await page.waitForTimeout(400);
-    assert.equal((await notes()).length, 8, 'moving inside a strip and resting do not repeat the note\n' + JSON.stringify(await page.evaluate(() => ({ notes: window.__stripSound.notes, scrollY, strips: [...document.querySelectorAll('#strips .strip')].slice(0, 10).map(s => [s.id, Math.round(s.getBoundingClientRect().x), Math.round(s.getBoundingClientRect().width)]), log: window.__log.filter(r => r.type !== 'mutation' || r.target !== 'strips').slice(-80) }))));
+    assert.equal((await notes()).length, 8, 'moving inside a strip and resting do not repeat the note');
     assert.equal(await page.evaluate(() => window.__stripSound.active), 0, 'short notes finish and release their oscillators');
     await page.mouse.move(8, 8);
     await page.getByRole('combobox', { name: 'Year', exact: true }).selectOption('2025');
