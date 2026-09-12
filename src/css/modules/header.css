@@ -42,3 +42,4 @@
 .project-filters button:hover { background: none; }
 .project-filters.is-previewing button:not(.is-preview-tag) { opacity: 0.3; }
 .project-filters select { flex: none; align-self: center; max-width: 100%; padding: 0.5rem 0; border: 0; background-color: var(--bg-primary); color: inherit; }
+.project-filters select:focus-visible { outline: none; }
