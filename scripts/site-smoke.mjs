@@ -5,6 +5,7 @@ import sharp from 'sharp';
 import { previewServer } from './preview-server.mjs';
 import { readProjects } from './project-data.js';
 import { ogFingerprint } from './images.js';
+import { checkStripAudio } from './strip-audio-checks.mjs';
 
 const server = process.env.AUDIT_BASE_URL ? null : await previewServer();
 const base = process.env.AUDIT_BASE_URL || server.url;
@@ -80,6 +81,7 @@ async function checkFooter(page) {
 }
 
 try {
+  await checkStripAudio({ check, visit, desktop, mobile });
   await check('every project shares its hero without JavaScript', { ...desktop, javaScriptEnabled: false }, async (page, context) => {
     // Share crawlers need complete tags in the original HTML, before the router runs.
     await page.route(/\.(?:avif|webp|mp4|webm)(?:\?.*)?$/, route => route.abort());

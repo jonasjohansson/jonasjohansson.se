@@ -1,5 +1,6 @@
 import { initAnimation } from './stripAnimation.js';
 import { homeScrollTop } from './home.js';
+import { initializeStripAudio, bindStripAudio } from './xylophone.js';
 
 let entries = [];
 let controller;
@@ -145,9 +146,11 @@ export function updateStrips(slug) {
   updatePreview();
   updateImages();
   initAnimation(document.getElementById('strips'), controller.signal);
+  bindStripAudio(document.getElementById('strips'), controller.signal);
 }
 
 export function initializeStrips() {
+  initializeStripAudio();
   document.documentElement.classList.add('enhanced');
   const filters = document.getElementById('project-filters');
   for (const tag of categories) {
