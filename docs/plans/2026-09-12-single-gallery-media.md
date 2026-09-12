@@ -53,3 +53,24 @@ WYSIWYG images decode without horizontal overflow. At 1440 and 1850 px with a
 900 px viewport height, Vista's first gallery video fills the width and has a
 720 px frame. The Vista crop at 1850 px and telescope pair at 1440 px were
 visually reviewed in `screenshots/single-gallery/`.
+
+## Portrait groups
+
+Vi kommer i fred has a related sequence of two 9:16 stills and one 9:16 video,
+authored at columns 1, 5 and 9. The grouping pass now preserves complete authored
+rows before pairing standalone media. Row rendering supports videos alongside
+images, using their aspect ratios to give the panels equal heights and 16 px gaps.
+Automatic portrait grouping also accepts portrait videos. Hero media stay separate.
+
+The sequence now stays in one row above 768 px and stacks with ordinary gaps on
+mobile. The landscape photograph after it remains an independent, full-width
+frame on large screens. Jagad's authored video pair is also preserved as a row.
+An audit of every project's grouping found no other layout changes.
+
+Regression checks cover the triptych at 390, 1280, 1850 and 2560 px, including
+uncropped proportions, equal desktop heights, normal mobile gaps, video playback
+and tap-to-show controls. Unit checks cover mixed-media groups, incomplete rows,
+text breaks and consecutive authored pairs.
+
+The final build, nine content tests and all 59 browser checks passed, including
+the subsequent Balena film-scan orientation correction.

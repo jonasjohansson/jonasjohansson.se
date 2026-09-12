@@ -81,12 +81,25 @@ export function readProjects(root = 'projects') {
 
 export function groupMedia(content) {
   const row = items => ({ type: 'row', items, arSum: items.reduce((sum, item) => sum + item.ar, 0), gutters: items.length - 1 });
-  const foldable = (block, index) => index > 0 && block?.type === 'image' && !block.size && !block.colStart && block.ar <= 1;
+  const media = block => block?.type === 'image' || block?.type === 'video';
+  const start = block => block.colStart ?? SIZE_MAP[block.size]?.colStart;
+  const span = block => block.colSpan ?? SIZE_MAP[block.size]?.colSpan;
+  const foldable = (block, index) => index > 0 && media(block) && !block.size && !block.colStart && !block.colSpan && block.ar <= 1;
   const grouped = [];
   for (let i = 0; i < content.length; i++) {
-    const a = content[i], b = content[i + 1];
-    if (i > 0 && a.type === 'image' && b?.type === 'image' && a.size === 'half-left' && b.size === 'half-right') {
-      grouped.push(row([a, b])); i++; continue;
+    const a = content[i];
+    // Keep complete authored rows together before desktop pairing, including
+    // mixed image/video triptychs. Resetting to column 1 starts a new row.
+    if (i > 0 && media(a) && start(a) === 1) {
+      let end = i, column = 1;
+      while (media(content[end]) && start(content[end]) === column && span(content[end])) {
+        column += span(content[end]);
+        end++;
+        if (column >= 13) break;
+      }
+      if (column === 13 && end - i > 1) {
+        grouped.push(row(content.slice(i, end))); i = end - 1; continue;
+      }
     }
     if (foldable(a, i)) {
       let end = i;

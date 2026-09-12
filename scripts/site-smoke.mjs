@@ -328,6 +328,74 @@ try {
     });
   }
 
+  for (const width of [390, 1280, 1850, 2560]) {
+    await check(`${width}px portrait triptych keeps images and video together`, width === 390 ? mobile : { viewport: { width, height: 1000 } }, async page => {
+      await visit(page, '/vi-kommer-i-fred/');
+      const row = page.locator('.media-row:has(video[src$="/07.webm"])');
+      assert.equal(await row.locator('img').count(), 2, 'both still panels remain in the group');
+      assert.equal(await row.locator('video').count(), 1, 'the moving panel remains in the group');
+      const geometry = await row.evaluate(row => {
+        const box = element => { const r = element.getBoundingClientRect(); return { x: r.x, y: r.y, width: r.width, height: r.height, right: r.right, bottom: r.bottom }; };
+        return {
+          row: box(row),
+          items: [...row.children].map(item => ({ ...box(item), ar: Number(item.style.getPropertyValue('--ar')), media: box(item.querySelector('img, video')) })),
+          after: box(row.nextElementSibling),
+          overflow: document.documentElement.scrollWidth > innerWidth,
+        };
+      });
+      assert.equal(geometry.overflow, false);
+      assert.equal(geometry.row.x, 24);
+      assert.ok(Math.abs(geometry.row.width - width + 48) < 1, 'the group uses the page width');
+      for (const [i, item] of geometry.items.entries()) {
+        assert.ok(Math.abs(item.media.width - item.width) < 1, 'media fill each panel');
+        assert.ok(Math.abs(item.media.width / item.media.height - item.ar) < 0.001, 'tall panels retain their uncropped proportions');
+        if (width > 768) {
+          assert.ok(Math.abs(item.y - geometry.items[0].y) < 1, 'all three panels share a row');
+          assert.ok(Math.abs(item.height - geometry.items[0].height) < 1, 'the image and video panels have equal heights');
+          if (i) assert.ok(Math.abs(item.x - geometry.items[i - 1].right - 16) < 1, 'no oversized gap between panels');
+        } else {
+          assert.equal(item.x, 24, 'mobile panels align with the page');
+          assert.ok(Math.abs(item.width - geometry.row.width) < 1, 'mobile panels use full width');
+          if (i) assert.ok(Math.abs(item.y - geometry.items[i - 1].bottom - 16) < 1, 'mobile panels have the normal gap');
+        }
+      }
+      assert.ok(geometry.after.y >= geometry.row.bottom, 'the following landscape starts after all three panels');
+      if (width >= 1440) assert.ok(Math.abs(geometry.after.width - geometry.row.width) < 1, 'the following lone image keeps its full-width frame');
+      const video = row.locator('video');
+      await video.scrollIntoViewIfNeeded();
+      await page.waitForFunction(() => document.querySelector('video[src$="/07.webm"]').currentTime > 0);
+      if (width === 390) {
+        assert.equal(await video.evaluate(video => video.controls), false, 'grouped videos also hide mobile controls initially');
+        await row.locator('.media-controls-reveal').click();
+        assert.equal(await video.evaluate(video => video.controls), true, 'tapping reveals grouped video controls');
+      }
+      await row.locator('img').evaluateAll(images => Promise.all(images.map(image => image.decode())));
+      await row.screenshot({ path: `${output}/vi-kommer-i-fred-triptych-${width}.png` });
+    });
+  }
+
+  for (const [name, options] of [['desktop', desktop], ['mobile', mobile]]) {
+    await check(`${name} film scan orientation matches its gallery frame`, options, async page => {
+      await visit(page, '/balena-voladora/');
+      const image = page.locator('img[alt^="A film photograph looking through"]');
+      await image.scrollIntoViewIfNeeded();
+      const geometry = await image.evaluate(async image => {
+        await image.decode();
+        const figure = image.closest('figure'), rect = image.getBoundingClientRect();
+        return { naturalWidth: image.naturalWidth, naturalHeight: image.naturalHeight, displayed: rect.width / rect.height,
+          frame: Number(figure.style.getPropertyValue('--ar')),
+          height: rect.height, previousHeight: figure.previousElementSibling.getBoundingClientRect().height };
+      });
+      const expected = 2075 / 3130;
+      // Browsers round density-corrected natural dimensions to whole pixels.
+      assert.ok(Math.abs(geometry.naturalWidth - geometry.naturalHeight * expected) < 1, 'generated images apply the counterclockwise EXIF orientation');
+      assert.ok(Math.abs(geometry.displayed - expected) < 0.001, 'the photo displays upright without distortion');
+      assert.ok(Math.abs(geometry.frame - expected) < 0.001, 'the gallery uses the oriented aspect ratio');
+      if (name === 'desktop') assert.ok(Math.abs(geometry.height - geometry.previousHeight) < 1, 'the rotated scan still matches its neighbour in height');
+      await image.locator('xpath=../..').screenshot({ path: `${output}/balena-oriented-scan-${name}.png` });
+    });
+  }
+
   await check('name toggles About with keyboard and reduced motion', { ...desktop, reducedMotion: 'reduce' }, async page => {
     await visit(page);
     await page.evaluate(() => document.fonts.ready);

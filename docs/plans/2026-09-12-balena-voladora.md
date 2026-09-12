@@ -60,3 +60,16 @@ Jonas requested removal of the Elsewhere mention from the published copy and mor
 Reviewed additional scans at full resolution. Added `000005170023.jpg` as `desert-build.jpg`, showing the ribs and mechanism laid out in daylight, and `000005170026.jpg` as `build-crew.jpg`, showing the crew beside the unfinished frame at sunset. These add stages of the build that the original selection did not show. The similar workshop-lighting photograph `000005170015.jpg` and softer close-up `000005170032.jpg` were not added.
 
 Both new files are unchanged 3130 × 2075 JPEG scans from `/Users/jonas/Downloads/47644 00000517/`, copied with regular asset permissions. No RAW files are present for these film scans. They appear together between the workshop photographs and the existing desert assembly pair. The page now contains twelve photographs, six RAW-developed photographs and six film scans.
+
+## Orientation and lighting credit correction
+
+Jonas identified the workshop lighting scan as sideways and requested a 90°
+counterclockwise correction. Changed only its EXIF orientation byte from 1 to 8
+in `workshop-lights.jpg`. Its compressed photograph data, grain and colours are
+untouched, and the original download remains unchanged. No RAW files exist in
+the film-scan folder. The image pipeline applies this orientation when producing
+AVIF and WebP; layout now measures oriented dimensions as well.
+
+Jonas clarified that Albert Carrera / [Nouled](https://nouled.com/) built and
+installed the lighting. The closing paragraph now credits that work explicitly
+and describes Jonas's role as making the 3D lighting study.

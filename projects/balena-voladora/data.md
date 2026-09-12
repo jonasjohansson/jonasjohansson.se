@@ -72,6 +72,7 @@ blocks:
     fontSize: small
     content: >-
       The whale was designed and built by [Erik
-      Schmitz](https://www.erikschmitz.art/), Selim and Albert. I worked on the
-      lighting and made the 3D study.
+      Schmitz](https://www.erikschmitz.art/), Selim and Albert Carrera. I made the
+      3D lighting study. Albert at [Nouled](https://nouled.com/) built and
+      installed the lighting.
 ---

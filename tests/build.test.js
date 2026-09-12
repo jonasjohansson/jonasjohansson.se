@@ -54,6 +54,36 @@ test('desktop media pairs stop at text and rows and leave odd images full width'
   assert.ok(content.every(block => !block.desktopPair), 'pairing leaves source blocks unchanged');
 });
 
+test('portrait triptychs retain their images and video before desktop pairing', () => {
+  const hero = { type: 'image', ar: 1.5 };
+  const image = { type: 'image', ar: 0.5625 };
+  const video = { type: 'video', ar: 0.5625, src: '07.webm', poster: '07-poster.jpg' };
+  const triptych = [image, image, video].map((block, i) => ({ ...block, colStart: 1 + i * 4, colSpan: 4 }));
+  const content = [hero, { type: 'text' }, ...triptych, hero, { type: 'text' }];
+  const grouped = pairDesktopMedia(groupMedia(content));
+  assert.deepEqual(grouped[2].items, triptych, 'the third panel stays with the first two');
+  assert.equal(grouped[2].arSum, 1.6875);
+  assert.equal(grouped[2].gutters, 2);
+  assert.ok(grouped.every(block => !block.desktopPair), 'the following landscape stays outside the triptych');
+  assert.deepEqual(grouped.flatMap(block => block.items || [block]), content, 'all media and text keep their order');
+
+  const automatic = groupMedia([video, { type: 'text' }, image, image, video, hero]);
+  assert.equal(automatic[0], video, 'a portrait video hero remains separate');
+  assert.deepEqual(automatic[2].items, [image, image, video], 'unplaced portrait videos also belong in portrait rows');
+  assert.equal(automatic[3], hero, 'landscapes end automatic portrait rows');
+});
+
+test('authored media rows stop at missing columns, text, and a new row', () => {
+  const hero = { type: 'image', ar: 1.5 };
+  const image = { type: 'image', ar: 0.5625, colStart: 1, colSpan: 4 };
+  for (const next of [{ ...image, colStart: 9 }, { type: 'text' }, hero]) {
+    assert.deepEqual(groupMedia([hero, image, next]), [hero, image, next]);
+  }
+  const pair = [{ type: 'video', ar: 1.5, size: 'half-left' }, { type: 'video', ar: 1.5, size: 'half-right' }];
+  const grouped = groupMedia([hero, ...pair, ...pair]);
+  assert.deepEqual(grouped.slice(1).map(row => row.items), [pair, pair], 'two video pairs remain distinct rows');
+});
+
 test('video heroes require a local poster and a reserved aspect ratio', () => {
   const directory = mkdtempSync(path.join(tmpdir(), 'site-video-hero-'));
   try {

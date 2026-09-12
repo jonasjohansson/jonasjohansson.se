@@ -35,10 +35,13 @@ async function buildProject(project) {
     if (block.type === 'image') {
       const src = `${project.directory}/${block.src}`;
       const metadata = await sharp(src).metadata();
-      const ar = block.ar ?? metadata.width / metadata.height;
+      // Responsive image generation applies EXIF orientation, so layout must
+      // use the displayed dimensions rather than the stored sensor dimensions.
+      const aspectRatio = meta => meta.orientation >= 5 ? meta.height / meta.width : meta.width / meta.height;
+      const ar = block.ar ?? aspectRatio(metadata);
       const mobileSrc = block.mobileSrc ? `${project.directory}/${block.mobileSrc}` : null;
       const mobile = mobileSrc ? await sharp(mobileSrc).metadata() : metadata;
-      return { ...block, src, mobileSrc, alt: block.alt || '', ar, mobileAr: mobile.width / mobile.height,
+      return { ...block, src, mobileSrc, alt: block.alt || '', ar, mobileAr: aspectRatio(mobile),
         focal: block.focal || '50% 50%', mobileFocal: block.mobileFocal || block.focal || '50% 50%',
         heroFit: block.heroFit || 'cover', colStart, colSpan,
         sizes: index === 0 ? 'calc(100vw - 48px)' : mediaSizes(colSpan, ar) };
