@@ -777,7 +777,11 @@ try {
       await page.locator('#strip-kagora').hover();
       assert.deepEqual(await highlighted(), ['light', 'community'], 'Kagora highlights its enabled categories');
       assert.deepEqual(await selected(), before, 'previewing a project does not toggle filters');
-      assert.equal(await page.locator('#project-filters [data-filter="light"]').evaluate(button => getComputedStyle(button).textDecorationLine), 'underline', 'matching tags are visibly underlined');
+      await page.waitForTimeout(250);
+      const opacities = await page.locator('#project-filters button').evaluateAll(buttons => Object.fromEntries(buttons.map(button => [button.dataset.filter, Number(getComputedStyle(button).opacity)])));
+      assert.equal(opacities.light, 1, 'matching tags keep full opacity');
+      assert.ok(Object.entries(opacities).every(([tag, opacity]) => ['light', 'community'].includes(tag) || opacity < 0.5), 'non-matching tags are dimmed');
+      assert.equal(await page.locator('#project-filters [data-filter="light"]').evaluate(button => getComputedStyle(button).textDecorationLine), 'none', 'matching tags are not underlined');
       assert.deepEqual(await footerLayout(), footer, 'the highlight does not shift the footer within the collection');
       await page.screenshot({ path: `${output}/tag-preview${route === '/' ? '-home' : '-project'}.png` });
       await page.mouse.move(0, 0);
