@@ -28,7 +28,6 @@
 .home-header-row { display: flex; flex-wrap: nowrap; align-items: center; gap: clamp(0.5rem, 2vw, 1.5rem); height: var(--home-header-height); padding: 0 var(--spacing-lg); }
 .home-header h1 { flex: none; margin: 0; font: inherit; white-space: nowrap; }
 .home-header a { display: inline-block; padding: 0.5rem 0; text-decoration: none; }
-.home-header a:hover { text-decoration: underline; text-underline-offset: 0.3em; }
 .header-contacts { flex: 0 1 auto; min-width: 0; margin-left: auto; overflow-x: auto; scrollbar-width: none; font-size: 0.875rem; line-height: 1.5; letter-spacing: 0; text-transform: none; }
 .header-contacts::-webkit-scrollbar { display: none; }
 .header-contacts p { margin: 0; white-space: nowrap; }
@@ -40,7 +39,7 @@
 .project-filters button[aria-pressed="true"] { background: none; color: inherit; }
 .project-filters button[aria-pressed="true"]::before { background: currentColor; }
 .project-filters button[aria-pressed="false"] { color: color-mix(in srgb, var(--text-primary) 60%, var(--bg-primary)); }
-.project-filters button:hover { background: none; text-decoration: underline; text-underline-offset: 0.3em; }
-.project-filters button.is-preview-tag { text-decoration: underline; text-decoration-thickness: 2px; text-underline-offset: 0.3em; }
-.project-filters button.is-preview-tag::before { box-shadow: 0 0 0 2px var(--bg-primary), 0 0 0 3px currentColor; }
+.project-filters button:hover { background: none; }
+.project-filters button { transition: opacity 0.15s ease; }
+.project-filters.is-previewing button:not(.is-preview-tag) { opacity: 0.3; }
 .project-filters select { flex: none; align-self: center; max-width: 100%; padding: 0.5rem 0; border: 0; background-color: var(--bg-primary); color: inherit; }

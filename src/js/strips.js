@@ -23,6 +23,7 @@ function updatePreview() {
   const entry = hoveredEntry || focused;
   const projectTags = projects.get(entry?.dataset.project)?.tags || [];
   document.getElementById('project-preview-name').textContent = entry?.getAttribute('aria-label') || '';
+  document.getElementById('project-filters').classList.toggle('is-previewing', Boolean(entry));
   document.querySelectorAll('#project-filters button').forEach(button => {
     const tag = button.dataset.filter;
     button.classList.toggle('is-preview-tag', activeTags.has(tag) && projectTags.includes(tag));
