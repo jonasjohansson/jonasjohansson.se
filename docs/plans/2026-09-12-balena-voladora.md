@@ -70,6 +70,8 @@ untouched, and the original download remains unchanged. No RAW files exist in
 the film-scan folder. The image pipeline applies this orientation when producing
 AVIF and WebP; layout now measures oriented dimensions as well.
 
-Jonas clarified that Albert Carrera / [Nouled](https://nouled.com/) built and
-installed the lighting. The closing paragraph now credits that work explicitly
-and describes Jonas's role as making the 3D lighting study.
+Jonas clarified the roles in the closing paragraph: Erik Schmitz and Selim
+designed the whale, and Erik did the engineering and built the wooden structure
+and mechanics. Jonas made the 3D study and handled the software and lighting
+programming. Albert Carrera / [Nouled](https://nouled.com/) handled the hardware,
+mounting and cabling.
