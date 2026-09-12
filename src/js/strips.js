@@ -65,7 +65,9 @@ function updateFilterStates() {
 
 function setImageSize(entry, width) {
   const picture = entry.querySelector('picture');
-  if (!picture || parseFloat(picture.querySelector('source').sizes) >= width || pendingImages.get(entry)?.width >= width) return;
+  // The default clause is the last one; touch devices carry a smaller one first.
+  const declared = Math.max(...picture.querySelector('source').sizes.split(',').map(clause => parseFloat(clause.trim().split(/\s+/).pop())));
+  if (!picture || declared >= width || pendingImages.get(entry)?.width >= width) return;
   // Leave the decoded preview in place until its replacement is ready. The
   // strip itself can expand immediately, even on a slow connection.
   const replacement = picture.cloneNode(true);

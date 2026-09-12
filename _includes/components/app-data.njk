@@ -2,4 +2,6 @@
   window.__PATH_PREFIX__ = {{ ('/' | url) | jsonScript | safe }}.replace(/\/$/, '');
   window.__PROJECTS_DATA__ = {{ projectsForJS | jsonScript | safe }};
   window.__SITE_TITLE__ = {{ site.title | jsonScript | safe }};
+  // Lay the strips out as a row before first paint so the module cannot cause a shift.
+  if ('noModule' in HTMLScriptElement.prototype) document.documentElement.classList.add('enhanced');
 </script>

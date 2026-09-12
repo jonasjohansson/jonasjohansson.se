@@ -805,6 +805,15 @@ try {
     }
   });
 
+  await check('touch devices download the 640w strip image at any pixel density', { ...mobile, deviceScaleFactor: 3 }, async page => {
+    await visit(page);
+    await page.waitForFunction(() => document.querySelector('#strips img')?.currentSrc);
+    const sources = await page.locator('#strips img').evaluateAll(images => images.filter(image => image.currentSrc).map(image => ({ src: image.currentSrc, lazy: image.loading })));
+    assert.ok(sources.length > 0);
+    assert.ok(sources.every(({ src }) => /-640\.(avif|webp)$/.test(src)), `strips stay at 640w on touch: ${sources.find(({ src }) => !/-640\./.test(src))?.src}`);
+    assert.ok(sources.every(({ lazy }) => lazy === 'lazy'), 'touch strips stay lazy');
+  });
+
   await check('strip images keep their scale throughout hover and keyboard expansion', { viewport: { width: 1800, height: 420 } }, async page => {
     for (const route of ['/', '/jagad/']) {
       await visit(page, route);
