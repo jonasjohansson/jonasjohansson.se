@@ -64,12 +64,10 @@
 #projects {
   display: block;
   width: 100%;
-  min-height: calc(100vh - var(--spacing-lg) * 2);
   position: relative;
   background-color: var(--bg-primary);
-  /* Separate the project from the navigation strips below it. Only renders
-     on project pages (#projects is display:none on home). */
-  margin-bottom: var(--spacing-4xl);
+  /* One gap between the final content block and the navigation strips. */
+  margin-bottom: var(--spacing-2xl);
 }
 
 #projects:not(:has(.project)) {
@@ -80,7 +78,6 @@
 #projects.visible {
   display: block;
   width: 100%;
-  min-height: 100vh;
 }
 
 figure {
@@ -96,7 +93,12 @@ figure {
   grid-auto-flow: dense;
   width: 100%;
   max-width: 100%;
-  padding: var(--spacing-xl) 0;
+  padding: var(--spacing-xl) 0 0;
+}
+
+/* The project wrapper supplies the ending gap, without stacking text margins. */
+.project-grid > :last-child {
+  margin-bottom: 0;
 }
 
 /* Heroes span the full width inside the page gutter. */
@@ -263,8 +265,7 @@ html[data-theme="dark"] .text-block a {
 .credits-block {
   font-size: var(--font-size-small);
   opacity: 0.7;
-  /* Match the space below the project (#projects margin-bottom) so the
-     credits sit with even breathing room above and below. */
+  /* Separate a standalone credit block from the preceding content. */
   margin-top: var(--spacing-4xl);
 }
 
@@ -449,8 +450,7 @@ html[data-theme="dark"] .text-block a {
     margin-top: var(--spacing-md);
   }
 
-  /* The 7.5rem breaks above credits and below the project are too much on
-     mobile; bring them down to 2rem (kept matched so credits stays even). */
+  /* Keep separate credits and the ending gap compact on mobile. */
   .credits-block,
   .presskit-block {
     margin-top: var(--spacing-xl);
