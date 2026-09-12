@@ -40,6 +40,5 @@
 .project-filters button[aria-pressed="true"]::before { background: currentColor; }
 .project-filters button[aria-pressed="false"] { color: color-mix(in srgb, var(--text-primary) 60%, var(--bg-primary)); }
 .project-filters button:hover { background: none; }
-.project-filters button { transition: opacity 0.15s ease; }
 .project-filters.is-previewing button:not(.is-preview-tag) { opacity: 0.3; }
 .project-filters select { flex: none; align-self: center; max-width: 100%; padding: 0.5rem 0; border: 0; background-color: var(--bg-primary); color: inherit; }

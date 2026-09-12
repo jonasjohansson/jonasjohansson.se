@@ -777,7 +777,6 @@ try {
       await page.locator('#strip-kagora').hover();
       assert.deepEqual(await highlighted(), ['light', 'community'], 'Kagora highlights its enabled categories');
       assert.deepEqual(await selected(), before, 'previewing a project does not toggle filters');
-      await page.waitForTimeout(250);
       const opacities = await page.locator('#project-filters button').evaluateAll(buttons => Object.fromEntries(buttons.map(button => [button.dataset.filter, Number(getComputedStyle(button).opacity)])));
       assert.equal(opacities.light, 1, 'matching tags keep full opacity');
       assert.ok(Object.entries(opacities).every(([tag, opacity]) => ['light', 'community'].includes(tag) || opacity < 0.5), 'non-matching tags are dimmed');
