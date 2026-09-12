@@ -2,6 +2,14 @@
 
 Replaced the placeholder with a project page at `/det-morka-ljuset/`, requested by Jonas on 12 September 2026. The page covers the film and his wider work with Elverket. It is tagged Audiovisual, Exhibition and, through its date, 2026.
 
+## Current publication
+
+After reviewing the first version, Jonas requested a minimal page until more imagery is available. The published page now keeps the hero, introduction, a short account of his role and a brief closing collaborator paragraph with a full-credits link. All selected media remains in the repo for later use.
+
+The [extended copy draft](../drafts/det-morka-ljuset.md) expands the project story, retains the full collaborator text, maps the supporting sources, and identifies imagery needed for each section. It is excluded from the site build. The record below documents the fuller first version, preserved in commit `db36f59`.
+
+The minimal revision passes the production build and all ten content/unit checks. Chrome review at 390 and 1440 px confirms one hero, three text blocks, no gallery video, correct sharing metadata and no horizontal overflow or browser errors. Confirmed that `dist/docs` is absent, so the extended draft is not published as a website page.
+
 ## Copy and sources
 
 The opening introduces Lars Lerin, Sara Broos and the film. The body describes Jonas's technical producer and animation roles, the room model, browser and desktop previews, mapping, Lofoten studies, delivery tools, Mellanrummet and the film website. The collaborators appear in closing prose. There is no invented personal anecdote or concluding slogan.
