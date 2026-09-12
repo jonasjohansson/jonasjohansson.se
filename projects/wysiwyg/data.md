@@ -28,8 +28,12 @@ blocks:
     fontSize: small
     content: >-
       Flocks gather and scatter while luminous figures pass through the
-      view. The recording and renders isolate the creatures against darkness,
-      revealing the individual birds and particles that make up their bodies.
+      view. The concept image below layers them over a photograph of the
+      desert. The recording and renders show the birds and particles on
+      their own.
+  - type: image
+    src: desert-concept.png
+    alt: "Concept image of the telescope in the desert at dusk, with a flock of green and yellow virtual birds and a blue particle figure superimposed on the landscape."
   - type: video
     src: flock-motion.mp4
     poster: flock-motion.jpg
@@ -65,6 +69,18 @@ blocks:
     src: eyepiece.jpg
     size: half-right
     alt: "A close view along the brass telescope towards its eyepiece, with grass and trees behind it."
+  - type: text
+    fontSize: small
+    content: >-
+      [Rose Hallgren](https://rosehallgren.se/) designed and built the wooden bench.
+  - type: image
+    src: bench-desert.jpg
+    size: half-left
+    alt: "Rose Hallgren's wooden bench stands in the desert in warm evening light, with curved cutouts in its legs and a scalloped edge beneath the seat."
+  - type: image
+    src: bench-joint.jpg
+    size: half-right
+    alt: "A close view of the bench's plywood seat and rounded upright, secured with a wooden peg."
   - type: text
     fontSize: small
     content: >-
