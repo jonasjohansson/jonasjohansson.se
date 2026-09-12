@@ -577,7 +577,7 @@ try {
   }
 
   for (const [name, options] of [['desktop', desktop], ['mobile', mobile]]) {
-    await check(`${name} selects one year and combines it with categories on both strip walls`, options, async page => {
+    await check(`${name} year and categories reset each other on both strip walls`, options, async page => {
       const datedProjects = readProjects().filter(project => project.type === 'work');
       const expected = (year, excluded = '', tags = []) => datedProjects
         .filter(project => project.slug !== excluded && (!year || project.date.startsWith(year)) && (!tags.length || project.tags.some(tag => tags.includes(tag))))
@@ -594,28 +594,23 @@ try {
         assert.deepEqual(await visible(), expected(year), 'changing year replaces the previous selection');
         assert.equal(await yearSelect.inputValue(), year);
       }
+      const pressed = () => page.locator('#project-filters [aria-pressed="true"]').evaluateAll(buttons => buttons.map(button => button.dataset.filter));
+      const allTags = await page.locator('#project-filters button').evaluateAll(buttons => buttons.map(button => button.dataset.filter));
       await yearSelect.selectOption('2025');
       await tag('mixed reality').click();
-      assert.deepEqual(await visible(), expected('2025', '', ['mixed reality']), 'categories narrow the chosen year');
+      assert.equal(await yearSelect.inputValue(), '', 'choosing a category clears the year');
+      assert.deepEqual(await visible(), expected('', '', ['mixed reality']), 'the category applies across all years');
       await tag('av').click();
-      assert.deepEqual(await visible(), expected('2025', '', ['mixed reality', 'av']), 'categories still combine within a single year');
+      assert.deepEqual(await visible(), expected('', '', ['mixed reality', 'av']), 'categories still combine');
       await yearSelect.selectOption('2024');
-      assert.deepEqual(await visible(), expected('2024', '', ['mixed reality', 'av']), 'changing year preserves selected categories');
-      await yearSelect.selectOption('2023');
-      await tag('av').click({ force: true });
-      assert.equal(await tag('av').getAttribute('aria-pressed'), 'true', 'keep the category with results in the selected year');
-      assert.deepEqual(await visible(), expected('2023', '', ['av']));
-      await tag('mixed reality').click();
-      await yearSelect.selectOption('');
-      assert.deepEqual(await visible(), expected('', '', ['av']), 'All years restores older projects in the chosen category');
+      assert.deepEqual(await pressed(), allTags, 'choosing a year turns every category back on');
+      assert.deepEqual(await visible(), expected('2024'), 'the year applies across all categories');
+      assert.equal(await page.locator('#project-year option[disabled]').count(), 0, 'every year stays available');
+      await tag('av').click();
+      assert.equal(await yearSelect.inputValue(), '');
+      assert.deepEqual(await visible(), expected('', '', ['av']));
       await tag('exhibition').click();
       await tag('av').click();
-      assert.equal(await yearSelect.locator('option[value="2025"]').isDisabled(), true, 'years without matching projects are unavailable');
-      await yearSelect.evaluate(select => {
-        select.value = '2025';
-        select.dispatchEvent(new Event('change', { bubbles: true }));
-      });
-      assert.equal(await yearSelect.inputValue(), '', 'invalid year changes cannot empty the wall');
       assert.deepEqual(await visible(), expected('', '', ['exhibition']));
 
       // Restore all categories and check the single-year state through navigation.

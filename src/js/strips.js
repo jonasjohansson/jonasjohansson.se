@@ -41,12 +41,14 @@ function hasMatches(selectedTags = activeTags, selectedYear = activeYear) {
   return [...projects.values()].some(project => project.slug !== currentSlug && matchesFilters(project, selectedTags, selectedYear));
 }
 
+// Year and categories are alternatives: choosing one resets the other, so
+// each is validated against the other's reset state.
 function canRemoveTag(tag) {
-  return activeTags.size > 1 && hasMatches(new Set([...activeTags].filter(candidate => candidate !== tag)));
+  return activeTags.size > 1 && hasMatches(new Set([...activeTags].filter(candidate => candidate !== tag)), '');
 }
 
 function canSelectOnlyTag(tag) {
-  return hasMatches(new Set([tag]));
+  return hasMatches(new Set([tag]), '');
 }
 
 function updateFilterStates() {
@@ -60,7 +62,7 @@ function updateFilterStates() {
   });
   const yearSelect = document.getElementById('project-year');
   yearSelect.value = activeYear;
-  for (const option of yearSelect.options) option.disabled = !hasMatches(activeTags, option.value);
+  for (const option of yearSelect.options) option.disabled = !hasMatches(new Set(categories), option.value);
 }
 
 function setImageSize(entry, width) {
@@ -181,17 +183,20 @@ export function initializeStrips() {
     scrollTo({ top, behavior: matchMedia('(prefers-reduced-motion: reduce)').matches ? 'instant' : 'smooth' });
   };
   yearSelect.addEventListener('change', () => {
-    if (!hasMatches(activeTags, yearSelect.value)) {
+    if (!hasMatches(new Set(categories), yearSelect.value)) {
       yearSelect.value = activeYear;
       return;
     }
     filterSelections.get(currentSlug).year = yearSelect.value;
+    activeTags.clear();
+    categories.forEach(tag => activeTags.add(tag));
     applyFilters();
   });
   filters.addEventListener('click', event => {
     const button = event.target.closest('button[data-filter]');
     if (!button) return;
     const tag = button.dataset.filter;
+    filterSelections.get(currentSlug).year = '';
     if (activeTags.size === categories.length) {
       if (!canSelectOnlyTag(tag)) return;
       activeTags.clear();
