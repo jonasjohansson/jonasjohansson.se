@@ -3,7 +3,7 @@ title: Det Mörka Ljuset
 date: '2026-09-26'
 color: '#a8bfc8'
 tags:
-  - audiovisual
+  - av
   - exhibition
 blocks:
   - type: image
@@ -19,16 +19,14 @@ blocks:
   - type: text
     fontSize: small
     content: >-
-      I'm the technical producer and part of the animation team. My work
-      includes the Lofoten sequences, tools for previewing and mapping
-      the film in the room, and the team's delivery system. I also made
-      the presentation for Mellanrummet, the smaller projection space
-      beside the hall, and the [website for the film](https://detmorkaljuset.se/).
+      I made animation for the film.
   - type: text
     fontSize: small
     content: >-
-      Made with [Sara Broos](https://www.sarabroos.com/),
-      [Lars Lerin](https://sandgrund.org/lars-lerin/), Elverket's technical
-      director Joacim Jardenäs and the film's animation and production
-      team. [Full credits and visitor information](https://elverket.com/produktioner/lars-lerin).
+      I worked with Jesper Kurlandsky and a team of talented animators,
+      including [Annie Tådne](https://tadne.se/),
+      [David Giese](https://davidgiese.com/),
+      [Johannes Ferm Winkler](https://johannesfermwinkler.se/),
+      [David Nord and Boris Nawratil](https://www.davidboris.se/),
+      among others. [Full credits and visitor information](https://elverket.com/produktioner/lars-lerin).
 ---

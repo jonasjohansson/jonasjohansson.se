@@ -4,27 +4,31 @@ Prepared 12 September 2026. Jonas asked for a minimal live page while better ima
 
 The sections below are a text bank for the expanded page. They can sit between future image groups; the headings are editorial markers, not proposed page furniture. The draft describes working tools and animation studies where that is what the sources establish. It does not treat every experiment as part of the finished film.
 
+Jonas's correction: he did not make the film website. Describe his contribution on the published page simply as animation, without singling out Lofoten or Mellanrummet. The additional production research below is retained for reference, not for automatic inclusion in the page. A local repository is not evidence of website authorship.
+
+Jonas worked with Jesper Kurlandsky and the animation team, not directly with Lars Lerin. He named Annie Tådne, David Giese, Johannes Ferm Winkler, David Nord and Boris Nawratil, among others. Distinguish the film's wider credits from Jonas's direct collaborators.
+
 ## Opening
 
 Lars Lerin's paintings, voice and archives surround the audience in [Det Mörka Ljuset](https://detmorkaljuset.se/), a film by Sara Broos made for the walls and floor of [Elverket](https://elverket.com/) in Stockholm.
 
-I'm the technical producer and part of the animation team. My work with Elverket includes the moving images, the tools we use to see them in the room, projection mapping and the system for collecting the team's deliveries. I also made the presentation for Mellanrummet, the smaller space beside the hall, and the website for the film.
+I made animation for the film.
 
 ## The film and the room
 
-The film follows Lars from his childhood in Värmland to Lofoten and further travels, through paintings, home movies, photographs and his own telling of his life. Sara developed the concept, directed and edited the film. Alongside the places and people in the paintings, the story follows his experiences of belonging, loneliness and finding a way to be himself.
+The film follows Lars through paintings, home movies, photographs and his own telling of his life. Sara developed the concept, directed and edited the film. Alongside the places and people in the paintings, the story follows his experiences of belonging, loneliness and finding a way to be himself.
 
 The main hall is roughly 34 metres long, eleven metres wide and eight metres high. There are images on all four walls and on the floor. A composition can surround you, but you can only look at part of it at once. Turning toward another wall changes what you see. Sitting down changes the relationship between the paintings above you and the image under your feet.
 
 That scale affects small decisions in the animation. An edge in a painting can meet the corner of the room. A house can extend across a wall, while water or mist continues onto the floor. A door opening can interrupt a face or a line of text. We need to see those relationships while the images are still being made.
 
-## Lofoten
+## Animation
 
-For Lofoten I worked with groups of paintings arranged around the room. Some compositions hold many smaller images together. Others give more space to a house, a mountain or a stretch of water. The working layouts let us compare those changes of scale across the whole room.
+I worked with groups of paintings arranged around the room. Some compositions hold many smaller images together. Others give more space to a house, a mountain or a stretch of water. The working layouts let us compare those changes of scale across the whole room.
 
 The floor has its own composition, continuing colours and reflections below the paintings on the walls. In one of the studies, houses line the walls while mist moves across the floor. In the flat production image the floor sits beneath the wall strip. Inside the preview it becomes the surface you are standing on, and the relationship is much easier to judge.
 
-There are several Lofoten arrangements and transition tests in the working material. Keeping those versions together makes it possible to go back to a painting or composition and try a different timing without rebuilding the room around it.
+There are several arrangements and transition tests in the working material. Keeping those versions together makes it possible to go back to a painting or composition and try a different timing without rebuilding the room around it.
 
 ## Moving between paintings
 
@@ -56,7 +60,7 @@ I built a separate desktop preview for the larger video files. It plays the four
 
 The desktop player uses hardware decoding where the format supports it. That matters when several large videos need to play at the same time. It also lets us load a separate sound file, inspect the flat layout, take a still or record a view from inside the room.
 
-The short Lofoten recording prepared for this page comes from the browser model playing an existing animation test. It is a way of showing the production work while the exhibition documentation is still being gathered.
+The short recording prepared for this page comes from the browser model playing an existing animation test. It is a way of showing the production work while the exhibition documentation is still being gathered.
 
 ## Mapping and delivery
 
@@ -68,21 +72,13 @@ For deliveries, I built an uploader organised by chapter. The team can send larg
 
 The delivery system also accepts stills, with additional image formats for the credits material. A still and a finished movie need different checks. Keeping them in the same chapter view lets the team see the material together without treating every file as a video master.
 
-## Mellanrummet
-
-Mellanrummet is the smaller projection room beside the main hall. Its screen is fourteen metres wide, with a much lower ceiling and a different viewing distance. I added it to the browser preview so we could check its presentation as well as the main film.
-
-It has its own media, separate from the five surfaces in the hall. The model includes the connecting doorways, so the presentation can also be seen from the main room. This makes it possible to look at the relationship between the spaces while working on their content.
-
-I made a presentation combining paintings and text for that long wall. The working exports include image sequences and text layouts sized for the projection.
-
-## The film website
-
-I also built [detmorkaljuset.se](https://detmorkaljuset.se/). It brings together the film's introduction, imagery, credits and visitor link in Swedish and English.
-
 ## Closing collaborators text
 
-[Sara Broos](https://www.sarabroos.com/) developed the concept, directed and edited the film, with paintings and narration by [Lars Lerin](https://sandgrund.org/lars-lerin/). I worked alongside Joacim Jardenäs, Elverket's technical director. The producers are Lars Beckung, Lisa Berggren Eyre, Jesper Kurlandsky and Fredrik Wikingsson, with Pia Åstrand managing the project at Chimney.
+I worked with Jesper Kurlandsky and a team of talented animators, including [Annie Tådne](https://tadne.se/), [David Giese](https://davidgiese.com/), [Johannes Ferm Winkler](https://johannesfermwinkler.se/), [David Nord and Boris Nawratil](https://www.davidboris.se/), among others. [Full credits and visitor information](https://elverket.com/produktioner/lars-lerin).
+
+### Wider film credits for reference
+
+[Sara Broos](https://www.sarabroos.com/) developed the concept, directed and edited the film, with paintings and narration by [Lars Lerin](https://sandgrund.org/lars-lerin/). Joacim Jardenäs is Elverket's technical director. The producers are Lars Beckung, Lisa Berggren Eyre, Jesper Kurlandsky and Fredrik Wikingsson, with Pia Åstrand managing the project at Chimney.
 
 Animation and visual effects are shared with [Tone Bjordam](https://www.tonebjordam.com/), [Johannes Ferm Winkler](https://johannesfermwinkler.se/), [David Giese](https://davidgiese.com/), Jacob Gåfvels, [Boris Nawratil and David Nord](https://www.davidboris.se/), Deniz Özumagi, Jon Skår, [Annie Tådne](https://tadne.se/), Viktor Tegréus and [Linn Willebrand](https://www.linnwillebrand.com/).
 
@@ -99,13 +95,11 @@ The full text is deliberately longer than the likely final page; use the section
 | Section | Best material to add | Material already retained |
 | --- | --- | --- |
 | Opening and scale | A strong finished room view showing walls, floor and audience scale | `hero.jpg`, `birds-in-the-room.jpg` |
-| Lofoten | Wide installation views of two different compositions, plus a detail showing the painting surface | `lofoten-layout.jpg`, `lofoten-room.mp4` and its poster |
+| Animation | Wide installation views of two different compositions, plus a detail showing the painting surface | `lofoten-layout.jpg`, `lofoten-room.mp4` and its poster |
 | Transitions | Short exports showing a complete transition between two paintings | Original transition exports in the Lofoten/Jonas Drive folder |
 | Birds and point clouds | Clean motion recordings of the actual studies | Working prototypes in `elverket-lars-lerin` |
 | Preview and mapping | A finished room view paired with the same composition in the model | `preview-tool.jpg`, `room-study.jpg`, `calibration.jpg` |
 | Production | A good photograph of the team working or reviewing, if available | No suitable new selection established |
-| Mellanrummet | Finished room, connecting doorway and a legible view of the presentation | Working image/text layouts and delivery notes on Drive |
-| Website | One concise view if it adds something to the film story | Local `detmorkaljuset.se` site |
 
 All named portfolio media remains in `projects/det-morka-ljuset/`. The earlier complete page and its image order are preserved in commit `db36f59`. New camera photographs should be reviewed from RAW first. Avoid using several versions of the same composition merely to make the gallery longer.
 
@@ -140,7 +134,7 @@ Local repos under `org/jonasjohansson`:
 | `elverket-viewer/README.md`, `video.py`, `ui_panel.py` | Desktop playback, synchronisation, hardware decoding, viewpoints, snapshots and recording |
 | `elverket-resolume-mapping-tool/README.md` | Camera/perspective tools, preset export and live effect |
 | `elverket-uploader/public/index.html`, `src/worker.js` | Chapter delivery, version preservation, format checks and media metadata warnings |
-| `detmorkaljuset.se/en/index.html` and Swedish page | Film synopsis, website scope and credits |
+| `detmorkaljuset.se/en/index.html` and Swedish page | Film synopsis and credits; not evidence of website authorship |
 
 Shared Drive `231 ELVERKET / Det Mörka Ljuset`:
 

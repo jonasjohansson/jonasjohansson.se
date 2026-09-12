@@ -8,11 +8,15 @@ After reviewing the first version, Jonas requested a minimal page until more ima
 
 The [extended copy draft](../drafts/det-morka-ljuset.md) expands the project story, retains the full collaborator text, maps the supporting sources, and identifies imagery needed for each section. It is excluded from the site build. The record below documents the fuller first version, preserved in commit `db36f59`.
 
+Jonas subsequently corrected the attribution: he did not make the film website. The published role now reads “I made animation for the film.” It does not name Lofoten or Mellanrummet. The draft's website credit has been removed, and its suggested animation copy follows the same preference. The local film-site repo remains a source for the film synopsis and credits, not evidence of authorship. This correction supersedes the first version's claims.
+
+The closing paragraph names Jonas's direct collaborators: Jesper Kurlandsky and animators Annie Tådne, David Giese, Johannes Ferm Winkler, David Nord and Boris Nawratil, among others. Lars Lerin remains credited for the paintings and voice in the introduction, without suggesting that Jonas worked directly with him. The saved draft distinguishes direct collaborators from the wider film credits.
+
 The minimal revision passes the production build and all ten content/unit checks. Chrome review at 390 and 1440 px confirms one hero, three text blocks, no gallery video, correct sharing metadata and no horizontal overflow or browser errors. Confirmed that `dist/docs` is absent, so the extended draft is not published as a website page.
 
 ## Copy and sources
 
-The opening introduces Lars Lerin, Sara Broos and the film. The body describes Jonas's technical producer and animation roles, the room model, browser and desktop previews, mapping, Lofoten studies, delivery tools, Mellanrummet and the film website. The collaborators appear in closing prose. There is no invented personal anecdote or concluding slogan.
+The first version introduced Lars Lerin, Sara Broos and the film, followed by production background and closing collaborator text. The current page follows Jonas's correction above and credits only his animation work.
 
 - [Elverket's production page](https://elverket.com/produktioner/lars-lerin) supplies the film synopsis, public opening date of 26 September 2026, and credited roles. The project date is the opening date, not the date of this portfolio update. The page does not claim that the public exhibition has already opened.
 - Local `detmorkaljuset.se/en/index.html` supplies the full credits, including Pia Åstrand's project management at Chimney. The site is linked as [detmorkaljuset.se](https://detmorkaljuset.se/).

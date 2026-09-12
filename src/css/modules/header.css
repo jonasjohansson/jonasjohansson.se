@@ -43,3 +43,4 @@
 .project-filters button:hover { background: none; text-decoration: underline; text-underline-offset: 0.3em; }
 .project-filters button.is-preview-tag { text-decoration: underline; text-decoration-thickness: 2px; text-underline-offset: 0.3em; }
 .project-filters button.is-preview-tag::before { box-shadow: 0 0 0 2px var(--bg-primary), 0 0 0 3px currentColor; }
+.project-filters select { flex: none; align-self: center; max-width: 100%; padding: 0.5rem 0; border: 0; background-color: var(--bg-primary); color: inherit; }
