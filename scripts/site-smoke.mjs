@@ -808,10 +808,13 @@ try {
   await check('touch devices download the 640w strip image at any pixel density', { ...mobile, deviceScaleFactor: 3 }, async page => {
     await visit(page);
     await page.waitForFunction(() => document.querySelector('#strips img')?.currentSrc);
-    const sources = await page.locator('#strips img').evaluateAll(images => images.filter(image => image.currentSrc).map(image => ({ src: image.currentSrc, lazy: image.loading })));
+    const sources = await page.locator('#strips img').evaluateAll(images => images.map((image, index) => ({ index, src: image.currentSrc, loading: image.loading, priority: image.getAttribute('fetchpriority') })).filter(image => image.src));
     assert.ok(sources.length > 0);
     assert.ok(sources.every(({ src }) => /-640\.(avif|webp)$/.test(src)), `strips stay at 640w on touch: ${sources.find(({ src }) => !/-640\./.test(src))?.src}`);
-    assert.ok(sources.every(({ lazy }) => lazy === 'lazy'), 'touch strips stay lazy');
+    assert.deepEqual(sources.filter(({ loading }) => loading === 'eager').map(({ index }) => index), [0, 1, 2], 'only the first three home strips load eagerly');
+    assert.equal(sources[0].priority, 'high', 'the first strip is the likely largest paint and gets priority');
+    await visit(page, '/jagad/');
+    assert.ok(await page.locator('#strips img').evaluateAll(images => images.every(image => image.loading === 'lazy')), 'project pages keep every strip lazy');
   });
 
   await check('strip images keep their scale throughout hover and keyboard expansion', { viewport: { width: 1800, height: 420 } }, async page => {

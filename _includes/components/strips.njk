@@ -14,7 +14,8 @@
       <picture class="strip-picture">
         <source type="image/avif" srcset="{{ item.thumbnail.avif }}" sizes="(hover: none) 213px, 640px">
         <source type="image/webp" srcset="{{ item.thumbnail.webp }}" sizes="(hover: none) 213px, 640px">
-        <img class="strip-image" src="{{ item.thumbnail.src }}" alt="" width="{{ item.thumbnail.width }}" height="{{ item.thumbnail.height }}" loading="lazy" decoding="async">
+        {%- set eager = (not project) and loop.index0 < 3 %}
+        <img class="strip-image" src="{{ item.thumbnail.src }}" alt="" width="{{ item.thumbnail.width }}" height="{{ item.thumbnail.height }}" loading="{{ 'eager' if eager else 'lazy' }}"{% if eager and loop.first %} fetchpriority="high"{% endif %} decoding="async">
       </picture>
     </a>
     {% endfor %}
