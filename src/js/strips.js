@@ -7,7 +7,10 @@ let resizeFrame;
 const projects = new Map(window.__PROJECTS_DATA__.map(project => [project.slug, project]));
 const counts = new Map();
 projects.forEach(project => project.tags.forEach(tag => counts.set(tag, (counts.get(tag) || 0) + 1)));
-const tags = [...counts.keys()].filter(tag => tag !== 'installation').sort((a, b) => counts.get(b) - counts.get(a) || a.localeCompare(b));
+const isYear = tag => /^\d{4}$/.test(tag);
+const categories = [...counts.keys()].filter(tag => tag !== 'installation' && !isYear(tag)).sort((a, b) => counts.get(b) - counts.get(a) || a.localeCompare(b));
+const years = [...counts.keys()].filter(isYear).sort((a, b) => Number(b) - Number(a));
+const tags = [...categories, ...years];
 let activeTags = new Set(tags);
 const filterSelections = new Map([['', activeTags]]);
 let currentSlug = '';
@@ -106,7 +109,7 @@ export function updateStrips(slug) {
   entries = [...document.querySelectorAll('#strips .strip')];
   let count = 0;
   // With every tag on, include projects whose only tag is the omitted
-  // Installation category too. Otherwise, match any enabled category.
+  // Installation category too. Otherwise, match any enabled category or year.
   const showAll = activeTags.size === tags.length;
   for (const entry of entries) {
     const matches = showAll || projects.get(entry.dataset.project)?.tags.some(tag => activeTags.has(tag));

@@ -2,6 +2,7 @@ import assert from 'node:assert/strict';
 import { existsSync, mkdirSync, readFileSync, writeFileSync } from 'node:fs';
 import { chromium } from 'playwright';
 import { previewServer } from './preview-server.mjs';
+import { readProjects } from './project-data.js';
 
 const server = process.env.AUDIT_BASE_URL ? null : await previewServer();
 const base = process.env.AUDIT_BASE_URL || server.url;
@@ -497,6 +498,51 @@ try {
   }
 
   for (const [name, options] of [['desktop', desktop], ['mobile', mobile]]) {
+    await check(`${name} recent year tags follow project dates on both strip walls`, options, async page => {
+      const datedProjects = readProjects().filter(project => project.type === 'work');
+      const expected = (years, excluded = '') => datedProjects
+        .filter(project => project.slug !== excluded && years.includes(project.date.slice(0, 4)))
+        .map(project => project.slug);
+      await visit(page);
+      const filter = year => page.locator(`#project-filters [data-filter="${year}"]`);
+      const visible = () => page.locator('#strips .strip:not([hidden])').evaluateAll(strips => strips.map(strip => strip.dataset.project));
+      const buttons = await page.locator('#project-filters button').evaluateAll(buttons => buttons.map(button => button.dataset.filter));
+      assert.deepEqual(buttons.filter(tag => /^\d{4}$/.test(tag)), ['2026', '2025', '2024', '2023']);
+      assert.deepEqual(buttons.slice(-4), ['2026', '2025', '2024', '2023'], 'recent years follow the subject tags, newest first');
+      await filter('2025').click();
+      assert.deepEqual(await visible(), expected(['2025']), 'the first year click isolates projects from that year');
+      assert.deepEqual(await page.locator('#project-filters [aria-pressed="true"]').allTextContents(), ['2025']);
+      await filter('2025').click({ force: true });
+      assert.deepEqual(await visible(), expected(['2025']), 'the last enabled year cannot be switched off');
+      await filter('2024').click();
+      assert.deepEqual(await visible(), expected(['2025', '2024']), 'multiple enabled years combine');
+      await filter('2023').click();
+      assert.deepEqual(await visible(), expected(['2025', '2024', '2023']));
+      await filter('2025').click();
+      await filter('2024').click();
+      assert.deepEqual(await visible(), expected(['2023']));
+      await filter('2023').scrollIntoViewIfNeeded();
+      const yearBounds = await filter('2023').boundingBox(), filterBounds = await page.locator('#project-filters').boundingBox();
+      assert.ok(yearBounds.x >= filterBounds.x - 1 && yearBounds.x + yearBounds.width <= filterBounds.x + filterBounds.width + 1, 'the final year is reachable in the scrolling footer');
+      await checkFooter(page);
+      await page.screenshot({ path: `${output}/year-filter-${name}.png` });
+
+      const chosen = expected(['2023'])[0];
+      await page.locator(`#strip-${chosen}`).click();
+      await page.waitForSelector(`#projects [data-project="${chosen}"]`);
+      await page.locator('#collection').evaluate(collection => collection.scrollIntoView({ block: 'start' }));
+      await filter('2023').click();
+      assert.deepEqual(await visible(), expected(['2023'], chosen), 'project pages filter by year and exclude the open project');
+      await filter('2024').click();
+      assert.deepEqual(await visible(), expected(['2023', '2024'], chosen));
+      await page.goBack();
+      await waitForHomeWall(page);
+      assert.deepEqual(await visible(), expected(['2023']), 'Back restores the homepage year selection');
+      assert.deepEqual(await page.locator('#project-filters [aria-pressed="true"]').allTextContents(), ['2023']);
+    });
+  }
+
+  for (const [name, options] of [['desktop', desktop], ['mobile', mobile]]) {
     await check(`${name} filters other projects without leaving the project wall`, options, async page => {
       await visit(page, '/society-expo/');
       await page.locator('#collection').evaluate(collection => collection.scrollIntoView({ block: 'start' }));
@@ -611,7 +657,7 @@ try {
       const before = await selected();
       const footer = await footerLayout();
       await page.locator('#strip-kagora').hover();
-      assert.deepEqual(await highlighted(), ['light', 'community'], 'Kagora highlights its enabled categories');
+      assert.deepEqual(await highlighted(), ['light', 'community', '2026'], 'Kagora highlights its enabled categories and year');
       assert.deepEqual(await selected(), before, 'previewing a project does not toggle filters');
       assert.equal(await page.locator('#project-filters [data-filter="light"]').evaluate(button => getComputedStyle(button).textDecorationLine), 'underline', 'matching tags are visibly underlined');
       assert.deepEqual(await footerLayout(), footer, 'the highlight does not shift the footer within the collection');
