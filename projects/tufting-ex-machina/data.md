@@ -20,14 +20,12 @@ blocks:
     fontSize: small
     content: >-
       Tufting Ex Machina was a two-day workshop at
-      [Aavistus](https://www.aavistusfestival.fi/), an audiovisual festival
-      in Helsinki that I have been part of since its start in 2022, as both
-      an artist and collaborator through
-      [Nordic Audiovisual Artists](https://www.nava.community). Created together
-      with [Rose Hallgren](https://rosehallgren.se/), the workshop brought
-      together 10 participants to tuft their own cultural canon. I'd
-      learned tufting during a residency at
-      [Konvent Zero](https://konventzero.com/) in Spain.
+      [Aavistus](https://www.aavistusfestival.fi/), an audiovisual festival in
+      Helsinki that I have been part of since its start in 2022, as both an artist
+      and collaborator through [Nordic Audiovisual
+      Artists](https://www.nava.community). The workshop brought together 10
+      participants to tuft their own cultural canon. I'd learned tufting during a
+      residency at [Konvent Zero](https://konventzero.com/) in Spain.
   - type: image
     src: 03.jpg
   - type: text
@@ -57,21 +55,27 @@ blocks:
   - type: text
     fontSize: small
     content: >-
-      For the project, Rose designed a custom modular tufting frame that
-      could expand to 2 x 4 metres yet fold down to fit in a sports bag.
+      For the project, [Rose Hallgren](https://rosehallgren.se/) designed a custom
+      modular tufting frame that could expand to 2 x 4 metres yet fold down to fit
+      in a sports bag.
   - type: image
     src: 07.jpg
   - type: text
     fontSize: small
     content: >-
-      The finished piece was exhibited at the festival, with conductive
-      thread added to make it interactive using
-      [Circuit Playground](https://www.adafruit.com/category/965). I also
-      produced a music track to accompany the work.
+      The finished piece was exhibited at the festival, with conductive thread
+      added to make it interactive using [Circuit
+      Playground](https://www.adafruit.com/category/965).
   - type: image
     src: 08.jpg
     size: half-left
   - type: image
     src: 09.jpg
     size: half-right
+  - type: text
+    fontSize: small
+    content: >-
+      Made with [Rose Hallgren](https://rosehallgren.se/) and the ten workshop
+      participants at [Aavistus](https://www.aavistusfestival.fi/). I also
+      produced a music track to accompany the work.
 ---

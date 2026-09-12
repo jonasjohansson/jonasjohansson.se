@@ -80,18 +80,16 @@ blocks:
       concert controlling the visuals with the
       [OP-Z](https://teenage.engineering/store/op-z/), ten storeys of
       light on the harbour, driven from inside a city bus.
+  - type: image
+    src: 03.jpg
   - type: text
     fontSize: small
     content: >-
-      It was a great few years. We would gather in Reykjavík for Sónar, hack
-      the facade, have morning meetings in the pool, and enjoy playing with
-      lights in the evenings. The work with Harpa became the spark for
-      [NAVA](https://www.nava.community) (Nordic Audiovisual Artists), a
-      community where Atlí, Owen, myself and artist
-      [Rasmus Stride](https://www.instagram.com/rasmus.stride/) formed the
-      collective that would go on to do projects like
-      [Tiny/Massive](/tinymassive/) and
-      Skaðablót.
-  - type: image
-    src: 03.jpg
+      It was a great few years. We would gather in Reykjavík for Sónar, hack the
+      facade, have morning meetings in the pool, and enjoy playing with lights in
+      the evenings. The work with Harpa became the spark for
+      [NAVA](https://www.nava.community) (Nordic Audiovisual Artists), a community
+      where Atlí, Owen, myself and artist [Rasmus
+      Stride](https://www.instagram.com/rasmus.stride/) formed the collective that
+      would go on to do projects like [Tiny/Massive](/tinymassive/) and Skaðablót.
 ---

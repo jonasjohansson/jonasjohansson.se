@@ -16,12 +16,13 @@ blocks:
   - type: text
     fontSize: small
     content: >-
-      I initiated and built Embed with [Barkas](https://barkas.com/) and
-      [Vitali Poluzhnikov](https://www.vitali.xyz/) in 2021. Three
-      short-throw projectors were installed in a small hotel room at Hobo
-      Hotel in Stockholm,
-      with an elaborate speaker system and a custom control
-      interface on a tablet. Guests could book the room and browse curated films
-      and generative graphics, surrounded by visuals on every wall.
+      In 2021, three short-throw projectors were installed in a small hotel room
+      at Hobo Hotel in Stockholm, with an elaborate speaker system and a custom
+      control interface on a tablet. Guests could book the room and browse curated
+      films and generative graphics, surrounded by visuals on every wall.
+  - type: text
+    fontSize: small
+    content: >-
+      I initiated and built Embed with [Barkas](https://barkas.com/) and [Vitali
+      Poluzhnikov](https://www.vitali.xyz/).
 ---
-

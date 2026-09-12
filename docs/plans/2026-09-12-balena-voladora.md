@@ -52,3 +52,11 @@ Ten photographs in total. The hero preserves its full composition. The existing 
 - Desktop and mobile screenshots visually reviewed for selection, sequence and spacing.
 - Sharing metadata includes the project title, description and generated Open Graph image.
 - GitHub's complete browser suite and deployment are followed after push.
+
+## Follow-up selection
+
+Jonas requested removal of the Elsewhere mention from the published copy and more photographs from the shared folder if they were strong enough. Removed the event phrase and link from the opening body paragraph.
+
+Reviewed additional scans at full resolution. Added `000005170023.jpg` as `desert-build.jpg`, showing the ribs and mechanism laid out in daylight, and `000005170026.jpg` as `build-crew.jpg`, showing the crew beside the unfinished frame at sunset. These add stages of the build that the original selection did not show. The similar workshop-lighting photograph `000005170015.jpg` and softer close-up `000005170032.jpg` were not added.
+
+Both new files are unchanged 3130 × 2075 JPEG scans from `/Users/jonas/Downloads/47644 00000517/`, copied with regular asset permissions. No RAW files are present for these film scans. They appear together between the workshop photographs and the existing desert assembly pair. The page now contains twelve photographs, six RAW-developed photographs and six film scans.

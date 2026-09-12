@@ -18,14 +18,12 @@ blocks:
   - type: text
     fontSize: small
     content: >-
-      Made with [Smash Studio](https://www.smash.studio/) and
-      [Platon Marko](https://platon.design/) to mark the launch of
-      Kanal 5's show "Jagad". We rebuilt a classic top-down chase game onto the
-      building itself: the windows became the blocks, the gaps between them
-      became the streets. Players worked custom arcade controllers down on the
-      pavement, hunting roaming celebrity avatars across the facade. Catch one
-      and the whole road network flooded with your colour. High scores and
-      player names were projected straight back onto the wall.
+      To mark the launch of Kanal 5's show "Jagad", we rebuilt a classic top-down
+      chase game onto the building itself: the windows became the blocks, the gaps
+      between them became the streets. Players worked custom arcade controllers
+      down on the pavement, hunting roaming celebrity avatars across the facade.
+      Catch one and the whole road network flooded with your colour. High scores
+      and player names were projected straight back onto the wall.
   - type: image
     src: 01-corrected.png
     alt: "Brightly outlined windows turn a five-storey Stockholm facade into a glowing arcade game at night."
@@ -42,14 +40,6 @@ blocks:
   - type: image
     src: controller-facade-first-frame.png
     alt: "Glowing arcade joysticks face a Stockholm building covered in colourful game projections across the wet street."
-  - type: text
-    fontSize: small
-    content: >-
-      I handled the game and real-time visuals, designed and built the physical
-      arcade controllers and their instruction panels, and built the
-      [web version](https://jagad.jonasjohansson.se/) so anyone could play from a
-      phone. Over three nights hundreds queued up, some to chase down their own
-      avatar.
   - type: video
     src: 10.webm
     alt: "A close view of a colourful animated car moving through the illuminated city in Jagad."
@@ -64,4 +54,13 @@ blocks:
     size: half-right
   - type: image
     src: 08.jpg
+  - type: text
+    fontSize: small
+    content: >-
+      Made with [Smash Studio](https://www.smash.studio/) and [Platon
+      Marko](https://platon.design/). I handled the game and real-time visuals,
+      designed and built the physical arcade controllers and their instruction
+      panels, and built the [web version](https://jagad.jonasjohansson.se/) so
+      anyone could play from a phone. Over three nights hundreds queued up, some
+      to chase down their own avatar.
 ---

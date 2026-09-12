@@ -18,17 +18,14 @@ blocks:
   - type: text
     fontSize: small
     content: >-
-      Eastern City Portal was a public artwork on
-      Camomile Street in the City of London, commissioned by
-      [Scarlett Entertainment](https://scarlettentertainment.com/). Created
-      together with [Erik Schmitz](https://www.erikschmitz.art/), the piece
-      was a continuation of an installation at
-      [Nowhere](https://www.goingnowhere.org/), where we built a large
-      wooden crack in the fabric of reality. Looking through it, visitors
-      would see into a lush walnut garden, in contrast to the dry sandy
-      landscape of Monegros. For this commission we developed the concept
-      further into a sculpture that doubled as an AR experience. Passersby
-      could point their phone at it and see the street transformed.
+      Eastern City Portal was a public artwork on Camomile Street in the City of
+      London. The piece was a continuation of an installation at
+      [Nowhere](https://www.goingnowhere.org/), where we built a large wooden
+      crack in the fabric of reality. Looking through it, visitors would see into
+      a lush walnut garden, in contrast to the dry sandy landscape of Monegros.
+      For this commission we developed the concept further into a sculpture that
+      doubled as an AR experience. Passersby could point their phone at it and see
+      the street transformed.
   - type: image
     src: 11.jpg
   - type: image
@@ -73,4 +70,10 @@ blocks:
   - type: image
     src: 10.jpg
     size: half-right
+  - type: text
+    fontSize: small
+    content: >-
+      I made this with [Erik Schmitz](https://www.erikschmitz.art/), for a
+      commission from [Scarlett
+      Entertainment](https://scarlettentertainment.com/).
 ---

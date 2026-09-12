@@ -32,26 +32,42 @@ blocks:
   - type: text
     fontSize: small
     content: >-
-      Flocks gather and scatter while luminous figures pass through the
-      view. The concept image below layers them over a photograph of the
-      desert. The recording and renders show the birds and particles on
-      their own.
+      By day, the flock appears as black birds. At night, it becomes a swarm
+      of lights. Giant figures made of particles walk through the landscape.
+      The concept images below superimpose these scenes on my photographs.
   - type: image
-    src: desert-concept.png
-    alt: "Concept image of the telescope in the desert at dusk, with a flock of green and yellow virtual birds and a blue particle figure superimposed on the landscape."
-  - type: video
-    src: flock-motion.mp4
-    poster: flock-motion.jpg
-    ar: 1.7777777778
-    alt: "A recording of WYSIWYG's bird simulation: a dense flock wheels, folds and changes colour as individual birds move together."
-  - type: image
-    src: flock-render.png
+    src: desert-giants-concept.png
     size: half-left
-    alt: "A render from WYSIWYG shows a dense flock of mint, green and pale yellow birds against a dark background."
+    alt: "Concept image combining a desert telescope photograph with two enormous cyan and violet particle figures walking above the distant camp at sunset."
   - type: image
-    src: giant-render.png
+    src: desert-flock-concept.png
     size: half-right
-    alt: "A render from WYSIWYG shows a walking figure formed from tiny luminous blue particles, with gaps dissolving its outline."
+    alt: "Concept image of a visitor looking through WYSIWYG, with a swirling flock of tiny black virtual birds superimposed across the desert sky."
+  - type: text
+    fontSize: small
+    content: >-
+      These recordings come directly from the software: the flock in daylight
+      and at night, the walking figures and a herd of animals.
+  - type: video
+    src: birds-day.mp4
+    poster: birds-day.png
+    ar: 1.7777777778
+    alt: "A recording from WYSIWYG: black bird silhouettes gather and turn in a murmuration over a bright salt-flat landscape."
+  - type: video
+    src: fireflies-night.mp4
+    poster: fireflies-night.png
+    ar: 1.7777777778
+    alt: "The same WYSIWYG flock moves across the night sky as softly glowing points of light above the salt flats."
+  - type: video
+    src: walking-figures.mp4
+    poster: walking-figures.png
+    ar: 1.7777777778
+    alt: "Two large human figures made of cyan and violet particles walk across a rocky nighttime landscape in WYSIWYG."
+  - type: video
+    src: animal-stampede.mp4
+    poster: animal-stampede.png
+    ar: 1.7777777778
+    alt: "A herd of low-poly buffalo, antelope, zebras and other animals runs past the camera through an alpine meadow in WYSIWYG."
   - type: text
     fontSize: small
     content: >-
@@ -74,10 +90,6 @@ blocks:
     src: eyepiece.jpg
     size: half-right
     alt: "A close view along the brass telescope towards its eyepiece, with grass and trees behind it."
-  - type: text
-    fontSize: small
-    content: >-
-      [Rose Hallgren](https://rosehallgren.se/) designed and built the wooden bench.
   - type: image
     src: bench-desert.jpg
     size: half-left
@@ -89,15 +101,18 @@ blocks:
   - type: text
     fontSize: small
     content: >-
-      The [software](https://github.com/jonasjohansson/wysiwyg) uses WebAR
-      and Three.js to combine the live camera image with moving figures
-      and flocks. The instrument travelled between the open desert and
-      a wooded setting during July 2026, giving each view a different
-      real-world backdrop.
+      The instrument travelled between the open desert and a wooded setting during
+      July 2026.
   - type: image
     src: sunset-viewer.jpg
     alt: "A visitor wearing headphones looks through the telescope as the sun sets over the landscape."
   - type: image
     src: sunset-telescope.jpg
     alt: "A close view along the brass telescope towards its circular wooden housing and the setting sun, with two visitors sitting in the distance."
+  - type: text
+    fontSize: small
+    content: >-
+      I built the [software](https://github.com/jonasjohansson/wysiwyg) using
+      WebAR and Three.js. [Rose Hallgren](https://rosehallgren.se/) designed and
+      built the wooden bench.
 ---

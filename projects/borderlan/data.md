@@ -17,11 +17,10 @@ blocks:
   - type: text
     fontSize: small
     content: >-
-      Hosted with [Rose Hallgren](https://rosehallgren.se/), BorderLAN brought
-      people together around Counter-Strike 1.6, Quake II, Unreal Tournament,
-      Heroes of Might and Magic III, Diablo and Diablo II, with Action Quake 2
-      and OpenArena also on the shelf. Players chose what to play together,
-      with music, food and drinks accompanying each sitting.
+      BorderLAN brought people together around Counter-Strike 1.6, Quake II,
+      Unreal Tournament, Heroes of Might and Magic III, Diablo and Diablo II, with
+      Action Quake 2 and OpenArena also on the shelf. Players chose what to play
+      together, with music, food and drinks accompanying each sitting.
   - type: image
     src: entrance.jpg
     alt: "An illuminated BorderLAN sign above the cellar entrance reads 'stay a while and listen', surrounded by foliage and small lights."
@@ -91,18 +90,13 @@ blocks:
   - type: image
     src: station-overhead.jpg
     alt: "A gaming station seen from directly above: white keyboard and mouse, headphones, candlelight and the red wooden seat beside the table."
-  - type: text
-    fontSize: small
-    content: >-
-      The [website](https://borderlan.land/) extended that atmosphere with
-      a glowing cellar door, a shelf of games and a place to book a seat.
   - type: image
     src: website.png
     alt: "The BorderLAN website presents a glowing cellar door between ornate panels for the event introduction and booking a seat."
   - type: text
     fontSize: small
     content: >-
-      The cellar held a small social world of its own: stone walls, warm
-      light, melting candles and people close enough to talk across the
-      table. The games gave everyone a reason to sit down together.
+      I hosted BorderLAN with [Rose Hallgren](https://rosehallgren.se/). The
+      [website](https://borderlan.land/) extended the room with a glowing cellar
+      door, a shelf of games and a place to book a seat.
 ---

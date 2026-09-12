@@ -46,36 +46,30 @@ blocks:
   - type: text
     fontSize: small
     content: >-
-      After that experience I was hooked and kept applying almost every year.
-      In 2023, Icehotel reached out and asked me to build a luxury suite for
-      Icehotel 365, the permanent ice hotel. They wanted an earlier concept I
-      had designed called [Mystery on the Icehotel Express](https://www.icehotel.com/mystery-icehotel-express), inspired by Agatha
-      Christie's [Murder on the Orient Express](https://en.wikipedia.org/wiki/Murder_on_the_Orient_Express),
-      a 1930s Orient Express train
-      where something has gone wrong, with clues scattered throughout for
-      visitors to piece together. The room featured a bedroom and a dining
-      area with [Art Deco](https://en.wikipedia.org/wiki/Art_Deco) details: drapes, ornaments, packed luggage, and a
-      ticking clock. I wanted to try CNC milling on ice, and designed the
-      clock and other details. The build required a large amount of ice,
-      and Creative Director Luca Roncoroni and their team
-      helped with several elements. This time I invited Jordi Claramunt and
-      his friend [Abel Pruñonosa](https://www.abelprunyonosa.com/), who did
-      most of the work as I could only be there for a few days. Music for the
-      room by Francesco Torelli and Nikita Dudnik. I still send in proposals
-      every year, longing to return with my partner
-      [Rose Hallgren](https://rosehallgren.se/) and collaborator
-      [Erik Schmitz](https://www.erikschmitz.art/).
+      After that experience I was hooked and kept applying almost every year. In
+      2023, Icehotel reached out and asked me to build a luxury suite for Icehotel
+      365, the permanent ice hotel. They wanted an earlier concept I had designed
+      called [Mystery on the Icehotel
+      Express](https://www.icehotel.com/mystery-icehotel-express), inspired by
+      Agatha Christie's [Murder on the Orient
+      Express](https://en.wikipedia.org/wiki/Murder_on_the_Orient_Express), a
+      1930s Orient Express train where something has gone wrong, with clues
+      scattered throughout for visitors to piece together. The room featured a
+      bedroom and a dining area with [Art
+      Deco](https://en.wikipedia.org/wiki/Art_Deco) details: drapes, ornaments,
+      packed luggage, and a ticking clock. I wanted to try CNC milling on ice, and
+      designed the clock and other details. The build required a large amount of
+      ice. This time I invited Jordi Claramunt and his friend [Abel
+      Pruñonosa](https://www.abelprunyonosa.com/), who did most of the work as I
+      could only be there for a few days. I still send in proposals every year,
+      longing to return with my partner [Rose Hallgren](https://rosehallgren.se/)
+      and collaborator [Erik Schmitz](https://www.erikschmitz.art/).
   - type: image
     src: 04.jpg
     size: half-left
   - type: image
     src: 05.jpg
     size: half-right
-  - type: text
-    fontSize: small
-    content: >-
-      Every detail had to sell the scene: a 1930s carriage where something
-      has gone wrong, waiting for someone to piece it together.
   - type: image
     src: 06.jpg
     size: half-left
@@ -84,4 +78,13 @@ blocks:
     size: half-right
   - type: image
     src: 08.jpg
+  - type: text
+    fontSize: small
+    content: >-
+      I made Haven with [Jordi
+      Claramunt](https://www.instagram.com/jordi.claramunt.art/) and Lukas Petko.
+      For Mystery on the Icehotel Express, Jordi and [Abel
+      Pruñonosa](https://www.abelprunyonosa.com/) did most of the build, with help
+      from Creative Director Luca Roncoroni and the Icehotel team. Francesco
+      Torelli and Nikita Dudnik made the music for that suite.
 ---

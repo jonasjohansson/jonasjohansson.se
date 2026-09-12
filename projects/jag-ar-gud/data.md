@@ -19,12 +19,10 @@ blocks:
   - type: text
     fontSize: small
     content: >-
-      Jag är Gud is an autobiographical one-man show by dancer and performer
-      Danne Dahlin about living with bipolar disorder. I got involved through
-      a mutual friend who introduced me to Danne, and over months of
-      conversation, he found actor and director Jakob Bladh. Danne was
-      mentored by Teresia Björk. [Rose Hallgren](https://rosehallgren.se/) and I shared video and
-      scenography; I also designed the lighting.
+      Jag är Gud is an autobiographical one-man show by dancer and performer Danne
+      Dahlin about living with bipolar disorder. I got involved through a mutual
+      friend who introduced me to Danne, and we spent months talking about the
+      piece.
   - type: image
     src: 03.jpg
     size: half-left
@@ -68,15 +66,16 @@ blocks:
   - type: image
     src: 08.jpg
     size: half-right
-  - type: text
-    fontSize: small
-    content: >-
-      Onstage, Danne carries the whole piece alone, and the lighting stays
-      simple so his stories can hold the room.
   - type: image
     src: 09.jpg
     size: half-left
   - type: image
     src: 10.jpg
     size: half-right
+  - type: text
+    fontSize: small
+    content: >-
+      Danne Dahlin performed the piece, with Jakob Bladh directing and Teresia
+      Björk as Danne’s mentor. [Rose Hallgren](https://rosehallgren.se/) and I
+      shared video and scenography; I also designed the lighting.
 ---

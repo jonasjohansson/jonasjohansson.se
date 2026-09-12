@@ -16,14 +16,10 @@ blocks:
   - type: text
     fontSize: small
     content: >-
-      I co-founded NAVA during a project at
-      [Harpa](/harpa/) in Reykjavík with
-      [Atlí Bollason](https://atlibollason.com/),
-      [Owen Hindley](https://www.owenhindley.co.uk/) and
-      [Rasmus Stride](https://www.instagram.com/rasmus.stride/). We were
+      I co-founded NAVA during a project at [Harpa](/harpa/) in Reykjavík. We were
       already hacking the Harpa facade together for
-      [Sónar](https://sonarreykjavik.com/), and NAVA came out of wanting to
-      keep that collaboration going beyond a single festival.
+      [Sónar](https://sonarreykjavik.com/), and NAVA came out of wanting to keep
+      that collaboration going beyond a single festival.
   - type: image
     src: 07.jpg
   - type: video
@@ -54,17 +50,15 @@ blocks:
   - type: text
     fontSize: small
     content: >-
-      Through open calls NAVA paired musicians with visual artists, starting
-      at Sónar Reykjavík and the Countdown Stage at
-      [Roskilde Festival](https://www.roskilde-festival.dk/) from 2016 to
-      2019. In April 2019, after Sónar Reykjavík was cancelled, we and
-      [Plútó](https://www.instagram.com/plutoreykjavik/) put on Skaðablót at
-      [Bíó Paradís](https://bioparadis.is/) in a few weeks, a one-day festival
-      with DJ sets from Phil Hartnoll of Orbital and Kero Kero Bonito, proceeds
-      going to an emergency fund for Icelandic electronic musicians. We also
-      ran [Tiny/Massive](/tinymassive/) at the Reykjavík Winter Lights
-      Festival, and Icelandic designer Katrín Hauksdóttir joined NAVA that
-      year.
+      Through open calls NAVA paired musicians with visual artists, starting at
+      Sónar Reykjavík and the Countdown Stage at [Roskilde
+      Festival](https://www.roskilde-festival.dk/) from 2016 to 2019. In April
+      2019, after Sónar Reykjavík was cancelled, we and
+      [Plútó](https://www.instagram.com/plutoreykjavik/) put on Skaðablót at [Bíó
+      Paradís](https://bioparadis.is/) in a few weeks, a one-day festival with DJ
+      sets from Phil Hartnoll of Orbital and Kero Kero Bonito, proceeds going to
+      an emergency fund for Icelandic electronic musicians. We also ran
+      [Tiny/Massive](/tinymassive/) at the Reykjavík Winter Lights Festival.
   - type: video
     src: 02.mp4
     alt: "A vocalist performs in front of projected imagery at Skaðablót in Bíó Paradís."
@@ -141,8 +135,10 @@ blocks:
   - type: text
     fontSize: small
     content: >-
-      NAVA is supported by
-      [Nordic Culture Fund](https://nordiskkulturfond.org/),
-      [Nordic Culture Point](https://www.nordiskkulturkontakt.org/) and
-      [NAPA](https://napa.gl/).
+      I co-founded NAVA with [Atlí Bollason](https://atlibollason.com/), [Owen
+      Hindley](https://www.owenhindley.co.uk/) and [Rasmus
+      Stride](https://www.instagram.com/rasmus.stride/). Katrín Hauksdóttir joined
+      us in 2019. NAVA is supported by [Nordic Culture
+      Fund](https://nordiskkulturfond.org/), [Nordic Culture
+      Point](https://www.nordiskkulturkontakt.org/) and [NAPA](https://napa.gl/).
 ---

@@ -16,13 +16,10 @@ blocks:
   - type: text
     fontSize: small
     content: >-
-      In May 2026, I co-organised
-      [Dome Dreaming](https://www.domedreaming.com) with
-      [Fredrik Edström](https://www.ivar.studio/) of IVAR Studios and
-      [Sebastian Häger](https://www.linkedin.com/in/sebastian-h%C3%A4ger-53054b155/),
-      a non-profit festival across three evenings at Wisdome Stockholm and one
-      at Wisdome Malmö. Both venues were newly built, and as far as we know it
-      was the first fulldome film festival in the Nordics.
+      In May 2026, I co-organised [Dome Dreaming](https://www.domedreaming.com), a
+      non-profit festival across three evenings at Wisdome Stockholm and one at
+      Wisdome Malmö. Both venues were newly built, and as far as we know it was
+      the first fulldome film festival in the Nordics.
   - type: image
     src: 04.jpg
     colStart: 4
@@ -110,23 +107,6 @@ blocks:
       see how their work would land on the surface before arriving for the
       production residency. The 3D model was made by Ashley Reed at
       [Smash Studio](https://www.smash.studio/).
-  - type: text
-    fontSize: small
-    content: >-
-      Festival photography by [Rose Hallgren](https://rosehallgren.se/) and
-      Glidephotos, with Rose also handling documentation and communication. Produced in collaboration with
-      [Aavistus](https://www.aavistusfestival.fi/),
-      [Kokong](https://www.instagram.com/kokongfestival/),
-      [Baltic Analog Lab](https://www.balticanaloglab.lv/) and
-      [Nordic Audiovisual Artists](https://www.nava.community). Supported by
-      Tekniska museet, [Malmö Stad](https://malmo.se),
-      [Region Stockholm](https://www.regionstockholm.se) and
-      [Kulturfonden Sverige-Finland](https://fondensverigefinland.org/).
-  - type: text
-    fontSize: small
-    content: >-
-      Full programme and credits at
-      [domedreaming.com](https://www.domedreaming.com).
   - type: image
     src: 15.jpg
     size: half-left
@@ -169,4 +149,21 @@ blocks:
   - type: image
     src: 34.jpg
     size: half-right
+  - type: text
+    fontSize: small
+    content: >-
+      I organised the festival with [Fredrik Edström](https://www.ivar.studio/) of
+      IVAR Studios and [Sebastian
+      Häger](https://www.linkedin.com/in/sebastian-h%C3%A4ger-53054b155/).
+      Festival photography by [Rose Hallgren](https://rosehallgren.se/) and
+      Glidephotos, with Rose also handling documentation and communication.
+      Produced in collaboration with [Aavistus](https://www.aavistusfestival.fi/),
+      [Kokong](https://www.instagram.com/kokongfestival/), [Baltic Analog
+      Lab](https://www.balticanaloglab.lv/) and [Nordic Audiovisual
+      Artists](https://www.nava.community). Supported by Tekniska museet, [Malmö
+      Stad](https://malmo.se), [Region Stockholm](https://www.regionstockholm.se)
+      and [Kulturfonden Sverige-Finland](https://fondensverigefinland.org/).
+
+      Full programme and credits at
+      [domedreaming.com](https://www.domedreaming.com).
 ---

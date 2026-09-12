@@ -21,13 +21,10 @@ blocks:
     fontSize: small
     content: >-
       A long-held dream to bring something new to the
-      [Melodifestivalen](https://en.wikipedia.org/wiki/Melodifestivalen)
-      stage, realised together with [Smash Studio](https://www.smash.studio/)
-      as co-designers. Smash led the design work from 3D modelling to
-      animation, while I was technical director and creative support.
-      The stage featured three 8 x 4.5m LED walls at 3200 x 1800 pixels
-      each, a 7.9 x 9.1m LED floor at 1664 x 1920 pixels, and a physical
-      Romanesque gate with staircase built for projection mapping.
+      [Melodifestivalen](https://en.wikipedia.org/wiki/Melodifestivalen) stage.
+      The stage featured three 8 x 4.5m LED walls at 3200 x 1800 pixels each, a
+      7.9 x 9.1m LED floor at 1664 x 1920 pixels, and a physical Romanesque gate
+      with staircase built for projection mapping.
   - type: text
     fontSize: small
     content: >-
@@ -36,10 +33,9 @@ blocks:
   - type: text
     fontSize: small
     content: >-
-      Architect [Rose Hallgren](https://rosehallgren.se/) built a physical
-      maquette we used for testing visuals, and I developed a custom
-      [Unity](https://unity.com/) camera tool to lock a precise
-      direction of photography across the scenes.
+      We tested the visuals on a physical maquette, and I developed a custom
+      [Unity](https://unity.com/) camera tool to lock a precise direction of
+      photography across the scenes.
   - type: image
     src: 03.jpg
   - type: video
@@ -47,5 +43,11 @@ blocks:
     alt: "Behind the scenes and stage visuals for Danny Saucedo’s Happy That You Found Me."
     ar: 0.5625
     poster: 01-poster.jpg
+  - type: text
+    fontSize: small
+    content: >-
+      I was technical director and creative support, working with [Smash
+      Studio](https://www.smash.studio/), who led the stage design, 3D modelling
+      and animation. [Rose Hallgren](https://rosehallgren.se/) built the physical
+      maquette we used for testing.
 ---
-

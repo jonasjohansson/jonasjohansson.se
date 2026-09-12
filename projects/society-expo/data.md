@@ -21,13 +21,12 @@ blocks:
   - type: text
     fontSize: small
     content: >-
-      I did the lighting for Society Expo Exhibition with
-      [Try New Things](https://trynewthings.fail/), at
-      [Skellefteå museum](https://skellefteamuseum.se/utstallning/society-expo-exhibition-2/)
+      Society Expo Exhibition takes place at [Skellefteå
+      museum](https://skellefteamuseum.se/utstallning/society-expo-exhibition-2/)
       on Nordanå. Part of Society Expo 2026, the exhibition tells the story of
       Skellefteå's transformation through sound, light, projections and
-      environments that respond to visitors. Four parts follow the energy
-      of nature, people, society and the future.
+      environments that respond to visitors. Four parts follow the energy of
+      nature, people, society and the future.
   - type: image
     src: nature-room.jpg
     size: full
@@ -95,14 +94,13 @@ blocks:
   - type: text
     fontSize: small
     content: >-
-      I loved working with the [Try New Things](https://trynewthings.fail/)
-      team. Everyone put their heart into every part of the build, from
-      the 3D printed joints to the signs, trees, endless wiring, wireless
-      connections and sensors. They brought the same care to guiding the
-      scenography students and making it all come together on site. I hope
-      we get to do it again, and I look forward to many more visits to their
-      beautiful office in Skellefteå. Jonas Westling and Pär Olofsson
-      photographed the exhibition, and Try New Things made the film. Find more
-      images and videos on their
-      [press page](https://trynewthings.fail/press/society-expo-2026/).
+      I did the lighting with [Try New Things](https://trynewthings.fail/) and
+      loved working with their team. Everyone put their heart into every part of
+      the build, from the 3D printed joints to the signs, trees, endless wiring,
+      wireless connections and sensors. They brought the same care to guiding the
+      scenography students and making it all come together on site. I hope we get
+      to do it again, and I look forward to many more visits to their beautiful
+      office in Skellefteå. Jonas Westling and Pär Olofsson photographed the
+      exhibition, and Try New Things made the film. Find more images and videos on
+      their [press page](https://trynewthings.fail/press/society-expo-2026/).
 ---

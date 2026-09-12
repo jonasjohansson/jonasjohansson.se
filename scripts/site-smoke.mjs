@@ -108,6 +108,7 @@ try {
         alt: document.querySelector('.hero img')?.alt || document.querySelector('.hero video')?.getAttribute('aria-label'),
         videoControls: [...document.querySelectorAll('#projects video')].every(video => !video.controls && video.getAttribute('aria-hidden') !== 'true' && (video.closest('.hero') || video.nextElementSibling?.matches('button.media-controls-reveal:not([hidden])'))),
         creditsAligned: [...document.querySelectorAll('.credits-list')].every(list => getComputedStyle(list).textAlign === 'left'),
+        ending: document.querySelector('.project-grid > :last-child')?.matches('.text-block, .presskit-block'),
         captions: document.querySelectorAll('#projects figcaption, #projects .video-description').length,
         videoDescriptions: [...document.querySelectorAll('#projects video')].every(video => video.getAttribute('aria-label')?.length > 15),
         stripSlugs: [...document.querySelectorAll('#strips .strip:not([hidden])')].map(strip => strip.dataset.project),
@@ -122,6 +123,7 @@ try {
       assert.equal(state.title, `${state.floatingTitle} | Jonas Johansson`, `${slug} floating title`);
       assert.equal(state.videoControls, true, `${slug} video controls`);
       assert.equal(state.creditsAligned, true, `${slug} credits alignment`);
+      assert.equal(state.ending, true, `${slug} ends with text after its media`);
       assert.equal(state.captions, 0, `${slug} has no visible media captions`);
       assert.equal(state.videoDescriptions, true, `${slug} retains video descriptions`);
       assert.deepEqual(state.stripSlugs, slugs.filter(project => project !== slug), `${slug} shows only other published projects`);
@@ -467,10 +469,34 @@ try {
   }
 
   for (const [name, options] of [['desktop', desktop], ['mobile', mobile]]) {
+    await check(`${name} name above project strips opens the homepage`, options, async page => {
+      await visit(page);
+      await page.locator('#home-link').click();
+      await page.waitForFunction(() => scrollY < 1 && document.body.dataset.homeView === 'about');
+      // Enter with About still open, without Playwright scrolling the home
+      // wall into view first. This used to save About as the name-link target.
+      await page.locator('#strip-lyra').evaluate(link => link.click());
+      await page.waitForFunction(() => document.documentElement.dataset.project === 'lyra');
+      await page.locator('#collection').evaluate(collection => collection.scrollIntoView({ block: 'start' }));
+      await page.locator('.collection-home-link').click();
+      await waitForHomeWall(page);
+      assert.equal(new URL(page.url()).pathname, `${prefix}/`);
+      assert.equal(new URL(page.url()).hash, '');
+      assert.equal(await page.evaluate(() => document.activeElement.id), 'home-title');
+      await checkFooter(page);
+      await page.goBack();
+      await page.waitForFunction(() => document.documentElement.dataset.project === 'lyra' && Math.abs(document.getElementById('collection').getBoundingClientRect().top) < 1);
+      await page.goBack();
+      await page.waitForFunction(() => document.body.dataset.route === 'home' && document.body.dataset.homeView === 'about' && scrollY < 1);
+    });
+  }
+
+  for (const [name, options] of [['desktop', desktop], ['mobile', mobile]]) {
     await check(`${name} returns from a direct project to the full wall`, options, async page => {
       await visit(page, '/lyra/');
       await page.locator('#header-toggle').click();
       await waitForHomeWall(page);
+      assert.equal(new URL(page.url()).hash, '', 'return links use the clean homepage URL');
       await checkFooter(page);
       assert.equal(await page.evaluate(() => document.activeElement.id), 'strip-lyra');
       const project = await page.locator('#strip-lyra').boundingBox();
@@ -717,23 +743,26 @@ try {
     });
   }
 
-  await check('WYSIWYG flock recording plays real moving frames', desktop, async page => {
+  await check('WYSIWYG scene recordings play real moving frames', desktop, async page => {
     await visit(page, '/wysiwyg/');
-    const video = page.locator('video[src$="/flock-motion.mp4"]');
-    await video.scrollIntoViewIfNeeded();
-    await page.waitForFunction(() => {
-      const v = document.querySelector('video[src$="/flock-motion.mp4"]');
-      return !v.paused && v.currentTime > 1;
-    });
-    assert.ok(await video.evaluate(v => v.videoWidth === 1920 && v.videoHeight === 1080 && v.duration > 10 && v.duration < 20));
-    const frame = () => video.evaluate(v => {
-      const canvas = document.createElement('canvas'); canvas.width = 160; canvas.height = 90;
-      const ctx = canvas.getContext('2d'); ctx.drawImage(v, 0, 0, 160, 90);
-      return canvas.toDataURL();
-    });
-    const first = await frame();
-    await page.waitForTimeout(800);
-    assert.notEqual(await frame(), first, 'the recording contains movement');
+    for (const name of ['birds-day', 'fireflies-night', 'walking-figures', 'animal-stampede']) {
+      const selector = `video[src$="/${name}.mp4"]`;
+      const video = page.locator(selector);
+      await video.scrollIntoViewIfNeeded();
+      await page.waitForFunction(selector => {
+        const v = document.querySelector(selector);
+        return !v.paused && v.currentTime > 1;
+      }, selector);
+      assert.ok(await video.evaluate(v => v.videoWidth === 1280 && v.videoHeight === 720 && Math.abs(v.duration - 8) < 0.1), `${name} decodes its full 8-second recording`);
+      const frame = () => video.evaluate(v => {
+        const canvas = document.createElement('canvas'); canvas.width = 160; canvas.height = 90;
+        const ctx = canvas.getContext('2d'); ctx.drawImage(v, 0, 0, 160, 90);
+        return canvas.toDataURL();
+      });
+      const first = await frame();
+      await page.waitForTimeout(800);
+      assert.notEqual(await frame(), first, `${name} contains movement`);
+    }
   });
 
   await check('mobile video controls appear on tap without changing playback', mobile, async page => {

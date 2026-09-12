@@ -92,4 +92,11 @@ blocks:
     src: shopfront.jpg
     alt: "The rug and workshop table are visible through the shopfront glass, layered with reflections of trees and the street."
     size: half-right
+  - type: text
+    fontSize: small
+    content: >-
+      Made with [Rose Hallgren](https://rosehallgren.se/) for [Klättermusens
+      Verkstad](https://www.instagram.com/klattermusens.verkstad/). Rose designed
+      the tufting frame and hand-stitched the backing. I made the artwork, yarn
+      previewer and wall mounts.
 ---

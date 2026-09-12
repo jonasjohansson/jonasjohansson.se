@@ -11,15 +11,12 @@ blocks:
     alt: "Balena Voladora at dusk, with cyan light tracing its ribs, fins and tail and a warm yellow light beside its open mouth."
   - type: text
     content: >-
-      A flying whale by [Erik Schmitz](https://www.erikschmitz.art/),
-      Selim and Albert. Pulling a lever sets its body in motion.
+      A flying whale. Pulling a lever sets its body in motion.
   - type: text
     fontSize: small
     content: >-
-      I worked on the lighting for Balena Voladora, shown at
-      [Elsewhere in 2026](https://art.nobodies.team/2026/balena-voladora).
-      LEDs follow the ribs, spine, fins and tail, changing the colour
-      of the skeleton as it swims above the ground.
+      LEDs follow the ribs, spine, fins and tail, changing the colour of the
+      skeleton as it swims above the ground.
   - type: image
     src: cyan-profile.jpg
     alt: "A low side view of the whale with cyan ribs and a raised tail against the evening sky, its metal mechanism visible underneath."
@@ -43,6 +40,12 @@ blocks:
     size: half-right
     alt: "A film photograph looking through the whale's ribs during a lighting test, with white LED tubes and their wiring visible."
   - type: image
+    src: desert-build.jpg
+    alt: "A film photograph of the whale's ribs and mechanical frame laid out for assembly in the desert, with a crew member standing beside them."
+  - type: image
+    src: build-crew.jpg
+    alt: "A film photograph of three crew members beside the whale's unfinished frame at sunset, with one raising a peace sign."
+  - type: image
     src: desert-assembly.jpg
     alt: "A film photograph of the crew lifting and fitting the whale's body onto its frame as the desert sky turns orange."
   - type: image
@@ -65,4 +68,10 @@ blocks:
   - type: image
     src: warm-whale.jpg
     alt: "The whale's open mouth, ribs and near fin glow orange and red against a pink evening sky."
+  - type: text
+    fontSize: small
+    content: >-
+      The whale was designed and built by [Erik
+      Schmitz](https://www.erikschmitz.art/), Selim and Albert. I worked on the
+      lighting and made the 3D study.
 ---

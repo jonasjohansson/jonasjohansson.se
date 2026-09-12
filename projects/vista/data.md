@@ -57,15 +57,11 @@ blocks:
     fontSize: small
     content: >-
       [Glommen](https://jonasjohansson-archive.github.io/vista/glommen) is my
-      first personal work, made after moving to Canada from Japan.
-      Inspired by my father, a painter of light, I began experimenting.
-      Glommen reflects the connection to my seaside hometown and the
-      anticipation of life without my father.
-      The sun's position in the artwork mirrors his birthday, near the
-      summer solstice. It was shown at Stockholm Showww in 2014, a pop-up
-      exhibition for internet art, and ten years later at
-      [Myriad](https://rethread.art/projects/myriad/) in R1 Reactor Hall,
-      Stockholm in 2024, a re|thread project on origin and authorship.
+      first personal work, made after moving to Canada from Japan. Inspired by my
+      father, a painter of light, I began experimenting. Glommen reflects the
+      connection to my seaside hometown and the anticipation of life without my
+      father. The sun's position in the artwork mirrors his birthday, near the
+      summer solstice.
   - type: video
     src: 05.webm
     alt: "An undulating blue horizon shifts beneath a warm orange sky."
@@ -81,4 +77,11 @@ blocks:
     src: 06.jpg
     colStart: 4
     colSpan: 6
+  - type: text
+    fontSize: small
+    content: >-
+      I made these pieces in [Three.js](https://threejs.org/). Glommen was shown
+      at Stockholm Showww in 2014 and at
+      [Myriad](https://rethread.art/projects/myriad/) in R1 Reactor Hall in 2024,
+      a re|thread project on origin and authorship.
 ---

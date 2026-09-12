@@ -18,9 +18,7 @@ blocks:
   - type: text
     fontSize: small
     content: >-
-      Designed and built under the direction of
-      [Annie Locke Scherer](https://www.instagram.com/annielocke/), Kagora
-      brings Japanese basket weaving to an architectural scale. Its name
+      Kagora brings Japanese basket weaving to an architectural scale. Its name
       combines kago, Japanese for basket, with aura.
   - type: video
     src: motion.mp4
@@ -105,9 +103,10 @@ blocks:
   - type: text
     fontSize: small
     content: >-
-      I designed the lighting, with sound by Teodor Sundström and engineering
-      by Christian Pisano.
-      Built with David Tollman, Rich Miller, Björn Bergenheim, Matias Peljo,
-      Markku Leppala, Emilia Ferguson, David Correa, Max Hassler,
-      Eero Laaksonen, Cecilia Johansson, Mar Benavides and Tomas Kronvall.
+      [Annie Locke Scherer](https://www.instagram.com/annielocke/) led the design
+      and build. I designed the lighting, with sound by Teodor Sundström and
+      engineering by Christian Pisano. Built with David Tollman, Rich Miller,
+      Björn Bergenheim, Matias Peljo, Markku Leppala, Emilia Ferguson, David
+      Correa, Max Hassler, Eero Laaksonen, Cecilia Johansson, Mar Benavides and
+      Tomas Kronvall.
 ---

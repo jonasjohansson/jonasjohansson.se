@@ -18,14 +18,12 @@ blocks:
     fontSize: small
     content: >-
       Firestarter is an interactive installation presented at
-      [Nowhere](https://www.goingnowhere.org/) in Monegros, a regional burn
-      I have attended since 2015. Created together with Catalan artist
-      [Erik Schmitz](https://www.erikschmitz.art/) and architect
-      [Rose Hallgren](https://rosehallgren.se/), the piece is an enlarged
-      replica of the classic Zippo lighter. I wanted to work with fire as a
-      material, so we learned propane systems, sensors, and ignition triggers
-      from the ground up. You walk up, you light a fire. A small, rebellious
-      act of speaking up. It lit the official closing ceremony.
+      [Nowhere](https://www.goingnowhere.org/) in Monegros, a regional burn I have
+      attended since 2015. The piece is an enlarged replica of the classic Zippo
+      lighter. I wanted to work with fire as a material, so we learned propane
+      systems, sensors, and ignition triggers from the ground up. You walk up, you
+      light a fire. A small, rebellious act of speaking up. It lit the official
+      closing ceremony.
   - type: image
     src: 03.jpg
   - type: image
@@ -35,9 +33,7 @@ blocks:
     content: >-
       Built from aluminium sheets on a steel frame with hand-cut patterns, LED
       lighting, [Arduino](https://www.arduino.cc/),
-      [DMX](https://en.wikipedia.org/wiki/DMX512), and an IR sensor. Constructed with help from
-      Josep Giribet in the workshop of David Giribet at
-      [Calidos](https://calidos.cat/) in Tarrega.
+      [DMX](https://en.wikipedia.org/wiki/DMX512), and an IR sensor.
   - type: image
     src: 05.jpg
   - type: image
@@ -54,4 +50,11 @@ blocks:
   - type: image
     src: 10.jpg
     size: half-right
+  - type: text
+    fontSize: small
+    content: >-
+      Made with [Erik Schmitz](https://www.erikschmitz.art/) and [Rose
+      Hallgren](https://rosehallgren.se/), with help from Josep Giribet. We built
+      it in David Giribet’s workshop at [Calidos](https://calidos.cat/) in
+      Tarrega.
 ---

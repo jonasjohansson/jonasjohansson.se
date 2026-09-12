@@ -65,20 +65,6 @@ blocks:
       and made this outside the brief. Pointing a phone at a sticker placed the
       whole arena on the table: a small portal back to a game I had loved since
       I was a teenager.
-  - type: text
-    content: >-
-      Everything begins with Unreal Tournament (1999) and the people who made
-      it.
-  - type: text
-    fontSize: small
-    content: >-
-      CTF-Face was designed by Cédric “Inoxx” Fiorentino. Unreal Tournament was
-      made by Epic Games and Digital Extremes, and “Foregone Destruction” was
-      written by Michiel van den Bos. I went back to my retail copy and
-      extracted its actor table, bot paths, UnrealScript rules, character and
-      weapon models, HUD textures, effects and sounds. This is a non-commercial
-      fan recreation and a study of their work; those assets and ideas remain
-      theirs. Original UT99 assets remain copyright Epic Games.
   - type: image
     src: 06.jpg
     alt: "The original CTF-Face navigation network is drawn as hundreds of connected lines across the two towers and bridge."
@@ -92,4 +78,14 @@ blocks:
       Restoring the 71-metre towers and grounding the old path network against a new
       navigation surface brought back the long, exposed crossings that give
       Facing Worlds its rhythm.
+  - type: text
+    fontSize: small
+    content: >-
+      CTF-Face was designed by Cédric “Inoxx” Fiorentino. Unreal Tournament was
+      made by Epic Games and Digital Extremes, and “Foregone Destruction” was
+      written by Michiel van den Bos. I went back to my retail copy and extracted
+      its actor table, bot paths, UnrealScript rules, character and weapon models,
+      HUD textures, effects and sounds. This is a non-commercial fan recreation
+      and a study of their work; those assets and ideas remain theirs. Original
+      UT99 assets remain copyright Epic Games.
 ---
