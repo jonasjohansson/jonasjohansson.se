@@ -60,8 +60,9 @@
 {% set ogTitle = projectTitle ~ ' | ' ~ site.title %}
 {% set ogDescription = projectDescription or site.description %}
 {% set ogUrl = site.url ~ (page.url | url) %}
-{% set ogImagePath = projectOgImage or siteOgImage or site.meta.ogImage %}
+{% set ogImagePath = projectOgImage %}
 {% set ogImage = site.url ~ ogImagePath %}
+{% set ogImageAlt = hero.alt %}
 {% set ogType = "article" %}
 {% else %}
 {% set ogTitle = site.title %}
@@ -69,6 +70,7 @@
 {% set ogUrl = site.url ~ (page.url | url) %}
 {% set ogImagePath = siteOgImage or site.meta.ogImage %}
 {% set ogImage = site.url ~ ogImagePath %}
+{% set ogImageAlt = site.title %}
 {% set ogType = "website" %}
 {% endif %}
 <meta
@@ -87,6 +89,9 @@
   property="og:image"
   content="{{ ogImage }}" />
 <meta
+  property="og:image:secure_url"
+  content="{{ ogImage }}" />
+<meta
   property="og:image:type"
   content="image/jpeg" />
 <meta
@@ -97,7 +102,7 @@
   content="630" />
 <meta
   property="og:image:alt"
-  content="{{ ogTitle }}" />
+  content="{{ ogImageAlt }}" />
 <meta
   property="og:site_name"
   content="{{ site.title }}" />
@@ -118,6 +123,9 @@
 <meta
   name="twitter:image"
   content="{{ ogImage }}" />
+<meta
+  name="twitter:image:alt"
+  content="{{ ogImageAlt }}" />
 
 <!-- Performance and Security -->
 <!-- Favicon and App Icons -->

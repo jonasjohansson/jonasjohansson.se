@@ -1,8 +1,10 @@
 import assert from 'node:assert/strict';
 import { existsSync, mkdirSync, readFileSync, writeFileSync } from 'node:fs';
 import { chromium } from 'playwright';
+import sharp from 'sharp';
 import { previewServer } from './preview-server.mjs';
 import { readProjects } from './project-data.js';
+import { ogFingerprint } from './images.js';
 
 const server = process.env.AUDIT_BASE_URL ? null : await previewServer();
 const base = process.env.AUDIT_BASE_URL || server.url;
@@ -78,6 +80,78 @@ async function checkFooter(page) {
 }
 
 try {
+  await check('every project shares its hero without JavaScript', { ...desktop, javaScriptEnabled: false }, async (page, context) => {
+    // Share crawlers need complete tags in the original HTML, before the router runs.
+    await page.route(/\.(?:avif|webp|mp4|webm)(?:\?.*)?$/, route => route.abort());
+    for (const project of readProjects().filter(project => project.type === 'work')) {
+      const hero = project.blocks[0];
+      const source = `${project.directory}/${hero.type === 'video' ? hero.poster : hero.src}`;
+      const expectedPath = `${prefix}/img/og/${project.slug}-${ogFingerprint(source, hero.focal)}.jpg`;
+      const expectedImage = `https://jonasjohansson.se${expectedPath}`;
+      const response = await page.goto(`${base}/${project.slug}/`, { waitUntil: 'domcontentloaded' });
+      assert.equal(response.status(), 200, project.slug);
+      for (const selector of ['meta[property="og:image"]', 'meta[property="og:image:secure_url"]', 'meta[name="twitter:image"]']) {
+        assert.equal(await page.locator(selector).count(), 1, `${project.slug} has one ${selector}`);
+        assert.equal(await page.locator(selector).getAttribute('content'), expectedImage, `${project.slug} uses its original hero or video poster`);
+      }
+      for (const selector of ['meta[property="og:image:alt"]', 'meta[name="twitter:image:alt"]']) {
+        assert.equal(await page.locator(selector).getAttribute('content'), hero.alt, `${project.slug} describes the hero`);
+      }
+      assert.equal(await page.locator('meta[property="og:image:type"]').getAttribute('content'), 'image/jpeg');
+      assert.equal(await page.locator('meta[property="og:image:width"]').getAttribute('content'), '1200');
+      assert.equal(await page.locator('meta[property="og:image:height"]').getAttribute('content'), '630');
+      assert.equal(await page.locator('meta[name="twitter:card"]').getAttribute('content'), 'summary_large_image');
+      assert.equal(await page.locator('meta[property="og:title"]').getAttribute('content'), `${project.title} | Jonas Johansson`);
+      const canonical = await page.locator('link[rel="canonical"]').getAttribute('href');
+      assert.equal(canonical, `https://jonasjohansson.se${prefix}/${project.slug}/`);
+      assert.equal(await page.locator('meta[property="og:url"]').getAttribute('content'), canonical);
+      const description = await page.locator('meta[name="description"]').getAttribute('content');
+      assert.ok(description.length > 20, `${project.slug} has a sharing description`);
+      assert.equal(await page.locator('meta[property="og:description"]').getAttribute('content'), description);
+      assert.equal(await page.locator('meta[name="twitter:description"]').getAttribute('content'), description);
+      const work = await page.locator('script[type="application/ld+json"]').evaluateAll(nodes => nodes.map(node => JSON.parse(node.textContent)).find(schema => schema['@type'] === 'CreativeWork'));
+      assert.equal(work.image, expectedImage, `${project.slug} structured data uses the same hero`);
+      const image = await context.request.get(new URL(expectedPath, base).href);
+      assert.equal(image.status(), 200, `${project.slug} sharing image is published`);
+      assert.match(image.headers()['content-type'], /^image\/jpeg/);
+      const metadata = await sharp(await image.body()).metadata();
+      assert.deepEqual([metadata.width, metadata.height, metadata.format, metadata.space], [1200, 630, 'jpeg', 'srgb'], `${project.slug} sharing image dimensions and format`);
+    }
+  });
+
+  await check('sharing metadata follows client navigation and Back', desktop, async page => {
+    const sharing = () => page.evaluate(() => ({
+      images: [...document.querySelectorAll('meta[property="og:image"]')].map(node => node.content),
+      twitter: [...document.querySelectorAll('meta[name="twitter:image"]')].map(node => node.content),
+      url: document.querySelector('meta[property="og:url"]').content,
+      work: [...document.querySelectorAll('script[type="application/ld+json"]')].map(node => JSON.parse(node.textContent)).find(schema => schema['@type'] === 'CreativeWork')?.image,
+    }));
+    await visit(page);
+    const home = await sharing();
+    await page.evaluate(() => { window.metadataNavigationMarker = true; });
+    await page.locator('#strip-balena-voladora').click();
+    await page.waitForSelector('#projects #balena-voladora');
+    const whale = await sharing();
+    assert.equal(whale.images.length, 1);
+    assert.match(whale.images[0], /\/og\/balena-voladora-[a-f0-9]+\.jpg$/);
+    assert.deepEqual(whale.twitter, whale.images);
+    assert.equal(whale.work, whale.images[0]);
+    await page.locator('#strip-society-expo').click();
+    await page.waitForSelector('#projects #society-expo');
+    const video = await sharing();
+    assert.equal(video.images.length, 1);
+    assert.match(video.images[0], /\/og\/society-expo-[a-f0-9]+\.jpg$/);
+    assert.deepEqual(video.twitter, video.images);
+    assert.equal(video.work, video.images[0]);
+    assert.equal(await page.evaluate(() => window.metadataNavigationMarker), true, 'navigation did not reload the document');
+    await page.goBack();
+    await page.waitForSelector('#projects #balena-voladora');
+    assert.deepEqual(await sharing(), whale, 'Back restores the previous sharing tags');
+    await page.goBack();
+    await waitForHomeWall(page);
+    assert.deepEqual(await sharing(), home, 'home restores its own sharing tags');
+  });
+
   for (const [name, viewport] of [['desktop', desktop], ['mobile', mobile]]) {
     await check(`${name} image space before downloads`, viewport, async page => {
       await page.route('**/img/**', route => route.abort());

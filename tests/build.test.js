@@ -4,7 +4,8 @@ import { mkdtempSync, writeFileSync, rmSync } from 'node:fs';
 import { tmpdir } from 'node:os';
 import path from 'node:path';
 import { groupMedia, pairDesktopMedia, readProjects, validateProject } from '../scripts/project-data.js';
-import { ogFingerprint } from '../scripts/images.js';
+import sharp from 'sharp';
+import { ogFingerprint, ogImage, imageCache } from '../scripts/images.js';
 
 test('authored projects validate, and sorting is deterministic', () => {
   const projects = readProjects().filter(project => project.type === 'work');
@@ -106,9 +107,35 @@ test('sharing image cache keys change when the source changes', () => {
     writeFileSync(source, 'first image');
     const first = ogFingerprint(source);
     assert.equal(first, ogFingerprint(source));
+    assert.notEqual(ogFingerprint(source, '50% 35%'), ogFingerprint(source, '50% 60%'), 'changing the hero crop also refreshes the sharing image URL');
     writeFileSync(source, 'replacement image');
     assert.notEqual(first, ogFingerprint(source));
   } finally { rmSync(directory, { recursive: true, force: true }); }
+});
+
+test('sharing previews apply orientation before the authored focal crop', async () => {
+  const directory = mkdtempSync(path.join(tmpdir(), 'site-og-orientation-'));
+  let output;
+  try {
+    const source = path.join(directory, 'hero.jpg');
+    const blue = await sharp({ create: { width: 320, height: 320, channels: 3, background: '#0000ff' } }).png().toBuffer();
+    await sharp({ create: { width: 320, height: 640, channels: 3, background: '#ff0000' } })
+      .composite([{ input: blue, left: 0, top: 320 }]).withMetadata({ orientation: 8 }).jpeg().toFile(source);
+    const url = await ogImage(source, path.basename(directory), '50% 50%');
+    output = path.join(imageCache, 'og', path.basename(url));
+    const metadata = await sharp(output).metadata();
+    assert.equal(metadata.format, 'jpeg');
+    assert.equal(metadata.width, 1200);
+    assert.equal(metadata.height, 630);
+    assert.equal(metadata.space, 'srgb');
+    const left = await sharp(await sharp(output).extract({ left: 40, top: 300, width: 20, height: 20 }).toBuffer()).stats();
+    const right = await sharp(await sharp(output).extract({ left: 1140, top: 300, width: 20, height: 20 }).toBuffer()).stats();
+    assert.ok(left.channels[0].mean > 240 && left.channels[2].mean < 15, 'red appears on the left after rotation');
+    assert.ok(right.channels[2].mean > 240 && right.channels[0].mean < 15, 'blue appears on the right after rotation');
+  } finally {
+    if (output) rmSync(output, { force: true });
+    rmSync(directory, { recursive: true, force: true });
+  }
 });
 
 test('audio samples require an accessible label and an existing project asset', () => {

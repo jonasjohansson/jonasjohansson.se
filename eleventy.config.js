@@ -78,7 +78,7 @@ async function buildProject(project) {
     }
   }
   const firstImage = content[0].type === 'video' ? `${project.directory}/${project.blocks[0].poster}` : content[0].src;
-  const [thumbnail, og] = await Promise.all([stripImage(firstImage), ogImage(firstImage, project.slug)]);
+  const [thumbnail, og] = await Promise.all([stripImage(firstImage), ogImage(firstImage, project.slug, project.blocks[0].focal)]);
   // One full-bleed page per project: opening statement, introduction and hero.
   const printMedia = await Promise.all(project.blocks
     .filter(block => block.type === 'image' || (block.type === 'video' && block.poster))

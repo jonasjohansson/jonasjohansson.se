@@ -11,12 +11,16 @@ blocks:
     alt: "Balena Voladora at dusk, with cyan light tracing its ribs, fins and tail and a warm yellow light beside its open mouth."
   - type: text
     content: >-
-      A flying whale. Pulling a lever sets its body in motion.
+      A flying whale in the desert. Pulling a lever sets its wooden skeleton
+      in motion, swimming above the sand.
   - type: text
     fontSize: small
     content: >-
-      LEDs follow the ribs, spine, fins and tail, changing the colour of the
-      skeleton as it swims above the ground.
+      I see a bit of Moby-Dick in it, but also a fossil, or one of the whale
+      skeletons hanging in a natural history museum. The ribs are open and
+      you can see the wooden joints and metal mechanism doing the work.
+      The starting point was a small DIY kinetic model, scaled up into
+      something people could operate themselves.
   - type: image
     src: cyan-profile.jpg
     alt: "A low side view of the whale with cyan ribs and a raised tail against the evening sky, its metal mechanism visible underneath."
@@ -26,11 +30,11 @@ blocks:
   - type: text
     fontSize: small
     content: >-
-      Before the build, I made a
-      [3D lighting study](https://balena-voladora.jonasjohansson.se/)
-      using Erik's model. It let me try the placement of the LEDs
-      against the shape of each rib, and work out the lengths before
-      cutting and wiring them.
+      For the lighting, I followed the skeleton. The LEDs trace the ribs,
+      spine, fins and tail, drawing the whale against the sky after dark.
+      I made a [3D lighting study](https://balena-voladora.jonasjohansson.se/)
+      using Erik's model to try the placement and work out the lengths before
+      the LEDs were cut and wired.
   - type: image
     src: workshop-build.jpg
     size: half-left
@@ -54,9 +58,10 @@ blocks:
   - type: text
     fontSize: small
     content: >-
-      The lighting is mapped in 3D, with separate runs for the twelve
-      ribs, spine, tail and two fins. Two controllers drive the LEDs,
-      letting colour move through the body from one part to the next.
+      I programmed the lighting against the whale's 3D geometry. The twelve
+      ribs, spine, tail and two fins have separate LED runs, driven by two
+      controllers. Colour can travel along an individual bone or move through
+      the whole body.
   - type: image
     src: tail-detail.jpg
     size: half-left

@@ -116,16 +116,31 @@ export async function responsiveImage(src, alt = '', className = 'media-img', si
   return `<picture>${sources}<img src="${fallback.url}" alt="${escape(alt)}" class="${escape(className)}" width="${fallback.width}" height="${fallback.height}" loading="${lcp ? 'eager' : 'lazy'}" decoding="async"${lcp ? ' fetchpriority="high"' : ''}></picture>`;
 }
 
-export function ogFingerprint(src) {
-  return createHash('sha256').update(readFileSync(src)).update('og-1200x630-attention-q82-v1').digest('hex').slice(0, 12);
+export function ogFingerprint(src, focal = null) {
+  return createHash('sha256').update(readFileSync(src)).update('og-1200x630-oriented-srgb-q90-v2').update(focal || 'attention').digest('hex').slice(0, 12);
 }
 
-export async function ogImage(src, slug) {
-  const filename = `og/${slug}-${ogFingerprint(src)}.jpg`;
+export async function ogImage(src, slug, focal = null) {
+  const filename = `og/${slug}-${ogFingerprint(src, focal)}.jpg`;
   const output = path.join(imageCache, filename);
   if (!existsSync(output)) {
     mkdirSync(path.dirname(output), { recursive: true });
-    await sharp(src).resize(1200, 630, { fit: 'cover', position: sharp.strategy.attention }).jpeg({ quality: 82, mozjpeg: true }).toFile(output);
+    let preview = sharp(src).rotate().toColourspace('srgb');
+    if (focal) {
+      const metadata = await sharp(src).metadata();
+      const rotated = metadata.orientation >= 5;
+      const sourceWidth = rotated ? metadata.height : metadata.width;
+      const sourceHeight = rotated ? metadata.width : metadata.height;
+      const scale = Math.max(1200 / sourceWidth, 630 / sourceHeight);
+      const width = Math.ceil(sourceWidth * scale), height = Math.ceil(sourceHeight * scale);
+      const [x, y] = focal.split(' ').map(value => parseFloat(value) / 100);
+      preview = preview.resize(width, height, { fit: 'fill' }).extract({
+        left: Math.round((width - 1200) * x), top: Math.round((height - 630) * y), width: 1200, height: 630,
+      });
+    } else {
+      preview = preview.resize(1200, 630, { fit: 'cover', position: sharp.strategy.attention });
+    }
+    await preview.jpeg({ quality: 90, mozjpeg: true }).toFile(output);
   }
   return `${prefix}/img/${filename}`;
 }
