@@ -11,7 +11,8 @@ async function observeAudio(page) {
     addEventListener('resize', () => log('resize', { w: innerWidth, h: innerHeight }));
     document.fonts?.ready.then(() => log('fonts-ready'));
     addEventListener('load', () => log('load'));
-    new MutationObserver(m => log('mutation', { n: m.length, target: m[0].target.id || m[0].target.className })).observe(document.documentElement, { childList: true, subtree: true, attributes: true, attributeFilter: ['class', 'style'] });
+    const observe = () => new MutationObserver(m => log('mutation', { n: m.length, target: m[0].target.id || m[0].target.className })).observe(document.documentElement, { childList: true, subtree: true, attributes: true, attributeFilter: ['class', 'style'] });
+    if (document.documentElement) observe(); else document.addEventListener('DOMContentLoaded', observe);
     const NativeAudio = window.AudioContext;
     window.__stripSound = { contexts: [], notes: [], active: 0 };
     window.AudioContext = class extends NativeAudio {
