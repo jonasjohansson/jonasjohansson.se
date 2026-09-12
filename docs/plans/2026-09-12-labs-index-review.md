@@ -4,8 +4,8 @@
 
 Use a compact alphabetical index with the same typeface, readable text and one
 short description per entry. Let each tool explain itself once someone opens it.
-The current catalogue is small enough that a stable A–Z order and a plain search
-field are sufficient.
+The current catalogue is small enough for a stable A–Z order. Use the full
+available width, without search, an entry count or introductory copy.
 
 [Open the working preview](../previews/labs-index.html). It contains all 24
 current entries and their existing destinations, with proposed shorter copy.
@@ -50,24 +50,24 @@ even though the underlying projects have substance.
 GitHub repositories, Ratbat and LedZeppelin websites. Browser tools includes
 the Helpers repository. The useful distinction at the moment of clicking is
 whether the destination is a tool, GitHub or a resource. The preview makes that
-visible in a quiet column. Existing group names remain searchable.
+visible in a quiet column.
 
 **The list depends entirely on JavaScript.** With JavaScript disabled, the live
 page contains zero links, only the title and introductory sentence. For an
-index, the links should be the HTML document itself. Search can enhance it.
+index, the links should be the HTML document itself. The preview needs no JavaScript.
 
 ## Proposed treatment
 
-- One column of entries, aligned by name, description and destination.
+- One column of entries using the full window width, aligned by name,
+  description and destination, with 24 px desktop and 20 px mobile gutters.
 - All names underlined at rest, with an obvious keyboard focus outline.
 - Alphabetical order. There is no reliable per-entry date in the current data,
   so a recent-first order would require additional editorial information.
-- One restrained search field that matches names, descriptions, existing
-  categories and destination types. No filter chips or separate category sections.
+- No search, counts, filter chips, introductory paragraph or category sections.
 - The existing SeasonMix typeface at a readable, consistent size.
 - On mobile, the description sits directly below its name; the destination
   remains beside the name.
-- All links and descriptions in the initial HTML. Search remains optional.
+- All links and descriptions in the initial HTML, with no runtime JavaScript.
 - Colour preference follows the operating system in the preview. The current
   site changes at 18:00 regardless of the visitor's preference.
 - Ordinary same-tab links, leaving the visitor free to open a new tab. The
@@ -95,23 +95,23 @@ the tool's own page.
 
 ## Preview checks
 
-| Viewport | Current height | Preview height | Entries starting in first screen |
-| --- | ---: | ---: | --- |
-| 1440 × 1000 | 2084 px | 1193 px | 11 → 20 |
-| 390 × 1000 | 2587 px | 2092 px | 8 → 11 |
+| Viewport | Current height | Preview height | Preview list width |
+| --- | ---: | ---: | ---: |
+| 1440 × 1000 | 2084 px | 1150 px | 1392 px |
+| 390 × 1000 | 2587 px | 2009 px | 350 px |
 
-The preview was also checked at 320 px wide and in light and dark mode.
-All 24 entries remain accessible without JavaScript. Search, no-results
-feedback, clearing search, alphabetical order, keyboard navigation, font
-loading and horizontal overflow checks passed.
+The full-width layout was checked at 320, 390, 720, 768, 1440 and 2560 px.
+All 24 entries remain accessible without JavaScript. The list fills the space
+between its gutters at every size, with no horizontal overflow. The preview
+contains no search input or script. Alphabetical order, keyboard navigation,
+font loading and light/dark styles were also checked during the review.
 
 ## If this direction is adopted
 
 Keep one source of truth for entries. A small generator can write the complete
-index into static HTML from the current data, with JavaScript only filtering
-existing rows. The current GitHub Pages deployment can remain static.
+index into static HTML from the current data. The current GitHub Pages
+deployment can remain static, with no JavaScript shipped to the browser.
 
 The main editorial task is to decide which experiments belong in the catalogue
 and maintain their concise descriptions. Do not infer activity from repository
 commit dates or add active/archived labels without reviewing the projects.
-

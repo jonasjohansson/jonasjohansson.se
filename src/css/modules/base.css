@@ -9,7 +9,7 @@ body { margin: 0; background: var(--bg-primary); color: var(--text-primary); fon
 a { color: inherit; text-underline-offset: 0.16em; }
 button, select { font: inherit; color: inherit; }
 button, summary, select { cursor: pointer; }
-button, select { background: transparent; border: 1px solid color-mix(in srgb, var(--text-primary) 30%, transparent); border-radius: 6px; padding: 0.5rem 0.75rem; }
+button, select { background: transparent; border: 1px solid color-mix(in srgb, var(--text-primary) 30%, transparent); border-radius: 0; padding: 0.5rem 0.75rem; }
 button:hover, select:hover { background: color-mix(in srgb, var(--text-primary) 6%, transparent); }
 button[aria-pressed="true"] { color: var(--bg-primary); background: var(--text-primary); border-color: var(--text-primary); }
 :focus-visible { outline: 2px solid currentColor; outline-offset: 4px; }
@@ -19,7 +19,7 @@ summary:focus-visible { outline-offset: 6px; }
 .skip-link { position: fixed; left: 1rem; top: -8rem; padding: 0.75rem 1rem; background: var(--bg-primary); color: var(--text-primary); z-index: 1000; }
 .skip-link:focus { top: 1rem; }
 img, video { max-width: 100%; }
-.navigation-status { position: fixed; bottom: 1rem; left: 50%; transform: translateX(-50%); z-index: 500; width: max-content; max-width: calc(100% - 2rem); padding: 1rem 1.25rem; background: var(--bg-primary); color: var(--text-primary); border: 1px solid currentColor; border-radius: 8px; box-shadow: 0 4px 28px #0002; }
+.navigation-status { position: fixed; bottom: 1rem; left: 50%; transform: translateX(-50%); z-index: 500; width: max-content; max-width: calc(100% - 2rem); padding: 1rem 1.25rem; background: var(--bg-primary); color: var(--text-primary); border: 1px solid currentColor; border-radius: 0; box-shadow: 0 4px 28px #0002; }
 .navigation-status p { margin: 0; }
 #navigation-actions { display: flex; align-items: center; flex-wrap: wrap; gap: 1rem; margin-top: 0.75rem; }
 @media (prefers-color-scheme: dark) {

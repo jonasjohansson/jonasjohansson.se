@@ -18,14 +18,14 @@
   --spacing-4xl: 7.5rem;
 
   /* Border Radius */
-  --radius-sm: 4px;
-  --radius-md: 0.75rem;
+  --radius-sm: 0;
+  --radius-md: 0;
 
   /* Project media */
   --media-max-h: calc(100dvh - 2 * var(--spacing-3xl)); /* ceiling on an in-body image */
   --gutter-pair: var(--spacing-md);
   --gutter-row: var(--gutter-pair); /* consistent spacing within and between image rows */
-  --radius-media: 4px;
+  --radius-media: 0;
 
   /* Strips */
   --strip-band-height: clamp(12rem, 24vw, 19rem); /* uniform rows on narrow and touch displays */

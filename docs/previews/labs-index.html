@@ -10,32 +10,22 @@
 :root { color-scheme: light; --paper:#f5f4f0; --ink:#292720; --muted:#59564e; --line:#c9c6bd; }
 * { box-sizing:border-box; }
 body { margin:0; background:var(--paper); color:var(--ink); font:18px/1.4 SeasonMix,Georgia,serif; }
-main { max-width:1248px; padding:24px; }
+main { width:100%; padding:24px; }
 header { display:flex; gap:24px; align-items:baseline; margin:0 0 24px; }
 h1,p { margin:0; }
 h1 { font:inherit; }
-header p { color:var(--muted); }
-.toolbar { display:flex; gap:20px; justify-content:space-between; align-items:center; padding-bottom:14px; font-size:16px; }
-.find { display:flex; gap:10px; align-items:baseline; }
-input { width:230px; max-width:100%; font:inherit; color:inherit; background:transparent; border:0; border-bottom:1px solid var(--muted); border-radius:0; padding:3px 0; }
 .index { padding:0; margin:0; list-style:none; border-top:1px solid var(--ink); }
-.columns, .index li { display:grid; grid-template-columns:240px minmax(0,1fr) 80px; gap:24px; }
+.columns, .index li { display:grid; grid-template-columns:clamp(200px, 20vw, 320px) minmax(0,1fr) 80px; gap:24px; }
 .columns { padding:9px 0; color:var(--muted); font-size:15px; }
 .index li { padding:8px 0; border-bottom:1px solid var(--line); align-items:baseline; }
 .index p { font-size:17px; }
 a { color:inherit; text-underline-offset:3px; text-decoration-thickness:1px; }
 a:hover { text-decoration-thickness:2px; }
-a:focus-visible,input:focus-visible { outline:2px solid var(--ink); outline-offset:4px; }
+a:focus-visible { outline:2px solid var(--ink); outline-offset:4px; }
 .destination { color:var(--muted); font-size:15px; }
-.empty { padding:24px 0; }
-[hidden] { display:none!important; }
 @media(max-width:720px) {
  main { padding:20px; }
  header { gap:16px; margin-bottom:20px; flex-wrap:wrap; }
- header p { flex-basis:100%; font-size:17px; }
- .toolbar { align-items:baseline; gap:14px; flex-wrap:wrap; }
- .find { flex:1; justify-content:flex-end; }
- input { width:160px; }
  .columns { display:none; }
  .index li { grid-template-columns:minmax(0,1fr) auto; gap:3px 16px; padding:11px 0; }
  .index p { grid-column:1/-1; grid-row:2; color:var(--muted); font-size:16px; }
@@ -47,49 +37,35 @@ a:focus-visible,input:focus-visible { outline:2px solid var(--ink); outline-offs
 </head>
 <body>
 <main>
-<header><h1>Labs</h1><p>Tools, experiments and resources.</p></header>
-<div class="toolbar"><p id="count" role="status" aria-live="polite">24 entries · A–Z</p><label class="find" hidden>Find <input id="find" type="search" autocomplete="off"></label></div>
+<header><h1>Labs</h1></header>
 <div class="columns" aria-hidden="true"><span>Name</span><span>Description</span><span>Opens</span></div>
 <ul class="index">
-      <li data-search="conrad control devices through a small web interface. apps github"><a href="https://github.com/jonasjohansson/conrad">Conrad</a><p>Control devices through a small web interface.</p><span class="destination">GitHub</span></li>
-      <li data-search="every night studios try text and logos on caps, then export the mockups. browser tools tool"><a href="https://everynightstudios.jonasjohansson.se">Every Night Studios</a><p>Try text and logos on caps, then export the mockups.</p><span class="destination">Tool</span></li>
-      <li data-search="exploring technology notes and tutorials on creative technology. resources resource"><a href="https://www.exploring.technology">Exploring Technology</a><p>Notes and tutorials on creative technology.</p><span class="destination">Resource</span></li>
-      <li data-search="flight finder run the same search across four flight search sites. browser tools tool"><a href="https://jonasjohansson.github.io/flight-finder/">Flight Finder</a><p>Run the same search across four flight search sites.</p><span class="destination">Tool</span></li>
-      <li data-search="fulldome preview preview a film inside a dome. browser tools tool"><a href="https://preview.domedreaming.com">Fulldome Preview</a><p>Preview a film inside a dome.</p><span class="destination">Tool</span></li>
-      <li data-search="godnapp listen to sveriges radio with a sleep timer. browser tools tool"><a href="https://jonasjohansson.github.io/godnapp/">Godnapp</a><p>Listen to Sveriges Radio with a sleep timer.</p><span class="destination">Tool</span></li>
-      <li data-search="google templates templates for project planning and finances. resources resource"><a href="https://drive.google.com/drive/folders/1f9R8S7efyesHzigLx6plSazXh47Pa-OV?usp=sharing">Google Templates</a><p>Templates for project planning and finances.</p><span class="destination">Resource</span></li>
-      <li data-search="grappa turn an image’s colours into a gradient map and .cube lut. browser tools tool"><a href="https://grappa.jonasjohansson.se">Grappa</a><p>Turn an image’s colours into a gradient map and .cube LUT.</p><span class="destination">Tool</span></li>
-      <li data-search="helpers small utilities for browser projects. browser tools github"><a href="https://github.com/jonasjohansson/helpers">Helpers</a><p>Small utilities for browser projects.</p><span class="destination">GitHub</span></li>
-      <li data-search="homie a browser for bookmarks. apps github"><a href="https://github.com/jonasjohansson/homie">Homie</a><p>A browser for bookmarks.</p><span class="destination">GitHub</span></li>
-      <li data-search="indigo use a website as a syphon or ndi source on macos. apps github"><a href="https://github.com/jonasjohansson/Indigo">Indigo</a><p>Use a website as a Syphon or NDI source on macOS.</p><span class="destination">GitHub</span></li>
-      <li data-search="instagram prototype mock up an instagram profile and its posts. browser tools tool"><a href="https://jonasjohansson.github.io/instagram-prototype/">Instagram Prototype</a><p>Mock up an Instagram profile and its posts.</p><span class="destination">Tool</span></li>
-      <li data-search="kagora plan led strip cuts and materials for kagora. browser tools tool"><a href="https://kagora.jonasjohansson.se">Kagora</a><p>Plan LED strip cuts and materials for Kagora.</p><span class="destination">Tool</span></li>
-      <li data-search="ledzeppelin make visuals, map fixtures and send them to addressable leds. apps tool"><a href="https://ledzeppelin.jonasjohansson.se">LedZeppelin</a><p>Make visuals, map fixtures and send them to addressable LEDs.</p><span class="destination">Tool</span></li>
-      <li data-search="matte make animated black-and-white transition mattes. browser tools tool"><a href="https://matte.jonasjohansson.se">Matte</a><p>Make animated black-and-white transition mattes.</p><span class="destination">Tool</span></li>
-      <li data-search="mio send and receive serial data. apps github"><a href="https://github.com/jonasjohansson/mio">Mio</a><p>Send and receive serial data.</p><span class="destination">GitHub</span></li>
-      <li data-search="organize downloads sort chrome downloads by date and category. plugins and extensions github"><a href="https://github.com/jonasjohansson/organize-downloads-by-date-and-category-chrome-extension">Organize Downloads</a><p>Sort Chrome downloads by date and category.</p><span class="destination">GitHub</span></li>
-      <li data-search="ratbat personal radio with stations from last.fm, nts and bandcamp. apps tool"><a href="https://ratbat.jonasjohansson.se">Ratbat</a><p>Personal radio with stations from Last.fm, NTS and Bandcamp.</p><span class="destination">Tool</span></li>
-      <li data-search="resolume ffgl shaders isf shaders compiled for resolume arena. plugins and extensions github"><a href="https://github.com/jonasjohansson/resolume-ffgl">Resolume FFGL Shaders</a><p>ISF shaders compiled for Resolume Arena.</p><span class="destination">GitHub</span></li>
-      <li data-search="slicer slice a 3d model into layered contours. browser tools tool"><a href="https://slicer.jonasjohansson.se">Slicer</a><p>Slice a 3D model into layered contours.</p><span class="destination">Tool</span></li>
-      <li data-search="testbild make test cards for projection across multiple surfaces. browser tools tool"><a href="https://jonasjohansson.github.io/testbild/">Testbild</a><p>Make test cards for projection across multiple surfaces.</p><span class="destination">Tool</span></li>
-      <li data-search="testbild 360 make test patterns for domes, panoramas and 360° images. browser tools tool"><a href="https://testbild-360.jonasjohansson.se">Testbild 360</a><p>Make test patterns for domes, panoramas and 360° images.</p><span class="destination">Tool</span></li>
-      <li data-search="unwrapped inspect a 3d model’s uvs and preview its textures. browser tools tool"><a href="https://jonasjohansson.github.io/unwrapped/">Unwrapped</a><p>Inspect a 3D model’s UVs and preview its textures.</p><span class="destination">Tool</span></li>
-      <li data-search="wendigo bring ndi and syphon video into a browser. apps github"><a href="https://github.com/jonasjohansson/wendigo">Wendigo</a><p>Bring NDI and Syphon video into a browser.</p><span class="destination">GitHub</span></li>
+      <li><a href="https://github.com/jonasjohansson/conrad">Conrad</a><p>Control devices through a small web interface.</p><span class="destination">GitHub</span></li>
+      <li><a href="https://everynightstudios.jonasjohansson.se">Every Night Studios</a><p>Try text and logos on caps, then export the mockups.</p><span class="destination">Tool</span></li>
+      <li><a href="https://www.exploring.technology">Exploring Technology</a><p>Notes and tutorials on creative technology.</p><span class="destination">Resource</span></li>
+      <li><a href="https://jonasjohansson.github.io/flight-finder/">Flight Finder</a><p>Run the same search across four flight search sites.</p><span class="destination">Tool</span></li>
+      <li><a href="https://preview.domedreaming.com">Fulldome Preview</a><p>Preview a film inside a dome.</p><span class="destination">Tool</span></li>
+      <li><a href="https://jonasjohansson.github.io/godnapp/">Godnapp</a><p>Listen to Sveriges Radio with a sleep timer.</p><span class="destination">Tool</span></li>
+      <li><a href="https://drive.google.com/drive/folders/1f9R8S7efyesHzigLx6plSazXh47Pa-OV?usp=sharing">Google Templates</a><p>Templates for project planning and finances.</p><span class="destination">Resource</span></li>
+      <li><a href="https://grappa.jonasjohansson.se">Grappa</a><p>Turn an image’s colours into a gradient map and .cube LUT.</p><span class="destination">Tool</span></li>
+      <li><a href="https://github.com/jonasjohansson/helpers">Helpers</a><p>Small utilities for browser projects.</p><span class="destination">GitHub</span></li>
+      <li><a href="https://github.com/jonasjohansson/homie">Homie</a><p>A browser for bookmarks.</p><span class="destination">GitHub</span></li>
+      <li><a href="https://github.com/jonasjohansson/Indigo">Indigo</a><p>Use a website as a Syphon or NDI source on macOS.</p><span class="destination">GitHub</span></li>
+      <li><a href="https://jonasjohansson.github.io/instagram-prototype/">Instagram Prototype</a><p>Mock up an Instagram profile and its posts.</p><span class="destination">Tool</span></li>
+      <li><a href="https://kagora.jonasjohansson.se">Kagora</a><p>Plan LED strip cuts and materials for Kagora.</p><span class="destination">Tool</span></li>
+      <li><a href="https://ledzeppelin.jonasjohansson.se">LedZeppelin</a><p>Make visuals, map fixtures and send them to addressable LEDs.</p><span class="destination">Tool</span></li>
+      <li><a href="https://matte.jonasjohansson.se">Matte</a><p>Make animated black-and-white transition mattes.</p><span class="destination">Tool</span></li>
+      <li><a href="https://github.com/jonasjohansson/mio">Mio</a><p>Send and receive serial data.</p><span class="destination">GitHub</span></li>
+      <li><a href="https://github.com/jonasjohansson/organize-downloads-by-date-and-category-chrome-extension">Organize Downloads</a><p>Sort Chrome downloads by date and category.</p><span class="destination">GitHub</span></li>
+      <li><a href="https://ratbat.jonasjohansson.se">Ratbat</a><p>Personal radio with stations from Last.fm, NTS and Bandcamp.</p><span class="destination">Tool</span></li>
+      <li><a href="https://github.com/jonasjohansson/resolume-ffgl">Resolume FFGL Shaders</a><p>ISF shaders compiled for Resolume Arena.</p><span class="destination">GitHub</span></li>
+      <li><a href="https://slicer.jonasjohansson.se">Slicer</a><p>Slice a 3D model into layered contours.</p><span class="destination">Tool</span></li>
+      <li><a href="https://jonasjohansson.github.io/testbild/">Testbild</a><p>Make test cards for projection across multiple surfaces.</p><span class="destination">Tool</span></li>
+      <li><a href="https://testbild-360.jonasjohansson.se">Testbild 360</a><p>Make test patterns for domes, panoramas and 360° images.</p><span class="destination">Tool</span></li>
+      <li><a href="https://jonasjohansson.github.io/unwrapped/">Unwrapped</a><p>Inspect a 3D model’s UVs and preview its textures.</p><span class="destination">Tool</span></li>
+      <li><a href="https://github.com/jonasjohansson/wendigo">Wendigo</a><p>Bring NDI and Syphon video into a browser.</p><span class="destination">GitHub</span></li>
 </ul>
-<p class="empty" hidden>No entries match. Clear the search to show all 24.</p>
 </main>
-<script>
-const field = document.getElementById('find');
-const rows = [...document.querySelectorAll('.index li')];
-const count = document.getElementById('count');
-const empty = document.querySelector('.empty');
-field.closest('label').hidden = false;
-field.addEventListener('input', () => {
- const words=field.value.toLowerCase().trim().split(/\s+/).filter(Boolean);
- let visible=0;
- for(const row of rows){row.hidden=!words.every(word=>row.dataset.search.includes(word));if(!row.hidden)visible++;}
- count.textContent=words.length ? visible+' of 24 entries' : '24 entries · A–Z';
- empty.hidden=visible!==0;
-});</script>
+
 </body>
 </html>
