@@ -21,6 +21,12 @@ blocks:
       towering figures within the camera's view of their surroundings.
       Turning the telescope lets them explore this other layer of the
       landscape.
+  - type: image
+    src: desert-gathering.jpg
+    alt: "People gather around the telescope on a rocky ridge overlooking the desert valley, while a seated visitor looks through the eyepiece."
+  - type: image
+    src: desert-viewer.jpg
+    alt: "A visitor sits on a small wooden bench and looks through WYSIWYG in an open desert setting."
   - type: text
     fontSize: small
     content: >-
@@ -40,9 +46,6 @@ blocks:
     src: giant-render.png
     size: half-right
     alt: "A render from WYSIWYG shows a walking figure formed from tiny luminous blue particles, with gaps dissolving its outline."
-  - type: image
-    src: desert-viewer.jpg
-    alt: "A visitor sits on a small wooden bench and looks through WYSIWYG in an open desert setting."
   - type: text
     fontSize: small
     content: >-
@@ -51,6 +54,9 @@ blocks:
       the screen in the telescope's line of sight, so looking at a
       digital image becomes a physical gesture: sit down, lean in and
       turn towards something.
+  - type: image
+    src: desert-detail.jpg
+    alt: "A close view of the telescope's stepped wooden housing, brass tube and tripod, with coloured lights out of focus across the desert."
   - type: image
     src: phone.jpg
     alt: "The opened circular wooden housing reveals the phone and its round landscape view beside the telescope."
@@ -73,4 +79,12 @@ blocks:
   - type: image
     src: sunset-viewer.jpg
     alt: "A visitor wearing headphones looks through the telescope as the sun sets over the landscape."
+  - type: image
+    src: desert-silhouette.jpg
+    size: half-left
+    alt: "The telescope and tripod stand in silhouette against the setting sun, with people sitting on the rocky ridge around them."
+  - type: image
+    src: carrying-telescope.jpg
+    size: half-right
+    alt: "A person carries the wooden bench and telescope across the desert ridge beneath a pink evening sky."
 ---

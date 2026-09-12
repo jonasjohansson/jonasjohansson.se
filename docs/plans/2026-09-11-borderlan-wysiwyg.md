@@ -321,3 +321,40 @@ Targeted checks at 390, 1440 and 2560 px confirmed twelve decoded images, two
 existing image pairs, expected overhead image widths, no horizontal overflow,
 removed content and the closing paragraph. Desktop, mobile audio and large-screen
 layout screenshots were visually reviewed in `screenshots/borderlan-final/`.
+
+## Additional desert photographs, 12 September
+
+Reviewed RAW-derived contact sheets covering all 341 RAW files from 8–11 July.
+Four additional photographs show the telescope among visitors on the ridge,
+the wooden housing in detail, its silhouette at sunset and the instrument being
+carried across the landscape. The previously rejected dusty visitor photograph
+and grassy setting remain excluded.
+
+Sources are under `Downloads/Camera/998_FUJI/`. Camera originals are unchanged.
+
+| Website asset | RAW source | Camera white balance |
+| --- | --- | --- |
+| `desert-detail.jpg` | `2026-07-09/RAF/DSCF8347.RAF` | 10411.296 K / tint 0.282 |
+| `desert-gathering.jpg` | `2026-07-11/RAF/DSCF8418.RAF` | 5987.364 K / tint 6.055 |
+| `desert-silhouette.jpg` | `2026-07-11/RAF/DSCF8465.RAF` | 6232.304 K / tint 9.406 |
+| `carrying-telescope.jpg` | `2026-07-11/RAF/DSCF8483.RAF` | 5331.879 K / tint 12.081 |
+
+Developed from sensor data with macOS Core Image `CIRAWFilter.outputImage`,
+using camera white balance, zero added exposure and the decoder's +0.12 EV
+baseline. Exports are 3200 px on the long edge, sRGB JPEG at quality 0.94.
+There is no crop, added sharpening or generative editing. All four final
+exports were visually inspected.
+
+WYSIWYG now has ten photographs, two renders and one video. The gathering and
+existing desert viewer photographs sit together on large displays, while the
+two new portrait photographs finish the page as a pair. All existing media
+remain, and the published text blocks are unchanged. The separate
+`2026-09-12-copy-review.md` contains suggestions for discussion, not applied copy.
+
+The build and six content tests passed. Targeted Chrome checks at 390, 1280,
+1440 and 1850 px confirmed all twelve images decode, gallery images remain
+lazy, the hero keeps its full width, the video remains present and there is no
+horizontal overflow or console error. The gathering pair uses half widths
+from 1440 px and stacks below that with a 16 px gap. The ending portraits also
+stack with a 16 px gap on mobile. The gathering at 1850 px and ending at
+1440 px were visually reviewed in `screenshots/wysiwyg-desert/`.
