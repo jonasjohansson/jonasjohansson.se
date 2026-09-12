@@ -34,15 +34,12 @@ blocks:
     content: >-
       By day, the flock appears as black birds. At night, it becomes a swarm
       of lights. Giant figures made of particles walk through the landscape.
-      The concept images below superimpose these scenes on my photographs.
+      The concept image below brings the birds and walking figures into
+      one of my photographs.
   - type: image
-    src: desert-giants-concept.png
-    size: half-left
-    alt: "Concept image combining a desert telescope photograph with two enormous cyan and violet particle figures walking above the distant camp at sunset."
-  - type: image
-    src: desert-flock-concept.png
-    size: half-right
-    alt: "Concept image of a visitor looking through WYSIWYG, with a swirling flock of tiny black virtual birds superimposed across the desert sky."
+    src: desert-creatures-concept.png
+    fit: contain
+    alt: "Concept image of the telescope at sunset, with two towering cyan and violet particle figures walking on the open sand in front of the camp and a flock of virtual birds crossing the sky."
   - type: text
     fontSize: small
     content: >-
@@ -98,6 +95,14 @@ blocks:
     src: bench-joint.jpg
     size: half-right
     alt: "A close view of the bench's plywood seat and rounded upright, secured with a wooden peg."
+  - type: image
+    src: bench-sunset.jpg
+    size: half-left
+    alt: "A visitor sits on Rose Hallgren's wooden bench overlooking the desert hills at sunset, seen from behind."
+  - type: image
+    src: bench-seat-detail.jpg
+    size: half-right
+    alt: "A view down onto the bench's plywood seat, showing its curved cutouts, wooden pegs and long evening shadows."
   - type: text
     fontSize: small
     content: >-

@@ -356,6 +356,7 @@ try {
             return { x: r.x, y: r.y, width: r.width, right: r.right, height: r.height, media,
               ar: Number(node.style.getPropertyValue('--ar')),
               fit: element && getComputedStyle(element).objectFit,
+              alt: element && (element.alt || element.getAttribute('aria-label')),
               imageWidth: image && image.width, imageHeight: image && image.height,
               sizes: node.querySelector('picture source')?.getAttribute('sizes') };
           };
@@ -381,7 +382,8 @@ try {
           } else {
             assert.ok(Math.abs(media.width - geometry.width) < 1, `${slug} lone media fill the row`);
             assert.ok(Math.abs(media.height - Math.min(geometry.width / media.ar, 800, 896)) < 1, `${slug} lone media use a bounded height`);
-            assert.equal(media.fit, 'cover', `${slug} crops within the frame`);
+            const authored = readProjects().find(project => project.slug === slug).blocks.find(block => block.alt === media.alt);
+            assert.equal(media.fit, authored?.fit || 'cover', `${slug} respects the authored crop within the frame`);
             assert.ok(media.imageWidth >= media.width - 1 && media.imageHeight >= media.height - 1, `${slug} media fill their frame, including authored zoom crops`);
             if (media.sizes) assert.ok(media.sizes.startsWith('(min-width: 1440px) calc(100vw - 48px)'), `${slug} downloads a full-width image for an unpaired frame`);
           }
@@ -392,13 +394,13 @@ try {
       }
       await visit(page, '/borderlan/');
       const entrance = page.locator('img[alt^="An illuminated BorderLAN sign"]');
-      const doorway = page.locator('img[alt^="A view through the blue cellar doorway"]');
-      const first = await entrance.boundingBox(), second = await doorway.boundingBox();
+      const players = page.locator('img[alt^="Four players sit around BorderLAN"]');
+      const first = await entrance.boundingBox(), second = await players.boundingBox();
       assert.ok(Math.abs(first.y - second.y) < 1, 'the entrance and Counter-Strike room photograph share a row');
       assert.ok(Math.abs(second.x - first.x - first.width - 16) < 1, 'the two photographs have the normal gutter');
       await entrance.scrollIntoViewIfNeeded();
       await entrance.evaluate(image => image.decode());
-      await doorway.evaluate(image => image.decode());
+      await players.evaluate(image => image.decode());
       await page.screenshot({ path: `${output}/borderlan-two-images-${width}.png` });
     });
   }

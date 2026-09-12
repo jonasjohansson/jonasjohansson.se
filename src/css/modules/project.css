@@ -388,7 +388,7 @@ html[data-theme="dark"] .text-block a {
 
   .project-grid > .media-item:not(.hero):not(:first-child):not(.desktop-pair) :is(img, video) {
     height: 100%;
-    object-fit: cover;
+    object-fit: var(--media-fit, cover);
     object-position: var(--focal, center);
   }
 }

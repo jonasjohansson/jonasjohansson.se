@@ -25,8 +25,8 @@ blocks:
     src: entrance.jpg
     alt: "An illuminated BorderLAN sign above the cellar entrance reads 'stay a while and listen', surrounded by foliage and small lights."
   - type: image
-    src: doorway-counter-strike.png
-    alt: "A view through the blue cellar doorway into the red gaming room, with classic Counter-Strike character heads covering every visible player's head."
+    src: players-counter-strike.png
+    alt: "Four players sit around BorderLAN's red gaming table beneath a vaulted stone ceiling, with classic Counter-Strike character heads superimposed over all four heads."
   - type: image
     src: room-wide.jpg
     alt: "The empty cellar glows orange around a handmade red gaming table, with four seats, back-to-back screens, candles and a projection on the stone wall."
