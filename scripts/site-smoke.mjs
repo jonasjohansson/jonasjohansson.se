@@ -559,7 +559,8 @@ try {
       await checkSelection();
       await toggle('mixed reality');
       await toggle('av');
-      assert.equal(await page.locator('#project-count').textContent(), '1 project');
+      const exhibitionCount = projects.filter(project => project.tags.includes('exhibition')).length;
+      assert.equal(await page.locator('#project-count').textContent(), `${exhibitionCount} ${exhibitionCount === 1 ? 'project' : 'projects'}`);
       for (const tag of tags.filter(tag => !selected.has(tag))) await toggle(tag);
       assert.equal(await page.locator('.strip:not([hidden])').count(), projects.length);
       await page.locator('#home-link').click();
@@ -619,7 +620,20 @@ try {
   }
 
   for (const [name, options] of [['desktop', desktop], ['mobile', mobile]]) {
-    await check(`${name} filters other projects without leaving the project wall`, options, async page => {
+    await check(`${name} filters a project wall with a category unique to the open project`, options, async page => {
+      // Keep the empty-result guard covered as the real collection grows.
+      // The unmodified collection and all its tags are exercised above.
+      await page.route(`${base}/society-expo/`, async route => {
+        const response = await route.fetch();
+        const body = (await response.text()).replace(/(window\.__PROJECTS_DATA__\s*=\s*)(\[.*?\])(\s*;)/s, (_, assignment, json, end) => {
+          const fixture = JSON.parse(json).map(project => ({
+            ...project,
+            tags: project.slug === 'society-expo' ? project.tags : project.tags.filter(tag => tag !== 'exhibition'),
+          }));
+          return assignment + JSON.stringify(fixture) + end;
+        });
+        await route.fulfill({ response, body });
+      });
       await visit(page, '/society-expo/');
       await page.locator('#collection').evaluate(collection => collection.scrollIntoView({ block: 'start' }));
       await checkFooter(page);
