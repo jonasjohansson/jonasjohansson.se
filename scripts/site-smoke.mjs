@@ -28,7 +28,7 @@ async function check(name, options, callback) {
     console.log(`✓ ${name}`);
   } catch (error) {
     results.push({ name, passed: false, error: error.stack });
-    console.error(`✗ ${name}: ${error.message}`);
+    console.error(`✗ ${name}: ${error.stack || error.message}`);
     await page.screenshot({ path: `${output}/${name.replace(/[^a-z0-9]+/gi, '-')}-failed.png` }).catch(() => {});
   } finally { await context.close(); }
 }
