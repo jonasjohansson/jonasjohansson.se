@@ -11,12 +11,12 @@
 * { box-sizing:border-box; }
 body { margin:0; background:var(--paper); color:var(--ink); font:18px/1.4 SeasonMix,Georgia,serif; }
 main { width:100%; padding:24px; }
-header { display:flex; gap:24px; align-items:baseline; margin:0 0 24px; }
-h1,p { margin:0; }
-h1 { font:inherit; }
+h1,h2,p { margin:0; }
+h2 { font:inherit; margin-bottom:8px; }
+section + section { margin-top:32px; }
+.visually-hidden { position:absolute; width:1px; height:1px; padding:0; margin:-1px; overflow:hidden; clip-path:inset(50%); white-space:nowrap; border:0; }
 .index { padding:0; margin:0; list-style:none; border-top:1px solid var(--ink); }
-.columns, .index li { display:grid; grid-template-columns:clamp(200px, 20vw, 320px) minmax(0,1fr) 80px; gap:24px; }
-.columns { padding:9px 0; color:var(--muted); font-size:15px; }
+.index li { display:grid; grid-template-columns:clamp(200px, 20vw, 320px) minmax(0,1fr) 80px; gap:24px; }
 .index li { padding:8px 0; border-bottom:1px solid var(--line); align-items:baseline; }
 .index p { font-size:17px; }
 a { color:inherit; text-underline-offset:3px; text-decoration-thickness:1px; }
@@ -25,8 +25,6 @@ a:focus-visible { outline:2px solid var(--ink); outline-offset:4px; }
 .destination { color:var(--muted); font-size:15px; }
 @media(max-width:720px) {
  main { padding:20px; }
- header { gap:16px; margin-bottom:20px; flex-wrap:wrap; }
- .columns { display:none; }
  .index li { grid-template-columns:minmax(0,1fr) auto; gap:3px 16px; padding:11px 0; }
  .index p { grid-column:1/-1; grid-row:2; color:var(--muted); font-size:16px; }
  .destination { grid-column:2; grid-row:1; }
@@ -37,34 +35,64 @@ a:focus-visible { outline:2px solid var(--ink); outline-offset:4px; }
 </head>
 <body>
 <main>
-<header><h1>Labs</h1></header>
-<div class="columns" aria-hidden="true"><span>Name</span><span>Description</span><span>Opens</span></div>
+<h1 class="visually-hidden">Tools and experiments</h1>
+<section aria-labelledby="design">
+<h2 id="design">Design</h2>
 <ul class="index">
-      <li><a href="https://github.com/jonasjohansson/conrad">Conrad</a><p>Control devices through a small web interface.</p><span class="destination">GitHub</span></li>
-      <li><a href="https://everynightstudios.jonasjohansson.se">Every Night Studios</a><p>Try text and logos on caps, then export the mockups.</p><span class="destination">Tool</span></li>
-      <li><a href="https://www.exploring.technology">Exploring Technology</a><p>Notes and tutorials on creative technology.</p><span class="destination">Resource</span></li>
-      <li><a href="https://jonasjohansson.github.io/flight-finder/">Flight Finder</a><p>Run the same search across four flight search sites.</p><span class="destination">Tool</span></li>
-      <li><a href="https://preview.domedreaming.com">Fulldome Preview</a><p>Preview a film inside a dome.</p><span class="destination">Tool</span></li>
-      <li><a href="https://jonasjohansson.github.io/godnapp/">Godnapp</a><p>Listen to Sveriges Radio with a sleep timer.</p><span class="destination">Tool</span></li>
-      <li><a href="https://drive.google.com/drive/folders/1f9R8S7efyesHzigLx6plSazXh47Pa-OV?usp=sharing">Google Templates</a><p>Templates for project planning and finances.</p><span class="destination">Resource</span></li>
-      <li><a href="https://grappa.jonasjohansson.se">Grappa</a><p>Turn an image’s colours into a gradient map and .cube LUT.</p><span class="destination">Tool</span></li>
-      <li><a href="https://github.com/jonasjohansson/helpers">Helpers</a><p>Small utilities for browser projects.</p><span class="destination">GitHub</span></li>
-      <li><a href="https://github.com/jonasjohansson/homie">Homie</a><p>A browser for bookmarks.</p><span class="destination">GitHub</span></li>
-      <li><a href="https://github.com/jonasjohansson/Indigo">Indigo</a><p>Use a website as a Syphon or NDI source on macOS.</p><span class="destination">GitHub</span></li>
-      <li><a href="https://jonasjohansson.github.io/instagram-prototype/">Instagram Prototype</a><p>Mock up an Instagram profile and its posts.</p><span class="destination">Tool</span></li>
-      <li><a href="https://kagora.jonasjohansson.se">Kagora</a><p>Plan LED strip cuts and materials for Kagora.</p><span class="destination">Tool</span></li>
-      <li><a href="https://ledzeppelin.jonasjohansson.se">LedZeppelin</a><p>Make visuals, map fixtures and send them to addressable LEDs.</p><span class="destination">Tool</span></li>
-      <li><a href="https://matte.jonasjohansson.se">Matte</a><p>Make animated black-and-white transition mattes.</p><span class="destination">Tool</span></li>
-      <li><a href="https://github.com/jonasjohansson/mio">Mio</a><p>Send and receive serial data.</p><span class="destination">GitHub</span></li>
-      <li><a href="https://github.com/jonasjohansson/organize-downloads-by-date-and-category-chrome-extension">Organize Downloads</a><p>Sort Chrome downloads by date and category.</p><span class="destination">GitHub</span></li>
-      <li><a href="https://ratbat.jonasjohansson.se">Ratbat</a><p>Personal radio with stations from Last.fm, NTS and Bandcamp.</p><span class="destination">Tool</span></li>
-      <li><a href="https://github.com/jonasjohansson/resolume-ffgl">Resolume FFGL Shaders</a><p>ISF shaders compiled for Resolume Arena.</p><span class="destination">GitHub</span></li>
-      <li><a href="https://slicer.jonasjohansson.se">Slicer</a><p>Slice a 3D model into layered contours.</p><span class="destination">Tool</span></li>
-      <li><a href="https://jonasjohansson.github.io/testbild/">Testbild</a><p>Make test cards for projection across multiple surfaces.</p><span class="destination">Tool</span></li>
-      <li><a href="https://testbild-360.jonasjohansson.se">Testbild 360</a><p>Make test patterns for domes, panoramas and 360° images.</p><span class="destination">Tool</span></li>
-      <li><a href="https://jonasjohansson.github.io/unwrapped/">Unwrapped</a><p>Inspect a 3D model’s UVs and preview its textures.</p><span class="destination">Tool</span></li>
-      <li><a href="https://github.com/jonasjohansson/wendigo">Wendigo</a><p>Bring NDI and Syphon video into a browser.</p><span class="destination">GitHub</span></li>
+  <li><a href="https://domedreaming-generator.jonasjohansson.se/">Dome Dreaming Generator</a><p>Build dome geometry and export unfolded layouts.</p><span class="destination">Tool</span></li>
+  <li><a href="https://everynightstudios.jonasjohansson.se">Every Night Studios</a><p>Try text and logos on caps, then export the mockups.</p><span class="destination">Tool</span></li>
+  <li><a href="https://jonasjohansson.github.io/instagram-prototype/">Instagram Prototype</a><p>Mock up an Instagram profile and its posts.</p><span class="destination">Tool</span></li>
+  <li><a href="https://kagora.jonasjohansson.se">Kagora</a><p>Plan LED strip cuts and materials for Kagora.</p><span class="destination">Tool</span></li>
+  <li><a href="https://ledger.jonasjohansson.se/">LEDger</a><p>Plan LED layouts, wiring, power and materials.</p><span class="destination">Tool</span></li>
+  <li><a href="https://lumenati.jonasjohansson.se/">Lumenati</a><p>Plan projector placement, coverage and brightness.</p><span class="destination">Tool</span></li>
+  <li><a href="https://nowhere-furniture.jonasjohansson.se/">Nowhere Furniture</a><p>Design plywood furniture and export material lists and cutting plans.</p><span class="destination">Tool</span></li>
+  <li><a href="https://slicer.jonasjohansson.se">Slicer</a><p>Slice a 3D model into layered contours.</p><span class="destination">Tool</span></li>
+  <li><a href="https://klattermusen.jonasjohansson.se/">TuftView</a><p>Preview tufted rugs, change yarn colours and estimate materials.</p><span class="destination">Tool</span></li>
+  <li><a href="https://jonasjohansson.github.io/unwrapped/">Unwrapped</a><p>Inspect a 3D model’s UVs and preview its textures.</p><span class="destination">Tool</span></li>
 </ul>
+</section>
+<section aria-labelledby="visuals">
+<h2 id="visuals">Visuals</h2>
+<ul class="index">
+  <li><a href="https://blob.jonasjohansson.se/">Blob</a><p>Move a refractive glass effect with your hands or cursor.</p><span class="destination">Tool</span></li>
+  <li><a href="https://cam2avatar.jonasjohansson.se/">cam2avatar</a><p>Animate a 3D avatar from a webcam or video.</p><span class="destination">Tool</span></li>
+  <li><a href="https://preview.domedreaming.com">Fulldome Preview</a><p>Preview a film inside a dome.</p><span class="destination">Tool</span></li>
+  <li><a href="https://grappa.jonasjohansson.se">Grappa</a><p>Turn an image’s colours into a gradient map and .cube LUT.</p><span class="destination">Tool</span></li>
+  <li><a href="https://github.com/jonasjohansson/Indigo">Indigo</a><p>Use a website as a Syphon or NDI source on macOS.</p><span class="destination">GitHub</span></li>
+  <li><a href="https://ledzeppelin.jonasjohansson.se">LedZeppelin</a><p>Make visuals, map fixtures and send them to addressable LEDs.</p><span class="destination">Tool</span></li>
+  <li><a href="https://matte.jonasjohansson.se">Matte</a><p>Make animated black-and-white transition mattes.</p><span class="destination">Tool</span></li>
+  <li><a href="https://github.com/jonasjohansson/resolume-ffgl">Resolume FFGL Shaders</a><p>ISF shaders compiled for Resolume Arena.</p><span class="destination">GitHub</span></li>
+  <li><a href="https://jonasjohansson.github.io/testbild/">Testbild</a><p>Make test cards for projection across multiple surfaces.</p><span class="destination">Tool</span></li>
+  <li><a href="https://testbild-360.jonasjohansson.se">Testbild 360</a><p>Make test patterns for domes, panoramas and 360° images.</p><span class="destination">Tool</span></li>
+  <li><a href="https://github.com/jonasjohansson/wendigo">Wendigo</a><p>Bring NDI and Syphon video into a browser.</p><span class="destination">GitHub</span></li>
+</ul>
+</section>
+<section aria-labelledby="sound">
+<h2 id="sound">Sound</h2>
+<ul class="index">
+  <li><a href="https://jonasjohansson.github.io/godnapp/">Godnapp</a><p>Listen to Sveriges Radio with a sleep timer.</p><span class="destination">Tool</span></li>
+  <li><a href="https://ratbat.jonasjohansson.se">Ratbat</a><p>Personal radio with stations from Last.fm, NTS and Bandcamp.</p><span class="destination">Tool</span></li>
+  <li><a href="https://jonasjohansson.github.io/tonejs-balls/">tonejs-balls</a><p>Make music with bouncing balls, scales and rhythms.</p><span class="destination">Tool</span></li>
+</ul>
+</section>
+<section aria-labelledby="utilities">
+<h2 id="utilities">Utilities</h2>
+<ul class="index">
+  <li><a href="https://github.com/jonasjohansson/conrad">Conrad</a><p>Control devices through a small web interface.</p><span class="destination">GitHub</span></li>
+  <li><a href="https://jonasjohansson.github.io/flight-finder/">Flight Finder</a><p>Run the same search across four flight search sites.</p><span class="destination">Tool</span></li>
+  <li><a href="https://github.com/jonasjohansson/helpers">Helpers</a><p>Small utilities for browser projects.</p><span class="destination">GitHub</span></li>
+  <li><a href="https://github.com/jonasjohansson/homie">Homie</a><p>A browser for bookmarks.</p><span class="destination">GitHub</span></li>
+  <li><a href="https://github.com/jonasjohansson/mio">Mio</a><p>Send and receive serial data.</p><span class="destination">GitHub</span></li>
+  <li><a href="https://github.com/jonasjohansson/organize-downloads-by-date-and-category-chrome-extension">Organize Downloads</a><p>Sort Chrome downloads by date and category.</p><span class="destination">GitHub</span></li>
+</ul>
+</section>
+<section aria-labelledby="resources">
+<h2 id="resources">Resources</h2>
+<ul class="index">
+  <li><a href="https://www.exploring.technology">Exploring Technology</a><p>Notes and tutorials on creative technology.</p><span class="destination">Resource</span></li>
+  <li><a href="https://drive.google.com/drive/folders/1f9R8S7efyesHzigLx6plSazXh47Pa-OV?usp=sharing">Google Templates</a><p>Templates for project planning and finances.</p><span class="destination">Resource</span></li>
+</ul>
+</section>
 </main>
 
 </body>

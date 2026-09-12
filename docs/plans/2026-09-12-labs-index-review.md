@@ -2,13 +2,14 @@
 
 ## Recommendation
 
-Use a compact alphabetical index with the same typeface, readable text and one
-short description per entry. Let each tool explain itself once someone opens it.
-The current catalogue is small enough for a stable A–Z order. Use the full
-available width, without search, an entry count or introductory copy.
+Use a compact index grouped by purpose: Design, Visuals, Sound, Utilities and
+Resources. Keep alphabetical order within each group, the same typeface and one
+short description per entry. Use the full available width, without a visible
+Labs heading, search, an entry count or introductory copy.
 
 [Open the working preview](../previews/labs-index.html). It contains all 24
-current entries and their existing destinations, with proposed shorter copy.
+current entries and eight additions from the [local repository review](2026-09-12-labs-repo-audit.md),
+with proposed shorter copy.
 It is a review artifact in the portfolio repository, excluded from the
 production build. The Labs repository and live site have not been changed.
 
@@ -61,9 +62,11 @@ index, the links should be the HTML document itself. The preview needs no JavaSc
 - One column of entries using the full window width, aligned by name,
   description and destination, with 24 px desktop and 20 px mobile gutters.
 - All names underlined at rest, with an obvious keyboard focus outline.
-- Alphabetical order. There is no reliable per-entry date in the current data,
-  so a recent-first order would require additional editorial information.
-- No search, counts, filter chips, introductory paragraph or category sections.
+- Five plain category headings, with entries alphabetised within each group.
+  These describe what the tools do, rather than their platform or packaging.
+- No visible Labs heading, column labels, search, counts, filter chips or
+  introductory paragraph. A hidden page heading provides document structure
+  for screen readers.
 - The existing SeasonMix typeface at a readable, consistent size.
 - On mobile, the description sits directly below its name; the destination
   remains beside the name.
@@ -88,23 +91,19 @@ animated hover previews or a new logo.
 | Wendigo | Bring NDI and Syphon video into a browser. |
 | Kagora | Plan LED strip cuts and materials for Kagora. |
 
-The full set of 24 proposed descriptions is in the preview. These describe the
+The full set of 32 proposed descriptions is in the preview. These describe the
 existing functions without adding personal anecdotes or claims about how often
 the tools are used. Detailed formats, protocols and export options belong on
 the tool's own page.
 
 ## Preview checks
 
-| Viewport | Current height | Preview height | Preview list width |
-| --- | ---: | ---: | ---: |
-| 1440 × 1000 | 2084 px | 1150 px | 1392 px |
-| 390 × 1000 | 2587 px | 2009 px | 350 px |
-
-The full-width layout was checked at 320, 390, 720, 768, 1440 and 2560 px.
-All 24 entries remain accessible without JavaScript. The list fills the space
-between its gutters at every size, with no horizontal overflow. The preview
-contains no search input or script. Alphabetical order, keyboard navigation,
-font loading and light/dark styles were also checked during the review.
+The grouped layout passed checks at 320, 390, 720, 768, 1440 and 2560 px in Chrome,
+in both light and dark modes. Each list fills the space between its gutters.
+The checks covered horizontal overflow, all 32 entries with JavaScript disabled,
+the five groups and their alphabetical order, preservation of the existing
+destinations, font loading and keyboard focus. The preview contains no search
+input or script.
 
 ## If this direction is adopted
 
