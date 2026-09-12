@@ -358,3 +358,9 @@ horizontal overflow or console error. The gathering pair uses half widths
 from 1440 px and stacks below that with a 16 px gap. The ending portraits also
 stack with a 16 px gap on mobile. The gathering at 1850 px and ending at
 1440 px were visually reviewed in `screenshots/wysiwyg-desert/`.
+
+The user subsequently excluded the gathering, carrying and silhouette
+photographs (`U4uadHc2pu`, `qBp9gDt55V`, `BYYoh2Rjv4`). Their image blocks
+have been removed from WYSIWYG. The new housing detail remains, leaving nine
+gallery images and the flock video. Camera originals and source exports are
+preserved.

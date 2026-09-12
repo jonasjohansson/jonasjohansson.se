@@ -22,9 +22,6 @@ blocks:
       Turning the telescope lets them explore this other layer of the
       landscape.
   - type: image
-    src: desert-gathering.jpg
-    alt: "People gather around the telescope on a rocky ridge overlooking the desert valley, while a seated visitor looks through the eyepiece."
-  - type: image
     src: desert-viewer.jpg
     alt: "A visitor sits on a small wooden bench and looks through WYSIWYG in an open desert setting."
   - type: text
@@ -79,12 +76,4 @@ blocks:
   - type: image
     src: sunset-viewer.jpg
     alt: "A visitor wearing headphones looks through the telescope as the sun sets over the landscape."
-  - type: image
-    src: desert-silhouette.jpg
-    size: half-left
-    alt: "The telescope and tripod stand in silhouette against the setting sun, with people sitting on the rocky ridge around them."
-  - type: image
-    src: carrying-telescope.jpg
-    size: half-right
-    alt: "A person carries the wooden bench and telescope across the desert ridge beneath a pink evening sky."
 ---
