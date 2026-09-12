@@ -3,7 +3,7 @@ import assert from 'node:assert/strict';
 import { mkdtempSync, writeFileSync, rmSync } from 'node:fs';
 import { tmpdir } from 'node:os';
 import path from 'node:path';
-import { groupMedia, readProjects, validateProject } from '../scripts/project-data.js';
+import { groupMedia, pairDesktopMedia, readProjects, validateProject } from '../scripts/project-data.js';
 import { ogFingerprint } from '../scripts/images.js';
 
 test('authored projects validate, and sorting is deterministic', () => {
@@ -40,6 +40,18 @@ test('media grouping preserves heroes, authored placements and balanced rows', (
   const pair = groupMedia([image, { ...image, size: 'half-left' }, { type: 'image', ar: 1.5, size: 'half-right' }]);
   assert.equal(pair[1].items.length, 2);
   assert.equal(pair[1].arSum, 2.167);
+});
+
+test('desktop media pairs stop at text and rows and leave odd images full width', () => {
+  const image = { type: 'image', ar: 1.5 };
+  const video = { type: 'video', ar: 1 };
+  const text = { type: 'text' };
+  const row = { type: 'row', items: [image, image] };
+  const content = [image, video, text, image, video, image, text, image, row, video, image, image, video];
+  const paired = pairDesktopMedia(content);
+  assert.deepEqual(paired.map(block => !!block.desktopPair), [false, false, false, true, true, false, false, false, false, true, true, true, true]);
+  assert.deepEqual(paired.map(({ desktopPair, ...block }) => block), content, 'pairing preserves the authored order and media');
+  assert.ok(content.every(block => !block.desktopPair), 'pairing leaves source blocks unchanged');
 });
 
 test('video heroes require a local poster and a reserved aspect ratio', () => {

@@ -5,7 +5,7 @@ import markdownIt from 'markdown-it';
 import sharp from 'sharp';
 import nunjucks from 'nunjucks';
 import htmlMinifier from 'html-minifier-terser';
-import { readProjects, SIZE_MAP, groupMedia } from './scripts/project-data.js';
+import { readProjects, SIZE_MAP, groupMedia, pairDesktopMedia } from './scripts/project-data.js';
 import { responsiveImage, stripImage, ogImage, imageMetadata, publishImages, printImage } from './scripts/images.js';
 
 const projectRoot = path.dirname(fileURLToPath(import.meta.url));
@@ -62,8 +62,9 @@ async function buildProject(project) {
     }
     return { type: 'credits', credits: creditsMarkup(block.credits), colStart: colStart || 1, colSpan: colSpan || 12 };
   }));
-  const grouped = groupMedia(content);
-  for (const block of grouped) {
+  const grouped = pairDesktopMedia(groupMedia(content));
+  for (const [index, block] of grouped.entries()) {
+    if (index > 0 && block.type === 'image') block.sizes = mediaSizes(block.colSpan, block.ar, block.desktopPair);
     if (block.type !== 'row') continue;
     for (const item of block.items) {
       // Each image takes its aspect-ratio share of the full-width row.
@@ -89,10 +90,10 @@ async function buildProject(project) {
     description: stripHtml(content.find(block => block.type === 'text')?.content).slice(0, 160) };
 }
 
-function mediaSizes(span, ar) {
+function mediaSizes(span, ar, paired = false) {
   const track = span && span < 12 ? `calc(${+(span / 12 * 100).toFixed(3)}vw - ${+(48 * span / 12 + 32 * (1 - span / 12)).toFixed(3)}px)` : 'calc(100vw - 48px)';
   const desktop = ar < 1 ? `min(${track}, calc((100vh - 192px) * ${+ar.toFixed(4)}))` : track;
-  const large = ar < 1 ? `min(calc(50vw - 32px), calc((100vh - 192px) * ${+ar.toFixed(4)}))` : 'calc(50vw - 32px)';
+  const large = !paired ? 'calc(100vw - 48px)' : ar < 1 ? `min(calc(50vw - 32px), calc((100vh - 192px) * ${+ar.toFixed(4)}))` : 'calc(50vw - 32px)';
   return `(min-width: 1440px) ${large}, (max-width: 768px) calc(100vw - 48px), ${desktop}`;
 }
 

@@ -107,3 +107,17 @@ export function groupMedia(content) {
   }
   return grouped;
 }
+
+// Pair only adjacent standalone media. Text and authored rows end each run,
+// and an odd final item keeps the full width on large screens.
+export function pairDesktopMedia(content) {
+  const result = content.map(block => ({ ...block }));
+  const media = block => block?.type === 'image' || block?.type === 'video';
+  for (let i = 1; i < result.length - 1; i++) {
+    if (media(result[i]) && media(result[i + 1])) {
+      result[i].desktopPair = result[i + 1].desktopPair = true;
+      i++;
+    }
+  }
+  return result;
+}

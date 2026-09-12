@@ -265,7 +265,7 @@ try {
   }
 
   for (const width of [1440, 1850, 2560]) {
-    await check(`${width}px galleries use two columns without reordering content`, { viewport: { width, height: 1000 } }, async page => {
+    await check(`${width}px galleries pair adjacent media and give single items the full width`, { viewport: { width, height: 1000 } }, async page => {
       await visit(page);
       const slugs = await page.evaluate(() => window.__PROJECTS_DATA__.map(project => project.slug));
       for (const slug of slugs) {
@@ -273,21 +273,41 @@ try {
         const geometry = await page.locator('.project-grid').evaluate(grid => {
           const box = node => {
             const r = node.getBoundingClientRect();
-            return { x: r.x, y: r.y, width: r.width, right: r.right };
+            const media = node.matches('.media-item:not(.hero)');
+            const element = media && node.querySelector('img, video');
+            const image = element && element.getBoundingClientRect();
+            return { x: r.x, y: r.y, width: r.width, right: r.right, height: r.height, media,
+              ar: Number(node.style.getPropertyValue('--ar')),
+              fit: element && getComputedStyle(element).objectFit,
+              imageWidth: image && image.width, imageHeight: image && image.height,
+              sizes: node.querySelector('picture source')?.getAttribute('sizes') };
           };
           return {
             width: grid.clientWidth,
             hero: box(grid.querySelector('.hero')),
-            media: [...grid.querySelectorAll(':scope > .media-item:not(.hero)')].map(box),
             children: [...grid.children].map(box),
             overflow: document.documentElement.scrollWidth > innerWidth,
           };
         });
         assert.equal(geometry.overflow, false, `${slug} stays within the viewport`);
         assert.ok(Math.abs(geometry.hero.width - geometry.width) < 1, `${slug} hero keeps the full width`);
-        for (const media of geometry.media) {
-          assert.ok(media.width <= (geometry.width - 16) / 2 + 1, `${slug} gallery media stays within half the width`);
-          assert.ok(media.x >= 24 && media.right <= width - 24 + 1, `${slug} keeps the outer gutter`);
+        for (let i = 1; i < geometry.children.length; i++) {
+          const media = geometry.children[i], next = geometry.children[i + 1];
+          if (!media.media) continue;
+          if (next?.media) {
+            assert.ok(Math.abs(media.y - next.y) < 1, `${slug} adjacent media share a row`);
+            for (const item of [media, next]) {
+              assert.ok(item.width <= (geometry.width - 16) / 2 + 1, `${slug} paired media fit their half of the row`);
+              assert.ok(item.x >= 24 && item.right <= width - 24 + 1, `${slug} keeps the outer gutter`);
+            }
+            i++;
+          } else {
+            assert.ok(Math.abs(media.width - geometry.width) < 1, `${slug} lone media fill the row`);
+            assert.ok(Math.abs(media.height - Math.min(geometry.width / media.ar, 800, 896)) < 1, `${slug} lone media use a bounded height`);
+            assert.equal(media.fit, 'cover', `${slug} crops within the frame`);
+            assert.ok(media.imageWidth >= media.width - 1 && media.imageHeight >= media.height - 1, `${slug} media fill their frame, including authored zoom crops`);
+            if (media.sizes) assert.ok(media.sizes.startsWith('(min-width: 1440px) calc(100vw - 48px)'), `${slug} downloads a full-width image for an unpaired frame`);
+          }
         }
         for (let i = 1; i < geometry.children.length; i++) {
           assert.ok(geometry.children[i].y >= geometry.children[i - 1].y - 1, `${slug} keeps its authored sequence`);

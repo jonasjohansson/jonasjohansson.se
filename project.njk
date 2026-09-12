@@ -34,14 +34,14 @@ eleventyComputed:
       </div>
 
       {% elif block.type == 'image' %}
-      <figure class="media-item{% if loop.first %} hero hero-{{ block.heroFit }}{% endif %}{% if block.size %} size-{{ block.size }}{% endif %}{% if block.ar and block.ar >= 1 and not loop.first %} wide{% endif %}{% if block.mask == 'botanical-circle' %} mask-botanical-circle{% endif %}{% if block.zoom %} media-zoom{% endif %}"
-        style="{% if block.colStart %}--col-start: {{ block.colStart }}; --col-span: {{ block.colSpan }};{% endif %}{% if block.ar %} --ar: {{ block.ar }};{% endif %}{% if block.zoom %} --image-zoom: {{ block.zoom }}; --focal: {{ block.focal }};{% endif %}{% if loop.first %} --focal: {{ block.focal }}; --mobile-focal: {{ block.mobileFocal }}; --mobile-ar: {{ block.mobileAr }};{% endif %}">
+      <figure class="media-item{% if loop.first %} hero hero-{{ block.heroFit }}{% endif %}{% if block.desktopPair %} desktop-pair{% endif %}{% if block.size %} size-{{ block.size }}{% endif %}{% if block.ar and block.ar >= 1 and not loop.first %} wide{% endif %}{% if block.mask == 'botanical-circle' %} mask-botanical-circle{% endif %}{% if block.zoom %} media-zoom{% endif %}"
+        style="{% if block.colStart %}--col-start: {{ block.colStart }}; --col-span: {{ block.colSpan }};{% endif %}{% if block.ar %} --ar: {{ block.ar }};{% endif %} --focal: {{ block.focal }};{% if block.zoom %} --image-zoom: {{ block.zoom }};{% endif %}{% if loop.first %} --mobile-focal: {{ block.mobileFocal }}; --mobile-ar: {{ block.mobileAr }};{% endif %}">
         {% responsiveImage block.src, block.alt, ("media-img lcp" if loop.first else "media-img"), block.sizes, block.mobileSrc %}
       </figure>
 
       {% elif block.type == 'video' %}
-      <figure class="media-item{% if loop.first %} hero hero-{{ block.heroFit }}{% endif %}{% if block.size %} size-{{ block.size }}{% endif %}{% if block.ar and block.ar >= 1 and not loop.first %} wide{% endif %}"
-        style="{% if block.colStart %}--col-start: {{ block.colStart }}; --col-span: {{ block.colSpan }};{% endif %}{% if block.ar %} --ar: {{ block.ar }};{% endif %}{% if loop.first %} --focal: {{ block.focal }}; --mobile-focal: {{ block.mobileFocal }}; --mobile-ar: {{ block.mobileAr }};{% endif %}">
+      <figure class="media-item{% if loop.first %} hero hero-{{ block.heroFit }}{% endif %}{% if block.desktopPair %} desktop-pair{% endif %}{% if block.size %} size-{{ block.size }}{% endif %}{% if block.ar and block.ar >= 1 and not loop.first %} wide{% endif %}"
+        style="{% if block.colStart %}--col-start: {{ block.colStart }}; --col-span: {{ block.colSpan }};{% endif %}{% if block.ar %} --ar: {{ block.ar }};{% endif %} --focal: {{ block.focal }};{% if loop.first %} --mobile-focal: {{ block.mobileFocal }}; --mobile-ar: {{ block.mobileAr }};{% endif %}">
         <video
           class="media-video"
           src="{{ block.src | url }}"

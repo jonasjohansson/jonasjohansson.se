@@ -23,7 +23,12 @@ blocks:
       landscape.
   - type: image
     src: desert-viewer.jpg
+    size: half-left
     alt: "A visitor sits on a small wooden bench and looks through WYSIWYG in an open desert setting."
+  - type: image
+    src: desert-eyepiece.jpg
+    size: half-right
+    alt: "A visitor looks through the brass telescope at dusk, seen from behind with its wooden housing and tripod in view."
   - type: text
     fontSize: small
     content: >-
@@ -92,4 +97,7 @@ blocks:
   - type: image
     src: sunset-viewer.jpg
     alt: "A visitor wearing headphones looks through the telescope as the sun sets over the landscape."
+  - type: image
+    src: sunset-telescope.jpg
+    alt: "A close view along the brass telescope towards its circular wooden housing and the setting sun, with two visitors sitting in the distance."
 ---

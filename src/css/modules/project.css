@@ -368,8 +368,27 @@ html[data-theme="dark"] .text-block a {
   }
 
   .project-grid > .media-item:not(.hero):not(:first-child) {
-    grid-column: auto / span 6;
+    grid-column: 1 / -1;
     align-self: start;
+  }
+
+  .project-grid > .media-item.desktop-pair:not(.hero):not(:first-child) {
+    grid-column: auto / span 6;
+  }
+
+  /* A lone image or video fills the row, with a bounded frame rather than
+     an empty second column or a full-width portrait extending off screen. */
+  .project-grid > .media-item:not(.hero):not(:first-child):not(.desktop-pair) {
+    max-width: none;
+    height: min(calc((100vw - 2 * var(--spacing-lg)) / var(--ar, 1)), 80svh, 56rem);
+    overflow: hidden;
+    border-radius: var(--radius-media);
+  }
+
+  .project-grid > .media-item:not(.hero):not(:first-child):not(.desktop-pair) :is(img, video) {
+    height: 100%;
+    object-fit: cover;
+    object-position: var(--focal, center);
   }
 }
 
