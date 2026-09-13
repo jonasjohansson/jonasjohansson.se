@@ -31,7 +31,7 @@
 .home-header h1 { flex: none; margin: 0; font: inherit; white-space: nowrap; }
 .collection-home-link { flex: none; }
 .home-header a { display: inline-block; padding: var(--spacing-sm) 0; text-decoration: none; }
-.header-contacts { flex: 0 1 auto; min-width: 0; gap: var(--icon-gap); overflow-x: auto; scrollbar-width: none; text-transform: uppercase; letter-spacing: var(--letter-spacing-caps); }
+.header-contacts { flex: 0 1 auto; min-width: 0; gap: var(--icon-gap); overflow-x: auto; scrollbar-width: none; text-transform: none; letter-spacing: 0; }
 .header-contacts::-webkit-scrollbar { display: none; }
 .header-contacts a, .header-contacts button { display: inline-flex; padding: var(--spacing-sm) 0; border: 0; background: none; color: inherit; font: inherit; letter-spacing: inherit; text-transform: inherit; text-decoration: none; white-space: nowrap; cursor: pointer; }
 @media (hover: none) { .header-contacts button[data-action="print"] { display: none; } }
