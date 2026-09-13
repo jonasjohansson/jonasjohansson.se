@@ -261,7 +261,7 @@ try {
       const header = await page.locator('#home-header').boundingBox();
       assert.equal(wall.x, 24);
       assert.equal(wall.width, options.viewport.width - 48);
-      assert.equal((await page.locator('#home-link').boundingBox()).x, wall.x + 12, 'the name sits in its block at the wall’s corner');
+      assert.equal((await page.locator('#home-link').boundingBox()).x, wall.x, 'the name starts at the wall’s left edge');
       assert.ok(Math.abs(wall.y - header.y - 24) < 1, 'the wall starts one gutter below the top of the floating header');
       await checkFooter(page);
       assert.equal(await page.evaluate(() => document.documentElement.scrollWidth > innerWidth), false);
