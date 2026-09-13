@@ -37,9 +37,6 @@ blocks:
       itself, as if it were a physical world with several entries from the
       different sides of the print.
   - type: image
-    src: close-away-stage.jpg
-    alt: "Detail of the Close/Away front: figures seated before a glowing stage of flowers under a pink scalloped arch, without the title."
-  - type: image
     src: close-away-left.jpg
     size: half-left
     alt: "Detail of the left side of the front cover: dense foliage in blue, green and orange with a seated figure in red."
@@ -50,18 +47,6 @@ blocks:
   - type: image
     src: close-away-window.jpg
     alt: "The inside panel of the digipack: an arched window with a bird in flight, framed by pale trees and pink flowers on a yellow wall."
-  - type: image
-    src: viewpoint.jpg
-    alt: "The full Viewpoint artwork: two mirrored faces in profile frame a swirling sea, with the lighthouse shining from the centre of the vortex."
-  - type: image
-    src: synchronised-whalestuff.jpg
-    alt: "Single artwork for Synchronized Whalestuff: a close view of a whale's eye in blue, silver and black."
-  - type: image
-    src: spinning-downwards.jpg
-    alt: "Single artwork for Spinning Downwards: a dark whirling vortex in the sea, seen from above."
-  - type: image
-    src: everlasting-confusion.jpg
-    alt: "Single artwork for Cycle 3, Everlasting Confusion: a fresnel lens glowing in warm and cool light against the dark."
   - type: text
     fontSize: small
     content: >-
@@ -80,6 +65,26 @@ blocks:
       the foundation. The singles zoom in: a whale's eye, a whirling vortex in
       the sea, a [fresnel lens](https://en.wikipedia.org/wiki/Fresnel_lens)
       from the lighthouse.
+  - type: image
+    src: viewpoint.jpg
+    alt: "The full Viewpoint artwork: two mirrored faces in profile frame a swirling sea, with the lighthouse shining from the centre of the vortex."
+  - type: image
+    src: viewpoint-lighthouse.jpg
+    size: half-left
+    alt: "The Viewpoint artwork without the band: the lighthouse on its rock at the centre of a stippled vortex, waves breaking below in green and violet."
+  - type: image
+    src: viewpoint-band.jpg
+    size: half-right
+    alt: "An alternate Viewpoint layout: the five musicians standing in blue-tinted monochrome to the left of the lighthouse and the vortex."
+  - type: image
+    src: synchronised-whalestuff.jpg
+    alt: "Single artwork for Synchronized Whalestuff: a close view of a whale's eye in blue, silver and black."
+  - type: image
+    src: spinning-downwards.jpg
+    alt: "Single artwork for Spinning Downwards: a dark whirling vortex in the sea, seen from above."
+  - type: image
+    src: everlasting-confusion.jpg
+    alt: "Single artwork for Cycle 3, Everlasting Confusion: a fresnel lens glowing in warm and cool light against the dark."
   - type: text
     fontSize: small
     content: >-
