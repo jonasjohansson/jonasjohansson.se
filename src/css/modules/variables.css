@@ -76,6 +76,7 @@
   /* Z-Index Scale */
   --chrome-pad: 0.75rem; /* inside the solid blocks that sit in the wall's corners */
   --corner-block: 3rem; /* height of every corner block: name, contacts, hovered title, categories */
+  --radius-corner: var(--chrome-pad); /* the one rounded corner of each corner block, the one pointing into the wall */
   --chevron: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 24 24' fill='%23ffffff' shape-rendering='crispEdges'%3E%3Cpath d='M4 8h2v2H4zm2 2h2v2H6zm2 2h2v2H8zm2 2h2v2h-2zm4 0h-2v2h2zm2-2h-2v2h2zm2-2h-2v2h2zm2-2h-2v2h2z'/%3E%3C/svg%3E"); /* pixel chevron for the year select, Pixelarticons style */
   --z-strips: 1;
   --z-filter: 10;

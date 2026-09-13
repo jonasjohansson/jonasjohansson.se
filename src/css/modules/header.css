@@ -26,7 +26,12 @@
 
 .home-header { background: var(--bg-primary); color: var(--text-primary); font-size: var(--font-size-ui); line-height: 1; letter-spacing: var(--letter-spacing-caps); text-transform: uppercase; }
 .home-header-row { display: flex; justify-content: space-between; align-items: flex-start; column-gap: var(--spacing-md); height: var(--home-header-height); }
-/* The four solid blocks in the wall's corners share one size, padding and line height. */
+/* The four solid blocks in the wall's corners share one size, padding and line height.
+   Each rounds the corner that points into the wall. */
+.home-header h1, .collection-home-link { border-bottom-right-radius: var(--radius-corner); }
+.header-contacts { border-bottom-left-radius: var(--radius-corner); }
+#project-preview-name { border-top-right-radius: var(--radius-corner); }
+.project-filters { border-top-left-radius: var(--radius-corner); }
 .home-header h1, .header-contacts, .collection-home-link, #project-preview-name, .project-filters { display: flex; align-items: center; box-sizing: border-box; height: var(--corner-block); padding: 0 var(--chrome-pad); background: var(--bg-primary); font-size: var(--font-size-ui); line-height: 1; }
 .home-header h1 { flex: none; margin: 0; font: inherit; white-space: nowrap; }
 .collection-home-link { flex: none; }
