@@ -69,14 +69,6 @@ blocks:
     src: viewpoint.jpg
     alt: "The full Viewpoint artwork: two mirrored faces in profile frame a swirling sea, with the lighthouse shining from the centre of the vortex."
   - type: image
-    src: viewpoint-lighthouse.jpg
-    size: half-left
-    alt: "The Viewpoint artwork without the band: the lighthouse on its rock at the centre of a stippled vortex, waves breaking below in green and violet."
-  - type: image
-    src: viewpoint-band.jpg
-    size: half-right
-    alt: "An alternate Viewpoint layout: the five musicians standing in blue-tinted monochrome to the left of the lighthouse and the vortex."
-  - type: image
     src: synchronised-whalestuff.jpg
     alt: "Single artwork for Synchronized Whalestuff: a close view of a whale's eye in blue, silver and black."
   - type: image
