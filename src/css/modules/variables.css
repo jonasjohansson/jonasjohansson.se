@@ -73,7 +73,7 @@
   --line-height-loose: 1.5;
 
   /* Z-Index Scale */
-  --scrim: color-mix(in srgb, var(--bg-primary) 85%, transparent); /* fade behind text floating over images */
+  --radius-pill: 999px; /* fully rounded ends on buttons */
   --z-strips: 1;
   --z-filter: 10;
   --z-content: 100;

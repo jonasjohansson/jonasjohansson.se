@@ -1,6 +1,6 @@
 <header id="home-header" class="home-header"{% if project %} hidden{% endif %}>
   <div class="home-header-row">
-    <h1 id="home-title" tabindex="-1"><a id="home-link" href="{{ '/' | url }}#about" aria-controls="intro" aria-label="{{ site.title }}, About">{{ site.title }}</a></h1>
+    <h1 id="home-title" tabindex="-1"><a id="home-link" href="{{ '/' | url }}#about" aria-controls="intro" aria-label="{{ site.title }}, About">{#- A pixel question mark drawn on the Pixelarticons grid -#}<svg viewBox="0 0 24 24" width="24" height="24" fill="currentColor" aria-hidden="true"><path d="M7 3h10v2H7zM5 5h2v4H5zm12 0h2v6h-2zm-2 6h2v2h-2zm-2 2h2v2h-2zm-2 2h2v4h-2zm0 5h2v2h-2z"/></svg><span class="sr-only">{{ site.title }}</span></a></h1>
     {% include "./contact-links.njk" %}
   </div>
 </header>
