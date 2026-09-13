@@ -60,6 +60,10 @@ async function checkFooter(page) {
   const contactRow = await header.boundingBox();
   assert.deepEqual((await contacts.locator('a').allTextContents()).map(text => text.trim()), ['Labs', 'Instagram', 'CV', 'Email'], 'contact links stay concise');
   assert.equal(await contacts.locator('a svg').count(), 4, 'each contact link carries an icon');
+  const printButton = contacts.locator('button[data-action="print"]');
+  assert.equal(await printButton.count(), 1, 'a print button sits with the contacts');
+  if (touch) assert.equal(await printButton.isVisible(), false, 'the print button stays off touch devices');
+  else assert.equal(await printButton.locator('svg').count(), 1, 'the print button carries an icon');
   assert.ok(Math.abs(contactBox.x + contactBox.width - wall.x - wall.width) < 1, 'contact links align with the right edge of the strips');
   assert.ok(contactBox.y >= contactRow.y && contactBox.y + contactBox.height <= contactRow.y + contactRow.height + 1, 'contacts fit in the row above the strips');
   const name = await header.locator(home ? '#home-link' : '.collection-home-link').boundingBox();
@@ -86,6 +90,13 @@ async function checkFooter(page) {
 
 try {
   await checkStripAudio({ check, visit, desktop, mobile });
+  await check('the print button prints the portfolio', desktop, async page => {
+    await visit(page, '/');
+    await page.evaluate(() => { window.__printed = 0; window.print = () => { window.__printed += 1; }; });
+    await page.locator('#home-header button[data-action="print"]').click();
+    await page.waitForFunction(() => window.__printed === 1);
+  });
+
   await check('every project shares its hero without JavaScript', { ...desktop, javaScriptEnabled: false }, async (page, context) => {
     // Share crawlers need complete tags in the original HTML, before the router runs.
     await page.route(/\.(?:avif|webp|mp4|webm)(?:\?.*)?$/, route => route.abort());

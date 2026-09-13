@@ -13,9 +13,7 @@ export function initPrint() {
   // Menu printing must stay synchronous. Cmd/Ctrl+P can wait for image decode
   // before opening the dialog, preventing empty frames on a cold first visit.
   addEventListener('beforeprint', warmImages);
-  addEventListener('keydown', async event => {
-    if (event.defaultPrevented || !(event.metaKey || event.ctrlKey) || event.key.toLowerCase() !== 'p' || event.altKey || event.shiftKey) return;
-    event.preventDefault();
+  const printPortfolio = async () => {
     if (preparing) return;
     preparing = true;
     try {
@@ -24,5 +22,13 @@ export function initPrint() {
     } finally {
       preparing = false;
     }
+  };
+  addEventListener('keydown', event => {
+    if (event.defaultPrevented || !(event.metaKey || event.ctrlKey) || event.key.toLowerCase() !== 'p' || event.altKey || event.shiftKey) return;
+    event.preventDefault();
+    printPortfolio();
+  });
+  document.addEventListener('click', event => {
+    if (event.target.closest('button[data-action="print"]')) printPortfolio();
   });
 }

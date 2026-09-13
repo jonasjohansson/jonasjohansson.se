@@ -29,7 +29,8 @@
 .home-header h1 { flex: none; margin: 0; font: inherit; white-space: nowrap; }
 .home-header a { display: inline-block; padding: var(--spacing-sm) 0; text-decoration: none; }
 .header-contacts { display: flex; flex: none; align-items: center; gap: clamp(var(--spacing-xs), 2vw, var(--spacing-md)); margin-left: auto; }
-.header-contacts a { display: inline-flex; padding: var(--spacing-sm) 0; color: inherit; text-decoration: none; }
+.header-contacts a, .header-contacts button { display: inline-flex; padding: var(--spacing-sm) 0; border: 0; background: none; color: inherit; font: inherit; text-decoration: none; cursor: pointer; }
+@media (hover: none) { .header-contacts button[data-action="print"] { display: none; } }
 .header-contacts svg { display: block; width: var(--icon-size); height: var(--icon-size); shape-rendering: crispEdges; }
 .project-filters { display: flex; flex: 0 1 auto; min-width: 0; max-width: calc(100% - 8rem); align-items: stretch; gap: 1.25rem; height: 100%; padding-left: 3px; overflow-x: auto; scrollbar-width: none; }
 .project-filters::-webkit-scrollbar { display: none; }
