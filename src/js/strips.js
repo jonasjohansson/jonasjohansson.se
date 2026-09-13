@@ -1,4 +1,5 @@
 import { initAnimation } from './stripAnimation.js';
+import { initDrift } from './stripDrift.js';
 import { homeScrollTop } from './home.js';
 import { initializeStripAudio, bindStripAudio } from './xylophone.js';
 
@@ -157,6 +158,7 @@ export function updateStrips(slug) {
   updatePreview();
   updateImages();
   initAnimation(document.getElementById('strips'), controller.signal);
+  initDrift(document.getElementById('strips'), controller.signal);
   bindStripAudio(document.getElementById('strips'), controller.signal);
 }
 

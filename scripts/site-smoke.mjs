@@ -97,6 +97,34 @@ try {
     await page.waitForFunction(() => window.__printed === 1);
   });
 
+  await check('touch strips drift sideways until the visitor takes over', mobile, async page => {
+    await visit(page);
+    const strips = page.locator('#strips');
+    const left = () => strips.evaluate(el => el.scrollLeft);
+    assert.equal(await left(), 0, 'the wall starts at its left edge');
+    await page.waitForFunction(() => document.getElementById('strips').scrollLeft > 8, null, { timeout: 8000 });
+    const a = await left();
+    await page.waitForTimeout(700);
+    const b = await left();
+    assert.ok(b > a, 'the wall keeps drifting while untouched');
+    await strips.dispatchEvent('touchstart');
+    await page.waitForTimeout(200);
+    const c = await left();
+    await page.waitForTimeout(700);
+    assert.equal(await left(), c, 'a touch ends the drift for good');
+    await page.locator('.strip:not([hidden])').first().evaluate(link => link.click());
+    await page.waitForFunction(() => !!document.documentElement.dataset.project);
+    await page.goBack();
+    await waitForHomeWall(page);
+    assert.ok(Math.abs(await left() - c) < 2, 'Back restores the position the visitor left');
+  });
+
+  await check('strips stay still on desktop and with reduced motion', { ...mobile, reducedMotion: 'reduce' }, async page => {
+    await visit(page);
+    await page.waitForTimeout(2200);
+    assert.equal(await page.locator('#strips').evaluate(el => el.scrollLeft), 0, 'reduced motion means no drift');
+  });
+
   await check('every project shares its hero without JavaScript', { ...desktop, javaScriptEnabled: false }, async (page, context) => {
     // Share crawlers need complete tags in the original HTML, before the router runs.
     await page.route(/\.(?:avif|webp|mp4|webm)(?:\?.*)?$/, route => route.abort());
