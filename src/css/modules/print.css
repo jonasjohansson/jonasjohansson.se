@@ -34,7 +34,7 @@
   .print-project-link a { text-decoration: underline; text-decoration-thickness: 0.4pt; text-underline-offset: 1mm; }
   .print-cover { padding: 22mm 16mm 16mm; color: black; }
   .print-cover h1 { font-size: 32pt; font-weight: normal; line-height: 1.1; margin: 0 0 15mm; }
-  .print-bio { max-width: 156mm; font-size: 10pt; }
+  .print-bio { max-width: 102mm; font-size: 10pt; }
   .print-bio p { margin: 0 0 4mm; }
   .print-contact { position: absolute; bottom: 16mm; font-size: 9pt; line-height: 1.6; }
 

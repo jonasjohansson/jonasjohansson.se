@@ -5,6 +5,7 @@ tags:
   - installation
   - av
   - mixed reality
+  - mapping
 blocks:
   - type: video
     src: 02-2x.webm

@@ -5,6 +5,7 @@ date: '2018-01-01'
 tags:
   - installation
   - light
+  - mapping
 blocks:
   - type: image
     src: 01.jpg

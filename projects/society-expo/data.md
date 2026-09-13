@@ -5,7 +5,6 @@ color: '#7161d5'
 tags:
   - light
   - installation
-  - exhibition
 blocks:
   - type: video
     src: lighting.mp4

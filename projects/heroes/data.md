@@ -5,6 +5,7 @@ date: '2022-01-01'
 tags:
   - av
   - installation
+  - mapping
 blocks:
   - type: image
     src: 01.jpg

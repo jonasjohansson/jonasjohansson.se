@@ -5,6 +5,7 @@ date: '2024-01-01'
 tags:
   - stage
   - av
+  - mapping
 blocks:
   - type: image
     src: 01.jpg
