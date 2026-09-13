@@ -44,15 +44,15 @@ async function waitForHomeWall(page) {
   await page.waitForFunction(() => document.body.dataset.route === 'home' && document.body.dataset.homeView === 'projects' && Math.abs(document.getElementById('intro-links').getBoundingClientRect().bottom - innerHeight) < 1);
 }
 
+// The corner that carries the name shows the hovered project's title instead.
+const cornerName = page => page.evaluate(() => (document.body.dataset.route === 'home' ? document.getElementById('home-link') : document.querySelector('.collection-home-link')).textContent);
+
 async function checkFooter(page) {
   const footer = await page.locator('#intro-links').boundingBox();
   const wall = await page.locator('#strips').boundingBox();
   const touch = await page.evaluate(() => matchMedia('(hover: none)').matches);
   assert.ok(footer.y < wall.y + wall.height && footer.y + footer.height >= wall.y + wall.height - 1, 'the categories float over the foot of the strips');
   assert.ok(Math.abs(footer.y + footer.height - page.viewportSize().height) < 1, 'footer fits within the strip viewport');
-  const preview = await page.locator('#project-preview-name').boundingBox();
-  if (touch) assert.equal(preview, null, 'touch devices do not reserve a row for the hover preview name');
-  else assert.equal(preview.x, wall.x, 'the project preview block sits flush with the wall’s corner');
   const home = await page.locator('body').getAttribute('data-route') === 'home';
   const header = page.locator(home ? '#home-header' : '#collection-header');
   const contacts = header.locator('.header-contacts');
@@ -784,7 +784,7 @@ try {
         const wall = await page.locator('#strips').boundingBox();
         const image = page.locator('.strip:not([hidden]) .strip-image').first();
         await page.mouse.move(wall.x + 10, wall.y + wall.height / 2);
-        assert.equal(await page.locator('#project-preview-name').textContent(), await image.locator('..').locator('..').getAttribute('aria-label'), 'hover shows the project name on both home and project pages');
+        assert.equal(await cornerName(page), await image.locator('..').locator('..').getAttribute('aria-label'), 'hover puts the project name in the corner on both home and project pages');
         await page.waitForFunction(() => parseFloat(getComputedStyle(document.querySelector('.strip:not([hidden]) .strip-image')).objectPosition) < 10);
         await page.mouse.move(wall.x + wall.width - 10, wall.y + wall.height / 2);
         await page.waitForFunction(() => parseFloat(getComputedStyle(document.querySelector('.strip:not([hidden]) .strip-image')).objectPosition) > 90);
@@ -920,15 +920,15 @@ try {
       assert.ok((await strip.boundingBox()).width > width * 4, 'hover expands before download completes');
       assert.equal(await renderedHeight(), initialHeight, 'preview stays at the same scale while the strip opens');
       assert.equal(await strip.getAttribute('aria-label'), 'Society Expo');
-      assert.equal(await page.locator('#project-preview-name').textContent(), 'Society Expo');
+      assert.equal(await cornerName(page), 'Society Expo');
       await page.mouse.move(0, 0);
-      assert.equal(await page.locator('#project-preview-name').textContent(), '', 'name clears when leaving the strips');
+      assert.equal(await cornerName(page), 'Jonas Johansson', 'the corner returns to the name when leaving the strips');
       await strip.focus();
-      assert.equal(await page.locator('#project-preview-name').textContent(), 'Society Expo', 'keyboard focus also previews the name');
+      assert.equal(await cornerName(page), 'Society Expo', 'keyboard focus also puts the title in the corner');
       await page.keyboard.press('Tab');
       await page.waitForTimeout(350);
       assert.ok((await page.locator('.strip:focus-visible').boundingBox()).width > width * 4, 'keyboard focus expands before download completes');
-      assert.equal(await page.locator('#project-preview-name').textContent(), await page.locator('.strip:focus-visible').getAttribute('aria-label'));
+      assert.equal(await cornerName(page), await page.locator('.strip:focus-visible').getAttribute('aria-label'));
       await checkFooter(page);
     } finally {
       release();

@@ -26,13 +26,12 @@
 
 .home-header { background: var(--bg-primary); color: var(--text-primary); font-size: var(--font-size-ui); line-height: 1; letter-spacing: var(--letter-spacing-caps); text-transform: uppercase; }
 .home-header-row { display: flex; justify-content: space-between; align-items: flex-start; column-gap: var(--spacing-md); height: var(--home-header-height); }
-.home-header h1, .header-contacts, .collection-home-link, #project-preview-name, .project-filters { display: flex; align-items: center; box-sizing: border-box; padding: var(--chrome-pad); background: var(--bg-primary); font-size: var(--font-size-ui); line-height: 1.2; }
+.home-header h1, .header-contacts, .collection-home-link, .project-filters { display: flex; align-items: center; box-sizing: border-box; padding: var(--chrome-pad); background: var(--bg-primary); font-size: var(--font-size-ui); line-height: 1.2; }
 /* The four solid blocks in the wall's corners share one size, padding and line height.
    Each pads only on the two sides that face the wall, so the text sits flush with
    the wall's outer edges. */
 .home-header h1, .collection-home-link { padding-top: 0; padding-left: 0; }
 .header-contacts { padding-top: 0; padding-right: 0; }
-#project-preview-name { padding-bottom: 0; padding-left: 0; }
 .project-filters { padding-bottom: 0; padding-right: 0; }
 .home-header h1 { flex: none; margin: 0; font: inherit; white-space: nowrap; }
 .collection-home-link { flex: none; }

@@ -25,7 +25,7 @@ function render() {
   atWall = scrollY >= previousWallTop - 1;
   document.body.dataset.homeView = atWall ? 'projects' : 'about';
   toggle.hash = atWall ? '#about' : '';
-  toggle.setAttribute('aria-label', `${toggle.textContent}, ${atWall ? 'About' : 'Projects'}`);
+  toggle.setAttribute('aria-label', `${toggle.dataset.title || toggle.textContent}, ${atWall ? 'About' : 'Projects'}`);
   toggle.setAttribute('aria-controls', atWall ? 'intro' : 'collection');
   if (focusTarget && Math.abs(scrollY - homeScrollTop(focusTarget === intro ? 'about' : 'projects')) < 1) {
     focusTarget.focus({ preventScroll: true });
