@@ -3,9 +3,9 @@ title: Kagora
 date: '2026-07-25'
 color: '#6448ff'
 tags:
+  - installation
   - light
   - community
-  - installation
 blocks:
   - type: image
     src: woodland-mist-ai.png

@@ -3,8 +3,8 @@ title: Lyra
 color: "#070a79"
 date: "2013-01-01"
 tags:
-  - light
   - installation
+  - light
 blocks:
   - type: image
     src: 01.jpg

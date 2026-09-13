@@ -3,7 +3,6 @@ title: Jagad
 date: '2026-01-01'
 tags:
   - installation
-  - av
   - mapping
 blocks:
   - type: image

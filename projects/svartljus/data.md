@@ -3,9 +3,9 @@ title: Svartljus
 color: "#b07600"
 date: '2017-01-01'
 tags:
+  - installation
   - light
   - community
-  - installation
 blocks:
   - type: image
     src: 05.jpg

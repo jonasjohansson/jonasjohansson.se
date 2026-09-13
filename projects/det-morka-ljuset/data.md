@@ -3,7 +3,7 @@ title: Det Mörka Ljuset
 date: '2026-09-26'
 color: '#a8bfc8'
 tags:
-  - av
+  - mapping
 blocks:
   - type: image
     src: hero.jpg

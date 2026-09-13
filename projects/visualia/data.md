@@ -2,7 +2,6 @@
 title: Visualia
 date: '2022-01-01'
 tags:
-  - av
   - community
 blocks:
   - type: image

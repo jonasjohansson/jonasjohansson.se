@@ -4,7 +4,7 @@ color: "#e16518"
 date: "2023-01-01"
 years: [2025, 2026]
 tags:
-  - av
+  - design
 blocks:
   - type: image
     src: close-away.jpg

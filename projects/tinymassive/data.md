@@ -4,8 +4,8 @@ color: "#00338e"
 date: '2019-01-01'
 tags:
   - installation
-  - av
   - light
+  - community
 blocks:
   - type: image
     src: 01.jpg

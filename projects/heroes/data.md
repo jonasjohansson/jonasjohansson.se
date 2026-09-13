@@ -3,7 +3,6 @@ title: Heroes
 color: "#727171"
 date: '2022-01-01'
 tags:
-  - av
   - installation
   - mapping
 blocks:

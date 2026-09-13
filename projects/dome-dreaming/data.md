@@ -3,7 +3,6 @@ title: Dome Dreaming
 color: "#c75200"
 date: "2026-05-01"
 tags:
-  - av
   - community
 blocks:
   - type: image

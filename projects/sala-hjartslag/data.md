@@ -3,7 +3,6 @@ title: Sala Hjärtslag
 color: "#962d00"
 date: '2024-01-01'
 tags:
-  - av
   - installation
   - mapping
 blocks:

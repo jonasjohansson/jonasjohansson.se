@@ -557,7 +557,7 @@ try {
       for (const tag of tags) {
         await select([tag]);
       }
-      await select(['mixed reality', 'av']);
+      await select(['mixed reality', 'community']);
       const expected = await visibleSlugs();
       const chosen = page.locator('.strip:not([hidden])').first();
       const id = await chosen.getAttribute('id');
@@ -569,23 +569,23 @@ try {
       assert.deepEqual(await visibleSlugs(), expected);
       assert.equal(await page.evaluate(() => document.activeElement.id), id);
       await checkSelection();
-      const stage = page.locator('#project-filters [data-filter="stage"]');
-      await stage.focus();
+      const design = page.locator('#project-filters [data-filter="design"]');
+      await design.focus();
       await page.keyboard.press('Space');
-      selected.add('stage');
+      selected.add('design');
       await checkSelection();
       await toggle('mixed reality');
-      await toggle('av');
-      const stageCount = projects.filter(project => project.tags.includes('stage')).length;
-      assert.equal(await page.locator('#project-count').textContent(), `${stageCount} ${stageCount === 1 ? 'project' : 'projects'}`);
+      await toggle('community');
+      const designCount = projects.filter(project => project.tags.includes('design')).length;
+      assert.equal(await page.locator('#project-count').textContent(), `${designCount} ${designCount === 1 ? 'project' : 'projects'}`);
       for (const tag of tags.filter(tag => !selected.has(tag))) await toggle(tag);
       assert.equal(await page.locator('.strip:not([hidden])').count(), projects.length);
       await page.locator('#home-link').click();
       await page.waitForFunction(() => scrollY < 1);
-      await stage.focus();
+      await design.focus();
       await page.keyboard.press('Space');
       selected.clear();
-      selected.add('stage');
+      selected.add('design');
       await checkSelection();
       await waitForHomeWall(page);
     });
@@ -615,18 +615,18 @@ try {
       await tag('mixed reality').click();
       assert.equal(await yearSelect.inputValue(), '', 'choosing a category clears the year');
       assert.deepEqual(await visible(), expected('', '', ['mixed reality']), 'the category applies across all years');
-      await tag('av').click();
-      assert.deepEqual(await visible(), expected('', '', ['mixed reality', 'av']), 'categories still combine');
+      await tag('community').click();
+      assert.deepEqual(await visible(), expected('', '', ['mixed reality', 'community']), 'categories still combine');
       await yearSelect.selectOption('2024');
       assert.deepEqual(await pressed(), allTags, 'choosing a year turns every category back on');
       assert.deepEqual(await visible(), expected('2024'), 'the year applies across all categories');
       assert.equal(await page.locator('#project-year option[disabled]').count(), 0, 'every year stays available');
-      await tag('av').click();
+      await tag('community').click();
       assert.equal(await yearSelect.inputValue(), '');
-      assert.deepEqual(await visible(), expected('', '', ['av']));
-      await tag('stage').click();
-      await tag('av').click();
-      assert.deepEqual(await visible(), expected('', '', ['stage']));
+      assert.deepEqual(await visible(), expected('', '', ['community']));
+      await tag('design').click();
+      await tag('community').click();
+      assert.deepEqual(await visible(), expected('', '', ['design']));
 
       // Restore all categories and check the single-year state through navigation.
       const inactiveTags = await page.locator('#project-filters [aria-pressed="false"]').evaluateAll(buttons => buttons.map(button => button.dataset.filter));
@@ -717,8 +717,8 @@ try {
       const yearSelect = page.getByRole('combobox', { name: 'Year', exact: true });
       const pressed = () => page.locator('#project-filters [aria-pressed="true"]').evaluateAll(buttons => buttons.map(button => button.dataset.filter));
       const allTags = await page.locator('#project-filters button').evaluateAll(buttons => buttons.map(button => button.dataset.filter));
-      await page.locator('#project-filters [data-filter="av"]').click();
-      assert.deepEqual(await pressed(), ['av'], 'a single category is selected');
+      await page.locator('#project-filters [data-filter="light"]').click();
+      assert.deepEqual(await pressed(), ['light'], 'a single category is selected');
       const first = page.locator('#strips .strip:not([hidden])').first();
       const slug = await first.getAttribute('data-project');
       await first.evaluate(link => link.click());

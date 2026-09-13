@@ -3,7 +3,6 @@ title: Resonance
 color: "#4f0396"
 date: '2024-01-01'
 tags:
-  - av
   - installation
   - mapping
 blocks:

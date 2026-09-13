@@ -3,8 +3,6 @@ title: Danny Saucedo
 color: "#9b2500"
 date: '2024-01-01'
 tags:
-  - stage
-  - av
   - mapping
 blocks:
   - type: image

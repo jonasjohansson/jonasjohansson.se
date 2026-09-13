@@ -3,7 +3,6 @@ title: Embed
 color: "#1a43fe"
 date: '2021-01-01'
 tags:
-  - av
   - installation
   - mapping
 blocks:

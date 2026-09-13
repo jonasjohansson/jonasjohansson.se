@@ -4,7 +4,6 @@ date: '2026-07-22'
 color: '#d85b32'
 tags:
   - community
-  - av
 blocks:
   - type: image
     src: players-diablo.png

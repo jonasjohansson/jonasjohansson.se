@@ -3,8 +3,9 @@ title: Lights for Ukraine
 color: "#5500a0"
 date: '2022-01-01'
 tags:
-  - light
   - installation
+  - light
+  - community
 blocks:
   - type: image
     src: 01.jpg

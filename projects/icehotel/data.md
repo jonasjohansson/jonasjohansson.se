@@ -4,6 +4,7 @@ color: "#0b4f80"
 date: "2023-01-01"
 tags:
   - installation
+  - design
 blocks:
   - type: image
     src: 01.jpg

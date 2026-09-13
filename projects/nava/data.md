@@ -2,9 +2,8 @@
 title: NAVA
 date: "2016-01-01"
 tags:
-  - av
-  - community
   - installation
+  - community
 blocks:
   - type: image
     src: 01.jpg
