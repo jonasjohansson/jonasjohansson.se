@@ -67,6 +67,13 @@ export async function checkStripAudio({ check, visit, desktop, mobile }) {
         });
       }
     }
+    // Let the hovered strip finish widening before measuring it, or the move
+    // below can land on its neighbour for a frame and sound an extra note.
+    await page.waitForFunction(() => new Promise(resolve => {
+      const strip = document.querySelectorAll('#strips .strip:not([hidden])')[7];
+      const width = strip.getBoundingClientRect().width;
+      requestAnimationFrame(() => requestAnimationFrame(() => resolve(strip.getBoundingClientRect().width === width)));
+    }));
     const box = await strips.nth(7).boundingBox();
     await page.mouse.move(box.x + box.width / 2, box.y + box.height / 2);
     await page.mouse.move(box.x + box.width / 2 + 1, box.y + box.height / 2);
