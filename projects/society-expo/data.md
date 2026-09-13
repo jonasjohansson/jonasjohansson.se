@@ -6,7 +6,6 @@ tags:
   - light
   - installation
   - exhibition
-presskit: https://trynewthings.fail/press/society-expo-2026/
 blocks:
   - type: video
     src: lighting.mp4
