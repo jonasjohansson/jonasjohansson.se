@@ -117,6 +117,12 @@ function updateImages() {
   }
 }
 
+// Leaving a project for the landing page starts over with every category
+// and no year, as if the site had just been opened.
+export function resetFilters(slug = '') {
+  filterSelections.set(slug, { tags: new Set(categories), year: '' });
+}
+
 export function updateStrips(slug) {
   currentSlug = slug || '';
   if (!filterSelections.has(currentSlug)) filterSelections.set(currentSlug, { tags: new Set(categories), year: '' });

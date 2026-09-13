@@ -126,7 +126,7 @@ class Router {
       else delete document.documentElement.dataset.project;
       if (project?.color) document.documentElement.style.setProperty('--project-color', project.color);
       else document.documentElement.style.removeProperty('--project-color');
-      this.onCommit(project?.slug);
+      this.onCommit(project?.slug, { resetFilters: !project && !!previousProject && !isPop });
       mountMedia(container);
       this.pending = false;
       this.setStatus('');

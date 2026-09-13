@@ -712,6 +712,29 @@ try {
   }
 
   for (const [name, options] of [['desktop', desktop], ['mobile', mobile]]) {
+    await check(`${name} leaving a project for the landing page resets the filters`, options, async page => {
+      await visit(page);
+      const yearSelect = page.getByRole('combobox', { name: 'Year', exact: true });
+      const pressed = () => page.locator('#project-filters [aria-pressed="true"]').evaluateAll(buttons => buttons.map(button => button.dataset.filter));
+      const allTags = await page.locator('#project-filters button').evaluateAll(buttons => buttons.map(button => button.dataset.filter));
+      await page.locator('#project-filters [data-filter="av"]').click();
+      assert.deepEqual(await pressed(), ['av'], 'a single category is selected');
+      const first = page.locator('#strips .strip:not([hidden])').first();
+      const slug = await first.getAttribute('data-project');
+      await first.evaluate(link => link.click());
+      await page.waitForFunction(slug => document.documentElement.dataset.project === slug, slug);
+      await page.locator('#header-toggle').click();
+      await waitForHomeWall(page);
+      assert.deepEqual(await pressed(), allTags, 'the project title returns to the landing page with every category on');
+      assert.equal(await yearSelect.inputValue(), '', 'and no year');
+      await yearSelect.selectOption('2024');
+      await page.locator('#strips .strip:not([hidden])').first().evaluate(link => link.click());
+      await page.waitForFunction(() => !!document.documentElement.dataset.project);
+      await page.goBack();
+      await waitForHomeWall(page);
+      assert.equal(await yearSelect.inputValue(), '2024', 'Back keeps the filters as they were');
+    });
+
     await check(`${name} name above project strips opens the homepage`, options, async page => {
       await visit(page);
       await page.locator('#home-link').click();
