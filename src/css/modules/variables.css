@@ -57,6 +57,16 @@
   --z-loading: 400; /* top of the stack; the focused skip link sits at +1 */
 }
 
+@media (max-width: 600px) {
+  /* Phones: tighter type so more words fit per screen. */
+  :root {
+    --font-size-small: 0.9375rem;
+    --font-size-medium: 1.15rem;
+    --font-size-large: 1.35rem;
+    --font-size-intro: 1rem;
+  }
+}
+
 /* Explicit theme; system preference is the CSS fallback. */
 html[data-theme="dark"] {
   --bg-primary: var(--color-black);

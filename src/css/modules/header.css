@@ -28,10 +28,9 @@
 .home-header-row { display: flex; flex-wrap: nowrap; align-items: center; gap: clamp(0.5rem, 2vw, 1.5rem); height: var(--home-header-height); padding: 0 var(--spacing-lg); }
 .home-header h1 { flex: none; margin: 0; font: inherit; white-space: nowrap; }
 .home-header a { display: inline-block; padding: 0.5rem 0; text-decoration: none; }
-.header-contacts { flex: 0 1 auto; min-width: 0; margin-left: auto; overflow-x: auto; scrollbar-width: none; font-size: 0.875rem; line-height: 1.5; letter-spacing: 0; text-transform: none; }
-.header-contacts::-webkit-scrollbar { display: none; }
-.header-contacts p { margin: 0; white-space: nowrap; }
-.header-contacts a { display: inline-block; padding: 0.5rem 0; text-decoration: underline; text-underline-offset: 0.15em; }
+.header-contacts { display: flex; flex: none; align-items: center; gap: clamp(0.5rem, 2.5vw, 1rem); margin-left: auto; }
+.header-contacts a { display: inline-flex; padding: 0.5rem 0; color: inherit; text-decoration: none; }
+.header-contacts svg { display: block; width: 1.25rem; height: 1.25rem; }
 .project-filters { display: flex; flex: 0 1 auto; min-width: 0; max-width: calc(100% - 8rem); align-items: stretch; gap: 1.25rem; height: 100%; padding-left: 3px; overflow-x: auto; scrollbar-width: none; }
 .project-filters::-webkit-scrollbar { display: none; }
 .project-filters button { display: inline-flex; align-items: center; gap: 0.4rem; flex: none; padding: 0.5rem 0; border: 0; border-radius: 0; background: none; color: inherit; font: inherit; letter-spacing: 0; text-transform: none; white-space: nowrap; }

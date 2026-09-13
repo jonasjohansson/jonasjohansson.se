@@ -92,3 +92,9 @@ html[data-theme="dark"] .intro-text a {
   .intro-links { display: grid; grid-template-columns: minmax(0, 1fr); grid-template-rows: 1.5em auto; align-content: center; gap: 0.25rem; }
   .project-filters { max-width: 100%; }
 }
+@media (hover: none) {
+  /* Touch devices never show the hover preview name, so the footer keeps one row. */
+  :root { --footer-height: 3rem; }
+  #project-preview-name { display: none; }
+  .intro-links { grid-template-rows: auto; }
+}
