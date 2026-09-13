@@ -1,5 +1,6 @@
 *, *::before, *::after { box-sizing: border-box; }
-html { min-height: 100%; scroll-padding-top: 5rem; }
+html { min-height: 100%; scroll-padding-top: 5rem; scrollbar-width: none; /* the page scrolls, but no bar is drawn */ }
+html::-webkit-scrollbar { display: none; }
 html.enhanced { scroll-padding-top: 0; }
 body { margin: 0; background: var(--bg-primary); color: var(--text-primary); font-family: var(--font-family); line-height: var(--line-height-base); }
 [hidden] { display: none !important; }
