@@ -14,11 +14,11 @@ blocks:
       Album artwork for electroacoustic jazz quintet
       [People in Orbit](https://peopleinorbit.se).
   - type: image
-    src: 01.jpg
+    src: spread.jpg
     size: half-left
     alt: "The Close/Away digipack spread: front, back, tracklist and credits panels, some rotated for printing."
   - type: image
-    src: 02.jpg
+    src: label.png
     size: half-right
     alt: "The Close/Away vinyl label, a circle of overlapping coloured petals and plants with the credits running around the edge."
   - type: text
@@ -35,6 +35,20 @@ blocks:
       colour work. The artwork is a repeating pattern that stitches onto
       itself, as if it were a physical world with several entries from the
       different sides of the print.
+  - type: image
+    src: close-away-stage.jpg
+    alt: "Detail of the Close/Away front: figures seated before a glowing stage of flowers under a pink scalloped arch, without the title."
+  - type: image
+    src: close-away-left.jpg
+    size: half-left
+    alt: "Detail of the left side of the front cover: dense foliage in blue, green and orange with a seated figure in red."
+  - type: image
+    src: close-away-right.jpg
+    size: half-right
+    alt: "Detail of the right side of the front cover: three figures watching among pink and orange plants."
+  - type: image
+    src: close-away-window.jpg
+    alt: "The inside panel of the digipack: an arched window with a bird in flight, framed by pale trees and pink flowers on a yellow wall."
   - type: image
     src: viewpoint-cover.jpg
     alt: "The Viewpoint album cover: a lighthouse on a rock in a stormy sea, framed by a dark vortex of scattered light, with the band name and title above."
