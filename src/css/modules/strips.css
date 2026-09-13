@@ -17,8 +17,8 @@ body[data-route="home"] .collection-header { display: none; }
   .enhanced .strip:is(:hover, :focus-visible) { flex-grow: 12; }
 }
 @media (hover: none) {
-  .enhanced #strips { touch-action: pan-x pan-y; }
-  .enhanced .strip { min-width: 3.5rem; }
-  /* The idle drift moves the strips as one composited layer; see stripDrift.js. */
-  .enhanced #strips[data-drifting] .strip { transform: translateX(var(--drift, 0px)); will-change: transform; }
+  /* The wall fits the screen; a finger across it opens the strip underneath. */
+  .enhanced #strips { touch-action: pan-y; }
+  .enhanced .strip { min-width: 0.5rem; }
+  .enhanced .strip.is-active { flex-grow: 12; }
 }

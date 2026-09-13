@@ -1,5 +1,4 @@
 import { initAnimation } from './stripAnimation.js';
-import { initDrift } from './stripDrift.js';
 import { homeScrollTop } from './home.js';
 import { initializeStripAudio, bindStripAudio } from './xylophone.js';
 
@@ -124,6 +123,31 @@ export function resetFilters(slug = '') {
   filterSelections.set(slug, { tags: new Set(categories), year: '' });
 }
 
+// On touch screens the wall fits the viewport like on desktop, and a finger
+// moving across it opens the strip underneath, the way a cursor does. A tap
+// still opens the project; a scrub that ends elsewhere opens nothing, because
+// the browser only fires click when the finger lifts where it landed.
+function bindTouchScrub(wall, signal) {
+  let active = null;
+  const setActive = strip => {
+    if (strip === active) return;
+    active?.classList.remove('is-active');
+    active = strip;
+    active?.classList.add('is-active');
+  };
+  wall.addEventListener('pointerdown', event => {
+    if (event.pointerType !== 'touch') return;
+    setActive(event.target.closest('.strip:not([hidden])'));
+  }, { signal, passive: true });
+  wall.addEventListener('pointermove', event => {
+    if (event.pointerType !== 'touch') return;
+    const strip = document.elementFromPoint(event.clientX, event.clientY)?.closest('.strip:not([hidden])');
+    if (strip && wall.contains(strip)) setActive(strip);
+  }, { signal, passive: true });
+  wall.addEventListener('pointercancel', () => setActive(null), { signal });
+  signal.addEventListener('abort', () => setActive(null), { once: true });
+}
+
 export function updateStrips(slug) {
   currentSlug = slug || '';
   if (!filterSelections.has(currentSlug)) filterSelections.set(currentSlug, { tags: new Set(categories), year: '' });
@@ -158,7 +182,7 @@ export function updateStrips(slug) {
   updatePreview();
   updateImages();
   initAnimation(document.getElementById('strips'), controller.signal);
-  initDrift(document.getElementById('strips'), controller.signal);
+  bindTouchScrub(document.getElementById('strips'), controller.signal);
   bindStripAudio(document.getElementById('strips'), controller.signal);
 }
 

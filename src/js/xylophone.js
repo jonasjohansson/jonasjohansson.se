@@ -83,6 +83,7 @@ export function initializeStripAudio() {
   melodyPlayer.enableMelodyMode('mario');
   // Browsers that block hover audio unlock it after a real click, tap or key.
   document.addEventListener('click', unlockAudio, { capture: true });
+  document.addEventListener('pointerdown', unlockAudio, { capture: true, passive: true });
   document.addEventListener('keydown', unlockAudio, { capture: true });
   document.addEventListener('visibilitychange', () => { if (document.hidden) stopNotes(); });
   addEventListener('pagehide', stopNotes);
@@ -100,8 +101,16 @@ export function bindStripAudio(container, signal) {
     if (!strip || !container.contains(strip)) { lastStrip = null; return; }
     if (strip !== lastStrip && stepMelody()) lastStrip = strip;
   };
+  let skipClick = false;
+  container.addEventListener('pointerdown', event => {
+    if (event.pointerType !== 'touch') return;
+    lastStrip = null;
+    lastX = lastY = undefined;
+    sample(event);
+    // The tap's click would otherwise play the same strip a second time.
+    skipClick = lastStrip !== null;
+  }, { signal, passive: true });
   container.addEventListener('pointermove', event => {
-    if (event.pointerType !== 'mouse' && event.pointerType !== 'pen') return;
     const samples = event.getCoalescedEvents?.();
     for (const point of samples?.length ? samples : [event]) sample(point);
   }, { signal, passive: true });
@@ -110,6 +119,7 @@ export function bindStripAudio(container, signal) {
     lastX = lastY = undefined;
   }, { signal });
   container.addEventListener('click', event => {
+    if (skipClick) { skipClick = false; return; }
     if (event.pointerType === 'mouse' && event.detail !== 0) return;
     if (!event.target.closest('.strip:not([hidden])')) return;
     const context = getAudio();

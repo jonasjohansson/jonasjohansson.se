@@ -97,44 +97,6 @@ try {
     await page.waitForFunction(() => window.__printed === 1);
   });
 
-  await check('touch strips drift sideways until the visitor takes over', mobile, async page => {
-    await visit(page);
-    const strips = page.locator('#strips');
-    const drift = () => strips.evaluate(el => -parseFloat(el.style.getPropertyValue('--drift') || '0'));
-    const left = () => strips.evaluate(el => el.scrollLeft);
-    assert.equal(await left(), 0, 'the wall starts at its left edge');
-    await page.waitForFunction(() => document.getElementById('strips').hasAttribute('data-drifting'), null, { timeout: 8000 });
-    await page.waitForTimeout(700);
-    const a = await drift();
-    assert.ok(a > 4, 'the wall has drifted');
-    await page.waitForTimeout(700);
-    const b = await drift();
-    assert.ok(b > a, 'the wall keeps drifting while untouched');
-    assert.equal(await left(), 0, 'drifting is a transform, not a scroll, so it stays smooth at fractional speeds');
-    const moved = await strips.locator('.strip:not([hidden])').first().evaluate(strip => getComputedStyle(strip).transform !== 'none');
-    assert.equal(moved, true, 'strips carry the drift as a transform');
-    await strips.dispatchEvent('touchstart');
-    await page.waitForTimeout(200);
-    assert.equal(await strips.evaluate(el => el.hasAttribute('data-drifting')), false, 'a touch removes the transform');
-    const c = await left();
-    assert.ok(Math.abs(c - b) <= 1, 'the drifted distance becomes the real scroll position');
-    await page.waitForTimeout(700);
-    assert.equal(await left(), c, 'a touch ends the drift for good');
-    await page.locator('.strip:not([hidden])').first().evaluate(link => link.click());
-    await page.waitForFunction(() => !!document.documentElement.dataset.project);
-    await page.goBack();
-    await waitForHomeWall(page);
-    assert.ok(Math.abs(await left() - c) < 2, 'Back restores the position the visitor left');
-    await page.waitForTimeout(1600);
-    assert.equal(await strips.evaluate(el => el.hasAttribute('data-drifting')), false, 'the drift does not come back after the visitor has taken over');
-  });
-
-  await check('strips stay still on desktop and with reduced motion', { ...mobile, reducedMotion: 'reduce' }, async page => {
-    await visit(page);
-    await page.waitForTimeout(2200);
-    assert.equal(await page.locator('#strips').evaluate(el => el.scrollLeft + (el.hasAttribute('data-drifting') ? 1 : 0)), 0, 'reduced motion means no drift');
-  });
-
   await check('every project shares its hero without JavaScript', { ...desktop, javaScriptEnabled: false }, async (page, context) => {
     // Share crawlers need complete tags in the original HTML, before the router runs.
     await page.route(/\.(?:avif|webp|mp4|webm)(?:\?.*)?$/, route => route.abort());
@@ -311,7 +273,8 @@ try {
         named: strip.getAttribute('aria-label') === window.__PROJECTS_DATA__.find(project => project.slug === strip.dataset.project).title,
         visibleText: strip.textContent.trim(),
       })));
-      assert.ok(entries.every(entry => entry.width >= (options.hasTouch ? 44 : 18) && entry.height === wall.height && entry.named && entry.visibleText === ''));
+      // Touch strips are thin like desktop ones: the strip under a finger opens before the finger lifts.
+      assert.ok(entries.every(entry => entry.width >= 8 && entry.height === wall.height && entry.named && entry.visibleText === ''));
       await page.locator('.strip:not([hidden]) .strip-image').evaluateAll(images => Promise.all(images.slice(0, 4).map(image => image.decode())));
       await page.screenshot({ path: `${output}/${name.replaceAll(' ', '-')}-home-wall.png` });
       await page.locator('#home-link').click();
@@ -349,7 +312,7 @@ try {
           visibleText: strip.textContent.trim() };
       }));
       assert.equal(await page.evaluate(() => document.documentElement.scrollWidth > innerWidth), false);
-      assert.ok(rects.every(rect => rect.width >= (options.hasTouch ? 44 : 18) && rect.height === wall.height && rect.named && rect.visibleText === ''));
+      assert.ok(rects.every(rect => rect.width >= 8 && rect.height === wall.height && rect.named && rect.visibleText === ''));
       for (let index = 1; index < rects.length; index++) {
         assert.equal(rects[index].y, rects[0].y, 'strips share an alignment');
         assert.ok(Math.abs(rects[index].x - rects[index - 1].x - rects[index - 1].width) < 1, 'images touch horizontally');
