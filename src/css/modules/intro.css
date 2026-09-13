@@ -87,16 +87,16 @@ html[data-theme="dark"] .intro-text a {
 }
 
 .intro-links { display: flex; align-items: flex-end; justify-content: space-between; gap: var(--spacing-lg); height: var(--footer-height); margin: 0; font-size: var(--font-size-ui); }
-#project-preview-name { flex: 0 1 auto; min-width: 0; margin: 0; padding: var(--spacing-xs) var(--chrome-pad); background: var(--bg-primary); overflow: hidden; white-space: nowrap; text-overflow: ellipsis; line-height: 1.5; }
+#project-preview-name { flex: 0 1 auto; min-width: 0; margin: 0; overflow: hidden; white-space: nowrap; text-overflow: ellipsis; }
 #project-preview-name:empty { visibility: hidden; }
 @media (max-width: 600px) {
-  :root { --footer-height: 4.5rem; }
+  :root { --footer-height: calc(2 * var(--corner-block)); }
   .intro-links { display: grid; grid-template-columns: minmax(0, 1fr); grid-template-rows: auto auto; align-content: end; justify-items: end; gap: var(--spacing-xs); }
   #project-preview-name { justify-self: start; }
 }
 @media (hover: none) {
   /* Touch devices never show the hover preview name, so the footer keeps one row. */
-  :root { --footer-height: 3rem; }
+  :root { --footer-height: var(--corner-block); }
   #project-preview-name { display: none; }
   .intro-links { grid-template-rows: auto; }
 }

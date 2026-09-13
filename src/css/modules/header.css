@@ -26,8 +26,8 @@
 
 .home-header { background: var(--bg-primary); color: var(--text-primary); font-size: var(--font-size-ui); line-height: 1; letter-spacing: var(--letter-spacing-caps); text-transform: uppercase; }
 .home-header-row { display: flex; justify-content: space-between; align-items: flex-start; column-gap: var(--spacing-md); height: var(--home-header-height); }
-/* Two solid blocks in the wall's top corners: the name and the contacts. */
-.home-header h1, .header-contacts, .collection-home-link { display: flex; align-items: center; height: var(--home-header-height); padding: 0 var(--chrome-pad); background: var(--bg-primary); }
+/* The four solid blocks in the wall's corners share one size, padding and line height. */
+.home-header h1, .header-contacts, .collection-home-link, #project-preview-name, .project-filters { display: flex; align-items: center; box-sizing: border-box; height: var(--corner-block); padding: 0 var(--chrome-pad); background: var(--bg-primary); font-size: var(--font-size-ui); line-height: 1; }
 .home-header h1 { flex: none; margin: 0; font: inherit; white-space: nowrap; }
 .collection-home-link { flex: none; }
 .home-header a { display: inline-block; padding: var(--spacing-sm) 0; text-decoration: none; }
@@ -35,7 +35,7 @@
 .header-contacts::-webkit-scrollbar { display: none; }
 .header-contacts a, .header-contacts button { display: inline-flex; padding: var(--spacing-sm) 0; border: 0; background: none; color: inherit; font: inherit; letter-spacing: inherit; text-transform: inherit; text-decoration: none; white-space: nowrap; cursor: pointer; }
 @media (hover: none) { .header-contacts button[data-action="print"] { display: none; } }
-.project-filters { display: flex; flex: 0 1 auto; min-width: 0; max-width: 100%; align-items: center; gap: var(--spacing-sm); margin-left: auto; padding: var(--spacing-xs) var(--chrome-pad); background: var(--bg-primary); overflow-x: auto; scrollbar-width: none; }
+.project-filters { flex: 0 1 auto; min-width: 0; max-width: 100%; gap: var(--spacing-sm); margin-left: auto; overflow-x: auto; scrollbar-width: none; }
 .project-filters::-webkit-scrollbar { display: none; }
 .project-filters button { display: inline-flex; align-items: center; flex: none; padding: 0.1em 0.3em; border: 0; border-radius: 0; background: none; color: inherit; font: inherit; letter-spacing: 0; text-transform: none; white-space: nowrap; }
 .project-filters button[aria-pressed="true"] { background: none; color: inherit; }
@@ -49,6 +49,6 @@
   /* Narrow screens: the contacts take a second row, still in the right corner. */
   :root { --home-header-height: 6rem; }
   .home-header-row, .collection-header { flex-wrap: wrap; align-content: flex-start; row-gap: 0; }
-  .home-header h1, .header-contacts, .collection-home-link { height: 3rem; }
+  .home-header h1, .header-contacts, .collection-home-link { height: var(--corner-block); }
   .header-contacts { margin-left: auto; max-width: 100%; }
 }
