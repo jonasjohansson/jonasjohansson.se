@@ -37,8 +37,8 @@
 .enhanced body[data-route="home"] #content { padding: 0; }
 .enhanced body[data-route="home"] .intro { position: static; max-width: none; margin: 0; padding: clamp(var(--spacing-lg), 5vw, 5rem) var(--page-gutter); }
 .enhanced body[data-route="home"] .intro-text { max-width: var(--measure); margin: 0; text-align: left; }
-.enhanced #intro-links { padding-inline: var(--page-gutter); /* inside the wall by one gutter */ }
-.enhanced body[data-route="home"] #intro-links { padding-inline: calc(2 * var(--page-gutter)); }
+.enhanced #intro-links { padding-inline: 0; /* the blocks sit flush with the wall's edges */ }
+.enhanced body[data-route="home"] #intro-links { padding-inline: var(--page-gutter); }
 
 /* Dark mode: colored name with staggered color + wave animation */
 html[data-theme="dark"] .intro-text .name > span {
@@ -86,12 +86,13 @@ html[data-theme="dark"] .intro-text a {
   text-underline-offset: var(--underline-offset);
 }
 
-.intro-links { display: flex; align-items: center; gap: var(--spacing-lg); height: var(--footer-height); margin: 0; font-size: var(--font-size-ui); }
-#project-preview-name { flex: 1; min-width: 0; min-height: 1.5em; margin: 0; overflow: hidden; white-space: nowrap; text-overflow: ellipsis; line-height: 1.5; }
+.intro-links { display: flex; align-items: flex-end; justify-content: space-between; gap: var(--spacing-lg); height: var(--footer-height); margin: 0; font-size: var(--font-size-ui); }
+#project-preview-name { flex: 0 1 auto; min-width: 0; margin: 0; padding: var(--spacing-xs) var(--chrome-pad); background: var(--bg-primary); overflow: hidden; white-space: nowrap; text-overflow: ellipsis; line-height: 1.5; }
+#project-preview-name:empty { visibility: hidden; }
 @media (max-width: 600px) {
   :root { --footer-height: 4.5rem; }
-  .intro-links { display: grid; grid-template-columns: minmax(0, 1fr); grid-template-rows: 1.5em auto; align-content: center; gap: var(--spacing-xs); }
-  .project-filters { max-width: 100%; }
+  .intro-links { display: grid; grid-template-columns: minmax(0, 1fr); grid-template-rows: auto auto; align-content: end; justify-items: end; gap: var(--spacing-xs); }
+  #project-preview-name { justify-self: start; }
 }
 @media (hover: none) {
   /* Touch devices never show the hover preview name, so the footer keeps one row. */

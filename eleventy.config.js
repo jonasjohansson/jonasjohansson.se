@@ -6,7 +6,7 @@ import sharp from 'sharp';
 import nunjucks from 'nunjucks';
 import htmlMinifier from 'html-minifier-terser';
 import { readProjects, SIZE_MAP, groupMedia, pairDesktopMedia } from './scripts/project-data.js';
-import { responsiveImage, stripImage, ogImage, imageMetadata, publishImages, printImage } from './scripts/images.js';
+import { responsiveImage, stripImage, ogImage, imageMetadata, publishImages, printImage, imageColour } from './scripts/images.js';
 
 const projectRoot = path.dirname(fileURLToPath(import.meta.url));
 const md = markdownIt({ html: true, breaks: false, linkify: true });
@@ -78,7 +78,7 @@ async function buildProject(project) {
     }
   }
   const firstImage = content[0].type === 'video' ? `${project.directory}/${project.blocks[0].poster}` : content[0].src;
-  const [thumbnail, og] = await Promise.all([stripImage(firstImage), ogImage(firstImage, project.slug, project.blocks[0].focal)]);
+  const [thumbnail, og, colour] = await Promise.all([stripImage(firstImage), ogImage(firstImage, project.slug, project.blocks[0].focal), imageColour(firstImage)]);
   // One full-bleed page per project: opening statement, introduction and hero.
   const printMedia = await Promise.all(project.blocks
     .filter(block => block.type === 'image' || (block.type === 'video' && block.poster))
@@ -89,7 +89,7 @@ async function buildProject(project) {
   const printCopy = content.filter(block => block.type === 'text').slice(0, 2);
   const { slug, title, date, tags, color = null } = project;
   return { slug, title, date, tags, color, year: new Date(date).getFullYear(), years: project.years || [], type: 'work',
-    content: grouped, thumbnail, ogImage: og, printMedia, printCopy, presskit: project.presskit || null,
+    content: grouped, thumbnail, colour, ogImage: og, printMedia, printCopy, presskit: project.presskit || null,
     description: stripHtml(content.find(block => block.type === 'text')?.content).slice(0, 160) };
 }
 
@@ -126,19 +126,23 @@ export default function (eleventyConfig) {
     if (!siteData) siteData = (async () => {
       const all = readProjects();
       const work = await Promise.all(all.filter(project => project.type === 'work').map(buildProject));
-      return { work };
+      // The wall runs around the colour wheel so neighbouring strips relate;
+      // greys and near-blacks gather at the end, darkest last.
+      const wallKey = ({ colour }) => colour.saturation < 0.15 ? 360 + (1 - colour.lightness) * 30 : colour.hue;
+      const wall = [...work].sort((a, b) => wallKey(a) - wallKey(b));
+      return { work, wall };
     })();
     return siteData;
   }
   eleventyConfig.addGlobalData('projects', async () => (await getSiteData()).work.map(({ slug, title, date, tags, color }) => ({ slug, title, date, tags, color })));
   eleventyConfig.addGlobalData('projectContent', async () => Object.fromEntries((await getSiteData()).work.map(project => [project.slug, project])));
-  eleventyConfig.addGlobalData('projectsForJS', async () => (await getSiteData()).work.map(({ slug, title, color, tags, year, years }) => ({
+  eleventyConfig.addGlobalData('projectsForJS', async () => (await getSiteData()).wall.map(({ slug, title, color, tags, year, years }) => ({
     slug, title, color,
     // Year filters follow project dates without changing the authored categories.
     // A project spanning several years lists them in `years`; the date's year is always included.
     tags: year >= 2023 ? [...new Set([...tags, String(year), ...years])] : [...new Set([...tags, ...years])],
   })));
-  eleventyConfig.addGlobalData('collectionItems', async () => (await getSiteData()).work);
+  eleventyConfig.addGlobalData('collectionItems', async () => (await getSiteData()).wall);
 
   eleventyConfig.addFilter("viteAsset", (filename) => {
     const isJS = filename.endsWith(".js");

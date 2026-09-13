@@ -25,14 +25,15 @@
 }
 
 .home-header { background: var(--bg-primary); color: var(--text-primary); font-size: var(--font-size-ui); line-height: 1; letter-spacing: var(--letter-spacing-caps); text-transform: uppercase; }
-.home-header-row { display: flex; flex-wrap: nowrap; align-items: center; gap: var(--icon-gap); height: var(--home-header-height); padding: 0 calc(2 * var(--page-gutter)); /* one gutter to the wall, one inside it */ }
+.home-header-row { display: inline-flex; max-width: 100%; flex-wrap: nowrap; align-items: center; gap: var(--icon-gap); height: var(--home-header-height); padding: 0 var(--chrome-pad); background: var(--bg-primary); /* a solid block in the wall's corner */ }
 .home-header h1 { flex: none; margin: 0; font: inherit; white-space: nowrap; }
-.home-header a { display: inline-flex; padding: var(--spacing-sm) 0; text-decoration: none; }
-.header-contacts { display: flex; flex: none; align-items: center; gap: var(--icon-gap); }
+.home-header a { display: inline-block; padding: var(--spacing-sm) 0; text-decoration: none; }
+.header-contacts { display: flex; flex: 0 1 auto; min-width: 0; align-items: center; gap: var(--icon-gap); overflow-x: auto; scrollbar-width: none; }
+.header-contacts::-webkit-scrollbar { display: none; }
 .header-contacts a, .header-contacts button { display: inline-flex; padding: var(--spacing-sm) 0; border: 0; background: none; color: inherit; font: inherit; text-decoration: none; cursor: pointer; }
 @media (hover: none) { .header-contacts button[data-action="print"] { display: none; } }
 .home-header svg, .header-contacts svg { display: block; width: var(--icon-size); height: var(--icon-size); shape-rendering: crispEdges; }
-.project-filters { display: flex; flex: 0 1 auto; min-width: 0; max-width: calc(100% - 8rem); align-items: center; gap: var(--spacing-sm); height: 100%; padding-left: 3px; overflow-x: auto; scrollbar-width: none; }
+.project-filters { display: flex; flex: 0 1 auto; min-width: 0; max-width: 100%; align-items: center; gap: var(--spacing-sm); margin-left: auto; padding: var(--spacing-xs) var(--chrome-pad); background: var(--bg-primary); overflow-x: auto; scrollbar-width: none; }
 .project-filters::-webkit-scrollbar { display: none; }
 .project-filters button { display: inline-flex; align-items: center; flex: none; padding: 0.1em 0.55em; border: 1px solid currentColor; border-radius: var(--radius-tag); background: none; color: inherit; font: inherit; letter-spacing: 0; text-transform: none; white-space: nowrap; }
 .project-filters button[aria-pressed="true"] { background: var(--color-black); color: var(--color-white); }

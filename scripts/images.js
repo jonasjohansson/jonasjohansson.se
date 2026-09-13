@@ -178,3 +178,14 @@ export function publishImages(outputDir = 'dist') {
   }
   writeFileSync(path.join(outputDir, 'image-manifest.json'), JSON.stringify([...referenced].sort().map(filename => `${prefix}/img/${filename}`), null, 2) + '\n');
 }
+
+// The dominant colour of an image as hue, saturation and lightness (0–360, 0–1, 0–1).
+export async function imageColour(file) {
+  const { dominant: { r, g, b } } = await sharp(file).stats();
+  const R = r / 255, G = g / 255, B = b / 255;
+  const max = Math.max(R, G, B), min = Math.min(R, G, B), d = max - min, l = (max + min) / 2;
+  const s = d === 0 ? 0 : d / (1 - Math.abs(2 * l - 1));
+  let h = 0;
+  if (d) h = ((max === R ? ((G - B) / d) % 6 : max === G ? (B - R) / d + 2 : (R - G) / d + 4) * 60 + 360) % 360;
+  return { hue: h, saturation: s, lightness: l };
+}
