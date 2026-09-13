@@ -25,16 +25,16 @@
 }
 
 .home-header { background: var(--bg-primary); color: var(--text-primary); font-size: var(--font-size-ui); line-height: 1; letter-spacing: var(--letter-spacing-caps); text-transform: uppercase; }
-.home-header-row { display: flex; flex-wrap: nowrap; align-items: center; gap: var(--header-gap); height: var(--home-header-height); padding: 0 var(--page-gutter); }
+.home-header-row { display: flex; flex-wrap: nowrap; align-items: center; gap: var(--header-gap); height: var(--home-header-height); padding: 0 calc(2 * var(--page-gutter)); /* one gutter to the wall, one inside it */ }
 .home-header h1 { flex: none; margin: 0; font: inherit; white-space: nowrap; }
 .home-header a { display: inline-flex; padding: var(--spacing-sm) 0; text-decoration: none; }
 .header-contacts { display: flex; flex: none; align-items: center; gap: clamp(var(--spacing-xs), 2vw, var(--spacing-md)); }
 .header-contacts a, .header-contacts button { display: inline-flex; padding: var(--spacing-sm) 0; border: 0; background: none; color: inherit; font: inherit; text-decoration: none; cursor: pointer; }
 @media (hover: none) { .header-contacts button[data-action="print"] { display: none; } }
 .home-header svg, .header-contacts svg { display: block; width: var(--icon-size); height: var(--icon-size); shape-rendering: crispEdges; }
-.project-filters { display: flex; flex: 0 1 auto; min-width: 0; max-width: calc(100% - 8rem); align-items: stretch; gap: 1.25rem; height: 100%; padding-left: 3px; overflow-x: auto; scrollbar-width: none; }
+.project-filters { display: flex; flex: 0 1 auto; min-width: 0; max-width: calc(100% - 8rem); align-items: center; gap: var(--spacing-sm); height: 100%; padding-left: 3px; overflow-x: auto; scrollbar-width: none; }
 .project-filters::-webkit-scrollbar { display: none; }
-.project-filters button { display: inline-flex; align-items: center; flex: none; padding: var(--spacing-xs) var(--spacing-md); border: 1px solid currentColor; border-radius: var(--radius-pill); background: none; color: inherit; font: inherit; letter-spacing: 0; text-transform: none; white-space: nowrap; }
+.project-filters button { display: inline-flex; align-items: center; flex: none; padding: 0.1em 0.55em; border: 1px solid currentColor; border-radius: var(--radius-tag); background: none; color: inherit; font: inherit; letter-spacing: 0; text-transform: none; white-space: nowrap; }
 .project-filters button[aria-pressed="true"] { background: none; color: inherit; }
 .project-filters button[aria-pressed="false"] { color: var(--text-muted); }
 .project-filters button:hover { background: none; }

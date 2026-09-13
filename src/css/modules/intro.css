@@ -37,7 +37,8 @@
 .enhanced body[data-route="home"] #content { padding: 0; }
 .enhanced body[data-route="home"] .intro { position: static; max-width: none; margin: 0; padding: clamp(var(--spacing-lg), 5vw, 5rem) var(--page-gutter); }
 .enhanced body[data-route="home"] .intro-text { max-width: var(--measure); margin: 0; text-align: left; }
-.enhanced body[data-route="home"] #intro-links { padding-inline: var(--page-gutter); }
+.enhanced #intro-links { padding-inline: var(--page-gutter); /* inside the wall by one gutter */ }
+.enhanced body[data-route="home"] #intro-links { padding-inline: calc(2 * var(--page-gutter)); }
 
 /* Dark mode: colored name with staggered color + wave animation */
 html[data-theme="dark"] .intro-text .name > span {

@@ -73,7 +73,7 @@
   --line-height-loose: 1.5;
 
   /* Z-Index Scale */
-  --radius-pill: 999px; /* fully rounded ends on buttons */
+  --radius-tag: 0.4em; /* softly rounded category buttons */
   --z-strips: 1;
   --z-filter: 10;
   --z-content: 100;

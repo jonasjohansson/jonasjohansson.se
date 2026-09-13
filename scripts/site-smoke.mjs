@@ -52,7 +52,7 @@ async function checkFooter(page) {
   assert.ok(Math.abs(footer.y + footer.height - page.viewportSize().height) < 1, 'footer fits within the strip viewport');
   const preview = await page.locator('#project-preview-name').boundingBox();
   if (touch) assert.equal(preview, null, 'touch devices do not reserve a row for the hover preview name');
-  else assert.equal(preview.x, wall.x, 'project preview name aligns with the left edge');
+  else assert.equal(preview.x, wall.x + 24, 'project preview name sits one gutter inside the strips');
   const home = await page.locator('body').getAttribute('data-route') === 'home';
   const header = page.locator(home ? '#home-header' : '#collection-header');
   const contacts = header.locator('.header-contacts');
@@ -68,7 +68,8 @@ async function checkFooter(page) {
   assert.ok(contactBox.y >= contactRow.y && contactBox.y + contactBox.height <= contactRow.y + contactRow.height + 1, 'contacts fit in the row above the strips');
   const name = await header.locator(home ? '#home-link' : '.collection-home-link').boundingBox();
   assert.ok(name.x + name.width <= contactBox.x, 'contact links do not overlap the name');
-  assert.equal(name.x, wall.x, 'name aligns with the strips');
+  const inset = !home && page.viewportSize().width <= 360 ? 0 : 24; // the smallest phones need the full width above project strips
+  assert.equal(name.x, wall.x + inset, 'the name sits one gutter inside the strips');
   assert.ok(contactRow.y <= wall.y + 1 && contactRow.y + contactRow.height > wall.y, 'the header floats over the top of the strips');
   if (!home) {
     const title = await page.locator('#header-toggle').boundingBox();
@@ -261,7 +262,7 @@ try {
       const header = await page.locator('#home-header').boundingBox();
       assert.equal(wall.x, 24);
       assert.equal(wall.width, options.viewport.width - 48);
-      assert.equal((await page.locator('#home-link').boundingBox()).x, wall.x, 'name aligns with the strips');
+      assert.equal((await page.locator('#home-link').boundingBox()).x, wall.x + 24, 'the name sits one gutter inside the strips');
       assert.ok(Math.abs(wall.y - header.y - 24) < 1, 'the wall starts one gutter below the top of the floating header');
       await checkFooter(page);
       assert.equal(await page.evaluate(() => document.documentElement.scrollWidth > innerWidth), false);
