@@ -2,6 +2,7 @@
 title: People in Orbit
 color: "#e16518"
 date: "2023-01-01"
+years: [2025, 2026]
 tags:
   - av
 blocks:
@@ -50,8 +51,8 @@ blocks:
     src: close-away-window.jpg
     alt: "The inside panel of the digipack: an arched window with a bird in flight, framed by pale trees and pink flowers on a yellow wall."
   - type: image
-    src: viewpoint-cover.jpg
-    alt: "The Viewpoint album cover: a lighthouse on a rock in a stormy sea, framed by a dark vortex of scattered light, with the band name and title above."
+    src: viewpoint.jpg
+    alt: "The full Viewpoint artwork: two mirrored faces in profile frame a swirling sea, with the lighthouse shining from the centre of the vortex."
   - type: image
     src: synchronised-whalestuff.jpg
     alt: "Single artwork for Synchronized Whalestuff: a close view of a whale's eye in blue, silver and black."
@@ -79,9 +80,6 @@ blocks:
       the foundation. The singles zoom in: a whale's eye, a whirling vortex in
       the sea, a [fresnel lens](https://en.wikipedia.org/wiki/Fresnel_lens)
       from the lighthouse.
-  - type: image
-    src: viewpoint.jpg
-    alt: "The full Viewpoint artwork: two mirrored faces in profile frame a swirling sea, with the lighthouse shining from the centre of the vortex."
   - type: text
     fontSize: small
     content: >-

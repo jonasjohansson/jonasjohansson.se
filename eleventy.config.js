@@ -88,7 +88,7 @@ async function buildProject(project) {
     })));
   const printCopy = content.filter(block => block.type === 'text').slice(0, 2);
   const { slug, title, date, tags, color = null } = project;
-  return { slug, title, date, tags, color, year: new Date(date).getFullYear(), type: 'work',
+  return { slug, title, date, tags, color, year: new Date(date).getFullYear(), years: project.years || [], type: 'work',
     content: grouped, thumbnail, ogImage: og, printMedia, printCopy, presskit: project.presskit || null,
     description: stripHtml(content.find(block => block.type === 'text')?.content).slice(0, 160) };
 }
@@ -132,10 +132,11 @@ export default function (eleventyConfig) {
   }
   eleventyConfig.addGlobalData('projects', async () => (await getSiteData()).work.map(({ slug, title, date, tags, color }) => ({ slug, title, date, tags, color })));
   eleventyConfig.addGlobalData('projectContent', async () => Object.fromEntries((await getSiteData()).work.map(project => [project.slug, project])));
-  eleventyConfig.addGlobalData('projectsForJS', async () => (await getSiteData()).work.map(({ slug, title, color, tags, year }) => ({
+  eleventyConfig.addGlobalData('projectsForJS', async () => (await getSiteData()).work.map(({ slug, title, color, tags, year, years }) => ({
     slug, title, color,
     // Year filters follow project dates without changing the authored categories.
-    tags: year >= 2023 ? [...new Set([...tags, String(year)])] : tags,
+    // A project spanning several years lists them in `years`; the date's year is always included.
+    tags: year >= 2023 ? [...new Set([...tags, String(year), ...years])] : [...new Set([...tags, ...years])],
   })));
   eleventyConfig.addGlobalData('collectionItems', async () => (await getSiteData()).work);
 

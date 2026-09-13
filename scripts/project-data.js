@@ -27,6 +27,7 @@ export function validateProject(data, slug, directory) {
   if (type !== 'work') return;
   if (!data.date || Number.isNaN(new Date(data.date).getTime())) fail('date must be a valid date');
   if (data.tags && (!Array.isArray(data.tags) || data.tags.some(tag => typeof tag !== 'string'))) fail('tags must be a list of text labels');
+  if (data.years && (!Array.isArray(data.years) || data.years.some(year => !/^\d{4}$/.test(String(year))))) fail('years must be a list of four-digit years');
   if (data.color && !/^#[\da-f]{6}$/i.test(data.color)) fail('color must be a six-digit hex colour');
   if (!Array.isArray(data.blocks) || !data.blocks.length) fail('blocks must contain project content');
   const hero = data.blocks[0];
@@ -75,7 +76,7 @@ export function readProjects(root = 'projects') {
     try { data = matter(readFileSync(filename, 'utf8')).data; }
     catch (cause) { throw new Error(`${filename}: ${cause.message}`, { cause }); }
     validateProject(data, entry.name, directory);
-    return [{ ...data, slug: entry.name, directory, type: data.type || 'work', tags: data.tags || [], date: data.date ? new Date(data.date).toISOString() : null }];
+    return [{ ...data, slug: entry.name, directory, type: data.type || 'work', tags: data.tags || [], years: (data.years || []).map(String), date: data.date ? new Date(data.date).toISOString() : null }];
   }).sort((a, b) => (new Date(b.date) - new Date(a.date)) || a.slug.localeCompare(b.slug, 'en'));
 }
 

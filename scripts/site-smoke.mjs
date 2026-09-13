@@ -584,7 +584,7 @@ try {
     await check(`${name} year and categories reset each other on both strip walls`, options, async page => {
       const datedProjects = readProjects().filter(project => project.type === 'work');
       const expected = (year, excluded = '', tags = []) => datedProjects
-        .filter(project => project.slug !== excluded && (!year || project.date.startsWith(year)) && (!tags.length || project.tags.some(tag => tags.includes(tag))))
+        .filter(project => project.slug !== excluded && (!year || project.date.startsWith(year) || project.years.includes(year)) && (!tags.length || project.tags.some(tag => tags.includes(tag))))
         .map(project => project.slug);
       await visit(page);
       const yearSelect = page.getByRole('combobox', { name: 'Year', exact: true });
