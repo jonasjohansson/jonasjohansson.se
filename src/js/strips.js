@@ -62,6 +62,7 @@ function updateFilterStates() {
   });
   const yearSelect = document.getElementById('project-year');
   yearSelect.value = activeYear;
+  yearSelect.classList.toggle('is-set', activeYear !== '');
   for (const option of yearSelect.options) option.disabled = !hasMatches(new Set(categories), option.value);
 }
 

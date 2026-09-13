@@ -35,9 +35,11 @@
 .project-filters { display: flex; flex: 0 1 auto; min-width: 0; max-width: calc(100% - 8rem); align-items: center; gap: var(--spacing-sm); height: 100%; padding-left: 3px; overflow-x: auto; scrollbar-width: none; }
 .project-filters::-webkit-scrollbar { display: none; }
 .project-filters button { display: inline-flex; align-items: center; flex: none; padding: 0.1em 0.55em; border: 1px solid currentColor; border-radius: var(--radius-tag); background: none; color: inherit; font: inherit; letter-spacing: 0; text-transform: none; white-space: nowrap; }
-.project-filters button[aria-pressed="true"] { background: none; color: inherit; }
+.project-filters button[aria-pressed="true"] { background: var(--color-black); color: var(--color-white); }
 .project-filters button[aria-pressed="false"] { color: var(--text-muted); }
 .project-filters button:hover { background: none; }
 .project-filters.is-previewing button:not(.is-preview-tag) { opacity: var(--opacity-dim); }
-.project-filters select { flex: none; align-self: center; max-width: 100%; padding: var(--spacing-sm) 0; border: 0; background-color: var(--bg-primary); color: inherit; }
+.project-filters select { flex: none; align-self: center; max-width: 100%; padding: 0.1em 1.5em 0.1em 0.55em; border: 1px solid currentColor; border-radius: var(--radius-tag); background: var(--chevron) no-repeat right 0.5em center / 0.75em; color: inherit; font: inherit; appearance: none; }
+.project-filters select.is-set { background-color: var(--color-black); color: var(--color-white); }
+.project-filters select option { color: var(--color-black); background: var(--color-white); }
 .project-filters select:focus-visible { outline: none; }
