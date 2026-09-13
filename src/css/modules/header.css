@@ -35,14 +35,14 @@
 .header-contacts::-webkit-scrollbar { display: none; }
 .header-contacts a, .header-contacts button { display: inline-flex; padding: var(--spacing-sm) 0; border: 0; background: none; color: inherit; font: inherit; letter-spacing: inherit; text-transform: inherit; text-decoration: none; white-space: nowrap; cursor: pointer; }
 @media (hover: none) { .header-contacts button[data-action="print"] { display: none; } }
-.project-filters { flex: 0 1 auto; min-width: 0; max-width: 100%; gap: var(--spacing-sm); margin-left: auto; overflow-x: auto; scrollbar-width: none; }
+.project-filters { flex: 0 1 auto; min-width: 0; max-width: 100%; gap: var(--spacing-md); margin-left: auto; overflow-x: auto; scrollbar-width: none; }
 .project-filters::-webkit-scrollbar { display: none; }
-.project-filters button { display: inline-flex; align-items: center; flex: none; padding: 0.1em 0.3em; border: 0; border-radius: 0; background: none; color: inherit; font: inherit; letter-spacing: 0; text-transform: none; white-space: nowrap; }
+.project-filters button { display: inline-flex; align-items: center; flex: none; padding: 0; border: 0; border-radius: 0; background: none; color: inherit; font: inherit; letter-spacing: 0; text-transform: none; white-space: nowrap; }
 .project-filters button[aria-pressed="true"] { background: none; color: inherit; }
 .project-filters button[aria-pressed="false"] { color: var(--text-muted); }
 .project-filters button:hover { background: none; }
 .project-filters.is-previewing button:not(.is-preview-tag) { opacity: var(--opacity-dim); }
-.project-filters select { flex: none; align-self: center; max-width: 100%; padding: 0.1em 1.2em 0.1em 0.3em; border: 0; border-radius: 0; background: var(--chevron) no-repeat right 0.2em center / 0.75em; color: inherit; font: inherit; appearance: none; }
+.project-filters select { flex: none; align-self: center; max-width: 100%; padding: 0 1em 0 0; border: 0; border-radius: 0; background: var(--chevron) no-repeat right center / 0.75em; color: inherit; font: inherit; appearance: none; }
 .project-filters select option { color: var(--color-black); background: var(--color-white); }
 .project-filters select:focus-visible { outline: none; }
 @media (max-width: 600px) {
