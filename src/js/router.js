@@ -62,6 +62,7 @@ class Router {
   position() {
     return {
       scrollY, stripScrollLeft: document.getElementById('strips').scrollLeft, focusId: document.activeElement?.id || '',
+      focusVisible: !!document.activeElement?.matches?.(':focus-visible'),
     };
   }
 
@@ -136,7 +137,18 @@ class Router {
       if (!focus && options.returnToCollection && previousProject) focus = document.getElementById(`strip-${previousProject.slug}`);
       focus ||= document.getElementById('home-title');
       focus.focus({ preventScroll: true });
-      if (restore && typeof restore.scrollY === 'number') scrollTo({ top: restore.scrollY, behavior: 'instant' });
+      if (restore && typeof restore.scrollY === 'number') {
+        scrollTo({ top: restore.scrollY, behavior: 'instant' });
+        // Coming back to a project should show the project, not the wall of
+        // other projects at its foot, which reads as the homepage. A keyboard
+        // user returning to the strip they focused keeps their place.
+        const keyboardOnStrip = restore.focusVisible && focus.classList.contains('strip');
+        if (project && !keyboardOnStrip && document.getElementById('collection').getBoundingClientRect().top < innerHeight / 2) {
+          scrollTo({ top: 0, behavior: 'instant' });
+          focus = container.querySelector('.project-title') || focus;
+          focus.focus({ preventScroll: true });
+        }
+      }
       else if (!project) scrollTo({ top: homeScrollTop(['#about', '#intro'].includes(url.hash) ? 'about' : 'projects'), behavior: 'instant' });
       else if (url.hash === '#collection') {
         (focus.classList.contains('strip') ? focus : document.getElementById('collection')).scrollIntoView({ block: 'start' });

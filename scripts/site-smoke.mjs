@@ -690,6 +690,7 @@ try {
       await page.waitForFunction(() => document.documentElement.dataset.project !== 'society-expo');
       await page.goBack();
       await page.waitForFunction(() => document.documentElement.dataset.project === 'society-expo');
+      assert.ok(await page.evaluate(() => scrollY) < 1, 'Back from a strip returns to the top of the project, not the wall it was clicked in');
       assert.deepEqual(await page.locator('#project-filters [aria-pressed="true"]').evaluateAll(buttons => buttons.map(button => button.dataset.filter)), ['community']);
       assert.deepEqual(await page.locator('.strip:not([hidden])').evaluateAll(strips => strips.map(strip => strip.dataset.project)), expected);
       await page.locator('.collection-home-link').click();
@@ -716,7 +717,8 @@ try {
       assert.equal(await page.evaluate(() => document.activeElement.id), 'home-title');
       await checkFooter(page);
       await page.goBack();
-      await page.waitForFunction(() => document.documentElement.dataset.project === 'lyra' && Math.abs(document.getElementById('collection').getBoundingClientRect().top) < 1);
+      await page.waitForFunction(() => document.documentElement.dataset.project === 'lyra' && scrollY < 1);
+      assert.equal(await page.evaluate(() => document.activeElement.className), 'project-title', 'Back shows the project itself, not its wall');
       await page.goBack();
       await page.waitForFunction(() => document.body.dataset.route === 'home' && document.body.dataset.homeView === 'about' && scrollY < 1);
     });

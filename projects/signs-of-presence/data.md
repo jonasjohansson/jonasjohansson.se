@@ -7,8 +7,8 @@ tags:
   - stage
 blocks:
   - type: image
-    src: performance-hero.jpg
-    alt: "People in Orbit on stage at Barnens Scen, lit in red, with a live-drawn graphic score of white strokes projected above them."
+    src: band-hero.jpg
+    alt: "Two of the musicians in profile at Barnens Scen, with bold white strokes of a live-drawn score projected large behind them."
   - type: text
     content: >-
       Live graphic scores for People in Orbit's reinterpretation of Signs of
@@ -28,13 +28,13 @@ blocks:
       The original sheets were photographed, cleaned up and redrawn in white
       on black for projection, with their expression markings set in type.
   - type: image
-    src: performance-marks.jpg
+    src: band-trumpet.jpg
     size: half-left
-    alt: "Bold white brush marks and dotted lines fill the projection above the band."
+    alt: "Adam Sass plays trumpet in blue light, a white line of the score curling across the wall behind him."
   - type: image
-    src: performance-colour.jpg
+    src: band-drums.jpg
     size: half-right
-    alt: "Scribbled white and purple strokes with green accents drawn live over the musicians."
+    alt: "The drummer at his kit, sheet music on the stand, with a white stroke of the projected score above."
   - type: image
     src: score-original.jpg
     size: half-left
@@ -52,13 +52,13 @@ blocks:
       I built for it, and composed the projection in
       [Resolume](https://resolume.com/) with custom FFGL shaders.
   - type: image
-    src: performance-lines.jpg
+    src: band-bass.jpg
     size: half-left
-    alt: "Long white lines and hatched marks stretch across the projection while the band plays below."
+    alt: "The double bass player seen from behind, the scroll of the bass against a wall of projected white marks."
   - type: image
-    src: performance-splash.jpg
+    src: band-sax.jpg
     size: half-right
-    alt: "Splashes and drips of white light hang over the musicians in red stage light."
+    alt: "The saxophonist in profile with the projected score falling across him, pale blue marks over his face and horn."
   - type: image
     src: performance-curves.jpg
     alt: "Curved white marks and dots of a live-drawn score hang above the musicians in the dark."

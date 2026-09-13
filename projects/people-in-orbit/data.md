@@ -76,7 +76,12 @@ blocks:
       music, videos and shows.
   - type: image
     src: website.jpg
+    size: half-left
     alt: "The People in Orbit website: a photographed living-room shelf with records, a turntable, a glowing lamp, a band photo, a TV and a red phone."
+  - type: image
+    src: website-ui.jpg
+    size: half-right
+    alt: "The website with its navigation open: About, Listen, Watch, Shows and Contact along the top, and a yellow note over the shelf introducing the band."
   - type: text
     fontSize: small
     content: >-
