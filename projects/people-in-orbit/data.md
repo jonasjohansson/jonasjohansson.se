@@ -4,16 +4,40 @@ color: "#e16518"
 date: "2023-01-01"
 tags:
   - av
-  - stage
 blocks:
   - type: image
-    src: viewpoint.jpg
-    alt: "The Viewpoint album artwork: two mirrored faces in profile frame a swirling sea, with a lighthouse shining from the centre of the vortex."
+    src: close-away.jpg
     heroFit: contain
+    alt: "The Close/Away album cover: a dense botanical world in purple, pink and green, with figures seated before a glowing stage and the band name above."
   - type: text
     content: >-
-      Album artwork and live visuals for electroacoustic jazz quintet People in
-      Orbit.
+      Album artwork for electroacoustic jazz quintet
+      [People in Orbit](https://peopleinorbit.se).
+  - type: image
+    src: 01.jpg
+    size: half-left
+    alt: "The Close/Away digipack spread: front, back, tracklist and credits panels, some rotated for printing."
+  - type: image
+    src: 02.jpg
+    size: half-right
+    alt: "The Close/Away vinyl label, a circle of overlapping coloured petals and plants with the credits running around the edge."
+  - type: text
+    fontSize: small
+    content: >-
+      I met trumpet player Adam Sass while working on another production, and he
+      reached out about designing the artwork for their debut album
+      [Close/Away](https://naxosdirect.se/items/close-away-1203059), released on
+      Prophone Records in 2023. I was
+      inspired by
+      [The Garden of Earthly Delights](https://en.wikipedia.org/wiki/The_Garden_of_Earthly_Delights)
+      by [Hieronymus Bosch](https://en.wikipedia.org/wiki/Hieronymus_Bosch)
+      and [Hilma af Klint](https://en.wikipedia.org/wiki/Hilma_af_Klint)'s
+      colour work. The artwork is a repeating pattern that stitches onto
+      itself, as if it were a physical world with several entries from the
+      different sides of the print.
+  - type: image
+    src: viewpoint-cover.jpg
+    alt: "The Viewpoint album cover: a lighthouse on a rock in a stormy sea, framed by a dark vortex of scattered light, with the band name and title above."
   - type: image
     src: synchronised-whalestuff.jpg
     alt: "Single artwork for Synchronized Whalestuff: a close view of a whale's eye in blue, silver and black."
@@ -42,48 +66,20 @@ blocks:
       the sea, a [fresnel lens](https://en.wikipedia.org/wiki/Fresnel_lens)
       from the lighthouse.
   - type: image
-    src: 01.jpg
-    alt: "Four views of colourful album artwork combine dense botanical patterns, hand-drawn lettering and circular motifs."
-  - type: image
-    src: 02.jpg
-    alt: "The Close/Away vinyl label, a circle of overlapping coloured petals and plants with the credits running around the edge."
+    src: viewpoint.jpg
+    alt: "The full Viewpoint artwork: two mirrored faces in profile frame a swirling sea, with the lighthouse shining from the centre of the vortex."
   - type: text
     fontSize: small
     content: >-
-      I met trumpet player Adam Sass while working on another production, and he
-      reached out about designing the artwork for their debut album
-      [Close/Away](https://naxosdirect.se/items/close-away-1203059), released on
-      Prophone Records. I was
-      inspired by
-      [The Garden of Earthly Delights](https://en.wikipedia.org/wiki/The_Garden_of_Earthly_Delights)
-      by [Hieronymus Bosch](https://en.wikipedia.org/wiki/Hieronymus_Bosch)
-      and [Hilma af Klint](https://en.wikipedia.org/wiki/Hilma_af_Klint)'s
-      colour work. The artwork is a repeating pattern that stitches onto
-      itself, as if it were a physical world with several entries from the
-      different sides of the print.
+      I also made their website, [peopleinorbit.se](https://peopleinorbit.se):
+      a photographed shelf where the records, the TV and the phone lead to the
+      music, videos and shows.
   - type: image
-    src: performance-scores.jpg
-    alt: "People in Orbit on stage at Barnens Scen, lit in red under a projected graphic score of white circles and lines."
-  - type: image
-    src: score-original.jpg
-    size: half-left
-    alt: "A photograph of the first page of the original 1978 Signs of Presence score, ink marks and text on paper."
-  - type: image
-    src: score-notation.jpg
-    size: half-right
-    alt: "The same score redrawn in white on black for projection, with its expression markings set in type."
-  - type: image
-    src: performance-green.jpg
-    alt: "The band beneath a green graphic score projected across the stage, drawn live during the performance."
+    src: website.jpg
+    alt: "The People in Orbit website: a photographed living-room shelf with records, a turntable, a glowing lamp, a band photo, a TV and a red phone."
   - type: text
     fontSize: small
     content: >-
-      In February 2026, [People in Orbit](https://www.instagram.com/people_in_orbit/)
-      performed Signs of Presence at Barnens Scen in Malmö, a reinterpretation
-      of the [graphic score](https://en.wikipedia.org/wiki/Graphic_notation_(music))
-      originally created by electronic pioneer Leo Nilsson and artist Al
-      Eklund in 1978. I built a custom web app for drawing live graphic
-      scores on a tablet in dialogue with the music, and used
-      [Resolume](https://resolume.com/)
-      with custom FFGL shaders for the live visual composition.
+      In 2026 I made the live visuals for their performance
+      [Signs of Presence](/signs-of-presence/).
 ---
