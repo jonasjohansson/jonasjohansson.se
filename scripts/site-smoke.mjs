@@ -59,16 +59,16 @@ async function checkFooter(page) {
   const contactBox = await contacts.boundingBox();
   const contactRow = await header.boundingBox();
   assert.deepEqual((await contacts.locator('a').allTextContents()).map(text => text.trim()), ['Labs', 'Instagram', 'CV', 'Email'], 'contact links stay concise');
-  assert.equal(await contacts.locator('a svg').count(), 4, 'each contact link carries an icon');
+  assert.equal(await contacts.locator('svg').count(), 0, 'contact links are plain text');
   const printButton = contacts.locator('button[data-action="print"]');
   assert.equal(await printButton.count(), 1, 'a print button sits with the contacts');
   if (touch) assert.equal(await printButton.isVisible(), false, 'the print button stays off touch devices');
-  else assert.equal(await printButton.locator('svg').count(), 1, 'the print button carries an icon');
+  else assert.equal((await printButton.textContent()).trim(), 'Print', 'the print button is plain text');
   assert.ok(contactBox.x + contactBox.width <= wall.x + wall.width + 1, 'contact links stay within the strips');
   assert.ok(contactBox.y >= contactRow.y && contactBox.y + contactBox.height <= contactRow.y + contactRow.height + 1, 'contacts fit in the row above the strips');
-  const name = await header.locator(home ? '#home-link' : '.collection-home-link').boundingBox();
-  assert.ok(name.x + name.width <= contactBox.x, 'contact links do not overlap the name');
-  assert.equal(name.x, wall.x + 12, 'the name sits in its block at the wall’s corner');
+  const name = await header.locator(home ? '#home-title' : '.collection-home-link').boundingBox();
+  assert.ok(name.x + name.width <= contactBox.x || name.y + name.height <= contactBox.y, 'contact links do not overlap the name (beside it, or on a second row on narrow screens)');
+  assert.equal(name.x, wall.x, 'the name block sits flush with the wall’s corner');
   assert.ok(contactRow.y <= wall.y + 1 && contactRow.y + contactRow.height > wall.y, 'the header floats over the top of the strips');
   if (!home) {
     const title = await page.locator('#header-toggle').boundingBox();
