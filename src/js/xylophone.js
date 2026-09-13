@@ -101,25 +101,28 @@ export function bindStripAudio(container, signal) {
     if (!strip || !container.contains(strip)) { lastStrip = null; return; }
     if (strip !== lastStrip && stepMelody()) lastStrip = strip;
   };
-  let skipClick = false;
   container.addEventListener('pointerdown', event => {
+    // A touch plays nothing yet: a tap sounds through its click, a scrub as it moves, a swipe never.
     if (event.pointerType !== 'touch') return;
     lastStrip = null;
     lastX = lastY = undefined;
-    sample(event);
-    // The tap's click would otherwise play the same strip a second time.
-    skipClick = lastStrip !== null;
   }, { signal, passive: true });
   container.addEventListener('pointermove', event => {
+    if (event.pointerType === 'touch') return;
     const samples = event.getCoalescedEvents?.();
     for (const point of samples?.length ? samples : [event]) sample(point);
+  }, { signal, passive: true });
+  // A touch only plays while scrubbing; a swipe that scrolls the wall stays silent.
+  container.addEventListener('touchmove', event => {
+    if (!('scrubbing' in container.dataset)) return;
+    const touch = event.touches[0];
+    sample({ clientX: touch.clientX, clientY: touch.clientY });
   }, { signal, passive: true });
   container.addEventListener('pointerleave', () => {
     lastStrip = null;
     lastX = lastY = undefined;
   }, { signal });
   container.addEventListener('click', event => {
-    if (skipClick) { skipClick = false; return; }
     if (event.pointerType === 'mouse' && event.detail !== 0) return;
     if (!event.target.closest('.strip:not([hidden])')) return;
     const context = getAudio();

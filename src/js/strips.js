@@ -124,29 +124,62 @@ export function resetFilters(slug = '') {
   filterSelections.set(slug, { tags: new Set(categories), year: '' });
 }
 
-// On touch screens the wall fits the viewport like on desktop, and a finger
-// moving across it opens the strip underneath, the way a cursor does. A tap
-// still opens the project; a scrub that ends elsewhere opens nothing, because
-// the browser only fires click when the finger lifts where it landed.
+// On touch screens the wall scrolls sideways under a swipe. A finger held
+// still for a moment starts a scrub instead: the strip under it opens and
+// follows the finger, the way a cursor does on desktop. A tap still opens the
+// project; a scrub that lifts elsewhere opens nothing, because the browser
+// only fires click when the finger lifts where it landed.
+const HOLD = 220; // ms of stillness before a touch becomes a scrub
+const SLOP = 8; // px of movement that makes a touch a swipe instead
 function bindTouchScrub(wall, signal) {
-  let active = null;
+  let active = null, timer = null, scrubbing = false, startX = 0, startY = 0;
   const setActive = strip => {
     if (strip === active) return;
     active?.classList.remove('is-active');
     active = strip;
     active?.classList.add('is-active');
   };
+  const stripAt = (x, y) => {
+    const strip = document.elementFromPoint(x, y)?.closest('.strip:not([hidden])');
+    return strip && wall.contains(strip) ? strip : null;
+  };
+  const end = () => {
+    clearTimeout(timer);
+    timer = null;
+    scrubbing = false;
+    delete wall.dataset.scrubbing;
+  };
   wall.addEventListener('pointerdown', event => {
     if (event.pointerType !== 'touch') return;
-    setActive(event.target.closest('.strip:not([hidden])'));
+    startX = event.clientX;
+    startY = event.clientY;
+    clearTimeout(timer);
+    timer = setTimeout(() => {
+      scrubbing = true;
+      wall.dataset.scrubbing = '';
+      setActive(stripAt(startX, startY));
+      navigator.vibrate?.(8);
+    }, HOLD);
   }, { signal, passive: true });
   wall.addEventListener('pointermove', event => {
-    if (event.pointerType !== 'touch') return;
-    const strip = document.elementFromPoint(event.clientX, event.clientY)?.closest('.strip:not([hidden])');
-    if (strip && wall.contains(strip)) setActive(strip);
+    if (event.pointerType !== 'touch' || scrubbing) return;
+    if (Math.hypot(event.clientX - startX, event.clientY - startY) > SLOP) { clearTimeout(timer); timer = null; }
   }, { signal, passive: true });
-  wall.addEventListener('pointercancel', () => setActive(null), { signal });
-  signal.addEventListener('abort', () => setActive(null), { once: true });
+  // Once scrubbing, the finger is followed through touch events, which keep
+  // arriving even after the browser has cancelled the pointer for a pan it
+  // is then told not to make.
+  wall.addEventListener('touchmove', event => {
+    if (!scrubbing) return;
+    event.preventDefault();
+    const touch = event.touches[0];
+    const strip = stripAt(touch.clientX, touch.clientY);
+    if (strip) setActive(strip);
+  }, { signal, passive: false });
+  wall.addEventListener('contextmenu', event => { if (timer !== null || scrubbing) event.preventDefault(); }, { signal });
+  wall.addEventListener('touchend', end, { signal });
+  wall.addEventListener('touchcancel', () => { end(); setActive(null); }, { signal });
+  wall.addEventListener('pointercancel', () => { if (!scrubbing) end(); }, { signal });
+  signal.addEventListener('abort', () => { end(); setActive(null); }, { once: true });
 }
 
 export function updateStrips(slug) {

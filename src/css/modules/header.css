@@ -28,12 +28,12 @@
 .home-header-row { display: flex; justify-content: space-between; align-items: flex-start; column-gap: var(--spacing-md); height: var(--home-header-height); }
 .home-header h1, .header-contacts, .collection-home-link, #project-preview-name, .project-filters { display: flex; align-items: center; box-sizing: border-box; padding: var(--chrome-pad); background: var(--bg-primary); font-size: var(--font-size-ui); line-height: 1.2; }
 /* The four solid blocks in the wall's corners share one size, padding and line height.
-   Each rounds the corner that points into the wall, and pads only on the two sides
-   that face the wall, so the text sits flush with the wall's outer edges. */
-.home-header h1, .collection-home-link { border-bottom-right-radius: var(--radius-corner); padding-top: 0; padding-left: 0; }
-.header-contacts { border-bottom-left-radius: var(--radius-corner); padding-top: 0; padding-right: 0; }
-#project-preview-name { border-top-right-radius: var(--radius-corner); padding-bottom: 0; padding-left: 0; }
-.project-filters { border-top-left-radius: var(--radius-corner); padding-bottom: 0; padding-right: 0; }
+   Each pads only on the two sides that face the wall, so the text sits flush with
+   the wall's outer edges. */
+.home-header h1, .collection-home-link { padding-top: 0; padding-left: 0; }
+.header-contacts { padding-top: 0; padding-right: 0; }
+#project-preview-name { padding-bottom: 0; padding-left: 0; }
+.project-filters { padding-bottom: 0; padding-right: 0; }
 .home-header h1 { flex: none; margin: 0; font: inherit; white-space: nowrap; }
 .collection-home-link { flex: none; }
 .home-header a { display: inline-block; padding: 0; text-decoration: none; }

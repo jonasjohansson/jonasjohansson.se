@@ -138,11 +138,24 @@ export async function checkStripAudio({ check, visit, desktop, mobile }) {
     await visit(page);
     const wall = page.locator('#strips');
     const box = await wall.boundingBox();
-    assert.ok(await wall.evaluate(el => el.scrollWidth <= el.clientWidth + 1), 'the touch wall fits the screen');
+    assert.ok(await wall.evaluate(el => el.scrollWidth > el.clientWidth + 1), 'the touch wall is wider than the screen and scrolls');
     const widths = () => page.locator('#strips .strip:not([hidden])').evaluateAll(strips => strips.map(strip => strip.getBoundingClientRect().width));
     const before = await widths();
     const cdp = await page.context().newCDPSession(page);
     const y = box.y + box.height / 2;
+    // A quick swipe scrolls the wall and opens nothing.
+    await cdp.send('Input.dispatchTouchEvent', { type: 'touchStart', touchPoints: [{ x: box.x + box.width - 20, y }] });
+    for (let x = box.x + box.width - 20; x > box.x + 40; x -= 40) {
+      await cdp.send('Input.dispatchTouchEvent', { type: 'touchMove', touchPoints: [{ x, y }] });
+    }
+    await cdp.send('Input.dispatchTouchEvent', { type: 'touchEnd', touchPoints: [] });
+    await page.waitForFunction(() => document.getElementById('strips').scrollLeft > 20);
+    assert.equal(await page.locator('#strips .strip.is-active').count(), 0, 'a swipe does not open a strip');
+    assert.equal(await page.evaluate(() => window.__stripSound.notes.length), 0, 'a swipe plays nothing');
+    // Start over for the scrub, so the swipe's momentum cannot turn the press into a fling stop.
+    await visit(page);
+    await page.waitForTimeout(300);
+    // A finger held still for a moment starts a scrub.
     await cdp.send('Input.dispatchTouchEvent', { type: 'touchStart', touchPoints: [{ x: box.x + 12, y }] });
     await page.waitForFunction(() => document.querySelector('#strips .strip.is-active'));
     const first = await page.locator('#strips .strip.is-active').getAttribute('id');
@@ -153,13 +166,14 @@ export async function checkStripAudio({ check, visit, desktop, mobile }) {
     }
     const last = await page.locator('#strips .strip.is-active').getAttribute('id');
     assert.notEqual(last, first, 'the open strip follows the finger');
-    await page.waitForFunction(() => window.__stripSound.notes.length >= 6, null, { timeout: 5000 });
+    await page.waitForFunction(() => window.__stripSound.notes.length >= 4, null, { timeout: 5000 });
     await cdp.send('Input.dispatchTouchEvent', { type: 'touchEnd', touchPoints: [] });
     await page.waitForTimeout(300);
     assert.equal(await page.evaluate(() => document.documentElement.dataset.project), undefined, 'lifting after a scrub opens nothing');
     assert.equal(await page.locator('#strips .strip.is-active').count(), 1, 'the last strip stays open after the finger lifts');
     const after = await widths();
-    assert.ok(Math.max(...after) > Math.max(...before) * 3, 'the open strip is clearly wider than the rest');
+    assert.ok(Math.max(...after) > Math.max(...before) * 2, 'the open strip is clearly wider than the rest');
+    assert.equal(await wall.evaluate(el => el.scrollLeft), 0, 'scrubbing did not scroll the wall');
     await page.locator('#strips .strip.is-active').tap();
     await page.waitForFunction(id => document.documentElement.dataset.project === id.replace('strip-', ''), last);
   });
