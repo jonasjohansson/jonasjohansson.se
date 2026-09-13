@@ -38,7 +38,7 @@ blocks:
   - type: image
     src: score-original.jpg
     size: half-left
-    alt: "A photograph of the first sheet of the original 1978 score: ink marks, splashes and lines along three staves on paper."
+    alt: "The first sheet of the 1978 score, cleaned up from the photographed original: ink marks, splashes and lines along three timed staves."
   - type: image
     src: score-notation.jpg
     size: half-right
@@ -48,7 +48,7 @@ blocks:
     content: >-
       Then I turned the idea around. While the band interpreted the notations,
       I drew a new score out of what I heard, live on a tablet in a
-      [custom web app](https://jonasjohansson.github.io/signsofpresence-app/)
+      [custom web app](https://signsofpresence.jonasjohansson.se/)
       I built for it, and composed the projection in
       [Resolume](https://resolume.com/) with custom FFGL shaders.
   - type: image
