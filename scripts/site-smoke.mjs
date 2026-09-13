@@ -1174,9 +1174,9 @@ try {
   await check('warm charcoal theme stays consistent across system preferences', { ...desktop, colorScheme: 'light' }, async page => {
     await visit(page);
     assert.equal(await page.locator('html').getAttribute('data-theme'), 'dark');
-    assert.equal(await page.locator('body').evaluate(body => getComputedStyle(body).backgroundColor), 'rgb(34, 31, 28)');
+    assert.equal(await page.locator('body').evaluate(body => getComputedStyle(body).backgroundColor), 'rgb(26, 24, 22)');
     assert.equal(await page.locator('body').evaluate(body => getComputedStyle(body).color), 'rgb(255, 255, 255)');
-    assert.equal(await page.locator('meta[name="theme-color"]').getAttribute('content'), '#221f1c');
+    assert.equal(await page.locator('meta[name="theme-color"]').getAttribute('content'), '#1a1816');
     assert.equal(await page.locator('#sound-toggle, #theme-preference').count(), 0);
     await page.emulateMedia({ colorScheme: 'dark' });
     assert.equal(await page.locator('html').getAttribute('data-theme'), 'dark');
@@ -1185,7 +1185,7 @@ try {
     assert.equal(await page.locator('html').getAttribute('data-theme'), 'dark');
     await page.locator('#strip-dome-dreaming').click();
     await page.waitForSelector('#projects #dome-dreaming');
-    assert.equal(await page.locator('body').evaluate(body => getComputedStyle(body).backgroundColor), 'rgb(34, 31, 28)');
+    assert.equal(await page.locator('body').evaluate(body => getComputedStyle(body).backgroundColor), 'rgb(26, 24, 22)');
   });
 
   await check('project image strips exclude the open project and support navigation', desktop, async page => {
@@ -1214,7 +1214,7 @@ try {
 
   await check('static HTML works without JavaScript', { ...desktop, javaScriptEnabled: false }, async page => {
     await page.goto(base);
-    assert.equal(await page.locator('body').evaluate(body => getComputedStyle(body).backgroundColor), 'rgb(34, 31, 28)');
+    assert.equal(await page.locator('body').evaluate(body => getComputedStyle(body).backgroundColor), 'rgb(26, 24, 22)');
     assert.ok(await page.locator('main #home-title').isVisible());
     assert.ok(await page.getByRole('link', { name: 'Klättermusen', exact: true }).isVisible());
     await page.locator('.strip').first().scrollIntoViewIfNeeded();

@@ -43,7 +43,7 @@ try {
         await page.locator('#collection').scrollIntoViewIfNeeded();
         await capture(page, `${name}--wall`);
         await page.emulateMedia({ colorScheme: 'dark' });
-        await page.waitForFunction(() => getComputedStyle(document.body).backgroundColor === 'rgb(34, 31, 28)');
+        await page.waitForFunction(() => getComputedStyle(document.body).backgroundColor === 'rgb(26, 24, 22)');
         await page.evaluate(() => new Promise(resolve => requestAnimationFrame(() => requestAnimationFrame(resolve))));
         await capture(page, `${name}--wall-dark`);
         await page.emulateMedia({ colorScheme: 'light' });

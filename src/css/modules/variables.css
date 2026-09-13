@@ -2,7 +2,7 @@
 :root {
   /* Colors */
   --color-white: #ffffff;
-  --color-black: #221f1c;
+  --color-black: #1a1816;
   --color-gray: #565049;
   --bg-primary: var(--color-white);
   --text-primary: var(--color-black);
@@ -26,6 +26,7 @@
   --measure: 56rem; /* text column width */
   --hero-height: calc(100vh - 2 * var(--page-gutter));
   --header-gap: clamp(0.5rem, 2vw, 1.5rem);
+  --icon-gap: clamp(var(--spacing-xs), 2vw, var(--spacing-md)); /* between the header icons, and after the question mark */
   --icon-size: 1.5rem;
 
   /* Surfaces and emphasis, all derived from the two theme colours */

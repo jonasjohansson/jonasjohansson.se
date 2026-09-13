@@ -4,8 +4,8 @@
   "description": "Artist working with light art, interactive art, digital art, technology, and installation",
   "start_url": "../",
   "display": "standalone",
-  "background_color": "#221f1c",
-  "theme_color": "#221f1c",
+  "background_color": "#1a1816",
+  "theme_color": "#1a1816",
   "icons": [
     {
       "src": "favicon-96x96.png",

@@ -25,10 +25,10 @@
 }
 
 .home-header { background: var(--bg-primary); color: var(--text-primary); font-size: var(--font-size-ui); line-height: 1; letter-spacing: var(--letter-spacing-caps); text-transform: uppercase; }
-.home-header-row { display: flex; flex-wrap: nowrap; align-items: center; gap: var(--header-gap); height: var(--home-header-height); padding: 0 calc(2 * var(--page-gutter)); /* one gutter to the wall, one inside it */ }
+.home-header-row { display: flex; flex-wrap: nowrap; align-items: center; gap: var(--icon-gap); height: var(--home-header-height); padding: 0 calc(2 * var(--page-gutter)); /* one gutter to the wall, one inside it */ }
 .home-header h1 { flex: none; margin: 0; font: inherit; white-space: nowrap; }
 .home-header a { display: inline-flex; padding: var(--spacing-sm) 0; text-decoration: none; }
-.header-contacts { display: flex; flex: none; align-items: center; gap: clamp(var(--spacing-xs), 2vw, var(--spacing-md)); }
+.header-contacts { display: flex; flex: none; align-items: center; gap: var(--icon-gap); }
 .header-contacts a, .header-contacts button { display: inline-flex; padding: var(--spacing-sm) 0; border: 0; background: none; color: inherit; font: inherit; text-decoration: none; cursor: pointer; }
 @media (hover: none) { .header-contacts button[data-action="print"] { display: none; } }
 .home-header svg, .header-contacts svg { display: block; width: var(--icon-size); height: var(--icon-size); shape-rendering: crispEdges; }
