@@ -11,7 +11,11 @@ let previousWallTop = 0;
 const isHome = () => document.body.dataset.route === 'home';
 
 export function homeScrollTop(view = 'projects') {
-  return view === 'about' ? 0 : Math.max(0, collection.getBoundingClientRect().top + scrollY - header.offsetHeight);
+  if (view === 'about') return 0;
+  // On touch screens the header floats over the wall, so it starts where the wall does.
+  const wallTop = collection.getBoundingClientRect().top;
+  const headerTop = header.hidden ? wallTop : header.getBoundingClientRect().top;
+  return Math.max(0, Math.min(headerTop, wallTop) + scrollY);
 }
 
 function render() {

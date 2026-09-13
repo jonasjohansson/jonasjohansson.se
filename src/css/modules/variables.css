@@ -73,6 +73,7 @@
   --line-height-loose: 1.5;
 
   /* Z-Index Scale */
+  --scrim: color-mix(in srgb, var(--bg-primary) 85%, transparent); /* fade behind text floating over images */
   --z-strips: 1;
   --z-filter: 10;
   --z-content: 100;

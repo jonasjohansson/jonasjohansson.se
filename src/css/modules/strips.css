@@ -21,4 +21,9 @@ body[data-route="home"] .collection-header { display: none; }
   .enhanced #strips { touch-action: pan-y; }
   .enhanced .strip { min-width: 0.5rem; }
   .enhanced .strip.is-active { flex-grow: 12; }
+  /* The name, icons and categories float over the wall, which takes the whole screen. */
+  .enhanced #collection, .enhanced body[data-route="home"] #collection { position: relative; height: 100dvh; }
+  .enhanced .home-header { position: relative; z-index: var(--z-filter); margin-bottom: calc(-1 * var(--home-header-height)); background: linear-gradient(var(--scrim), transparent); }
+  .enhanced .collection-header { position: absolute; top: 0; left: 0; right: 0; z-index: var(--z-filter); background: linear-gradient(var(--scrim), transparent); }
+  .enhanced .intro-links { position: relative; z-index: var(--z-filter); margin-top: calc(-1 * var(--footer-height)); background: linear-gradient(transparent, var(--scrim)); }
 }

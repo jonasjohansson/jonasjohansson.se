@@ -47,10 +47,11 @@ async function waitForHomeWall(page) {
 async function checkFooter(page) {
   const footer = await page.locator('#intro-links').boundingBox();
   const wall = await page.locator('#strips').boundingBox();
-  assert.ok(Math.abs(footer.y - wall.y - wall.height) < 1, 'footer sits directly below the strips');
+  const touch = await page.evaluate(() => matchMedia('(hover: none)').matches);
+  if (touch) assert.ok(Math.abs(footer.y + footer.height - wall.y - wall.height) < 1, 'on touch screens the categories float over the foot of the strips');
+  else assert.ok(Math.abs(footer.y - wall.y - wall.height) < 1, 'footer sits directly below the strips');
   assert.ok(Math.abs(footer.y + footer.height - page.viewportSize().height) < 1, 'footer fits within the strip viewport');
   const preview = await page.locator('#project-preview-name').boundingBox();
-  const touch = await page.evaluate(() => matchMedia('(hover: none)').matches);
   if (touch) assert.equal(preview, null, 'touch devices do not reserve a row for the hover preview name');
   else assert.equal(preview.x, wall.x, 'project preview name aligns with the left edge');
   const home = await page.locator('body').getAttribute('data-route') === 'home';
@@ -69,7 +70,8 @@ async function checkFooter(page) {
   const name = await header.locator(home ? '#home-link' : '.collection-home-link').boundingBox();
   assert.ok(name.x + name.width <= contactBox.x, 'contact links do not overlap the name');
   assert.equal(name.x, wall.x, 'name aligns with the strips');
-  assert.ok(Math.abs(contactRow.y + contactRow.height - wall.y) < 1, 'header sits immediately above the strips');
+  if (touch) assert.ok(Math.abs(contactRow.y - wall.y) < 1, 'on touch screens the header floats over the top of the strips');
+  else assert.ok(Math.abs(contactRow.y + contactRow.height - wall.y) < 1, 'header sits immediately above the strips');
   if (!home) {
     const title = await page.locator('#header-toggle').boundingBox();
     assert.ok(Math.abs(title.x + title.width / 2 - page.viewportSize().width / 2) < 1, 'project title remains centered');
@@ -262,7 +264,8 @@ try {
       assert.equal(wall.x, 24);
       assert.equal(wall.width, options.viewport.width - 48);
       assert.equal((await page.locator('#home-link').boundingBox()).x, wall.x, 'name aligns with the strips');
-      assert.ok(Math.abs(wall.y - header.height) < 1, 'wall starts directly below the header');
+      if (options.hasTouch) assert.ok(Math.abs(wall.y - header.y) < 1, 'on touch screens the header floats over the top of the wall');
+      else assert.ok(Math.abs(wall.y - header.height) < 1, 'wall starts directly below the header');
       await checkFooter(page);
       assert.equal(await page.evaluate(() => document.documentElement.scrollWidth > innerWidth), false);
       const intro = await page.locator('#intro').boundingBox();
@@ -281,7 +284,9 @@ try {
       await page.waitForFunction(() => scrollY < 1 && document.activeElement.id === 'intro');
       const aboutHeader = await page.locator('#home-header').boundingBox();
       assert.ok(Math.abs(aboutHeader.y - intro.height) < 1, 'the name and contacts scroll with the strips');
-      assert.ok(Math.abs((await page.locator('#strips').boundingBox()).y - aboutHeader.y - aboutHeader.height) < 1, 'header stays attached to the wall');
+      const wallTop = (await page.locator('#strips').boundingBox()).y;
+      if (options.hasTouch) assert.ok(Math.abs(wallTop - aboutHeader.y) < 1, 'header stays over the top of the wall');
+      else assert.ok(Math.abs(wallTop - aboutHeader.y - aboutHeader.height) < 1, 'header stays attached to the wall');
       const text = await page.locator('.intro-text').boundingBox();
       assert.equal(text.x, wall.x, 'About shares the strips’ left edge');
       assert.ok(aboutHeader.y - text.y - text.height <= 81, 'About ends after its content without an empty viewport');
@@ -303,7 +308,7 @@ try {
       assert.equal(wall.x, 24);
       assert.equal(wall.x, (await page.locator('.hero').boundingBox()).x, 'strips share the project media gutter');
       assert.equal(wall.width, options.viewport.width - 48);
-      assert.equal(wall.height, options.viewport.height - (await page.locator('#collection-header').boundingBox()).height - (await page.locator('#intro-links').boundingBox()).height);
+      assert.equal(wall.height, options.hasTouch ? options.viewport.height : options.viewport.height - (await page.locator('#collection-header').boundingBox()).height - (await page.locator('#intro-links').boundingBox()).height);
       assert.ok((await page.locator('#projects').boundingBox()).y < wall.y);
       const rects = await page.locator('.strip:not([hidden])').evaluateAll(strips => strips.map(strip => {
         const rect = strip.getBoundingClientRect();
@@ -527,7 +532,7 @@ try {
         assert.deepEqual(await page.locator('#project-filters [aria-pressed="true"]').evaluateAll(buttons => buttons.map(button => button.dataset.filter)), tags.filter(tag => selected.has(tag)));
         assert.ok(selected.size > 0 && expected.length > 0, 'at least one tag and its projects stay visible');
         assert.equal(await page.locator('#project-filters [aria-disabled="true"]').count(), selected.size === 1 ? 1 : 0);
-        assert.equal((await page.locator('#strips').boundingBox()).height, options.viewport.height - (await page.locator('#home-header').boundingBox()).height - (await page.locator('#intro-links').boundingBox()).height);
+        assert.equal((await page.locator('#strips').boundingBox()).height, options.hasTouch ? options.viewport.height : options.viewport.height - (await page.locator('#home-header').boundingBox()).height - (await page.locator('#intro-links').boundingBox()).height);
       };
       const toggle = async tag => {
         await page.locator('#project-filters button').nth(tags.indexOf(tag)).click();
