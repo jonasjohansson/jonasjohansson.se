@@ -10,17 +10,7 @@
   display: block;
 }
 
-.project-title {
-  position: absolute;
-  width: 1px;
-  height: 1px;
-  padding: 0;
-  margin: -1px;
-  overflow: hidden;
-  clip: rect(0, 0, 0, 0);
-  white-space: nowrap;
-  border: 0;
-}
+/* .project-title is visually hidden by the shared .sr-only rule in base.css. */
 
 /* Font size classes for project content */
 .text-small {
@@ -107,12 +97,9 @@ figure {
   grid-column: 1 / -1;
   overflow: hidden;
   border-radius: var(--radius-md);
-  height: calc(100vh - var(--spacing-lg) * 2);
-  height: calc(100dvh - var(--spacing-lg) * 2);
-  min-height: calc(100vh - var(--spacing-lg) * 2);
-  min-height: calc(100dvh - var(--spacing-lg) * 2);
-  max-height: calc(100vh - var(--spacing-lg) * 2);
-  max-height: calc(100dvh - var(--spacing-lg) * 2);
+  height: var(--hero-height);
+  min-height: var(--hero-height);
+  max-height: var(--hero-height);
   margin-top: calc(-1 * var(--spacing-xl));
   margin-left: 0;
   margin-right: 0;
@@ -193,7 +180,7 @@ figure {
 
 .text-block {
   width: 100%;
-  max-width: 56rem;
+  max-width: var(--measure);
   margin-inline: auto;
   /* Images keep the tight grid gutter (row-gap); text blocks get a larger
      break on both sides so they read as a separate beat. */
@@ -249,7 +236,7 @@ html[data-theme="dark"] .text-block a {
 
 /* Statement text: wider column, tighter leading */
 .text-block.text-large {
-  max-width: 56rem;
+  max-width: var(--measure);
   text-align: left;
   line-height: var(--line-height-tight);
 }
@@ -264,7 +251,7 @@ html[data-theme="dark"] .text-block a {
 
 .credits-block {
   font-size: var(--font-size-small);
-  opacity: 0.7;
+  opacity: var(--opacity-muted);
   /* Separate a standalone credit block from the preceding content. */
   margin-top: var(--spacing-4xl);
 }
@@ -277,7 +264,7 @@ html[data-theme="dark"] .text-block a {
 }
 
 .credits-list li {
-  margin-bottom: 0.5rem;
+  margin-bottom: var(--spacing-sm);
 }
 
 .credit-support {
@@ -288,12 +275,12 @@ html[data-theme="dark"] .text-block a {
 .credits-list a {
   color: inherit;
   text-decoration: underline;
-  text-underline-offset: 2px;
+  text-underline-offset: var(--underline-offset);
 }
 
 .presskit-block {
   font-size: var(--font-size-small);
-  opacity: 0.7;
+  opacity: var(--opacity-muted);
   text-align: center;
   margin: var(--spacing-4xl) 0 0;
   grid-column: 1 / -1;
@@ -306,7 +293,7 @@ html[data-theme="dark"] .text-block a {
 .presskit-block a {
   color: inherit;
   text-decoration: underline;
-  text-underline-offset: 2px;
+  text-underline-offset: var(--underline-offset);
 }
 
 /* Neighbouring media folded into one flex row at build time — an authored
@@ -381,7 +368,7 @@ html[data-theme="dark"] .text-block a {
      an empty second column or a full-width portrait extending off screen. */
   .project-grid > .media-item:not(.hero):not(:first-child):not(.desktop-pair) {
     max-width: none;
-    height: min(calc((100vw - 2 * var(--spacing-lg)) / var(--ar, 1)), 80svh, 56rem);
+    height: min(calc((100vw - 2 * var(--page-gutter)) / var(--ar, 1)), 80svh, var(--measure));
     overflow: hidden;
     border-radius: var(--radius-media);
   }
@@ -475,10 +462,10 @@ html[data-theme="dark"] .text-block a {
     aspect-ratio: var(--ar);
   }
 }
-.media-video { aspect-ratio: var(--ar); background: color-mix(in srgb, var(--text-primary) 5%, var(--bg-primary)); }
-.credits-block { width: 100%; max-width: 56rem; margin-inline: auto; }
+.media-video { aspect-ratio: var(--ar); background: var(--surface-tint); }
+.credits-block { width: 100%; max-width: var(--measure); margin-inline: auto; }
 @media (max-width: 768px) {
-  .project-grid > .media-item.hero { height: min(85svh, calc((100vw - 2 * var(--spacing-lg)) / var(--mobile-ar, var(--ar)))); min-height: 0; max-height: none; }
+  .project-grid > .media-item.hero { height: min(85svh, calc((100vw - 2 * var(--page-gutter)) / var(--mobile-ar, var(--ar)))); min-height: 0; max-height: none; }
   .project-grid > .media-item.hero :is(img, video) { object-position: var(--mobile-focal, var(--focal, center)); }
 }
 

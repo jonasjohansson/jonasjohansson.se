@@ -3,9 +3,9 @@
   top: 0;
   left: 50%;
   transform: translateX(-50%);
-  z-index: 300;
+  z-index: var(--z-header);
   width: max-content;
-  max-width: calc(100% - 2 * var(--spacing-lg));
+  max-width: calc(100% - 2 * var(--page-gutter));
   border-radius: 0 0 var(--radius-md) var(--radius-md);
   background: var(--bg-primary);
   color: var(--text-primary);
@@ -24,21 +24,21 @@
   border-radius: inherit;
 }
 
-.home-header { background: var(--bg-primary); color: var(--text-primary); font-size: 0.875rem; line-height: 1; letter-spacing: 0.06em; text-transform: uppercase; }
-.home-header-row { display: flex; flex-wrap: nowrap; align-items: center; gap: clamp(0.5rem, 2vw, 1.5rem); height: var(--home-header-height); padding: 0 var(--spacing-lg); }
+.home-header { background: var(--bg-primary); color: var(--text-primary); font-size: var(--font-size-ui); line-height: 1; letter-spacing: var(--letter-spacing-caps); text-transform: uppercase; }
+.home-header-row { display: flex; flex-wrap: nowrap; align-items: center; gap: var(--header-gap); height: var(--home-header-height); padding: 0 var(--page-gutter); }
 .home-header h1 { flex: none; margin: 0; font: inherit; white-space: nowrap; }
-.home-header a { display: inline-block; padding: 0.5rem 0; text-decoration: none; }
-.header-contacts { display: flex; flex: none; align-items: center; gap: clamp(0.5rem, 2.5vw, 1rem); margin-left: auto; }
-.header-contacts a { display: inline-flex; padding: 0.5rem 0; color: inherit; text-decoration: none; }
-.header-contacts svg { display: block; width: 1.5rem; height: 1.5rem; shape-rendering: crispEdges; }
+.home-header a { display: inline-block; padding: var(--spacing-sm) 0; text-decoration: none; }
+.header-contacts { display: flex; flex: none; align-items: center; gap: clamp(var(--spacing-xs), 2vw, var(--spacing-md)); margin-left: auto; }
+.header-contacts a { display: inline-flex; padding: var(--spacing-sm) 0; color: inherit; text-decoration: none; }
+.header-contacts svg { display: block; width: var(--icon-size); height: var(--icon-size); shape-rendering: crispEdges; }
 .project-filters { display: flex; flex: 0 1 auto; min-width: 0; max-width: calc(100% - 8rem); align-items: stretch; gap: 1.25rem; height: 100%; padding-left: 3px; overflow-x: auto; scrollbar-width: none; }
 .project-filters::-webkit-scrollbar { display: none; }
-.project-filters button { display: inline-flex; align-items: center; gap: 0.4rem; flex: none; padding: 0.5rem 0; border: 0; border-radius: 0; background: none; color: inherit; font: inherit; letter-spacing: 0; text-transform: none; white-space: nowrap; }
-.project-filters button::before { content: ""; flex: none; width: 0.5rem; height: 0.5rem; border: 1px solid currentColor; border-radius: 0; }
+.project-filters button { display: inline-flex; align-items: center; gap: 0.4rem; flex: none; padding: var(--spacing-sm) 0; border: 0; border-radius: 0; background: none; color: inherit; font: inherit; letter-spacing: 0; text-transform: none; white-space: nowrap; }
+.project-filters button::before { content: ""; flex: none; width: var(--spacing-sm); height: var(--spacing-sm); border: 1px solid currentColor; border-radius: 0; }
 .project-filters button[aria-pressed="true"] { background: none; color: inherit; }
 .project-filters button[aria-pressed="true"]::before { background: currentColor; }
-.project-filters button[aria-pressed="false"] { color: color-mix(in srgb, var(--text-primary) 60%, var(--bg-primary)); }
+.project-filters button[aria-pressed="false"] { color: var(--text-muted); }
 .project-filters button:hover { background: none; }
-.project-filters.is-previewing button:not(.is-preview-tag) { opacity: 0.3; }
-.project-filters select { flex: none; align-self: center; max-width: 100%; padding: 0.5rem 0; border: 0; background-color: var(--bg-primary); color: inherit; }
+.project-filters.is-previewing button:not(.is-preview-tag) { opacity: var(--opacity-dim); }
+.project-filters select { flex: none; align-self: center; max-width: 100%; padding: var(--spacing-sm) 0; border: 0; background-color: var(--bg-primary); color: inherit; }
 .project-filters select:focus-visible { outline: none; }

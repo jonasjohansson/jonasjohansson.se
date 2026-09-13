@@ -1,6 +1,6 @@
 .intro {
   position: relative;
-  padding: var(--spacing-xl) var(--spacing-lg) var(--spacing-2xl);
+  padding: var(--spacing-xl) var(--page-gutter) var(--spacing-2xl);
   max-width: calc(8 / 12 * 100%);
   margin: 0 auto;
   flex-shrink: 0;
@@ -35,9 +35,9 @@
 }
 
 .enhanced body[data-route="home"] #content { padding: 0; }
-.enhanced body[data-route="home"] .intro { position: static; max-width: none; margin: 0; padding: clamp(1.5rem, 5vw, 5rem) var(--spacing-lg); }
-.enhanced body[data-route="home"] .intro-text { max-width: 56rem; margin: 0; text-align: left; }
-.enhanced body[data-route="home"] #intro-links { padding-inline: var(--spacing-lg); }
+.enhanced body[data-route="home"] .intro { position: static; max-width: none; margin: 0; padding: clamp(var(--spacing-lg), 5vw, 5rem) var(--page-gutter); }
+.enhanced body[data-route="home"] .intro-text { max-width: var(--measure); margin: 0; text-align: left; }
+.enhanced body[data-route="home"] #intro-links { padding-inline: var(--page-gutter); }
 
 /* Dark mode: colored name with staggered color + wave animation */
 html[data-theme="dark"] .intro-text .name > span {
@@ -45,30 +45,30 @@ html[data-theme="dark"] .intro-text .name > span {
   animation: name-color 8s infinite, name-wave 2s ease-in-out infinite;
 }
 
-html[data-theme="dark"] .intro-text .name > span:nth-of-type(1)  { color: #e63946; animation-delay: -0s, -0s; }
-html[data-theme="dark"] .intro-text .name > span:nth-of-type(2)  { color: #f77f00; animation-delay: -1.14s, -0.14s; }
-html[data-theme="dark"] .intro-text .name > span:nth-of-type(3)  { color: #fcbf49; animation-delay: -2.28s, -0.28s; }
-html[data-theme="dark"] .intro-text .name > span:nth-of-type(4)  { color: #2a9d8f; animation-delay: -3.42s, -0.42s; }
-html[data-theme="dark"] .intro-text .name > span:nth-of-type(5)  { color: #82c8e5; animation-delay: -4.56s, -0.56s; }
-html[data-theme="dark"] .intro-text .name > span:nth-of-type(6)  { color: #7209b7; animation-delay: -5.7s, -0.84s; }
-html[data-theme="dark"] .intro-text .name > span:nth-of-type(7)  { color: #3a86ff; animation-delay: -6.84s, -0.98s; }
-html[data-theme="dark"] .intro-text .name > span:nth-of-type(8)  { color: #e63946; animation-delay: -0.57s, -1.12s; }
-html[data-theme="dark"] .intro-text .name > span:nth-of-type(9)  { color: #f77f00; animation-delay: -1.71s, -1.26s; }
-html[data-theme="dark"] .intro-text .name > span:nth-of-type(10) { color: #fcbf49; animation-delay: -2.85s, -1.4s; }
-html[data-theme="dark"] .intro-text .name > span:nth-of-type(11) { color: #2a9d8f; animation-delay: -3.99s, -1.54s; }
-html[data-theme="dark"] .intro-text .name > span:nth-of-type(12) { color: #82c8e5; animation-delay: -5.13s, -1.68s; }
-html[data-theme="dark"] .intro-text .name > span:nth-of-type(13) { color: #7209b7; animation-delay: -6.27s, -1.82s; }
-html[data-theme="dark"] .intro-text .name > span:nth-of-type(14) { color: #3a86ff; animation-delay: -7.41s, -1.96s; }
+html[data-theme="dark"] .intro-text .name > span:nth-of-type(1)  { color: var(--name-1); animation-delay: -0s, -0s; }
+html[data-theme="dark"] .intro-text .name > span:nth-of-type(2)  { color: var(--name-2); animation-delay: -1.14s, -0.14s; }
+html[data-theme="dark"] .intro-text .name > span:nth-of-type(3)  { color: var(--name-3); animation-delay: -2.28s, -0.28s; }
+html[data-theme="dark"] .intro-text .name > span:nth-of-type(4)  { color: var(--name-4); animation-delay: -3.42s, -0.42s; }
+html[data-theme="dark"] .intro-text .name > span:nth-of-type(5)  { color: var(--name-5); animation-delay: -4.56s, -0.56s; }
+html[data-theme="dark"] .intro-text .name > span:nth-of-type(6)  { color: var(--name-6); animation-delay: -5.7s, -0.84s; }
+html[data-theme="dark"] .intro-text .name > span:nth-of-type(7)  { color: var(--name-7); animation-delay: -6.84s, -0.98s; }
+html[data-theme="dark"] .intro-text .name > span:nth-of-type(8)  { color: var(--name-1); animation-delay: -0.57s, -1.12s; }
+html[data-theme="dark"] .intro-text .name > span:nth-of-type(9)  { color: var(--name-2); animation-delay: -1.71s, -1.26s; }
+html[data-theme="dark"] .intro-text .name > span:nth-of-type(10) { color: var(--name-3); animation-delay: -2.85s, -1.4s; }
+html[data-theme="dark"] .intro-text .name > span:nth-of-type(11) { color: var(--name-4); animation-delay: -3.99s, -1.54s; }
+html[data-theme="dark"] .intro-text .name > span:nth-of-type(12) { color: var(--name-5); animation-delay: -5.13s, -1.68s; }
+html[data-theme="dark"] .intro-text .name > span:nth-of-type(13) { color: var(--name-6); animation-delay: -6.27s, -1.82s; }
+html[data-theme="dark"] .intro-text .name > span:nth-of-type(14) { color: var(--name-7); animation-delay: -7.41s, -1.96s; }
 
 @keyframes name-color {
-  0%   { color: #e63946; }
-  14%  { color: #f77f00; }
-  28%  { color: #fcbf49; }
-  42%  { color: #2a9d8f; }
-  57%  { color: #82c8e5; }
-  71%  { color: #7209b7; }
-  85%  { color: #3a86ff; }
-  100% { color: #e63946; }
+  0%   { color: var(--name-1); }
+  14%  { color: var(--name-2); }
+  28%  { color: var(--name-3); }
+  42%  { color: var(--name-4); }
+  57%  { color: var(--name-5); }
+  71%  { color: var(--name-6); }
+  85%  { color: var(--name-7); }
+  100% { color: var(--name-1); }
 }
 
 @keyframes name-wave {
@@ -82,14 +82,14 @@ html[data-theme="dark"] .intro-text a {
 
 .intro-text a {
   text-decoration: underline;
-  text-underline-offset: 2px;
+  text-underline-offset: var(--underline-offset);
 }
 
-.intro-links { display: flex; align-items: center; gap: var(--spacing-lg); height: var(--footer-height); margin: 0; font-size: 0.875rem; }
+.intro-links { display: flex; align-items: center; gap: var(--spacing-lg); height: var(--footer-height); margin: 0; font-size: var(--font-size-ui); }
 #project-preview-name { flex: 1; min-width: 0; min-height: 1.5em; margin: 0; overflow: hidden; white-space: nowrap; text-overflow: ellipsis; line-height: 1.5; }
 @media (max-width: 600px) {
   :root { --footer-height: 4.5rem; }
-  .intro-links { display: grid; grid-template-columns: minmax(0, 1fr); grid-template-rows: 1.5em auto; align-content: center; gap: 0.25rem; }
+  .intro-links { display: grid; grid-template-columns: minmax(0, 1fr); grid-template-rows: 1.5em auto; align-content: center; gap: var(--spacing-xs); }
   .project-filters { max-width: 100%; }
 }
 @media (hover: none) {

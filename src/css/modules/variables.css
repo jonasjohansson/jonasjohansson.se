@@ -21,6 +21,26 @@
   --radius-sm: 0;
   --radius-md: 0;
 
+  /* Layout */
+  --page-gutter: var(--spacing-lg); /* the one inset every edge shares */
+  --measure: 56rem; /* text column width */
+  --hero-height: calc(100vh - 2 * var(--page-gutter));
+  --header-gap: clamp(0.5rem, 2vw, 1.5rem);
+  --icon-size: 1.5rem;
+
+  /* Surfaces and emphasis, all derived from the two theme colours */
+  --surface-tint: color-mix(in srgb, var(--text-primary) 6%, var(--bg-primary));
+  --border-muted: color-mix(in srgb, var(--text-primary) 30%, transparent);
+  --text-muted: color-mix(in srgb, var(--text-primary) 60%, var(--bg-primary));
+  --opacity-muted: 0.7;
+  --opacity-dim: 0.3;
+  --focus-ring: 2px solid currentColor;
+  --underline-offset: 2px;
+  --transition-fast: 0.25s ease;
+
+  /* Breakpoints (for reference; custom properties cannot be used inside @media):
+     600px phones, 768px tablets, 1440px wide desktop */
+
   /* Project media */
   --media-max-h: calc(100dvh - 2 * var(--spacing-3xl)); /* ceiling on an in-body image */
   --gutter-pair: var(--spacing-md);
@@ -41,8 +61,10 @@
   --font-size-medium: clamp(1.4rem, 1.08rem + 1.3vw, 2.05rem);
   --font-size-large: clamp(1.73rem, 1.3rem + 1.94vw, 2.81rem);
   --font-size-intro: clamp(1.13rem, 0.54rem + 1.08vw + 0.32vh, 1.94rem);
+  --font-size-ui: 0.875rem; /* header, footer and filter labels */
   --letter-spacing-base: 0;
   --letter-spacing-wide: 0.04em; /* uppercase header/subtitle tracking */
+  --letter-spacing-caps: 0.06em; /* uppercase name and section labels */
   --letter-spacing-wider: 0;
   --line-height-tight: 1.15;
   --line-height-snug: 1.35;
@@ -54,7 +76,23 @@
   --z-strips: 1;
   --z-filter: 10;
   --z-content: 100;
-  --z-loading: 400; /* top of the stack; the focused skip link sits at +1 */
+  --z-header: 300;
+  --z-loading: 400;
+  --z-status: 500;
+  --z-skip-link: 1000; /* top of the stack */
+
+  /* Name animation palette (dark theme) */
+  --name-1: #e63946;
+  --name-2: #f77f00;
+  --name-3: #fcbf49;
+  --name-4: #2a9d8f;
+  --name-5: #82c8e5;
+  --name-6: #7209b7;
+  --name-7: #3a86ff;
+}
+
+@supports (height: 100dvh) {
+  :root { --hero-height: calc(100dvh - 2 * var(--page-gutter)); }
 }
 
 @media (max-width: 600px) {
