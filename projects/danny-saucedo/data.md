@@ -4,6 +4,7 @@ color: "#9b2500"
 date: '2024-01-01'
 tags:
   - mapping
+  - stage
 blocks:
   - type: image
     src: 01.jpg

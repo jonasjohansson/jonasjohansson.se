@@ -4,6 +4,7 @@ color: "#833e00"
 date: '2024-01-01'
 tags:
   - light
+  - stage
 blocks:
   - type: image
     src: 01.jpg

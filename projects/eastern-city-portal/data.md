@@ -5,7 +5,6 @@ date: "2024-01-01"
 tags:
   - installation
   - mixed reality
-  - design
 blocks:
   - type: image
     src: 01.jpg
