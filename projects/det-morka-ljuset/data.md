@@ -35,20 +35,15 @@ blocks:
       built a browser model of the room so we could see how a house, a
       face or a stretch of water would land on the walls and floor while
       the images were still being made.
+  # Blue houses
   - type: image
     src: blue-house-visitors.jpg
+    pair: false
     alt: "Visitors walk across a cobbled floor projection beneath Lars Lerin's blue night watercolours of tall houses and trees."
-  - type: image
-    src: lofoten-house-dark.jpg
-    size: half-left
-    alt: "A small group stands in the dark hall facing a single projected watercolour of a house by the sea, lit from above."
-  - type: image
-    src: meadow.jpg
-    size: half-right
-    alt: "Visitors stand inside a projected summer meadow of wildflowers, with painted figures walking across the walls."
   - type: video
     src: blue-room.mp4
     poster: blue-room-poster.jpg
+    pair: false
     ar: 1.7777777778
     alt: "A wide view of the hall with visitors standing among blue watercolour houses and trees projected across the walls and floor."
   - type: image
@@ -56,15 +51,28 @@ blocks:
     size: half-left
     alt: "Three visitors hold each other in a corner of the hall, looking up at blue watercolour houses rising across both walls."
   - type: image
-    src: meadow-portrait.jpg
+    src: blue-house-seated.jpg
     size: half-right
-    alt: "An adult and a child hold hands in a corner of the hall as painted figures walk through a flowering meadow above them."
+    alt: "Two visitors sit on the cobbled floor projection while others stand in the corner of the hall among blue watercolour houses."
+  # Lofoten
   - type: image
     src: lofoten-birds-visitors.jpg
+    size: half-left
     alt: "Visitors stand as silhouettes on a warmly lit floor while gulls fly across a projected Lofoten sky and mountain."
   - type: image
-    src: blue-house-seated.jpg
-    alt: "Two visitors sit on the cobbled floor projection while others stand in the corner of the hall among blue watercolour houses."
+    src: lofoten-house-dark.jpg
+    size: half-right
+    alt: "A small group stands in the dark hall facing a single projected watercolour of a house by the sea, lit from above."
+  # Meadow
+  - type: image
+    src: meadow.jpg
+    pair: false
+    alt: "Visitors stand inside a projected summer meadow of wildflowers, with painted figures walking across the walls."
+  - type: image
+    src: meadow-portrait.jpg
+    pair: false
+    fit: contain
+    alt: "An adult and a child hold hands in a corner of the hall as painted figures walk through a flowering meadow above them."
   - type: text
     fontSize: small
     content: >-

@@ -36,7 +36,9 @@ blocks:
 
 `focal` and `mobileFocal` set the crop position as horizontal and vertical percentages. `heroFit: contain` keeps the entire artwork visible. Heroes have a 24 px page inset and 12 px rounded corners. Mobile heroes use their natural proportions, capped at 85% of the viewport height. To supply a different mobile composition, add `mobileSrc: hero-mobile.jpg`; its dimensions are read automatically. These options use existing artwork and do not generate or alter source files.
 
-Image dimensions and responsive sources are generated during the build. Leave `ar` unset unless you deliberately need a layout ratio override. Optional `size` values are `full`, `large`, `left`, `right`, `half-left`, `half-right`, `small-left` and `small-right`. You can also set `colStart` and `colSpan` within the 12-column grid. Unplaced portrait images are grouped into balanced rows; an authored `half-left` followed by `half-right` forms a pair. Media stacks on mobile.
+Image dimensions and responsive sources are generated during the build. Leave `ar` unset unless you deliberately need a layout ratio override. Optional `size` values are `full`, `large`, `left`, `right`, `half-left`, `half-right`, `small-left` and `small-right`. You can also set `colStart` and `colSpan` within the 12-column grid. Unplaced portrait images are grouped into balanced rows; an authored `half-left` followed by `half-right` forms a pair. Media stacks on mobile. On screens 1440 px and wider, neighbouring standalone images and videos share a row; add `pair: false` to keep one alone at full width. Set `fit: contain` to show a lone portrait whole rather than cropped.
+
+Add `unlisted: true` to a project to keep its page at its URL while leaving it out of the strips, filters, print portfolio and sitemap. The page carries `noindex, nofollow`.
 
 For a closer view inside a gallery image's existing frame, set `zoom: 1.8` and a `focal` point. Zoom accepts values from 1 to 3 and remains fixed on hover. The source photograph and navigation strips keep their original framing.
 

@@ -98,3 +98,9 @@ Left out: `0009`, `0194` and `0257` show the room empty, `0095` repeats `0107`, 
 Glidephotos is Martynas Justinevicius (name from the skynet task archive, where he invoiced through Frilans Finans). The closing credits paragraph reads "Photographs by Martynas Justinevicius (Glidephotos)", linked to the Glidephotos Instagram. This covers the hero too.
 
 The press material may not be published in full yet, so the page is marked `unlisted: true`. An unlisted project keeps its page at `/det-morka-ljuset/` but is left out of the strips, filters, print portfolio and sitemap, and its page carries `noindex, nofollow`. Remove the flag when Elverket clears the material. Anyone with the direct link can still open the page.
+
+## Chapter layout (14 September 2026)
+
+Jonas wanted the meadow photograph full width and the photographs grouped by the film's chapters. The gallery now runs blue houses (visitor photograph and the room loop at full width, then a portrait and landscape pair), Lofoten (a pair), and meadow (the landscape at full width, then the portrait on its own with `fit: contain`).
+
+Large screens pair neighbouring standalone media automatically, even with `size: full`, and the gallery checks rely on that for Society Expo. So instead of changing the rule, blocks can set `pair: false` to stay alone.

@@ -55,6 +55,8 @@ test('desktop media pairs stop at text and rows and leave odd images full width'
   assert.deepEqual(paired.map(block => !!block.desktopPair), [false, false, false, true, true, false, false, false, false, true, true, true, true]);
   assert.deepEqual(paired.map(({ desktopPair, ...block }) => block), content, 'pairing preserves the authored order and media');
   assert.ok(content.every(block => !block.desktopPair), 'pairing leaves source blocks unchanged');
+  const alone = { ...image, pair: false };
+  assert.deepEqual(pairDesktopMedia([image, alone, image, image, alone, image]).map(block => !!block.desktopPair), [false, false, true, true, false, false], 'pair: false keeps media alone without shifting later pairs');
 });
 
 test('portrait triptychs retain their images and video before desktop pairing', () => {

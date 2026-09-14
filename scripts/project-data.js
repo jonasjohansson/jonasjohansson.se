@@ -49,6 +49,7 @@ export function validateProject(data, slug, directory) {
       asset(block.src, `${label}.src`);
       if (block.zoom !== undefined && (block.type !== 'image' || typeof block.zoom !== 'number' || !Number.isFinite(block.zoom) || block.zoom < 1 || block.zoom > 3)) fail(`${label}.zoom must be an image scale between 1 and 3`);
       if (block.alt !== undefined && typeof block.alt !== 'string') fail(`${label}.alt must be text`);
+      if (block.pair !== undefined && block.pair !== false) fail(`${label}.pair can only be false`);
       if (block.type === 'video' && !block.alt?.trim()) fail(`${label}: video needs a text description`);
       if (block.type === 'video' && !block.ar) fail(`${label}: video needs an aspect ratio to reserve its space`);
       if (block.mobileSrc) asset(block.mobileSrc, `${label}.mobileSrc`);
@@ -128,8 +129,10 @@ export function groupMedia(content) {
 export function pairDesktopMedia(content) {
   const result = content.map(block => ({ ...block }));
   const media = block => block?.type === 'image' || block?.type === 'video';
+  // pair: false keeps an image or video alone at full width on large screens.
+  const pairable = block => media(block) && block.pair !== false;
   for (let i = 1; i < result.length - 1; i++) {
-    if (media(result[i]) && media(result[i + 1])) {
+    if (pairable(result[i]) && pairable(result[i + 1])) {
       result[i].desktopPair = result[i + 1].desktopPair = true;
       i++;
     }
