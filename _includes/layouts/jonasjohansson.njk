@@ -9,14 +9,6 @@
     <a href="#main" class="skip-link">Skip to content</a>
     <div id="route-announcer" class="sr-only" aria-live="polite" aria-atomic="true"></div>
     {% include "../components/header.njk" %}
-    <div id="navigation-status" class="navigation-status" hidden>
-      <p id="navigation-message" role="status"></p>
-      <div id="navigation-actions" hidden>
-        <button type="button" id="navigation-retry">Try again</button>
-        <a id="navigation-fallback">Open page</a>
-        <button type="button" id="navigation-dismiss">Dismiss</button>
-      </div>
-    </div>
     <div id="content">
       <main id="main" tabindex="-1">
         {% include "../components/intro.njk" %}

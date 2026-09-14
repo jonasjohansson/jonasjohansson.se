@@ -984,19 +984,15 @@ try {
     assert.equal(await page.locator('#main').getAttribute('aria-busy'), 'false');
   });
 
-  await check('failed project has recovery and retry works', desktop, async page => {
+  await check('failed project fetch falls back to a full page load', desktop, async page => {
     await visit(page);
-    await page.route('**/firestarter/', route => route.abort());
+    await page.route('**/firestarter/', route => route.request().resourceType() === 'fetch' ? route.abort() : route.continue());
     await page.locator('#strip-firestarter').focus();
     await page.keyboard.press('Enter');
-    await page.waitForFunction(() => !document.getElementById('navigation-actions').hidden);
-    assert.equal(new URL(page.url()).pathname, `${prefix}/`);
-    assert.equal(await page.locator('body').getAttribute('data-route'), 'home');
-    assert.equal(await page.locator('#navigation-fallback').getAttribute('href'), `${prefix}/firestarter/`);
-    await page.unroute('**/firestarter/');
-    await page.locator('#navigation-retry').click();
+    await page.waitForURL('**/firestarter/');
     await page.waitForSelector('#projects #firestarter');
-    assert.equal(await page.locator('#navigation-status').getAttribute('hidden'), '');
+    assert.equal(await page.locator('body').getAttribute('data-route'), 'project');
+    assert.equal(await page.locator('.navigation-status').count(), 0);
   });
 
   for (const [name, options] of [['desktop', desktop], ['mobile', mobile]]) {

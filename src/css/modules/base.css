@@ -20,9 +20,6 @@ summary:focus-visible { outline-offset: 6px; }
 .skip-link { position: fixed; left: var(--spacing-md); top: -8rem; padding: 0.75rem var(--spacing-md); background: var(--bg-primary); color: var(--text-primary); z-index: var(--z-skip-link); }
 .skip-link:focus { top: var(--spacing-md); }
 img, video { max-width: 100%; }
-.navigation-status { position: fixed; bottom: var(--spacing-md); left: 50%; transform: translateX(-50%); z-index: var(--z-status); width: max-content; max-width: calc(100% - 2 * var(--spacing-md)); padding: var(--spacing-md) 1.25rem; background: var(--bg-primary); color: var(--text-primary); border: 1px solid currentColor; border-radius: 0; box-shadow: 0 4px 28px #0002; }
-.navigation-status p { margin: 0; }
-#navigation-actions { display: flex; align-items: center; flex-wrap: wrap; gap: var(--spacing-md); margin-top: 0.75rem; }
 @media (prefers-color-scheme: dark) {
   html:not([data-theme="light"]) { --bg-primary: var(--color-black); --text-primary: var(--color-white); color-scheme: dark; }
 }

@@ -42,7 +42,7 @@ class Router {
     document.addEventListener('click', event => {
       if (event.defaultPrevented || event.button !== 0 || event.metaKey || event.ctrlKey || event.shiftKey || event.altKey) return;
       const anchor = event.target.closest('a[href]');
-      if (!anchor || anchor.target || anchor.hasAttribute('download') || anchor.id === 'navigation-fallback') return;
+      if (!anchor || anchor.target || anchor.hasAttribute('download')) return;
       const url = new URL(anchor.href, location.href);
       if (url.origin !== location.origin || url.search) return;
       const path = normalized(url.pathname);
@@ -52,11 +52,6 @@ class Router {
       this.navigate(url.href, { returnToCollection: anchor.hasAttribute('data-home-link') });
     });
     addEventListener('spa-navigate', event => { this.navigate(event.detail.path); });
-    document.getElementById('navigation-retry').addEventListener('click', () => this.navigate(this.failedPath));
-    document.getElementById('navigation-dismiss').addEventListener('click', () => {
-      this.setStatus('');
-      document.getElementById('main').focus({ preventScroll: true });
-    });
   }
 
   position() {
@@ -70,11 +65,9 @@ class Router {
     history.replaceState({ ...history.state, route: this.currentPath, ...this.position() }, '', location.href);
   }
 
-  setStatus(message, error = false) {
-    document.getElementById('navigation-status').hidden = !message;
-    document.getElementById('navigation-message').textContent = message;
-    document.getElementById('navigation-actions').hidden = !error;
-    document.getElementById('main').setAttribute('aria-busy', String(this.pending));
+  setBusy(busy) {
+    this.pending = busy;
+    document.getElementById('main').setAttribute('aria-busy', String(busy));
   }
 
   async navigate(target, options = {}) {
@@ -93,8 +86,7 @@ class Router {
       if (location.pathname !== path || location.hash !== url.hash) history.pushState({ route: path }, '', path + url.hash);
     }
     const restore = options.restore || (options.returnToCollection ? this.homeReturn : null);
-    this.pending = true;
-    this.setStatus('');
+    this.setBusy(true);
     try {
       let page = this.cache.get(path);
       if (!page) {
@@ -128,8 +120,7 @@ class Router {
       else document.documentElement.style.removeProperty('--project-color');
       this.onCommit(project?.slug, { resetFilters: !project && !!previousProject && !isPop });
       mountMedia(container);
-      this.pending = false;
-      this.setStatus('');
+      this.setBusy(false);
       let focus;
       if (restore?.focusId) focus = document.getElementById(restore.focusId);
       if (focus?.closest('[hidden]')) focus = null;
@@ -162,13 +153,8 @@ class Router {
       document.getElementById('route-announcer').textContent = `Opened ${project?.title || 'home'}`;
     } catch (error) {
       if (generation !== this.generation || error.name === 'AbortError') return;
-      this.pending = false;
-      this.failedPath = path;
-      // Preserve the readable page and its URL while offering explicit recovery.
-      history.replaceState({ route: this.currentPath, ...currentPosition }, '', this.currentPath);
-      document.getElementById('navigation-fallback').href = path;
-      this.setStatus(`Couldn’t open ${projects.get(path)?.title || 'the homepage'}. Please try again.`, true);
-      document.getElementById('navigation-retry').focus({ preventScroll: true });
+      // A failed fetch falls back to an ordinary page load of the same URL.
+      location.replace(path + url.hash);
     }
   }
 }
