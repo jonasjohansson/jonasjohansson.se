@@ -34,6 +34,22 @@ blocks:
       built a browser model of the room so we could see how a house, a
       face or a stretch of water would land on the walls and floor while
       the images were still being made.
+  - type: image
+    src: blue-house-visitors.jpg
+    alt: "Visitors walk across a cobbled floor projection beneath Lars Lerin's blue night watercolours of tall houses and trees."
+  - type: image
+    src: lofoten-house-dark.jpg
+    size: half-left
+    alt: "A small group stands in the dark hall facing a single projected watercolour of a house by the sea, lit from above."
+  - type: image
+    src: meadow.jpg
+    size: half-right
+    alt: "Visitors stand inside a projected summer meadow of wildflowers, with painted figures walking across the walls."
+  - type: video
+    src: blue-room.mp4
+    poster: blue-room-poster.jpg
+    ar: 1.7777777778
+    alt: "A wide view of the hall with visitors standing among blue watercolour houses and trees projected across the walls and floor."
   - type: text
     fontSize: small
     content: >-

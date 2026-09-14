@@ -65,3 +65,19 @@ Published recording: 1920 × 1080, 25 fps, H.264/yuv420p, 22.96 seconds, fast-st
 - The original HTML contains the hero-derived 1200 × 630 JPEG for Open Graph, Twitter and structured data. The new page appears in the project strips and sitemap.
 - Updated browser checks that assumed Society Expo was the only Exhibition project. Real collection counts now come from the project data. A local test fixture preserves the separate case where a category belongs only to the open project, so the empty-result guard remains covered as the collection grows.
 - All 63 browser checks pass locally, including the new project's route and hero-sharing metadata. GitHub Pages deployment is followed before reporting the page live.
+
+## Exhibition photography and motion (14 September 2026)
+
+Jonas received the Elverket press materials (WeTransfer, `pressmeddelande_-elverket_det-morka-ljuset`) and asked to add images and motion only, with no copy changes. The running time was deliberately not added.
+
+| Asset | Source |
+| --- | --- |
+| `blue-house-visitors.jpg` | `Stillbilder_Det_Mörka_Ljuset/@glidephotos_20260906_0107.jpg` |
+| `lofoten-house-dark.jpg` | `Stillbilder_Det_Mörka_Ljuset/@glidephotos_20260906_0286.jpg` |
+| `meadow.jpg` | `Stillbilder_Det_Mörka_Ljuset/@glidephotos_20260908_01.jpg` |
+| `blue-room.mp4` | `Rörligt_ Det _Mörka_Ljuset/Blue_Horizontal00091186.mp4`, 12–36 s |
+| `blue-room-poster.jpg` | First frame of `blue-room.mp4` |
+
+The stills are sRGB JPEG exports resized to 3200 px wide; the batch had no RAW files. The video source is 1080p HEVC with no audio. The publication copy is 24 s, H.264/yuv420p, video stream only, fast-start, 4.7 MB. The existing `hero.jpg` is the same photograph as `@glidephotos_20260908_01-2.jpg`, so the photographer is Glide Photos. No photo credit was added to the page.
+
+The credit list names Jonas under Animation & Visuella Effekter and as Teknisk Producent. It spells Deniz Ozumagi and Jacob Gafvels. The page copy is unchanged.
