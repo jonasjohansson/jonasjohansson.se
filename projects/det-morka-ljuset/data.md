@@ -68,11 +68,6 @@ blocks:
     src: meadow.jpg
     pair: false
     alt: "Visitors stand inside a projected summer meadow of wildflowers, with painted figures walking across the walls."
-  - type: image
-    src: meadow-portrait.jpg
-    pair: false
-    fit: contain
-    alt: "An adult and a child hold hands in a corner of the hall as painted figures walk through a flowering meadow above them."
   - type: text
     fontSize: small
     content: >-
