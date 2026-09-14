@@ -1,4 +1,5 @@
 import assert from 'node:assert/strict';
+import { readFileSync } from 'node:fs';
 
 async function observeAudio(page) {
   await page.addInitScript(() => {
@@ -53,6 +54,11 @@ export async function checkStripAudio({ check, visit, desktop, mobile }) {
     await page.waitForFunction(() => window.__stripSound.contexts[0]?.state === 'running');
     assert.deepEqual(await notes(), [], 'unlocking audio does not play a note');
     const melody = [659.25, 659.25, 659.25, 523.25, 659.25, 783.99, 392, 523.25];
+    // The whole Mario sequence, read from the site's melody module, for relative checks later.
+    const source = readFileSync(new URL('../src/js/melody.js', import.meta.url), 'utf8');
+    const frequencies = Object.fromEntries([...source.matchAll(/^\s*"?([A-G]#?\d)"?:\s*([\d.]+)/gm)].map(match => [match[1], Number(match[2])]));
+    const sequence = [...source.slice(source.indexOf('MARIO_MELODY = ['), source.indexOf('];', source.indexOf('MARIO_MELODY = ['))).matchAll(/note: "([A-G]#?\d)"/g)].map(match => frequencies[match[1]]);
+    assert.deepEqual(sequence.slice(0, 8), melody, 'the melody module still opens with the known first eight notes');
     const strips = page.locator('#strips .strip:not([hidden])');
     for (let i = 0; i < melody.length; i++) {
       await strips.nth(i).hover();
@@ -75,16 +81,20 @@ export async function checkStripAudio({ check, visit, desktop, mobile }) {
       requestAnimationFrame(() => requestAnimationFrame(() => resolve(strip.getBoundingClientRect().width === width)));
     }));
     const box = await strips.nth(7).boundingBox();
+    // Counts from here are relative: the layout shift of a hover can land the
+    // pointer on a neighbour for a frame in CI, which is a real note, not a bug.
+    const settled = (await notes()).length;
     await page.mouse.move(box.x + box.width / 2, box.y + box.height / 2);
     await page.mouse.move(box.x + box.width / 2 + 1, box.y + box.height / 2);
     await page.waitForTimeout(400);
-    assert.equal((await notes()).length, 8, 'moving inside a strip and resting do not repeat the note');
+    assert.equal((await notes()).length, settled, 'moving inside a strip and resting do not repeat the note');
     assert.equal(await page.evaluate(() => window.__stripSound.active), 0, 'short notes finish and release their oscillators');
     await page.mouse.move(8, 8);
     await page.getByRole('combobox', { name: 'Year', exact: true }).selectOption('2025');
-    assert.equal((await notes()).length, 8, 'filter changes are silent');
+    assert.equal((await notes()).length, settled, 'filter changes are silent');
     await strips.first().hover();
-    assert.ok(Math.abs((await notes())[8] - 392) < 0.01, 'the melody continues with a small filtered collection');
+    await page.waitForFunction(count => window.__stripSound.notes.length === count * 2, settled + 1);
+    assert.ok(Math.abs((await notes())[settled] - sequence[settled % sequence.length]) < 0.01, 'the melody continues with a small filtered collection');
     const chosen = await strips.first().getAttribute('data-project');
     await strips.first().click();
     await page.waitForSelector(`#projects [data-project="${chosen}"]`);
