@@ -51,7 +51,8 @@ async function checkFooter(page) {
   const footer = await page.locator('#intro-links').boundingBox();
   const wall = await page.locator('#strips').boundingBox();
   const touch = await page.evaluate(() => matchMedia('(hover: none)').matches);
-  assert.ok(footer.y < wall.y + wall.height && footer.y + footer.height >= wall.y + wall.height - 1, 'the categories float over the foot of the strips');
+  if (touch) assert.ok(Math.abs(footer.y - wall.y - wall.height) < 1, 'on phones the categories sit directly below the strips');
+  else assert.ok(footer.y < wall.y + wall.height && footer.y + footer.height >= wall.y + wall.height - 1, 'the categories float over the foot of the strips');
   assert.ok(Math.abs(footer.y + footer.height - page.viewportSize().height) < 1, 'footer fits within the strip viewport');
   const home = await page.locator('body').getAttribute('data-route') === 'home';
   const header = page.locator(home ? '#home-header' : '#collection-header');
@@ -69,7 +70,8 @@ async function checkFooter(page) {
   const name = await header.locator(home ? '#home-title' : '.collection-home-link').boundingBox();
   assert.ok(name.x + name.width <= contactBox.x || name.y + name.height <= contactBox.y, 'contact links do not overlap the name (beside it, or on a second row on narrow screens)');
   assert.equal(name.x, wall.x, 'the name block sits flush with the wall’s corner');
-  assert.ok(contactRow.y <= wall.y + 1 && contactRow.y + contactRow.height > wall.y, 'the header floats over the top of the strips');
+  if (touch) assert.ok(Math.abs(contactRow.y + contactRow.height - wall.y) < 1, 'on phones the header sits directly above the strips');
+  else assert.ok(contactRow.y <= wall.y + 1 && contactRow.y + contactRow.height > wall.y, 'the header floats over the top of the strips');
   if (!home) {
     const title = await page.locator('#header-toggle').boundingBox();
     assert.ok(Math.abs(title.x + title.width / 2 - page.viewportSize().width / 2) < 1, 'project title remains centered');
@@ -262,7 +264,8 @@ try {
       assert.equal(wall.x, 24);
       assert.equal(wall.width, options.viewport.width - 48);
       assert.equal((await page.locator('#home-link').boundingBox()).x, wall.x, 'the name starts at the wall’s left edge');
-      assert.ok(Math.abs(wall.y - header.y - 24) < 1, 'the wall starts one gutter below the top of the floating header');
+      if (options.hasTouch) assert.ok(Math.abs(wall.y - header.y - header.height) < 1, 'on phones the wall starts directly below the header');
+      else assert.ok(Math.abs(wall.y - header.y - 24) < 1, 'the wall starts one gutter below the top of the floating header');
       await checkFooter(page);
       assert.equal(await page.evaluate(() => document.documentElement.scrollWidth > innerWidth), false);
       const intro = await page.locator('#intro').boundingBox();
@@ -282,7 +285,8 @@ try {
       const aboutHeader = await page.locator('#home-header').boundingBox();
       assert.ok(Math.abs(aboutHeader.y - intro.height) < 1, 'the name and contacts scroll with the strips');
       const wallTop = (await page.locator('#strips').boundingBox()).y;
-      assert.ok(Math.abs(wallTop - aboutHeader.y - 24) < 1, 'header stays over the top of the wall');
+      if (options.hasTouch) assert.ok(Math.abs(wallTop - aboutHeader.y - aboutHeader.height) < 1, 'header stays attached above the wall');
+      else assert.ok(Math.abs(wallTop - aboutHeader.y - 24) < 1, 'header stays over the top of the wall');
       const text = await page.locator('.intro-text').boundingBox();
       assert.equal(text.x, wall.x, 'About shares the strips’ left edge');
       assert.ok(aboutHeader.y - text.y - text.height <= 81, 'About ends after its content without an empty viewport');
@@ -304,7 +308,8 @@ try {
       assert.equal(wall.x, 24);
       assert.equal(wall.x, (await page.locator('.hero').boundingBox()).x, 'strips share the project media gutter');
       assert.equal(wall.width, options.viewport.width - 48);
-      assert.equal(wall.height, options.viewport.height - 48, 'the wall keeps the page gutter above and below');
+      if (options.hasTouch) assert.equal(wall.height, options.viewport.height - 48 - (await page.locator('#collection-header').boundingBox()).height - (await page.locator('#intro-links').boundingBox()).height + 24, 'on phones the wall fills what the header, categories and gutters leave');
+      else assert.equal(wall.height, options.viewport.height - 48, 'the wall keeps the page gutter above and below');
       assert.ok((await page.locator('#projects').boundingBox()).y < wall.y);
       const rects = await page.locator('.strip:not([hidden])').evaluateAll(strips => strips.map(strip => {
         const rect = strip.getBoundingClientRect();
@@ -528,7 +533,7 @@ try {
         assert.deepEqual(await page.locator('#project-filters [aria-pressed="true"]').evaluateAll(buttons => buttons.map(button => button.dataset.filter)), tags.filter(tag => selected.has(tag)));
         assert.ok(selected.size > 0 && expected.length > 0, 'at least one tag and its projects stay visible');
         assert.equal(await page.locator('#project-filters [aria-disabled="true"]').count(), selected.size === 1 ? 1 : 0);
-        assert.equal((await page.locator('#strips').boundingBox()).height, options.viewport.height - 48);
+        assert.equal((await page.locator('#strips').boundingBox()).height, options.hasTouch ? options.viewport.height - 48 - (await page.locator('#home-header').boundingBox()).height - (await page.locator('#intro-links').boundingBox()).height + 48 : options.viewport.height - 48);
       };
       const toggle = async tag => {
         await page.locator('#project-filters button').nth(tags.indexOf(tag)).click();
