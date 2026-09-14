@@ -81,3 +81,20 @@ Jonas received the Elverket press materials (WeTransfer, `pressmeddelande_-elver
 The stills are sRGB JPEG exports resized to 3200 px wide; the batch had no RAW files. The video source is 1080p HEVC with no audio. The publication copy is 24 s, H.264/yuv420p, video stream only, fast-start, 4.7 MB. The existing `hero.jpg` is the same photograph as `@glidephotos_20260908_01-2.jpg`, so the photographer is Glide Photos. No photo credit was added to the page.
 
 The credit list names Jonas under Animation & Visuella Effekter and as Teknisk Producent. It spells Deniz Ozumagi and Jacob Gafvels. The page copy is unchanged.
+
+## More photographs, photographer credit and unlisting (14 September 2026)
+
+Jonas asked for more of the exhibition photographs and a proper credit for the photographer. Four more stills were added from the same batch, again as 3200 px sRGB JPEGs:
+
+| Asset | Source |
+| --- | --- |
+| `blue-house-family.jpg` | `@glidephotos_20260906_0160.jpg` (portrait) |
+| `meadow-portrait.jpg` | `@glidephotos_20260908_02.jpg` (portrait) |
+| `lofoten-birds-visitors.jpg` | `@glidephotos_20260906_0314.jpg` |
+| `blue-house-seated.jpg` | `@glidephotos_20260906_0140.jpg` |
+
+Left out: `0009`, `0194` and `0257` show the room empty, `0095` repeats `0107`, and `9506` is a 567 px web export.
+
+Glidephotos is Martynas Justinevicius (name from the skynet task archive, where he invoiced through Frilans Finans). The closing credits paragraph reads "Photographs by Martynas Justinevicius (Glidephotos)", linked to the Glidephotos Instagram. This covers the hero too.
+
+The press material may not be published in full yet, so the page is marked `unlisted: true`. An unlisted project keeps its page at `/det-morka-ljuset/` but is left out of the strips, filters, print portfolio and sitemap, and its page carries `noindex, nofollow`. Remove the flag when Elverket clears the material. Anyone with the direct link can still open the page.

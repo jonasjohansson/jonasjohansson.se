@@ -19,6 +19,8 @@ test('invalid content reports the project and field rather than disappearing', (
     writeFileSync(path.join(directory, 'hero.jpg'), 'fixture');
     const data = { title: 'Example', date: '2026-01-01', blocks: [{ type: 'image', src: 'hero.jpg', alt: 'An example artwork.' }] };
     assert.throws(() => validateProject({ ...data, date: 'bad date' }, 'example', directory), /example\/data.md: date/);
+    assert.throws(() => validateProject({ ...data, unlisted: 'yes' }, 'example', directory), /unlisted must be/);
+    assert.doesNotThrow(() => validateProject({ ...data, unlisted: true }, 'example', directory));
     assert.throws(() => validateProject({ ...data, blocks: [{ ...data.blocks[0], src: 'missing.jpg' }] }, 'example', directory), /blocks\[0\].src: missing/);
     assert.throws(() => validateProject({ ...data, blocks: [data.blocks[0], { type: 'unknown' }] }, 'example', directory), /blocks\[1\]: unknown/);
     assert.throws(() => validateProject({ ...data, blocks: [{ ...data.blocks[0], alt: '' }] }, 'example', directory), /hero needs/);

@@ -2,6 +2,7 @@
 title: Det Mörka Ljuset
 date: '2026-09-26'
 color: '#a8bfc8'
+unlisted: true
 tags:
   - mapping
 blocks:
@@ -50,6 +51,20 @@ blocks:
     poster: blue-room-poster.jpg
     ar: 1.7777777778
     alt: "A wide view of the hall with visitors standing among blue watercolour houses and trees projected across the walls and floor."
+  - type: image
+    src: blue-house-family.jpg
+    size: half-left
+    alt: "Three visitors hold each other in a corner of the hall, looking up at blue watercolour houses rising across both walls."
+  - type: image
+    src: meadow-portrait.jpg
+    size: half-right
+    alt: "An adult and a child hold hands in a corner of the hall as painted figures walk through a flowering meadow above them."
+  - type: image
+    src: lofoten-birds-visitors.jpg
+    alt: "Visitors stand as silhouettes on a warmly lit floor while gulls fly across a projected Lofoten sky and mountain."
+  - type: image
+    src: blue-house-seated.jpg
+    alt: "Two visitors sit on the cobbled floor projection while others stand in the corner of the hall among blue watercolour houses."
   - type: text
     fontSize: small
     content: >-
@@ -59,6 +74,10 @@ blocks:
       [Johannes Ferm Winkler](https://johannesfermwinkler.se/),
       [David Nord and Boris Nawratil](https://www.davidboris.se/),
       among others. [Full credits and visitor information](https://elverket.com/produktioner/lars-lerin).
+
+
+      Photographs by Martynas Justinevicius
+      ([Glidephotos](https://www.instagram.com/glidephotos/)).
   - type: text
     fontSize: small
     content: >-

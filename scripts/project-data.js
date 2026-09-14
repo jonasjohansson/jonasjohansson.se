@@ -24,6 +24,7 @@ export function validateProject(data, slug, directory) {
   const type = data.type || 'work';
   if (!['work', 'lab', 'placeholder'].includes(type)) fail(`unknown type ${type}`);
   if (data.date && Number.isNaN(new Date(data.date).getTime())) fail('date must be a valid date');
+  if (data.unlisted !== undefined && typeof data.unlisted !== 'boolean') fail('unlisted must be true or false');
   if (type !== 'work') return;
   if (!data.date || Number.isNaN(new Date(data.date).getTime())) fail('date must be a valid date');
   if (data.tags && (!Array.isArray(data.tags) || data.tags.some(tag => typeof tag !== 'string'))) fail('tags must be a list of text labels');

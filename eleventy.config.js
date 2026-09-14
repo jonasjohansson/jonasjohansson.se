@@ -88,7 +88,7 @@ async function buildProject(project) {
     })));
   const printCopy = content.filter(block => block.type === 'text').slice(0, 2);
   const { slug, title, date, tags, color = null } = project;
-  return { slug, title, date, tags, color, year: new Date(date).getFullYear(), years: project.years || [], type: 'work',
+  return { slug, title, date, tags, color, year: new Date(date).getFullYear(), years: project.years || [], type: 'work', unlisted: !!project.unlisted,
     content: grouped, thumbnail, colour, ogImage: og, printMedia, printCopy, presskit: project.presskit || null,
     description: stripHtml(content.find(block => block.type === 'text')?.content).slice(0, 160) };
 }
@@ -129,12 +129,13 @@ export default function (eleventyConfig) {
       // The wall runs around the colour wheel so neighbouring strips relate;
       // greys and near-blacks gather at the end, darkest last.
       const wallKey = ({ colour }) => colour.saturation < 0.15 ? 360 + (1 - colour.lightness) * 30 : colour.hue;
-      const wall = [...work].sort((a, b) => wallKey(a) - wallKey(b));
+      // Unlisted projects keep their page but stay off the wall, filters and print portfolio.
+      const wall = work.filter(project => !project.unlisted).sort((a, b) => wallKey(a) - wallKey(b));
       return { work, wall };
     })();
     return siteData;
   }
-  eleventyConfig.addGlobalData('projects', async () => (await getSiteData()).work.map(({ slug, title, date, tags, color }) => ({ slug, title, date, tags, color })));
+  eleventyConfig.addGlobalData('projects', async () => (await getSiteData()).work.map(({ slug, title, date, tags, color, unlisted }) => ({ slug, title, date, tags, color, unlisted: !!unlisted })));
   eleventyConfig.addGlobalData('projectContent', async () => Object.fromEntries((await getSiteData()).work.map(project => [project.slug, project])));
   eleventyConfig.addGlobalData('projectsForJS', async () => (await getSiteData()).wall.map(({ slug, title, color, tags, year, years }) => ({
     slug, title, color,

@@ -598,9 +598,26 @@ try {
     });
   }
 
+  await check('unlisted projects keep their page but stay off the wall, sitemap and search', desktop, async page => {
+    const unlisted = readProjects().filter(project => project.type === 'work' && project.unlisted);
+    const sitemap = await (await page.request.get(`${base}/sitemap.xml`)).text();
+    await visit(page, '/');
+    for (const project of unlisted) {
+      assert.equal(await page.locator(`#strip-${project.slug}`).count(), 0, `${project.slug} has no strip`);
+      assert.ok(!sitemap.includes(`/${project.slug}/`), `${project.slug} is not in the sitemap`);
+    }
+    assert.ok(!(await page.evaluate(() => window.__PROJECTS_DATA__.map(project => project.slug))).some(slug => unlisted.some(project => project.slug === slug)), 'unlisted projects are not filterable');
+    for (const project of unlisted) {
+      const response = await page.goto(`${base}/${project.slug}/`, { waitUntil: 'domcontentloaded' });
+      assert.equal(response.status(), 200, `${project.slug} still opens directly`);
+      assert.equal(await page.locator('meta[name="robots"]').getAttribute('content'), 'noindex, nofollow');
+      assert.equal(await page.locator('#strips .strip:not([hidden])').count(), await page.locator('#strips .strip').count(), 'every listed project stays on its wall');
+    }
+  });
+
   for (const [name, options] of [['desktop', desktop], ['mobile', mobile]]) {
     await check(`${name} year and categories reset each other on both strip walls`, options, async page => {
-      const datedProjects = readProjects().filter(project => project.type === 'work');
+      const datedProjects = readProjects().filter(project => project.type === 'work' && !project.unlisted);
       const expected = (year, excluded = '', tags = []) => datedProjects
         .filter(project => project.slug !== excluded && (!year || project.date.startsWith(year) || project.years.includes(year)) && (!tags.length || project.tags.some(tag => tags.includes(tag))))
         .map(project => project.slug);
