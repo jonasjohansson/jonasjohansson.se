@@ -94,7 +94,7 @@ class Router {
     }
     const restore = options.restore || (options.returnToCollection ? this.homeReturn : null);
     this.pending = true;
-    this.setStatus(`Opening ${projects.get(path)?.title || 'projects'}…`);
+    this.setStatus('');
     try {
       let page = this.cache.get(path);
       if (!page) {
