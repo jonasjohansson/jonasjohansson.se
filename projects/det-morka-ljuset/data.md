@@ -47,12 +47,7 @@ blocks:
     ar: 1.7777777778
     alt: "A wide view of the hall with visitors standing among blue watercolour houses and trees projected across the walls and floor."
   - type: image
-    src: blue-house-family.jpg
-    size: half-left
-    alt: "Three visitors hold each other in a corner of the hall, looking up at blue watercolour houses rising across both walls."
-  - type: image
     src: blue-house-seated.jpg
-    size: half-right
     alt: "Two visitors sit on the cobbled floor projection while others stand in the corner of the hall among blue watercolour houses."
   # Lofoten
   - type: image

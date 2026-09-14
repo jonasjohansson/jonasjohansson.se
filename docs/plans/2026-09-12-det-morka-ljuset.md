@@ -88,7 +88,6 @@ Jonas asked for more of the exhibition photographs and a proper credit for the p
 
 | Asset | Source |
 | --- | --- |
-| `blue-house-family.jpg` | `@glidephotos_20260906_0160.jpg` (portrait) |
 | `lofoten-birds-visitors.jpg` | `@glidephotos_20260906_0314.jpg` |
 | `blue-house-seated.jpg` | `@glidephotos_20260906_0140.jpg` |
 
@@ -100,6 +99,6 @@ The press material may not be published in full yet, so the page is marked `unli
 
 ## Chapter layout (14 September 2026)
 
-Jonas wanted the meadow photograph full width and the photographs grouped by the film's chapters. The gallery now runs blue houses (visitor photograph and the room loop at full width, then a portrait and landscape pair), Lofoten (a pair), and meadow (the landscape at full width). The portrait meadow photograph was later removed at Jonas's request.
+Jonas wanted the meadow photograph full width and the photographs grouped by the film's chapters. The gallery now runs blue houses (visitor photograph and the room loop at full width, then the seated visitors on their own; the family portrait was later removed at Jonas's request), Lofoten (a pair), and meadow (the landscape at full width). The portrait meadow photograph was later removed at Jonas's request.
 
 Large screens pair neighbouring standalone media automatically, even with `size: full`, and the gallery checks rely on that for Society Expo. So instead of changing the rule, blocks can set `pair: false` to stay alone.
