@@ -75,7 +75,7 @@
 
   /* Z-Index Scale */
   --chrome-pad: 0.75rem; /* inside the solid blocks that sit in the wall's corners */
-  --strip-touch-width: 3.5rem; /* a finger's width per strip on touch screens */
+  --strip-touch-width: 2.75rem; /* per strip on touch screens: 44px, a comfortable tap target */
   --strip-touch-open: 9rem; /* the strip under a held finger opens to this */
   --corner-block: 3rem; /* height of every corner block: name, contacts, hovered title, categories */
   --chevron: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 24 24' fill='%23ffffff' shape-rendering='crispEdges'%3E%3Cpath d='M4 8h2v2H4zm2 2h2v2H6zm2 2h2v2H8zm2 2h2v2h-2zm4 0h-2v2h2zm2-2h-2v2h2zm2-2h-2v2h2zm2-2h-2v2h2z'/%3E%3C/svg%3E"); /* pixel chevron for the year select, Pixelarticons style */
