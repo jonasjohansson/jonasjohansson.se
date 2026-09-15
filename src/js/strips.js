@@ -22,11 +22,10 @@ function updatePreview() {
   const focused = document.activeElement?.closest('#strips .strip:not([hidden])');
   const entry = hoveredEntry || focused;
   const projectTags = projects.get(entry?.dataset.project)?.tags || [];
-  // The name in the corner becomes the project's title while a strip is hovered, focused or scrubbed.
-  for (const link of document.querySelectorAll('#home-link, .collection-home-link')) {
-    link.dataset.title ??= link.textContent;
-    link.textContent = entry?.getAttribute('aria-label') || link.dataset.title;
-  }
+  // The bottom-left caption names the project while a strip is hovered, focused or scrubbed.
+  const caption = document.getElementById('strip-caption');
+  caption.textContent = entry?.getAttribute('aria-label') || '';
+  caption.hidden = !entry;
   document.getElementById('project-filters').classList.toggle('is-previewing', Boolean(entry));
   document.querySelectorAll('#project-filters button').forEach(button => {
     const tag = button.dataset.filter;

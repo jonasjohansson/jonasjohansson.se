@@ -35,7 +35,11 @@ async function check(name, options, callback) {
 }
 
 async function visit(page, route = '/') {
-  await page.goto(base + route);
+  // The landing page opens on About; most checks start from the wall.
+  const url = base + (route === '/' ? '/#collection' : route);
+  // Going to the same URL with a hash does not reload, so start over explicitly.
+  if (page.url() === url) await page.reload();
+  else await page.goto(url);
   await page.waitForFunction(() => document.documentElement.classList.contains('enhanced'));
   if (route === '/') await waitForHomeWall(page);
 }
@@ -44,8 +48,8 @@ async function waitForHomeWall(page) {
   await page.waitForFunction(() => document.body.dataset.route === 'home' && document.body.dataset.homeView === 'projects' && Math.abs(document.getElementById('intro-links').getBoundingClientRect().bottom - innerHeight) < 1);
 }
 
-// The corner that carries the name shows the hovered project's title instead.
-const cornerName = page => page.evaluate(() => (document.body.dataset.route === 'home' ? document.getElementById('home-link') : document.querySelector('.collection-home-link')).textContent);
+// The bottom-left caption names the hovered project.
+const caption = page => page.locator('#strip-caption').evaluate(caption => caption.hidden ? '' : caption.textContent);
 
 async function checkFooter(page) {
   const footer = await page.locator('#intro-links').boundingBox();
@@ -261,7 +265,7 @@ try {
     ['touch landscape', { ...mobile, viewport: { width: 844, height: 390 } }],
     ['touch tablet', { ...mobile, viewport: { width: 1024, height: 768 } }],
   ]) {
-    await check(`${name} opens on the wall with About above it`, options, async page => {
+    await check(`${name} wall sits below About`, options, async page => {
       await visit(page);
       const wall = await page.locator('#strips').boundingBox();
       const header = await page.locator('#home-header').boundingBox();
@@ -332,6 +336,25 @@ try {
       await checkFooter(page);
       await page.locator('.strip:not([hidden]) .strip-image').evaluateAll(images => Promise.all(images.slice(0, 4).map(image => image.decode())));
       await page.screenshot({ path: `${output}/${name.replaceAll(' ', '-')}-project-wall.png` });
+    });
+  }
+
+  for (const [name, options] of [['desktop', desktop], ['mobile', mobile]]) {
+    await check(`${name} landing opens on About with the name hidden until the strips fill the screen`, options, async page => {
+      await page.goto(base + '/');
+      await page.waitForFunction(() => document.documentElement.classList.contains('enhanced') && document.body.dataset.homeView === 'about' && scrollY < 1);
+      const opacity = () => page.locator('#home-title').evaluate(title => getComputedStyle(title).opacity);
+      assert.equal(await opacity(), '0', 'the name is hidden while About shows');
+      assert.equal(await page.locator('#home-link').getAttribute('aria-label'), 'Jonas Johansson, Projects');
+      assert.ok(await page.locator('.header-contacts').first().isVisible(), 'the contacts stay visible');
+      assert.equal(await caption(page), '', 'no caption until a strip is hovered');
+      // Scroll rather than press Escape: a keyboard-focused name stays visible on purpose.
+      await page.evaluate(() => scrollTo({ top: document.getElementById('collection').getBoundingClientRect().top + scrollY, behavior: 'instant' }));
+      await waitForHomeWall(page);
+      assert.equal(await opacity(), '1', 'the name shows once the strips fill the screen');
+      await page.evaluate(() => scrollBy({ top: -120, behavior: 'instant' }));
+      await page.waitForFunction(() => document.body.dataset.homeView === 'about');
+      assert.equal(await opacity(), '0', 'scrolling back up towards About hides the name again');
     });
   }
 
@@ -510,7 +533,7 @@ try {
     await page.keyboard.press('Enter');
     await page.waitForFunction(() => scrollY < 1 && document.activeElement.id === 'intro');
     assert.equal((await page.locator('.intro-text').boundingBox()).x, 24, 'About stays left aligned on wide screens');
-    await page.locator('#home-link').click();
+    await page.keyboard.press('Escape');
     await waitForHomeWall(page);
     await page.evaluate(() => {
       scrollTo({ top: 0, behavior: 'instant' });
@@ -736,8 +759,10 @@ try {
       assert.deepEqual(await page.locator('#project-filters [aria-pressed="true"]').evaluateAll(buttons => buttons.map(button => button.dataset.filter)), ['community']);
       assert.deepEqual(await page.locator('.strip:not([hidden])').evaluateAll(strips => strips.map(strip => strip.dataset.project)), expected);
       await page.locator('.collection-home-link').click();
-      await waitForHomeWall(page);
+      await page.waitForFunction(() => document.body.dataset.route === 'home' && document.body.dataset.homeView === 'about' && scrollY < 1);
       assert.equal(await page.locator('#project-filters [aria-pressed="false"]').count(), 0, 'project filters do not change the homepage selection');
+      await page.evaluate(() => scrollTo({ top: document.getElementById('collection').getBoundingClientRect().top + scrollY, behavior: 'instant' }));
+      await waitForHomeWall(page);
       await checkFooter(page);
     });
   }
@@ -776,11 +801,10 @@ try {
       await page.waitForFunction(() => document.documentElement.dataset.project === 'lyra');
       await page.locator('#collection').evaluate(collection => collection.scrollIntoView({ block: 'start' }));
       await page.locator('.collection-home-link').click();
-      await waitForHomeWall(page);
+      await page.waitForFunction(() => document.body.dataset.route === 'home' && document.body.dataset.homeView === 'about' && scrollY < 1);
       assert.equal(new URL(page.url()).pathname, `${prefix}/`);
       assert.equal(new URL(page.url()).hash, '');
       assert.equal(await page.evaluate(() => document.activeElement.id), 'home-title');
-      await checkFooter(page);
       await page.goBack();
       await page.waitForFunction(() => document.documentElement.dataset.project === 'lyra' && scrollY < 1);
       assert.equal(await page.evaluate(() => document.activeElement.className), 'project-title', 'Back shows the project itself, not its wall');
@@ -810,7 +834,8 @@ try {
         const wall = await page.locator('#strips').boundingBox();
         const image = page.locator('.strip:not([hidden]) .strip-image').first();
         await page.mouse.move(wall.x + 10, wall.y + wall.height / 2);
-        assert.equal(await cornerName(page), await image.locator('..').locator('..').getAttribute('aria-label'), 'hover puts the project name in the corner on both home and project pages');
+        assert.equal(await caption(page), await image.locator('..').locator('..').getAttribute('aria-label'), 'hover names the project bottom left on both home and project pages');
+        assert.equal((await page.locator('#strip-caption').boundingBox()).x, wall.x, 'the caption sits in the bottom-left corner');
         await page.waitForFunction(() => parseFloat(getComputedStyle(document.querySelector('.strip:not([hidden]) .strip-image')).objectPosition) < 10);
         await page.mouse.move(wall.x + wall.width - 10, wall.y + wall.height / 2);
         await page.waitForFunction(() => parseFloat(getComputedStyle(document.querySelector('.strip:not([hidden]) .strip-image')).objectPosition) > 90);
@@ -946,15 +971,15 @@ try {
       assert.ok((await strip.boundingBox()).width > width * 4, 'hover expands before download completes');
       assert.equal(await renderedHeight(), initialHeight, 'preview stays at the same scale while the strip opens');
       assert.equal(await strip.getAttribute('aria-label'), 'Society Expo');
-      assert.equal(await cornerName(page), 'Society Expo');
+      assert.equal(await caption(page), 'Society Expo');
       await page.mouse.move(0, 0);
-      assert.equal(await cornerName(page), 'Jonas Johansson', 'the corner returns to the name when leaving the strips');
+      assert.equal(await caption(page), '', 'the caption clears when leaving the strips');
       await strip.focus();
-      assert.equal(await cornerName(page), 'Society Expo', 'keyboard focus also puts the title in the corner');
+      assert.equal(await caption(page), 'Society Expo', 'keyboard focus also names the project');
       await page.keyboard.press('Tab');
       await page.waitForTimeout(350);
       assert.ok((await page.locator('.strip:focus-visible').boundingBox()).width > width * 4, 'keyboard focus expands before download completes');
-      assert.equal(await cornerName(page), await page.locator('.strip:focus-visible').getAttribute('aria-label'));
+      assert.equal(await caption(page), await page.locator('.strip:focus-visible').getAttribute('aria-label'));
       await checkFooter(page);
     } finally {
       release();

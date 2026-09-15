@@ -24,8 +24,8 @@ function render() {
   previousWallTop = homeScrollTop();
   atWall = scrollY >= previousWallTop - 1;
   document.body.dataset.homeView = atWall ? 'projects' : 'about';
-  toggle.hash = atWall ? '#about' : '';
-  toggle.setAttribute('aria-label', `${toggle.dataset.title || toggle.textContent}, ${atWall ? 'About' : 'Projects'}`);
+  toggle.hash = atWall ? '' : '#collection';
+  toggle.setAttribute('aria-label', `${toggle.textContent}, ${atWall ? 'About' : 'Projects'}`);
   toggle.setAttribute('aria-controls', atWall ? 'intro' : 'collection');
   if (focusTarget && Math.abs(scrollY - homeScrollTop(focusTarget === intro ? 'about' : 'projects')) < 1) {
     focusTarget.focus({ preventScroll: true });
@@ -74,7 +74,8 @@ export function initializeHome() {
   }).observe(intro);
   updateHome(document.documentElement.dataset.project);
   if (isHome()) {
-    scrollTo({ top: homeScrollTop(['#about', '#intro'].includes(location.hash) ? 'about' : 'projects'), behavior: 'instant' });
+    // The landing page opens on About; #collection opens straight on the wall.
+    scrollTo({ top: homeScrollTop(location.hash === '#collection' ? 'projects' : 'about'), behavior: 'instant' });
     render();
   }
 }

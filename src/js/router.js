@@ -140,7 +140,8 @@ class Router {
           focus.focus({ preventScroll: true });
         }
       }
-      else if (!project) scrollTo({ top: homeScrollTop(['#about', '#intro'].includes(url.hash) ? 'about' : 'projects'), behavior: 'instant' });
+      // Home opens on About, unless the link returns to the projects wall.
+      else if (!project) scrollTo({ top: homeScrollTop(options.returnToCollection || url.hash === '#collection' ? 'projects' : 'about'), behavior: 'instant' });
       else if (url.hash === '#collection') {
         (focus.classList.contains('strip') ? focus : document.getElementById('collection')).scrollIntoView({ block: 'start' });
       } else scrollTo({ top: 0, behavior: 'instant' });

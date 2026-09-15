@@ -35,5 +35,5 @@ body[data-route="home"] .collection-header { display: none; }
   .enhanced .home-header { margin-bottom: 0; }
   .enhanced .collection-header { position: static; height: auto; }
   .enhanced .intro-links { margin-top: 0; height: calc(var(--footer-height) + var(--page-gutter)); padding-bottom: var(--page-gutter); }
-  .home-header h1, .header-contacts, .collection-home-link, .project-filters { background: none; }
+  .home-header h1, .header-contacts, .collection-home-link, .project-filters, .strip-caption { background: none; }
 }
