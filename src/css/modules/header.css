@@ -25,9 +25,8 @@
 }
 
 @media (hover: none) {
-  /* Phones: the project title sits above the hero, left aligned with the page. */
-  #header { position: static; transform: none; width: auto; max-width: none; padding: var(--page-gutter) var(--page-gutter) 0; border-radius: 0; background: none; text-align: left; }
-  .header-subtitle { padding: 0; }
+  /* Phones show no project title; the hero opens the page instead. */
+  #header { display: none; }
 }
 
 .home-header { background: var(--bg-primary); color: var(--text-primary); font-size: var(--font-size-ui); line-height: 1; letter-spacing: var(--letter-spacing-caps); text-transform: uppercase; }

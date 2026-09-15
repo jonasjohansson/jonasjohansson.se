@@ -77,9 +77,11 @@ async function checkFooter(page) {
   if (touch) assert.ok(Math.abs(contactRow.y + contactRow.height - wall.y) < 1, 'on phones the header sits directly above the strips');
   else assert.ok(contactRow.y <= wall.y + 1 && contactRow.y + contactRow.height > wall.y, 'the header floats over the top of the strips');
   if (!home) {
-    const title = await page.locator('#header-toggle').boundingBox();
-    if (touch) assert.equal(title.x, wall.x, 'on phones the project title is left aligned with the page');
-    else assert.ok(Math.abs(title.x + title.width / 2 - page.viewportSize().width / 2) < 1, 'project title remains centered');
+    if (touch) assert.equal(await page.locator('#header').isVisible(), false, 'phones show no project title');
+    else {
+      const title = await page.locator('#header-toggle').boundingBox();
+      assert.ok(Math.abs(title.x + title.width / 2 - page.viewportSize().width / 2) < 1, 'project title remains centered');
+    }
     assert.equal(await page.locator('#header .header-contacts').count(), 0, 'project hero header contains only the title');
   }
   await contacts.evaluate(nav => { nav.scrollLeft = nav.scrollWidth; });
@@ -204,8 +206,7 @@ try {
         hero: document.querySelector('.hero').getBoundingClientRect().top,
         gutter: parseFloat(getComputedStyle(document.getElementById('content')).paddingTop),
         floatingTitle: document.getElementById('header-toggle').textContent.trim(),
-        titleAbove: matchMedia('(hover: none)').matches,
-        titleBottom: document.getElementById('header').getBoundingClientRect().bottom,
+        touch: matchMedia('(hover: none)').matches,
         alt: document.querySelector('.hero img')?.alt || document.querySelector('.hero video')?.getAttribute('aria-label'),
         videoControls: [...document.querySelectorAll('#projects video')].every(video => !video.controls && video.getAttribute('aria-hidden') !== 'true' && (video.closest('.hero') || video.nextElementSibling?.matches('button.media-controls-reveal:not([hidden])'))),
         creditsAligned: [...document.querySelectorAll('.credits-list')].every(list => getComputedStyle(list).textAlign === 'left'),
@@ -220,8 +221,8 @@ try {
       assert.equal(state.zero, false, `${slug} has collapsed media`);
       assert.ok(state.alt.length > 15, `${slug} hero description`);
       assert.ok(state.title.endsWith(' | Jonas Johansson'), `${slug} document title`);
-      // Phones set the title above the hero; elsewhere it floats over the hero's top edge.
-      assert.ok(Math.abs(state.hero - (state.titleAbove ? state.titleBottom + state.gutter : state.gutter)) < 1, `${slug} hero starts at ${state.hero}`);
+      // Phones open on the hero, flush with the top of the screen; elsewhere it starts one gutter down.
+      assert.ok(Math.abs(state.hero - (state.touch ? 0 : state.gutter)) < 1, `${slug} hero starts at ${state.hero}`);
       assert.equal(state.title, `${state.floatingTitle} | Jonas Johansson`, `${slug} floating title`);
       assert.equal(state.videoControls, true, `${slug} video controls`);
       assert.equal(state.creditsAligned, true, `${slug} credits alignment`);
@@ -240,8 +241,10 @@ try {
         await visit(page, `/${slug}/`);
         const hero = await page.locator('.hero').boundingBox();
         const media = await page.locator('.hero img, .hero video').boundingBox();
-        assert.equal(hero.x, 24, `${slug} hero starts at the page gutter`);
-        assert.ok(Math.abs(hero.width - (options.viewport.width - 48)) < 1, `${slug} hero uses the full content width`);
+        // Phones run the hero edge to edge; elsewhere it sits inside the page gutter.
+        const inset = options.hasTouch ? 0 : 24;
+        assert.equal(hero.x, inset, `${slug} hero starts at ${inset ? 'the page gutter' : 'the screen edge'}`);
+        assert.ok(Math.abs(hero.width - (options.viewport.width - 2 * inset)) < 1, `${slug} hero uses the full ${inset ? 'content' : 'screen'} width`);
         assert.equal(media.width, hero.width, `${slug} image or video fills the hero frame`);
         const fittedWidth = await page.locator('.hero').evaluate(hero => {
           if (!hero.classList.contains('hero-contain')) return hero.clientWidth;
@@ -314,7 +317,8 @@ try {
       await visit(page, '/jagad/');
       const wall = await page.locator('#strips').boundingBox();
       assert.equal(wall.x, 24);
-      assert.equal(wall.x, (await page.locator('.hero').boundingBox()).x, 'strips share the project media gutter');
+      // Phones run the hero edge to edge, so there the strips keep the page gutter instead.
+      assert.equal(wall.x, options.hasTouch ? 24 : (await page.locator('.hero').boundingBox()).x, 'strips share the project media gutter');
       assert.equal(wall.width, options.viewport.width - 48);
       if (options.hasTouch) assert.equal(wall.height, options.viewport.height - 48 - (await page.locator('#collection-header').boundingBox()).height - (await page.locator('#intro-links').boundingBox()).height + 24, 'on phones the wall fills what the header, categories and gutters leave');
       else assert.equal(wall.height, options.viewport.height - 48, 'the wall keeps the page gutter above and below');
@@ -384,9 +388,12 @@ try {
           return { hero: { x: hero.x, width: hero.width }, images: images.map(image => { const r = image.getBoundingClientRect(); return { x: r.x, width: r.width }; }) };
         });
         assert.ok(geometry.images.length > 0, `${slug} has gallery media to check`);
+        // Phones keep the gallery inside the page gutter while the hero runs edge to edge.
+        const inset = options.hasTouch ? 24 : geometry.hero.x;
+        const width = options.hasTouch ? options.viewport.width - 48 : geometry.hero.width;
         for (const image of geometry.images) {
-          assert.ok(Math.abs(image.x - geometry.hero.x) < 1, `${slug} gallery starts at the hero's left edge`);
-          assert.ok(Math.abs(image.width - geometry.hero.width) < 1, `${slug} gallery uses the hero's width`);
+          assert.ok(Math.abs(image.x - inset) < 1, `${slug} gallery starts at ${options.hasTouch ? 'the page gutter' : "the hero's left edge"}`);
+          assert.ok(Math.abs(image.width - width) < 1, `${slug} gallery uses ${options.hasTouch ? 'the content width' : "the hero's width"}`);
         }
       }
     });
@@ -779,9 +786,15 @@ try {
       const slug = await first.getAttribute('data-project');
       await first.evaluate(link => link.click());
       await page.waitForFunction(slug => document.documentElement.dataset.project === slug, slug);
-      await page.locator('#header-toggle').click();
+      if (options.hasTouch) {
+        // Phones show no project title; the name above the project's strips leads home.
+        await page.locator('#collection').evaluate(collection => collection.scrollIntoView({ block: 'start' }));
+        await page.locator('.collection-home-link').click();
+        await page.waitForFunction(() => document.body.dataset.route === 'home');
+        await page.evaluate(() => scrollTo({ top: document.getElementById('collection').getBoundingClientRect().top + scrollY, behavior: 'instant' }));
+      } else await page.locator('#header-toggle').click();
       await waitForHomeWall(page);
-      assert.deepEqual(await pressed(), allTags, 'the project title returns to the landing page with every category on');
+      assert.deepEqual(await pressed(), allTags, 'leaving the project for the landing page turns every category on');
       assert.equal(await yearSelect.inputValue(), '', 'and no year');
       await yearSelect.selectOption('2024');
       await page.locator('#strips .strip:not([hidden])').first().evaluate(link => link.click());
@@ -816,6 +829,10 @@ try {
   for (const [name, options] of [['desktop', desktop], ['mobile', mobile]]) {
     await check(`${name} returns from a direct project to the full wall`, options, async page => {
       await visit(page, '/lyra/');
+      if (options.hasTouch) {
+        assert.equal(await page.locator('#header-toggle').isVisible(), false, 'phones show no project title to return with');
+        return;
+      }
       await page.locator('#header-toggle').click();
       await waitForHomeWall(page);
       assert.equal(new URL(page.url()).hash, '', 'return links use the clean homepage URL');

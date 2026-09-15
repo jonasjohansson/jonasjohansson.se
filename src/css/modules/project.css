@@ -481,6 +481,15 @@ html[data-theme="dark"] .text-block a {
   }
 }
 
+/* Phones: the hero runs edge to edge from the top of the screen, without the page gutter. */
+@media (hover: none) {
+  body[data-route="project"] #content { padding-top: 0; }
+  .project-grid > .media-item.hero { width: calc(100% + 2 * var(--page-gutter)); margin-inline: calc(-1 * var(--page-gutter)); border-radius: 0; }
+}
+@media (hover: none) and (max-width: 768px) {
+  .project-grid > .media-item.hero { height: min(85svh, calc(100vw / var(--mobile-ar, var(--ar)))); }
+}
+
 /* Uncropped heroes fill the width by sizing their frame to the image itself. */
 .project-grid > .hero.hero-contain { height: auto; min-height: 0; max-height: none; aspect-ratio: var(--ar); }
 .project-grid > .hero.hero-contain :is(img, video) { object-fit: contain; }
