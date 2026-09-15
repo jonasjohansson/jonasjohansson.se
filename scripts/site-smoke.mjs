@@ -74,7 +74,8 @@ async function checkFooter(page) {
   else assert.ok(contactRow.y <= wall.y + 1 && contactRow.y + contactRow.height > wall.y, 'the header floats over the top of the strips');
   if (!home) {
     const title = await page.locator('#header-toggle').boundingBox();
-    assert.ok(Math.abs(title.x + title.width / 2 - page.viewportSize().width / 2) < 1, 'project title remains centered');
+    if (touch) assert.equal(title.x, wall.x, 'on phones the project title is left aligned with the page');
+    else assert.ok(Math.abs(title.x + title.width / 2 - page.viewportSize().width / 2) < 1, 'project title remains centered');
     assert.equal(await page.locator('#header .header-contacts').count(), 0, 'project hero header contains only the title');
   }
   await contacts.evaluate(nav => { nav.scrollLeft = nav.scrollWidth; });
@@ -199,6 +200,8 @@ try {
         hero: document.querySelector('.hero').getBoundingClientRect().top,
         gutter: parseFloat(getComputedStyle(document.getElementById('content')).paddingTop),
         floatingTitle: document.getElementById('header-toggle').textContent.trim(),
+        titleAbove: matchMedia('(hover: none)').matches,
+        titleBottom: document.getElementById('header').getBoundingClientRect().bottom,
         alt: document.querySelector('.hero img')?.alt || document.querySelector('.hero video')?.getAttribute('aria-label'),
         videoControls: [...document.querySelectorAll('#projects video')].every(video => !video.controls && video.getAttribute('aria-hidden') !== 'true' && (video.closest('.hero') || video.nextElementSibling?.matches('button.media-controls-reveal:not([hidden])'))),
         creditsAligned: [...document.querySelectorAll('.credits-list')].every(list => getComputedStyle(list).textAlign === 'left'),
@@ -213,7 +216,8 @@ try {
       assert.equal(state.zero, false, `${slug} has collapsed media`);
       assert.ok(state.alt.length > 15, `${slug} hero description`);
       assert.ok(state.title.endsWith(' | Jonas Johansson'), `${slug} document title`);
-      assert.ok(Math.abs(state.hero - state.gutter) < 1, `${slug} hero starts at ${state.hero}`);
+      // Phones set the title above the hero; elsewhere it floats over the hero's top edge.
+      assert.ok(Math.abs(state.hero - (state.titleAbove ? state.titleBottom + state.gutter : state.gutter)) < 1, `${slug} hero starts at ${state.hero}`);
       assert.equal(state.title, `${state.floatingTitle} | Jonas Johansson`, `${slug} floating title`);
       assert.equal(state.videoControls, true, `${slug} video controls`);
       assert.equal(state.creditsAligned, true, `${slug} credits alignment`);

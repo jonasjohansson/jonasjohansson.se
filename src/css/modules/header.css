@@ -24,6 +24,12 @@
   border-radius: inherit;
 }
 
+@media (hover: none) {
+  /* Phones: the project title sits above the hero, left aligned with the page. */
+  #header { position: static; transform: none; width: auto; max-width: none; padding: var(--page-gutter) var(--page-gutter) 0; border-radius: 0; background: none; text-align: left; }
+  .header-subtitle { padding: 0; }
+}
+
 .home-header { background: var(--bg-primary); color: var(--text-primary); font-size: var(--font-size-ui); line-height: 1; letter-spacing: var(--letter-spacing-caps); text-transform: uppercase; }
 .home-header-row { display: flex; justify-content: space-between; align-items: flex-start; column-gap: var(--spacing-md); height: var(--home-header-height); }
 .home-header h1, .header-contacts, .collection-home-link, .project-filters { display: flex; align-items: center; box-sizing: border-box; padding: var(--chrome-pad); background: var(--bg-primary); font-size: var(--font-size-ui); line-height: 1.2; }
