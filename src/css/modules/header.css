@@ -65,11 +65,18 @@ body[data-home-view="about"] #home-title:not(:has(:focus-visible)) { opacity: 0;
   .home-header-row, .collection-header { flex-wrap: wrap; align-content: flex-start; row-gap: 0; }
   .header-contacts { margin-left: auto; max-width: 100%; }
 }
-@media (hover: none) and (min-width: 400px) {
-  /* Phones this wide fit the name and contacts (no Print) on one row, so the
-     home header keeps a single row instead of reserving space for a second. */
-  :root { --home-header-height: var(--corner-block); }
+@media (hover: none) {
+  /* Phones: the name, contacts and category rows are one line of text plus the
+     block padding, so the wall has the same gap above and below. Narrow phones
+     reserve two rows for the wrapped contacts. */
+  :root { --phone-row: 1.8125rem; --footer-height: var(--phone-row); --home-header-height: calc(2 * var(--phone-row)); }
 }
+@media (hover: none) and (min-width: 400px) {
+  /* Phones this wide fit the name and contacts (no Print) on one row. */
+  :root { --home-header-height: var(--phone-row); }
+}
+/* Phones scrub the strips open under a finger, so they show no caption. */
+@media (hover: none) { .strip-caption { display: none; } }
 @media (hover: none) {
   /* If the row wraps anyway, it grows rather than overlapping the wall. */
   .home-header-row { height: auto; min-height: var(--home-header-height); }

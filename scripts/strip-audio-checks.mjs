@@ -176,6 +176,7 @@ export async function checkStripAudio({ check, visit, desktop, mobile }) {
     }
     const last = await page.locator('#strips .strip.is-active').getAttribute('id');
     assert.notEqual(last, first, 'the open strip follows the finger');
+    assert.equal(await page.locator('#strip-caption').isVisible(), false, 'phones show no strip caption while scrubbing');
     await page.waitForFunction(() => window.__stripSound.notes.length >= 4, null, { timeout: 5000 });
     await cdp.send('Input.dispatchTouchEvent', { type: 'touchEnd', touchPoints: [] });
     await page.waitForTimeout(300);
