@@ -44,6 +44,13 @@ async function visit(page, route = '/') {
   if (route === '/') await waitForHomeWall(page);
 }
 
+// Phones open a strip with the first tap, naming it, and enter with the second.
+async function openStrip(page, strip, via = 'tap') {
+  const once = () => via === 'dispatch' ? strip.evaluate(link => link.click()) : via === 'click' ? strip.click() : strip.tap();
+  await once();
+  if (await page.evaluate(() => matchMedia('(hover: none)').matches)) await once();
+}
+
 async function waitForHomeWall(page) {
   await page.waitForFunction(() => document.body.dataset.route === 'home' && document.body.dataset.homeView === 'projects' && Math.abs(document.getElementById('intro-links').getBoundingClientRect().bottom - innerHeight) < 1);
 }
@@ -362,6 +369,24 @@ try {
     });
   }
 
+  await check('phone taps open a strip and name it before entering the project', mobile, async page => {
+    await visit(page);
+    const first = page.locator('#strip-harpa');
+    const second = page.locator('#strip-jagad');
+    await first.tap();
+    assert.equal(await page.evaluate(() => document.documentElement.dataset.project), undefined, 'the first tap does not open the project');
+    assert.equal(await first.evaluate(strip => strip.classList.contains('is-active')), true, 'the tapped strip opens');
+    assert.equal(await caption(page), 'Harpa', 'the open strip is named');
+    const openWidth = (await first.boundingBox()).width;
+    assert.ok(openWidth > (await second.boundingBox()).width * 2, 'the open strip is clearly wider than the rest');
+    await second.tap();
+    assert.equal(await page.evaluate(() => document.documentElement.dataset.project), undefined, 'tapping another strip moves the opening, it does not navigate');
+    assert.equal(await caption(page), 'Jagad', 'the caption follows the open strip');
+    assert.equal(await first.evaluate(strip => strip.classList.contains('is-active')), false, 'only one strip stays open');
+    await second.tap();
+    await page.waitForFunction(() => document.documentElement.dataset.project === 'jagad');
+  });
+
   await check('scroll up reaches About without fading or resizing the strips', desktop, async page => {
     await visit(page);
     const height = (await page.locator('#strips').boundingBox()).height;
@@ -602,7 +627,7 @@ try {
       const expected = await visibleSlugs();
       const chosen = page.locator('.strip:not([hidden])').first();
       const id = await chosen.getAttribute('id');
-      await chosen.click();
+      await openStrip(page, chosen, 'click');
       await page.waitForSelector('#projects .project');
       assert.equal(await page.locator('.strip:not([hidden])').count(), projects.length - 1, 'project pages show all other projects');
       await page.goBack();
@@ -699,7 +724,7 @@ try {
       await checkFooter(page);
       await page.screenshot({ path: `${output}/year-filter-${name}.png` });
       const chosen = expected('2023')[0];
-      await page.locator(`#strip-${chosen}`).click();
+      await openStrip(page, page.locator(`#strip-${chosen}`), 'click');
       await page.waitForSelector(`#projects [data-project="${chosen}"]`);
       await page.locator('#collection').evaluate(collection => collection.scrollIntoView({ block: 'start' }));
       assert.equal(await yearSelect.inputValue(), '', 'new project walls start with all years');
@@ -758,7 +783,7 @@ try {
       assert.equal(await page.locator('#strip-society-expo').isVisible(), false, 'open project stays excluded');
       await page.waitForFunction(() => Math.abs(document.getElementById('collection').getBoundingClientRect().top) < 1);
       await checkFooter(page);
-      await page.locator('.strip:not([hidden])').first().click();
+      await openStrip(page, page.locator('.strip:not([hidden])').first(), 'click');
       await page.waitForFunction(() => document.documentElement.dataset.project !== 'society-expo');
       await page.goBack();
       await page.waitForFunction(() => document.documentElement.dataset.project === 'society-expo');
@@ -784,7 +809,7 @@ try {
       assert.deepEqual(await pressed(), ['light'], 'a single category is selected');
       const first = page.locator('#strips .strip:not([hidden])').first();
       const slug = await first.getAttribute('data-project');
-      await first.evaluate(link => link.click());
+      await openStrip(page, first, 'dispatch');
       await page.waitForFunction(slug => document.documentElement.dataset.project === slug, slug);
       if (options.hasTouch) {
         // Phones show no project title; the name above the project's strips leads home.
@@ -797,7 +822,7 @@ try {
       assert.deepEqual(await pressed(), allTags, 'leaving the project for the landing page turns every category on');
       assert.equal(await yearSelect.inputValue(), '', 'and no year');
       await yearSelect.selectOption('2024');
-      await page.locator('#strips .strip:not([hidden])').first().evaluate(link => link.click());
+      await openStrip(page, page.locator('#strips .strip:not([hidden])').first(), 'dispatch');
       await page.waitForFunction(() => !!document.documentElement.dataset.project);
       await page.goBack();
       await waitForHomeWall(page);
@@ -810,7 +835,7 @@ try {
       await page.waitForFunction(() => scrollY < 1 && document.body.dataset.homeView === 'about');
       // Enter with About still open, without Playwright scrolling the home
       // wall into view first. This used to save About as the name-link target.
-      await page.locator('#strip-lyra').evaluate(link => link.click());
+      await openStrip(page, page.locator('#strip-lyra'), 'dispatch');
       await page.waitForFunction(() => document.documentElement.dataset.project === 'lyra');
       await page.locator('#collection').evaluate(collection => collection.scrollIntoView({ block: 'start' }));
       await page.locator('.collection-home-link').click();
@@ -1063,7 +1088,7 @@ try {
       const downloads = [];
       page.on('request', request => { if (/room-mix-.*\.mp3$/.test(request.url())) downloads.push(request.url()); });
       await visit(page);
-      await page.locator('#strip-borderlan').click();
+      await openStrip(page, page.locator('#strip-borderlan'), 'click');
       await page.waitForSelector('#projects #borderlan');
       const samples = page.locator('#projects audio');
       assert.equal(await samples.count(), 3);
@@ -1139,7 +1164,7 @@ try {
 
   await check('mobile video controls respect reduced motion and client navigation', { ...mobile, reducedMotion: 'reduce' }, async page => {
     await visit(page);
-    await page.locator('#strip-kagora').tap();
+    await openStrip(page, page.locator('#strip-kagora'));
     await page.waitForSelector('#projects #kagora');
     const video = page.locator('#projects video').first();
     const reveal = page.getByRole('button', { name: /^Show video controls:/ }).first();
@@ -1149,7 +1174,7 @@ try {
     assert.equal(await video.evaluate(video => video.controls && video.paused), true, 'revealing controls does not autoplay with reduced motion');
     await page.goBack();
     await page.waitForFunction(() => document.body.dataset.route === 'home');
-    await page.locator('#strip-kagora').tap();
+    await openStrip(page, page.locator('#strip-kagora'));
     await page.waitForSelector('#projects #kagora');
     assert.equal(await page.locator('#projects .media-controls-reveal').count(), 1, 'remount does not duplicate the tap target');
     assert.equal(await video.evaluate(video => video.paused && !video.controls), true, 'returning starts with controls hidden');
@@ -1198,7 +1223,7 @@ try {
     const posterHash = poster.match(/\/([^/]+)-\d+\.webp$/)[1];
     assert.ok((await strip.locator('img').getAttribute('src')).includes(posterHash));
     assert.equal(await strip.locator('video').count(), 0);
-    await strip.tap();
+    await openStrip(page, strip);
     await page.waitForSelector('#projects #vi-kommer-i-fred');
     assert.equal(await hero.getAttribute('poster'), poster);
     assert.equal(await hero.evaluate(video => video.paused && !video.controls), true);
@@ -1224,7 +1249,7 @@ try {
     const id = await chosen.getAttribute('id');
     const y = await page.evaluate(() => scrollY);
     const x = await page.locator('#strips').evaluate(strips => strips.scrollLeft);
-    await chosen.tap(); await page.waitForSelector('#projects .project');
+    await openStrip(page, chosen); await page.waitForSelector('#projects .project');
     assert.ok(await page.locator('#strips img').count() > 0);
     await page.goBack(); await page.waitForFunction(() => document.body.dataset.route === 'home');
     assert.ok(await page.locator('#strips img').count() > 0);
@@ -1320,7 +1345,7 @@ try {
 
   await check('mobile project media stays lazy', mobile, async page => {
     await visit(page);
-    await page.locator('#strip-klattermusen').tap();
+    await openStrip(page, page.locator('#strip-klattermusen'));
     await page.waitForSelector('#projects #klattermusen');
     await page.waitForTimeout(300);
     const bodyImages = page.locator('#projects .media-item:not(.hero) img');

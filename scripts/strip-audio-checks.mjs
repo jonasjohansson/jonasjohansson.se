@@ -132,14 +132,23 @@ export async function checkStripAudio({ check, visit, desktop, mobile }) {
   await check('touch strip taps play Mario once without blocking project navigation', mobile, async page => {
     await observeAudio(page);
     await visit(page);
-    await page.locator('#strip-klattermusen').tap();
-    await page.waitForSelector('#projects #klattermusen');
-    await page.waitForFunction(() => window.__stripSound.notes.length === 2);
+    // Phones open a strip with the first tap and enter it with the second.
+    const strip = page.locator('#strip-klattermusen');
+    await strip.tap();
+    await page.waitForFunction(() => window.__stripSound.notes.length >= 1);
     assert.equal(await page.evaluate(() => window.__stripSound.notes[0]), 659.25, 'the first tap plays the first note');
+    assert.equal(await page.evaluate(() => document.documentElement.dataset.project), undefined, 'the first tap only opens the strip');
+    const opened = await page.evaluate(() => window.__stripSound.notes.length);
+    await strip.tap();
+    await page.waitForSelector('#projects #klattermusen');
+    assert.ok(await page.evaluate(() => window.__stripSound.notes.length) > opened, 'entering the project plays the next note');
     await page.waitForFunction(() => window.__stripSound.active === 0);
     await page.locator('#collection').evaluate(collection => collection.scrollIntoView({ block: 'start' }));
-    await page.locator('#strips .strip:not([hidden])').first().tap();
-    await page.waitForFunction(() => window.__stripSound.notes.length === 4);
+    const next = page.locator('#strips .strip:not([hidden])').first();
+    const before = await page.evaluate(() => window.__stripSound.notes.length);
+    await next.tap();
+    await next.tap();
+    await page.waitForFunction(count => window.__stripSound.notes.length > count, before);
     await page.waitForFunction(() => document.documentElement.dataset.project !== 'klattermusen');
   });
 
@@ -176,7 +185,7 @@ export async function checkStripAudio({ check, visit, desktop, mobile }) {
     }
     const last = await page.locator('#strips .strip.is-active').getAttribute('id');
     assert.notEqual(last, first, 'the open strip follows the finger');
-    assert.equal(await page.locator('#strip-caption').isVisible(), false, 'phones show no strip caption while scrubbing');
+    assert.equal(await page.locator('#strip-caption').textContent(), await page.locator('#strips .strip.is-active').getAttribute('aria-label'), 'the caption names the strip under the finger');
     await page.waitForFunction(() => window.__stripSound.notes.length >= 4, null, { timeout: 5000 });
     await cdp.send('Input.dispatchTouchEvent', { type: 'touchEnd', touchPoints: [] });
     await page.waitForTimeout(300);

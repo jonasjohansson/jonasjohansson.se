@@ -180,6 +180,16 @@ function bindTouchScrub(wall, signal) {
     const strip = stripAt(touch.clientX, touch.clientY);
     if (strip) setActive(strip);
   }, { signal, passive: false });
+  // Phones cannot hover, so a 44px strip gives no clue what it is. The first
+  // tap opens that strip and names it in the caption; tapping the open strip
+  // again enters the project. Holding still scrubs through the wall.
+  wall.addEventListener('click', event => {
+    if (matchMedia('(hover: hover)').matches) return;
+    const strip = event.target.closest('.strip:not([hidden])');
+    if (!strip || !wall.contains(strip) || strip === active) return;
+    event.preventDefault();
+    setActive(strip);
+  }, { signal });
   wall.addEventListener('contextmenu', event => { if (timer !== null || scrubbing) event.preventDefault(); }, { signal });
   wall.addEventListener('touchend', end, { signal });
   wall.addEventListener('touchcancel', () => { end(); setActive(null); }, { signal });
