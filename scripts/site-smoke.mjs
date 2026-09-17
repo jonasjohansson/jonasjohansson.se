@@ -44,21 +44,34 @@ async function visit(page, route = '/') {
   if (route === '/') await waitForHomeWall(page);
 }
 
-// Phones open a strip with the first tap, naming it, and enter with the second.
+// Phones open a project from its card with one tap, like a click on the wall.
 async function openStrip(page, strip, via = 'tap') {
-  const once = () => via === 'dispatch' ? strip.evaluate(link => link.click()) : via === 'click' ? strip.click() : strip.tap();
-  await once();
-  if (await page.evaluate(() => matchMedia('(hover: none)').matches)) await once();
+  if (via === 'dispatch') return strip.evaluate(link => link.click());
+  if (via === 'click') return strip.click();
+  return strip.tap();
 }
 
 async function waitForHomeWall(page) {
-  await page.waitForFunction(() => document.body.dataset.route === 'home' && document.body.dataset.homeView === 'projects' && Math.abs(document.getElementById('intro-links').getBoundingClientRect().bottom - innerHeight) < 1);
+  await page.waitForFunction(() => {
+    if (document.body.dataset.route !== 'home' || document.body.dataset.homeView !== 'projects') return false;
+    const footer = document.getElementById('intro-links');
+    // Phones scroll a card list and show no footer; the wall pins its footer to the foot of the screen.
+    if (getComputedStyle(footer).display === 'none') return true;
+    return Math.abs(footer.getBoundingClientRect().bottom - innerHeight) < 1;
+  });
 }
 
 // The bottom-left caption names the hovered project.
 const caption = page => page.locator('#strip-caption').evaluate(caption => caption.hidden ? '' : caption.textContent);
 
 async function checkFooter(page) {
+  // Phones list cards instead of a wall: no filter footer, no categories, no caption.
+  if (await page.evaluate(() => matchMedia('(hover: none)').matches)) {
+    assert.equal(await page.locator('#intro-links').isVisible(), false, 'phones show no filter footer');
+    assert.equal(await page.locator('#project-filters').isVisible(), false, 'phones show no categories');
+    assert.equal(await page.locator('#strip-caption').isVisible(), false, 'phones show no strip caption');
+    return;
+  }
   const footer = await page.locator('#intro-links').boundingBox();
   const wall = await page.locator('#strips').boundingBox();
   const touch = await page.evaluate(() => matchMedia('(hover: none)').matches);
@@ -275,7 +288,7 @@ try {
     ['touch landscape', { ...mobile, viewport: { width: 844, height: 390 } }],
     ['touch tablet', { ...mobile, viewport: { width: 1024, height: 768 } }],
   ]) {
-    await check(`${name} wall sits below About`, options, async page => {
+    await check(`${name} projects sit below About`, options, async page => {
       await visit(page);
       const wall = await page.locator('#strips').boundingBox();
       const header = await page.locator('#home-header').boundingBox();
@@ -288,11 +301,33 @@ try {
       assert.equal(await page.evaluate(() => document.documentElement.scrollWidth > innerWidth), false);
       const intro = await page.locator('#intro').boundingBox();
       assert.ok(intro.y < 0 && Math.abs(intro.y + intro.height - header.y) < 1, 'About is physically above the header and strips');
+      if (options.hasTouch) {
+        // Phones scroll a list of cards: a photograph with the project's name under it.
+        const list = await page.locator('.strip:not([hidden])').evaluateAll(strips => strips.map(strip => {
+          const rect = strip.getBoundingClientRect();
+          const picture = strip.querySelector('.strip-picture').getBoundingClientRect();
+          const title = strip.querySelector('.strip-title');
+          const project = window.__PROJECTS_DATA__.find(entry => entry.slug === strip.dataset.project);
+          return { width: rect.width, ratio: picture.width / picture.height, named: title.textContent.trim() === project.title,
+            shown: getComputedStyle(title).display !== 'none', under: title.getBoundingClientRect().top >= picture.bottom - 1 };
+        }));
+        assert.ok(list.length > 1, 'every project has a card');
+        assert.ok(list.every(card => Math.abs(card.width - wall.width) < 1), 'cards fill the content width');
+        assert.ok(list.every(card => Math.abs(card.ratio - 1.5) < 0.02), 'card images share one shape');
+        assert.ok(list.every(card => card.named && card.shown && card.under), 'each card names its project underneath the image');
+        await page.locator('#strips .strip:not([hidden])').first().scrollIntoViewIfNeeded();
+        await page.waitForFunction(() => {
+          const image = document.querySelector('#strips .strip:not([hidden]) img');
+          return image?.complete && image.naturalWidth > 0;
+        }, null, { timeout: 5000 }).catch(() => {});
+        await page.screenshot({ path: `${output}/${name.replaceAll(' ', '-')}-home-cards.png` });
+        return;
+      }
       const entries = await page.locator('.strip').evaluateAll(strips => strips.map(strip => ({
         width: strip.getBoundingClientRect().width,
         height: strip.getBoundingClientRect().height,
         named: strip.getAttribute('aria-label') === window.__PROJECTS_DATA__.find(project => project.slug === strip.dataset.project).title,
-        visibleText: strip.textContent.trim(),
+        visibleText: strip.innerText.trim(),
       })));
       // Touch strips are thin like desktop ones: the strip under a finger opens before the finger lifts.
       assert.ok(entries.every(entry => entry.width >= 8 && entry.height === wall.height && entry.named && entry.visibleText === ''));
@@ -324,17 +359,43 @@ try {
       await visit(page, '/jagad/');
       const wall = await page.locator('#strips').boundingBox();
       assert.equal(wall.x, 24);
-      // Phones run the hero edge to edge, so there the strips keep the page gutter instead.
-      assert.equal(wall.x, options.hasTouch ? 24 : (await page.locator('.hero').boundingBox()).x, 'strips share the project media gutter');
       assert.equal(wall.width, options.viewport.width - 48);
-      if (options.hasTouch) assert.equal(wall.height, options.viewport.height - 48 - (await page.locator('#collection-header').boundingBox()).height - (await page.locator('#intro-links').boundingBox()).height + 24, 'on phones the wall fills what the header, categories and gutters leave');
-      else assert.equal(wall.height, options.viewport.height - 48, 'the wall keeps the page gutter above and below');
       assert.ok((await page.locator('#projects').boundingBox()).y < wall.y);
+      assert.equal(await page.evaluate(() => document.documentElement.scrollWidth > innerWidth), false);
+      if (options.hasTouch) {
+        // Phones list the same cards under the project, below its content.
+        const cards = await page.locator('#strips .strip:not([hidden])').evaluateAll(strips => strips.map(strip => {
+          const rect = strip.getBoundingClientRect();
+          const picture = strip.querySelector('.strip-picture').getBoundingClientRect();
+          const title = strip.querySelector('.strip-title');
+          const project = window.__PROJECTS_DATA__.find(entry => entry.slug === strip.dataset.project);
+          return { slug: strip.dataset.project, width: rect.width, top: rect.top, bottom: rect.bottom,
+            ratio: picture.width / picture.height, named: title.textContent.trim() === project.title,
+            under: title.getBoundingClientRect().top >= picture.bottom - 1 };
+        }));
+        assert.ok(cards.length > 1, 'every other project has a card');
+        assert.ok(!cards.some(card => card.slug === 'jagad'), 'the open project has no card');
+        assert.ok(cards.every(card => Math.abs(card.width - wall.width) < 1), 'cards fill the content width');
+        assert.ok(cards.every(card => Math.abs(card.ratio - 1.5) < 0.02 && card.named && card.under), 'each card names its project underneath the image');
+        for (let index = 1; index < cards.length; index++) {
+          assert.ok(cards[index].top >= cards[index - 1].bottom - 1, 'cards stack down the page');
+        }
+        await checkFooter(page);
+        await page.locator('#strips .strip:not([hidden])').first().scrollIntoViewIfNeeded();
+        await page.waitForFunction(() => {
+          const image = document.querySelector('#strips .strip:not([hidden]) img');
+          return image?.complete && image.naturalWidth > 0;
+        }, null, { timeout: 5000 }).catch(() => {});
+        await page.screenshot({ path: `${output}/${name.replaceAll(' ', '-')}-project-cards.png` });
+        return;
+      }
+      assert.equal(wall.x, (await page.locator('.hero').boundingBox()).x, 'strips share the project media gutter');
+      assert.equal(wall.height, options.viewport.height - 48, 'the wall keeps the page gutter above and below');
       const rects = await page.locator('.strip:not([hidden])').evaluateAll(strips => strips.map(strip => {
         const rect = strip.getBoundingClientRect();
         return { x: rect.x, y: rect.y, width: rect.width, height: rect.height,
           named: strip.getAttribute('aria-label') === window.__PROJECTS_DATA__.find(project => project.slug === strip.dataset.project).title,
-          visibleText: strip.textContent.trim() };
+          visibleText: strip.innerText.trim() };
       }));
       assert.equal(await page.evaluate(() => document.documentElement.scrollWidth > innerWidth), false);
       assert.ok(rects.every(rect => rect.width >= 8 && rect.height === wall.height && rect.named && rect.visibleText === ''));
@@ -368,24 +429,6 @@ try {
       assert.equal(await opacity(), '0', 'scrolling back up towards About hides the name again');
     });
   }
-
-  await check('phone taps open a strip and name it before entering the project', mobile, async page => {
-    await visit(page);
-    const first = page.locator('#strip-harpa');
-    const second = page.locator('#strip-jagad');
-    await first.tap();
-    assert.equal(await page.evaluate(() => document.documentElement.dataset.project), undefined, 'the first tap does not open the project');
-    assert.equal(await first.evaluate(strip => strip.classList.contains('is-active')), true, 'the tapped strip opens');
-    assert.equal(await caption(page), 'Harpa', 'the open strip is named');
-    const openWidth = (await first.boundingBox()).width;
-    assert.ok(openWidth > (await second.boundingBox()).width * 2, 'the open strip is clearly wider than the rest');
-    await second.tap();
-    assert.equal(await page.evaluate(() => document.documentElement.dataset.project), undefined, 'tapping another strip moves the opening, it does not navigate');
-    assert.equal(await caption(page), 'Jagad', 'the caption follows the open strip');
-    assert.equal(await first.evaluate(strip => strip.classList.contains('is-active')), false, 'only one strip stays open');
-    await second.tap();
-    await page.waitForFunction(() => document.documentElement.dataset.project === 'jagad');
-  });
 
   await check('scroll up reaches About without fading or resizing the strips', desktop, async page => {
     await visit(page);
@@ -576,6 +619,12 @@ try {
 
   for (const [name, options] of [['desktop', desktop], ['mobile', mobile]]) {
     await check(`${name} toggles multiple tags and preserves the selection after Back`, options, async page => {
+      // Phones list cards with no categories and no year filter.
+      if (options.hasTouch) {
+        await visit(page);
+        assert.equal(await page.locator('#project-filters').isVisible(), false, 'phones show no categories');
+        return;
+      }
       await visit(page);
       const projects = await page.evaluate(() => window.__PROJECTS_DATA__);
       const tags = await page.locator('#project-filters button').evaluateAll(buttons => buttons.map(button => button.dataset.filter));
@@ -676,6 +725,12 @@ try {
 
   for (const [name, options] of [['desktop', desktop], ['mobile', mobile]]) {
     await check(`${name} year and categories reset each other on both strip walls`, options, async page => {
+      // Phones list cards with no categories and no year filter.
+      if (options.hasTouch) {
+        await visit(page);
+        assert.equal(await page.locator('#project-filters').isVisible(), false, 'phones show no categories');
+        return;
+      }
       const datedProjects = readProjects().filter(project => project.type === 'work' && !project.unlisted);
       const expected = (year, excluded = '', tags = []) => datedProjects
         .filter(project => project.slug !== excluded && (!year || project.date.startsWith(year) || project.years.includes(year)) && (!tags.length || project.tags.some(tag => tags.includes(tag))))
@@ -745,6 +800,12 @@ try {
 
   for (const [name, options] of [['desktop', desktop], ['mobile', mobile]]) {
     await check(`${name} filters a project wall with a category unique to the open project`, options, async page => {
+      // Phones list cards with no categories and no year filter.
+      if (options.hasTouch) {
+        await visit(page);
+        assert.equal(await page.locator('#project-filters').isVisible(), false, 'phones show no categories');
+        return;
+      }
       // Keep the empty-result guard covered as the real collection grows.
       // The unmodified collection and all its tags are exercised above.
       await page.route(`${base}/society-expo/`, async route => {
@@ -801,6 +862,12 @@ try {
 
   for (const [name, options] of [['desktop', desktop], ['mobile', mobile]]) {
     await check(`${name} leaving a project for the landing page resets the filters`, options, async page => {
+      // Phones list cards with no categories and no year filter.
+      if (options.hasTouch) {
+        await visit(page);
+        assert.equal(await page.locator('#project-filters').isVisible(), false, 'phones show no categories');
+        return;
+      }
       await visit(page);
       const yearSelect = page.getByRole('combobox', { name: 'Year', exact: true });
       const pressed = () => page.locator('#project-filters [aria-pressed="true"]').evaluateAll(buttons => buttons.map(button => button.dataset.filter));
@@ -938,16 +1005,18 @@ try {
     }
   });
 
-  await check('touch devices download the 640w strip image at any pixel density', { ...mobile, deviceScaleFactor: 3 }, async page => {
+  await check('touch devices download a card-sized image at any pixel density', { ...mobile, deviceScaleFactor: 3 }, async page => {
     await visit(page);
     await page.waitForFunction(() => document.querySelector('#strips img')?.currentSrc);
     const sources = await page.locator('#strips img').evaluateAll(images => images.map((image, index) => ({ index, src: image.currentSrc, loading: image.loading, priority: image.getAttribute('fetchpriority') })).filter(image => image.src));
     assert.ok(sources.length > 0);
-    assert.ok(sources.every(({ src }) => /-640\.(avif|webp)$/.test(src)), `strips stay at 640w on touch: ${sources.find(({ src }) => !/-640\./.test(src))?.src}`);
-    assert.deepEqual(sources.filter(({ loading }) => loading === 'eager').map(({ index }) => index), [0, 1, 2], 'only the first three home strips load eagerly');
-    assert.equal(sources[0].priority, 'high', 'the first strip is the likely largest paint and gets priority');
+    const pixels = src => Number(src.match(/-(\d+)\.(?:avif|webp)$/)?.[1]);
+    // Cards fill the content width, so a dense screen asks for more than the wall's sliver did.
+    assert.ok(sources.every(({ src }) => pixels(src) >= 640), `cards ask for at least 640w on touch: ${sources.find(({ src }) => !(pixels(src) >= 640))?.src}`);
+    assert.deepEqual(sources.filter(({ loading }) => loading === 'eager').map(({ index }) => index), [0, 1, 2], 'only the first three home cards load eagerly');
+    assert.equal(sources[0].priority, 'high', 'the first card is the likely largest paint and gets priority');
     await visit(page, '/jagad/');
-    assert.ok(await page.locator('#strips img').evaluateAll(images => images.every(image => image.loading === 'lazy')), 'project pages keep every strip lazy');
+    assert.ok(await page.locator('#strips img').evaluateAll(images => images.every(image => image.loading === 'lazy')), 'project pages keep every card lazy');
   });
 
   await check('strip images keep their scale throughout hover and keyboard expansion', { viewport: { width: 1800, height: 420 } }, async page => {

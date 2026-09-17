@@ -231,7 +231,8 @@ export function updateStrips(slug) {
   updatePreview();
   updateImages();
   initAnimation(document.getElementById('strips'), controller.signal);
-  bindTouchScrub(document.getElementById('strips'), controller.signal);
+  // Phones show a card list, which needs neither the scrub nor the two-step tap.
+  if (!matchMedia('(hover: none)').matches) bindTouchScrub(document.getElementById('strips'), controller.signal);
   bindStripAudio(document.getElementById('strips'), controller.signal);
 }
 

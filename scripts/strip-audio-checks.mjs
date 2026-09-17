@@ -129,73 +129,40 @@ export async function checkStripAudio({ check, visit, desktop, mobile }) {
     assert.equal(await page.evaluate(() => window.__stripSound.notes[0]), 659.25);
   });
 
-  await check('touch strip taps play Mario once without blocking project navigation', mobile, async page => {
+  await check('touch taps open a project from its card and play Mario', mobile, async page => {
     await observeAudio(page);
     await visit(page);
-    // Phones open a strip with the first tap and enter it with the second.
-    const strip = page.locator('#strip-klattermusen');
-    await strip.tap();
-    await page.waitForFunction(() => window.__stripSound.notes.length >= 1);
-    assert.equal(await page.evaluate(() => window.__stripSound.notes[0]), 659.25, 'the first tap plays the first note');
-    assert.equal(await page.evaluate(() => document.documentElement.dataset.project), undefined, 'the first tap only opens the strip');
-    const opened = await page.evaluate(() => window.__stripSound.notes.length);
-    await strip.tap();
+    await page.locator('#strip-klattermusen').tap();
     await page.waitForSelector('#projects #klattermusen');
-    assert.ok(await page.evaluate(() => window.__stripSound.notes.length) > opened, 'entering the project plays the next note');
+    await page.waitForFunction(() => window.__stripSound.notes.length >= 1);
+    assert.equal(await page.evaluate(() => window.__stripSound.notes[0]), 659.25, 'the tap plays the first note');
     await page.waitForFunction(() => window.__stripSound.active === 0);
     await page.locator('#collection').evaluate(collection => collection.scrollIntoView({ block: 'start' }));
-    const next = page.locator('#strips .strip:not([hidden])').first();
     const before = await page.evaluate(() => window.__stripSound.notes.length);
-    await next.tap();
-    await next.tap();
+    await page.locator('#strips .strip:not([hidden])').first().tap();
     await page.waitForFunction(count => window.__stripSound.notes.length > count, before);
     await page.waitForFunction(() => document.documentElement.dataset.project !== 'klattermusen');
   });
 
-  await check('touch scrub opens the strip under the finger and plays notes without opening a project', mobile, async page => {
+  await check('touch cards scroll the page and open nothing until tapped', mobile, async page => {
     await observeAudio(page);
     await visit(page);
-    const wall = page.locator('#strips');
-    const box = await wall.boundingBox();
-    assert.ok(await wall.evaluate(el => el.scrollWidth > el.clientWidth + 1), 'the touch wall is wider than the screen and scrolls');
-    const widths = () => page.locator('#strips .strip:not([hidden])').evaluateAll(strips => strips.map(strip => strip.getBoundingClientRect().width));
-    const before = await widths();
+    const cards = page.locator('#strips .strip:not([hidden])');
+    assert.ok(await cards.count() > 1, 'the card list holds every project');
+    assert.equal(await page.locator('#strips').evaluate(list => list.scrollWidth <= list.clientWidth + 1), true, 'the list does not scroll sideways');
+    const box = await cards.first().boundingBox();
     const cdp = await page.context().newCDPSession(page);
-    const y = box.y + box.height / 2;
-    // A quick swipe scrolls the wall and opens nothing.
-    await cdp.send('Input.dispatchTouchEvent', { type: 'touchStart', touchPoints: [{ x: box.x + box.width - 20, y }] });
-    for (let x = box.x + box.width - 20; x > box.x + 40; x -= 40) {
-      await cdp.send('Input.dispatchTouchEvent', { type: 'touchMove', touchPoints: [{ x, y }] });
-    }
+    const x = box.x + box.width / 2, y = box.y + box.height / 2;
+    const from = await page.evaluate(() => scrollY);
+    // A swipe scrolls the page; nothing opens in place and nothing is captioned.
+    await cdp.send('Input.dispatchTouchEvent', { type: 'touchStart', touchPoints: [{ x, y }] });
+    for (let step = 1; step <= 8; step++) await cdp.send('Input.dispatchTouchEvent', { type: 'touchMove', touchPoints: [{ x, y: y - 40 * step }] });
     await cdp.send('Input.dispatchTouchEvent', { type: 'touchEnd', touchPoints: [] });
-    await page.waitForFunction(() => document.getElementById('strips').scrollLeft > 20);
-    assert.equal(await page.locator('#strips .strip.is-active').count(), 0, 'a swipe does not open a strip');
+    await page.waitForFunction(top => scrollY > top, from);
+    assert.equal(await page.evaluate(() => document.documentElement.dataset.project), undefined, 'a swipe opens no project');
+    assert.equal(await page.locator('#strips .strip.is-active').count(), 0, 'cards never open in place');
+    assert.equal(await page.locator('#strip-caption').isVisible(), false, 'phones show no strip caption');
     assert.equal(await page.evaluate(() => window.__stripSound.notes.length), 0, 'a swipe plays nothing');
-    // Start over for the scrub, so the swipe's momentum cannot turn the press into a fling stop.
-    await visit(page);
-    await page.waitForTimeout(300);
-    // A finger held still for a moment starts a scrub.
-    await cdp.send('Input.dispatchTouchEvent', { type: 'touchStart', touchPoints: [{ x: box.x + 12, y }] });
-    await page.waitForFunction(() => document.querySelector('#strips .strip.is-active'));
-    const first = await page.locator('#strips .strip.is-active').getAttribute('id');
-    await page.waitForFunction(() => document.querySelector('#strips .strip.is-active').getBoundingClientRect().width > 60);
-    for (let x = box.x + 12; x < box.x + box.width - 12; x += 24) {
-      await cdp.send('Input.dispatchTouchEvent', { type: 'touchMove', touchPoints: [{ x, y }] });
-      await page.waitForTimeout(30);
-    }
-    const last = await page.locator('#strips .strip.is-active').getAttribute('id');
-    assert.notEqual(last, first, 'the open strip follows the finger');
-    assert.equal(await page.locator('#strip-caption').textContent(), await page.locator('#strips .strip.is-active').getAttribute('aria-label'), 'the caption names the strip under the finger');
-    await page.waitForFunction(() => window.__stripSound.notes.length >= 4, null, { timeout: 5000 });
-    await cdp.send('Input.dispatchTouchEvent', { type: 'touchEnd', touchPoints: [] });
-    await page.waitForTimeout(300);
-    assert.equal(await page.evaluate(() => document.documentElement.dataset.project), undefined, 'lifting after a scrub opens nothing');
-    assert.equal(await page.locator('#strips .strip.is-active').count(), 1, 'the last strip stays open after the finger lifts');
-    const after = await widths();
-    assert.ok(Math.max(...after) > Math.max(...before) * 2, 'the open strip is clearly wider than the rest');
-    assert.equal(await wall.evaluate(el => el.scrollLeft), 0, 'scrubbing did not scroll the wall');
-    await page.locator('#strips .strip.is-active').tap();
-    await page.waitForFunction(id => document.documentElement.dataset.project === id.replace('strip-', ''), last);
   });
 
   await check('strip navigation works when Web Audio is unavailable', desktop, async page => {

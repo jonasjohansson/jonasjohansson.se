@@ -7,6 +7,7 @@ body[data-route="home"] .collection-header { display: none; }
 .strip-picture { display: contents; }
 .strip-image { position: absolute; width: 100%; height: 100%; object-fit: cover; object-position: var(--bg-x, 50%) var(--bg-y, 50%); }
 .strip:focus-visible { outline: var(--focus-ring); outline-offset: -3px; }
+.strip-title { display: none; }
 .enhanced #collection { display: flex; flex-direction: column; height: calc(100dvh - var(--footer-height)); scroll-margin: 0; }
 .enhanced body[data-route="home"] #collection { height: calc(100dvh - var(--home-header-height) - var(--footer-height)); padding: 0 var(--page-gutter); }
 /* The name, icons and categories float over the wall, which takes the whole screen. */
@@ -23,17 +24,25 @@ body[data-route="home"] .collection-header { display: none; }
   .enhanced .strip:is(:hover, :focus-visible) { flex-grow: 12; }
 }
 @media (hover: none) {
-  /* The wall scrolls sideways under a swipe. A finger held still for a moment
-     starts scrubbing instead: the strip under it opens and follows the finger. */
-  .enhanced #strips { touch-action: pan-x pan-y; }
-  .enhanced .strip { min-width: var(--strip-touch-width); -webkit-touch-callout: none; user-select: none; }
-  .enhanced .strip.is-active { min-width: var(--strip-touch-open); }
-  /* Phones: the name, contacts and categories sit above and below a shorter wall,
-     plain text on the page, instead of blocks over the strips. */
-  .enhanced #collection { height: calc(100dvh - var(--footer-height) - var(--page-gutter)); padding-bottom: 0; }
-  .enhanced body[data-route="home"] #collection { height: calc(100dvh - var(--home-header-height) - var(--footer-height) - 2 * var(--page-gutter)); padding-block: 0; }
+  /* Phones scroll a list of cards instead of the wall: each project is an image
+     with its name underneath. No hover means a sliver of a photograph says
+     nothing, and a card needs no gesture to read. */
+  .enhanced #collection { height: auto; padding: 0; }
+  /* The home page has no content padding of its own, so the cards take the gutter here. */
+  .enhanced body[data-route="home"] #collection { height: auto; padding: 0 var(--page-gutter); }
+  /* #collection jumps land on the cards, which would leave the name row just above
+     the screen: keep the header's height in view so the first tap on it toggles. */
+  .enhanced body[data-route="home"] #collection { scroll-margin-top: calc(var(--home-header-height) + var(--page-gutter)); }
+  .enhanced #content { padding-bottom: var(--page-gutter); }
+  .enhanced #strips { flex: none; flex-direction: column; height: auto; min-height: 0; overflow: visible; gap: var(--spacing-xl); touch-action: auto; }
+  .enhanced .strip { flex: none; width: 100%; min-width: 0; height: auto; background: none; -webkit-touch-callout: none; }
+  .enhanced .strip-picture { display: block; position: relative; overflow: hidden; aspect-ratio: 3 / 2; background: var(--surface-tint); }
+  .enhanced .strip-image { position: absolute; inset: 0; width: 100%; height: 100%; max-width: none; left: auto; transform: none; }
+  .enhanced .strip-title { display: block; padding-top: var(--chrome-pad); font-size: var(--font-size-ui); line-height: 1.2; letter-spacing: var(--letter-spacing-caps); text-transform: uppercase; }
+  /* The name and contacts sit above the list as plain text; phones show no
+     categories, no year filter and no hover caption. */
   .enhanced .home-header { margin-bottom: 0; }
-  .enhanced .collection-header { position: static; height: auto; }
-  .enhanced .intro-links { margin-top: 0; height: calc(var(--footer-height) + var(--page-gutter)); padding-bottom: var(--page-gutter); }
-  .home-header h1, .header-contacts, .collection-home-link, .project-filters, .strip-caption { background: none; }
+  .enhanced .collection-header { position: static; height: auto; padding-bottom: var(--chrome-pad); }
+  .enhanced .intro-links { display: none; }
+  .home-header h1, .header-contacts, .collection-home-link { background: none; }
 }
