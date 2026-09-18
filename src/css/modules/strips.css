@@ -42,6 +42,9 @@ body[data-route="home"] .collection-header { display: none; }
   /* The name and contacts sit above the list as plain text; phones show no
      categories, no year filter and no hover caption. */
   .enhanced .home-header { margin-bottom: 0; }
+  /* The landing page keeps the contacts above the cards, without repeating the
+     name as you scroll. Project pages keep theirs: it is the way back home. */
+  .enhanced body[data-route="home"] #home-title { display: none; }
   .enhanced .collection-header { position: static; height: auto; padding-bottom: var(--chrome-pad); }
   .enhanced .intro-links { display: none; }
   .home-header h1, .header-contacts, .collection-home-link { background: none; }

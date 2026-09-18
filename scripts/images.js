@@ -52,7 +52,7 @@ export async function printImage(src, focal = '50% 50%') {
 // Bake both fades into PNG alpha rather than exporting nested SVG/CSS masks.
 // One continuous image avoids seams where PDF renderers join alpha tiles.
 async function printShade(tint, opacity) {
-  const key = createHash('sha256').update(`${tint}-${opacity}-rgba-shade-v2`).digest('hex').slice(0, 12);
+  const key = createHash('sha256').update(`${tint}-${opacity}-rgba-shade-v3`).digest('hex').slice(0, 12);
   const rgb = [1, 3, 5].map(start => parseInt(tint.slice(start, start + 2), 16));
   const urls = {};
   for (const [name, height] of [['shadeBody', 800]]) {
@@ -61,11 +61,13 @@ async function printShade(tint, opacity) {
     if (!existsSync(output)) {
       const width = 800;
       const pixels = Buffer.alloc(width * height * 4);
+      // Both fades ease the whole way out. A ramp that holds full strength and
+      // then turns leaves a visible shoulder where the falloff begins.
+      const ease = value => { const t = Math.min(1, Math.max(0, value)); return t * t * (3 - 2 * t); };
       for (let y = 0; y < height; y++) {
-        const t = Math.max(0, (y / (height - 1) - 0.8) / 0.2);
-        const vertical = 1 - t * t * (3 - 2 * t);
+        const vertical = ease((1 - y / (height - 1)) / 0.55);
         for (let x = 0; x < width; x++) {
-          const horizontal = Math.min(1, (1 - x / (width - 1)) / (1 - 0.565));
+          const horizontal = ease((1 - x / (width - 1)) / 0.62);
           const offset = (y * width + x) * 4;
           pixels[offset] = rgb[0]; pixels[offset + 1] = rgb[1]; pixels[offset + 2] = rgb[2];
           pixels[offset + 3] = Math.round(255 * opacity * horizontal * vertical);

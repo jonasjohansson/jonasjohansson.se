@@ -127,6 +127,8 @@ class Router {
       if (!focus && project) focus = container.querySelector('.project-title');
       if (!focus && options.returnToCollection && previousProject) focus = document.getElementById(`strip-${previousProject.slug}`);
       focus ||= document.getElementById('home-title');
+      // Phones show no name on the landing page, so land on About instead.
+      if (focus && !focus.offsetParent) focus = document.getElementById('intro') || focus;
       focus.focus({ preventScroll: true });
       if (restore && typeof restore.scrollY === 'number') {
         scrollTo({ top: restore.scrollY, behavior: 'instant' });

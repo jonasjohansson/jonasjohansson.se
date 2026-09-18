@@ -21,7 +21,7 @@ try {
   const pages = await page.locator('.print-page:visible').count();
   assert.equal(pages, await page.locator('.print-project').count() + 1, 'one page per project plus cover');
   assert.equal(await page.locator('.print-closing').count(), 0);
-  assert.deepEqual(await page.locator('.print-profile-links a').allTextContents(), ['Labs', 'GitHub', 'Instagram', 'LinkedIn', 'CV', 'Email']);
+  assert.deepEqual(await page.locator('.print-profile-links a').allTextContents(), ['Instagram', 'CV', 'Email']);
   assert.equal(await page.locator('.print-profile-links a').filter({ hasText: /^CV$/ }).getAttribute('href'), 'https://docs.google.com/document/d/1riN-cIeqjiBx2DtVJnRfUAMP0qtcFEWkCvK95kKrOOY/export?format=pdf');
   const overflow = await page.locator('.print-page:visible').evaluateAll(pages => pages.flatMap(page => {
     const content = page.querySelector('.print-project-text, .print-bio');

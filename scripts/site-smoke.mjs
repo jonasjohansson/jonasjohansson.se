@@ -83,7 +83,7 @@ async function checkFooter(page) {
   const contacts = header.locator('.header-contacts');
   const contactBox = await contacts.boundingBox();
   const contactRow = await header.boundingBox();
-  assert.deepEqual((await contacts.locator('a').allTextContents()).map(text => text.trim()), ['Labs', 'Instagram', 'CV', 'Email'], 'contact links stay concise');
+  assert.deepEqual((await contacts.locator('a').allTextContents()).map(text => text.trim()), ['Instagram', 'CV', 'Email'], 'contact links stay concise');
   assert.equal(await contacts.locator('svg').count(), 0, 'contact links are plain text');
   const printButton = contacts.locator('button[data-action="print"]');
   assert.equal(await printButton.count(), 1, 'a print button sits with the contacts');
@@ -294,7 +294,7 @@ try {
       const header = await page.locator('#home-header').boundingBox();
       assert.equal(wall.x, 24);
       assert.equal(wall.width, options.viewport.width - 48);
-      assert.equal((await page.locator('#home-link').boundingBox()).x, wall.x, 'the name starts at the wall’s left edge');
+      if (!options.hasTouch) assert.equal((await page.locator('#home-link').boundingBox()).x, wall.x, 'the name starts at the wall’s left edge');
       if (options.hasTouch) assert.ok(Math.abs(wall.y - header.y - header.height) < 1, 'on phones the wall starts directly below the header');
       else assert.ok(Math.abs(wall.y - header.y - 24) < 1, 'the wall starts one gutter below the top of the floating header');
       await checkFooter(page);
@@ -416,6 +416,12 @@ try {
       await page.goto(base + '/');
       await page.waitForFunction(() => document.documentElement.classList.contains('enhanced') && document.body.dataset.homeView === 'about' && scrollY < 1);
       const opacity = () => page.locator('#home-title').evaluate(title => getComputedStyle(title).opacity);
+      if (options.hasTouch) {
+        // Phones never repeat the name above the cards; the contacts stay.
+        assert.equal(await page.locator('#home-title').isVisible(), false, 'phones show no name on the landing page');
+        assert.ok(await page.locator('#home-header .header-contacts').isVisible(), 'the contacts stay');
+        return;
+      }
       assert.equal(await opacity(), '0', 'the name is hidden while About shows');
       assert.equal(await page.locator('#home-link').getAttribute('aria-label'), 'Jonas Johansson, Projects');
       assert.ok(await page.locator('.header-contacts').first().isVisible(), 'the contacts stay visible');
@@ -898,7 +904,9 @@ try {
 
     await check(`${name} name above project strips opens the homepage`, options, async page => {
       await visit(page);
-      await page.locator('#home-link').click();
+      // Phones have no name to tap on the landing page; About is a scroll away.
+      if (options.hasTouch) await page.evaluate(() => scrollTo({ top: 0, behavior: 'instant' }));
+      else await page.locator('#home-link').click();
       await page.waitForFunction(() => scrollY < 1 && document.body.dataset.homeView === 'about');
       // Enter with About still open, without Playwright scrolling the home
       // wall into view first. This used to save About as the name-link target.
@@ -909,7 +917,7 @@ try {
       await page.waitForFunction(() => document.body.dataset.route === 'home' && document.body.dataset.homeView === 'about' && scrollY < 1);
       assert.equal(new URL(page.url()).pathname, `${prefix}/`);
       assert.equal(new URL(page.url()).hash, '');
-      assert.equal(await page.evaluate(() => document.activeElement.id), 'home-title');
+      assert.equal(await page.evaluate(() => document.activeElement.id), options.hasTouch ? 'intro' : 'home-title', 'returning home lands on the name, or on About where phones show none');
       await page.goBack();
       await page.waitForFunction(() => document.documentElement.dataset.project === 'lyra' && scrollY < 1);
       assert.equal(await page.evaluate(() => document.activeElement.className), 'project-title', 'Back shows the project itself, not its wall');
