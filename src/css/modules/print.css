@@ -27,6 +27,11 @@
   .print-project-text { display: flow-root; position: relative; width: 112mm; margin: 16mm 0 0 16mm; }
   .print-project-text h2 { font-size: 24pt; font-weight: normal; line-height: 1.08; letter-spacing: -0.015em; margin: 0 0 7mm; text-wrap: balance; }
   .print-copy { max-width: 102mm; }
+  /* The portfolio shows the short copy; a project's own cover shows all of it. */
+  .print-copy-full { display: none; }
+  body[data-route="project"] .print-copy:not(.print-copy-full) { display: none; }
+  body[data-route="project"] .print-copy-full { display: block; max-width: none; columns: 2; column-gap: 8mm; }
+  body[data-route="project"] .print-project-text { width: 210mm; }
   .print-copy p { margin: 0 0 3.5mm; }
   .print-lead { font-size: 11pt; line-height: 1.32; }
   .print-lead p { margin-bottom: 5mm; }
@@ -47,42 +52,52 @@
   body[data-route="project"] .print-cover,
   body[data-route="project"] .print-project { display: none; }
 
-  /* A project prints as a document: the composed page as its cover, then the
-     project's own text and images across as many pages as they need. */
+  /* A project prints as a picture book: the composed cover carries the writing,
+     then every image takes a whole sheet, cropped to fill it. */
   body[data-route="project"] > #content { display: block !important; }
   body[data-route="project"] #content > :not(#main),
   body[data-route="project"] #main > :not(#projects),
   body[data-route="project"] #projects .project-title,
   body[data-route="project"] .media-controls-reveal { display: none !important; }
-  /* The cover is later in the document than the page content, so pull it first. */
-  body[data-route="project"] #content { display: flow-root !important; }
-  body[data-route="project"] .print-portfolio { position: relative; z-index: 1; }
-  body[data-route="project"] #projects { break-before: page; }
-  body[data-route="project"] #projects { display: block; margin: 0; background: none; }
+  /* The page gutter would inset every sheet and push each 190.5mm image past
+     its page, splitting it across two: printed pages bleed to the paper edge. */
+  body[data-route="project"] #content { display: flow-root !important; padding: 0 !important; }
+  body[data-route="project"] #projects { display: block; margin: 0; background: none; break-before: page; }
   body[data-route="project"] .project { background: none; }
-  /* Use the landscape page: two columns of blocks, flowing and packing together. */
-  body[data-route="project"] .project-grid {
-    display: block; width: auto; padding: 16mm;
-    columns: 2; column-gap: 12mm; orphans: 3; widows: 3;
-  }
-  /* The cover already carries the hero and the opening line, and a video would
-     repeat its poster. An audio player is a dead control on paper: keep its
-     label, drop the widget. */
+  body[data-route="project"] .project-grid { display: block; width: auto; padding: 0; }
+  /* The cover holds the hero and every word; the pages after it are pictures. */
   body[data-route="project"] .project-grid > .media-item.hero,
-  body[data-route="project"] .project-grid > .text-block.text-large:first-of-type,
+  body[data-route="project"] .project-grid > .text-block,
+  body[data-route="project"] .project-grid > .credits-block,
+  body[data-route="project"] .project-grid > .presskit-block,
   body[data-route="project"] .project-grid .media-item:has(video),
-  body[data-route="project"] audio { display: none; }
-  body[data-route="project"] .audio-block { font-size: 8.5pt; color: black; }
-  body[data-route="project"] .project-grid > * { break-inside: avoid; margin: 0 0 6mm; }
-  /* A trailing margin after the last block spills into a blank final page. */
-  body[data-route="project"] .project-grid > :last-child { margin-bottom: 0; break-after: avoid; }
-  body[data-route="project"] .media-row { display: flex; gap: 4mm; align-items: flex-start; }
-  body[data-route="project"] .media-row > .media-item { flex: 1 1 0; margin: 0; }
-  body[data-route="project"] .media-item { position: static; width: auto; height: auto; max-height: none; overflow: visible; border-radius: 0; }
-  body[data-route="project"] .media-item :is(img, video) { position: static; display: block; width: 100%; height: auto; max-height: 96mm; object-fit: contain; object-position: center; }
-  body[data-route="project"] .text-block { max-width: none; margin: 0 0 6mm; color: black; }
-  body[data-route="project"] .text-large { font-size: 12pt; line-height: 1.35; }
-  body[data-route="project"] .text-medium,
-  body[data-route="project"] .text-small { font-size: 9pt; line-height: 1.5; text-align: left; }
-  body[data-route="project"] .credits-block { max-width: none; font-size: 8.5pt; }
+  body[data-route="project"] audio { display: none !important; }
+  /* One image per sheet, bleeding to every edge. The size-* classes place media
+     on the twelve-column grid on screen; on paper every image takes the sheet,
+     so they have to lose here. A page break belongs only to a page that prints:
+     hidden media kept their break and produced blank sheets. */
+  body[data-route="project"] .project-grid > .media-item,
+  body[data-route="project"] .media-row > .media-item,
+  body[data-route="project"] .project-grid > .media-item[class*="size-"],
+  body[data-route="project"] .media-row > .media-item[class*="size-"],
+  /* Authored placements arrive as inline --col-start/--col-span custom
+     properties, which outrank a class selector: they have to lose here too. */
+  body[data-route="project"] .media-item[style*="--col-start"],
+  body[data-route="project"] .media-item[style*="--col-span"] {
+    display: block; grid-column: 1 / -1; width: 338.667mm !important; max-width: none; height: 190.5mm !important; margin: 0;
+    break-inside: avoid; break-before: auto; overflow: hidden; border-radius: 0;
+    /* Row children keep their screen flex share (flex: var(--ar) 1 0) and the
+       aspect-ratio box that sizes them; both would win over a plain width. */
+    flex: none !important; aspect-ratio: auto !important;
+  }
+  body[data-route="project"] .project-grid > .media-item:not(:first-of-type),
+  body[data-route="project"] .media-row > .media-item { break-before: page; }
+  body[data-route="project"] .project-grid > .media-item.hero,
+  body[data-route="project"] .media-item:has(video) { break-before: auto !important; }
+  body[data-route="project"] .media-row { display: block; gap: 0; }
+  body[data-route="project"] .media-item :is(img, video) {
+    position: static; display: block; width: 100%; height: 100%; max-height: none;
+    object-fit: cover; object-position: var(--focal, center);
+  }
+  body[data-route="project"] .project-grid > :last-child { break-after: avoid; }
 }

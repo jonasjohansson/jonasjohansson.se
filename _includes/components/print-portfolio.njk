@@ -31,6 +31,12 @@
           <div{% if loop.first %} class="print-lead"{% endif %}>{{ block.content | safe }}</div>
           {% endfor %}
         </div>
+        {# Printed on its own, a project carries all of its writing on the cover. #}
+        <div class="print-copy print-copy-full">
+          {% for block in item.printCopyFull %}
+          <div{% if loop.first %} class="print-lead"{% endif %}>{{ block.content | safe }}</div>
+          {% endfor %}
+        </div>
         <p class="print-project-link"><a href="{{ site.url }}{{ ('/' ~ item.slug ~ '/') | url }}">View full project ↗</a></p>
       </div>
     </section>

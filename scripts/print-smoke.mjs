@@ -51,6 +51,13 @@ try {
   await page.locator('#strip-jagad').click();
   await page.waitForFunction(() => document.documentElement.dataset.project === 'jagad');
   await page.emulateMedia({ media: 'print' });
+  // emulateMedia fires no print event, so nothing warms the page's lazy images
+  // the way Cmd+P or the browser's menu would. Warm them the same way here.
+  await page.evaluate(async () => {
+    const images = [...document.querySelectorAll('[data-print-project] img, #projects .project img')];
+    images.forEach(image => { image.loading = 'eager'; });
+    await Promise.all(images.map(image => image.decode().catch(() => {})));
+  });
   assert.equal(await page.locator('.print-project:visible').count(), 1);
   assert.equal(await page.locator('.print-cover').isVisible(), false);
   assert.equal(await page.locator('.print-page:visible').count(), 1, 'one composed cover page');
@@ -63,8 +70,13 @@ try {
       contentVisible: !!content?.offsetParent,
       coverFirst: (cover.compareDocumentPosition(content) & Node.DOCUMENT_POSITION_FOLLOWING) > 0,
       heroRepeated: shown('#projects .hero').length,
-      leadRepeated: shown('#projects .project-grid > .text-block.text-large').length,
+      textOnSheets: shown('#projects .text-block, #projects .credits-block').length,
+      coverCopyBlocks: shown('.print-copy-full > *').length,
       audioWidgets: shown('#projects audio').length,
+      fullBleed: shown('#projects .media-item').every(node => {
+        const mm = 96 / 25.4, box = node.getBoundingClientRect();
+        return Math.abs(box.x) < 2 && Math.abs(box.width / mm - 338.667) < 1 && Math.abs(box.height / mm - 190.5) < 1;
+      }),
       images: shown('#projects .project img').length,
       undecoded: shown('#projects .project img').filter(img => !(img.complete && img.naturalWidth > 0)).length,
       strips: shown('#collection').length,
@@ -73,20 +85,25 @@ try {
   assert.equal(printed.contentVisible, true, 'a project prints its own page, not only the cover');
   assert.equal(printed.coverFirst, true, 'the composed cover comes first');
   assert.equal(printed.heroRepeated, 0, 'the hero is not repeated after the cover');
-  assert.equal(printed.leadRepeated, 0, 'the opening line is not repeated after the cover');
+  // The cover carries the writing; the sheets after it are pictures only.
+  assert.ok(printed.coverCopyBlocks > 1, 'the cover carries the project\'s writing');
+  assert.equal(printed.textOnSheets, 0, 'no text or credits print on the image sheets');
+  assert.equal(printed.fullBleed, true, 'every printed image fills its sheet, edge to edge');
   assert.equal(printed.audioWidgets, 0, 'audio players do not print as dead controls');
   assert.ok(printed.images > 0, 'the project prints its images');
   assert.equal(printed.undecoded, 0, 'every printed image has decoded');
   assert.equal(printed.strips, 0, 'the strip wall stays off the printed project');
   await page.pdf({ path: `${output}/jagad.pdf`, preferCSSPageSize: true });
-  // A trailing margin after the final block used to spill into a blank sheet.
-  // Page breaks cannot be measured from the document, so assert the cause.
-  const trailing = await page.evaluate(() => {
-    const last = [...document.querySelectorAll('#projects .project-grid > *')].filter(node => node.offsetParent !== null).at(-1);
-    return last && { margin: getComputedStyle(last).marginBottom, breakAfter: getComputedStyle(last).breakAfter };
+  // Every printed sheet is one image, so the document has to end exactly on a
+  // sheet boundary: anything over would print as a blank trailing page.
+  const ending = await page.evaluate(() => {
+    const sheet = 190.5 * 96 / 25.4;
+    const shown = [...document.querySelectorAll('#projects .media-item')].filter(node => node.offsetParent !== null);
+    const last = shown.at(-1).getBoundingClientRect();
+    return { sheets: (last.bottom + scrollY) / sheet, images: shown.length };
   });
-  assert.equal(trailing.margin, '0px', 'the last block has no trailing margin to spill onto a blank sheet');
-  assert.equal(trailing.breakAfter, 'avoid', 'and asks for no page break after it');
+  assert.ok(Math.abs(ending.sheets - Math.round(ending.sheets)) < 0.02, 'the last image ends on a sheet boundary, with no blank page after it');
+  assert.equal(Math.round(ending.sheets), ending.images + 1, 'the document is the cover plus one sheet per image');
   await page.emulateMedia({ media: 'screen' });
   await page.locator('#header-toggle').click();
   await page.waitForFunction(() => document.body.dataset.route === 'home');
@@ -98,8 +115,17 @@ try {
   await noJS.emulateMedia({ media: 'print' });
   assert.equal(await noJS.locator('.print-project:visible').count(), 1);
   assert.equal(await noJS.locator('.print-page:visible').count(), 1);
-  assert.equal(await noJS.locator('#projects .project').isVisible(), true, 'the project itself prints without JavaScript too');
+  // Six projects have no media beyond their hero, so they print as a cover
+  // alone; Lyra is one of them. Check a project that has sheets to print.
   assert.equal(await noJS.locator('#projects .hero').isVisible(), false, 'without JavaScript the hero still is not repeated');
+  const sheets = await noJS.locator('#projects .media-item:not(.hero)').count();
+  assert.equal(sheets, 0, 'Lyra has no media beyond its hero, so its PDF is the cover alone');
+  const withMedia = await browser.newPage({ javaScriptEnabled: false });
+  await withMedia.goto(`${server.url}/jagad/`);
+  await withMedia.emulateMedia({ media: 'print' });
+  assert.equal(await withMedia.locator('#projects .project').isVisible(), true, 'a project with media prints its own sheets without JavaScript too');
+  assert.ok(await withMedia.locator('#projects .media-item:not(.hero)').count() > 0, 'and those sheets are its images');
+  await withMedia.close();
   console.log('✓ Direct project visit selects the correct print content without JavaScript');
   assert.deepEqual(missing, [], 'no missing assets');
 } finally {

@@ -17,6 +17,7 @@ export function initPrint() {
   // Menu printing must stay synchronous. Cmd/Ctrl+P can wait for image decode
   // before opening the dialog, preventing empty frames on a cold first visit.
   addEventListener('beforeprint', warmImages);
+
   const printPortfolio = async () => {
     if (preparing) return;
     preparing = true;

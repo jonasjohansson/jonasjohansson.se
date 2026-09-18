@@ -86,10 +86,14 @@ async function buildProject(project) {
       ...await printImage(`${project.directory}/${block.type === 'video' ? block.poster : block.src}`, block.focal),
       alt: block.alt || '',
     })));
-  const printCopy = content.filter(block => block.type === 'text').slice(0, 2);
+  // The portfolio gives each project one page, so its cover copy stays short.
+  // A project printed on its own carries all of its writing on that cover.
+  const textBlocks = content.filter(block => block.type === 'text');
+  const printCopy = textBlocks.slice(0, 2);
+  const printCopyFull = textBlocks;
   const { slug, title, date, tags, color = null } = project;
   return { slug, title, date, tags, color, year: new Date(date).getFullYear(), years: project.years || [], type: 'work', unlisted: !!project.unlisted,
-    content: grouped, thumbnail, colour, ogImage: og, printMedia, printCopy, presskit: project.presskit || null,
+    content: grouped, thumbnail, colour, ogImage: og, printMedia, printCopy, printCopyFull, presskit: project.presskit || null,
     description: stripHtml(content.find(block => block.type === 'text')?.content).slice(0, 160) };
 }
 
