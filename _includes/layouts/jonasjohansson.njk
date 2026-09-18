@@ -9,6 +9,7 @@
     <a href="#main" class="skip-link">Skip to content</a>
     <div id="route-announcer" class="sr-only" aria-live="polite" aria-atomic="true"></div>
     {% include "../components/header.njk" %}
+    {% include "../components/print-portfolio.njk" %}
     <div id="content">
       <main id="main" tabindex="-1">
         {% include "../components/intro.njk" %}
@@ -18,7 +19,6 @@
       </main>
       {% include "../components/intro-links.njk" %}
     </div>
-    {% include "../components/print-portfolio.njk" %}
     <script type="module" src="{{ 'main.js' | viteAsset | url }}"></script>
   </body>
 </html>

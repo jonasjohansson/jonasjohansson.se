@@ -4,7 +4,11 @@ export function initPrint() {
     const slug = document.documentElement.dataset.project;
     const projects = [...document.querySelectorAll('[data-print-project]')]
       .filter(project => !slug || project.dataset.printProject === slug);
-    return projects.flatMap(project => [...project.querySelectorAll('img')]).map(img => {
+    const sources = projects.flatMap(project => [...project.querySelectorAll('img')]);
+    // A project also prints its own page after the cover, and those images are
+    // lazy: without warming them the later pages come out blank.
+    if (slug) sources.push(...document.querySelectorAll('#projects .project img'));
+    return sources.map(img => {
       img.loading = 'eager';
       return img.decode().catch(() => {});
     });
