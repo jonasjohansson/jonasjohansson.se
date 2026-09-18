@@ -87,6 +87,16 @@ try {
   assert.equal(printed.heroRepeated, 0, 'the hero is not repeated after the cover');
   // The cover carries the writing; the sheets after it are pictures only.
   assert.ok(printed.coverCopyBlocks > 1, 'the cover carries the project\'s writing');
+  // The portfolio's overflow check measures its short copy, so a project cover
+  // could clip its writing unnoticed. Measure the cover that actually prints.
+  const coverFit = await page.evaluate(() => {
+    const visible = selector => [...document.querySelectorAll(selector)].find(node => node.offsetParent !== null);
+    const page = visible('.print-project .print-page');
+    const last = visible('.print-project-link') || visible('.print-copy-full');
+    if (!page || !last) return null;
+    return (last.getBoundingClientRect().bottom - page.getBoundingClientRect().top) / (96 / 25.4);
+  });
+  assert.ok(coverFit !== null && coverFit <= 190.5, `the cover's writing fits its sheet (ends at ${Math.round(coverFit)}mm of 190.5mm)`);
   assert.equal(printed.textOnSheets, 0, 'no text or credits print on the image sheets');
   assert.equal(printed.fullBleed, true, 'every printed image fills its sheet, edge to edge');
   assert.equal(printed.audioWidgets, 0, 'audio players do not print as dead controls');

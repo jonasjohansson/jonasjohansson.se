@@ -16,7 +16,9 @@
   </section>
   {% for item in collectionItems %}
   <article class="print-project" data-print-project="{{ item.slug }}">
-    <section class="print-page print-project-page">
+    {# The hero is also a background so a cover that grows onto a second sheet
+       still carries the photograph: an absolutely placed img cannot repeat. #}
+    <section class="print-page print-project-page" style="--print-hero: url('{{ item.printMedia[0].src }}'); --print-hero-focal: {{ item.content[0].focal }}">
       <img class="print-hero" src="{{ item.printMedia[0].src }}" alt="{{ item.printMedia[0].alt }}" width="{{ item.printMedia[0].width }}" height="{{ item.printMedia[0].height }}" style="object-position: {{ item.content[0].focal }}" loading="lazy" decoding="async">
       <div class="print-project-text">
         {# Raster alpha survives PDF viewers that misrender nested vector masks. #}
