@@ -137,8 +137,8 @@ try {
   assert.ok(await withMedia.locator('#projects .media-item:not(.hero)').count() > 0, 'and those sheets are its images');
   await withMedia.close();
   console.log('✓ Direct project visit selects the correct print content without JavaScript');
-  // Every cover is one sheet, with long writing set smaller to fit. Measure
-  // every project: a scale that still runs long has to fail here rather than
+  // Every cover is one sheet, with long writing stepped down to fit. Measure
+  // every project: a step that still runs long has to fail here rather than
   // silently clipping a project's writing out of its PDF.
   const sweep = await browser.newPage({ javaScriptEnabled: false });
   await sweep.goto(server.url);

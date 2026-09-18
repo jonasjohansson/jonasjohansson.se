@@ -32,9 +32,9 @@
   body[data-route="project"] .print-copy:not(.print-copy-full) { display: none; }
   /* One narrow column on the left: two columns ran the text across the whole
      photograph, and the shade had to darken all of it to keep them readable. */
-  body[data-route="project"] .print-copy-full { display: block; max-width: 102mm; }
-  body[data-route="project"] .print-project-text { width: 112mm; }
-  body[data-route="project"] .print-shade { width: 150mm; }
+  body[data-route="project"] .print-copy-full { display: block; max-width: 96mm; }
+  body[data-route="project"] .print-project-text { width: 106mm; }
+  body[data-route="project"] .print-shade { width: 144mm; }
   /* Every cover is one sheet. Growing onto a second one only ever repeated the
      same photograph, so a project whose writing would overrun is set smaller
      instead: the build works out the scale. flow-root keeps the text block's

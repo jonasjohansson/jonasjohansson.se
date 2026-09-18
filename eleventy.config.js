@@ -97,20 +97,19 @@ async function buildProject(project) {
   // Solving a scale per project needs the copy's real height, and a character
   // count predicts that too loosely to trust near the edge of a sheet: the
   // fixed part of a cover (title, margins, link) ranges from 39mm to 72mm
-  // between projects. So the rule is flat. A project that would overrun takes
-  // one scale, small enough for the longest of them — dome-dreaming has the
-  // most copy in the portfolio and measures 182mm of a 190.5mm sheet at 0.7 —
-  // and every other project is left alone at full size. The estimate below
-  // only chooses which projects scale, where being a couple of millimetres out
-  // costs nothing; it never sets the scale. The print check measures all 34
-  // covers, so copy that still runs long fails there rather than being clipped
-  // out of a PDF unnoticed.
+  // between projects. So the estimate below only chooses a step, never sets
+  // a scale, and the steps are far apart in estimate terms: covers that fit
+  // as they are measure up to 178, the ones that need 0.75 run 183 to 267,
+  // and only dome-dreaming — the most copy in the portfolio — reaches 293 and
+  // needs 0.7. Being a few millimetres out cannot cross those gaps. The print
+  // check measures all 34 covers, so copy that still runs long fails there
+  // rather than being clipped out of a PDF unnoticed.
   const copyChars = stripHtml(printCopyFull.map(block => block.content).join(' ')).replace(/\s+/g, ' ').trim().length;
   const paragraphs = printCopyFull.reduce((count, block) => count + (block.content.match(/<p[\s>]/g) || []).length, 0);
-  const LONG_COPY_MM = 184;
-  const LONG_COPY_SCALE = 0.7; // 9pt copy prints at 6.3pt.
   const estimated = 48 + 0.07 * copyChars + 3.1 * paragraphs;
-  const printCopyScale = estimated > LONG_COPY_MM ? LONG_COPY_SCALE : 1;
+  // 0.75 prints 9pt copy at 6.8pt; 0.7 at 6.3pt, for the one project that
+  // still will not fit a sheet at 6.8pt.
+  const printCopyScale = estimated > 280 ? 0.7 : estimated > 180 ? 0.75 : 1;
   const { slug, title, date, tags, color = null } = project;
   return { slug, title, date, tags, color, year: new Date(date).getFullYear(), years: project.years || [], type: 'work', unlisted: !!project.unlisted,
     content: grouped, thumbnail, colour, ogImage: og, printMedia, printCopy, printCopyFull, printCopyScale, presskit: project.presskit || null,
