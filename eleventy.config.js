@@ -91,17 +91,29 @@ async function buildProject(project) {
   const textBlocks = content.filter(block => block.type === 'text');
   const printCopy = textBlocks.slice(0, 2);
   const printCopyFull = textBlocks;
-  // CSS cannot round a box up to a whole sheet, and a cover that ends partway
-  // down one starts the pictures mid-page. Count the sheets here instead. The
-  // estimate was fitted against all 34 measured covers (worst case 9mm out);
-  // it only has to be right near the break, and the print check measures every
-  // project so an estimate that runs short fails there instead of clipping.
+  // Every cover is one sheet. Growing onto a second one only ever repeated the
+  // same photograph, so writing that would overrun is set smaller instead.
+  //
+  // Solving a scale per project needs the copy's real height, and a character
+  // count predicts that too loosely to trust near the edge of a sheet: the
+  // fixed part of a cover (title, margins, link) ranges from 39mm to 72mm
+  // between projects. So the rule is flat. A project that would overrun takes
+  // one scale, small enough for the longest of them — dome-dreaming has the
+  // most copy in the portfolio and measures 182mm of a 190.5mm sheet at 0.7 —
+  // and every other project is left alone at full size. The estimate below
+  // only chooses which projects scale, where being a couple of millimetres out
+  // costs nothing; it never sets the scale. The print check measures all 34
+  // covers, so copy that still runs long fails there rather than being clipped
+  // out of a PDF unnoticed.
   const copyChars = stripHtml(printCopyFull.map(block => block.content).join(' ')).replace(/\s+/g, ' ').trim().length;
   const paragraphs = printCopyFull.reduce((count, block) => count + (block.content.match(/<p[\s>]/g) || []).length, 0);
-  const printCoverSheets = 41 + 0.067 * copyChars + 5.5 * paragraphs > 182.5 ? 2 : 1;
+  const LONG_COPY_MM = 184;
+  const LONG_COPY_SCALE = 0.7; // 9pt copy prints at 6.3pt.
+  const estimated = 48 + 0.07 * copyChars + 3.1 * paragraphs;
+  const printCopyScale = estimated > LONG_COPY_MM ? LONG_COPY_SCALE : 1;
   const { slug, title, date, tags, color = null } = project;
   return { slug, title, date, tags, color, year: new Date(date).getFullYear(), years: project.years || [], type: 'work', unlisted: !!project.unlisted,
-    content: grouped, thumbnail, colour, ogImage: og, printMedia, printCopy, printCopyFull, printCoverSheets, presskit: project.presskit || null,
+    content: grouped, thumbnail, colour, ogImage: og, printMedia, printCopy, printCopyFull, printCopyScale, presskit: project.presskit || null,
     description: stripHtml(content.find(block => block.type === 'text')?.content).slice(0, 160) };
 }
 

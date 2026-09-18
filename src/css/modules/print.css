@@ -35,27 +35,27 @@
   body[data-route="project"] .print-copy-full { display: block; max-width: 102mm; }
   body[data-route="project"] .print-project-text { width: 112mm; }
   body[data-route="project"] .print-shade { width: 150mm; }
-  /* A fixed, clipped sheet cut the longest projects off mid-sentence, and a box
-     grown to fit ended partway down a sheet and took the pictures with it. CSS
-     cannot round a box up to a whole sheet, so the build counts the sheets each
-     cover needs and the cover claims exactly that many: the pictures after it
-     always start on a sheet boundary. flow-root keeps the text block's 16mm top
-     margin from collapsing out and pushing every picture off the grid. */
+  /* Every cover is one sheet. Growing onto a second one only ever repeated the
+     same photograph, so a project whose writing would overrun is set smaller
+     instead: the build works out the scale. flow-root keeps the text block's
+     16mm top margin from collapsing out and pushing every picture off the grid. */
   body[data-route="project"] .print-project .print-page {
-    height: calc(var(--cover-sheets, 1) * 190.5mm); display: flow-root; overflow: hidden;
-    /* The cover is an exact number of sheets, so whatever follows already
-       starts on a boundary. Forcing a break after it printed a blank sheet on
-       the projects whose cover is the last thing printed. */
+    height: 190.5mm; display: flow-root; overflow: hidden;
+    /* The cover is exactly one sheet, so whatever follows already starts on a
+       boundary. Forcing a break after it printed a blank sheet on the projects
+       whose cover is the last thing printed. */
     break-after: auto;
   }
-  /* A cover holding two sheets has to be allowed to break between them. */
-  body[data-route="project"] .print-cover-tall { break-inside: auto; }
-  body[data-route="project"] .print-project-text { position: relative; padding-bottom: 16mm; }
+  /* Sizes below the title are relative, so they all follow the scale. */
+  body[data-route="project"] .print-project-text {
+    position: relative; padding-bottom: 6mm;
+    font-size: calc(9pt * var(--copy-scale, 1));
+  }
 
-  .print-copy p { margin: 0 0 3.5mm; }
-  .print-lead { font-size: 11pt; line-height: 1.32; }
-  .print-lead p { margin-bottom: 5mm; }
-  .print-project-link { margin: 6mm 0 0; font-size: 8.5pt; line-height: 1.4; }
+  .print-copy p { margin: 0 0 1.1em; }
+  .print-lead { font-size: 1.222em; line-height: 1.32; }
+  .print-lead p { margin-bottom: 1.29em; }
+  .print-project-link { margin: 1.85em 0 0; font-size: 0.944em; line-height: 1.4; }
   .print-project-link a { text-decoration: underline; text-decoration-thickness: 0.4pt; text-underline-offset: 1mm; }
   .print-cover { padding: 22mm 16mm 16mm; color: black; }
   .print-cover h1 { font-size: 32pt; font-weight: normal; line-height: 1.1; margin: 0 0 15mm; }
