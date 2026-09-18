@@ -137,6 +137,57 @@ try {
   assert.ok(await withMedia.locator('#projects .media-item:not(.hero)').count() > 0, 'and those sheets are its images');
   await withMedia.close();
   console.log('✓ Direct project visit selects the correct print content without JavaScript');
+  // Each cover is allocated whole sheets at build time from an estimate of its
+  // copy. Measure every project: an estimate that runs short has to fail here
+  // rather than silently clipping a project's writing out of its PDF.
+  const sweep = await browser.newPage({ javaScriptEnabled: false });
+  await sweep.goto(server.url);
+  const slugs = await sweep.$$eval('[data-print-project]', nodes => nodes.map(node => node.dataset.printProject));
+  const badCovers = [];
+  for (const slug of slugs) {
+    await sweep.goto(`${server.url}/${slug}/`);
+    await sweep.emulateMedia({ media: 'print' });
+    const cover = await sweep.evaluate(() => {
+      const mm = 96 / 25.4;
+      const shown = selector => [...document.querySelectorAll(selector)].filter(node => node.offsetParent !== null);
+      const page = shown('.print-project .print-page')[0];
+      const last = shown('.print-project-link')[0] || shown('.print-copy-full')[0];
+      if (!page || !last) return null;
+      const box = page.getBoundingClientRect();
+      // A forced break after the last printed sheet prints a blank page.
+      const printed = [...shown('#projects .media-item')].at(-1) || page;
+      return {
+        sheets: +(box.height / mm / 190.5).toFixed(3),
+        height: +(box.height / mm).toFixed(1),
+        writingEndsAt: +((last.getBoundingClientRect().bottom - box.top) / mm).toFixed(1),
+        heroes: shown('.print-project .print-hero').length,
+        breakAfterLast: getComputedStyle(printed).breakAfter,
+      };
+    });
+    await sweep.emulateMedia({ media: 'screen' });
+    if (!cover) { badCovers.push({ slug, cover: 'no printable cover' }); continue; }
+    const whole = Math.abs(cover.sheets - Math.round(cover.sheets)) < 0.01;
+    if (!whole || cover.writingEndsAt > cover.height || cover.heroes !== Math.round(cover.sheets) || cover.breakAfterLast === 'page') badCovers.push({ slug, ...cover });
+  }
+  assert.deepEqual(badCovers, [], 'every cover fills whole sheets, keeps its writing inside, carries a hero on each sheet and ends without a forced break');
+  // Layout alone cannot show a trailing blank sheet, because a forced break
+  // adds a page without adding height. Count the pages in the real PDF: one
+  // project that prints images after its cover, and one that prints none.
+  const pdfPages = buffer => (buffer.toString('latin1').match(/\/Type\s*\/Page[^sC]/g) || []).length;
+  for (const slug of ['jagad', 'lyra']) {
+    await sweep.goto(`${server.url}/${slug}/`);
+    await sweep.emulateMedia({ media: 'print' });
+    const expected = await sweep.evaluate(() => {
+      const mm = 96 / 25.4;
+      const shown = selector => [...document.querySelectorAll(selector)].filter(node => node.offsetParent !== null);
+      const page = shown('.print-project .print-page')[0];
+      return Math.round(page.getBoundingClientRect().height / mm / 190.5) + shown('#projects .media-item').length;
+    });
+    assert.equal(pdfPages(await sweep.pdf({ preferCSSPageSize: true })), expected, `${slug} prints its cover sheets plus one page per image, with no blank page`);
+    await sweep.emulateMedia({ media: 'screen' });
+  }
+  await sweep.close();
+  console.log(`✓ ${slugs.length} project covers occupy whole sheets, writing inside, a hero on every sheet, no blank pages`);
   assert.deepEqual(missing, [], 'no missing assets');
 } finally {
   await browser.close();

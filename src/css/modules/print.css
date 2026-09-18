@@ -13,8 +13,8 @@
   .print-page { position: relative; height: 190.5mm; overflow: hidden; break-after: page; break-inside: avoid; }
   .print-project:last-child .print-page { break-after: auto; }
   .print-project-page { color: white; }
-  .print-hero { position: absolute; inset: 0; display: block; width: 100%; height: 100%; max-width: none; }
-  .print-hero { object-fit: cover; }
+  /* One hero per sheet the cover occupies, each placed by an inline top offset. */
+  .print-hero { position: absolute; top: 0; left: 0; display: block; width: 100%; height: 190.5mm; max-width: none; object-fit: cover; }
   /* Anchor to the copy, not the page: full strength through the link, then
      a proportional vertical fade. The horizontal fade still clears the right. */
   .print-shade {
@@ -35,24 +35,21 @@
   body[data-route="project"] .print-copy-full { display: block; max-width: 102mm; }
   body[data-route="project"] .print-project-text { width: 112mm; }
   body[data-route="project"] .print-shade { width: 150mm; }
-  /* A fixed, clipped sheet cut the longest projects off mid-sentence, so the
-     cover grows to fit its copy. overflow: visible allows that, but it also let
-     the text block's 16mm top margin collapse out and push the whole document
-     down the sheet, so every picture page straddled a break: flow-root keeps
-     the margin inside without clipping the text.
-     Known limit: a grown cover occupies a fractional number of sheets (Harpa
-     1.47, Society Expo 1.13) and those projects' pictures start mid-sheet.
-     A box cannot be rounded up to a whole sheet in CSS; the fix is a second
-     cover section in the template, not a taller one here. */
+  /* A fixed, clipped sheet cut the longest projects off mid-sentence, and a box
+     grown to fit ended partway down a sheet and took the pictures with it. CSS
+     cannot round a box up to a whole sheet, so the build counts the sheets each
+     cover needs and the cover claims exactly that many: the pictures after it
+     always start on a sheet boundary. flow-root keeps the text block's 16mm top
+     margin from collapsing out and pushing every picture off the grid. */
   body[data-route="project"] .print-project .print-page {
-    height: auto; min-height: 190.5mm; overflow: visible; display: flow-root;
-    box-sizing: border-box;
-    /* The hero is a background as well as an <img>: an absolutely placed image
-       cannot carry onto the second sheet a grown cover spills into. */
-    background-image: var(--print-hero); background-size: cover;
-    background-position: var(--print-hero-focal, center); background-repeat: no-repeat;
+    height: calc(var(--cover-sheets, 1) * 190.5mm); display: flow-root; overflow: hidden;
+    /* The cover is an exact number of sheets, so whatever follows already
+       starts on a boundary. Forcing a break after it printed a blank sheet on
+       the projects whose cover is the last thing printed. */
+    break-after: auto;
   }
-  body[data-route="project"] .print-project .print-hero { position: absolute; height: 190.5mm; }
+  /* A cover holding two sheets has to be allowed to break between them. */
+  body[data-route="project"] .print-cover-tall { break-inside: auto; }
   body[data-route="project"] .print-project-text { position: relative; padding-bottom: 16mm; }
 
   .print-copy p { margin: 0 0 3.5mm; }
@@ -86,6 +83,11 @@
      its page, splitting it across two: printed pages bleed to the paper edge. */
   body[data-route="project"] #content { display: flow-root !important; padding: 0 !important; }
   body[data-route="project"] #projects { display: block; margin: 0; background: none; break-before: page; }
+  /* Seven projects print as a cover alone. An empty container still forced a
+     break and printed a blank sheet: a break adds a page without adding height,
+     so only the page count of a rendered PDF shows it. The condition mirrors
+     what the rules below hide, so it counts sheets that actually print. */
+  body[data-route="project"] #projects:not(:has(.media-item:not(.hero))) { break-before: auto; }
   body[data-route="project"] .project { background: none; }
   body[data-route="project"] .project-grid { display: block; width: auto; padding: 0; }
   /* The cover holds the hero and every word; the pages after it are pictures. */
