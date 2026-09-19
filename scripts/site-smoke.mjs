@@ -90,7 +90,11 @@ async function checkFooter(page) {
   if (touch) assert.equal(await printButton.isVisible(), false, 'the print button stays off touch devices');
   else assert.equal((await printButton.textContent()).trim(), 'Print', 'the print button is plain text');
   assert.ok(contactBox.x + contactBox.width <= wall.x + wall.width + 1, 'contact links stay within the strips');
-  assert.ok(contactBox.y >= contactRow.y && contactBox.y + contactBox.height <= contactRow.y + contactRow.height + 1, 'contacts fit in the row above the strips');
+  // This fails intermittently, a few times a day, with the header looking
+  // right in the failure screenshot. Report both boxes so the next occurrence
+  // says how far out it was instead of costing another investigation.
+  assert.ok(contactBox.y >= contactRow.y && contactBox.y + contactBox.height <= contactRow.y + contactRow.height + 1,
+    `contacts fit in the row above the strips (contacts ${JSON.stringify(contactBox)} vs row ${JSON.stringify(contactRow)})`);
   const name = await header.locator(home ? '#home-title' : '.collection-home-link').boundingBox();
   assert.ok(name.x + name.width <= contactBox.x || name.y + name.height <= contactBox.y, 'contact links do not overlap the name (beside it, or on a second row on narrow screens)');
   assert.equal(name.x, wall.x, 'the name block sits flush with the wall’s corner');
@@ -1351,21 +1355,24 @@ try {
     await page.screenshot({ path: `${output}/mobile-restored-strips.png` });
   });
 
-  await check('warm charcoal theme stays consistent across system preferences', { ...desktop, colorScheme: 'light' }, async page => {
+  // White for everyone: the palette is pinned with data-theme="light", because
+  // the stylesheet otherwise hands a dark system preference the dark palette.
+  await check('white theme stays consistent across system preferences', { ...desktop, colorScheme: 'dark' }, async page => {
     await visit(page);
-    assert.equal(await page.locator('html').getAttribute('data-theme'), 'dark');
-    assert.equal(await page.locator('body').evaluate(body => getComputedStyle(body).backgroundColor), 'rgb(26, 24, 22)');
-    assert.equal(await page.locator('body').evaluate(body => getComputedStyle(body).color), 'rgb(255, 255, 255)');
-    assert.equal(await page.locator('meta[name="theme-color"]').getAttribute('content'), '#1a1816');
+    assert.equal(await page.locator('html').getAttribute('data-theme'), 'light');
+    assert.equal(await page.locator('body').evaluate(body => getComputedStyle(body).backgroundColor), 'rgb(255, 255, 255)');
+    assert.equal(await page.locator('body').evaluate(body => getComputedStyle(body).color), 'rgb(26, 24, 22)');
+    assert.equal(await page.locator('meta[name="theme-color"]').getAttribute('content'), '#ffffff');
     assert.equal(await page.locator('#sound-toggle, #theme-preference').count(), 0);
-    await page.emulateMedia({ colorScheme: 'dark' });
-    assert.equal(await page.locator('html').getAttribute('data-theme'), 'dark');
     await page.emulateMedia({ colorScheme: 'light' });
+    assert.equal(await page.locator('html').getAttribute('data-theme'), 'light');
+    await page.emulateMedia({ colorScheme: 'dark' });
     await page.reload();
-    assert.equal(await page.locator('html').getAttribute('data-theme'), 'dark');
+    assert.equal(await page.locator('html').getAttribute('data-theme'), 'light');
+    assert.equal(await page.locator('body').evaluate(body => getComputedStyle(body).backgroundColor), 'rgb(255, 255, 255)');
     await page.locator('#strip-dome-dreaming').click();
     await page.waitForSelector('#projects #dome-dreaming');
-    assert.equal(await page.locator('body').evaluate(body => getComputedStyle(body).backgroundColor), 'rgb(26, 24, 22)');
+    assert.equal(await page.locator('body').evaluate(body => getComputedStyle(body).backgroundColor), 'rgb(255, 255, 255)');
   });
 
   await check('project image strips exclude the open project and support navigation', desktop, async page => {
@@ -1394,7 +1401,7 @@ try {
 
   await check('static HTML works without JavaScript', { ...desktop, javaScriptEnabled: false }, async page => {
     await page.goto(base);
-    assert.equal(await page.locator('body').evaluate(body => getComputedStyle(body).backgroundColor), 'rgb(26, 24, 22)');
+    assert.equal(await page.locator('body').evaluate(body => getComputedStyle(body).backgroundColor), 'rgb(255, 255, 255)');
     assert.ok(await page.locator('main #home-title').isVisible());
     assert.ok(await page.getByRole('link', { name: 'Klättermusen', exact: true }).isVisible());
     await page.locator('.strip').first().scrollIntoViewIfNeeded();

@@ -1,5 +1,5 @@
 <!DOCTYPE html>
-<html lang="en" data-theme="dark"{% if project %} data-project="{{ project.slug }}"{% if project.color %} style="--project-color: {{ project.color }}"{% endif %}{% endif %}>
+<html lang="en" data-theme="light"{% if project %} data-project="{{ project.slug }}"{% if project.color %} style="--project-color: {{ project.color }}"{% endif %}{% endif %}>
   <head>
     {% include "../components/metadata.njk" %}
     <link rel="stylesheet" href="{{ 'styles.css' | viteAsset | url }}">

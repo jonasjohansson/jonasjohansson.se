@@ -61,7 +61,9 @@
   --font-size-small: clamp(1.03rem, 0.86rem + 0.76vw, 1.46rem);
   --font-size-medium: clamp(1.4rem, 1.08rem + 1.3vw, 2.05rem);
   --font-size-large: clamp(1.73rem, 1.3rem + 1.94vw, 2.81rem);
-  --font-size-intro: clamp(1.13rem, 0.54rem + 1.08vw + 0.32vh, 1.94rem);
+  /* The About text reads as body copy, not a statement: about 20px on a
+     laptop rather than 27px, and it stops growing sooner on a large display. */
+  --font-size-intro: clamp(1.05rem, 0.62rem + 0.62vw + 0.18vh, 1.4rem);
   --font-size-ui: 0.875rem; /* header, footer and filter labels */
   --letter-spacing-base: 0;
   --letter-spacing-wide: 0.04em; /* uppercase header/subtitle tracking */
@@ -87,13 +89,16 @@
   --z-skip-link: 1000; /* top of the stack */
 
   /* Name animation palette (dark theme) */
-  --name-1: #e63946;
-  --name-2: #f77f00;
-  --name-3: #fcbf49;
-  --name-4: #2a9d8f;
-  --name-5: #82c8e5;
+  /* The name cycles through these on the intro. They were picked against a
+     charcoal background; on white the pale ones fell to about 1.7:1, so each
+     keeps its hue at a depth that reads as text on paper-white. */
+  --name-1: #c1121f;
+  --name-2: #b35c00;
+  --name-3: #8a6410;
+  --name-4: #1b6b61;
+  --name-5: #2c7e9e;
   --name-6: #7209b7;
-  --name-7: #3a86ff;
+  --name-7: #1c5fd0;
 }
 
 @supports (height: 100dvh) {

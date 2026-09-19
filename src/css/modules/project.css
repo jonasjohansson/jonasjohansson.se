@@ -236,7 +236,7 @@ html[data-theme="dark"] .text-block a {
 .audio-block audio {
   display: block;
   width: 100%;
-  color-scheme: dark;
+  color-scheme: light;
 }
 
 /* Statement text: wider column, tighter leading */
