@@ -89,6 +89,25 @@ export function initializeStripAudio() {
   addEventListener('pagehide', stopNotes);
 }
 
+// An accordion sounds when it is squeezed. Dragging the window edge narrows
+// every strip at once, so the wall plays: one note for each strip's width of
+// travel, which a drag crosses a few times a second. Resize fires per frame,
+// so the notes space themselves rather than stacking into a chord.
+export function bindResizeAudio(container, signal) {
+  // Phones change width by rotating, which is not a squeeze.
+  if (matchMedia('(hover: none)').matches) return;
+  let width = innerWidth;
+  addEventListener('resize', () => {
+    const strips = container.querySelectorAll('.strip:not([hidden])').length;
+    // A hidden wall (a phone card list, say) is not being squeezed.
+    if (!strips || container.offsetParent === null) { width = innerWidth; return; }
+    const step = Math.max(24, innerWidth / strips);
+    if (Math.abs(innerWidth - width) < step) return;
+    width = innerWidth;
+    stepMelody();
+  }, { signal, passive: true });
+}
+
 export function bindStripAudio(container, signal) {
   let lastStrip;
   let lastX, lastY;

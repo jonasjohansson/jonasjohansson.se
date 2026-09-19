@@ -90,10 +90,10 @@ async function checkFooter(page) {
   if (touch) assert.equal(await printButton.isVisible(), false, 'the print button stays off touch devices');
   else assert.equal((await printButton.textContent()).trim(), 'Print', 'the print button is plain text');
   assert.ok(contactBox.x + contactBox.width <= wall.x + wall.width + 1, 'contact links stay within the strips');
-  // This fails intermittently, a few times a day, with the header looking
-  // right in the failure screenshot. Report both boxes so the next occurrence
-  // says how far out it was instead of costing another investigation.
-  assert.ok(contactBox.y >= contactRow.y && contactBox.y + contactBox.height <= contactRow.y + contactRow.height + 1,
+  // Both edges carry the same pixel of tolerance. The top had none, so a third
+  // of a pixel of sub-pixel rounding (contacts at 23.95 against a row at 24.31)
+  // failed this at random, with the header looking right in the screenshot.
+  assert.ok(contactBox.y >= contactRow.y - 1 && contactBox.y + contactBox.height <= contactRow.y + contactRow.height + 1,
     `contacts fit in the row above the strips (contacts ${JSON.stringify(contactBox)} vs row ${JSON.stringify(contactRow)})`);
   const name = await header.locator(home ? '#home-title' : '.collection-home-link').boundingBox();
   assert.ok(name.x + name.width <= contactBox.x || name.y + name.height <= contactBox.y, 'contact links do not overlap the name (beside it, or on a second row on narrow screens)');

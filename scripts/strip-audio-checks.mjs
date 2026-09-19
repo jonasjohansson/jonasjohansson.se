@@ -172,4 +172,42 @@ export async function checkStripAudio({ check, visit, desktop, mobile }) {
     await page.locator('#strip-kagora').click();
     await page.waitForSelector('#projects #kagora');
   });
+
+  await check('squeezing the window plays the wall like an accordion', desktop, async page => {
+    await observeAudio(page);
+    await visit(page);
+    const notes = () => page.evaluate(() => window.__stripSound.notes.filter((_, index) => index % 2 === 0));
+    // Audio unlocks on a real gesture in the page; dragging a window edge is
+    // not one, so a resize on a cold load is silent by design.
+    await page.mouse.click(8, 8);
+    await page.waitForFunction(() => window.__stripSound.contexts[0]?.state === 'running');
+    assert.deepEqual(await notes(), [], 'unlocking still plays nothing');
+    const strip = await page.evaluate(() => innerWidth / document.querySelectorAll('#strips .strip:not([hidden])').length);
+    for (let step = 1; step <= 4; step++) {
+      await page.setViewportSize({ width: Math.round(1440 - strip * step), height: 900 });
+      await page.waitForTimeout(80);
+    }
+    const squeezed = (await notes()).length;
+    assert.ok(squeezed > 0, 'squeezing the window sounds the wall');
+    assert.ok(squeezed <= 6, `a drag plays a run, not a burst (${squeezed} notes for four steps)`);
+    // An accordion sounds both ways: letting the window back out plays on.
+    await page.setViewportSize({ width: 1440, height: 900 });
+    await page.waitForTimeout(150);
+    assert.ok((await notes()).length > squeezed, 'widening the window plays too');
+    const melody = [659.25, 659.25, 659.25, 523.25, 659.25, 783.99, 392, 523.25];
+    const played = await notes();
+    assert.ok(played.every((frequency, index) => Math.abs(frequency - melody[index % melody.length]) < 0.01),
+      'the squeeze continues the same Mario sequence the pointer plays');
+  });
+
+  await check('rotating a phone does not sound the strips', mobile, async page => {
+    await observeAudio(page);
+    await visit(page);
+    // Unlock first, so silence here is the guard working and not a missing context.
+    await page.mouse.click(8, 8);
+    const size = page.viewportSize();
+    await page.setViewportSize({ width: size.height, height: size.width });
+    await page.waitForTimeout(200);
+    assert.equal(await page.evaluate(() => window.__stripSound.notes.length), 0, 'a rotation is not a squeeze');
+  });
 }
