@@ -75,10 +75,13 @@ async function checkFooter(page) {
   const footer = await page.locator('#intro-links').boundingBox();
   const wall = await page.locator('#strips').boundingBox();
   const touch = await page.evaluate(() => matchMedia('(hover: none)').matches);
+  const home = await page.locator('body').getAttribute('data-route') === 'home';
   if (touch) assert.ok(Math.abs(footer.y - wall.y - wall.height) < 1, 'on phones the categories sit directly below the strips');
+  // The landing gives the categories their own band under the wall; a project
+  // page still floats them over its foot.
+  else if (home) assert.ok(footer.y >= wall.y + wall.height - 1, 'the categories sit below the strips');
   else assert.ok(footer.y < wall.y + wall.height && footer.y + footer.height >= wall.y + wall.height - 1, 'the categories float over the foot of the strips');
   assert.ok(Math.abs(footer.y + footer.height - page.viewportSize().height) < 1, 'footer fits within the strip viewport');
-  const home = await page.locator('body').getAttribute('data-route') === 'home';
   const header = page.locator(home ? '#home-header' : '#collection-header');
   const contacts = header.locator('.header-contacts');
   const contactBox = await contacts.boundingBox();
@@ -105,6 +108,9 @@ async function checkFooter(page) {
     assert.equal(name.x, wall.x, 'the name block sits flush with the wall’s corner');
   }
   if (touch) assert.ok(Math.abs(contactRow.y + contactRow.height - wall.y) < 1, 'on phones the header sits directly above the strips');
+  // Same on the landing: the contacts have a band of their own above the wall,
+  // while a project page keeps them floating over its top corner.
+  else if (home) assert.ok(contactRow.y + contactRow.height <= wall.y + 1, 'the contacts sit above the strips');
   else assert.ok(contactRow.y <= wall.y + 1 && contactRow.y + contactRow.height > wall.y, 'the header floats over the top of the strips');
   if (!home) {
     if (touch) assert.equal(await page.locator('#header').isVisible(), false, 'phones show no project title');
@@ -308,7 +314,9 @@ try {
       assert.equal(wall.width, options.viewport.width - 48);
       assert.equal(await page.locator('#home-title').count(), 0, 'the landing page carries no name');
       if (options.hasTouch) assert.ok(Math.abs(wall.y - header.y - header.height) < 1, 'on phones the wall starts directly below the header');
-      else assert.ok(Math.abs(wall.y - header.y - 24) < 1, 'the wall starts one gutter below the top of the floating header');
+      // The contacts band is clear of the wall now, so the gutter falls between
+      // the two rather than between the wall and the top of a floating header.
+      else assert.ok(Math.abs(wall.y - header.y - header.height - 24) < 1, 'the wall starts one gutter below the contacts band');
       await checkFooter(page);
       assert.equal(await page.evaluate(() => document.documentElement.scrollWidth > innerWidth), false);
       const intro = await page.locator('#intro').boundingBox();
@@ -652,7 +660,10 @@ try {
         assert.deepEqual(await page.locator('#project-filters [aria-pressed="true"]').evaluateAll(buttons => buttons.map(button => button.dataset.filter)), tags.filter(tag => selected.has(tag)));
         assert.ok(selected.size > 0 && expected.length > 0, 'at least one tag and its projects stay visible');
         assert.equal(await page.locator('#project-filters [aria-disabled="true"]').count(), selected.size === 1 ? 1 : 0);
-        assert.equal((await page.locator('#strips').boundingBox()).height, options.hasTouch ? options.viewport.height - 48 - (await page.locator('#home-header').boundingBox()).height - (await page.locator('#intro-links').boundingBox()).height + 48 : options.viewport.height - 48);
+        // The wall fills what the contacts and categories leave, less the
+        // gutter it keeps above and below, on both kinds of screen.
+        const bands = (await page.locator('#home-header').boundingBox()).height + (await page.locator('#intro-links').boundingBox()).height;
+        assert.equal((await page.locator('#strips').boundingBox()).height, options.hasTouch ? options.viewport.height - bands : options.viewport.height - bands - 48);
       };
       const toggle = async tag => {
         await page.locator('#project-filters button').nth(tags.indexOf(tag)).click();
@@ -866,7 +877,10 @@ try {
       // The name above a project's wall leads home, which opens on the wall.
       await page.waitForFunction(() => document.body.dataset.route === 'home' && document.body.dataset.homeView === 'projects' && scrollY < 1);
       assert.equal(await page.locator('#project-filters [aria-pressed="false"]').count(), 0, 'project filters do not change the homepage selection');
-      await page.evaluate(() => scrollTo({ top: document.getElementById('collection').getBoundingClientRect().top + scrollY, behavior: 'instant' }));
+      // The wall is the top of the landing page, and the contacts sit in a band
+      // above it: scrolling to the wall's own top would leave the categories a
+      // band short of the foot of the screen.
+      await page.evaluate(() => scrollTo({ top: 0, behavior: 'instant' }));
       await waitForHomeWall(page);
       await checkFooter(page);
     });

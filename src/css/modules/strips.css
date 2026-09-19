@@ -10,12 +10,24 @@ body[data-route="home"] .collection-header { display: none; }
 .strip-title { display: none; }
 .enhanced #collection { display: flex; flex-direction: column; height: calc(100dvh - var(--footer-height)); scroll-margin: 0; }
 .enhanced body[data-route="home"] #collection { height: calc(100dvh - var(--home-header-height) - var(--footer-height)); padding: 0 var(--page-gutter); }
-/* The name, icons and categories float over the wall, which takes the whole screen. */
-/* The wall keeps the page gutter above and below, like the project media, and the text rows sit over its edges without any fade. */
+/* On a project page the name and categories float over the wall, which takes the
+   whole screen. On the landing they sit in their own bands, above and below, so
+   the strips keep clear air at top and bottom. */
 .enhanced #collection, .enhanced body[data-route="home"] #collection { position: relative; height: 100dvh; padding-block: var(--page-gutter); }
-.enhanced .home-header { position: relative; z-index: var(--z-filter); padding: var(--page-gutter) var(--page-gutter) 0; margin-bottom: calc(-1 * (var(--home-header-height) + var(--page-gutter))); background: none; }
+/* The wall gives up the two bands it no longer sits under, so contacts, strips
+   and categories together still fill exactly one screen. The wall no longer
+   starts at the top of the page, so a #collection jump has to allow for the
+   contacts above it or it lands a band too low and the categories leave the
+   foot of the screen. */
+.enhanced body[data-route="home"] #collection {
+  height: calc(100dvh - var(--home-header-height) - var(--footer-height) - 2 * var(--page-gutter));
+  scroll-margin-top: calc(var(--home-header-height) + var(--page-gutter));
+}
+.enhanced .home-header { position: relative; z-index: var(--z-filter); padding: var(--page-gutter) var(--page-gutter) 0; background: none; }
 .enhanced .collection-header { position: absolute; top: var(--page-gutter); left: 0; right: 0; z-index: var(--z-filter); justify-content: space-between; align-items: flex-start; column-gap: var(--spacing-md); }
 .enhanced .intro-links { position: relative; z-index: var(--z-filter); height: calc(var(--footer-height) + var(--page-gutter)); padding-bottom: var(--page-gutter); margin-top: calc(-1 * (var(--footer-height) + var(--page-gutter))); }
+/* On the landing the categories sit under the wall instead of over its foot. */
+.enhanced body[data-route="home"] .intro-links { margin-top: 0; }
 .enhanced #strips { flex: 1; flex-direction: row; height: 100%; min-height: 0; overflow-x: auto; scrollbar-width: none; }
 .enhanced #strips::-webkit-scrollbar { display: none; }
 .enhanced .strip { flex: 1 1 0; width: auto; height: 100%; min-width: 1.125rem; min-height: 0; transition: flex-grow var(--transition-fast); }
