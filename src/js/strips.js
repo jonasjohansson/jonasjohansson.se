@@ -22,16 +22,10 @@ let hoveredEntry;
 function updatePreview() {
   const focused = document.activeElement?.closest('#strips .strip:not([hidden])');
   const entry = hoveredEntry || focused;
-  const projectTags = projects.get(entry?.dataset.project)?.tags || [];
   // The bottom-left caption names the project while a strip is hovered, focused or scrubbed.
   const caption = document.getElementById('strip-caption');
   caption.textContent = entry?.getAttribute('aria-label') || '';
   caption.hidden = !entry;
-  document.getElementById('project-filters').classList.toggle('is-previewing', Boolean(entry));
-  document.querySelectorAll('#project-filters button').forEach(button => {
-    const tag = button.dataset.filter;
-    button.classList.toggle('is-preview-tag', activeTags.has(tag) && projectTags.includes(tag));
-  });
 }
 
 function matchesFilters(project, selectedTags = activeTags, selectedYear = activeYear) {
@@ -45,28 +39,23 @@ function hasMatches(selectedTags = activeTags, selectedYear = activeYear) {
   return [...projects.values()].some(project => project.slug !== currentSlug && matchesFilters(project, selectedTags, selectedYear));
 }
 
-// Year and categories are alternatives: choosing one resets the other, so
-// each is validated against the other's reset state.
-function canRemoveTag(tag) {
-  return activeTags.size > 1 && hasMatches(new Set([...activeTags].filter(candidate => candidate !== tag)), '');
-}
-
+// Year and category are alternatives: choosing one resets the other, so each
+// is validated against the other's reset state.
 function canSelectOnlyTag(tag) {
   return hasMatches(new Set([tag]), '');
 }
 
+// The dropdown carries one category at a time; the whole set means All work.
+function selectedCategory() {
+  return activeTags.size === categories.length ? '' : [...activeTags][0];
+}
+
 function updateFilterStates() {
-  document.querySelectorAll('#project-filters button').forEach(button => {
-    const active = activeTags.has(button.dataset.filter);
-    button.setAttribute('aria-pressed', String(active));
-    const disabled = activeTags.size === categories.length
-      ? !canSelectOnlyTag(button.dataset.filter)
-      : active && !canRemoveTag(button.dataset.filter);
-    button.setAttribute('aria-disabled', String(disabled));
-  });
+  const categorySelect = document.getElementById('project-category');
+  categorySelect.value = selectedCategory();
+  for (const option of categorySelect.options) option.disabled = option.value !== '' && !canSelectOnlyTag(option.value);
   const yearSelect = document.getElementById('project-year');
   yearSelect.value = activeYear;
-  yearSelect.classList.toggle('is-set', activeYear !== '');
   for (const option of yearSelect.options) option.disabled = !hasMatches(new Set(categories), option.value);
 }
 
@@ -242,15 +231,13 @@ export function initializeStrips() {
   initializeStripAudio();
   document.documentElement.classList.add('enhanced');
   const filters = document.getElementById('project-filters');
-  for (const tag of categories) {
-    const button = document.createElement('button');
-    button.type = 'button';
-    button.dataset.filter = tag;
-    button.textContent = tag === 'av' ? 'Audiovisual' : tag[0].toUpperCase() + tag.slice(1);
-    button.setAttribute('aria-pressed', String(activeTags.has(tag)));
-    button.setAttribute('aria-controls', 'strips');
-    filters.append(button);
-  }
+  const categorySelect = document.createElement('select');
+  categorySelect.id = 'project-category';
+  categorySelect.setAttribute('aria-label', 'Category');
+  categorySelect.setAttribute('aria-controls', 'strips');
+  categorySelect.add(new Option('All work', ''));
+  for (const tag of categories) categorySelect.add(new Option(tag === 'av' ? 'Audiovisual' : tag[0].toUpperCase() + tag.slice(1), tag));
+  filters.append(categorySelect);
   const yearSelect = document.createElement('select');
   yearSelect.id = 'project-year';
   yearSelect.setAttribute('aria-label', 'Year');
@@ -276,20 +263,16 @@ export function initializeStrips() {
     categories.forEach(tag => activeTags.add(tag));
     applyFilters();
   });
-  filters.addEventListener('click', event => {
-    const button = event.target.closest('button[data-filter]');
-    if (!button) return;
-    const tag = button.dataset.filter;
-    filterSelections.get(currentSlug).year = '';
-    if (activeTags.size === categories.length) {
-      if (!canSelectOnlyTag(tag)) return;
-      activeTags.clear();
-      activeTags.add(tag);
-    } else {
-      if (activeTags.has(tag) && !canRemoveTag(tag)) return;
-      if (activeTags.has(tag)) activeTags.delete(tag);
-      else activeTags.add(tag);
+  categorySelect.addEventListener('change', () => {
+    const tag = categorySelect.value;
+    if (tag && !canSelectOnlyTag(tag)) {
+      categorySelect.value = selectedCategory();
+      return;
     }
+    filterSelections.get(currentSlug).year = '';
+    activeTags.clear();
+    if (tag) activeTags.add(tag);
+    else categories.forEach(category => activeTags.add(category));
     applyFilters();
   });
   updateStrips(document.documentElement.dataset.project);

@@ -649,7 +649,7 @@ try {
   });
 
   for (const [name, options] of [['desktop', desktop], ['mobile', mobile]]) {
-    await check(`${name} toggles multiple tags and preserves the selection after Back`, options, async page => {
+    await check(`${name} picks a category and preserves the selection after Back`, options, async page => {
       // Phones list cards with no categories and no year filter.
       if (options.hasTouch) {
         await visit(page);
@@ -658,84 +658,60 @@ try {
       }
       await visit(page);
       const projects = await page.evaluate(() => window.__PROJECTS_DATA__);
-      const tags = await page.locator('#project-filters button').evaluateAll(buttons => buttons.map(button => button.dataset.filter));
-      assert.deepEqual(new Set(tags), new Set(projects.flatMap(project => project.tags).filter(tag => tag !== 'installation' && !/^\d{4}$/.test(tag))));
-      assert.equal(tags.includes(''), false, 'there is no All button');
+      const categories = page.locator('#project-category');
+      const tags = await categories.locator('option').evaluateAll(options => options.map(option => option.value));
+      assert.equal(tags[0], '', 'the dropdown opens on All work');
+      assert.deepEqual(new Set(tags.slice(1)), new Set(projects.flatMap(project => project.tags).filter(tag => tag !== 'installation' && !/^\d{4}$/.test(tag))));
       assert.equal(tags.includes('education'), false, 'Education is no longer a filter');
       assert.ok(projects.find(project => project.slug === 'visualia').tags.includes('community'), 'Visualia belongs to Community');
       assert.ok(projects.find(project => project.slug === 'svartljus').tags.includes('community'), 'Svartljus belongs to Community');
-      const selected = new Set(tags);
+      let chosen = '';
       const visibleSlugs = () => page.locator('.strip:not([hidden])').evaluateAll(strips => strips.map(strip => strip.dataset.project));
       const checkSelection = async () => {
-        const expected = projects.filter(project => selected.size === tags.length || project.tags.some(tag => selected.has(tag))).map(project => project.slug);
-        assert.deepEqual(await visibleSlugs(), expected, 'show projects matching any enabled tag');
-        assert.deepEqual(await page.locator('#project-filters [aria-pressed="true"]').evaluateAll(buttons => buttons.map(button => button.dataset.filter)), tags.filter(tag => selected.has(tag)));
-        assert.ok(selected.size > 0 && expected.length > 0, 'at least one tag and its projects stay visible');
-        assert.equal(await page.locator('#project-filters [aria-disabled="true"]').count(), selected.size === 1 ? 1 : 0);
-        // The wall fills what the contacts and categories leave, less the
+        const expected = projects.filter(project => !chosen || project.tags.includes(chosen)).map(project => project.slug);
+        assert.deepEqual(await visibleSlugs(), expected, 'show the projects in the chosen category');
+        assert.equal(await categories.inputValue(), chosen, 'the dropdown names the category on screen');
+        assert.ok(expected.length > 0, 'a category never empties the wall');
+        // Every category has projects of its own on the landing page, so none
+        // of them is closed off.
+        assert.equal(await categories.locator('option:disabled').count(), 0, 'every category stays available on the landing page');
+        // The wall fills what the writing and the categories leave, less the
         // gutter it keeps above and below, on both kinds of screen.
         const bands = (await page.locator('#home-header').boundingBox()).height + (await page.locator('#intro-links').boundingBox()).height;
         assert.equal((await page.locator('#strips').boundingBox()).height, options.hasTouch ? options.viewport.height - bands : options.viewport.height - bands - 48);
       };
-      const toggle = async tag => {
-        await page.locator('#project-filters button').nth(tags.indexOf(tag)).click();
-        if (selected.size === tags.length) {
-          selected.clear();
-          selected.add(tag);
-        } else if (selected.has(tag)) selected.delete(tag);
-        else selected.add(tag);
+      const choose = async tag => {
+        await categories.selectOption(tag);
+        chosen = tag;
         await checkSelection();
       };
       await checkSelection();
-      assert.equal(await page.locator('.strip:not([hidden])').count(), projects.length, 'all tags start on, including projects tagged only Installation');
-      await toggle('light');
-      assert.deepEqual(await page.locator('#project-filters [aria-pressed="true"]').evaluateAll(buttons => buttons.map(button => button.dataset.filter)), ['light'], 'first click selects only Light');
-      const last = page.locator('#project-filters [aria-pressed="true"]');
-      await last.click({ force: true });
-      await checkSelection();
-      await last.focus();
-      await page.keyboard.press('Space');
-      await checkSelection();
-      await page.keyboard.press('Enter');
-      await checkSelection();
+      assert.equal(await page.locator('.strip:not([hidden])').count(), projects.length, 'All work shows everything, including projects tagged only Installation');
+      await choose('light');
+      assert.equal(await categories.inputValue(), 'light', 'choosing Light shows Light');
+      await choose('');
       await checkFooter(page);
-      const select = async wanted => {
-        for (const tag of wanted.filter(tag => !selected.has(tag))) await toggle(tag);
-        for (const tag of [...selected].filter(tag => !wanted.includes(tag))) await toggle(tag);
-      };
-      for (const tag of tags) {
-        await select([tag]);
-      }
-      await select(['mixed reality', 'community']);
+      for (const tag of tags.slice(1)) await choose(tag);
+      await choose('community');
       const expected = await visibleSlugs();
-      const chosen = page.locator('.strip:not([hidden])').first();
-      const id = await chosen.getAttribute('id');
-      await openStrip(page, chosen, 'click');
+      const strip = page.locator('.strip:not([hidden])').first();
+      const id = await strip.getAttribute('id');
+      await openStrip(page, strip, 'click');
       await page.waitForSelector('#projects .project');
       assert.equal(await page.locator('.strip:not([hidden])').count(), projects.length - 1, 'project pages show all other projects');
       await page.goBack();
       await waitForHomeWall(page);
-      assert.deepEqual(await visibleSlugs(), expected);
+      assert.deepEqual(await visibleSlugs(), expected, 'Back restores the category');
       assert.equal(await page.evaluate(() => document.activeElement.id), id);
       await checkSelection();
-      const design = page.locator('#project-filters [data-filter="design"]');
-      await design.focus();
-      await page.keyboard.press('Space');
-      selected.add('design');
-      await checkSelection();
-      await toggle('mixed reality');
-      await toggle('community');
+      await choose('design');
       const designCount = projects.filter(project => project.tags.includes('design')).length;
       assert.equal(await page.locator('#project-count').textContent(), `${designCount} ${designCount === 1 ? 'project' : 'projects'}`);
-      for (const tag of tags.filter(tag => !selected.has(tag))) await toggle(tag);
+      await choose('');
       assert.equal(await page.locator('.strip:not([hidden])').count(), projects.length);
       await page.evaluate(() => scrollTo({ top: 0, behavior: 'instant' }));
       await page.waitForFunction(() => scrollY < 1);
-      await design.focus();
-      await page.keyboard.press('Space');
-      selected.clear();
-      selected.add('design');
-      await checkSelection();
+      await choose('design');
       await waitForHomeWall(page);
     });
   }
@@ -774,38 +750,35 @@ try {
       const wallOrder = await page.locator('#strips .strip').evaluateAll(strips => strips.map(strip => strip.dataset.project));
       datedProjects.sort((a, b) => wallOrder.indexOf(a.slug) - wallOrder.indexOf(b.slug));
       const yearSelect = page.getByRole('combobox', { name: 'Year', exact: true });
-      const tag = value => page.locator(`#project-filters [data-filter="${value}"]`);
+      const categorySelect = page.getByRole('combobox', { name: 'Category', exact: true });
       const visible = () => page.locator('#strips .strip:not([hidden])').evaluateAll(strips => strips.map(strip => strip.dataset.project));
       assert.equal(await yearSelect.getAttribute('multiple'), null, 'the year selector cannot select multiple years');
+      assert.equal(await categorySelect.getAttribute('multiple'), null, 'the category selector cannot select multiple categories');
       assert.deepEqual(await yearSelect.locator('option').allTextContents(), ['All years', '2026', '2025', '2024', '2023']);
-      assert.equal(await page.locator('#project-filters button').evaluateAll(buttons => buttons.some(button => /^\d{4}$/.test(button.dataset.filter))), false, 'years are no longer toggle buttons');
+      assert.equal(await page.locator('#project-filters button').count(), 0, 'both filters are dropdowns, not rows of toggles');
       for (const year of ['2025', '2024', '2023', '2026', '']) {
         await yearSelect.selectOption(year);
         assert.deepEqual(await visible(), expected(year), 'changing year replaces the previous selection');
         assert.equal(await yearSelect.inputValue(), year);
       }
-      const pressed = () => page.locator('#project-filters [aria-pressed="true"]').evaluateAll(buttons => buttons.map(button => button.dataset.filter));
-      const allTags = await page.locator('#project-filters button').evaluateAll(buttons => buttons.map(button => button.dataset.filter));
       await yearSelect.selectOption('2025');
-      await tag('mixed reality').click();
+      await categorySelect.selectOption('mixed reality');
       assert.equal(await yearSelect.inputValue(), '', 'choosing a category clears the year');
       assert.deepEqual(await visible(), expected('', '', ['mixed reality']), 'the category applies across all years');
-      await tag('community').click();
-      assert.deepEqual(await visible(), expected('', '', ['mixed reality', 'community']), 'categories still combine');
+      await categorySelect.selectOption('community');
+      assert.deepEqual(await visible(), expected('', '', ['community']), 'a second choice replaces the first');
       await yearSelect.selectOption('2024');
-      assert.deepEqual(await pressed(), allTags, 'choosing a year turns every category back on');
+      assert.equal(await categorySelect.inputValue(), '', 'choosing a year returns the category to All work');
       assert.deepEqual(await visible(), expected('2024'), 'the year applies across all categories');
       assert.equal(await page.locator('#project-year option[disabled]').count(), 0, 'every year stays available');
-      await tag('community').click();
+      await categorySelect.selectOption('community');
       assert.equal(await yearSelect.inputValue(), '');
       assert.deepEqual(await visible(), expected('', '', ['community']));
-      await tag('design').click();
-      await tag('community').click();
+      await categorySelect.selectOption('design');
       assert.deepEqual(await visible(), expected('', '', ['design']));
 
-      // Restore all categories and check the single-year state through navigation.
-      const inactiveTags = await page.locator('#project-filters [aria-pressed="false"]').evaluateAll(buttons => buttons.map(button => button.dataset.filter));
-      for (const value of inactiveTags) await tag(value).click();
+      // Back to all work, then check the single-year state through navigation.
+      await categorySelect.selectOption('');
       await yearSelect.selectOption('2023');
       await yearSelect.scrollIntoViewIfNeeded();
       const yearBounds = await yearSelect.boundingBox(), filterBounds = await page.locator('#project-filters').boundingBox();
@@ -856,22 +829,20 @@ try {
       await visit(page, '/society-expo/');
       await page.locator('#collection').evaluate(collection => collection.scrollIntoView({ block: 'start' }));
       await checkFooter(page);
-      // In this fixture Light belongs only to the open project, so selecting it
-      // alone must not hide every strip.
-      const unique = page.locator('#project-filters [data-filter="light"]');
+      // In this fixture Light belongs only to the open project, so the wall it
+      // would leave is empty: the dropdown closes that category off rather
+      // than emptying the wall.
+      const categorySelect = page.locator('#project-category');
+      const option = value => categorySelect.locator(`option[value="${value}"]`);
       const before = await page.locator('.strip:not([hidden])').evaluateAll(strips => strips.map(strip => strip.dataset.project));
-      assert.equal(await unique.getAttribute('aria-disabled'), 'true');
-      await unique.click({ force: true });
+      assert.equal(await option('light').evaluate(option => option.disabled), true, 'a category with nothing left to show is not selectable');
+      assert.equal(await option('community').evaluate(option => option.disabled), false, 'a category with work left stays selectable');
+      assert.equal(await option('').evaluate(option => option.disabled), false, 'All work is always available');
+      assert.equal(await categorySelect.inputValue(), '', 'a project wall opens on All work');
       assert.deepEqual(await page.locator('.strip:not([hidden])').evaluateAll(strips => strips.map(strip => strip.dataset.project)), before);
-      assert.equal(await page.locator('#project-filters [aria-pressed="false"]').count(), 0, 'an unavailable solo tag leaves all selected');
-      const community = page.locator('#project-filters [data-filter="community"]');
-      await community.click();
-      assert.deepEqual(await page.locator('#project-filters [aria-pressed="true"]').evaluateAll(buttons => buttons.map(button => button.dataset.filter)), ['community'], 'first click selects only Community on project pages too');
-      await unique.click();
-      assert.equal(await community.getAttribute('aria-disabled'), 'true');
-      await community.click({ force: true });
-      assert.equal(await community.getAttribute('aria-pressed'), 'true', 'keep a usable tag when the other selection belongs only to the open project');
-      await unique.click();
+      await categorySelect.selectOption('community');
+      assert.equal(await categorySelect.inputValue(), 'community', 'the dropdown works on project pages too');
+      assert.equal(await option('light').evaluate(option => option.disabled), true, 'the closed-off category stays closed off');
       const expected = await page.evaluate(() => window.__PROJECTS_DATA__.filter(project => project.slug !== 'society-expo' && project.tags.includes('community')).map(project => project.slug));
       assert.deepEqual(await page.locator('.strip:not([hidden])').evaluateAll(strips => strips.map(strip => strip.dataset.project)), expected);
       assert.equal(new URL(page.url()).pathname, `${prefix}/society-expo/`, 'filtering stays on the project');
@@ -883,12 +854,12 @@ try {
       await page.goBack();
       await page.waitForFunction(() => document.documentElement.dataset.project === 'society-expo');
       assert.ok(await page.evaluate(() => scrollY) < 1, 'Back from a strip returns to the top of the project, not the wall it was clicked in');
-      assert.deepEqual(await page.locator('#project-filters [aria-pressed="true"]').evaluateAll(buttons => buttons.map(button => button.dataset.filter)), ['community']);
+      assert.equal(await categorySelect.inputValue(), 'community');
       assert.deepEqual(await page.locator('.strip:not([hidden])').evaluateAll(strips => strips.map(strip => strip.dataset.project)), expected);
       await page.locator('.collection-home-link').click();
       // The name above a project's wall leads home, which opens on the wall.
       await page.waitForFunction(() => document.body.dataset.route === 'home' && document.body.dataset.homeView === 'projects' && scrollY < 1);
-      assert.equal(await page.locator('#project-filters [aria-pressed="false"]').count(), 0, 'project filters do not change the homepage selection');
+      assert.equal(await categorySelect.inputValue(), '', 'project filters do not change the homepage selection');
       // The wall is the top of the landing page, and the contacts sit in a band
       // above it: scrolling to the wall's own top would leave the categories a
       // band short of the foot of the screen.
@@ -908,10 +879,9 @@ try {
       }
       await visit(page);
       const yearSelect = page.getByRole('combobox', { name: 'Year', exact: true });
-      const pressed = () => page.locator('#project-filters [aria-pressed="true"]').evaluateAll(buttons => buttons.map(button => button.dataset.filter));
-      const allTags = await page.locator('#project-filters button').evaluateAll(buttons => buttons.map(button => button.dataset.filter));
-      await page.locator('#project-filters [data-filter="light"]').click();
-      assert.deepEqual(await pressed(), ['light'], 'a single category is selected');
+      const categorySelect = page.locator('#project-category');
+      await categorySelect.selectOption('light');
+      assert.equal(await categorySelect.inputValue(), 'light', 'a category is selected');
       const first = page.locator('#strips .strip:not([hidden])').first();
       const slug = await first.getAttribute('data-project');
       await openStrip(page, first, 'dispatch');
@@ -924,7 +894,7 @@ try {
         await page.evaluate(() => scrollTo({ top: document.getElementById('collection').getBoundingClientRect().top + scrollY, behavior: 'instant' }));
       } else await page.locator('#header-toggle').click();
       await waitForHomeWall(page);
-      assert.deepEqual(await pressed(), allTags, 'leaving the project for the landing page turns every category on');
+      assert.equal(await categorySelect.inputValue(), '', 'leaving the project for the landing page returns to All work');
       assert.equal(await yearSelect.inputValue(), '', 'and no year');
       await yearSelect.selectOption('2024');
       await openStrip(page, page.locator('#strips .strip:not([hidden])').first(), 'dispatch');
@@ -999,47 +969,32 @@ try {
     });
   }
 
-  await check('strip previews highlight enabled tags without changing filters', desktop, async page => {
-    const highlighted = () => page.locator('#project-filters .is-preview-tag').evaluateAll(buttons => buttons.map(button => button.dataset.filter));
-    const selected = () => page.locator('#project-filters [aria-pressed="true"]').evaluateAll(buttons => buttons.map(button => button.dataset.filter));
+  // The categories are a dropdown now, so a hovered strip has no tag to light
+  // up: the caption names it, and nothing under the wall moves.
+  await check('previewing a strip leaves the filters and the footer alone', desktop, async page => {
     const footerLayout = () => page.locator('#project-filters').evaluate(filters => {
       const rect = filters.getBoundingClientRect();
       const collection = document.getElementById('collection').getBoundingClientRect();
       return { x: rect.x - collection.x, y: rect.y - collection.y, width: rect.width, height: rect.height };
     });
+    const categorySelect = page.locator('#project-category');
     for (const route of ['/', '/jagad/']) {
       await visit(page, route);
       await page.locator('#collection').evaluate(collection => collection.scrollIntoView({ block: 'start' }));
-      const before = await selected();
+      const before = await categorySelect.inputValue();
       const footer = await footerLayout();
+      const label = await page.locator('#strip-kagora').getAttribute('aria-label');
       await page.locator('#strip-kagora').hover();
-      assert.deepEqual(await highlighted(), ['light', 'community'], 'Kagora highlights its enabled categories');
-      assert.deepEqual(await selected(), before, 'previewing a project does not toggle filters');
-      const opacities = await page.locator('#project-filters button').evaluateAll(buttons => Object.fromEntries(buttons.map(button => [button.dataset.filter, Number(getComputedStyle(button).opacity)])));
-      assert.equal(opacities.light, 1, 'matching tags keep full opacity');
-      assert.ok(Object.entries(opacities).every(([tag, opacity]) => ['light', 'community'].includes(tag) || opacity < 0.5), 'non-matching tags are dimmed');
-      assert.equal(await page.locator('#project-filters [data-filter="light"]').evaluate(button => getComputedStyle(button).textDecorationLine), 'none', 'matching tags are not underlined');
-      assert.deepEqual(await footerLayout(), footer, 'the highlight does not shift the footer within the collection');
+      assert.equal(await caption(page), label, 'hovering names the project');
+      assert.equal(await categorySelect.inputValue(), before, 'previewing a project does not change the filters');
+      assert.deepEqual(await footerLayout(), footer, 'the preview does not shift the footer within the collection');
       await page.screenshot({ path: `${output}/tag-preview${route === '/' ? '-home' : '-project'}.png` });
       await page.mouse.move(0, 0);
-      assert.deepEqual(await highlighted(), [], 'highlight clears on pointer leave');
-      await page.locator('#project-filters [data-filter="light"]').click();
-      const filtered = await selected();
+      assert.equal(await caption(page), '', 'the caption clears on pointer leave');
+      await categorySelect.selectOption('light');
       await page.locator('#strip-kagora').hover();
-      assert.deepEqual(await highlighted(), ['light'], 'disabled categories do not highlight');
-      assert.deepEqual(await selected(), filtered);
+      assert.equal(await categorySelect.inputValue(), 'light', 'the preview leaves a chosen category in place');
       await page.mouse.move(0, 0);
-      await page.locator('#strip-svartljus').focus();
-      assert.deepEqual(await highlighted(), ['light'], 'keyboard focus previews matching tags too');
-      await page.locator('#project-filters [data-filter="light"]').focus();
-      assert.deepEqual(await highlighted(), [], 'highlight clears on blur');
-      await page.emulateMedia({ reducedMotion: 'reduce' });
-      await page.locator('#strip-kagora').hover();
-      assert.deepEqual(await highlighted(), ['light'], 'reduced motion preserves the static highlight');
-      await page.locator('#strip-kagora').click();
-      await page.waitForFunction(() => document.documentElement.dataset.project === 'kagora');
-      assert.deepEqual(await highlighted(), [], 'navigation clears the previous preview');
-      await page.emulateMedia({ reducedMotion: 'no-preference' });
     }
   });
 
@@ -1061,7 +1016,7 @@ try {
     for (const route of ['/', '/jagad/']) {
       await visit(page, route);
       if (route === '/') {
-        await page.locator('#project-filters button[data-filter="mixed reality"]').click();
+        await page.locator('#project-category').selectOption('mixed reality');
       }
       await page.locator('#collection').scrollIntoViewIfNeeded();
       await page.mouse.move(0, 0);
