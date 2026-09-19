@@ -83,7 +83,16 @@ export function readProjects(root = 'projects') {
 }
 
 export function groupMedia(content) {
-  const row = items => ({ type: 'row', items, arSum: items.reduce((sum, item) => sum + item.ar, 0), gutters: items.length - 1 });
+  // Printed, a row of tall images belongs on one sheet. Cropping a portrait
+  // photograph to a 16:9 sheet throws most of it away, which is not true of a
+  // landscape one, so only all-portrait rows group. Videos do not print, so
+  // they are ignored here and a row with nothing printable never groups.
+  const printTogether = items => {
+    const printable = items.filter(item => item.type !== 'video');
+    return printable.length > 1 && printable.every(item => item.ar < 1);
+  };
+  const row = items => ({ type: 'row', items, arSum: items.reduce((sum, item) => sum + item.ar, 0), gutters: items.length - 1,
+    printTogether: printTogether(items) });
   const media = block => block?.type === 'image' || block?.type === 'video';
   const start = block => block.colStart ?? SIZE_MAP[block.size]?.colStart;
   const span = block => block.colSpan ?? SIZE_MAP[block.size]?.colSpan;

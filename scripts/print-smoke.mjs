@@ -73,7 +73,8 @@ try {
       textOnSheets: shown('#projects .text-block, #projects .credits-block').length,
       coverCopyBlocks: shown('.print-copy-full > *').length,
       audioWidgets: shown('#projects audio').length,
-      fullBleed: shown('#projects .media-item').every(node => {
+      // A grouped row shares one sheet, so its children are not full width.
+      fullBleed: shown('#projects .media-item').filter(node => !node.closest('.print-together')).every(node => {
         const mm = 96 / 25.4, box = node.getBoundingClientRect();
         return Math.abs(box.x) < 2 && Math.abs(box.width / mm - 338.667) < 1 && Math.abs(box.height / mm - 190.5) < 1;
       }),
@@ -110,10 +111,16 @@ try {
     const sheet = 190.5 * 96 / 25.4;
     const shown = [...document.querySelectorAll('#projects .media-item')].filter(node => node.offsetParent !== null);
     const last = shown.at(-1).getBoundingClientRect();
-    return { sheets: (last.bottom + scrollY) / sheet, images: shown.length };
+    // A row of tall images shares one sheet, so sheets are counted as the
+    // images that take one each, plus one for every grouped row.
+    return {
+      sheets: (last.bottom + scrollY) / sheet,
+      pictureSheets: shown.filter(node => !node.closest('.print-together')).length
+        + document.querySelectorAll('#projects .media-row.print-together').length,
+    };
   });
   assert.ok(Math.abs(ending.sheets - Math.round(ending.sheets)) < 0.02, 'the last image ends on a sheet boundary, with no blank page after it');
-  assert.equal(Math.round(ending.sheets), ending.images + 1, 'the document is the cover plus one sheet per image');
+  assert.equal(Math.round(ending.sheets), ending.pictureSheets + 1, 'the document is the cover plus one sheet per picture, grouped rows counting once');
   await page.emulateMedia({ media: 'screen' });
   await page.locator('#header-toggle').click();
   await page.waitForFunction(() => document.body.dataset.route === 'home');
@@ -181,9 +188,12 @@ try {
       const mm = 96 / 25.4;
       const shown = selector => [...document.querySelectorAll(selector)].filter(node => node.offsetParent !== null);
       const page = shown('.print-project .print-page')[0];
-      return Math.round(page.getBoundingClientRect().height / mm / 190.5) + shown('#projects .media-item').length;
+      // Images that take a sheet each, plus one sheet for every grouped row.
+      return Math.round(page.getBoundingClientRect().height / mm / 190.5)
+        + shown('#projects .media-item').filter(node => !node.closest('.print-together')).length
+        + document.querySelectorAll('#projects .media-row.print-together').length;
     });
-    assert.equal(pdfPages(await sweep.pdf({ preferCSSPageSize: true })), expected, `${slug} prints its cover sheets plus one page per image, with no blank page`);
+    assert.equal(pdfPages(await sweep.pdf({ preferCSSPageSize: true })), expected, `${slug} prints its cover sheets plus one page per picture, with no blank page`);
     await sweep.emulateMedia({ media: 'screen' });
   }
   await sweep.close();

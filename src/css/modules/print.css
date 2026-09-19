@@ -120,6 +120,21 @@
   body[data-route="project"] .project-grid > .media-item.hero,
   body[data-route="project"] .media-item:has(video) { break-before: auto !important; }
   body[data-route="project"] .media-row { display: block; gap: 0; }
+  /* A row of tall images takes one sheet between them rather than a sheet each:
+     cropping a portrait photograph to 16:9 throws most of the picture away.
+     The row becomes the sheet, and each image takes its aspect-ratio share of
+     the width, so the group prints as it is composed on screen. */
+  body[data-route="project"] .media-row.print-together {
+    display: flex; gap: 0; width: 338.667mm; height: 190.5mm; margin: 0;
+    break-before: page; break-inside: avoid; overflow: hidden;
+  }
+  body[data-route="project"] .media-row.print-together > .media-item {
+    width: auto !important; max-width: none; height: 190.5mm !important; margin: 0;
+    flex: var(--ar) 1 0 !important; break-before: auto !important; break-inside: avoid;
+    aspect-ratio: auto !important; overflow: hidden; border-radius: 0;
+  }
+  /* Video prints nothing, so it must not hold a share of the row's width. */
+  body[data-route="project"] .media-row.print-together > .media-item:has(video) { display: none !important; }
   body[data-route="project"] .media-item :is(img, video) {
     position: static; display: block; width: 100%; height: 100%; max-height: none;
     object-fit: cover; object-position: var(--focal, center);
