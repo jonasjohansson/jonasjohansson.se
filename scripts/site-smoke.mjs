@@ -95,9 +95,15 @@ async function checkFooter(page) {
   // failed this at random, with the header looking right in the screenshot.
   assert.ok(contactBox.y >= contactRow.y - 1 && contactBox.y + contactBox.height <= contactRow.y + contactRow.height + 1,
     `contacts fit in the row above the strips (contacts ${JSON.stringify(contactBox)} vs row ${JSON.stringify(contactRow)})`);
-  const name = await header.locator(home ? '#home-title' : '.collection-home-link').boundingBox();
-  assert.ok(name.x + name.width <= contactBox.x || name.y + name.height <= contactBox.y, 'contact links do not overlap the name (beside it, or on a second row on narrow screens)');
-  assert.equal(name.x, wall.x, 'the name block sits flush with the wall’s corner');
+  // The landing wall carries no name; a project wall keeps its own as the way
+  // home, so only that one has a block to sit beside the contacts.
+  if (home) {
+    assert.ok(Math.abs(contactBox.x + contactBox.width - wall.x - wall.width) < 1, 'the contacts sit flush with the wall’s right corner');
+  } else {
+    const name = await header.locator('.collection-home-link').boundingBox();
+    assert.ok(name.x + name.width <= contactBox.x || name.y + name.height <= contactBox.y, 'contact links do not overlap the name (beside it, or on a second row on narrow screens)');
+    assert.equal(name.x, wall.x, 'the name block sits flush with the wall’s corner');
+  }
   if (touch) assert.ok(Math.abs(contactRow.y + contactRow.height - wall.y) < 1, 'on phones the header sits directly above the strips');
   else assert.ok(contactRow.y <= wall.y + 1 && contactRow.y + contactRow.height > wall.y, 'the header floats over the top of the strips');
   if (!home) {
@@ -294,19 +300,19 @@ try {
     ['touch landscape', { ...mobile, viewport: { width: 844, height: 390 } }],
     ['touch tablet', { ...mobile, viewport: { width: 1024, height: 768 } }],
   ]) {
-    await check(`${name} projects sit below About`, options, async page => {
+    await check(`${name} About sits below the projects`, options, async page => {
       await visit(page);
       const wall = await page.locator('#strips').boundingBox();
       const header = await page.locator('#home-header').boundingBox();
       assert.equal(wall.x, 24);
       assert.equal(wall.width, options.viewport.width - 48);
-      if (!options.hasTouch) assert.equal((await page.locator('#home-link').boundingBox()).x, wall.x, 'the name starts at the wall’s left edge');
+      assert.equal(await page.locator('#home-title').count(), 0, 'the landing page carries no name');
       if (options.hasTouch) assert.ok(Math.abs(wall.y - header.y - header.height) < 1, 'on phones the wall starts directly below the header');
       else assert.ok(Math.abs(wall.y - header.y - 24) < 1, 'the wall starts one gutter below the top of the floating header');
       await checkFooter(page);
       assert.equal(await page.evaluate(() => document.documentElement.scrollWidth > innerWidth), false);
       const intro = await page.locator('#intro').boundingBox();
-      assert.ok(intro.y < 0 && Math.abs(intro.y + intro.height - header.y) < 1, 'About is physically above the header and strips');
+      assert.ok(intro.y >= wall.y + wall.height - 1, 'About reads below the strips, not above them');
       if (options.hasTouch) {
         // Phones scroll a list of cards: a photograph with the project's name under it.
         const list = await page.locator('.strip:not([hidden])').evaluateAll(strips => strips.map(strip => {
@@ -339,26 +345,19 @@ try {
       assert.ok(entries.every(entry => entry.width >= 8 && entry.height === wall.height && entry.named && entry.visibleText === ''));
       await page.locator('.strip:not([hidden]) .strip-image').evaluateAll(images => Promise.all(images.slice(0, 4).map(image => image.decode())));
       await page.screenshot({ path: `${output}/${name.replaceAll(' ', '-')}-home-wall.png` });
-      await page.locator('#home-link').click();
-      await page.waitForFunction(() => scrollY < 1 && document.activeElement.id === 'intro');
-      const aboutHeader = await page.locator('#home-header').boundingBox();
-      assert.ok(Math.abs(aboutHeader.y - intro.height) < 1, 'the name and contacts scroll with the strips');
-      const wallTop = (await page.locator('#strips').boundingBox()).y;
-      if (options.hasTouch) assert.ok(Math.abs(wallTop - aboutHeader.y - aboutHeader.height) < 1, 'header stays attached above the wall');
-      else assert.ok(Math.abs(wallTop - aboutHeader.y - 24) < 1, 'header stays over the top of the wall');
+      // About is a scroll away under the wall, with no name to toggle it.
+      await page.evaluate(() => scrollTo({ top: 99999, behavior: 'instant' }));
+      await page.waitForFunction(() => document.body.dataset.homeView === 'about');
       const text = await page.locator('.intro-text').boundingBox();
       assert.equal(text.x, wall.x, 'About shares the strips’ left edge');
-      assert.ok(aboutHeader.y - text.y - text.height <= 81, 'About ends after its content without an empty viewport');
-      assert.equal(await page.locator('#home-link').textContent(), 'Jonas Johansson');
-      assert.equal(await page.locator('#home-link').getAttribute('aria-label'), 'Jonas Johansson, Projects');
+      assert.ok(text.y < options.viewport.height, 'About is on screen once scrolled to');
       assert.equal(await page.locator('#intro').evaluate(intro => intro.inert), false);
-      assert.equal(await page.evaluate(() => document.activeElement.id), 'intro');
       assert.equal((await page.locator('#strips').boundingBox()).height, wall.height, 'the wall keeps its height when scrolling');
       assert.equal(await page.locator('#intro').evaluate(intro => getComputedStyle(intro).opacity), '1');
-      await page.screenshot({ path: `${output}/${name.replaceAll(' ', '-')}-about-above.png` });
+      await page.screenshot({ path: `${output}/${name.replaceAll(' ', '-')}-about-below.png` });
       await page.keyboard.press('Escape');
       await waitForHomeWall(page);
-      assert.equal(await page.evaluate(() => document.activeElement.id), 'home-link');
+      assert.equal(await page.evaluate(() => Math.round(scrollY)), 0, 'Escape climbs back to the wall');
     });
 
     await check(`${name} has the same vertical strip wall below project pages`, options, async page => {
@@ -418,42 +417,39 @@ try {
   }
 
   for (const [name, options] of [['desktop', desktop], ['mobile', mobile]]) {
-    await check(`${name} landing opens on About with the name hidden until the strips fill the screen`, options, async page => {
+    await check(`${name} landing opens on the wall with About below it`, options, async page => {
       await page.goto(base + '/');
-      await page.waitForFunction(() => document.documentElement.classList.contains('enhanced') && document.body.dataset.homeView === 'about' && scrollY < 1);
-      const opacity = () => page.locator('#home-title').evaluate(title => getComputedStyle(title).opacity);
-      if (options.hasTouch) {
-        // Phones never repeat the name above the cards; the contacts stay.
-        assert.equal(await page.locator('#home-title').isVisible(), false, 'phones show no name on the landing page');
-        assert.ok(await page.locator('#home-header .header-contacts').isVisible(), 'the contacts stay');
-        return;
-      }
-      assert.equal(await opacity(), '0', 'the name is hidden while About shows');
-      assert.equal(await page.locator('#home-link').getAttribute('aria-label'), 'Jonas Johansson, Projects');
-      assert.ok(await page.locator('.header-contacts').first().isVisible(), 'the contacts stay visible');
+      await page.waitForFunction(() => document.documentElement.classList.contains('enhanced') && document.body.dataset.homeView === 'projects' && scrollY < 1);
+      assert.equal(await page.locator('#home-title').count(), 0, 'the landing page carries no name');
+      assert.ok(await page.locator('#home-header .header-contacts').isVisible(), 'the contacts stay');
+      const wall = await page.locator('#strips').boundingBox();
+      const intro = await page.locator('#intro').boundingBox();
+      assert.ok(intro.y >= wall.y + wall.height - 1, 'About reads below the wall, not above it');
+      if (options.hasTouch) return;
       assert.equal(await caption(page), '', 'no caption until a strip is hovered');
-      // Scroll rather than press Escape: a keyboard-focused name stays visible on purpose.
-      await page.evaluate(() => scrollTo({ top: document.getElementById('collection').getBoundingClientRect().top + scrollY, behavior: 'instant' }));
-      await waitForHomeWall(page);
-      assert.equal(await opacity(), '1', 'the name shows once the strips fill the screen');
-      await page.evaluate(() => scrollBy({ top: -120, behavior: 'instant' }));
+      // Scrolling down reaches About; the wall is what the page opens on.
+      await page.evaluate(() => scrollTo({ top: 99999, behavior: 'instant' }));
       await page.waitForFunction(() => document.body.dataset.homeView === 'about');
-      assert.equal(await opacity(), '0', 'scrolling back up towards About hides the name again');
+      assert.ok((await page.locator('.intro-text').boundingBox()).y < 900, 'About is on screen once scrolled to');
+      await page.evaluate(() => scrollTo({ top: 0, behavior: 'instant' }));
+      await waitForHomeWall(page);
     });
   }
 
-  await check('scroll up reaches About without fading or resizing the strips', desktop, async page => {
+  await check('scroll down reaches About without fading or resizing the strips', desktop, async page => {
     await visit(page);
     const height = (await page.locator('#strips').boundingBox()).height;
     await page.mouse.move(700, 400);
-    await page.mouse.wheel(0, -250);
+    await page.mouse.wheel(0, 250);
     await page.waitForFunction(() => document.body.dataset.homeView === 'about');
     assert.equal(await page.locator('#intro').evaluate(intro => getComputedStyle(intro).opacity), '1');
     assert.equal((await page.locator('#strips').boundingBox()).height, height);
+    await page.mouse.wheel(0, 2000);
+    await page.waitForFunction(() => document.body.dataset.homeView === 'about');
+    assert.equal(await page.locator('#intro').evaluate(intro => intro.inert), false);
+    // The wall is back up the page now, and the header floats over it there.
     await page.mouse.wheel(0, -2000);
     await page.waitForFunction(() => scrollY < 1);
-    assert.equal(await page.locator('#intro').evaluate(intro => intro.inert), false);
-    await page.mouse.wheel(0, 2000);
     await waitForHomeWall(page);
     await checkFooter(page);
   });
@@ -621,22 +617,15 @@ try {
     });
   }
 
-  await check('name toggles About with keyboard and reduced motion', { ...desktop, reducedMotion: 'reduce' }, async page => {
+  await check('Escape climbs back to the wall from About, with reduced motion', { ...desktop, reducedMotion: 'reduce' }, async page => {
     await visit(page);
-    await page.evaluate(() => document.fonts.ready);
     await waitForHomeWall(page);
-    assert.equal(await page.locator('#home-link').getAttribute('aria-label'), 'Jonas Johansson, About');
-    await page.locator('#home-link').focus();
-    await page.keyboard.press('Enter');
-    await page.waitForFunction(() => scrollY < 1 && document.activeElement.id === 'intro');
+    await page.evaluate(() => scrollTo({ top: 99999, behavior: 'instant' }));
+    await page.waitForFunction(() => document.body.dataset.homeView === 'about');
     assert.equal((await page.locator('.intro-text').boundingBox()).x, 24, 'About stays left aligned on wide screens');
     await page.keyboard.press('Escape');
     await waitForHomeWall(page);
-    await page.evaluate(() => {
-      scrollTo({ top: 0, behavior: 'instant' });
-      document.getElementById('home-link').click();
-    });
-    await waitForHomeWall(page);
+    assert.equal(await page.evaluate(() => Math.round(scrollY)), 0, 'Escape returns to the top of the wall');
   });
 
   for (const [name, options] of [['desktop', desktop], ['mobile', mobile]]) {
@@ -717,7 +706,7 @@ try {
       assert.equal(await page.locator('#project-count').textContent(), `${designCount} ${designCount === 1 ? 'project' : 'projects'}`);
       for (const tag of tags.filter(tag => !selected.has(tag))) await toggle(tag);
       assert.equal(await page.locator('.strip:not([hidden])').count(), projects.length);
-      await page.locator('#home-link').click();
+      await page.evaluate(() => scrollTo({ top: 0, behavior: 'instant' }));
       await page.waitForFunction(() => scrollY < 1);
       await design.focus();
       await page.keyboard.press('Space');
@@ -874,7 +863,8 @@ try {
       assert.deepEqual(await page.locator('#project-filters [aria-pressed="true"]').evaluateAll(buttons => buttons.map(button => button.dataset.filter)), ['community']);
       assert.deepEqual(await page.locator('.strip:not([hidden])').evaluateAll(strips => strips.map(strip => strip.dataset.project)), expected);
       await page.locator('.collection-home-link').click();
-      await page.waitForFunction(() => document.body.dataset.route === 'home' && document.body.dataset.homeView === 'about' && scrollY < 1);
+      // The name above a project's wall leads home, which opens on the wall.
+      await page.waitForFunction(() => document.body.dataset.route === 'home' && document.body.dataset.homeView === 'projects' && scrollY < 1);
       assert.equal(await page.locator('#project-filters [aria-pressed="false"]').count(), 0, 'project filters do not change the homepage selection');
       await page.evaluate(() => scrollTo({ top: document.getElementById('collection').getBoundingClientRect().top + scrollY, behavior: 'instant' }));
       await waitForHomeWall(page);
@@ -920,25 +910,25 @@ try {
 
     await check(`${name} name above project strips opens the homepage`, options, async page => {
       await visit(page);
-      // Phones have no name to tap on the landing page; About is a scroll away.
-      if (options.hasTouch) await page.evaluate(() => scrollTo({ top: 0, behavior: 'instant' }));
-      else await page.locator('#home-link').click();
-      await page.waitForFunction(() => scrollY < 1 && document.body.dataset.homeView === 'about');
-      // Enter with About still open, without Playwright scrolling the home
-      // wall into view first. This used to save About as the name-link target.
+      // About reads below the wall now, so scroll down to it and enter a
+      // project from there: entering with About open used to strand focus.
+      await page.evaluate(() => scrollTo({ top: 99999, behavior: 'instant' }));
+      await page.waitForFunction(() => document.body.dataset.homeView === 'about');
       await openStrip(page, page.locator('#strip-lyra'), 'dispatch');
       await page.waitForFunction(() => document.documentElement.dataset.project === 'lyra');
       await page.locator('#collection').evaluate(collection => collection.scrollIntoView({ block: 'start' }));
       await page.locator('.collection-home-link').click();
-      await page.waitForFunction(() => document.body.dataset.route === 'home' && document.body.dataset.homeView === 'about' && scrollY < 1);
+      // The landing opens on the wall, so leaving a project lands there.
+      await page.waitForFunction(() => document.body.dataset.route === 'home' && document.body.dataset.homeView === 'projects' && scrollY < 1);
       assert.equal(new URL(page.url()).pathname, `${prefix}/`);
       assert.equal(new URL(page.url()).hash, '');
-      assert.equal(await page.evaluate(() => document.activeElement.id), options.hasTouch ? 'intro' : 'home-title', 'returning home lands on the name, or on About where phones show none');
       await page.goBack();
       await page.waitForFunction(() => document.documentElement.dataset.project === 'lyra' && scrollY < 1);
       assert.equal(await page.evaluate(() => document.activeElement.className), 'project-title', 'Back shows the project itself, not its wall');
       await page.goBack();
-      await page.waitForFunction(() => document.body.dataset.route === 'home' && document.body.dataset.homeView === 'about' && scrollY < 1);
+      // Back restores the reading position, so this returns to About rather
+      // than to the top: About is no longer at a scroll of zero.
+      await page.waitForFunction(() => document.body.dataset.route === 'home' && document.body.dataset.homeView === 'about');
     });
   }
 
@@ -1402,7 +1392,9 @@ try {
   await check('static HTML works without JavaScript', { ...desktop, javaScriptEnabled: false }, async page => {
     await page.goto(base);
     assert.equal(await page.locator('body').evaluate(body => getComputedStyle(body).backgroundColor), 'rgb(255, 255, 255)');
-    assert.ok(await page.locator('main #home-title').isVisible());
+    // The landing is the wall, with About reading below it; neither needs script.
+    assert.ok(await page.locator('main #strips').isVisible());
+    assert.ok(await page.locator('main #intro .intro-text').isVisible());
     assert.ok(await page.getByRole('link', { name: 'Klättermusen', exact: true }).isVisible());
     await page.locator('.strip').first().scrollIntoViewIfNeeded();
     await page.locator('.strip img').first().evaluate(image => image.decode());

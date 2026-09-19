@@ -1,81 +1,53 @@
 const intro = document.getElementById('intro');
 const header = document.getElementById('home-header');
-const toggle = document.getElementById('home-link');
-const collection = document.getElementById('collection');
 const motion = matchMedia('(prefers-reduced-motion: reduce)');
 let frame;
-let focusTarget;
-let atWall = false;
-let previousWallTop = 0;
 
 const isHome = () => document.body.dataset.route === 'home';
 
+// The wall is the landing page and About reads underneath it, so the projects
+// view starts at the top and the about view where the intro begins.
 export function homeScrollTop(view = 'projects') {
-  if (view === 'about') return 0;
-  // The header floats over the wall, so the wall view starts where the header does.
-  const wallTop = collection.getBoundingClientRect().top;
-  const headerTop = header.hidden ? wallTop : header.getBoundingClientRect().top;
-  return Math.max(0, Math.min(headerTop, wallTop) + scrollY);
+  if (view === 'projects') return 0;
+  return Math.max(0, Math.round(intro.getBoundingClientRect().top + scrollY));
 }
 
 function render() {
   frame = null;
   if (!isHome()) return;
-  previousWallTop = homeScrollTop();
-  atWall = scrollY >= previousWallTop - 1;
-  document.body.dataset.homeView = atWall ? 'projects' : 'about';
-  toggle.hash = atWall ? '' : '#collection';
-  toggle.setAttribute('aria-label', `${toggle.textContent}, ${atWall ? 'About' : 'Projects'}`);
-  toggle.setAttribute('aria-controls', atWall ? 'intro' : 'collection');
-  if (focusTarget && Math.abs(scrollY - homeScrollTop(focusTarget === intro ? 'about' : 'projects')) < 1) {
-    focusTarget.focus({ preventScroll: true });
-    focusTarget = null;
-  }
-}
-
-function goTo(view) {
-  focusTarget = view === 'about' ? intro : toggle;
-  scrollTo({ top: homeScrollTop(view), behavior: motion.matches ? 'instant' : 'smooth' });
-  render();
+  // About is shorter than the screen, so the page cannot scroll far enough to
+  // put its top at the viewport's top: the view turns on how much of it shows.
+  // Measured against the wall, the reading starts around 150px in.
+  const top = intro.getBoundingClientRect().top;
+  document.body.dataset.homeView = top <= innerHeight - 150 ? 'about' : 'projects';
 }
 
 export function updateHome(slug) {
   header.hidden = !!slug;
-  focusTarget = null;
   if (slug) {
-    atWall = false;
     delete document.body.dataset.homeView;
-  } else {
-    if (frame) cancelAnimationFrame(frame);
-    frame = requestAnimationFrame(render);
+    return;
   }
+  if (frame) cancelAnimationFrame(frame);
+  frame = requestAnimationFrame(render);
 }
 
 export function initializeHome() {
-  toggle.addEventListener('click', event => {
-    if (!isHome() || event.button !== 0 || event.metaKey || event.ctrlKey || event.shiftKey || event.altKey) return;
-    event.preventDefault();
-    // Focus and pointer scrolling can arrive before the next scroll frame.
-    // Read the current position so the toggle follows what is visible now.
-    goTo(scrollY >= homeScrollTop() - 1 ? 'about' : 'projects');
-  });
-  document.addEventListener('keydown', event => {
-    if (event.key === 'Escape' && isHome() && !atWall) goTo('projects');
-  });
   const schedule = () => {
     if (!frame && isHome()) frame = requestAnimationFrame(render);
   };
   addEventListener('scroll', schedule, { passive: true });
-  new ResizeObserver(() => {
-    if (!isHome()) return;
-    const top = homeScrollTop();
-    if (atWall && !focusTarget && Math.abs(top - previousWallTop) > 1) scrollTo({ top, behavior: 'instant' });
-    render();
-  }).observe(intro);
+  // About's position decides where its view begins, so a reflow moves the line.
+  new ResizeObserver(schedule).observe(intro);
+  document.addEventListener('keydown', event => {
+    // Escape climbs back to the wall from the writing below it.
+    if (event.key === 'Escape' && isHome() && scrollY > 1) {
+      scrollTo({ top: 0, behavior: motion.matches ? 'instant' : 'smooth' });
+    }
+  });
   updateHome(document.documentElement.dataset.project);
   if (isHome()) {
-    // The landing page opens on About; #collection opens straight on the wall.
-    scrollTo({ top: homeScrollTop(location.hash === '#collection' ? 'projects' : 'about'), behavior: 'instant' });
+    scrollTo({ top: homeScrollTop(location.hash === '#about' ? 'about' : 'projects'), behavior: 'instant' });
     render();
   }
 }

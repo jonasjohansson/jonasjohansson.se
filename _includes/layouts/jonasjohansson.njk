@@ -12,12 +12,14 @@
     {% include "../components/print-portfolio.njk" %}
     <div id="content">
       <main id="main" tabindex="-1">
-        {% include "../components/intro.njk" %}
+        {# The wall is the landing page, the filters float at its foot, and
+           About reads underneath both. #}
         {% include "../components/home-header.njk" %}
         <div id="projects" class="projects-container">{{ content | safe }}</div>
         {% include "../components/strips.njk" %}
+        {% include "../components/intro-links.njk" %}
+        {% include "../components/intro.njk" %}
       </main>
-      {% include "../components/intro-links.njk" %}
     </div>
     <script type="module" src="{{ 'main.js' | viteAsset | url }}"></script>
   </body>

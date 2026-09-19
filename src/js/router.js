@@ -126,10 +126,14 @@ class Router {
       if (focus?.closest('[hidden]')) focus = null;
       if (!focus && project) focus = container.querySelector('.project-title');
       if (!focus && options.returnToCollection && previousProject) focus = document.getElementById(`strip-${previousProject.slug}`);
-      focus ||= document.getElementById('home-title');
-      // Phones show no name on the landing page, so land on About instead.
-      if (focus && !focus.offsetParent) focus = document.getElementById('intro') || focus;
-      focus.focus({ preventScroll: true });
+      // The landing carries no name any more, so returning home lands on the
+      // wall's own heading, which names it for a screen reader. Anything that
+      // is not rendered falls back to About, and a missing element must never
+      // throw here: this runs mid-commit, and the scroll below would be lost.
+      focus ||= document.getElementById('collection-title');
+      if (focus && !focus.offsetParent && !focus.classList.contains('sr-only')) focus = document.getElementById('intro') || focus;
+      focus ||= document.getElementById('intro');
+      focus?.focus({ preventScroll: true });
       if (restore && typeof restore.scrollY === 'number') {
         scrollTo({ top: restore.scrollY, behavior: 'instant' });
         // Coming back to a project should show the project, not the wall of
@@ -143,7 +147,8 @@ class Router {
         }
       }
       // Home opens on About, unless the link returns to the projects wall.
-      else if (!project) scrollTo({ top: homeScrollTop(options.returnToCollection || url.hash === '#collection' ? 'projects' : 'about'), behavior: 'instant' });
+      // Leaving a project lands on the wall, which is the top of the landing page.
+      else if (!project) scrollTo({ top: homeScrollTop(url.hash === '#about' ? 'about' : 'projects'), behavior: 'instant' });
       else if (url.hash === '#collection') {
         (focus.classList.contains('strip') ? focus : document.getElementById('collection')).scrollIntoView({ block: 'start' });
       } else scrollTo({ top: 0, behavior: 'instant' });
