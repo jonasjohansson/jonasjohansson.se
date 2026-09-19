@@ -1,6 +1,7 @@
 import { initAnimation } from './stripAnimation.js';
 import { homeScrollTop } from './home.js';
-import { initializeStripAudio, bindStripAudio, bindResizeAudio } from './xylophone.js';
+import { initializeStripAudio, bindStripAudio } from './xylophone.js';
+import { bindAccordion } from './accordion.js';
 
 let entries = [];
 let controller;
@@ -234,7 +235,7 @@ export function updateStrips(slug) {
   // Phones show a card list, which needs neither the scrub nor the two-step tap.
   if (!matchMedia('(hover: none)').matches) bindTouchScrub(document.getElementById('strips'), controller.signal);
   bindStripAudio(document.getElementById('strips'), controller.signal);
-  bindResizeAudio(document.getElementById('strips'), controller.signal);
+  bindAccordion(document.getElementById('strips'), controller.signal);
 }
 
 export function initializeStrips() {
