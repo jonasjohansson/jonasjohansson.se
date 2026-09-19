@@ -133,8 +133,13 @@
     flex: var(--ar) 1 0 !important; break-before: auto !important; break-inside: avoid;
     aspect-ratio: auto !important; overflow: hidden; border-radius: 0;
   }
-  /* Video prints nothing, so it must not hold a share of the row's width. */
-  body[data-route="project"] .media-row.print-together > .media-item:has(video) { display: none !important; }
+  /* A video panel prints as its poster frame, so the row keeps every column it
+     has on screen. The video itself goes, since its controls would print as a
+     dead bar; a panel with no poster prints nothing and takes no width. */
+  body[data-route="project"] .media-row.print-together > .media-item:has(video) { display: block !important; }
+  body[data-route="project"] .media-row.print-together > .media-item:not(:has(.print-poster)):has(video) { display: none !important; }
+  body[data-route="project"] .media-row.print-together video { display: none !important; }
+  body[data-route="project"] .media-row.print-together .print-poster { display: block !important; }
   body[data-route="project"] .media-item :is(img, video) {
     position: static; display: block; width: 100%; height: 100%; max-height: none;
     object-fit: cover; object-position: var(--focal, center);

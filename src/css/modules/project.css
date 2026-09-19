@@ -37,6 +37,11 @@
   height: auto;
 }
 
+/* A video's poster frame, carried for print only: on a shared printed sheet a
+   video panel prints as this image, since the video itself cannot. The class
+   alone loses to `.media-item img` below, which sets every image to block. */
+.media-item img.print-poster { display: none; }
+
 .media-item:has(> .media-controls-reveal) { position: relative; }
 .media-controls-reveal {
   position: absolute;

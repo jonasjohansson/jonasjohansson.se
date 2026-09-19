@@ -43,6 +43,12 @@ eleventyComputed:
             {% if item.poster %}poster="{{ item.poster }}"{% endif %}
             aria-label="{{ item.alt }}"
             data-preview></video>
+          {# A video is a panel of the printed sheet too, as its poster frame:
+             CSS cannot print a video as its poster, and the controls would
+             print as a dead bar. Hidden on screen, shown only on paper. #}
+          {% if block.printTogether and item.poster %}
+          <img class="print-poster" src="{{ item.poster }}" alt="{{ item.alt }}" loading="lazy" decoding="async">
+          {% endif %}
           {% else %}
           {% responsiveImage item.src, item.alt, "media-img", item.sizes %}
           {% endif %}

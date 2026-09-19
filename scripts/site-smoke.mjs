@@ -221,7 +221,9 @@ try {
       await visit(page, `/${slug}/`);
       const state = await page.evaluate(() => ({
         overflow: document.documentElement.scrollWidth > innerWidth,
-        zero: [...document.querySelectorAll('#projects img, #projects video')].some(el => el.getBoundingClientRect().width < 1 || el.getBoundingClientRect().height < 1),
+        // A print-only poster frame is deliberately not rendered on screen, so
+        // it has no box; every panel that does render still has to have one.
+        zero: [...document.querySelectorAll('#projects img:not(.print-poster), #projects video')].some(el => el.getBoundingClientRect().width < 1 || el.getBoundingClientRect().height < 1),
         title: document.title,
         hero: document.querySelector('.hero').getBoundingClientRect().top,
         gutter: parseFloat(getComputedStyle(document.getElementById('content')).paddingTop),
@@ -541,8 +543,16 @@ try {
     await check(`${width}px portrait triptych keeps images and video together`, width === 390 ? mobile : { viewport: { width, height: 1000 } }, async page => {
       await visit(page, '/vi-kommer-i-fred/');
       const row = page.locator('.media-row:has(video[src$="/07.webm"])');
-      assert.equal(await row.locator('img').count(), 2, 'both still panels remain in the group');
+      // The video panel also carries a poster image for print, which never
+      // renders here: count the panels that are actually shown on screen.
+      assert.equal(await row.locator('img:not(.print-poster)').count(), 2, 'both still panels remain in the group');
       assert.equal(await row.locator('video').count(), 1, 'the moving panel remains in the group');
+      // Printed, the group shares one sheet and a video cannot print, so the
+      // moving panel carries its poster frame: present here, never rendered.
+      const printPoster = row.locator('img.print-poster');
+      assert.equal(await printPoster.count(), 1, 'the moving panel carries a poster frame for print');
+      assert.ok((await printPoster.getAttribute('src'))?.length > 0, 'the print poster has a source');
+      assert.equal(await printPoster.isVisible(), false, 'the print poster never renders on screen');
       const geometry = await row.evaluate(row => {
         const box = element => { const r = element.getBoundingClientRect(); return { x: r.x, y: r.y, width: r.width, height: r.height, right: r.right, bottom: r.bottom }; };
         return {
@@ -578,7 +588,9 @@ try {
         await row.locator('.media-controls-reveal').click();
         assert.equal(await video.evaluate(video => video.controls), true, 'tapping reveals grouped video controls');
       }
-      await row.locator('img').evaluateAll(images => Promise.all(images.map(image => image.decode())));
+      // The print-only poster is hidden and lazy, so it never loads on screen:
+      // decoding it would wait for an image the browser will never fetch.
+      await row.locator('img:not(.print-poster)').evaluateAll(images => Promise.all(images.map(image => image.decode())));
       await row.screenshot({ path: `${output}/vi-kommer-i-fred-triptych-${width}.png` });
     });
   }

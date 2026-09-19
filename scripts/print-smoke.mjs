@@ -194,6 +194,19 @@ try {
         + document.querySelectorAll('#projects .media-row.print-together').length;
     });
     assert.equal(pdfPages(await sweep.pdf({ preferCSSPageSize: true })), expected, `${slug} prints its cover sheets plus one page per picture, with no blank page`);
+    // A grouped row that loses a panel still fills its sheet with the panels
+    // that remain, so counting them is not enough: their widths have to add up
+    // to the full sheet, or a column has quietly gone missing.
+    const rowFill = await sweep.evaluate(() => {
+      const mm = 96 / 25.4;
+      return [...document.querySelectorAll('#projects .media-row.print-together')].map(row => {
+        const panels = [...row.querySelectorAll(':scope > .media-item')].filter(node => node.offsetParent !== null);
+        const width = panels.reduce((sum, node) => sum + node.getBoundingClientRect().width / mm, 0);
+        return { panels: panels.length, width: +width.toFixed(1) };
+      });
+    });
+    assert.ok(rowFill.every(row => row.panels > 1 && Math.abs(row.width - 338.667) < 1),
+      `${slug} grouped rows keep every panel and fill the sheet: ${JSON.stringify(rowFill)}`);
     await sweep.emulateMedia({ media: 'screen' });
   }
   await sweep.close();
