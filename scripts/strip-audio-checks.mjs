@@ -217,6 +217,31 @@ export async function checkStripAudio({ check, visit, desktop, mobile }) {
     assert.equal((await sound()).active, 0, 'and the bellows close again');
   });
 
+  await check('the bellows swell rather than thump', desktop, async page => {
+    await observeAudio(page);
+    await visit(page);
+    await page.mouse.click(8, 8);
+    await page.waitForFunction(() => window.__stripSound.contexts[0]?.state === 'running');
+    const peak = await page.evaluate(async () => {
+      const analyser = window.__stripSound.analyser;
+      const samples = new Float32Array(analyser.fftSize);
+      let max = 0;
+      dispatchEvent(new Event('resize'));
+      const until = performance.now() + 260;
+      while (performance.now() < until) {
+        analyser.getFloatTimeDomainData(samples);
+        for (const value of samples) max = Math.max(max, Math.abs(value));
+        await new Promise(resolve => requestAnimationFrame(resolve));
+      }
+      return max;
+    });
+    // The gain was scheduled to zero at the same instant the first squeeze
+    // cancelled everything scheduled there, so the ramp started from the node's
+    // default of one: nine reeds at full scale, a thump at the top of a drag.
+    assert.ok(peak > 0, 'the reeds sound when the window moves');
+    assert.ok(peak < 0.5, `they open at playing level rather than full scale (peak ${peak.toFixed(2)})`);
+  });
+
   await check('rotating a phone does not sound the strips', mobile, async page => {
     await observeAudio(page);
     await visit(page);

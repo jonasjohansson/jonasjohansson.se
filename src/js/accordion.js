@@ -8,7 +8,7 @@ import { getAudioContext } from './xylophone.js';
 const REEDS = [-11, 0, 9];            // cents apart, the musette beat
 const CHORD = [1, 1.5, 2];            // root, fifth, octave
 const SCALE = [146.83, 164.81, 196.0, 220.0, 246.94, 293.66]; // D pentatonic
-const LEVEL = 0.09;                   // quieter than the xylophone's strike
+const LEVEL = 0.03;                   // nine reeds sum, so each one stays low
 const HELD_MS = 170;                  // silence for this long means the drag ended
 
 let bellows = null;
@@ -20,7 +20,10 @@ let releaseTimer = 0;
 function open(context, root) {
   const now = context.currentTime;
   const gain = context.createGain();
-  gain.gain.setValueAtTime(0, now);
+  // Set, not scheduled: the first squeeze runs in this same tick and cancels
+  // anything scheduled at `now`, which would leave the gain at its default of
+  // one and land nine reeds at full volume — a thump at the top of every drag.
+  gain.gain.value = 0;
   // Reeds are bright but not harsh; the body of the instrument rolls off the top.
   const filter = context.createBiquadFilter();
   filter.type = 'lowpass';
@@ -66,8 +69,12 @@ function squeeze(context, moved) {
   const root = SCALE[degree];
   bellows ||= open(context, root);
   bellows.voices.forEach(({ oscillator, interval }) => oscillator.frequency.setValueAtTime(root * interval, now));
+  // Hold whatever the gain is at right now before cancelling, so the ramp
+  // always starts from the level being heard rather than from a default.
+  const current = bellows.gain.gain.value;
   bellows.gain.gain.cancelScheduledValues(now);
-  bellows.gain.gain.setTargetAtTime(LEVEL, now, 0.03);
+  bellows.gain.gain.setValueAtTime(current, now);
+  bellows.gain.gain.setTargetAtTime(LEVEL, now, 0.04);
   clearTimeout(releaseTimer);
   releaseTimer = setTimeout(() => close(context), HELD_MS);
 }
