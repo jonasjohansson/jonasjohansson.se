@@ -89,8 +89,22 @@ async function checkFooter(page) {
   assert.ok(Math.abs(footer.y + footer.height - page.viewportSize().height) < 1, 'footer fits within the strip viewport');
   const header = page.locator(home ? '#home-header' : '#collection-header');
   const contacts = header.locator('.header-contacts');
-  const contactBox = await contacts.boundingBox();
   const contactRow = await header.boundingBox();
+  if (home) {
+    // The landing's band is the writing alone: CV and email read in About's
+    // first sentence, in parentheses after the name, so the corner is empty.
+    assert.equal(await contacts.count(), 0, 'the landing band carries no corner links');
+    const intro = page.locator('#intro');
+    assert.deepEqual((await intro.locator('a').allTextContents()).slice(0, 2).map(text => text.trim()), ['CV', 'Email'],
+      'About opens with CV and email beside the name');
+    assert.equal(await intro.locator('a[href^="mailto:"]').count(), 1, 'the email is a link in About');
+    const introBox = await intro.boundingBox();
+    assert.ok(introBox.x >= wall.x - 1 && introBox.x + introBox.width <= wall.x + wall.width + 1, 'the writing stays within the strips');
+    assert.ok(contactRow.y + contactRow.height <= wall.y + 1, 'the band sits above the strips');
+    assert.equal(await page.locator('#project-filters').isVisible(), true, 'tag filters are available on both strip walls');
+    return checkFilterBounds(page);
+  }
+  const contactBox = await contacts.boundingBox();
   assert.deepEqual((await contacts.locator('a').allTextContents()).map(text => text.trim()), ['Instagram', 'CV', 'Email'], 'contact links stay concise');
   assert.equal(await contacts.locator('svg').count(), 0, 'contact links are plain text');
   const printButton = contacts.locator('button[data-action="print"]');
@@ -103,34 +117,28 @@ async function checkFooter(page) {
   // failed this at random, with the header looking right in the screenshot.
   assert.ok(contactBox.y >= contactRow.y - 1 && contactBox.y + contactBox.height <= contactRow.y + contactRow.height + 1,
     `contacts fit in the row above the strips (contacts ${JSON.stringify(contactBox)} vs row ${JSON.stringify(contactRow)})`);
-  // The landing wall carries no name; a project wall keeps its own as the way
-  // home, so only that one has a block to sit beside the contacts.
-  if (home) {
-    assert.ok(Math.abs(contactBox.x + contactBox.width - wall.x - wall.width) < 1, 'the contacts sit flush with the wall’s right corner');
-  } else {
-    const name = await header.locator('.collection-home-link').boundingBox();
-    assert.ok(name.x + name.width <= contactBox.x || name.y + name.height <= contactBox.y, 'contact links do not overlap the name (beside it, or on a second row on narrow screens)');
-    assert.equal(name.x, wall.x, 'the name block sits flush with the wall’s corner');
-  }
+  // A project wall keeps its name as the way home, so it has a block sitting
+  // beside the contacts.
+  const name = await header.locator('.collection-home-link').boundingBox();
+  assert.ok(name.x + name.width <= contactBox.x || name.y + name.height <= contactBox.y, 'contact links do not overlap the name (beside it, or on a second row on narrow screens)');
+  assert.equal(name.x, wall.x, 'the name block sits flush with the wall’s corner');
   if (touch) assert.ok(Math.abs(contactRow.y + contactRow.height - wall.y) < 1, 'on phones the header sits directly above the strips');
-  // Same on the landing: the contacts have a band of their own above the wall,
-  // while a project page keeps them floating over its top corner.
-  else if (home) assert.ok(contactRow.y + contactRow.height <= wall.y + 1, 'the contacts sit above the strips');
   else assert.ok(contactRow.y <= wall.y + 1 && contactRow.y + contactRow.height > wall.y, 'the header floats over the top of the strips');
-  if (!home) {
-    if (touch) assert.equal(await page.locator('#header').isVisible(), false, 'phones show no project title');
-    else {
-      const title = await page.locator('#header-toggle').boundingBox();
-      assert.ok(Math.abs(title.x + title.width / 2 - page.viewportSize().width / 2) < 1, 'project title remains centered');
-    }
-    assert.equal(await page.locator('#header .header-contacts').count(), 0, 'project hero header contains only the title');
+  if (touch) assert.equal(await page.locator('#header').isVisible(), false, 'phones show no project title');
+  else {
+    const title = await page.locator('#header-toggle').boundingBox();
+    assert.ok(Math.abs(title.x + title.width / 2 - page.viewportSize().width / 2) < 1, 'project title remains centered');
   }
+  assert.equal(await page.locator('#header .header-contacts').count(), 0, 'project hero header contains only the title');
   await contacts.evaluate(nav => { nav.scrollLeft = nav.scrollWidth; });
   const email = await contacts.locator('a[href^="mailto:"]').boundingBox();
   assert.ok(email.x >= contactBox.x && email.x + email.width <= contactBox.x + contactBox.width + 1, 'Email remains reachable in the scrolling contact row on phones');
   await contacts.evaluate(nav => { nav.scrollLeft = 0; });
-  assert.equal(await page.locator('#intro a[href^="mailto:"]').count(), 0, 'contacts stay outside About');
   assert.equal(await page.locator('#project-filters').isVisible(), true, 'tag filters are available on both strip walls');
+  return checkFilterBounds(page);
+}
+
+async function checkFilterBounds(page) {
   const filterBounds = await page.locator('#project-filters').evaluate(filters => {
     const rect = filters.getBoundingClientRect(), footer = filters.closest('footer').getBoundingClientRect();
     return { top: rect.top - footer.top, bottom: footer.bottom - rect.bottom };
@@ -140,10 +148,14 @@ async function checkFooter(page) {
 
 try {
   await checkStripAudio({ check, visit, desktop, mobile });
+  // The landing band is the writing alone, so the print button now lives only
+  // on the wall a project page carries.
   await check('the print button prints the portfolio', desktop, async page => {
-    await visit(page, '/');
+    await visit(page);
+    const slug = await page.evaluate(() => window.__PROJECTS_DATA__[0].slug);
+    await visit(page, `/${slug}/`);
     await page.evaluate(() => { window.__printed = 0; window.print = () => { window.__printed += 1; }; });
-    await page.locator('#home-header button[data-action="print"]').click();
+    await page.locator('#collection-header button[data-action="print"]').click();
     await page.waitForFunction(() => window.__printed === 1);
   });
 
@@ -325,8 +337,9 @@ try {
       assert.equal(await page.evaluate(() => document.documentElement.scrollWidth > innerWidth), false);
       const intro = await page.locator('#intro').boundingBox();
       assert.ok(intro.y + intro.height <= wall.y + 1, 'About reads above the strips, in the band with the links');
-      const contacts = await page.locator('#home-header .header-contacts').boundingBox();
-      if (!options.hasTouch) assert.ok(intro.x + intro.width <= contacts.x + 1, 'the writing and the links share the band without overlapping');
+      // The band is the writing alone now, so it runs to the measure and no
+      // further: the links it carries are words inside that first sentence.
+      assert.ok(intro.x + intro.width <= wall.x + wall.width + 1, 'the writing stays within the wall');
       if (options.hasTouch) {
         // Phones scroll a list of cards: a photograph with the project's name under it.
         const list = await page.locator('.strip:not([hidden])').evaluateAll(strips => strips.map(strip => {
@@ -430,7 +443,8 @@ try {
       await page.goto(base + '/');
       await page.waitForFunction(() => document.documentElement.classList.contains('enhanced') && document.body.dataset.homeView === 'projects' && scrollY < 1);
       assert.equal(await page.locator('#home-title').count(), 0, 'the landing page carries no name of its own');
-      assert.ok(await page.locator('#home-header .header-contacts').isVisible(), 'the contacts stay');
+      assert.equal(await page.locator('#home-header .header-contacts').count(), 0, 'the band carries no corner links');
+      assert.equal(await page.locator('#intro a[href$="format=pdf"]').count(), 1, 'the CV is a link in About');
       const wall = await page.locator('#strips').boundingBox();
       const intro = await page.locator('#intro').boundingBox();
       assert.ok(intro.y + intro.height <= wall.y + 1, 'About reads above the wall');
