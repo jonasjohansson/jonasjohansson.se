@@ -14,15 +14,26 @@ body[data-route="home"] .collection-header { display: none; }
    whole screen. On the landing they sit in their own bands, above and below, so
    the strips keep clear air at top and bottom. */
 .enhanced #collection, .enhanced body[data-route="home"] #collection { position: relative; height: 100dvh; padding-block: var(--page-gutter); }
-/* The wall gives up the two bands it no longer sits under, so contacts, strips
-   and categories together still fill exactly one screen. The wall no longer
-   starts at the top of the page, so a #collection jump has to allow for the
-   contacts above it or it lands a band too low and the categories leave the
-   foot of the screen. */
+/* The landing is one screen: the top band holds About and the links, the
+   categories sit at the foot, and the wall takes whatever height is left. About
+   runs to whatever length it runs to, so the wall cannot be a calc of fixed
+   bands — it has to flex. A #collection jump still has to clear the band above
+   it, or it lands low and the categories leave the foot of the screen. */
+.enhanced body[data-route="home"] #main { display: flex; flex-direction: column; min-height: 100dvh; }
+/* The wall takes what About leaves, but never less than this: on a short screen
+   a fixed screenful crushed it to 95px, which is no longer a wall. Past that
+   floor the page grows and scrolls rather than squeezing the work. */
 .enhanced body[data-route="home"] #collection {
-  height: calc(100dvh - var(--home-header-height) - var(--footer-height) - 2 * var(--page-gutter));
-  scroll-margin-top: calc(var(--home-header-height) + var(--page-gutter));
+  flex: 1;
+  height: auto;
+  min-height: 22rem;
 }
+/* The strips size themselves through a chain of percentage heights, which only
+   resolve against a definite one. The wall's height comes from flex now, so the
+   strips stretch to it instead: with height: 100% against an auto parent every
+   strip image collapsed to nothing and the wall rendered blank. */
+.enhanced body[data-route="home"] #strips { height: auto; }
+.enhanced body[data-route="home"] .strip { height: auto; align-self: stretch; }
 .enhanced .home-header { position: relative; z-index: var(--z-filter); padding: var(--page-gutter) var(--page-gutter) 0; background: none; }
 .enhanced .collection-header { position: absolute; top: var(--page-gutter); left: 0; right: 0; z-index: var(--z-filter); justify-content: space-between; align-items: flex-start; column-gap: var(--spacing-md); }
 .enhanced .intro-links { position: relative; z-index: var(--z-filter); height: calc(var(--footer-height) + var(--page-gutter)); padding-bottom: var(--page-gutter); margin-top: calc(-1 * (var(--footer-height) + var(--page-gutter))); }

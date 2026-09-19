@@ -30,9 +30,16 @@
 }
 
 .home-header { background: var(--bg-primary); color: var(--text-primary); font-size: var(--font-size-ui); line-height: 1; letter-spacing: var(--letter-spacing-caps); text-transform: uppercase; }
-/* The contacts are the only block here since the landing dropped its name, and
-   space-between would strand a lone child at the left of the wall. */
-.home-header-row { display: flex; justify-content: flex-end; align-items: flex-start; column-gap: var(--spacing-md); height: var(--home-header-height); }
+/* The top band: About on the left, the links on the right. It grows with the
+   writing rather than sitting at the corner-block height, and the wall below
+   takes what is left of the screen. */
+.home-header-row { display: flex; justify-content: space-between; align-items: flex-start; column-gap: var(--spacing-xl); min-height: var(--home-header-height); }
+/* About is body copy, not chrome: the band's caps and tracking are for the
+   links beside it, and the writing keeps its own reading width. */
+/* The band already carries the page gutter, so About drops its own or the
+   writing sits a gutter in from the wall's left edge instead of level with it. */
+.home-header-row #intro { flex: 1 1 auto; min-width: 0; max-width: var(--measure); padding: 0; text-transform: none; letter-spacing: normal; line-height: inherit; }
+.home-header-row .header-contacts { flex: none; }
 .header-contacts, .collection-home-link, .project-filters, .strip-caption { display: flex; align-items: center; box-sizing: border-box; padding: var(--chrome-pad); background: var(--bg-primary); font-size: var(--font-size-ui); line-height: 1.2; }
 /* The four solid blocks in the wall's corners share one size, padding and line height.
    Each pads only on the two sides that face the wall, so the text sits flush with

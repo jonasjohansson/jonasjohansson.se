@@ -1,6 +1,8 @@
 <header id="home-header" class="home-header"{% if project %} hidden{% endif %}>
-  {# No name over the landing wall: About carries it, below the strips. #}
+  {# The top band: About on the left, the links on the right. It carries the
+     name in its own copy, so no separate name block sits over the wall. #}
   <div class="home-header-row">
+    {% include "./intro.njk" %}
     {% include "./contact-links.njk" %}
   </div>
 </header>

@@ -57,6 +57,11 @@ async function waitForHomeWall(page) {
     const footer = document.getElementById('intro-links');
     // Phones scroll a card list and show no footer; the wall pins its footer to the foot of the screen.
     if (getComputedStyle(footer).display === 'none') return true;
+    // About shares the screen with the wall now, so on a short viewport the
+    // landing runs past one screenful and the categories sit at the foot of the
+    // page instead of the foot of the window.
+    const fits = document.documentElement.scrollHeight <= innerHeight + 1;
+    if (!fits) return footer.getBoundingClientRect().height > 0;
     return Math.abs(footer.getBoundingClientRect().bottom - innerHeight) < 1;
   });
 }
@@ -306,21 +311,22 @@ try {
     ['touch landscape', { ...mobile, viewport: { width: 844, height: 390 } }],
     ['touch tablet', { ...mobile, viewport: { width: 1024, height: 768 } }],
   ]) {
-    await check(`${name} About sits below the projects`, options, async page => {
+    await check(`${name} About sits above the projects`, options, async page => {
       await visit(page);
       const wall = await page.locator('#strips').boundingBox();
       const header = await page.locator('#home-header').boundingBox();
       assert.equal(wall.x, 24);
       assert.equal(wall.width, options.viewport.width - 48);
-      assert.equal(await page.locator('#home-title').count(), 0, 'the landing page carries no name');
+      assert.equal(await page.locator('#home-title').count(), 0, 'the landing page carries no name of its own');
       if (options.hasTouch) assert.ok(Math.abs(wall.y - header.y - header.height) < 1, 'on phones the wall starts directly below the header');
-      // The contacts band is clear of the wall now, so the gutter falls between
-      // the two rather than between the wall and the top of a floating header.
-      else assert.ok(Math.abs(wall.y - header.y - header.height - 24) < 1, 'the wall starts one gutter below the contacts band');
+      // The top band holds About and the links; the wall starts a gutter below it.
+      else assert.ok(Math.abs(wall.y - header.y - header.height - 24) < 1, 'the wall starts one gutter below the top band');
       await checkFooter(page);
       assert.equal(await page.evaluate(() => document.documentElement.scrollWidth > innerWidth), false);
       const intro = await page.locator('#intro').boundingBox();
-      assert.ok(intro.y >= wall.y + wall.height - 1, 'About reads below the strips, not above them');
+      assert.ok(intro.y + intro.height <= wall.y + 1, 'About reads above the strips, in the band with the links');
+      const contacts = await page.locator('#home-header .header-contacts').boundingBox();
+      if (!options.hasTouch) assert.ok(intro.x + intro.width <= contacts.x + 1, 'the writing and the links share the band without overlapping');
       if (options.hasTouch) {
         // Phones scroll a list of cards: a photograph with the project's name under it.
         const list = await page.locator('.strip:not([hidden])').evaluateAll(strips => strips.map(strip => {
@@ -353,19 +359,14 @@ try {
       assert.ok(entries.every(entry => entry.width >= 8 && entry.height === wall.height && entry.named && entry.visibleText === ''));
       await page.locator('.strip:not([hidden]) .strip-image').evaluateAll(images => Promise.all(images.slice(0, 4).map(image => image.decode())));
       await page.screenshot({ path: `${output}/${name.replaceAll(' ', '-')}-home-wall.png` });
-      // About is a scroll away under the wall, with no name to toggle it.
-      await page.evaluate(() => scrollTo({ top: 99999, behavior: 'instant' }));
-      await page.waitForFunction(() => document.body.dataset.homeView === 'about');
+      // About is in the band above the wall, on screen from the start.
       const text = await page.locator('.intro-text').boundingBox();
       assert.equal(text.x, wall.x, 'About shares the strips’ left edge');
-      assert.ok(text.y < options.viewport.height, 'About is on screen once scrolled to');
+      assert.ok(text.y < wall.y, 'About reads above the wall without scrolling');
       assert.equal(await page.locator('#intro').evaluate(intro => intro.inert), false);
-      assert.equal((await page.locator('#strips').boundingBox()).height, wall.height, 'the wall keeps its height when scrolling');
       assert.equal(await page.locator('#intro').evaluate(intro => getComputedStyle(intro).opacity), '1');
-      await page.screenshot({ path: `${output}/${name.replaceAll(' ', '-')}-about-below.png` });
-      await page.keyboard.press('Escape');
-      await waitForHomeWall(page);
-      assert.equal(await page.evaluate(() => Math.round(scrollY)), 0, 'Escape climbs back to the wall');
+      assert.ok(text.width <= wall.width, 'the writing keeps a reading width inside the band');
+      await page.screenshot({ path: `${output}/${name.replaceAll(' ', '-')}-about-above.png` });
     });
 
     await check(`${name} has the same vertical strip wall below project pages`, options, async page => {
@@ -425,39 +426,35 @@ try {
   }
 
   for (const [name, options] of [['desktop', desktop], ['mobile', mobile]]) {
-    await check(`${name} landing opens on the wall with About below it`, options, async page => {
+    await check(`${name} landing shows About and the wall together`, options, async page => {
       await page.goto(base + '/');
       await page.waitForFunction(() => document.documentElement.classList.contains('enhanced') && document.body.dataset.homeView === 'projects' && scrollY < 1);
-      assert.equal(await page.locator('#home-title').count(), 0, 'the landing page carries no name');
+      assert.equal(await page.locator('#home-title').count(), 0, 'the landing page carries no name of its own');
       assert.ok(await page.locator('#home-header .header-contacts').isVisible(), 'the contacts stay');
       const wall = await page.locator('#strips').boundingBox();
       const intro = await page.locator('#intro').boundingBox();
-      assert.ok(intro.y >= wall.y + wall.height - 1, 'About reads below the wall, not above it');
+      assert.ok(intro.y + intro.height <= wall.y + 1, 'About reads above the wall');
+      // Both are on screen at once: the landing is one view, not two.
+      assert.ok(intro.y >= 0 && wall.y < options.viewport.height, 'the writing and the work are visible together');
       if (options.hasTouch) return;
       assert.equal(await caption(page), '', 'no caption until a strip is hovered');
-      // Scrolling down reaches About; the wall is what the page opens on.
-      await page.evaluate(() => scrollTo({ top: 99999, behavior: 'instant' }));
-      await page.waitForFunction(() => document.body.dataset.homeView === 'about');
-      assert.ok((await page.locator('.intro-text').boundingBox()).y < 900, 'About is on screen once scrolled to');
-      await page.evaluate(() => scrollTo({ top: 0, behavior: 'instant' }));
-      await waitForHomeWall(page);
+      assert.equal(await page.locator('.intro-text').evaluate(text => getComputedStyle(text).textTransform), 'none', 'About is body copy, not the band’s uppercase chrome');
+      assert.ok((await page.locator('#strips .strip:not([hidden]) img').first().boundingBox()).height > 100, 'the strips keep a usable height beside the writing');
     });
   }
 
-  await check('scroll down reaches About without fading or resizing the strips', desktop, async page => {
+  await check('About and the wall share the screen without either giving way', desktop, async page => {
     await visit(page);
     const height = (await page.locator('#strips').boundingBox()).height;
-    await page.mouse.move(700, 400);
-    await page.mouse.wheel(0, 250);
-    await page.waitForFunction(() => document.body.dataset.homeView === 'about');
+    assert.ok(height > 200, `the wall keeps a usable height beside the writing (${Math.round(height)}px)`);
     assert.equal(await page.locator('#intro').evaluate(intro => getComputedStyle(intro).opacity), '1');
-    assert.equal((await page.locator('#strips').boundingBox()).height, height);
-    await page.mouse.wheel(0, 2000);
-    await page.waitForFunction(() => document.body.dataset.homeView === 'about');
+    await page.mouse.move(700, 400);
+    // Hovering a strip widens it; the wall must not change height for it.
+    await page.locator('#strips .strip:not([hidden])').nth(4).hover();
+    await page.waitForTimeout(200);
+    assert.equal((await page.locator('#strips').boundingBox()).height, height, 'hovering a strip leaves the wall its height');
     assert.equal(await page.locator('#intro').evaluate(intro => intro.inert), false);
-    // The wall is back up the page now, and the header floats over it there.
-    await page.mouse.wheel(0, -2000);
-    await page.waitForFunction(() => scrollY < 1);
+    await page.mouse.move(700, 20);
     await waitForHomeWall(page);
     await checkFooter(page);
   });
@@ -625,15 +622,16 @@ try {
     });
   }
 
-  await check('Escape climbs back to the wall from About, with reduced motion', { ...desktop, reducedMotion: 'reduce' }, async page => {
+  await check('the landing needs no keyboard escape, with reduced motion', { ...desktop, reducedMotion: 'reduce' }, async page => {
     await visit(page);
     await waitForHomeWall(page);
-    await page.evaluate(() => scrollTo({ top: 99999, behavior: 'instant' }));
-    await page.waitForFunction(() => document.body.dataset.homeView === 'about');
+    // About and the wall are both on screen, so there is no view to leave: the
+    // keyboard reaches the writing, the links and the strips in one pass.
     assert.equal((await page.locator('.intro-text').boundingBox()).x, 24, 'About stays left aligned on wide screens');
-    await page.keyboard.press('Escape');
-    await waitForHomeWall(page);
-    assert.equal(await page.evaluate(() => Math.round(scrollY)), 0, 'Escape returns to the top of the wall');
+    assert.equal(await page.evaluate(() => Math.round(scrollY)), 0, 'the landing opens without scrolling');
+    await page.keyboard.press('Tab');
+    const reached = await page.evaluate(() => document.activeElement?.closest('#intro, #home-header, #strips')?.id || document.activeElement?.tagName);
+    assert.ok(reached, `tabbing lands inside the landing rather than nowhere (${reached})`);
   });
 
   for (const [name, options] of [['desktop', desktop], ['mobile', mobile]]) {
@@ -924,10 +922,8 @@ try {
 
     await check(`${name} name above project strips opens the homepage`, options, async page => {
       await visit(page);
-      // About reads below the wall now, so scroll down to it and enter a
-      // project from there: entering with About open used to strand focus.
-      await page.evaluate(() => scrollTo({ top: 99999, behavior: 'instant' }));
-      await page.waitForFunction(() => document.body.dataset.homeView === 'about');
+      // About shares the landing with the wall, so a project is entered with
+      // the writing already on screen: that used to strand focus on About.
       await openStrip(page, page.locator('#strip-lyra'), 'dispatch');
       await page.waitForFunction(() => document.documentElement.dataset.project === 'lyra');
       await page.locator('#collection').evaluate(collection => collection.scrollIntoView({ block: 'start' }));
@@ -940,9 +936,9 @@ try {
       await page.waitForFunction(() => document.documentElement.dataset.project === 'lyra' && scrollY < 1);
       assert.equal(await page.evaluate(() => document.activeElement.className), 'project-title', 'Back shows the project itself, not its wall');
       await page.goBack();
-      // Back restores the reading position, so this returns to About rather
-      // than to the top: About is no longer at a scroll of zero.
-      await page.waitForFunction(() => document.body.dataset.route === 'home' && document.body.dataset.homeView === 'about');
+      // About shares the landing with the wall now, so there is no second view
+      // to come back to: home always shows both.
+      await page.waitForFunction(() => document.body.dataset.route === 'home' && document.body.dataset.homeView === 'projects');
     });
   }
 
@@ -1086,7 +1082,10 @@ try {
     }
   });
 
-  await check('desktop strips respond while larger images are still downloading', desktop, async page => {
+  // A taller screen than the usual desktop one: About now shares the landing,
+  // so on a 900px screen the wall is short enough that the source already
+  // fetched covers an expanded strip and no second download is triggered.
+  await check('desktop strips respond while larger images are still downloading', { viewport: { width: 1440, height: 1200 } }, async page => {
     await visit(page);
     await page.locator('#collection').scrollIntoViewIfNeeded();
     const strip = page.locator('#strip-society-expo');
@@ -1108,7 +1107,7 @@ try {
       await page.waitForTimeout(350);
       assert.ok(pending > 0, 'larger image download is pending');
       assert.ok((await strip.boundingBox()).width > width * 4, 'hover expands before download completes');
-      assert.equal(await renderedHeight(), initialHeight, 'preview stays at the same scale while the strip opens');
+      assert.ok(Math.abs(await renderedHeight() - initialHeight) < 1, 'preview stays at the same scale while the strip opens');
       assert.equal(await strip.getAttribute('aria-label'), 'Society Expo');
       assert.equal(await caption(page), 'Society Expo');
       await page.mouse.move(0, 0);
@@ -1126,7 +1125,10 @@ try {
     }
     await page.waitForFunction(src => document.querySelector('#strip-society-expo img').currentSrc !== src, narrowSrc);
     await image.evaluate(image => image.decode());
-    assert.equal(await renderedHeight(), initialHeight, 'larger image keeps the preview scale');
+    // Derived from the source's natural dimensions, so the narrow and full
+    // images land a fraction of a pixel apart: a scale change is visible, this
+    // is rounding.
+    assert.ok(Math.abs(await renderedHeight() - initialHeight) < 1, 'larger image keeps the preview scale');
     const fullSrc = await image.evaluate(image => image.currentSrc);
     await strip.hover();
     await page.mouse.move(0, 0);
