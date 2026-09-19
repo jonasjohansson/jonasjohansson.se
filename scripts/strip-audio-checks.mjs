@@ -75,10 +75,18 @@ export async function checkStripAudio({ check, visit, desktop, mobile }) {
     }
     // Let the hovered strip finish widening before measuring it, or the move
     // below can land on its neighbour for a frame and sound an extra note.
+    // A stable width is not a stable position: the strips on either side are
+    // still redistributing, so strip 8 can still be sliding when its box is
+    // read, and the point below then lands on a neighbour. Wait for the edge
+    // as well as the width, which is what actually decides what is under the
+    // pointer. This failed three CI runs in a day before the x was included.
     await page.waitForFunction(() => new Promise(resolve => {
       const strip = document.querySelectorAll('#strips .strip:not([hidden])')[7];
-      const width = strip.getBoundingClientRect().width;
-      requestAnimationFrame(() => requestAnimationFrame(() => resolve(strip.getBoundingClientRect().width === width)));
+      const { x, width } = strip.getBoundingClientRect();
+      requestAnimationFrame(() => requestAnimationFrame(() => {
+        const settled = strip.getBoundingClientRect();
+        resolve(settled.width === width && settled.x === x);
+      }));
     }));
     const box = await strips.nth(7).boundingBox();
     // Counts from here are relative: the layout shift of a hover can land the
