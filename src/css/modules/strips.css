@@ -81,6 +81,5 @@ body[data-route="home"] .collection-header { display: none; }
      caption, and on a phone no year either. */
   .enhanced .intro-links { height: auto; padding-top: var(--spacing-xl); }
   .enhanced .strip-caption, .enhanced .project-filters { display: none; }
-  .enhanced .project-filters + .header-contacts { margin-left: auto; }
   .home-header h1, .header-contacts, .collection-home-link { background: none; }
 }

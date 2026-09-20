@@ -77,6 +77,7 @@ async function checkFooter(page) {
   // Phones list cards, so the band under the list carries the links alone.
   if (touch) {
     assert.equal(await page.locator('#project-filters').isVisible(), false, 'phones show no categories');
+    assert.equal(await page.locator('#project-search').isVisible(), false, 'phones do not ask for typing');
     assert.equal(await page.locator('#strip-caption').isVisible(), false, 'phones show no strip caption');
     assert.equal(await contacts.isVisible(), true, 'phones keep the links under the list');
     assert.deepEqual((await contacts.locator('a').allTextContents()).map(text => text.trim()), ['CV', 'Email'], 'contact links stay concise');
@@ -94,13 +95,17 @@ async function checkFooter(page) {
   const printButton = contacts.locator('button[data-action="print"]');
   assert.equal(await printButton.count(), 1, 'a print button sits with the contacts');
   assert.equal((await printButton.textContent()).trim(), 'Print', 'the print button is plain text');
-  // The links hold the bottom-right corner on both walls, with the filter to
-  // their left; nothing is left in the corner above the work.
-  assert.ok(Math.abs(contactBox.x + contactBox.width - wall.x - wall.width) < 1, 'the contacts sit flush with the wall’s right corner');
+  // The filter holds the wall's bottom-right corner with the links just inside
+  // it; nothing is left in the corner above the work.
+  const filterBox = await page.locator('#project-filters').boundingBox();
+  assert.ok(Math.abs(filterBox.x + filterBox.width - wall.x - wall.width) < 1, 'the filter sits flush with the wall’s right corner');
+  assert.ok(contactBox.x + contactBox.width <= filterBox.x + 1, 'the links sit just inside the filter');
+  assert.ok(filterBox.x - contactBox.x - contactBox.width < 40, 'the links and the filter read as one group');
   assert.ok(contactBox.y >= footer.y - 1 && contactBox.y + contactBox.height <= footer.y + footer.height + 1,
     `contacts fit in the band under the strips (contacts ${JSON.stringify(contactBox)} vs band ${JSON.stringify(footer)})`);
-  const filterBox = await page.locator('#project-filters').boundingBox();
-  assert.ok(filterBox.x + filterBox.width <= contactBox.x + 1, 'the filter sits to the left of the links');
+  const search = page.locator('#project-search');
+  assert.equal(await search.isVisible(), true, 'a name can be typed beside the filter');
+  assert.equal(await search.getAttribute('placeholder'), 'Search', 'the field says what it is');
   assert.equal(await page.locator('#intro a[href^="mailto:"]').count(), 0, 'the email is a link in the corner, not in About');
   if (home) {
     const intro = await page.locator('#intro').boundingBox();
@@ -994,6 +999,54 @@ try {
       await page.mouse.move(0, 0);
     }
   });
+
+  for (const [name, options] of [['desktop', desktop], ['mobile', mobile]]) {
+    await check(`${name} typing a name finds the project`, options, async page => {
+      await visit(page);
+      const search = page.locator('#project-search');
+      if (options.hasTouch) {
+        assert.equal(await search.isVisible(), false, 'phones list every card, so there is nothing to search');
+        return;
+      }
+      const filter = page.locator('#project-filter');
+      const shown = () => page.locator('#strips .strip:not([hidden])').evaluateAll(strips => strips.map(strip => strip.dataset.project));
+      const all = (await shown()).length;
+      await search.fill('jagad');
+      assert.deepEqual(await shown(), ['jagad'], 'a name shows that project alone');
+      // Case and accents are not what anyone is typing at, and a name that is
+      // only in the slug still finds it.
+      await search.fill('JAGAD');
+      assert.deepEqual(await shown(), ['jagad'], 'case does not matter');
+      await search.fill('vi-kommer');
+      assert.deepEqual(await shown(), ['vi-kommer-i-fred'], 'the address finds it too');
+      await search.fill('dome');
+      assert.deepEqual(await shown(), ['dome-dreaming'], 'a fragment is enough');
+      // A name that matches nothing leaves the wall as it was, the same rule
+      // the dropdown follows by closing off a category with nothing to show.
+      const before = await shown();
+      await search.fill('qqqzzz');
+      assert.deepEqual(await shown(), before, 'a name that matches nothing leaves the wall alone');
+      assert.equal(await search.evaluate(input => input.classList.contains('is-empty')), true, 'and says so');
+      await search.fill('');
+      assert.equal((await shown()).length, all, 'clearing the field brings every project back');
+      assert.equal(await search.evaluate(input => input.classList.contains('is-empty')), false);
+      // Typing and the dropdown are alternatives, each clearing the other.
+      await filter.selectOption('light');
+      const lit = (await shown()).length;
+      assert.ok(lit > 1 && lit < all, 'the dropdown still narrows the wall');
+      await search.fill('jagad');
+      assert.deepEqual(await shown(), ['jagad'], 'typing searches the whole collection, not the chosen category');
+      assert.equal(await filter.inputValue(), '', 'and returns the dropdown to All work');
+      await filter.selectOption('design');
+      assert.equal(await search.inputValue(), '', 'choosing from the dropdown clears the field');
+      assert.ok((await shown()).length > 1, 'and the category is on the wall');
+      await search.fill('jagad');
+      await search.press('Escape');
+      assert.equal(await search.inputValue(), '', 'Escape clears the field');
+      assert.equal((await shown()).length, all, 'and the wall is whole again');
+      await checkFooter(page);
+    });
+  }
 
   await check('touch devices download a card-sized image at any pixel density', { ...mobile, deviceScaleFactor: 3 }, async page => {
     await visit(page);

@@ -54,12 +54,30 @@
 .header-contacts::-webkit-scrollbar { display: none; }
 .header-contacts a, .header-contacts button { display: inline-flex; padding: 0; border: 0; background: none; color: inherit; font: inherit; letter-spacing: inherit; text-transform: inherit; text-decoration: none; white-space: nowrap; cursor: pointer; }
 @media (hover: none) { .header-contacts button[data-action="print"] { display: none; } }
-.project-filters { flex: 0 1 auto; min-width: 0; max-width: 100%; gap: var(--spacing-md); margin-left: auto; overflow-x: auto; scrollbar-width: none; }
-.project-filters + .header-contacts { flex: none; margin-left: var(--spacing-xl); }
+/* The filter holds the corner; the links sit just inside it, pushed right by
+   the caption's own auto margin on the other end of the band. */
+.project-filters { flex: none; min-width: 0; max-width: 100%; gap: var(--spacing-md); margin-left: var(--spacing-sm); overflow-x: auto; scrollbar-width: none; }
+.intro-links .header-contacts { flex: 0 1 auto; margin-left: auto; }
 .project-filters::-webkit-scrollbar { display: none; }
 .project-filters select { flex: none; align-self: center; max-width: 100%; padding: 0 1em 0 0; border: 0; border-radius: 0; background: var(--chevron) no-repeat right center / 0.75em; color: inherit; font: inherit; appearance: none; }
 .project-filters select option, .project-filters select optgroup { color: var(--color-black); background: var(--color-white); }
 .project-filters select:focus-visible { outline: none; }
+/* The search reads as one more word in the row until it is typed in: no box,
+   no rule, the placeholder in the same muted grey the dropdown's chevron is. */
+.project-filters input[type="search"] { flex: none; align-self: center; width: 5.5em; padding: 0; border: 0; border-radius: 0; background: none; color: inherit; font: inherit; letter-spacing: inherit; text-transform: inherit; appearance: none; }
+.project-filters input[type="search"]::placeholder { color: var(--text-muted); opacity: 1; }
+.project-filters input[type="search"]:focus-visible { outline: none; }
+/* A name that matches nothing: the wall keeps what it has, and the typing
+   says so by going quiet. */
+.project-filters input[type="search"].is-empty { color: var(--text-muted); text-decoration: line-through; }
+/* The native clear button is a blue cross in Chrome, the one saturated thing
+   in a monochrome row. Same mark, drawn in the row's own colour. */
+.project-filters input[type="search"]::-webkit-search-cancel-button {
+  -webkit-appearance: none; width: 0.7em; height: 0.7em; margin-left: 0.4em; background: currentColor; opacity: 0.6; cursor: pointer;
+  -webkit-mask: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 10 10'%3E%3Cpath d='M1%201L9%209M9%201L1%209' stroke='black' stroke-width='1.4'/%3E%3C/svg%3E") center / contain no-repeat;
+  mask: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 10 10'%3E%3Cpath d='M1%201L9%209M9%201L1%209' stroke='black' stroke-width='1.4'/%3E%3C/svg%3E") center / contain no-repeat;
+}
+@media (hover: none) { .project-filters input[type="search"] { display: none; } }
 @media (max-width: 600px) {
   /* Narrow screens: the contacts take a second row, still in the right corner. */
   :root { --home-header-height: 6rem; }
