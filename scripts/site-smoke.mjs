@@ -81,7 +81,6 @@ async function checkFooter(page) {
     assert.equal(await page.locator('#strip-caption').isVisible(), false, 'phones show no strip caption');
     assert.equal(await contacts.isVisible(), true, 'phones keep the links under the list');
     assert.deepEqual((await contacts.locator('a').allTextContents()).map(text => text.trim()), ['CV', 'Email'], 'contact links stay concise');
-    assert.equal(await contacts.locator('button[data-action="print"]').isVisible(), false, 'the print button stays off touch devices');
     return;
   }
   const footer = await page.locator('#intro-links').boundingBox();
@@ -92,9 +91,7 @@ async function checkFooter(page) {
   assert.ok(Math.abs(footer.y + footer.height - page.viewportSize().height) < 1, 'footer fits within the strip viewport');
   assert.deepEqual((await contacts.locator('a').allTextContents()).map(text => text.trim()), ['CV', 'Email'], 'contact links stay concise');
   assert.equal(await contacts.locator('svg').count(), 0, 'contact links are plain text');
-  const printButton = contacts.locator('button[data-action="print"]');
-  assert.equal(await printButton.count(), 1, 'a print button sits with the contacts');
-  assert.equal((await printButton.textContent()).trim(), 'Print', 'the print button is plain text');
+  assert.equal(await contacts.locator('button').count(), 0, 'the links are links, with no button among them');
   // The filter holds the wall's bottom-right corner with the links just inside
   // it; nothing is left in the corner above the work.
   const filterBox = await page.locator('#project-filters').boundingBox();
@@ -103,9 +100,11 @@ async function checkFooter(page) {
   assert.ok(filterBox.x - contactBox.x - contactBox.width < 40, 'the links and the filter read as one group');
   assert.ok(contactBox.y >= footer.y - 1 && contactBox.y + contactBox.height <= footer.y + footer.height + 1,
     `contacts fit in the band under the strips (contacts ${JSON.stringify(contactBox)} vs band ${JSON.stringify(footer)})`);
+  // Typing a name searches the collection, so the field is on the landing,
+  // where the collection is the page. A project wall keeps only the filter.
   const search = page.locator('#project-search');
-  assert.equal(await search.isVisible(), true, 'a name can be typed beside the filter');
-  assert.equal(await search.getAttribute('placeholder'), 'Search', 'the field says what it is');
+  assert.equal(await search.isVisible(), home, `the search field belongs to the landing (visible: ${await search.isVisible()}, home: ${home})`);
+  if (home) assert.equal(await search.getAttribute('placeholder'), 'Search', 'the field says what it is');
   assert.equal(await page.locator('#intro a[href^="mailto:"]').count(), 0, 'the email is a link in the corner, not in About');
   if (home) {
     const intro = await page.locator('#intro').boundingBox();
@@ -136,14 +135,17 @@ async function checkFilterBounds(page) {
 
 try {
   await checkStripAudio({ check, visit, desktop, mobile });
-  // The print button sits with the links, in the band under either wall.
-  await check('the print button prints the portfolio', desktop, async page => {
+  // Nothing on the page offers printing any more, so Cmd/Ctrl+P is the way in
+  // and has to work on both routes.
+  await check('Cmd/Ctrl+P prints the portfolio', desktop, async page => {
     await visit(page);
-    const slug = await page.evaluate(() => window.__PROJECTS_DATA__[0].slug);
-    await visit(page, `/${slug}/`);
-    await page.evaluate(() => { window.__printed = 0; window.print = () => { window.__printed += 1; }; });
-    await page.locator('#intro-links button[data-action="print"]').click();
-    await page.waitForFunction(() => window.__printed === 1);
+    assert.equal(await page.locator('button[data-action="print"]').count(), 0, 'the page offers no print button');
+    for (const route of [null, 'first']) {
+      if (route) await visit(page, `/${await page.evaluate(() => window.__PROJECTS_DATA__[0].slug)}/`);
+      await page.evaluate(() => { window.__printed = 0; window.print = () => { window.__printed += 1; }; });
+      await page.keyboard.press('Control+p');
+      await page.waitForFunction(() => window.__printed === 1);
+    }
   });
 
   await check('every project shares its hero without JavaScript', { ...desktop, javaScriptEnabled: false }, async (page, context) => {
@@ -1063,6 +1065,11 @@ try {
       assert.equal(await search.inputValue(), '', 'Escape clears the field');
       assert.equal((await shown()).length, all, 'and the wall is whole again');
       await checkFooter(page);
+      // The wall under a project is a way out, not a collection to search.
+      await visit(page, `/${await page.evaluate(() => window.__PROJECTS_DATA__[0].slug)}/`);
+      await page.locator('#collection').evaluate(collection => collection.scrollIntoView({ block: 'start' }));
+      assert.equal(await search.isVisible(), false, 'a project wall offers no search field');
+      assert.equal(await page.locator('#project-filter').isVisible(), true, 'but keeps the filter');
     });
   }
 

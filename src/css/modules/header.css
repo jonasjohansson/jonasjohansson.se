@@ -52,8 +52,7 @@
 .collection-home-link { flex: none; }
 .header-contacts { flex: 0 1 auto; min-width: 0; gap: var(--icon-gap); overflow-x: auto; scrollbar-width: none; text-transform: none; letter-spacing: 0; }
 .header-contacts::-webkit-scrollbar { display: none; }
-.header-contacts a, .header-contacts button { display: inline-flex; padding: 0; border: 0; background: none; color: inherit; font: inherit; letter-spacing: inherit; text-transform: inherit; text-decoration: none; white-space: nowrap; cursor: pointer; }
-@media (hover: none) { .header-contacts button[data-action="print"] { display: none; } }
+.header-contacts a { display: inline-flex; padding: 0; color: inherit; font: inherit; letter-spacing: inherit; text-transform: inherit; text-decoration: none; white-space: nowrap; cursor: pointer; }
 /* The filter holds the corner; the links sit just inside it, pushed right by
    the caption's own auto margin on the other end of the band. */
 .project-filters { flex: none; min-width: 0; max-width: 100%; gap: var(--spacing-md); margin-left: var(--spacing-sm); overflow-x: auto; scrollbar-width: none; }

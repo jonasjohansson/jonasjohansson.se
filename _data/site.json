@@ -12,11 +12,6 @@
       "label": "Email",
       "href": "mailto:j@jonasjohansson.se",
       "icon": "email"
-    },
-    {
-      "label": "Print",
-      "action": "print",
-      "icon": "print"
     }
   ],
   "aboutUrl": "https://docs.google.com/document/d/1riN-cIeqjiBx2DtVJnRfUAMP0qtcFEWkCvK95kKrOOY/export?format=pdf",

@@ -14,8 +14,10 @@ export function initPrint() {
     });
   };
 
-  // Menu printing must stay synchronous. Cmd/Ctrl+P can wait for image decode
-  // before opening the dialog, preventing empty frames on a cold first visit.
+  // The page offers no print button: Cmd/Ctrl+P and the browser's own menu are
+  // the ways in. Menu printing must stay synchronous, while Cmd/Ctrl+P can wait
+  // for image decode before opening the dialog, preventing empty frames on a
+  // cold first visit.
   addEventListener('beforeprint', warmImages);
 
   const printPortfolio = async () => {
@@ -32,8 +34,5 @@ export function initPrint() {
     if (event.defaultPrevented || !(event.metaKey || event.ctrlKey) || event.key.toLowerCase() !== 'p' || event.altKey || event.shiftKey) return;
     event.preventDefault();
     printPortfolio();
-  });
-  document.addEventListener('click', event => {
-    if (event.target.closest('button[data-action="print"]')) printPortfolio();
   });
 }
