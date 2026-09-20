@@ -1,0 +1,46 @@
+---
+permalink: "/privacy/"
+eleventyExcludeFromCollections: true
+---
+{# A plain page outside the portfolio layout: no wall, no header, no scripts.
+   It exists because Google requires a privacy policy URL before an OAuth app
+   may leave Testing mode, and the app in question is Jonas's own tooling
+   (the "Skynet" project OS and Claude MCP), used by Jonas alone. #}
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <meta name="robots" content="noindex">
+  <title>Privacy policy — {{ site.title }}</title>
+  <link rel="stylesheet" href="{{ 'styles.css' | viteAsset | url }}">
+  <style>
+    .privacy { max-width: 40rem; margin: 0 auto; padding: 3rem 1.25rem 4rem; line-height: 1.5; }
+    .privacy h1 { font-size: 1.25rem; margin: 0 0 1.5rem; }
+    .privacy h2 { font-size: 1rem; margin: 2rem 0 0.5rem; }
+    .privacy p { margin: 0 0 1rem; }
+    .privacy a { color: inherit; }
+  </style>
+</head>
+<body>
+  <main class="privacy">
+    <h1>Privacy policy</h1>
+    <p>This policy covers the personal tools that Jonas Johansson runs under the Google OAuth app named Claude MCP and the project system behind <a href="https://os.jonasjohansson.se">os.jonasjohansson.se</a>. They are built and used by Jonas alone, to manage his own projects.</p>
+
+    <h2>What the tools access</h2>
+    <p>With permission granted at sign-in, the tools read and write files in Jonas's own Google Drive, create and update events in his own Google Calendar, and send email from his own Gmail account. Only Jonas's accounts are connected; the app is not offered to anyone else.</p>
+
+    <h2>What happens to the data</h2>
+    <p>Data fetched from Google stays on Jonas's own computers, where the tools run. Nothing is sold, shared with third parties, used for advertising, or used to train machine-learning models. Access tokens are stored locally on those computers and can be revoked at any time from <a href="https://myaccount.google.com/permissions">Google account permissions</a>.</p>
+
+    <h2>Limited use</h2>
+    <p>Use of information received from Google APIs adheres to the <a href="https://developers.google.com/terms/api-services-user-data-policy">Google API Services User Data Policy</a>, including the Limited Use requirements.</p>
+
+    <h2>Visitors to this website</h2>
+    <p>jonasjohansson.se sets no cookies and runs no analytics. It is a static site hosted on GitHub Pages, whose servers log requests as any web host does.</p>
+
+    <h2>Contact</h2>
+    <p><a href="mailto:{{ site.email }}">{{ site.email }}</a></p>
+  </main>
+</body>
+</html>
