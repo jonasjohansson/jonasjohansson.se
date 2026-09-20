@@ -37,6 +37,16 @@
 .enhanced body[data-route="home"] #content { padding: 0; }
 .enhanced body[data-route="home"] .intro { position: static; max-width: none; margin: 0; padding: clamp(var(--spacing-lg), 5vw, 5rem) var(--page-gutter); }
 .enhanced body[data-route="home"] .intro-text { max-width: var(--measure); margin: 0; text-align: left; }
+/* About reads as a column rather than a banner across the wall: three quarters
+   of it, and never wider than the measure on a large display. Phones keep the
+   full width, where three quarters would be a gutter with a few words in it. */
+/* Above the tablet breakpoint, where three quarters is still a readable line. */
+@media (min-width: 769px) {
+  /* Three quarters of the wall, not of this block: a percentage here resolves
+     against an ancestor already capped at the measure, which took the column
+     down to 672px on a large display instead of leaving it at the measure. */
+  .enhanced body[data-route="home"] .intro-text { max-width: min(var(--measure), calc(0.75 * (100vw - 2 * var(--page-gutter)))); }
+}
 .enhanced #intro-links { padding-inline: 0; /* the blocks sit flush with the wall's edges */ }
 .enhanced body[data-route="home"] #intro-links { padding-inline: var(--page-gutter); }
 

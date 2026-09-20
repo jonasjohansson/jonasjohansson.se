@@ -337,6 +337,13 @@ try {
       assert.deepEqual(blank, [], 'every strip carries a colour to stand in for its photograph');
       // The band is the writing alone: the links live under the wall now.
       assert.ok(intro.x + intro.width <= wall.x + wall.width + 1, 'the writing stays within the wall');
+      // About is a column, not a banner: at most three quarters of the wall on
+      // anything above a tablet, and the full width below that, where three
+      // quarters would be a gutter with a few words in it.
+      const column = await page.locator('.intro-text').boundingBox();
+      const share = column.width / wall.width;
+      if (options.viewport.width > 768) assert.ok(share <= 0.76, `About takes at most three quarters of the wall (${(share * 100).toFixed(0)}%)`);
+      else assert.ok(share > 0.99, `About takes the full width on a small screen (${(share * 100).toFixed(0)}%)`);
       if (options.hasTouch) {
         // Phones scroll a list of cards: a photograph with the project's name under it.
         const list = await page.locator('.strip:not([hidden])').evaluateAll(strips => strips.map(strip => {
