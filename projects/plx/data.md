@@ -22,15 +22,15 @@ blocks:
   - type: text
     fontSize: small
     content: >-
-      Kulturföreningen PLX has been active since the early 2000s, working out of
+      PLX has been going since 2006 and an association since 2014, working out of
       Blekinge, Malmö and Stockholm, and organising festivals, exhibitions and
       performances with an emphasis on site-specificity, experimentation and
       sustainability. Since 2017 its centre has been PLX Tjärö, four days each
       August on a protected island in the archipelago: no cars, only boats,
-      barefoot paths and cows. In 2025 that meant **six stages**, over **sixty music
-      acts** and **thirty exhibiting artists**, a floating sauna and a popup
-      cinema. More than **250 artists** from over **25 countries** have played
-      there.
+      barefoot paths and cows. In 2025 that meant **six stages**, over **sixty
+      music acts** and **thirty exhibiting artists**, a floating sauna and a
+      popup cinema. More than **250 artists** from over **25 countries** have
+      played there.
   - type: image
     src: lit-sail.jpg
     size: half-left
@@ -38,16 +38,27 @@ blocks:
   - type: image
     src: cliff-sculpture.jpg
     size: half-right
-    alt: "A pale sculpture of coiled forms stands on a mossy granite outcrop under an oak, with the sea behind."
+    alt: "A pale sculpture of coiled forms stands on a mossy granite outcrop under an oak, with a stage light at its foot."
   - type: text
     fontSize: small
     content: >-
-      I have **curated the art since 2021**, and I lead **Konst & Teknik**, the team
-      that plans the light and lays the power the island runs on. That is the
-      part nobody sees: the cabling and the distribution that every artist
-      plugs into, and the support they need once they are out on the rocks with
-      a piece half-built. Choosing the work and making the work possible are the
+      I have **curated the art since 2021**, and I lead **Konst & Teknik**, the
+      team that plans the light and lays the power the island runs on. That is
+      the part nobody sees: the cabling and the distribution every artist plugs
+      into, and the support they need once they are out on the rocks with a
+      piece half-built. Choosing the work and making the work possible are the
       same job here.
+  - type: image
+    src: fan-day.jpg
+    size: half-left
+    alt: "A large fan of thin steel ribs opens against a cloudy sky on the island's bare rock."
+  - type: image
+    src: fan-night.jpg
+    size: half-right
+    alt: "The same steel fan at night, its ribs picked out in white light against complete darkness."
+  - type: image
+    src: red-arcs.jpg
+    alt: "Red arcs of light zigzag along the shoreline at dusk, doubled in the still water below."
   - type: image
     src: seahorse.jpg
     size: half-left
@@ -56,6 +67,9 @@ blocks:
     src: lip-sculpture.jpg
     size: half-right
     alt: "A dark plinth holds a white sculpture of parted lips, facing the archipelago at dusk."
+  - type: image
+    src: cinema.jpg
+    alt: "One person sits alone on a bench in front of the outdoor cinema screen at night, the ground lit yellow in front of it."
   - type: text
     fontSize: small
     content: >-
@@ -68,33 +82,49 @@ blocks:
   - type: text
     fontSize: small
     content: >-
-      For Tjärö 2025 I made the festival's identity. Hedonism took Romanesque
-      illumination — angels, arches, a dragon under the span — and solarised it
-      into electric blue and orange, with the wordmark in blackletter neon. It
-      ran across the posters, the map, the wristbands and the socials.
+      I draw the wristbands. For Tjärö 2025 that was orange roses on a thorned
+      vine the length of a purple band, worked into Ernst Lilja's identity for
+      the year, alongside the two maps: the one that shows you the island and
+      the one that finds you your bed.
   - type: image
-    src: hedonism.jpg
-    alt: "The Tjärö 2025 poster: a Romanesque arch with angels and a dragon, solarised into electric blue and orange, with PLXX TJÄRÖ 2025 in glowing magenta blackletter."
-  - type: text
-    fontSize: small
-    content: >-
-      PLX **turned twenty** in 2026 and marked it with ODE JOY, two nights in the
-      old casino at Malmö Konstmuseum in Kungsparken. I built the site: a vine
-      that climbs the page's scaffolding while you read it.
-  - type: image
-    src: ode-site.jpg
-    alt: "The ODE JOY website: a vine climbing pale scaffolding on a dark green ground, with a Renaissance painting in an orange oval above the festival details in Swedish."
-  - type: text
-    fontSize: small
-    content: >-
-      I drew the wristbands from the same trellis, printed small enough to hold
-      for two nights.
-  - type: image
-    src: wristband.jpg
+    src: tjaro-wristband.png
     size: full
-    alt: "The ODE JOY wristband: pale line-work and violet flowers on navy, with PLX ODE JOY set in green across the middle."
+    alt: "The Tjärö 2025 wristband: orange roses on a green thorned vine across a purple band, with PLXX TJÄRÖ and a large 25 in magenta blackletter."
+  - type: image
+    src: tjaro-band-detail.png
+    size: full
+    alt: "A close view of the Tjärö wristband: the thorned stem, an opened rose, and a medieval figure lifted from an illumination."
   - type: text
     fontSize: small
     content: >-
-      Photographs from Tjärö 2025 by [Olle Enqvist](https://olleenqvist.se).
+      PLX **turned twenty** in 2026 and marked it with ODE JOY, two nights in
+      the old casino at Malmö Konstmuseum in Kungsparken. I built the site — a
+      vine that climbs a scaffold while you read the page — and ran the visuals
+      through both nights.
+  - type: image
+    src: ode-render-a.jpg
+    alt: "A frame from the ODE JOY website with its writing hidden: a vine climbing pale scaffolding on a dark green ground."
+  - type: text
+    fontSize: small
+    content: >-
+      The wristbands took that scaffold with them, one band for each way in:
+      lime and violet on navy for both nights, orange and lime on oxblood for
+      the Friday alone.
+  - type: image
+    src: ode-band-both.png
+    size: full
+    alt: "The ODE JOY two-night wristband: violet flowers climbing a pale lattice on navy, with PLX ODE JOY set in lime across the middle."
+  - type: image
+    src: ode-band-fri.png
+    size: full
+    alt: "The ODE JOY Friday wristband: the same lattice and flowers in lime and orange on oxblood, with PLX ODE JOY in orange."
+  - type: image
+    src: ode-band-detail.png
+    size: full
+    alt: "A close view of the wristband lattice: violet leaves and pale six-petalled flowers threaded through crossing struts."
+  - type: text
+    fontSize: small
+    content: >-
+      Photographs from Tjärö by [Olle Enqvist](https://olleenqvist.se), Djoana
+      Gueorguieva and David Neman.
 ---
