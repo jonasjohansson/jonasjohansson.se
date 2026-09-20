@@ -21,7 +21,14 @@ try {
   const pages = await page.locator('.print-page:visible').count();
   assert.equal(pages, await page.locator('.print-project').count() + 1, 'one page per project plus cover');
   assert.equal(await page.locator('.print-closing').count(), 0);
-  assert.deepEqual(await page.locator('.print-profile-links a').allTextContents(), ['Instagram', 'CV', 'Email']);
+  // The cover's links come from the same list the page's corner uses, so the
+  // printed portfolio cannot drift from the site. Email has its own line just
+  // above, and Print is an action that means nothing on paper.
+  const cover = await page.locator('.print-profile-links a').allTextContents();
+  assert.deepEqual(cover.map(text => text.trim()), ['CV'], 'the cover lists what the site lists');
+  const corner = await page.locator('#intro-links .header-contacts a').allTextContents();
+  assert.deepEqual(corner.map(text => text.trim()), ['CV', 'Email'], 'and the site lists CV and Email');
+  assert.equal(await page.locator('.print-contact a[href^="mailto:"]').count(), 1, 'the email is on the cover once');
   assert.equal(await page.locator('.print-profile-links a').filter({ hasText: /^CV$/ }).getAttribute('href'), 'https://docs.google.com/document/d/1riN-cIeqjiBx2DtVJnRfUAMP0qtcFEWkCvK95kKrOOY/export?format=pdf');
   const overflow = await page.locator('.print-page:visible').evaluateAll(pages => pages.flatMap(page => {
     const content = page.querySelector('.print-project-text, .print-bio');

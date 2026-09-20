@@ -60,35 +60,6 @@
 .intro-text .name > span:nth-of-type(12) { color: var(--name-5); animation-delay: -5.13s, -1.68s; }
 .intro-text .name > span:nth-of-type(13) { color: var(--name-6); animation-delay: -6.27s, -1.82s; }
 .intro-text .name > span:nth-of-type(14) { color: var(--name-7); animation-delay: -7.41s, -1.96s; }
-/* The internship line is lettered too, so the stagger carries on past the
-   name's fourteen. Same two periods: the colour wraps every seven letters
-   with a half-step offset per row, the wave is one step of 0.14s each. */
-.intro-text .name > span:nth-of-type(15) { color: var(--name-1); animation-delay: -1.14s, -1.96s; }
-.intro-text .name > span:nth-of-type(16) { color: var(--name-2); animation-delay: -2.28s, -0.1s; }
-.intro-text .name > span:nth-of-type(17) { color: var(--name-3); animation-delay: -3.42s, -0.24s; }
-.intro-text .name > span:nth-of-type(18) { color: var(--name-4); animation-delay: -4.56s, -0.38s; }
-.intro-text .name > span:nth-of-type(19) { color: var(--name-5); animation-delay: -5.7s, -0.52s; }
-.intro-text .name > span:nth-of-type(20) { color: var(--name-6); animation-delay: -6.84s, -0.66s; }
-.intro-text .name > span:nth-of-type(21) { color: var(--name-7); animation-delay: -7.98s, -0.8s; }
-.intro-text .name > span:nth-of-type(22) { color: var(--name-1); animation-delay: -1.71s, -0.94s; }
-.intro-text .name > span:nth-of-type(23) { color: var(--name-2); animation-delay: -2.85s, -1.08s; }
-.intro-text .name > span:nth-of-type(24) { color: var(--name-3); animation-delay: -3.99s, -1.22s; }
-.intro-text .name > span:nth-of-type(25) { color: var(--name-4); animation-delay: -5.13s, -1.36s; }
-.intro-text .name > span:nth-of-type(26) { color: var(--name-5); animation-delay: -6.27s, -1.5s; }
-.intro-text .name > span:nth-of-type(27) { color: var(--name-6); animation-delay: -7.41s, -1.64s; }
-.intro-text .name > span:nth-of-type(28) { color: var(--name-7); animation-delay: -0.55s, -1.78s; }
-.intro-text .name > span:nth-of-type(29) { color: var(--name-1); animation-delay: -2.28s, -1.92s; }
-.intro-text .name > span:nth-of-type(30) { color: var(--name-2); animation-delay: -3.42s, -0.06s; }
-.intro-text .name > span:nth-of-type(31) { color: var(--name-3); animation-delay: -4.56s, -0.2s; }
-.intro-text .name > span:nth-of-type(32) { color: var(--name-4); animation-delay: -5.7s, -0.34s; }
-.intro-text .name > span:nth-of-type(33) { color: var(--name-5); animation-delay: -6.84s, -0.48s; }
-.intro-text .name > span:nth-of-type(34) { color: var(--name-6); animation-delay: -7.98s, -0.62s; }
-.intro-text .name > span:nth-of-type(35) { color: var(--name-7); animation-delay: -1.12s, -0.76s; }
-.intro-text .name > span:nth-of-type(36) { color: var(--name-1); animation-delay: -2.85s, -0.9s; }
-.intro-text .name > span:nth-of-type(37) { color: var(--name-2); animation-delay: -3.99s, -1.04s; }
-.intro-text .name > span:nth-of-type(38) { color: var(--name-3); animation-delay: -5.13s, -1.18s; }
-.intro-text .name > span:nth-of-type(39) { color: var(--name-4); animation-delay: -6.27s, -1.32s; }
-.intro-text .name > span:nth-of-type(40) { color: var(--name-5); animation-delay: -7.41s, -1.46s; }
 
 @keyframes name-color {
   0%   { color: var(--name-1); }

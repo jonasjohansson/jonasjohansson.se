@@ -11,7 +11,14 @@
     <div class="print-contact">
       <a href="{{ site.url }}">{{ site.url | replace('https://', '') }}</a><br>
       <a href="mailto:{{ site.email }}">{{ site.email }}</a>
-      <div class="print-profile-links">{{ site.links | markdown | safe }}</div>
+      <div class="print-profile-links">
+        {%- set shown = [] %}
+        {%- for contact in site.contacts %}
+        {%- if not contact.action and contact.href != ("mailto:" ~ site.email) %}
+        {{- "" if shown.push(contact) }}{% if shown.length > 1 %} · {% endif %}<a href="{{ contact.href }}">{{ contact.label }}</a>
+        {%- endif %}
+        {%- endfor %}
+      </div>
     </div>
   </section>
   {% for item in collectionItems %}
