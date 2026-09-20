@@ -127,9 +127,6 @@ blocks:
     src: ode-singer.jpg
     size: half-right
     alt: "A singer leans into the microphone, lit from the side in cyan and magenta that bleeds across the frame."
-  - type: image
-    src: ode-projection.jpg
-    alt: "Ochre and red light thrown across a painted surface, its drawn lines and faces catching the projection."
   - type: text
     fontSize: small
     content: >-
