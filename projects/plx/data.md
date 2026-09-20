@@ -114,8 +114,20 @@ blocks:
       vine that climbs a scaffold while you read the page — and ran the visuals
       through both nights.
   - type: image
-    src: ode-tower.jpg
-    alt: "The ODE JOY tower rendered without its writing: a scaffold of stairs and platforms in lilac and terracotta, two stage cages bracketing it, a vine climbing the whole run."
+    src: ode-tower-1.jpg
+    colStart: 1
+    colSpan: 4
+    alt: "The ground of the ODE JOY tower, rendered without its writing: stairs and platforms in terracotta and white, a stage cage around the lowest floors, a vine already climbing."
+  - type: image
+    src: ode-tower-2.jpg
+    colStart: 5
+    colSpan: 4
+    alt: "The middle of the tower, where the light turns lilac: stair runs doubling back on themselves, a stage cage pushed out on all four sides, artists' photographs hung on the panels."
+  - type: image
+    src: ode-tower-3.jpg
+    colStart: 9
+    colSpan: 4
+    alt: "The summit of the tower in pink light, the last cage at its foot and the stairs running up past the top of the frame."
   - type: video
     src: ode-climb.mp4
     poster: ode-climb-poster.jpg
