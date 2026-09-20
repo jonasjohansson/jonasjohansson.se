@@ -111,7 +111,11 @@ async function buildProject(project) {
   // still will not fit a sheet at 6.8pt.
   const printCopyScale = estimated > 280 ? 0.7 : estimated > 180 ? 0.75 : 1;
   const { slug, title, date, tags, color = null } = project;
-  return { slug, title, date, tags, color, year: new Date(date).getFullYear(), years: project.years || [], type: 'work', unlisted: !!project.unlisted,
+  // The strip stands in its own colour until its photograph arrives. Seven
+  // projects declare none, so the hero's dominant colour — already measured to
+  // order the wall — stands in, rather than a grey gap in a band of colour.
+  const stripColor = color || `hsl(${colour.hue.toFixed(0)} ${(colour.saturation * 100).toFixed(0)}% ${(colour.lightness * 100).toFixed(0)}%)`;
+  return { slug, title, date, tags, color, stripColor, year: new Date(date).getFullYear(), years: project.years || [], type: 'work', unlisted: !!project.unlisted,
     content: grouped, thumbnail, colour, ogImage: og, printMedia, printCopy, printCopyFull, printCopyScale, presskit: project.presskit || null,
     description: stripHtml(content.find(block => block.type === 'text')?.content).slice(0, 160) };
 }

@@ -324,6 +324,20 @@ try {
       assert.equal(await page.evaluate(() => document.documentElement.scrollWidth > innerWidth), false);
       const intro = await page.locator('#intro').boundingBox();
       assert.ok(intro.y + intro.height <= wall.y + 1, 'About reads above the strips');
+      // The internship line stands on its own, lettered like the name so it
+      // cycles the same palette.
+      const lines = await page.locator('.intro-text p').evaluateAll(paragraphs => paragraphs.map(p => p.textContent.trim()));
+      assert.equal(lines.at(-1), 'Currently accepting internship requests.', 'the internship line is a paragraph of its own');
+      const lettered = await page.locator('.intro-text p:last-child .name > span').count();
+      assert.equal(lettered, 36, 'every letter of it is its own span');
+      const colours = await page.locator('.intro-text p:last-child .name > span').evaluateAll(spans =>
+        spans.map(span => getComputedStyle(span).color));
+      assert.ok(new Set(colours).size > 3, `the line cycles the palette rather than sitting on one colour (${new Set(colours).size} colours)`);
+      // Every strip stands in its own colour, so the wall is whole from the
+      // first paint instead of filling in column by column.
+      const blank = await page.locator('#strips .strip').evaluateAll(strips => strips.filter(strip =>
+        !strip.style.getPropertyValue('--project-color')).map(strip => strip.dataset.project));
+      assert.deepEqual(blank, [], 'every strip carries a colour to stand in for its photograph');
       // The band is the writing alone: the links live under the wall now.
       assert.ok(intro.x + intro.width <= wall.x + wall.width + 1, 'the writing stays within the wall');
       if (options.hasTouch) {

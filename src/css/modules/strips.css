@@ -6,7 +6,7 @@
 @media (hover: none) { .collection-home-link { display: flex; } }
 body[data-route="home"] .collection-header { display: none; }
 #strips { display: flex; flex-direction: column; gap: 0; overflow: hidden; position: relative; touch-action: pan-y; }
-.strip { display: block; flex: none; width: 100%; min-width: 0; color: inherit; text-decoration: none; height: var(--strip-band-height); position: relative; overflow: hidden; padding: 0; border: 0; background: var(--surface-tint); }
+.strip { display: block; flex: none; width: 100%; min-width: 0; color: inherit; text-decoration: none; height: var(--strip-band-height); position: relative; overflow: hidden; padding: 0; border: 0; background: var(--project-color, var(--surface-tint)); }
 .strip-picture { display: contents; }
 .strip-image { position: absolute; width: 100%; height: 100%; object-fit: cover; object-position: var(--bg-x, 50%) var(--bg-y, 50%); }
 .strip:focus-visible { outline: var(--focus-ring); outline-offset: -3px; }
@@ -67,7 +67,7 @@ body[data-route="home"] .collection-header { display: none; }
   .enhanced #content { padding-bottom: var(--page-gutter); }
   .enhanced #strips { flex: none; flex-direction: column; height: auto; min-height: 0; overflow: visible; gap: var(--spacing-xl); touch-action: auto; }
   .enhanced .strip { flex: none; width: 100%; min-width: 0; height: auto; background: none; -webkit-touch-callout: none; }
-  .enhanced .strip-picture { display: block; position: relative; overflow: hidden; aspect-ratio: 3 / 2; background: var(--surface-tint); }
+  .enhanced .strip-picture { display: block; position: relative; overflow: hidden; aspect-ratio: 3 / 2; background: var(--project-color, var(--surface-tint)); }
   .enhanced .strip-image { position: absolute; inset: 0; width: 100%; height: 100%; max-width: none; left: auto; transform: none; }
   .enhanced .strip-title { display: block; padding-top: var(--chrome-pad); font-size: var(--font-size-ui); line-height: 1.2; letter-spacing: var(--letter-spacing-caps); text-transform: uppercase; }
   /* The name and contacts sit above the list as plain text; phones show no
