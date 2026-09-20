@@ -126,8 +126,9 @@ blocks:
     content: >-
       The tower has four floors and the score climbs with you: strings on the
       ground, a hihat on the second, a beat and a whistle on the third,
-      shakuhachi and steel pan at the summit. Six stems by Anton, crossfading by
-      camera height, and the tower loops, so the climb has no top.
+      shakuhachi and steel pan at the summit. Six stems by Anton Ingvarsson,
+      crossfading by camera height, and the tower loops, so the climb has no
+      top.
   - type: image
     src: ode-stage.jpg
     alt: "Beams of light rake through haze across a draped backdrop, a figure silhouetted at the microphone in front of it."
