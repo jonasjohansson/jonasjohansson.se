@@ -91,3 +91,16 @@
   /* If the row wraps anyway, it grows rather than overlapping the wall. */
   .home-header-row { height: auto; min-height: var(--home-header-height); }
 }
+
+@media (hover: none) {
+  /* On a phone the project's title is the page's heading rather than a label
+     in the chrome, so it reads from the left edge at reading size, in the case
+     it was written in. It is still the way back to the collection. */
+  #header { left: 0; transform: none; max-width: 100%; text-align: left; }
+  .header-subtitle {
+    padding-left: var(--page-gutter);
+    font-size: var(--font-size-large);
+    letter-spacing: var(--letter-spacing-base);
+    text-transform: none;
+  }
+}
