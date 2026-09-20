@@ -104,7 +104,11 @@
   #header { position: static; transform: none; max-width: 100%; background: none; text-align: left; }
   .header-subtitle {
     padding: var(--page-gutter) var(--page-gutter) var(--spacing-md);
-    font-size: var(--font-size-large);
+    /* A heading sets its own size rather than taking a step of the body scale:
+       phones pull --font-size-large down to 21.6px, which is a caption when
+       this is the first thing on the page. 27px on a phone, reaching today's
+       41px by the width where the plate takes over. */
+    font-size: clamp(1.6rem, 1.15rem + 2.2vw, 2.6rem);
     letter-spacing: var(--letter-spacing-base);
     text-transform: none;
   }
