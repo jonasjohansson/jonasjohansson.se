@@ -3,7 +3,6 @@ title: Vi kommer i fred
 date: '2025-11-06'
 tags:
   - installation
-  - mapping
   - mixed reality
 blocks:
   - type: video
