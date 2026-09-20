@@ -7,9 +7,8 @@ tags:
   - community
 blocks:
   - type: image
-    src: woodland-mist-ai.png
-    alt: "Kagora glows warm gold between dark tree trunks, with mist drifting through the woodland and blue light in the foreground."
-    focal: "52% 60%"
+    src: light-detail.jpg
+    alt: "A close view of Kagora's crossing ribs reveals rows of blue and cyan LEDs running along the curved structure."
   - type: text
     content: >-
       A woven pavilion of moving light, built as a place to gather in the
@@ -19,6 +18,10 @@ blocks:
     content: >-
       Kagora brings Japanese basket weaving to an architectural scale. Its name
       combines kago, Japanese for basket, with aura.
+  - type: image
+    src: woodland-mist-ai.png
+    alt: "Kagora glows warm gold between dark tree trunks, with mist drifting through the woodland and blue light in the foreground."
+    focal: "52% 60%"
   - type: video
     src: motion.mp4
     poster: motion-poster.jpg
@@ -54,9 +57,6 @@ blocks:
     src: interior.jpg
     alt: "Looking up from inside Kagora, multicoloured light curves cross above visitors beneath the evening sky."
   - type: image
-    src: light-detail.jpg
-    alt: "A close view of Kagora's crossing ribs reveals rows of blue and cyan LEDs running along the curved structure."
-  - type: image
     src: tube-joints.jpg
     size: half-left
     alt: "Coloured points of light glow through crossing tubes, revealing the connectors and joints holding the weave together."
@@ -75,14 +75,6 @@ blocks:
       assembled the woven ribs among the trees. In daylight, the white
       structure frames the woodland; after dark, the light gives it a
       different presence.
-  - type: text
-    fontSize: small
-    content: >-
-      Twelve networked controllers coordinate the light across the pavilion.
-      I used my tools [LEDger](https://github.com/jonasjohansson/LEDger)
-      to plan the power and wiring, and
-      [LED Zeppelin](https://github.com/jonasjohansson/ledzeppelin)
-      to map visuals onto the tubes and control them in real time.
   - type: image
     src: lighting-control.jpg
     alt: "Hands at a laptop showing a digital model of Kagora, with the illuminated pavilion glowing blue among the trees behind it."
