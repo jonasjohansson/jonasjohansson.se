@@ -56,20 +56,28 @@
   animation: name-color 8s infinite, name-wave 2s ease-in-out infinite;
 }
 
-.intro-text .name > span:nth-of-type(1)  { color: var(--name-1); animation-delay: -0s, -0s; }
-.intro-text .name > span:nth-of-type(2)  { color: var(--name-2); animation-delay: -1.14s, -0.14s; }
-.intro-text .name > span:nth-of-type(3)  { color: var(--name-3); animation-delay: -2.28s, -0.28s; }
-.intro-text .name > span:nth-of-type(4)  { color: var(--name-4); animation-delay: -3.42s, -0.42s; }
-.intro-text .name > span:nth-of-type(5)  { color: var(--name-5); animation-delay: -4.56s, -0.56s; }
-.intro-text .name > span:nth-of-type(6)  { color: var(--name-6); animation-delay: -5.7s, -0.84s; }
-.intro-text .name > span:nth-of-type(7)  { color: var(--name-7); animation-delay: -6.84s, -0.98s; }
-.intro-text .name > span:nth-of-type(8)  { color: var(--name-1); animation-delay: -0.57s, -1.12s; }
-.intro-text .name > span:nth-of-type(9)  { color: var(--name-2); animation-delay: -1.71s, -1.26s; }
-.intro-text .name > span:nth-of-type(10) { color: var(--name-3); animation-delay: -2.85s, -1.4s; }
-.intro-text .name > span:nth-of-type(11) { color: var(--name-4); animation-delay: -3.99s, -1.54s; }
-.intro-text .name > span:nth-of-type(12) { color: var(--name-5); animation-delay: -5.13s, -1.68s; }
-.intro-text .name > span:nth-of-type(13) { color: var(--name-6); animation-delay: -6.27s, -1.82s; }
-.intro-text .name > span:nth-of-type(14) { color: var(--name-7); animation-delay: -7.41s, -1.96s; }
+/* Each letter stands one palette step further round than the one before it —
+   8s over seven colours is 1.14s a step — so the name reads as a spread rather
+   than a single colour flashing. Each time the palette comes round again the
+   run slips half a step, so a letter and its seventh neighbour never pulse
+   together. The build gives every span its index; the timing stays here, and
+   the plain first line covers browsers without mod(). */
+.intro-text .name > span {
+  animation-delay: calc(var(--i) * -1.14s), calc(var(--i) * -0.14s);
+  animation-delay:
+    calc(mod(var(--i), 7) * -1.14s + round(down, var(--i) / 7, 1) * -0.57s),
+    calc(var(--i) * -0.14s);
+}
+
+/* The colour each letter starts on, which is also the one it keeps if the
+   animation never runs. */
+.intro-text .name > span:nth-of-type(7n+1) { color: var(--name-1); }
+.intro-text .name > span:nth-of-type(7n+2) { color: var(--name-2); }
+.intro-text .name > span:nth-of-type(7n+3) { color: var(--name-3); }
+.intro-text .name > span:nth-of-type(7n+4) { color: var(--name-4); }
+.intro-text .name > span:nth-of-type(7n+5) { color: var(--name-5); }
+.intro-text .name > span:nth-of-type(7n+6) { color: var(--name-6); }
+.intro-text .name > span:nth-of-type(7n+7) { color: var(--name-7); }
 
 @keyframes name-color {
   0%   { color: var(--name-1); }

@@ -7,7 +7,7 @@
 <div class="print-portfolio">
   <section class="print-page print-cover">
     <h1>{{ site.author }}</h1>
-    <div class="print-bio">{{ site.intro | markdown | safe }}</div>
+    <div class="print-bio">{{ site.intro | markdown | letterName(site.author) | safe }}</div>
     <div class="print-contact">
       <a href="{{ site.url }}">{{ site.url | replace('https://', '') }}</a><br>
       <a href="mailto:{{ site.email }}">{{ site.email }}</a>

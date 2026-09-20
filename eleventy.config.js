@@ -141,6 +141,15 @@ export default function (eleventyConfig) {
   eleventyConfig.addGlobalData('buildYear', new Date().getFullYear());
   eleventyConfig.addFilter('isoDate', value => value && !Number.isNaN(new Date(value).getTime()) ? new Date(value).toISOString().slice(0, 10) : '');
   eleventyConfig.addFilter('markdown', renderMarkdown);
+  // The name carries a colour per character, which needs one element per
+  // character. Writing those spans by hand in site.json meant any rewording of
+  // the About text left the name flat, so the build letters it instead.
+  eleventyConfig.addFilter('letterName', (html, name) => {
+    let index = 0;
+    const lettered = [...name].map(character =>
+      character === ' ' ? ' ' : `<span style="--i:${index++}">${character}</span>`).join('');
+    return html.replace(name, `<span class="name">${lettered}</span>`);
+  });
   eleventyConfig.addFilter('stripHtml', stripHtml);
   eleventyConfig.addFilter('truncate', (text, max = 160) => text?.length > max ? text.slice(0, max) + '…' : text || '');
   eleventyConfig.addFilter('findFirstText', blocks => blocks?.find(block => block.type === 'text')?.content || '');
