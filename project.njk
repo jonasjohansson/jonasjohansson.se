@@ -28,7 +28,7 @@ eleventyComputed:
       {# print-together: tall images share one printed sheet instead of each
          being cropped to its own. Each keeps its aspect-ratio share of the
          width, and video is hidden there because it prints nothing. #}
-      <div class="media-row{% if block.printTogether %} print-together{% endif %}" style="--ar-sum: {{ block.arSum }}; --gutters: {{ block.gutters }}">
+      <div class="media-row{% if block.items.length > 2 %} media-row-keeps{% endif %}{% if block.printTogether %} print-together{% endif %}" style="--ar-sum: {{ block.arSum }}; --gutters: {{ block.gutters }}">
         {% for item in block.items %}
         <figure class="media-item{% if item.size %} size-{{ item.size }}{% endif %}{% if item.mask == 'botanical-circle' %} mask-botanical-circle{% endif %}{% if item.zoom %} media-zoom{% endif %}" style="--ar: {{ item.ar }}{% if item.zoom %}; --image-zoom: {{ item.zoom }}; --focal: {{ item.focal }}{% endif %}">
           {% if item.type == 'video' %}

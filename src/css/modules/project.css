@@ -406,6 +406,14 @@ html[data-theme="dark"] .text-block a {
     width: 100%;
   }
 
+  /* A row of three stays a row on a phone. Stacked, three uprights of one
+     subject run four screens deep and read as the same picture three times;
+     side by side they are one picture in three parts, which is what the author
+     composed. Pairs still stack, where half a phone is too little to see. */
+  .media-row-keeps { flex-direction: row; align-items: flex-start; gap: var(--gutter-pair); }
+  .media-row-keeps > .media-item,
+  .media-row-keeps > .media-item:not(.hero):not(:first-child) { flex: var(--ar) 1 0; width: auto; }
+
   [style*="--col-start"] {
     grid-column-start: 1;
   }

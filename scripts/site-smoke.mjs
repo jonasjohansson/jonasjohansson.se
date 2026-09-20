@@ -633,15 +633,12 @@ try {
       for (const [i, item] of geometry.items.entries()) {
         assert.ok(Math.abs(item.media.width - item.width) < 1, 'media fill each panel');
         assert.ok(Math.abs(item.media.width / item.media.height - item.ar) < 0.001, 'tall panels retain their uncropped proportions');
-        if (width > 768) {
-          assert.ok(Math.abs(item.y - geometry.items[0].y) < 1, 'all three panels share a row');
-          assert.ok(Math.abs(item.height - geometry.items[0].height) < 1, 'the image and video panels have equal heights');
-          if (i) assert.ok(Math.abs(item.x - geometry.items[i - 1].right - 16) < 1, 'no oversized gap between panels');
-        } else {
-          assert.equal(item.x, inset, 'mobile panels align with the group they sit in');
-          assert.ok(Math.abs(item.width - geometry.row.width) < 1, 'mobile panels use full width');
-          if (i) assert.ok(Math.abs(item.y - geometry.items[i - 1].bottom - 16) < 1, 'mobile panels have the normal gap');
-        }
+        // Three stay three at every width, a phone included: stacked, three
+        // uprights of one subject run several screens deep and read as the same
+        // picture three times over. A pair still stacks.
+        assert.ok(Math.abs(item.y - geometry.items[0].y) < 1, 'all three panels share a row');
+        assert.ok(Math.abs(item.height - geometry.items[0].height) < 1, 'the image and video panels have equal heights');
+        if (i) assert.ok(Math.abs(item.x - geometry.items[i - 1].right - 16) < 1, 'no oversized gap between panels');
       }
       assert.ok(geometry.after.y >= geometry.row.bottom, 'the following landscape starts after all three panels');
       if (width >= 1440) assert.ok(Math.abs(geometry.after.width - geometry.row.width) < 1, 'the following lone image keeps its full-width frame');
