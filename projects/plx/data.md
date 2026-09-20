@@ -22,10 +22,10 @@ blocks:
   - type: text
     fontSize: small
     content: >-
-      PLX has been going since 2006 and an association since 2014, working out of
-      Blekinge, Malmö and Stockholm, and organising festivals, exhibitions and
-      performances with an emphasis on site-specificity, experimentation and
-      sustainability. Since 2017 its centre has been PLX Tjärö, four days each
+      PLX has been going since 2006, an association since 2014, working out of
+      Blekinge, Malmö and Stockholm on festivals, exhibitions and performances
+      made for the place they happen in. Since 2017 its centre has been PLX
+      Tjärö, four days each
       August on a protected island in the archipelago: no cars, only boats,
       barefoot paths and cows. In 2025 that meant **six stages**, over **sixty
       music acts** and **thirty exhibiting artists**, a floating sauna and a
@@ -110,8 +110,9 @@ blocks:
     fontSize: small
     content: >-
       PLX **turned twenty** in 2026 and marked it with ODE JOY, two nights in
-      the old casino at Malmö Konstmuseum in Kungsparken. I built the site — a
-      vine that climbs a scaffold while you read the page — and ran the visuals
+      the old casino at Malmö Konstmuseum in Kungsparken. A large scaffolding
+      installation stood in the main room. I built the site as its double: a
+      vine climbing a scaffold while you read the page. I ran the visuals
       through both nights.
   - type: image
     src: ode-tower-1.jpg
@@ -136,11 +137,11 @@ blocks:
   - type: text
     fontSize: small
     content: >-
-      The tower has four floors and the score climbs with you: strings on the
-      ground, a hihat on the second, a beat and a whistle on the third,
-      shakuhachi and steel pan at the summit. Six stems by Anton Ingvarsson,
-      crossfading by camera height, and the tower loops, so the climb has no
-      top.
+      The tower has four floors because the casino has four main areas, and
+      the score climbs with you: strings on the ground, a hihat on the second,
+      a beat and a whistle on the third, shakuhachi and steel pan at the
+      summit. Six stems by Anton Ingvarsson, crossfading by camera height, and
+      the tower loops, so the climb has no top.
   - type: image
     src: ode-stage.jpg
     alt: "Beams of light rake through haze across a draped backdrop, a figure silhouetted at the microphone in front of it."
