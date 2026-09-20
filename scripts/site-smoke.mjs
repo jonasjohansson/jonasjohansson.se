@@ -426,33 +426,24 @@ try {
       assert.ok((await page.locator('#projects').boundingBox()).y < wall.y);
       assert.equal(await page.evaluate(() => document.documentElement.scrollWidth > innerWidth), false);
       if (options.hasTouch) {
-        // Phones list the same cards under the project, below its content.
-        const cards = await page.locator('#strips .strip:not([hidden])').evaluateAll(strips => strips.map(strip => {
+        // A phone gets the same sliver wall here as on the landing: a screen of
+        // them rather than a grid of cards, opened by dragging a thumb along.
+        const slivers = await page.locator('#strips .strip:not([hidden])').evaluateAll(strips => strips.map(strip => {
           const rect = strip.getBoundingClientRect();
-          const picture = strip.querySelector('.strip-picture').getBoundingClientRect();
-          const title = strip.querySelector('.strip-title');
           const project = window.__PROJECTS_DATA__.find(entry => entry.slug === strip.dataset.project);
-          return { slug: strip.dataset.project, width: rect.width, x: rect.x, top: rect.top, bottom: rect.bottom,
-            ratio: picture.width / picture.height, named: title.textContent.trim() === project.title,
-            under: title.getBoundingClientRect().top >= picture.bottom - 1 };
+          return { slug: strip.dataset.project, width: rect.width, height: rect.height,
+            named: strip.getAttribute('aria-label') === project.title, visibleText: strip.innerText.trim() };
         }));
-        assert.ok(cards.length > 1, 'every other project has a card');
-        assert.ok(!cards.some(card => card.slug === 'jagad'), 'the open project has no card');
-        // Two columns, so a card is half the wall less the gap between them.
-        const column = (wall.width - 16) / 2;
-        assert.ok(cards.every(card => Math.abs(card.width - column) < 2), `cards take half the width each (${Math.round(cards[0].width)} of ${Math.round(wall.width)})`);
-        assert.equal(new Set(cards.map(card => Math.round(card.x))).size, 2, 'in two columns');
-        assert.ok(cards.every(card => Math.abs(card.ratio - 1.5) < 0.02 && card.named && card.under), 'each card names its project underneath the image');
-        for (let index = 2; index < cards.length; index++) {
-          assert.ok(cards[index].top >= cards[index - 2].bottom - 1, 'the rows stack down the page');
-        }
+        assert.ok(slivers.length > 1, 'every other project is a sliver');
+        assert.ok(!slivers.some(sliver => sliver.slug === 'jagad'), 'the open project has none');
+        assert.ok(slivers.every(sliver => sliver.width >= 8 && sliver.height === wall.height && sliver.named && sliver.visibleText === ''),
+          `every sliver is thin, full height and named (${Math.round(slivers[0].width)} of ${Math.round(wall.width)})`);
+        assert.equal(await page.locator('#strips').evaluate(strips => strips.scrollWidth <= strips.clientWidth + 1), true,
+          'and they all fit without scrolling sideways');
         await checkFooter(page);
-        await page.locator('#strips .strip:not([hidden])').first().scrollIntoViewIfNeeded();
-        await page.waitForFunction(() => {
-          const image = document.querySelector('#strips .strip:not([hidden]) img');
-          return image?.complete && image.naturalWidth > 0;
-        }, null, { timeout: 5000 }).catch(() => {});
-        await page.screenshot({ path: `${output}/${name.replaceAll(' ', '-')}-project-cards.png` });
+        await page.locator('#strips .strip:not([hidden]) .strip-image').evaluateAll(images =>
+          Promise.all(images.slice(0, 4).map(image => image.decode().catch(() => {}))));
+        await page.screenshot({ path: `${output}/${name.replaceAll(' ', '-')}-project-wall.png` });
         return;
       }
       assert.equal(wall.x, (await page.locator('.hero').boundingBox()).x, 'strips share the project media gutter');

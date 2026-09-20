@@ -160,8 +160,14 @@ export async function checkStripAudio({ check, visit, desktop, mobile }) {
     await page.waitForFunction(() => window.__stripSound.active === 0);
     await page.locator('#collection').evaluate(collection => collection.scrollIntoView({ block: 'start' }));
     const before = await page.evaluate(() => window.__stripSound.notes.length);
-    await page.locator('#strips .strip:not([hidden])').first().tap();
+    // A project's wall is slivers too, so it answers a thumb the same way: the
+    // first tap opens and names, the second enters.
+    const onward = page.locator('#strips .strip:not([hidden])').first();
+    await onward.tap();
     await page.waitForFunction(count => window.__stripSound.notes.length > count, before);
+    await page.waitForFunction(() => !!document.querySelector('.strip.is-active'));
+    assert.equal(await page.evaluate(() => document.documentElement.dataset.project), 'klattermusen', 'the first tap opens rather than leaves');
+    await onward.tap();
     await page.waitForFunction(() => document.documentElement.dataset.project !== 'klattermusen');
   });
 
