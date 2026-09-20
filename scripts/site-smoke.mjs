@@ -60,11 +60,10 @@ async function settleOpenStrip(page) {
 }
 
 async function openStrip(page, strip, via = 'tap') {
-  // The landing's wall on a phone is slivers: the first press opens one and
-  // names it, the second enters. A project page's grid of cards opens on one.
-  // This holds however the press is delivered — tap, click or a dispatched
-  // click — because the wall reads the device, not the event.
-  const twoStep = await page.evaluate(() => matchMedia('(hover: none)').matches && document.body.dataset.route === 'home');
+  // Either wall on a phone is slivers: the first press opens one and names it,
+  // the second enters. This holds however the press is delivered, by tap, click
+  // or a dispatched click, because the wall reads the device, not the event.
+  const twoStep = await page.evaluate(() => matchMedia('(hover: none)').matches);
   const press = () => (via === 'dispatch' ? strip.evaluate(link => link.click()) : via === 'click' ? strip.click() : strip.tap());
   await press();
   if (!twoStep) return;
@@ -76,7 +75,6 @@ async function waitForHomeWall(page) {
   await page.waitForFunction(() => {
     if (document.body.dataset.route !== 'home' || document.body.dataset.homeView !== 'projects') return false;
     const footer = document.getElementById('intro-links');
-    // A project page's phone layout shows nothing under its cards.
     if (getComputedStyle(footer).display === 'none') return true;
     // About shares the screen with the wall now, so on a short viewport the
     // landing runs past one screenful and the categories sit at the foot of the
@@ -95,15 +93,14 @@ async function checkFooter(page) {
   const home = await page.locator('body').getAttribute('data-route') === 'home';
   const contacts = page.locator('#intro-links .header-contacts');
   const contactBox = await contacts.boundingBox();
-  // A phone carries no chrome at all beyond the caption that names the strip
-  // a tap has opened, and that only on the landing, where the wall is slivers.
+  // A phone carries no chrome at all beyond the band under the wall: the
+  // caption that names whatever a thumb has opened, on either route, and the
+  // filter on the landing alone.
   if (touch) {
-    // The landing keeps the filter under its wall; a project page's cards keep
-    // nothing under them. Neither asks a phone to type, and neither carries links.
     assert.equal(await page.locator('#project-filters').isVisible(), home, 'the filter is under the landing wall and nowhere else on a phone');
     assert.equal(await page.locator('#project-search').isVisible(), false, 'phones do not ask for typing');
     assert.equal(await contacts.count() > 0 && await contacts.isVisible(), false, 'phones carry no links');
-    if (!home) assert.equal(await page.locator('#intro-links').isVisible(), false, 'a project page keeps nothing under its cards');
+    assert.equal(await page.locator('#intro-links').isVisible(), true, 'both walls keep the band that names an open strip');
     return;
   }
   const footer = await page.locator('#intro-links').boundingBox();
@@ -441,8 +438,6 @@ try {
         assert.equal(await page.locator('#strips').evaluate(strips => strips.scrollWidth <= strips.clientWidth + 1), true,
           'and they all fit without scrolling sideways');
         await checkFooter(page);
-        await page.locator('#strips .strip:not([hidden]) .strip-image').evaluateAll(images =>
-          Promise.all(images.slice(0, 4).map(image => image.decode().catch(() => {}))));
         await page.screenshot({ path: `${output}/${name.replaceAll(' ', '-')}-project-wall.png` });
         return;
       }

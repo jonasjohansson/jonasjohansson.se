@@ -80,9 +80,9 @@ blocks:
     size: half-left
     alt: "A tall candle burns on the rock beside a handwritten note, with more candles glowing behind it."
   - type: image
-    src: archipelago.jpg
+    src: lanterns.jpg
     size: half-right
-    alt: "Someone sits alone on the shoreline rock looking out at the low islands of the archipelago."
+    alt: "A cluster of paper lanterns hangs under a wide red disc in the branches of an oak, the canopy washed red, two people sitting in the light below."
   - type: text
     fontSize: small
     content: >-
