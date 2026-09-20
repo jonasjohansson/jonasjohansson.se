@@ -89,10 +89,6 @@ export function initializeStripAudio() {
   addEventListener('pagehide', stopNotes);
 }
 
-// The accordion sounds through the same context, so one unlock serves both
-// instruments and they never open a second output.
-export const getAudioContext = () => getAudio();
-
 export function bindStripAudio(container, signal) {
   let lastStrip;
   let lastX, lastY;

@@ -181,99 +181,22 @@ export async function checkStripAudio({ check, visit, desktop, mobile }) {
     await page.waitForSelector('#projects #kagora');
   });
 
-  await check('squeezing the window plays an accordion, not the xylophone', desktop, async page => {
+  // Resizing the window used to play the wall; that instrument is gone, so a
+  // resize on any device now sounds nothing at all.
+  await check('resizing the window sounds nothing', desktop, async page => {
     await observeAudio(page);
     await visit(page);
-    const sound = () => page.evaluate(() => ({ notes: window.__stripSound.notes.slice(), active: window.__stripSound.active }));
-    // Audio unlocks on a real gesture in the page; dragging a window edge is
-    // not one, so a resize on a cold load is silent by design.
+    // Unlock first, so silence here is the absence of the instrument and not a
+    // missing audio context.
     await page.mouse.click(8, 8);
     await page.waitForFunction(() => window.__stripSound.contexts[0]?.state === 'running');
-    assert.deepEqual((await sound()).notes, [], 'unlocking still plays nothing');
     const strip = await page.evaluate(() => innerWidth / document.querySelectorAll('#strips .strip:not([hidden])').length);
     for (let step = 1; step <= 4; step++) {
       await page.setViewportSize({ width: Math.round(1440 - strip * step), height: 900 });
       await page.waitForTimeout(60);
     }
-    const dragging = await sound();
-    // A free reed is a bank of sawtooths a few cents apart, three to a note,
-    // so one squeeze opens a chord rather than striking a single bar.
-    assert.ok(dragging.notes.length >= 9, `the bellows open a bank of reeds (${dragging.notes.length} oscillators)`);
-    assert.ok(dragging.active >= 9, 'the reeds sustain while the window keeps moving');
-    assert.ok(new Set(dragging.notes.map(frequency => +frequency.toFixed(2))).size >= 3, 'the chord carries a root, a fifth and an octave');
-    const xylophone = [659.25, 523.25, 783.99, 392];
-    assert.ok(!dragging.notes.some(frequency => xylophone.some(note => Math.abs(frequency - note) < 0.01)),
-      'the accordion is its own voice, not the strips melody');
-    // Bellows sustain, so a drag that carries on moves the chord rather than
-    // striking again: the reeds only start afresh once they have closed.
-    await page.waitForTimeout(800);
-    assert.equal((await sound()).active, 0, 'the bellows release once the window stops moving');
-    const rested = (await sound()).notes.length;
-    // An accordion sounds both ways: opening the window plays as well.
-    await page.setViewportSize({ width: 1440, height: 900 });
-    await page.waitForTimeout(80);
-    assert.ok((await sound()).notes.length > rested, 'opening the window plays too, not only closing it');
-    await page.waitForTimeout(800);
-    assert.equal((await sound()).active, 0, 'and the bellows close again');
-  });
-
-  await check('the bellows swell rather than thump', desktop, async page => {
-    await observeAudio(page);
-    await visit(page);
-    await page.mouse.click(8, 8);
-    await page.waitForFunction(() => window.__stripSound.contexts[0]?.state === 'running');
-    const peak = await page.evaluate(async () => {
-      const analyser = window.__stripSound.analyser;
-      const samples = new Float32Array(analyser.fftSize);
-      let max = 0;
-      dispatchEvent(new Event('resize'));
-      const until = performance.now() + 260;
-      while (performance.now() < until) {
-        analyser.getFloatTimeDomainData(samples);
-        for (const value of samples) max = Math.max(max, Math.abs(value));
-        await new Promise(resolve => requestAnimationFrame(resolve));
-      }
-      return max;
-    });
-    // The gain was scheduled to zero at the same instant the first squeeze
-    // cancelled everything scheduled there, so the ramp started from the node's
-    // default of one: nine reeds at full scale, a thump at the top of a drag.
-    assert.ok(peak > 0, 'the reeds sound when the window moves');
-    assert.ok(peak < 0.5, `they open at playing level rather than full scale (peak ${peak.toFixed(2)})`);
-  });
-
-  // The wall under a project is there to leave by, not to play: squeezing the
-  // window while reading one should not start an instrument.
-  await check('a project page stays quiet when the window is squeezed', desktop, async page => {
-    await observeAudio(page);
-    await visit(page, '/jagad/');
-    await page.mouse.click(8, 8);
-    await page.waitForFunction(() => window.__stripSound.contexts[0]?.state === 'running');
-    assert.equal(new URL(page.url()).pathname.includes('jagad'), true, 'unlocking did not navigate away');
-    const strip = await page.evaluate(() => innerWidth / document.querySelectorAll('#strips .strip:not([hidden])').length);
-    for (let step = 1; step <= 4; step++) {
-      await page.setViewportSize({ width: Math.round(1440 - strip * step), height: 900 });
-      await page.waitForTimeout(60);
-    }
-    await page.waitForTimeout(200);
-    assert.equal(await page.evaluate(() => window.__stripSound.notes.length), 0, 'the wall under a project is read, not played');
-    // And the landing still plays: the guard is the route, not a broken bind.
-    await visit(page);
-    for (let step = 1; step <= 4; step++) {
-      await page.setViewportSize({ width: Math.round(1440 - strip * step), height: 900 });
-      await page.waitForTimeout(60);
-    }
-    assert.ok(await page.evaluate(() => window.__stripSound.notes.length) > 0, 'the landing still plays');
-  });
-
-  await check('rotating a phone does not sound the strips', mobile, async page => {
-    await observeAudio(page);
-    await visit(page);
-    // Unlock first, so silence here is the guard working and not a missing context.
-    await page.mouse.click(8, 8);
-    const size = page.viewportSize();
-    await page.setViewportSize({ width: size.height, height: size.width });
-    await page.waitForTimeout(200);
-    assert.equal(await page.evaluate(() => window.__stripSound.notes.length), 0, 'a rotation is not a squeeze');
+    await page.waitForTimeout(250);
+    assert.equal(await page.evaluate(() => window.__stripSound.notes.length), 0, 'a squeeze plays nothing');
+    assert.equal(await page.evaluate(() => window.__stripSound.active), 0, 'and leaves nothing sounding');
   });
 }
