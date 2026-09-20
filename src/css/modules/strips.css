@@ -77,6 +77,13 @@
   .enhanced body[data-route="home"] .strip.is-active { flex-grow: 12; }
   .enhanced body[data-route="home"] .intro-links { display: flex; height: auto; padding-top: var(--chrome-pad); }
   .enhanced body[data-route="home"] .strip-caption { display: block; max-width: 100%; }
+  /* The filter comes with it: the caption names what a thumb has opened, the
+     dropdown narrows what there is to open. The search field stays off — a
+     phone should not have to type to look at pictures. */
+  /* The band already pads above its contents, so the filter does not pad again:
+     the twelve pixels it brought were enough to push the landing three past a
+     single screen, and the landing is meant to be exactly one. */
+  .enhanced body[data-route="home"] .project-filters { display: flex; margin-left: auto; padding-top: 0; }
 
   /* Project pages: two columns of cards, each a photograph with its name under it. */
   .enhanced body:not([data-route="home"]) #strips {

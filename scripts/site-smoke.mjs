@@ -98,7 +98,9 @@ async function checkFooter(page) {
   // A phone carries no chrome at all beyond the caption that names the strip
   // a tap has opened, and that only on the landing, where the wall is slivers.
   if (touch) {
-    assert.equal(await page.locator('#project-filters').isVisible(), false, 'phones show no categories');
+    // The landing keeps the filter under its wall; a project page's cards keep
+    // nothing under them. Neither asks a phone to type, and neither carries links.
+    assert.equal(await page.locator('#project-filters').isVisible(), home, 'the filter is under the landing wall and nowhere else on a phone');
     assert.equal(await page.locator('#project-search').isVisible(), false, 'phones do not ask for typing');
     assert.equal(await contacts.count() > 0 && await contacts.isVisible(), false, 'phones carry no links');
     if (!home) assert.equal(await page.locator('#intro-links').isVisible(), false, 'a project page keeps nothing under its cards');
@@ -704,10 +706,13 @@ try {
 
   for (const [name, options] of [['desktop', desktop], ['mobile', mobile]]) {
     await check(`${name} picks a category and preserves the selection after Back`, options, async page => {
-      // Phones list cards with no categories and no year filter.
+      // A phone carries the filter under the landing wall and nothing under a
+      // project's cards; what the filter does is exercised on a pointer device.
       if (options.hasTouch) {
         await visit(page);
-        assert.equal(await page.locator('#project-filters').isVisible(), false, 'phones show no categories');
+        assert.equal(await page.locator('#project-filter').isVisible(), true, 'the landing wall carries the filter');
+        await visit(page, `/${await page.evaluate(() => window.__PROJECTS_DATA__[0].slug)}/`);
+        assert.equal(await page.locator('#project-filters').isVisible(), false, 'a project page on a phone carries none');
         return;
       }
       await visit(page);
@@ -793,10 +798,13 @@ try {
 
   for (const [name, options] of [['desktop', desktop], ['mobile', mobile]]) {
     await check(`${name} year and categories reset each other on both strip walls`, options, async page => {
-      // Phones list cards with no categories and no year filter.
+      // A phone carries the filter under the landing wall and nothing under a
+      // project's cards; what the filter does is exercised on a pointer device.
       if (options.hasTouch) {
         await visit(page);
-        assert.equal(await page.locator('#project-filters').isVisible(), false, 'phones show no categories');
+        assert.equal(await page.locator('#project-filter').isVisible(), true, 'the landing wall carries the filter');
+        await visit(page, `/${await page.evaluate(() => window.__PROJECTS_DATA__[0].slug)}/`);
+        assert.equal(await page.locator('#project-filters').isVisible(), false, 'a project page on a phone carries none');
         return;
       }
       const datedProjects = readProjects().filter(project => project.type === 'work' && !project.unlisted);
@@ -865,10 +873,13 @@ try {
 
   for (const [name, options] of [['desktop', desktop], ['mobile', mobile]]) {
     await check(`${name} filters a project wall with a category unique to the open project`, options, async page => {
-      // Phones list cards with no categories and no year filter.
+      // A phone carries the filter under the landing wall and nothing under a
+      // project's cards; what the filter does is exercised on a pointer device.
       if (options.hasTouch) {
         await visit(page);
-        assert.equal(await page.locator('#project-filters').isVisible(), false, 'phones show no categories');
+        assert.equal(await page.locator('#project-filter').isVisible(), true, 'the landing wall carries the filter');
+        await visit(page, `/${await page.evaluate(() => window.__PROJECTS_DATA__[0].slug)}/`);
+        assert.equal(await page.locator('#project-filters').isVisible(), false, 'a project page on a phone carries none');
         return;
       }
       // Keep the empty-result guard covered as the real collection grows.
@@ -929,10 +940,13 @@ try {
 
   for (const [name, options] of [['desktop', desktop], ['mobile', mobile]]) {
     await check(`${name} leaving a project for the landing page resets the filters`, options, async page => {
-      // Phones list cards with no categories and no year filter.
+      // A phone carries the filter under the landing wall and nothing under a
+      // project's cards; what the filter does is exercised on a pointer device.
       if (options.hasTouch) {
         await visit(page);
-        assert.equal(await page.locator('#project-filters').isVisible(), false, 'phones show no categories');
+        assert.equal(await page.locator('#project-filter').isVisible(), true, 'the landing wall carries the filter');
+        await visit(page, `/${await page.evaluate(() => window.__PROJECTS_DATA__[0].slug)}/`);
+        assert.equal(await page.locator('#project-filters').isVisible(), false, 'a project page on a phone carries none');
         return;
       }
       await visit(page);
