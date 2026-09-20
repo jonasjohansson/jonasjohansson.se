@@ -495,12 +495,20 @@ try {
           return { hero: { x: hero.x, width: hero.width }, images: images.map(image => { const r = image.getBoundingClientRect(); return { x: r.x, width: r.width }; }) };
         });
         assert.ok(geometry.images.length > 0, `${slug} has gallery media to check`);
-        // Phones keep the gallery inside the page gutter while the hero runs edge to edge.
-        const inset = options.hasTouch ? 24 : geometry.hero.x;
-        const width = options.hasTouch ? options.viewport.width - 48 : geometry.hero.width;
+        // The gallery shares the hero's edges on every screen. On a phone those
+        // edges are the screen's: the pictures run edge to edge and the writing
+        // alone keeps the page gutter.
+        if (options.hasTouch) {
+          assert.equal(geometry.hero.x, 0, `${slug} hero runs edge to edge on a phone`);
+          assert.equal(geometry.hero.width, options.viewport.width, `${slug} hero uses the whole screen`);
+        }
         for (const image of geometry.images) {
-          assert.ok(Math.abs(image.x - inset) < 1, `${slug} gallery starts at ${options.hasTouch ? 'the page gutter' : "the hero's left edge"}`);
-          assert.ok(Math.abs(image.width - width) < 1, `${slug} gallery uses ${options.hasTouch ? 'the content width' : "the hero's width"}`);
+          assert.ok(Math.abs(image.x - geometry.hero.x) < 1, `${slug} gallery starts at the hero's left edge`);
+          assert.ok(Math.abs(image.width - geometry.hero.width) < 1, `${slug} gallery uses the hero's width`);
+        }
+        if (options.hasTouch) {
+          const text = await page.locator('.text-block').first().boundingBox();
+          assert.ok(Math.abs(text.x - 24) < 1, `${slug} keeps the writing inside the page gutter`);
         }
       }
     });
@@ -594,8 +602,10 @@ try {
         };
       });
       assert.equal(geometry.overflow, false);
-      assert.equal(geometry.row.x, 24);
-      assert.ok(Math.abs(geometry.row.width - width + 48) < 1, 'the group uses the page width');
+      // A phone runs its pictures edge to edge; everything else keeps the gutter.
+      const inset = width === 390 ? 0 : 24;
+      assert.equal(geometry.row.x, inset);
+      assert.ok(Math.abs(geometry.row.width - width + 2 * inset) < 1, 'the group uses the page width');
       for (const [i, item] of geometry.items.entries()) {
         assert.ok(Math.abs(item.media.width - item.width) < 1, 'media fill each panel');
         assert.ok(Math.abs(item.media.width / item.media.height - item.ar) < 0.001, 'tall panels retain their uncropped proportions');
@@ -604,7 +614,7 @@ try {
           assert.ok(Math.abs(item.height - geometry.items[0].height) < 1, 'the image and video panels have equal heights');
           if (i) assert.ok(Math.abs(item.x - geometry.items[i - 1].right - 16) < 1, 'no oversized gap between panels');
         } else {
-          assert.equal(item.x, 24, 'mobile panels align with the page');
+          assert.equal(item.x, inset, 'mobile panels align with the group they sit in');
           assert.ok(Math.abs(item.width - geometry.row.width) < 1, 'mobile panels use full width');
           if (i) assert.ok(Math.abs(item.y - geometry.items[i - 1].bottom - 16) < 1, 'mobile panels have the normal gap');
         }

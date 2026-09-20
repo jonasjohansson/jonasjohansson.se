@@ -486,10 +486,24 @@ html[data-theme="dark"] .text-block a {
   }
 }
 
-/* Phones: the hero runs edge to edge from the top of the screen, without the page gutter. */
+/* Phones: the pictures run edge to edge, the hero from the top of the screen.
+   The writing keeps the page gutter, so the images are the only thing touching
+   the edges rather than one of them doing it alone. */
 @media (hover: none) {
   body[data-route="project"] #content { padding-top: 0; }
-  .project-grid > .media-item.hero { width: calc(100% + 2 * var(--page-gutter)); margin-inline: calc(-1 * var(--page-gutter)); border-radius: 0; }
+  /* Each selector mirrors the one that set this item's gutter above, so the
+     later source order decides rather than a specificity a shorter selector
+     would lose: a plain `.project-grid > .media-item` is outweighed by the
+     `:not(:first-child):not(.hero)` rule and leaves the gutter in place. */
+  .project-grid > .media-item:first-child,
+  .project-grid > .media-item.hero,
+  .project-grid > .media-item:not(:first-child):not(.hero),
+  .project-grid > .media-item:not(:first-child):not(.hero):not(.desktop-pair),
+  .project-grid > .media-row {
+    width: calc(100% + 2 * var(--page-gutter));
+    margin-inline: calc(-1 * var(--page-gutter));
+    border-radius: 0;
+  }
 }
 @media (hover: none) and (max-width: 768px) {
   .project-grid > .media-item.hero { height: min(85svh, calc(100vw / var(--mobile-ar, var(--ar)))); }
