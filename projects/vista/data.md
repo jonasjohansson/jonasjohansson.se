@@ -3,7 +3,6 @@ title: Vista
 color: "#8401ff"
 date: '2018-01-01'
 tags:
-  - installation
   - light
 blocks:
   - type: image

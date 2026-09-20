@@ -3,7 +3,6 @@ title: Harpa
 color: "#ff5c1a"
 date: '2017-01-01'
 tags:
-  - installation
   - light
 blocks:
   - type: image

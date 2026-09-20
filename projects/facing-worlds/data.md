@@ -2,7 +2,6 @@
 title: Facing Worlds
 date: "2025-09-01"
 tags:
-  - installation
   - mixed reality
 blocks:
   - type: image

@@ -1,6 +1,9 @@
 .collection { scroll-margin-top: 4rem; }
 .collection-header { display: flex; align-items: center; column-gap: var(--header-gap); flex: none; height: var(--home-header-height); font-size: var(--font-size-ui); }
-.collection-home-link { text-transform: uppercase; letter-spacing: var(--letter-spacing-caps); text-decoration: none; white-space: nowrap; }
+/* The project title at the top of the page is the way home, so the wall needs
+   no name of its own. Phones hide that title, and keep this instead. */
+.collection-home-link { display: none; text-transform: uppercase; letter-spacing: var(--letter-spacing-caps); text-decoration: none; white-space: nowrap; }
+@media (hover: none) { .collection-home-link { display: flex; } }
 body[data-route="home"] .collection-header { display: none; }
 #strips { display: flex; flex-direction: column; gap: 0; overflow: hidden; position: relative; touch-action: pan-y; }
 .strip { display: block; flex: none; width: 100%; min-width: 0; color: inherit; text-decoration: none; height: var(--strip-band-height); position: relative; overflow: hidden; padding: 0; border: 0; background: var(--surface-tint); }
@@ -35,10 +38,17 @@ body[data-route="home"] .collection-header { display: none; }
 .enhanced body[data-route="home"] #strips { height: auto; }
 .enhanced body[data-route="home"] .strip { height: auto; align-self: stretch; }
 .enhanced .home-header { position: relative; z-index: var(--z-filter); padding: var(--page-gutter) var(--page-gutter) 0; background: none; }
+/* The links are the row's only child on a pointer device, so they hold the
+   wall's right corner rather than being stranded at its left one. */
 .enhanced .collection-header { position: absolute; top: var(--page-gutter); left: 0; right: 0; z-index: var(--z-filter); justify-content: space-between; align-items: flex-start; column-gap: var(--spacing-md); }
-.enhanced .intro-links { position: relative; z-index: var(--z-filter); height: calc(var(--footer-height) + var(--page-gutter)); padding-bottom: var(--page-gutter); margin-top: calc(-1 * (var(--footer-height) + var(--page-gutter))); }
-/* On the landing the categories sit under the wall instead of over its foot. */
-.enhanced body[data-route="home"] .intro-links { margin-top: 0; }
+.enhanced .header-contacts { margin-left: auto; }
+/* The caption and the categories have a band of their own under the wall on
+   every route, so nothing sits on the work. A project wall is a screenful, so
+   it gives up the band's height from its own padding; the landing's wall
+   flexes and needs no bottom padding at all. */
+.enhanced .intro-links { position: relative; z-index: var(--z-filter); height: calc(var(--footer-height) + var(--page-gutter)); padding-bottom: var(--page-gutter); margin-top: 0; }
+.enhanced #collection { height: calc(100dvh - var(--footer-height) - var(--page-gutter)); padding-bottom: 0; }
+.enhanced body[data-route="home"] #collection { padding-bottom: 0; }
 .enhanced #strips { flex: 1; flex-direction: row; height: 100%; min-height: 0; overflow-x: auto; scrollbar-width: none; }
 .enhanced #strips::-webkit-scrollbar { display: none; }
 .enhanced .strip { flex: 1 1 0; width: auto; height: 100%; min-width: 1.125rem; min-height: 0; transition: flex-grow var(--transition-fast); }

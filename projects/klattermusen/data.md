@@ -2,7 +2,6 @@
 title: Klättermusen
 date: '2026-08-14'
 tags:
-  - installation
   - design
 blocks:
   - type: image

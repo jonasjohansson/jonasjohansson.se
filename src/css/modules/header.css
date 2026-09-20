@@ -48,8 +48,8 @@
 .header-contacts { padding-top: 0; padding-right: 0; }
 .project-filters { padding-bottom: 0; padding-right: 0; }
 .strip-caption { display: block; flex: 0 1 auto; min-width: 0; max-width: 45%; margin: 0 auto 0 0; padding-bottom: 0; padding-left: 0; padding-right: var(--spacing-md); text-transform: uppercase; letter-spacing: var(--letter-spacing-caps); white-space: nowrap; overflow: hidden; text-overflow: ellipsis; }
-.collection-home-link { flex: none; }
 .home-header a { display: inline-block; padding: 0; text-decoration: none; }
+.collection-home-link { flex: none; }
 .header-contacts { flex: 0 1 auto; min-width: 0; gap: var(--icon-gap); overflow-x: auto; scrollbar-width: none; text-transform: none; letter-spacing: 0; }
 .header-contacts::-webkit-scrollbar { display: none; }
 .header-contacts a, .header-contacts button { display: inline-flex; padding: 0; border: 0; background: none; color: inherit; font: inherit; letter-spacing: inherit; text-transform: inherit; text-decoration: none; white-space: nowrap; cursor: pointer; }

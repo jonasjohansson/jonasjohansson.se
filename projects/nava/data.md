@@ -2,7 +2,6 @@
 title: NAVA
 date: "2016-01-01"
 tags:
-  - installation
   - community
 blocks:
   - type: image

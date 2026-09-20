@@ -3,7 +3,6 @@ title: Tiny/Massive
 color: "#00338e"
 date: '2019-01-01'
 tags:
-  - installation
   - light
   - community
 blocks:

@@ -81,11 +81,9 @@ async function checkFooter(page) {
   const wall = await page.locator('#strips').boundingBox();
   const touch = await page.evaluate(() => matchMedia('(hover: none)').matches);
   const home = await page.locator('body').getAttribute('data-route') === 'home';
-  if (touch) assert.ok(Math.abs(footer.y - wall.y - wall.height) < 1, 'on phones the categories sit directly below the strips');
-  // The landing gives the categories their own band under the wall; a project
-  // page still floats them over its foot.
-  else if (home) assert.ok(footer.y >= wall.y + wall.height - 1, 'the categories sit below the strips');
-  else assert.ok(footer.y < wall.y + wall.height && footer.y + footer.height >= wall.y + wall.height - 1, 'the categories float over the foot of the strips');
+  // Both walls give the caption and the categories a band of their own under
+  // the work, with the same gap above them.
+  assert.ok(footer.y >= wall.y + wall.height - 1, 'the categories sit below the strips');
   assert.ok(Math.abs(footer.y + footer.height - page.viewportSize().height) < 1, 'footer fits within the strip viewport');
   const header = page.locator(home ? '#home-header' : '#collection-header');
   const contacts = header.locator('.header-contacts');
@@ -105,7 +103,7 @@ async function checkFooter(page) {
     return checkFilterBounds(page);
   }
   const contactBox = await contacts.boundingBox();
-  assert.deepEqual((await contacts.locator('a').allTextContents()).map(text => text.trim()), ['Instagram', 'CV', 'Email'], 'contact links stay concise');
+  assert.deepEqual((await contacts.locator('a').allTextContents()).map(text => text.trim()), ['CV', 'Email'], 'contact links stay concise');
   assert.equal(await contacts.locator('svg').count(), 0, 'contact links are plain text');
   const printButton = contacts.locator('button[data-action="print"]');
   assert.equal(await printButton.count(), 1, 'a print button sits with the contacts');
@@ -117,18 +115,14 @@ async function checkFooter(page) {
   // failed this at random, with the header looking right in the screenshot.
   assert.ok(contactBox.y >= contactRow.y - 1 && contactBox.y + contactBox.height <= contactRow.y + contactRow.height + 1,
     `contacts fit in the row above the strips (contacts ${JSON.stringify(contactBox)} vs row ${JSON.stringify(contactRow)})`);
-  // A project wall keeps its name as the way home, so it has a block sitting
-  // beside the contacts.
-  const name = await header.locator('.collection-home-link').boundingBox();
-  assert.ok(name.x + name.width <= contactBox.x || name.y + name.height <= contactBox.y, 'contact links do not overlap the name (beside it, or on a second row on narrow screens)');
-  assert.equal(name.x, wall.x, 'the name block sits flush with the wall’s corner');
-  if (touch) assert.ok(Math.abs(contactRow.y + contactRow.height - wall.y) < 1, 'on phones the header sits directly above the strips');
-  else assert.ok(contactRow.y <= wall.y + 1 && contactRow.y + contactRow.height > wall.y, 'the header floats over the top of the strips');
-  if (touch) assert.equal(await page.locator('#header').isVisible(), false, 'phones show no project title');
-  else {
-    const title = await page.locator('#header-toggle').boundingBox();
-    assert.ok(Math.abs(title.x + title.width / 2 - page.viewportSize().width / 2) < 1, 'project title remains centered');
-  }
+  // The project title at the top of the page is the way home, so the wall
+  // carries no name and the links hold its right corner alone.
+  assert.equal(await header.locator('.collection-home-link').isVisible(), false, 'the wall above a project carries no name');
+  assert.ok(Math.abs(contactBox.x + contactBox.width - wall.x - wall.width) < 1, 'the contacts sit flush with the wall’s right corner');
+  assert.ok(contactRow.y <= wall.y + 1 && contactRow.y + contactRow.height > wall.y, 'the header floats over the top of the strips');
+  const title = await page.locator('#header-toggle').boundingBox();
+  assert.ok(Math.abs(title.x + title.width / 2 - page.viewportSize().width / 2) < 1, 'project title remains centered');
+  assert.equal(await page.locator('#header-toggle').getAttribute('href'), `${prefix}/`, 'the project title leads home');
   assert.equal(await page.locator('#header .header-contacts').count(), 0, 'project hero header contains only the title');
   await contacts.evaluate(nav => { nav.scrollLeft = nav.scrollWidth; });
   const email = await contacts.locator('a[href^="mailto:"]').boundingBox();
@@ -417,7 +411,13 @@ try {
         return;
       }
       assert.equal(wall.x, (await page.locator('.hero').boundingBox()).x, 'strips share the project media gutter');
-      assert.equal(wall.height, options.viewport.height - 48, 'the wall keeps the page gutter above and below');
+      // A project wall is one screen: a gutter above it, then the caption and
+      // category band below, with the work between them and nothing on it.
+      const band = (await page.locator('#intro-links').boundingBox()).height;
+      // Measured against the section, since the wall sits far down the page.
+      const gutter = wall.y - (await page.locator('#collection').boundingBox()).y;
+      assert.ok(Math.abs(gutter - 24) < 1, `the wall keeps the page gutter above it (${gutter})`);
+      assert.equal(wall.height, options.viewport.height - 24 - band, 'the wall gives the band below it its full height');
       const rects = await page.locator('.strip:not([hidden])').evaluateAll(strips => strips.map(strip => {
         const rect = strip.getBoundingClientRect();
         return { x: rect.x, y: rect.y, width: rect.width, height: rect.height,
@@ -661,7 +661,8 @@ try {
       const categories = page.locator('#project-category');
       const tags = await categories.locator('option').evaluateAll(options => options.map(option => option.value));
       assert.equal(tags[0], '', 'the dropdown opens on All work');
-      assert.deepEqual(new Set(tags.slice(1)), new Set(projects.flatMap(project => project.tags).filter(tag => tag !== 'installation' && !/^\d{4}$/.test(tag))));
+      // Every tag a project carries is offered in the dropdown, and nothing else.
+      assert.deepEqual(new Set(tags.slice(1)), new Set(projects.flatMap(project => project.tags).filter(tag => !/^\d{4}$/.test(tag))));
       assert.equal(tags.includes('education'), false, 'Education is no longer a filter');
       assert.ok(projects.find(project => project.slug === 'visualia').tags.includes('community'), 'Visualia belongs to Community');
       assert.ok(projects.find(project => project.slug === 'svartljus').tags.includes('community'), 'Svartljus belongs to Community');
@@ -678,7 +679,7 @@ try {
         // The wall fills what the writing and the categories leave, less the
         // gutter it keeps above and below, on both kinds of screen.
         const bands = (await page.locator('#home-header').boundingBox()).height + (await page.locator('#intro-links').boundingBox()).height;
-        assert.equal((await page.locator('#strips').boundingBox()).height, options.hasTouch ? options.viewport.height - bands : options.viewport.height - bands - 48);
+        assert.equal((await page.locator('#strips').boundingBox()).height, options.hasTouch ? options.viewport.height - bands : options.viewport.height - bands - 24);
       };
       const choose = async tag => {
         await categories.selectOption(tag);
@@ -686,7 +687,7 @@ try {
         await checkSelection();
       };
       await checkSelection();
-      assert.equal(await page.locator('.strip:not([hidden])').count(), projects.length, 'All work shows everything, including projects tagged only Installation');
+      assert.equal(await page.locator('.strip:not([hidden])').count(), projects.length, 'All work shows everything, including projects carrying no category');
       await choose('light');
       assert.equal(await categories.inputValue(), 'light', 'choosing Light shows Light');
       await choose('');
@@ -856,8 +857,8 @@ try {
       assert.ok(await page.evaluate(() => scrollY) < 1, 'Back from a strip returns to the top of the project, not the wall it was clicked in');
       assert.equal(await categorySelect.inputValue(), 'community');
       assert.deepEqual(await page.locator('.strip:not([hidden])').evaluateAll(strips => strips.map(strip => strip.dataset.project)), expected);
-      await page.locator('.collection-home-link').click();
-      // The name above a project's wall leads home, which opens on the wall.
+      await page.locator('#header-toggle').click();
+      // The project's own title leads home, which opens on the wall.
       await page.waitForFunction(() => document.body.dataset.route === 'home' && document.body.dataset.homeView === 'projects' && scrollY < 1);
       assert.equal(await categorySelect.inputValue(), '', 'project filters do not change the homepage selection');
       // The wall is the top of the landing page, and the contacts sit in a band
@@ -887,7 +888,8 @@ try {
       await openStrip(page, first, 'dispatch');
       await page.waitForFunction(slug => document.documentElement.dataset.project === slug, slug);
       if (options.hasTouch) {
-        // Phones show no project title; the name above the project's strips leads home.
+        // Phones show no project title, so the wall above the project keeps the
+        // name there as the only way back.
         await page.locator('#collection').evaluate(collection => collection.scrollIntoView({ block: 'start' }));
         await page.locator('.collection-home-link').click();
         await page.waitForFunction(() => document.body.dataset.route === 'home');
@@ -904,21 +906,28 @@ try {
       assert.equal(await yearSelect.inputValue(), '2024', 'Back keeps the filters as they were');
     });
 
-    await check(`${name} name above project strips opens the homepage`, options, async page => {
+    // A pointer device leaves a project by its title at the top of the page; a
+    // phone has no title, so its wall keeps the name.
+    await check(`${name} the way home from a project opens the homepage`, options, async page => {
       await visit(page);
       // About shares the landing with the wall, so a project is entered with
       // the writing already on screen: that used to strand focus on About.
       await openStrip(page, page.locator('#strip-lyra'), 'dispatch');
       await page.waitForFunction(() => document.documentElement.dataset.project === 'lyra');
       await page.locator('#collection').evaluate(collection => collection.scrollIntoView({ block: 'start' }));
-      await page.locator('.collection-home-link').click();
+      await page.locator(options.hasTouch ? '.collection-home-link' : '#header-toggle').click();
       // The landing opens on the wall, so leaving a project lands there.
       await page.waitForFunction(() => document.body.dataset.route === 'home' && document.body.dataset.homeView === 'projects' && scrollY < 1);
       assert.equal(new URL(page.url()).pathname, `${prefix}/`);
       assert.equal(new URL(page.url()).hash, '');
       await page.goBack();
       await page.waitForFunction(() => document.documentElement.dataset.project === 'lyra' && scrollY < 1);
-      assert.equal(await page.evaluate(() => document.activeElement.className), 'project-title', 'Back shows the project itself, not its wall');
+      // Where focus lands differs by device — the router sets the project's
+      // title, a pointer browser restores the link that was clicked — so this
+      // states the property both have to hold to rather than one class name.
+      const focus = await page.evaluate(() => ({ className: document.activeElement.className,
+        inWall: !!document.activeElement.closest('#collection'), onProject: !!document.activeElement.closest('#projects, #header') }));
+      assert.ok(focus.onProject && !focus.inWall, `Back shows the project itself, not its wall (focus on ${focus.className})`);
       await page.goBack();
       // About shares the landing with the wall now, so there is no second view
       // to come back to: home always shows both.

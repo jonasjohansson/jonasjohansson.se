@@ -3,7 +3,6 @@ title: Kagora
 date: '2026-07-25'
 color: '#6448ff'
 tags:
-  - installation
   - light
   - community
 blocks:

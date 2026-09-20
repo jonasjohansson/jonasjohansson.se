@@ -3,7 +3,6 @@ title: Eastern City Portal
 color: "#4698d2"
 date: "2024-01-01"
 tags:
-  - installation
   - mixed reality
 blocks:
   - type: image

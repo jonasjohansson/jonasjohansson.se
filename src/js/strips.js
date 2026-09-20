@@ -10,7 +10,7 @@ const projects = new Map(window.__PROJECTS_DATA__.map(project => [project.slug, 
 const counts = new Map();
 projects.forEach(project => project.tags.forEach(tag => counts.set(tag, (counts.get(tag) || 0) + 1)));
 const isYear = tag => /^\d{4}$/.test(tag);
-const categories = [...counts.keys()].filter(tag => tag !== 'installation' && !isYear(tag)).sort((a, b) => counts.get(b) - counts.get(a) || a.localeCompare(b));
+const categories = [...counts.keys()].filter(tag => !isYear(tag)).sort((a, b) => counts.get(b) - counts.get(a) || a.localeCompare(b));
 const years = [...counts.keys()].filter(isYear).sort((a, b) => Number(b) - Number(a));
 let activeTags = new Set(categories);
 let activeYear = '';
@@ -29,8 +29,9 @@ function updatePreview() {
 }
 
 function matchesFilters(project, selectedTags = activeTags, selectedYear = activeYear) {
-  // Subject tags combine with each other; the year narrows that selection.
-  // With all subjects on, include projects tagged only Installation as well.
+  // A project belongs to one category or none; the year narrows that
+  // selection. All work is every category at once, which shows untagged
+  // projects too.
   return (!selectedYear || project.tags.includes(selectedYear)) &&
     (selectedTags.size === categories.length || project.tags.some(tag => selectedTags.has(tag)));
 }

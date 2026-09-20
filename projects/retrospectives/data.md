@@ -3,7 +3,6 @@ title: Retrospectives
 color: "#ff6a1a"
 date: "2022-01-01"
 tags:
-  - installation
   - design
 blocks:
   - type: image

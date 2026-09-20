@@ -3,7 +3,6 @@ title: Society Expo
 date: '2026-05-27'
 color: '#7161d5'
 tags:
-  - installation
   - light
 blocks:
   - type: video

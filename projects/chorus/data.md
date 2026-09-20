@@ -2,7 +2,6 @@
 title: Chorus
 date: "2022-12-01"
 tags:
-  - installation
   - mapping
 blocks:
   - type: image

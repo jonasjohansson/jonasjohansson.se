@@ -3,7 +3,6 @@ title: Emerging Sensation
 color: "#1521b4"
 date: "2019-01-01"
 tags:
-  - installation
   - light
   - mixed reality
 blocks:

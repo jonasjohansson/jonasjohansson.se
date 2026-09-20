@@ -3,7 +3,6 @@ title: Firestarter
 color: "#005d80"
 date: '2024-01-01'
 tags:
-  - installation
   - light
 blocks:
   - type: image

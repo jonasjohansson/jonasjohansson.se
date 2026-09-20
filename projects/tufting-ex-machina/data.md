@@ -3,7 +3,6 @@ title: Tufting Ex Machina
 color: "#f37100"
 date: '2024-01-01'
 tags:
-  - installation
   - community
 blocks:
   - type: image
