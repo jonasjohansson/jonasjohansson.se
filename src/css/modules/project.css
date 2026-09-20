@@ -474,6 +474,17 @@ html[data-theme="dark"] .text-block a {
   .project-grid > .media-item.hero :is(img, video) { object-position: var(--mobile-focal, var(--focal, center)); }
 }
 
+/* PLX is the one project that reads in its own face, the two the festival's
+   presentation is set in. The serif carries the writing a little larger than
+   SeasonMix would, since Rosarivo runs small; the display face takes the
+   project's title and the figures worth stopping on. */
+#plx .text-block { font-family: "Rosarivo", Georgia, "Times New Roman", serif; }
+/* Rosarivo runs small, so the body copy gains a little — set on the paragraphs
+   rather than the block, which would flatten the large opening into the rest. */
+#plx .text-block p { font-size: 1.08em; }
+#plx .text-block strong { font-family: "Germania One", "Trebuchet MS", sans-serif; font-weight: normal; letter-spacing: 0.01em; }
+html[data-project="plx"] #header-toggle { font-family: "Germania One", "Trebuchet MS", sans-serif; letter-spacing: 0.06em; }
+
 /* Bring the pavilion forward within the already levelled woodland image. */
 #kagora .hero img { transform: scale(1.5); transform-origin: 52% 60%; }
 

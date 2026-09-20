@@ -13,3 +13,30 @@
   font-style: italic;
   font-display: swap;
 }
+
+/* PLX carries the typography of the festival's own presentation: Rosarivo for
+   the writing, Germania One for the figures it wants you to stop on. Scoped to
+   that one project — every other page on the site is SeasonMix. */
+@font-face {
+  font-family: "Rosarivo";
+  src: url("../fonts/Rosarivo-Regular.woff2") format("woff2");
+  font-weight: normal;
+  font-style: normal;
+  font-display: swap;
+}
+
+@font-face {
+  font-family: "Rosarivo";
+  src: url("../fonts/Rosarivo-Italic.woff2") format("woff2");
+  font-weight: normal;
+  font-style: italic;
+  font-display: swap;
+}
+
+@font-face {
+  font-family: "Germania One";
+  src: url("../fonts/GermaniaOne-Regular.woff2") format("woff2");
+  font-weight: normal;
+  font-style: normal;
+  font-display: swap;
+}
