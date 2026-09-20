@@ -340,9 +340,9 @@ try {
       assert.equal(wall.x, 24);
       assert.equal(wall.width, options.viewport.width - 48);
       assert.equal(await page.locator('#home-title').count(), 0, 'the landing page carries no name of its own');
-      if (options.hasTouch) assert.ok(Math.abs(wall.y - header.y - header.height) < 1, 'on phones the wall starts directly below the header');
-      // The top band is the writing; the wall starts a gutter below it.
-      else assert.ok(Math.abs(wall.y - header.y - header.height - 24) < 1, 'the wall starts one gutter below the top band');
+      // The top band is the writing, and the wall starts one gutter below it on
+      // every device: About and the work are separate things.
+      assert.ok(Math.abs(wall.y - header.y - header.height - 24) < 1, `the wall starts one gutter below the writing (${Math.round(wall.y - header.y - header.height)}px)`);
       await checkFooter(page);
       assert.equal(await page.evaluate(() => document.documentElement.scrollWidth > innerWidth), false);
       const intro = await page.locator('#intro').boundingBox();

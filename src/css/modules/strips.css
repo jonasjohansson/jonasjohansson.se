@@ -55,7 +55,9 @@
      into a grid of cards instead, because there it is a way out and wants to
      be tapped rather than admired. */
   .enhanced #collection { height: auto; padding: 0; }
-  .enhanced body[data-route="home"] #collection { padding: 0 var(--page-gutter); }
+  /* The same gutter above the wall that a pointer device leaves: About and the
+     work are separate things, and the shorthand here had zeroed it. */
+  .enhanced body[data-route="home"] #collection { padding: var(--page-gutter) var(--page-gutter) 0; }
   /* A #collection jump has to clear the writing above it, or it lands low. */
   .enhanced body[data-route="home"] #collection { scroll-margin-top: calc(var(--home-header-height) + var(--page-gutter)); }
   .enhanced #content { padding-bottom: var(--page-gutter); }
