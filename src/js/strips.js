@@ -172,9 +172,20 @@ function bindTouchScrub(wall, signal) {
       navigator.vibrate?.(8);
     }, HOLD);
   }, { signal, passive: true });
+  // A finger dragged along the wall scrubs from the moment it moves sideways:
+  // the strip under it opens as it passes, so the wall can be read by running
+  // a thumb across it rather than tapping a 10px sliver. A drag up or down is
+  // the page scrolling and stays that way.
   wall.addEventListener('pointermove', event => {
     if (event.pointerType !== 'touch' || scrubbing) return;
-    if (Math.hypot(event.clientX - startX, event.clientY - startY) > SLOP) { clearTimeout(timer); timer = null; }
+    const dx = event.clientX - startX, dy = event.clientY - startY;
+    if (Math.hypot(dx, dy) <= SLOP) return;
+    clearTimeout(timer);
+    timer = null;
+    if (Math.abs(dx) <= Math.abs(dy)) return;
+    scrubbing = true;
+    wall.dataset.scrubbing = '';
+    setActive(stripAt(event.clientX, event.clientY));
   }, { signal, passive: true });
   // Once scrubbing, the finger is followed through touch events, which keep
   // arriving even after the browser has cancelled the pointer for a pan it
@@ -186,9 +197,10 @@ function bindTouchScrub(wall, signal) {
     const strip = stripAt(touch.clientX, touch.clientY);
     if (strip) setActive(strip);
   }, { signal, passive: false });
-  // Phones cannot hover, so a 44px strip gives no clue what it is. The first
-  // tap opens that strip and names it in the caption; tapping the open strip
-  // again enters the project. Holding still scrubs through the wall.
+  // Phones cannot hover, so a sliver gives no clue what it is. The first tap
+  // opens that strip and names it in the caption; tapping the open strip enters
+  // the project. A drag along the wall opens them in turn without entering
+  // anything, because the browser only fires click where the finger landed.
   wall.addEventListener('click', event => {
     if (matchMedia('(hover: hover)').matches) return;
     const strip = event.target.closest('.strip:not([hidden])');

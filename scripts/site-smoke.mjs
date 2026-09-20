@@ -1054,6 +1054,52 @@ try {
     }
   });
 
+  // A sliver is too small to aim at, so the wall is meant to be read with a
+  // thumb: drag along it and each strip opens as the finger passes, then tap
+  // the open one to enter it.
+  await check('dragging along the phone wall opens strips in turn, and a tap enters', mobile, async page => {
+    await visit(page);
+    const wall = await page.locator('#strips').boundingBox();
+    const y = wall.y + wall.height / 2;
+    const cdp = await page.context().newCDPSession(page);
+    const state = () => page.evaluate(() => ({ active: document.querySelector('.strip.is-active')?.dataset.project ?? null,
+      caption: document.getElementById('strip-caption').textContent.trim(), project: document.documentElement.dataset.project ?? null }));
+    await cdp.send('Input.dispatchTouchEvent', { type: 'touchStart', touchPoints: [{ x: wall.x + 20, y }] });
+    const opened = [];
+    for (let step = 1; step <= 12; step++) {
+      await cdp.send('Input.dispatchTouchEvent', { type: 'touchMove', touchPoints: [{ x: wall.x + 20 + step * 22, y }] });
+      await page.waitForTimeout(60);
+      const now = await state();
+      if (now.active && opened.at(-1) !== now.active) opened.push(now.active);
+    }
+    await cdp.send('Input.dispatchTouchEvent', { type: 'touchEnd', touchPoints: [] });
+    assert.ok(opened.length >= 4, `the drag opens strips as it passes (${opened.length})`);
+    const lifted = await state();
+    assert.equal(lifted.project, null, 'lifting the finger enters nothing');
+    assert.equal(lifted.active, opened.at(-1), 'the last strip the finger crossed stays open');
+    assert.equal(lifted.caption, await page.locator('.strip.is-active').getAttribute('aria-label'), 'and stays named');
+    const open = await page.locator('.strip.is-active').boundingBox();
+    await page.touchscreen.tap(open.x + open.width / 2, open.y + 200);
+    await page.waitForFunction(slug => document.documentElement.dataset.project === slug, lifted.active);
+  });
+
+  // A drag up or down is the page scrolling, not a scrub.
+  await check('a vertical drag on the phone wall opens nothing', mobile, async page => {
+    await visit(page);
+    const wall = await page.locator('#strips').boundingBox();
+    const cdp = await page.context().newCDPSession(page);
+    const x = wall.x + wall.width / 2;
+    await cdp.send('Input.dispatchTouchEvent', { type: 'touchStart', touchPoints: [{ x, y: wall.y + wall.height - 40 }] });
+    for (let step = 1; step <= 8; step++) {
+      await cdp.send('Input.dispatchTouchEvent', { type: 'touchMove', touchPoints: [{ x, y: wall.y + wall.height - 40 - step * 30 }] });
+      await page.waitForTimeout(40);
+    }
+    await cdp.send('Input.dispatchTouchEvent', { type: 'touchEnd', touchPoints: [] });
+    await page.waitForTimeout(250);
+    assert.equal(await page.locator('.strip.is-active').count(), 0, 'a vertical drag opens no strip');
+    assert.equal(await page.evaluate(() => document.documentElement.dataset.project), undefined, 'and enters none');
+  });
+
   for (const [name, options] of [['desktop', desktop], ['mobile', mobile]]) {
     await check(`${name} typing a name finds the project`, options, async page => {
       await visit(page);
