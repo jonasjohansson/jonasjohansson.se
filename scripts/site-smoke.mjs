@@ -269,6 +269,7 @@ try {
         title: document.title,
         hero: document.querySelector('.hero').getBoundingClientRect().top,
         gutter: parseFloat(getComputedStyle(document.getElementById('content')).paddingTop),
+        titleBottom: document.getElementById('header').getBoundingClientRect().bottom,
         floatingTitle: document.getElementById('header-toggle').textContent.trim(),
         touch: matchMedia('(hover: none)').matches,
         alt: document.querySelector('.hero img')?.alt || document.querySelector('.hero video')?.getAttribute('aria-label'),
@@ -285,8 +286,11 @@ try {
       assert.equal(state.zero, false, `${slug} has collapsed media`);
       assert.ok(state.alt.length > 15, `${slug} hero description`);
       assert.ok(state.title.endsWith(' | Jonas Johansson'), `${slug} document title`);
-      // Phones open on the hero, flush with the top of the screen; elsewhere it starts one gutter down.
-      assert.ok(Math.abs(state.hero - (state.touch ? 0 : state.gutter)) < 1, `${slug} hero starts at ${state.hero}`);
+      // A phone reads the project's name first and the picture under it, so the
+      // hero starts where the title ends. Elsewhere the title floats over the
+      // work and the hero starts one gutter down.
+      assert.ok(Math.abs(state.hero - (state.touch ? state.titleBottom : state.gutter)) < 1,
+        `${slug} hero starts at ${state.hero}, ${state.touch ? `title ends at ${state.titleBottom}` : `gutter is ${state.gutter}`}`);
       assert.equal(state.title, `${state.floatingTitle} | Jonas Johansson`, `${slug} floating title`);
       assert.equal(state.videoControls, true, `${slug} video controls`);
       assert.equal(state.creditsAligned, true, `${slug} credits alignment`);

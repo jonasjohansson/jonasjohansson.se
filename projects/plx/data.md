@@ -120,14 +120,6 @@ blocks:
     src: ode-stage.jpg
     alt: "Beams of light rake through haze across a draped backdrop, a figure silhouetted at the microphone in front of it."
   - type: image
-    src: ode-windows.jpg
-    size: half-left
-    alt: "Arched museum windows glow magenta and blue above a crowd in silhouette, a bright doorway at the centre."
-  - type: image
-    src: ode-beams.jpg
-    size: half-right
-    alt: "White beams cross above a packed dark hall, the crowd lit only by the stage behind them."
-  - type: image
     src: ode-dinner.jpg
     size: half-left
     alt: "Guests in hats and flowers sit at a long candlelit table under greenery and bunting, in front of tall windows."
