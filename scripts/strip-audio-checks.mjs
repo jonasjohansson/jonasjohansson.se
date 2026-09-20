@@ -137,13 +137,26 @@ export async function checkStripAudio({ check, visit, desktop, mobile }) {
     assert.equal(await page.evaluate(() => window.__stripSound.notes[0]), 659.25);
   });
 
-  await check('touch taps open a project from its card and play Mario', mobile, async page => {
+  // The landing's wall is slivers on a phone: the first tap opens one and names
+  // it, the second enters. A project page lists cards, which open on one tap.
+  await check('a tap opens a strip, a second enters it, and both play Mario', mobile, async page => {
     await observeAudio(page);
     await visit(page);
-    await page.locator('#strip-klattermusen').tap();
-    await page.waitForSelector('#projects #klattermusen');
+    const strip = page.locator('#strip-klattermusen');
+    await strip.tap();
+    await page.waitForFunction(() => !!document.querySelector('.strip.is-active'));
+    await page.evaluate(() => new Promise(resolve => {
+      const open = document.querySelector('.strip.is-active');
+      open.addEventListener('transitionend', resolve, { once: true });
+      setTimeout(resolve, 1200);
+    }));
+    assert.equal(await page.locator('#strip-klattermusen.is-active').count(), 1, 'the first tap opens that strip');
+    assert.equal(await page.evaluate(() => document.documentElement.dataset.project), undefined, 'and does not enter the project');
+    assert.equal(await page.locator('#strip-caption').isVisible(), true, 'the caption names what is open');
     await page.waitForFunction(() => window.__stripSound.notes.length >= 1);
     assert.equal(await page.evaluate(() => window.__stripSound.notes[0]), 659.25, 'the tap plays the first note');
+    await strip.tap();
+    await page.waitForSelector('#projects #klattermusen');
     await page.waitForFunction(() => window.__stripSound.active === 0);
     await page.locator('#collection').evaluate(collection => collection.scrollIntoView({ block: 'start' }));
     const before = await page.evaluate(() => window.__stripSound.notes.length);
@@ -152,12 +165,13 @@ export async function checkStripAudio({ check, visit, desktop, mobile }) {
     await page.waitForFunction(() => document.documentElement.dataset.project !== 'klattermusen');
   });
 
-  await check('touch cards scroll the page and open nothing until tapped', mobile, async page => {
+  await check('a swipe through a project wall scrolls it and opens nothing', mobile, async page => {
     await observeAudio(page);
-    await visit(page);
+    await visit(page, '/klattermusen/');
+    await page.locator('#collection').evaluate(collection => collection.scrollIntoView({ block: 'start' }));
     const cards = page.locator('#strips .strip:not([hidden])');
-    assert.ok(await cards.count() > 1, 'the card list holds every project');
-    assert.equal(await page.locator('#strips').evaluate(list => list.scrollWidth <= list.clientWidth + 1), true, 'the list does not scroll sideways');
+    assert.ok(await cards.count() > 1, 'the grid holds every other project');
+    assert.equal(await page.locator('#strips').evaluate(grid => grid.scrollWidth <= grid.clientWidth + 1), true, 'the grid does not scroll sideways');
     const box = await cards.first().boundingBox();
     const cdp = await page.context().newCDPSession(page);
     const x = box.x + box.width / 2, y = box.y + box.height / 2;
@@ -167,9 +181,9 @@ export async function checkStripAudio({ check, visit, desktop, mobile }) {
     for (let step = 1; step <= 8; step++) await cdp.send('Input.dispatchTouchEvent', { type: 'touchMove', touchPoints: [{ x, y: y - 40 * step }] });
     await cdp.send('Input.dispatchTouchEvent', { type: 'touchEnd', touchPoints: [] });
     await page.waitForFunction(top => scrollY > top, from);
-    assert.equal(await page.evaluate(() => document.documentElement.dataset.project), undefined, 'a swipe opens no project');
+    assert.equal(await page.evaluate(() => document.documentElement.dataset.project), 'klattermusen', 'a swipe opens no project');
     assert.equal(await page.locator('#strips .strip.is-active').count(), 0, 'cards never open in place');
-    assert.equal(await page.locator('#strip-caption').isVisible(), false, 'phones show no strip caption');
+    assert.equal(await page.locator('#strip-caption').isVisible(), false, 'a project page shows no caption');
     assert.equal(await page.evaluate(() => window.__stripSound.notes.length), 0, 'a swipe plays nothing');
   });
 

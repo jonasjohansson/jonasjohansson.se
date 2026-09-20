@@ -1,10 +1,4 @@
 <section id="collection" class="collection" aria-labelledby="collection-title">
-  {# The name is gone from this corner wherever the project title leads home.
-     Phones show no title, so there it stays as the only way back. The links
-     sit under the wall now, with the filter. #}
-  <div id="collection-header" class="collection-header">
-    <a class="collection-home-link" href="{{ '/' | url }}">{{ site.title }}</a>
-  </div>
   <h2 id="collection-title" class="sr-only" tabindex="-1">{% if project %}More projects{% else %}Projects{% endif %}</h2>
   <nav id="strips" aria-label="Projects">
     {% for item in collectionItems %}

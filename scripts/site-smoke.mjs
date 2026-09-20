@@ -45,17 +45,38 @@ async function visit(page, route = '/') {
 }
 
 // Phones open a project from its card with one tap, like a click on the wall.
+async function settleOpenStrip(page) {
+  // The opened strip grows through a transition, so its width is still moving
+  // when the class lands. Two frames at the same width is not enough to prove
+  // it has finished — at the start of the transition the first frames round to
+  // the same pixel — so wait for the transition itself to end.
+  await page.waitForFunction(() => !!document.querySelector('.strip.is-active'));
+  await page.evaluate(() => new Promise(resolve => {
+    const strip = document.querySelector('.strip.is-active');
+    if (!strip || !parseFloat(getComputedStyle(strip).transitionDuration)) return resolve();
+    strip.addEventListener('transitionend', resolve, { once: true });
+    setTimeout(resolve, 1200);
+  }));
+}
+
 async function openStrip(page, strip, via = 'tap') {
-  if (via === 'dispatch') return strip.evaluate(link => link.click());
-  if (via === 'click') return strip.click();
-  return strip.tap();
+  // The landing's wall on a phone is slivers: the first press opens one and
+  // names it, the second enters. A project page's grid of cards opens on one.
+  // This holds however the press is delivered — tap, click or a dispatched
+  // click — because the wall reads the device, not the event.
+  const twoStep = await page.evaluate(() => matchMedia('(hover: none)').matches && document.body.dataset.route === 'home');
+  const press = () => (via === 'dispatch' ? strip.evaluate(link => link.click()) : via === 'click' ? strip.click() : strip.tap());
+  await press();
+  if (!twoStep) return;
+  await settleOpenStrip(page);
+  return press();
 }
 
 async function waitForHomeWall(page) {
   await page.waitForFunction(() => {
     if (document.body.dataset.route !== 'home' || document.body.dataset.homeView !== 'projects') return false;
     const footer = document.getElementById('intro-links');
-    // Phones scroll a card list and show no footer; the wall pins its footer to the foot of the screen.
+    // A project page's phone layout shows nothing under its cards.
     if (getComputedStyle(footer).display === 'none') return true;
     // About shares the screen with the wall now, so on a short viewport the
     // landing runs past one screenful and the categories sit at the foot of the
@@ -74,13 +95,13 @@ async function checkFooter(page) {
   const home = await page.locator('body').getAttribute('data-route') === 'home';
   const contacts = page.locator('#intro-links .header-contacts');
   const contactBox = await contacts.boundingBox();
-  // Phones list cards, so the band under the list carries the links alone.
+  // A phone carries no chrome at all beyond the caption that names the strip
+  // a tap has opened, and that only on the landing, where the wall is slivers.
   if (touch) {
     assert.equal(await page.locator('#project-filters').isVisible(), false, 'phones show no categories');
     assert.equal(await page.locator('#project-search').isVisible(), false, 'phones do not ask for typing');
-    assert.equal(await page.locator('#strip-caption').isVisible(), false, 'phones show no strip caption');
-    assert.equal(await contacts.isVisible(), true, 'phones keep the links under the list');
-    assert.deepEqual((await contacts.locator('a').allTextContents()).map(text => text.trim()), ['CV', 'Email'], 'contact links stay concise');
+    assert.equal(await contacts.count() > 0 && await contacts.isVisible(), false, 'phones carry no links');
+    if (!home) assert.equal(await page.locator('#intro-links').isVisible(), false, 'a project page keeps nothing under its cards');
     return;
   }
   const footer = await page.locator('#intro-links').boundingBox();
@@ -114,8 +135,8 @@ async function checkFooter(page) {
   } else {
     // The project title at the top of the page is the way home, so the wall
     // carries no name and nothing sits over the work.
-    assert.equal(await page.locator('#collection-header .collection-home-link').isVisible(), false, 'the wall above a project carries no name');
-    assert.equal(await page.locator('#collection-header .header-contacts').count(), 0, 'nothing floats over the top of a project wall');
+    assert.equal(await page.locator('.collection-home-link').count(), 0, 'no wall carries a name');
+    assert.equal(await page.locator('#collection-header').count(), 0, 'nothing floats over the top of a project wall');
     const title = await page.locator('#header-toggle').boundingBox();
     assert.ok(Math.abs(title.x + title.width / 2 - page.viewportSize().width / 2) < 1, 'project title remains centered');
     assert.equal(await page.locator('#header-toggle').getAttribute('href'), `${prefix}/`, 'the project title leads home');
@@ -347,25 +368,32 @@ try {
       if (options.viewport.width > 768) assert.ok(share <= 0.76, `About takes at most three quarters of the wall (${(share * 100).toFixed(0)}%)`);
       else assert.ok(share > 0.99, `About takes the full width on a small screen (${(share * 100).toFixed(0)}%)`);
       if (options.hasTouch) {
-        // Phones scroll a list of cards: a photograph with the project's name under it.
-        const list = await page.locator('.strip:not([hidden])').evaluateAll(strips => strips.map(strip => {
-          const rect = strip.getBoundingClientRect();
-          const picture = strip.querySelector('.strip-picture').getBoundingClientRect();
-          const title = strip.querySelector('.strip-title');
-          const project = window.__PROJECTS_DATA__.find(entry => entry.slug === strip.dataset.project);
-          return { width: rect.width, ratio: picture.width / picture.height, named: title.textContent.trim() === project.title,
-            shown: getComputedStyle(title).display !== 'none', under: title.getBoundingClientRect().top >= picture.bottom - 1 };
+        // The landing keeps its wall on a phone: every project is a sliver and
+        // they all fit one screen rather than scrolling sideways.
+        const slivers = await page.locator('#strips').evaluate(wall => {
+          const strips = [...wall.querySelectorAll('.strip:not([hidden])')];
+          return { count: strips.length, scrolls: wall.scrollWidth > wall.clientWidth + 1,
+            widths: strips.map(strip => strip.getBoundingClientRect().width),
+            heights: new Set(strips.map(strip => Math.round(strip.getBoundingClientRect().height))).size,
+            titles: strips.every(strip => getComputedStyle(strip.querySelector('.strip-title')).display === 'none') };
+        });
+        assert.ok(slivers.count > 1, 'every project is on the wall');
+        assert.equal(slivers.scrolls, false, 'the whole wall fits one screen');
+        assert.equal(slivers.heights, 1, 'the slivers share one height');
+        assert.ok(Math.abs(slivers.widths.reduce((a, b) => a + b, 0) - wall.width) < 2, 'they divide the wall between them');
+        assert.equal(slivers.titles, true, 'a sliver is a photograph, named only once it is opened');
+        // A tap opens one and names it; tapping the open one enters.
+        const strip = page.locator('#strips .strip:not([hidden])').first();
+        await strip.tap();
+        await settleOpenStrip(page);
+        const opened = await page.evaluate(() => ({
+          width: document.querySelector('.strip.is-active').getBoundingClientRect().width,
+          caption: document.getElementById('strip-caption').textContent.trim(),
+          label: document.querySelector('.strip.is-active').getAttribute('aria-label'),
         }));
-        assert.ok(list.length > 1, 'every project has a card');
-        assert.ok(list.every(card => Math.abs(card.width - wall.width) < 1), 'cards fill the content width');
-        assert.ok(list.every(card => Math.abs(card.ratio - 1.5) < 0.02), 'card images share one shape');
-        assert.ok(list.every(card => card.named && card.shown && card.under), 'each card names its project underneath the image');
-        await page.locator('#strips .strip:not([hidden])').first().scrollIntoViewIfNeeded();
-        await page.waitForFunction(() => {
-          const image = document.querySelector('#strips .strip:not([hidden]) img');
-          return image?.complete && image.naturalWidth > 0;
-        }, null, { timeout: 5000 }).catch(() => {});
-        await page.screenshot({ path: `${output}/${name.replaceAll(' ', '-')}-home-cards.png` });
+        assert.ok(opened.width > wall.width / slivers.count * 3, `the tapped strip opens (${Math.round(opened.width)}px of ${Math.round(wall.width)})`);
+        assert.equal(opened.caption, opened.label, 'and names itself under the wall');
+        await page.screenshot({ path: `${output}/${name.replaceAll(' ', '-')}-home-wall.png` });
         return;
       }
       const entries = await page.locator('.strip').evaluateAll(strips => strips.map(strip => ({
@@ -402,16 +430,19 @@ try {
           const picture = strip.querySelector('.strip-picture').getBoundingClientRect();
           const title = strip.querySelector('.strip-title');
           const project = window.__PROJECTS_DATA__.find(entry => entry.slug === strip.dataset.project);
-          return { slug: strip.dataset.project, width: rect.width, top: rect.top, bottom: rect.bottom,
+          return { slug: strip.dataset.project, width: rect.width, x: rect.x, top: rect.top, bottom: rect.bottom,
             ratio: picture.width / picture.height, named: title.textContent.trim() === project.title,
             under: title.getBoundingClientRect().top >= picture.bottom - 1 };
         }));
         assert.ok(cards.length > 1, 'every other project has a card');
         assert.ok(!cards.some(card => card.slug === 'jagad'), 'the open project has no card');
-        assert.ok(cards.every(card => Math.abs(card.width - wall.width) < 1), 'cards fill the content width');
+        // Two columns, so a card is half the wall less the gap between them.
+        const column = (wall.width - 16) / 2;
+        assert.ok(cards.every(card => Math.abs(card.width - column) < 2), `cards take half the width each (${Math.round(cards[0].width)} of ${Math.round(wall.width)})`);
+        assert.equal(new Set(cards.map(card => Math.round(card.x))).size, 2, 'in two columns');
         assert.ok(cards.every(card => Math.abs(card.ratio - 1.5) < 0.02 && card.named && card.under), 'each card names its project underneath the image');
-        for (let index = 1; index < cards.length; index++) {
-          assert.ok(cards[index].top >= cards[index - 1].bottom - 1, 'cards stack down the page');
+        for (let index = 2; index < cards.length; index++) {
+          assert.ok(cards[index].top >= cards[index - 2].bottom - 1, 'the rows stack down the page');
         }
         await checkFooter(page);
         await page.locator('#strips .strip:not([hidden])').first().scrollIntoViewIfNeeded();
@@ -456,7 +487,8 @@ try {
       await page.waitForFunction(() => document.documentElement.classList.contains('enhanced') && document.body.dataset.homeView === 'projects' && scrollY < 1);
       assert.equal(await page.locator('#home-title').count(), 0, 'the landing page carries no name of its own');
       assert.equal(await page.locator('#home-header .header-contacts').count(), 0, 'the top band carries no links');
-      assert.equal(await page.locator('#intro-links .header-contacts').isVisible(), true, 'the links sit under the wall instead');
+      // The links sit under the wall on a pointer device; a phone carries none.
+      assert.equal(await page.locator('#intro-links .header-contacts').isVisible(), !options.hasTouch, 'the links sit under the wall, and only where there are links');
       const wall = await page.locator('#strips').boundingBox();
       const intro = await page.locator('#intro').boundingBox();
       assert.ok(intro.y + intro.height <= wall.y + 1, 'About reads above the wall');
@@ -911,14 +943,7 @@ try {
       const slug = await first.getAttribute('data-project');
       await openStrip(page, first, 'dispatch');
       await page.waitForFunction(slug => document.documentElement.dataset.project === slug, slug);
-      if (options.hasTouch) {
-        // Phones show no project title, so the wall above the project keeps the
-        // name there as the only way back.
-        await page.locator('#collection').evaluate(collection => collection.scrollIntoView({ block: 'start' }));
-        await page.locator('.collection-home-link').click();
-        await page.waitForFunction(() => document.body.dataset.route === 'home');
-        await page.evaluate(() => scrollTo({ top: document.getElementById('collection').getBoundingClientRect().top + scrollY, behavior: 'instant' }));
-      } else await page.locator('#header-toggle').click();
+      await page.locator('#header-toggle').click();
       await waitForHomeWall(page);
       assert.equal(await filter.inputValue(), '', 'leaving the project for the landing page returns to All work');
       await filter.selectOption('2024');
@@ -929,8 +954,7 @@ try {
       assert.equal(await filter.inputValue(), '2024', 'Back keeps the filters as they were');
     });
 
-    // A pointer device leaves a project by its title at the top of the page; a
-    // phone has no title, so its wall keeps the name.
+    // Every device leaves a project by its own title at the top of the page.
     await check(`${name} the way home from a project opens the homepage`, options, async page => {
       await visit(page);
       // About shares the landing with the wall, so a project is entered with
@@ -938,7 +962,7 @@ try {
       await openStrip(page, page.locator('#strip-lyra'), 'dispatch');
       await page.waitForFunction(() => document.documentElement.dataset.project === 'lyra');
       await page.locator('#collection').evaluate(collection => collection.scrollIntoView({ block: 'start' }));
-      await page.locator(options.hasTouch ? '.collection-home-link' : '#header-toggle').click();
+      await page.locator('#header-toggle').click();
       // The landing opens on the wall, so leaving a project lands there.
       await page.waitForFunction(() => document.body.dataset.route === 'home' && document.body.dataset.homeView === 'projects' && scrollY < 1);
       assert.equal(new URL(page.url()).pathname, `${prefix}/`);
@@ -961,10 +985,10 @@ try {
   for (const [name, options] of [['desktop', desktop], ['mobile', mobile]]) {
     await check(`${name} returns from a direct project to the full wall`, options, async page => {
       await visit(page, '/lyra/');
-      if (options.hasTouch) {
-        assert.equal(await page.locator('#header-toggle').isVisible(), false, 'phones show no project title to return with');
-        return;
-      }
+      // The project's own title is the way home on every device now: a phone
+      // has no name above its wall to return with.
+      assert.equal(await page.locator('.collection-home-link').count(), 0, 'no wall carries a name');
+      assert.equal(await page.locator('#header-toggle').isVisible(), true, 'the project title is there to return with');
       await page.locator('#header-toggle').click();
       await waitForHomeWall(page);
       assert.equal(new URL(page.url()).hash, '', 'return links use the clean homepage URL');

@@ -237,8 +237,9 @@ export function updateStrips(slug) {
   updatePreview();
   updateImages();
   initAnimation(document.getElementById('strips'), controller.signal);
-  // Phones show a card list, which needs neither the scrub nor the two-step tap.
-  if (!matchMedia('(hover: none)').matches) bindTouchScrub(document.getElementById('strips'), controller.signal);
+  // The scrub belongs to a wall of slivers: a finger held still opens the strip
+  // under it. A project page's phone layout is a grid of cards, which is tapped.
+  if (!currentSlug || !matchMedia('(hover: none)').matches) bindTouchScrub(document.getElementById('strips'), controller.signal);
   bindStripAudio(document.getElementById('strips'), controller.signal);
 }
 

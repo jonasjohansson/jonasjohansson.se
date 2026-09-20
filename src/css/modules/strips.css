@@ -1,10 +1,4 @@
 .collection { scroll-margin-top: 4rem; }
-.collection-header { display: flex; align-items: center; column-gap: var(--header-gap); flex: none; height: var(--home-header-height); font-size: var(--font-size-ui); }
-/* The project title at the top of the page is the way home, so the wall needs
-   no name of its own. Phones hide that title, and keep this instead. */
-.collection-home-link { display: none; text-transform: uppercase; letter-spacing: var(--letter-spacing-caps); text-decoration: none; white-space: nowrap; }
-@media (hover: none) { .collection-home-link { display: flex; } }
-body[data-route="home"] .collection-header { display: none; }
 #strips { display: flex; flex-direction: column; gap: 0; overflow: hidden; position: relative; touch-action: pan-y; }
 .strip { display: block; flex: none; width: 100%; min-width: 0; color: inherit; text-decoration: none; height: var(--strip-band-height); position: relative; overflow: hidden; padding: 0; border: 0; background: var(--project-color, var(--surface-tint)); }
 .strip-picture { display: contents; }
@@ -38,8 +32,6 @@ body[data-route="home"] .collection-header { display: none; }
 .enhanced body[data-route="home"] #strips { height: auto; }
 .enhanced body[data-route="home"] .strip { height: auto; align-self: stretch; }
 .enhanced .home-header { position: relative; z-index: var(--z-filter); padding: var(--page-gutter) var(--page-gutter) 0; background: none; }
-/* Only phones put anything in this row now — the name, as their way home. */
-.enhanced .collection-header { position: absolute; top: var(--page-gutter); left: 0; right: 0; z-index: var(--z-filter); justify-content: flex-start; align-items: flex-start; column-gap: var(--spacing-md); }
 /* The caption and the categories have a band of their own under the wall on
    every route, so nothing sits on the work. A project wall is a screenful, so
    it gives up the band's height from its own padding; the landing's wall
@@ -58,31 +50,39 @@ body[data-route="home"] .collection-header { display: none; }
   .enhanced .strip:is(:hover, :focus-visible) { flex-grow: 12; }
 }
 @media (hover: none) {
-  /* Phones scroll a list of cards instead of the wall: each project is an image
-     with its name underneath. No hover means a sliver of a photograph says
-     nothing, and a card needs no gesture to read. */
+  /* The landing keeps the wall on a phone: it is the page, and a screen of
+     slivers reads as one picture of the work. A project page turns its wall
+     into a grid of cards instead, because there it is a way out and wants to
+     be tapped rather than admired. */
   .enhanced #collection { height: auto; padding: 0; }
-  /* The home page has no content padding of its own, so the cards take the gutter here. */
-  .enhanced body[data-route="home"] #collection { height: auto; padding: 0 var(--page-gutter); }
-  /* #collection jumps land on the cards, which would leave the name row just above
-     the screen: keep the header's height in view so the first tap on it toggles. */
+  .enhanced body[data-route="home"] #collection { padding: 0 var(--page-gutter); }
+  /* A #collection jump has to clear the writing above it, or it lands low. */
   .enhanced body[data-route="home"] #collection { scroll-margin-top: calc(var(--home-header-height) + var(--page-gutter)); }
   .enhanced #content { padding-bottom: var(--page-gutter); }
-  .enhanced #strips { flex: none; flex-direction: column; height: auto; min-height: 0; overflow: visible; gap: var(--spacing-xl); touch-action: auto; }
-  .enhanced .strip { flex: none; width: 100%; min-width: 0; height: auto; background: none; -webkit-touch-callout: none; }
-  .enhanced .strip-picture { display: block; position: relative; overflow: hidden; aspect-ratio: 3 / 2; background: var(--project-color, var(--surface-tint)); }
-  .enhanced .strip-image { position: absolute; inset: 0; width: 100%; height: 100%; max-width: none; left: auto; transform: none; }
-  .enhanced .strip-title { display: block; padding-top: var(--chrome-pad); font-size: var(--font-size-ui); line-height: 1.2; letter-spacing: var(--letter-spacing-caps); text-transform: uppercase; }
-  /* The name and contacts sit above the list as plain text; phones show no
-     categories, no year filter and no hover caption. */
+
+  /* A phone carries no links, no categories and no name over either wall. The
+     project's own title at the top of its page is the way home. */
   .enhanced .home-header { margin-bottom: 0; }
-  /* The landing page keeps the contacts above the cards, without repeating the
-     name as you scroll. Project pages keep theirs: it is the way back home. */
   .enhanced body[data-route="home"] #home-title { display: none; }
-  .enhanced .collection-header { position: static; height: auto; padding-bottom: var(--chrome-pad); }
-  /* The band under the list carries the links alone: no categories, no
-     caption, and on a phone no year either. */
-  .enhanced .intro-links { height: auto; padding-top: var(--spacing-xl); }
-  .enhanced .strip-caption, .enhanced .project-filters { display: none; }
-  .home-header h1, .header-contacts, .collection-home-link { background: none; }
+  .enhanced .intro-links, .enhanced .header-contacts, .enhanced .project-filters, .enhanced .strip-caption { display: none; }
+  .home-header h1 { background: none; }
+
+  /* The landing's slivers all fit one screen rather than scrolling sideways,
+     so the wall reads as one picture. A tap opens a strip wide enough to see
+     and names it underneath; tapping the open one enters the project, which is
+     the only thing a phone keeps under the wall. */
+  .enhanced body[data-route="home"] .strip { min-width: 0; }
+  .enhanced body[data-route="home"] .strip.is-active { flex-grow: 12; }
+  .enhanced body[data-route="home"] .intro-links { display: flex; height: auto; padding-top: var(--chrome-pad); }
+  .enhanced body[data-route="home"] .strip-caption { display: block; max-width: 100%; }
+
+  /* Project pages: two columns of cards, each a photograph with its name under it. */
+  .enhanced body:not([data-route="home"]) #strips {
+    display: grid; grid-template-columns: 1fr 1fr; gap: var(--spacing-lg) var(--gutter-pair);
+    flex: none; height: auto; min-height: 0; overflow: visible; touch-action: auto;
+  }
+  .enhanced body:not([data-route="home"]) .strip { flex: none; width: 100%; min-width: 0; height: auto; background: none; -webkit-touch-callout: none; }
+  .enhanced body:not([data-route="home"]) .strip-picture { display: block; position: relative; overflow: hidden; aspect-ratio: 3 / 2; background: var(--project-color, var(--surface-tint)); }
+  .enhanced body:not([data-route="home"]) .strip-image { position: absolute; inset: 0; width: 100%; height: 100%; max-width: none; left: auto; transform: none; }
+  .enhanced body:not([data-route="home"]) .strip-title { display: block; padding-top: var(--chrome-pad); font-size: var(--font-size-xs); line-height: 1.2; letter-spacing: var(--letter-spacing-caps); text-transform: uppercase; }
 }
