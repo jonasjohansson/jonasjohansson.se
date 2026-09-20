@@ -48,24 +48,8 @@ blocks:
       on the rocks with a piece half-built. Choosing the work and making the
       work possible are the same job here.
   - type: image
-    src: fan-day.jpg
-    size: half-left
-    alt: "A large fan of thin steel ribs opens against a cloudy sky on the island's bare rock."
-  - type: image
-    src: fan-night.jpg
-    size: half-right
-    alt: "The same steel fan at night, its ribs picked out in white light against complete darkness."
-  - type: image
     src: red-arcs.jpg
     alt: "Red arcs of light zigzag along the shoreline at dusk, doubled in the still water below."
-  - type: image
-    src: seahorse.jpg
-    size: half-left
-    alt: "An ironwork seahorse stands in shallow water at sunset, its chain tail running back to the shore."
-  - type: image
-    src: lip-sculpture.jpg
-    size: half-right
-    alt: "A dark plinth holds a white sculpture of parted lips, facing the archipelago at dusk."
   - type: text
     fontSize: small
     content: >-
@@ -75,14 +59,6 @@ blocks:
   - type: image
     src: cinema.jpg
     alt: "One person sits alone on a bench in front of the outdoor cinema screen at night, the ground lit yellow in front of it."
-  - type: image
-    src: candles.jpg
-    size: half-left
-    alt: "A tall candle burns on the rock beside a handwritten note, with more candles glowing behind it."
-  - type: image
-    src: lanterns.jpg
-    size: half-right
-    alt: "A cluster of paper lanterns hangs under a wide red disc in the branches of an oak, the canopy washed red, two people sitting in the light below."
   - type: text
     fontSize: small
     content: >-
@@ -96,8 +72,7 @@ blocks:
     fontSize: small
     content: >-
       I draw the wristbands. For Tjärö 2025 that was orange roses on a thorned
-      vine the length of a purple band, worked into Ernst Lilja's identity for
-      the year, alongside the island's two maps.
+      vine the length of a purple band, alongside the island's two maps.
   - type: image
     src: tjaro-wristband.png
     size: full
@@ -112,8 +87,7 @@ blocks:
       PLX **turned twenty** in 2026 and marked it with ODE JOY, two nights in
       the old casino at Malmö Konstmuseum in Kungsparken. A large scaffolding
       installation stood in the main room. I built the site as its double: a
-      vine climbing a scaffold while you read the page. I ran the visuals
-      through both nights.
+      vine climbing a scaffold while you read the page.
   - type: image
     src: ode-tower-1.jpg
     colStart: 1
