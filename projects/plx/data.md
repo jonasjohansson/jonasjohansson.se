@@ -43,11 +43,10 @@ blocks:
     fontSize: small
     content: >-
       I have **curated the art since 2021**, and I lead **Konst & Teknik**, the
-      team that plans the light and lays the power the island runs on. That is
-      the part nobody sees: the cabling and the distribution every artist plugs
-      into, and the support they need once they are out on the rocks with a
-      piece half-built. Choosing the work and making the work possible are the
-      same job here.
+      team that plans the light and lays the power the island runs on: the
+      cabling every artist plugs into, and the help they need once they are out
+      on the rocks with a piece half-built. Choosing the work and making the
+      work possible are the same job here.
   - type: image
     src: fan-day.jpg
     size: half-left
@@ -67,9 +66,23 @@ blocks:
     src: lip-sculpture.jpg
     size: half-right
     alt: "A dark plinth holds a white sculpture of parted lips, facing the archipelago at dusk."
+  - type: text
+    fontSize: small
+    content: >-
+      The cinema is mine too — **co-created, programmed and built** each year.
+      Previews and works in progress from independent filmmakers, often in
+      conversation with Folkets Bio, played outdoors to whoever sits down.
   - type: image
     src: cinema.jpg
     alt: "One person sits alone on a bench in front of the outdoor cinema screen at night, the ground lit yellow in front of it."
+  - type: image
+    src: candles.jpg
+    size: half-left
+    alt: "A tall candle burns on the rock beside a handwritten note, with more candles glowing behind it."
+  - type: image
+    src: archipelago.jpg
+    size: half-right
+    alt: "Someone sits alone on the shoreline rock looking out at the low islands of the archipelago."
   - type: text
     fontSize: small
     content: >-
@@ -84,8 +97,7 @@ blocks:
     content: >-
       I draw the wristbands. For Tjärö 2025 that was orange roses on a thorned
       vine the length of a purple band, worked into Ernst Lilja's identity for
-      the year, alongside the two maps: the one that shows you the island and
-      the one that finds you your bed.
+      the year, alongside the island's two maps.
   - type: image
     src: tjaro-wristband.png
     size: full
@@ -104,12 +116,45 @@ blocks:
   - type: image
     src: ode-render-a.jpg
     alt: "A frame from the ODE JOY website with its writing hidden: a vine climbing pale scaffolding on a dark green ground."
+  - type: video
+    src: ode-climb.mp4
+    poster: ode-climb-poster.jpg
+    ar: 1.6
+    alt: "The ODE JOY site in motion: the camera climbs a scaffold tower hung with the lineup, the vine growing across it."
   - type: text
     fontSize: small
     content: >-
-      The wristbands took that scaffold with them, one band for each way in:
-      lime and violet on navy for both nights, orange and lime on oxblood for
-      the Friday alone.
+      The tower has four floors and the score climbs with you: strings on the
+      ground, a hihat on the second, a beat and a whistle on the third,
+      shakuhachi and steel pan at the summit. Six stems by Anton, crossfading by
+      camera height, and the tower loops, so the climb has no top.
+  - type: image
+    src: ode-stage.jpg
+    alt: "Beams of light rake through haze across a draped backdrop, a figure silhouetted at the microphone in front of it."
+  - type: image
+    src: ode-windows.jpg
+    size: half-left
+    alt: "Arched museum windows glow magenta and blue above a crowd in silhouette, a bright doorway at the centre."
+  - type: image
+    src: ode-beams.jpg
+    size: half-right
+    alt: "White beams cross above a packed dark hall, the crowd lit only by the stage behind them."
+  - type: image
+    src: ode-dinner.jpg
+    size: half-left
+    alt: "Guests in hats and flowers sit at a long candlelit table under greenery and bunting, in front of tall windows."
+  - type: image
+    src: ode-singer.jpg
+    size: half-right
+    alt: "A singer leans into the microphone, lit from the side in cyan and magenta that bleeds across the frame."
+  - type: image
+    src: ode-projection.jpg
+    alt: "Ochre and red light thrown across a painted surface, its drawn lines and faces catching the projection."
+  - type: text
+    fontSize: small
+    content: >-
+      The wristbands took that scaffold with them: lime and violet on navy for
+      both nights, orange and lime on oxblood for the Friday alone.
   - type: image
     src: ode-band-both.png
     size: full
@@ -125,6 +170,6 @@ blocks:
   - type: text
     fontSize: small
     content: >-
-      Photographs from Tjärö by [Olle Enqvist](https://olleenqvist.se), Djoana
-      Gueorguieva and David Neman.
+      Photographs from Tjärö and ODE JOY by [Olle Enqvist](https://olleenqvist.se),
+      Djoana Gueorguieva, David Neman and Petter Nilsson.
 ---
