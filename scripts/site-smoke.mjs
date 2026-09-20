@@ -70,65 +70,54 @@ async function waitForHomeWall(page) {
 const caption = page => page.locator('#strip-caption').evaluate(caption => caption.hidden ? '' : caption.textContent);
 
 async function checkFooter(page) {
-  // Phones list cards instead of a wall: no filter footer, no categories, no caption.
-  if (await page.evaluate(() => matchMedia('(hover: none)').matches)) {
-    assert.equal(await page.locator('#intro-links').isVisible(), false, 'phones show no filter footer');
+  const touch = await page.evaluate(() => matchMedia('(hover: none)').matches);
+  const home = await page.locator('body').getAttribute('data-route') === 'home';
+  const contacts = page.locator('#intro-links .header-contacts');
+  const contactBox = await contacts.boundingBox();
+  // Phones list cards, so the band under the list carries the links alone.
+  if (touch) {
     assert.equal(await page.locator('#project-filters').isVisible(), false, 'phones show no categories');
     assert.equal(await page.locator('#strip-caption').isVisible(), false, 'phones show no strip caption');
+    assert.equal(await contacts.isVisible(), true, 'phones keep the links under the list');
+    assert.deepEqual((await contacts.locator('a').allTextContents()).map(text => text.trim()), ['CV', 'Email'], 'contact links stay concise');
+    assert.equal(await contacts.locator('button[data-action="print"]').isVisible(), false, 'the print button stays off touch devices');
     return;
   }
   const footer = await page.locator('#intro-links').boundingBox();
   const wall = await page.locator('#strips').boundingBox();
-  const touch = await page.evaluate(() => matchMedia('(hover: none)').matches);
-  const home = await page.locator('body').getAttribute('data-route') === 'home';
-  // Both walls give the caption and the categories a band of their own under
-  // the work, with the same gap above them.
-  assert.ok(footer.y >= wall.y + wall.height - 1, 'the categories sit below the strips');
+  // Both walls give the caption, the filter and the links a band of their own
+  // under the work, with the same gap above them.
+  assert.ok(footer.y >= wall.y + wall.height - 1, 'the chrome sits below the strips');
   assert.ok(Math.abs(footer.y + footer.height - page.viewportSize().height) < 1, 'footer fits within the strip viewport');
-  const header = page.locator(home ? '#home-header' : '#collection-header');
-  const contacts = header.locator('.header-contacts');
-  const contactRow = await header.boundingBox();
-  if (home) {
-    // The landing's band is the writing alone: CV and email read in About's
-    // first sentence, in parentheses after the name, so the corner is empty.
-    assert.equal(await contacts.count(), 0, 'the landing band carries no corner links');
-    const intro = page.locator('#intro');
-    assert.deepEqual((await intro.locator('a').allTextContents()).slice(0, 2).map(text => text.trim()), ['CV', 'Email'],
-      'About opens with CV and email beside the name');
-    assert.equal(await intro.locator('a[href^="mailto:"]').count(), 1, 'the email is a link in About');
-    const introBox = await intro.boundingBox();
-    assert.ok(introBox.x >= wall.x - 1 && introBox.x + introBox.width <= wall.x + wall.width + 1, 'the writing stays within the strips');
-    assert.ok(contactRow.y + contactRow.height <= wall.y + 1, 'the band sits above the strips');
-    assert.equal(await page.locator('#project-filters').isVisible(), true, 'tag filters are available on both strip walls');
-    return checkFilterBounds(page);
-  }
-  const contactBox = await contacts.boundingBox();
   assert.deepEqual((await contacts.locator('a').allTextContents()).map(text => text.trim()), ['CV', 'Email'], 'contact links stay concise');
   assert.equal(await contacts.locator('svg').count(), 0, 'contact links are plain text');
   const printButton = contacts.locator('button[data-action="print"]');
   assert.equal(await printButton.count(), 1, 'a print button sits with the contacts');
-  if (touch) assert.equal(await printButton.isVisible(), false, 'the print button stays off touch devices');
-  else assert.equal((await printButton.textContent()).trim(), 'Print', 'the print button is plain text');
-  assert.ok(contactBox.x + contactBox.width <= wall.x + wall.width + 1, 'contact links stay within the strips');
-  // Both edges carry the same pixel of tolerance. The top had none, so a third
-  // of a pixel of sub-pixel rounding (contacts at 23.95 against a row at 24.31)
-  // failed this at random, with the header looking right in the screenshot.
-  assert.ok(contactBox.y >= contactRow.y - 1 && contactBox.y + contactBox.height <= contactRow.y + contactRow.height + 1,
-    `contacts fit in the row above the strips (contacts ${JSON.stringify(contactBox)} vs row ${JSON.stringify(contactRow)})`);
-  // The project title at the top of the page is the way home, so the wall
-  // carries no name and the links hold its right corner alone.
-  assert.equal(await header.locator('.collection-home-link').isVisible(), false, 'the wall above a project carries no name');
+  assert.equal((await printButton.textContent()).trim(), 'Print', 'the print button is plain text');
+  // The links hold the bottom-right corner on both walls, with the filter to
+  // their left; nothing is left in the corner above the work.
   assert.ok(Math.abs(contactBox.x + contactBox.width - wall.x - wall.width) < 1, 'the contacts sit flush with the wall’s right corner');
-  assert.ok(contactRow.y <= wall.y + 1 && contactRow.y + contactRow.height > wall.y, 'the header floats over the top of the strips');
-  const title = await page.locator('#header-toggle').boundingBox();
-  assert.ok(Math.abs(title.x + title.width / 2 - page.viewportSize().width / 2) < 1, 'project title remains centered');
-  assert.equal(await page.locator('#header-toggle').getAttribute('href'), `${prefix}/`, 'the project title leads home');
-  assert.equal(await page.locator('#header .header-contacts').count(), 0, 'project hero header contains only the title');
-  await contacts.evaluate(nav => { nav.scrollLeft = nav.scrollWidth; });
-  const email = await contacts.locator('a[href^="mailto:"]').boundingBox();
-  assert.ok(email.x >= contactBox.x && email.x + email.width <= contactBox.x + contactBox.width + 1, 'Email remains reachable in the scrolling contact row on phones');
-  await contacts.evaluate(nav => { nav.scrollLeft = 0; });
-  assert.equal(await page.locator('#project-filters').isVisible(), true, 'tag filters are available on both strip walls');
+  assert.ok(contactBox.y >= footer.y - 1 && contactBox.y + contactBox.height <= footer.y + footer.height + 1,
+    `contacts fit in the band under the strips (contacts ${JSON.stringify(contactBox)} vs band ${JSON.stringify(footer)})`);
+  const filterBox = await page.locator('#project-filters').boundingBox();
+  assert.ok(filterBox.x + filterBox.width <= contactBox.x + 1, 'the filter sits to the left of the links');
+  assert.equal(await page.locator('#intro a[href^="mailto:"]').count(), 0, 'the email is a link in the corner, not in About');
+  if (home) {
+    const intro = await page.locator('#intro').boundingBox();
+    assert.ok(intro.x >= wall.x - 1 && intro.x + intro.width <= wall.x + wall.width + 1, 'the writing stays within the strips');
+    assert.ok(intro.y + intro.height <= wall.y + 1, 'the writing sits above the strips');
+    assert.equal(await page.locator('#home-header .header-contacts').count(), 0, 'the landing band is the writing alone');
+  } else {
+    // The project title at the top of the page is the way home, so the wall
+    // carries no name and nothing sits over the work.
+    assert.equal(await page.locator('#collection-header .collection-home-link').isVisible(), false, 'the wall above a project carries no name');
+    assert.equal(await page.locator('#collection-header .header-contacts').count(), 0, 'nothing floats over the top of a project wall');
+    const title = await page.locator('#header-toggle').boundingBox();
+    assert.ok(Math.abs(title.x + title.width / 2 - page.viewportSize().width / 2) < 1, 'project title remains centered');
+    assert.equal(await page.locator('#header-toggle').getAttribute('href'), `${prefix}/`, 'the project title leads home');
+    assert.equal(await page.locator('#header .header-contacts').count(), 0, 'project hero header contains only the title');
+  }
+  assert.equal(await page.locator('#project-filters').isVisible(), true, 'the filter is available on both strip walls');
   return checkFilterBounds(page);
 }
 
@@ -142,14 +131,13 @@ async function checkFilterBounds(page) {
 
 try {
   await checkStripAudio({ check, visit, desktop, mobile });
-  // The landing band is the writing alone, so the print button now lives only
-  // on the wall a project page carries.
+  // The print button sits with the links, in the band under either wall.
   await check('the print button prints the portfolio', desktop, async page => {
     await visit(page);
     const slug = await page.evaluate(() => window.__PROJECTS_DATA__[0].slug);
     await visit(page, `/${slug}/`);
     await page.evaluate(() => { window.__printed = 0; window.print = () => { window.__printed += 1; }; });
-    await page.locator('#collection-header button[data-action="print"]').click();
+    await page.locator('#intro-links button[data-action="print"]').click();
     await page.waitForFunction(() => window.__printed === 1);
   });
 
@@ -325,14 +313,13 @@ try {
       assert.equal(wall.width, options.viewport.width - 48);
       assert.equal(await page.locator('#home-title').count(), 0, 'the landing page carries no name of its own');
       if (options.hasTouch) assert.ok(Math.abs(wall.y - header.y - header.height) < 1, 'on phones the wall starts directly below the header');
-      // The top band holds About and the links; the wall starts a gutter below it.
+      // The top band is the writing; the wall starts a gutter below it.
       else assert.ok(Math.abs(wall.y - header.y - header.height - 24) < 1, 'the wall starts one gutter below the top band');
       await checkFooter(page);
       assert.equal(await page.evaluate(() => document.documentElement.scrollWidth > innerWidth), false);
       const intro = await page.locator('#intro').boundingBox();
-      assert.ok(intro.y + intro.height <= wall.y + 1, 'About reads above the strips, in the band with the links');
-      // The band is the writing alone now, so it runs to the measure and no
-      // further: the links it carries are words inside that first sentence.
+      assert.ok(intro.y + intro.height <= wall.y + 1, 'About reads above the strips');
+      // The band is the writing alone: the links live under the wall now.
       assert.ok(intro.x + intro.width <= wall.x + wall.width + 1, 'the writing stays within the wall');
       if (options.hasTouch) {
         // Phones scroll a list of cards: a photograph with the project's name under it.
@@ -443,8 +430,8 @@ try {
       await page.goto(base + '/');
       await page.waitForFunction(() => document.documentElement.classList.contains('enhanced') && document.body.dataset.homeView === 'projects' && scrollY < 1);
       assert.equal(await page.locator('#home-title').count(), 0, 'the landing page carries no name of its own');
-      assert.equal(await page.locator('#home-header .header-contacts').count(), 0, 'the band carries no corner links');
-      assert.equal(await page.locator('#intro a[href$="format=pdf"]').count(), 1, 'the CV is a link in About');
+      assert.equal(await page.locator('#home-header .header-contacts').count(), 0, 'the top band carries no links');
+      assert.equal(await page.locator('#intro-links .header-contacts').isVisible(), true, 'the links sit under the wall instead');
       const wall = await page.locator('#strips').boundingBox();
       const intro = await page.locator('#intro').boundingBox();
       assert.ok(intro.y + intro.height <= wall.y + 1, 'About reads above the wall');
@@ -658,11 +645,14 @@ try {
       }
       await visit(page);
       const projects = await page.evaluate(() => window.__PROJECTS_DATA__);
-      const categories = page.locator('#project-category');
-      const tags = await categories.locator('option').evaluateAll(options => options.map(option => option.value));
-      assert.equal(tags[0], '', 'the dropdown opens on All work');
+      const categories = page.locator('#project-filter');
+      // One dropdown holds both lists, each under its own heading.
+      assert.deepEqual(await categories.locator('optgroup').evaluateAll(groups => groups.map(group => group.label)), ['Category', 'Year'],
+        'the dropdown groups categories and years');
+      assert.equal(await categories.locator('option').first().getAttribute('value'), '', 'the dropdown opens on All work');
+      const tags = await categories.locator('optgroup[label="Category"] option').evaluateAll(options => options.map(option => option.value));
       // Every tag a project carries is offered in the dropdown, and nothing else.
-      assert.deepEqual(new Set(tags.slice(1)), new Set(projects.flatMap(project => project.tags).filter(tag => !/^\d{4}$/.test(tag))));
+      assert.deepEqual(new Set(tags), new Set(projects.flatMap(project => project.tags).filter(tag => !/^\d{4}$/.test(tag))));
       assert.equal(tags.includes('education'), false, 'Education is no longer a filter');
       assert.ok(projects.find(project => project.slug === 'visualia').tags.includes('community'), 'Visualia belongs to Community');
       assert.ok(projects.find(project => project.slug === 'svartljus').tags.includes('community'), 'Svartljus belongs to Community');
@@ -692,7 +682,7 @@ try {
       assert.equal(await categories.inputValue(), 'light', 'choosing Light shows Light');
       await choose('');
       await checkFooter(page);
-      for (const tag of tags.slice(1)) await choose(tag);
+      for (const tag of tags) await choose(tag);
       await choose('community');
       const expected = await visibleSlugs();
       const strip = page.locator('.strip:not([hidden])').first();
@@ -750,58 +740,58 @@ try {
       // The wall is ordered by colour, not date; expectations follow the wall.
       const wallOrder = await page.locator('#strips .strip').evaluateAll(strips => strips.map(strip => strip.dataset.project));
       datedProjects.sort((a, b) => wallOrder.indexOf(a.slug) - wallOrder.indexOf(b.slug));
-      const yearSelect = page.getByRole('combobox', { name: 'Year', exact: true });
-      const categorySelect = page.getByRole('combobox', { name: 'Category', exact: true });
+      const filter = page.locator('#project-filter');
       const visible = () => page.locator('#strips .strip:not([hidden])').evaluateAll(strips => strips.map(strip => strip.dataset.project));
-      assert.equal(await yearSelect.getAttribute('multiple'), null, 'the year selector cannot select multiple years');
-      assert.equal(await categorySelect.getAttribute('multiple'), null, 'the category selector cannot select multiple categories');
-      assert.deepEqual(await yearSelect.locator('option').allTextContents(), ['All years', '2026', '2025', '2024', '2023']);
-      assert.equal(await page.locator('#project-filters button').count(), 0, 'both filters are dropdowns, not rows of toggles');
+      assert.equal(await filter.getAttribute('multiple'), null, 'the filter cannot hold two selections at once');
+      assert.deepEqual(await filter.locator('optgroup[label="Year"] option').allTextContents(), ['2026', '2025', '2024', '2023']);
+      assert.equal(await page.locator('#project-filters button').count(), 0, 'the filter is a dropdown, not a row of toggles');
+      assert.equal(await page.locator('#project-filters select').count(), 1, 'the year and the categories share one dropdown');
       for (const year of ['2025', '2024', '2023', '2026', '']) {
-        await yearSelect.selectOption(year);
+        await filter.selectOption(year);
         assert.deepEqual(await visible(), expected(year), 'changing year replaces the previous selection');
-        assert.equal(await yearSelect.inputValue(), year);
+        assert.equal(await filter.inputValue(), year);
       }
-      await yearSelect.selectOption('2025');
-      await categorySelect.selectOption('mixed reality');
-      assert.equal(await yearSelect.inputValue(), '', 'choosing a category clears the year');
+      // One control, so a category and a year cannot both be held: each choice
+      // replaces the last, and the dropdown always shows what is on the wall.
+      await filter.selectOption('2025');
+      await filter.selectOption('mixed reality');
+      assert.equal(await filter.inputValue(), 'mixed reality', 'choosing a category replaces the year');
       assert.deepEqual(await visible(), expected('', '', ['mixed reality']), 'the category applies across all years');
-      await categorySelect.selectOption('community');
+      await filter.selectOption('community');
       assert.deepEqual(await visible(), expected('', '', ['community']), 'a second choice replaces the first');
-      await yearSelect.selectOption('2024');
-      assert.equal(await categorySelect.inputValue(), '', 'choosing a year returns the category to All work');
+      await filter.selectOption('2024');
+      assert.equal(await filter.inputValue(), '2024', 'choosing a year replaces the category');
       assert.deepEqual(await visible(), expected('2024'), 'the year applies across all categories');
-      assert.equal(await page.locator('#project-year option[disabled]').count(), 0, 'every year stays available');
-      await categorySelect.selectOption('community');
-      assert.equal(await yearSelect.inputValue(), '');
+      assert.equal(await page.locator('#project-filter option[disabled]').count(), 0, 'nothing is closed off on the landing page');
+      await filter.selectOption('community');
       assert.deepEqual(await visible(), expected('', '', ['community']));
-      await categorySelect.selectOption('design');
+      await filter.selectOption('design');
       assert.deepEqual(await visible(), expected('', '', ['design']));
 
       // Back to all work, then check the single-year state through navigation.
-      await categorySelect.selectOption('');
-      await yearSelect.selectOption('2023');
-      await yearSelect.scrollIntoViewIfNeeded();
-      const yearBounds = await yearSelect.boundingBox(), filterBounds = await page.locator('#project-filters').boundingBox();
-      assert.ok(yearBounds.x >= filterBounds.x - 1 && yearBounds.x + yearBounds.width <= filterBounds.x + filterBounds.width + 1, 'the year dropdown is reachable in the scrolling footer');
+      await filter.selectOption('');
+      await filter.selectOption('2023');
+      await filter.scrollIntoViewIfNeeded();
+      const filterBox = await filter.boundingBox(), filterBounds = await page.locator('#project-filters').boundingBox();
+      assert.ok(filterBox.x >= filterBounds.x - 1 && filterBox.x + filterBox.width <= filterBounds.x + filterBounds.width + 1, 'the dropdown is reachable in the scrolling footer');
       await checkFooter(page);
       await page.screenshot({ path: `${output}/year-filter-${name}.png` });
       const chosen = expected('2023')[0];
       await openStrip(page, page.locator(`#strip-${chosen}`), 'click');
       await page.waitForSelector(`#projects [data-project="${chosen}"]`);
       await page.locator('#collection').evaluate(collection => collection.scrollIntoView({ block: 'start' }));
-      assert.equal(await yearSelect.inputValue(), '', 'new project walls start with all years');
-      await yearSelect.selectOption('2023');
+      assert.equal(await filter.inputValue(), '', 'new project walls start with all years');
+      await filter.selectOption('2023');
       assert.deepEqual(await visible(), expected('2023', chosen), 'project pages exclude the open project');
-      await yearSelect.selectOption('2024');
+      await filter.selectOption('2024');
       assert.deepEqual(await visible(), expected('2024', chosen));
       await page.goBack();
       await waitForHomeWall(page);
       assert.deepEqual(await visible(), expected('2023'), 'Back restores the homepage year selection');
-      assert.equal(await yearSelect.inputValue(), '2023');
+      assert.equal(await filter.inputValue(), '2023');
       await page.goForward();
       await page.waitForSelector(`#projects [data-project="${chosen}"]`);
-      assert.equal(await yearSelect.inputValue(), '2024', 'Forward restores the project wall year selection');
+      assert.equal(await filter.inputValue(), '2024', 'Forward restores the project wall year selection');
       assert.deepEqual(await visible(), expected('2024', chosen));
     });
   }
@@ -833,16 +823,16 @@ try {
       // In this fixture Light belongs only to the open project, so the wall it
       // would leave is empty: the dropdown closes that category off rather
       // than emptying the wall.
-      const categorySelect = page.locator('#project-category');
-      const option = value => categorySelect.locator(`option[value="${value}"]`);
+      const filter = page.locator('#project-filter');
+      const option = value => filter.locator(`option[value="${value}"]`);
       const before = await page.locator('.strip:not([hidden])').evaluateAll(strips => strips.map(strip => strip.dataset.project));
       assert.equal(await option('light').evaluate(option => option.disabled), true, 'a category with nothing left to show is not selectable');
       assert.equal(await option('community').evaluate(option => option.disabled), false, 'a category with work left stays selectable');
       assert.equal(await option('').evaluate(option => option.disabled), false, 'All work is always available');
-      assert.equal(await categorySelect.inputValue(), '', 'a project wall opens on All work');
+      assert.equal(await filter.inputValue(), '', 'a project wall opens on All work');
       assert.deepEqual(await page.locator('.strip:not([hidden])').evaluateAll(strips => strips.map(strip => strip.dataset.project)), before);
-      await categorySelect.selectOption('community');
-      assert.equal(await categorySelect.inputValue(), 'community', 'the dropdown works on project pages too');
+      await filter.selectOption('community');
+      assert.equal(await filter.inputValue(), 'community', 'the dropdown works on project pages too');
       assert.equal(await option('light').evaluate(option => option.disabled), true, 'the closed-off category stays closed off');
       const expected = await page.evaluate(() => window.__PROJECTS_DATA__.filter(project => project.slug !== 'society-expo' && project.tags.includes('community')).map(project => project.slug));
       assert.deepEqual(await page.locator('.strip:not([hidden])').evaluateAll(strips => strips.map(strip => strip.dataset.project)), expected);
@@ -855,12 +845,12 @@ try {
       await page.goBack();
       await page.waitForFunction(() => document.documentElement.dataset.project === 'society-expo');
       assert.ok(await page.evaluate(() => scrollY) < 1, 'Back from a strip returns to the top of the project, not the wall it was clicked in');
-      assert.equal(await categorySelect.inputValue(), 'community');
+      assert.equal(await filter.inputValue(), 'community');
       assert.deepEqual(await page.locator('.strip:not([hidden])').evaluateAll(strips => strips.map(strip => strip.dataset.project)), expected);
       await page.locator('#header-toggle').click();
       // The project's own title leads home, which opens on the wall.
       await page.waitForFunction(() => document.body.dataset.route === 'home' && document.body.dataset.homeView === 'projects' && scrollY < 1);
-      assert.equal(await categorySelect.inputValue(), '', 'project filters do not change the homepage selection');
+      assert.equal(await filter.inputValue(), '', 'project filters do not change the homepage selection');
       // The wall is the top of the landing page, and the contacts sit in a band
       // above it: scrolling to the wall's own top would leave the categories a
       // band short of the foot of the screen.
@@ -879,10 +869,9 @@ try {
         return;
       }
       await visit(page);
-      const yearSelect = page.getByRole('combobox', { name: 'Year', exact: true });
-      const categorySelect = page.locator('#project-category');
-      await categorySelect.selectOption('light');
-      assert.equal(await categorySelect.inputValue(), 'light', 'a category is selected');
+      const filter = page.locator('#project-filter');
+      await filter.selectOption('light');
+      assert.equal(await filter.inputValue(), 'light', 'a category is selected');
       const first = page.locator('#strips .strip:not([hidden])').first();
       const slug = await first.getAttribute('data-project');
       await openStrip(page, first, 'dispatch');
@@ -896,14 +885,13 @@ try {
         await page.evaluate(() => scrollTo({ top: document.getElementById('collection').getBoundingClientRect().top + scrollY, behavior: 'instant' }));
       } else await page.locator('#header-toggle').click();
       await waitForHomeWall(page);
-      assert.equal(await categorySelect.inputValue(), '', 'leaving the project for the landing page returns to All work');
-      assert.equal(await yearSelect.inputValue(), '', 'and no year');
-      await yearSelect.selectOption('2024');
+      assert.equal(await filter.inputValue(), '', 'leaving the project for the landing page returns to All work');
+      await filter.selectOption('2024');
       await openStrip(page, page.locator('#strips .strip:not([hidden])').first(), 'dispatch');
       await page.waitForFunction(() => !!document.documentElement.dataset.project);
       await page.goBack();
       await waitForHomeWall(page);
-      assert.equal(await yearSelect.inputValue(), '2024', 'Back keeps the filters as they were');
+      assert.equal(await filter.inputValue(), '2024', 'Back keeps the filters as they were');
     });
 
     // A pointer device leaves a project by its title at the top of the page; a
@@ -986,23 +974,23 @@ try {
       const collection = document.getElementById('collection').getBoundingClientRect();
       return { x: rect.x - collection.x, y: rect.y - collection.y, width: rect.width, height: rect.height };
     });
-    const categorySelect = page.locator('#project-category');
+    const filter = page.locator('#project-filter');
     for (const route of ['/', '/jagad/']) {
       await visit(page, route);
       await page.locator('#collection').evaluate(collection => collection.scrollIntoView({ block: 'start' }));
-      const before = await categorySelect.inputValue();
+      const before = await filter.inputValue();
       const footer = await footerLayout();
       const label = await page.locator('#strip-kagora').getAttribute('aria-label');
       await page.locator('#strip-kagora').hover();
       assert.equal(await caption(page), label, 'hovering names the project');
-      assert.equal(await categorySelect.inputValue(), before, 'previewing a project does not change the filters');
+      assert.equal(await filter.inputValue(), before, 'previewing a project does not change the filters');
       assert.deepEqual(await footerLayout(), footer, 'the preview does not shift the footer within the collection');
       await page.screenshot({ path: `${output}/tag-preview${route === '/' ? '-home' : '-project'}.png` });
       await page.mouse.move(0, 0);
       assert.equal(await caption(page), '', 'the caption clears on pointer leave');
-      await categorySelect.selectOption('light');
+      await filter.selectOption('light');
       await page.locator('#strip-kagora').hover();
-      assert.equal(await categorySelect.inputValue(), 'light', 'the preview leaves a chosen category in place');
+      assert.equal(await filter.inputValue(), 'light', 'the preview leaves a chosen category in place');
       await page.mouse.move(0, 0);
     }
   });
@@ -1025,7 +1013,7 @@ try {
     for (const route of ['/', '/jagad/']) {
       await visit(page, route);
       if (route === '/') {
-        await page.locator('#project-category').selectOption('mixed reality');
+        await page.locator('#project-filter').selectOption('mixed reality');
       }
       await page.locator('#collection').scrollIntoViewIfNeeded();
       await page.mouse.move(0, 0);
@@ -1362,7 +1350,7 @@ try {
   await check('project image strips exclude the open project and support navigation', desktop, async page => {
     await visit(page);
     const count = await page.locator('a.strip:visible').count();
-    assert.equal(await page.locator('.collection-toolbar, .collection-controls, #project-filter, #shuffle-projects').count(), 0);
+    assert.equal(await page.locator('.collection-toolbar, .collection-controls, #shuffle-projects').count(), 0);
     await page.locator('#strip-jagad').click();
     await page.waitForSelector('#projects #jagad');
     assert.equal(await page.locator('#strip-jagad').isVisible(), false);

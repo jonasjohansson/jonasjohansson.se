@@ -38,10 +38,8 @@ body[data-route="home"] .collection-header { display: none; }
 .enhanced body[data-route="home"] #strips { height: auto; }
 .enhanced body[data-route="home"] .strip { height: auto; align-self: stretch; }
 .enhanced .home-header { position: relative; z-index: var(--z-filter); padding: var(--page-gutter) var(--page-gutter) 0; background: none; }
-/* The links are the row's only child on a pointer device, so they hold the
-   wall's right corner rather than being stranded at its left one. */
-.enhanced .collection-header { position: absolute; top: var(--page-gutter); left: 0; right: 0; z-index: var(--z-filter); justify-content: space-between; align-items: flex-start; column-gap: var(--spacing-md); }
-.enhanced .header-contacts { margin-left: auto; }
+/* Only phones put anything in this row now — the name, as their way home. */
+.enhanced .collection-header { position: absolute; top: var(--page-gutter); left: 0; right: 0; z-index: var(--z-filter); justify-content: flex-start; align-items: flex-start; column-gap: var(--spacing-md); }
 /* The caption and the categories have a band of their own under the wall on
    every route, so nothing sits on the work. A project wall is a screenful, so
    it gives up the band's height from its own padding; the landing's wall
@@ -79,6 +77,10 @@ body[data-route="home"] .collection-header { display: none; }
      name as you scroll. Project pages keep theirs: it is the way back home. */
   .enhanced body[data-route="home"] #home-title { display: none; }
   .enhanced .collection-header { position: static; height: auto; padding-bottom: var(--chrome-pad); }
-  .enhanced .intro-links { display: none; }
+  /* The band under the list carries the links alone: no categories, no
+     caption, and on a phone no year either. */
+  .enhanced .intro-links { height: auto; padding-top: var(--spacing-xl); }
+  .enhanced .strip-caption, .enhanced .project-filters { display: none; }
+  .enhanced .project-filters + .header-contacts { margin-left: auto; }
   .home-header h1, .header-contacts, .collection-home-link { background: none; }
 }

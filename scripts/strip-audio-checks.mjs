@@ -98,7 +98,7 @@ export async function checkStripAudio({ check, visit, desktop, mobile }) {
     assert.equal((await notes()).length, settled, 'moving inside a strip and resting do not repeat the note');
     assert.equal(await page.evaluate(() => window.__stripSound.active), 0, 'short notes finish and release their oscillators');
     await page.mouse.move(8, 8);
-    await page.getByRole('combobox', { name: 'Year', exact: true }).selectOption('2025');
+    await page.locator('#project-filter').selectOption('2025');
     assert.equal((await notes()).length, settled, 'filter changes are silent');
     await strips.first().hover();
     await page.waitForFunction(count => window.__stripSound.notes.length === count * 2, settled + 1);

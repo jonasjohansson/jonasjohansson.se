@@ -46,18 +46,25 @@ function canSelectOnlyTag(tag) {
   return hasMatches(new Set([tag]), '');
 }
 
-// The dropdown carries one category at a time; the whole set means All work.
-function selectedCategory() {
+// One dropdown carries both lists, because they were always alternatives: a
+// category, a year, or All work. The whole set of categories means All work.
+function currentFilter() {
+  if (activeYear) return activeYear;
   return activeTags.size === categories.length ? '' : [...activeTags][0];
 }
 
+// A choice is offered only if it leaves something on the wall. On a project
+// page the open project is not on its own wall, so a category it alone holds
+// would empty it.
+function canSelect(value) {
+  if (!value) return true;
+  return isYear(value) ? hasMatches(new Set(categories), value) : canSelectOnlyTag(value);
+}
+
 function updateFilterStates() {
-  const categorySelect = document.getElementById('project-category');
-  categorySelect.value = selectedCategory();
-  for (const option of categorySelect.options) option.disabled = option.value !== '' && !canSelectOnlyTag(option.value);
-  const yearSelect = document.getElementById('project-year');
-  yearSelect.value = activeYear;
-  for (const option of yearSelect.options) option.disabled = !hasMatches(new Set(categories), option.value);
+  const filter = document.getElementById('project-filter');
+  filter.value = currentFilter();
+  for (const option of filter.options) option.disabled = !canSelect(option.value);
 }
 
 function setImageSize(entry, width) {
@@ -232,20 +239,20 @@ export function initializeStrips() {
   initializeStripAudio();
   document.documentElement.classList.add('enhanced');
   const filters = document.getElementById('project-filters');
-  const categorySelect = document.createElement('select');
-  categorySelect.id = 'project-category';
-  categorySelect.setAttribute('aria-label', 'Category');
-  categorySelect.setAttribute('aria-controls', 'strips');
-  categorySelect.add(new Option('All work', ''));
-  for (const tag of categories) categorySelect.add(new Option(tag === 'av' ? 'Audiovisual' : tag[0].toUpperCase() + tag.slice(1), tag));
-  filters.append(categorySelect);
-  const yearSelect = document.createElement('select');
-  yearSelect.id = 'project-year';
-  yearSelect.setAttribute('aria-label', 'Year');
-  yearSelect.setAttribute('aria-controls', 'strips');
-  yearSelect.add(new Option('All years', ''));
-  for (const year of years) yearSelect.add(new Option(year, year));
-  filters.append(yearSelect);
+  const filter = document.createElement('select');
+  filter.id = 'project-filter';
+  filter.setAttribute('aria-label', 'Filter projects');
+  filter.setAttribute('aria-controls', 'strips');
+  filter.add(new Option('All work', ''));
+  const group = (label, values, text) => {
+    const optgroup = document.createElement('optgroup');
+    optgroup.label = label;
+    for (const value of values) optgroup.append(new Option(text(value), value));
+    filter.append(optgroup);
+  };
+  group('Category', categories, tag => tag === 'av' ? 'Audiovisual' : tag[0].toUpperCase() + tag.slice(1));
+  group('Year', years, year => year);
+  filters.append(filter);
   filters.hidden = false;
   updateFilterStates();
   const applyFilters = () => {
@@ -254,26 +261,18 @@ export function initializeStrips() {
     const top = currentSlug ? document.getElementById('collection').getBoundingClientRect().top + scrollY : homeScrollTop();
     scrollTo({ top, behavior: matchMedia('(prefers-reduced-motion: reduce)').matches ? 'instant' : 'smooth' });
   };
-  yearSelect.addEventListener('change', () => {
-    if (!hasMatches(new Set(categories), yearSelect.value)) {
-      yearSelect.value = activeYear;
+  filter.addEventListener('change', () => {
+    const value = filter.value;
+    if (!canSelect(value)) {
+      filter.value = currentFilter();
       return;
     }
-    filterSelections.get(currentSlug).year = yearSelect.value;
+    // Picking from one list clears the other, which is what a single dropdown
+    // says on its face: a year shows every category, a category every year.
+    filterSelections.get(currentSlug).year = isYear(value) ? value : '';
     activeTags.clear();
-    categories.forEach(tag => activeTags.add(tag));
-    applyFilters();
-  });
-  categorySelect.addEventListener('change', () => {
-    const tag = categorySelect.value;
-    if (tag && !canSelectOnlyTag(tag)) {
-      categorySelect.value = selectedCategory();
-      return;
-    }
-    filterSelections.get(currentSlug).year = '';
-    activeTags.clear();
-    if (tag) activeTags.add(tag);
-    else categories.forEach(category => activeTags.add(category));
+    if (value && !isYear(value)) activeTags.add(value);
+    else categories.forEach(tag => activeTags.add(tag));
     applyFilters();
   });
   updateStrips(document.documentElement.dataset.project);
