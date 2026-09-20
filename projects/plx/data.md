@@ -69,9 +69,9 @@ blocks:
   - type: text
     fontSize: small
     content: >-
-      The cinema is mine too — **co-created, programmed and built** each year.
-      Previews and works in progress from independent filmmakers, often in
-      conversation with Folkets Bio, played outdoors to whoever sits down.
+      I **host the cinema**: putting it up each year and helping curate what
+      plays. Previews and works in progress from independent filmmakers, often
+      in conversation with Folkets Bio, shown outdoors to whoever sits down.
   - type: image
     src: cinema.jpg
     alt: "One person sits alone on a bench in front of the outdoor cinema screen at night, the ground lit yellow in front of it."
