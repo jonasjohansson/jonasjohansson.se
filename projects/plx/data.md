@@ -114,8 +114,8 @@ blocks:
       vine that climbs a scaffold while you read the page — and ran the visuals
       through both nights.
   - type: image
-    src: ode-render-a.jpg
-    alt: "A frame from the ODE JOY website with its writing hidden: a vine climbing pale scaffolding on a dark green ground."
+    src: ode-tower.jpg
+    alt: "The ODE JOY tower rendered without its writing: a scaffold of stairs and platforms in lilac and terracotta, two stage cages bracketing it, a vine climbing the whole run."
   - type: video
     src: ode-climb.mp4
     poster: ode-climb-poster.jpg
