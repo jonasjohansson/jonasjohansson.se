@@ -73,18 +73,8 @@ blocks:
       The level is placed from the original map data rather than eyeballed from
       screenshots: two flag bases, twenty player starts, 56 pickups, 166
       navigation points and 592 path connections. I started from a 3D map model
-      by Harry Clark, which had compressed the arena to 43% of its real scale.
+      by Harry Clarke, which had compressed the arena to 43% of its real scale.
       Restoring the 71-metre towers and grounding the old path network against a new
       navigation surface brought back the long, exposed crossings that give
       Facing Worlds its rhythm.
-  - type: text
-    fontSize: small
-    content: >-
-      CTF-Face was designed by Cédric “Inoxx” Fiorentino. Unreal Tournament was
-      made by Epic Games and Digital Extremes, and “Foregone Destruction” was
-      written by Michiel van den Bos. I went back to my retail copy and extracted
-      its actor table, bot paths, UnrealScript rules, character and weapon models,
-      HUD textures, effects and sounds. This is a non-commercial fan recreation
-      and a study of their work; those assets and ideas remain theirs. Original
-      UT99 assets remain copyright Epic Games.
 ---

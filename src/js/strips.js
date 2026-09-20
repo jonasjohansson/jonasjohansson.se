@@ -241,7 +241,9 @@ export function updateStrips(slug) {
   // Phones show a card list, which needs neither the scrub nor the two-step tap.
   if (!matchMedia('(hover: none)').matches) bindTouchScrub(document.getElementById('strips'), controller.signal);
   bindStripAudio(document.getElementById('strips'), controller.signal);
-  bindAccordion(document.getElementById('strips'), controller.signal);
+  // Squeezing the window plays the wall only where the wall is the page. A
+  // project page is read, and resizing it should not start an instrument.
+  if (!currentSlug) bindAccordion(document.getElementById('strips'), controller.signal);
 }
 
 export function initializeStrips() {

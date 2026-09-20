@@ -242,6 +242,30 @@ export async function checkStripAudio({ check, visit, desktop, mobile }) {
     assert.ok(peak < 0.5, `they open at playing level rather than full scale (peak ${peak.toFixed(2)})`);
   });
 
+  // The wall under a project is there to leave by, not to play: squeezing the
+  // window while reading one should not start an instrument.
+  await check('a project page stays quiet when the window is squeezed', desktop, async page => {
+    await observeAudio(page);
+    await visit(page, '/jagad/');
+    await page.mouse.click(8, 8);
+    await page.waitForFunction(() => window.__stripSound.contexts[0]?.state === 'running');
+    assert.equal(new URL(page.url()).pathname.includes('jagad'), true, 'unlocking did not navigate away');
+    const strip = await page.evaluate(() => innerWidth / document.querySelectorAll('#strips .strip:not([hidden])').length);
+    for (let step = 1; step <= 4; step++) {
+      await page.setViewportSize({ width: Math.round(1440 - strip * step), height: 900 });
+      await page.waitForTimeout(60);
+    }
+    await page.waitForTimeout(200);
+    assert.equal(await page.evaluate(() => window.__stripSound.notes.length), 0, 'the wall under a project is read, not played');
+    // And the landing still plays: the guard is the route, not a broken bind.
+    await visit(page);
+    for (let step = 1; step <= 4; step++) {
+      await page.setViewportSize({ width: Math.round(1440 - strip * step), height: 900 });
+      await page.waitForTimeout(60);
+    }
+    assert.ok(await page.evaluate(() => window.__stripSound.notes.length) > 0, 'the landing still plays');
+  });
+
   await check('rotating a phone does not sound the strips', mobile, async page => {
     await observeAudio(page);
     await visit(page);
