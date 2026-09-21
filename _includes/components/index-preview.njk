@@ -4,31 +4,40 @@
   body[data-index-view="index"] #strips {
     --strip-min-width: var(--spacing-xl);
     --strip-grow: 1;
-    --index-font-size: clamp(1rem, 1.4vw, 1.375rem);
+    --index-font-size: clamp(var(--font-size-ui), 1.1vw, 1rem);
     border-block: 1px solid var(--border-muted);
     border-inline-start: 1px solid var(--border-muted);
     touch-action: pan-x pan-y;
   }
-  body[data-index-view="index"] .strip {
-    background: var(--bg-primary);
+  body[data-index-view="index"] .strip::after {
+    content: '';
+    position: absolute;
+    inset: 0;
+    background: linear-gradient(to top, color-mix(in srgb, var(--color-black) 80%, transparent), transparent 85%);
     box-shadow: inset -1px 0 var(--border-muted);
+    pointer-events: none;
   }
-  body[data-index-view="index"] .strip-image { visibility: hidden; }
   body[data-index-view="index"] .strip-title {
     display: block;
     position: absolute;
     bottom: var(--spacing-md);
     left: 50%;
+    z-index: 1;
     max-height: calc(100% - 2 * var(--spacing-md));
     writing-mode: vertical-rl;
     transform: translateX(-50%) rotate(180deg);
     font-size: var(--index-font-size);
     line-height: var(--line-height-ui);
+    text-transform: uppercase;
+    letter-spacing: var(--letter-spacing-caps);
+    color: var(--color-white);
+    text-shadow: 0 1px var(--spacing-xs) var(--color-black);
     white-space: nowrap;
     overflow: hidden;
     text-overflow: ellipsis;
     pointer-events: none;
   }
+  body[data-index-view="index"] .strip:focus-visible { outline-color: var(--color-white); }
   .project-filters .index-toggle {
     flex: none;
     padding: 0;
@@ -71,9 +80,9 @@
   function setView(showIndex, announce = false) {
     document.body.dataset.indexView = showIndex ? 'index' : 'images';
     toggle.textContent = showIndex ? 'Images' : 'Index';
-    toggle.setAttribute('aria-label', showIndex ? 'Show project images' : 'Show project names');
+    toggle.setAttribute('aria-label', showIndex ? 'Show images only' : 'Show project names');
     if (announce) {
-      document.getElementById('route-announcer').textContent = showIndex ? 'Project names shown' : 'Project images shown';
+      document.getElementById('route-announcer').textContent = showIndex ? 'Project images with names shown' : 'Project images shown';
     }
     // Let the original wall update image sizes after restoring its widths.
     dispatchEvent(new Event('resize'));
