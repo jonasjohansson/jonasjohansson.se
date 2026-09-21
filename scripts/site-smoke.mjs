@@ -438,7 +438,8 @@ try {
         }));
         assert.ok(slivers.length > 1, 'every other project is a sliver');
         assert.ok(!slivers.some(sliver => sliver.slug === 'jagad'), 'the open project has none');
-        assert.ok(slivers.every(sliver => sliver.width >= 8 && sliver.height === wall.height && sliver.named && sliver.visibleText === ''),
+        const sliverWidth = wall.width / slivers.length;
+        assert.ok(slivers.every(sliver => Math.abs(sliver.width - sliverWidth) < 1 && sliver.height === wall.height && sliver.named && sliver.visibleText === ''),
           `every sliver is thin, full height and named (${Math.round(slivers[0].width)} of ${Math.round(wall.width)})`);
         assert.equal(await page.locator('#strips').evaluate(strips => strips.scrollWidth <= strips.clientWidth + 1), true,
           'and they all fit without scrolling sideways');
@@ -1096,7 +1097,7 @@ try {
       await search.fill('vi-kommer');
       assert.deepEqual(await shown(), ['vi-kommer-i-fred'], 'the address finds it too');
       await search.fill('dome');
-      assert.deepEqual(await shown(), ['dome-dreaming'], 'a fragment is enough');
+      assert.deepEqual((await shown()).sort(), ['dome-conductor', 'dome-dreaming'], 'a fragment finds both matching projects');
       // A name that matches nothing leaves the wall as it was, the same rule
       // the dropdown follows by closing off a category with nothing to show.
       const before = await shown();

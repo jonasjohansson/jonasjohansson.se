@@ -76,6 +76,9 @@ blocks:
       their own ideas into the rooms. The story of the city keeps growing
       with the people who enter it.
   - type: image
+    src: interactive-wall.jpg
+    alt: "An adult holds a child reaching for a yellow hand-shaped touch panel, beside a glowing loop of light and a white bust."
+  - type: image
     src: exhibition-visitors.jpg
     size: half-left
     alt: "Visitors explore the exhibition beneath winding white lights, with a blue slide and pink, blue and orange displays."
