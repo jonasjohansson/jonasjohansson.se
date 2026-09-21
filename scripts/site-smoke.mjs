@@ -379,7 +379,7 @@ try {
           return { count: strips.length, scrolls: wall.scrollWidth > wall.clientWidth + 1,
             widths: strips.map(strip => strip.getBoundingClientRect().width),
             heights: new Set(strips.map(strip => Math.round(strip.getBoundingClientRect().height))).size,
-            titles: strips.every(strip => getComputedStyle(strip.querySelector('.strip-title')).display === 'none') };
+            titles: strips.every(strip => strip.innerText.trim() === '') };
         });
         assert.ok(slivers.count > 1, 'every project is on the wall');
         assert.equal(slivers.scrolls, false, 'the whole wall fits one screen');
@@ -782,7 +782,7 @@ try {
       const visible = () => page.locator('#strips .strip:not([hidden])').evaluateAll(strips => strips.map(strip => strip.dataset.project));
       assert.equal(await filter.getAttribute('multiple'), null, 'the filter cannot hold two selections at once');
       assert.deepEqual(await filter.locator('optgroup[label="Year"] option').allTextContents(), ['2026', '2025', '2024', '2023']);
-      assert.equal(await page.locator('#project-filters button:not(#project-view)').count(), 0, 'filter choices remain in the dropdown');
+      assert.equal(await page.locator('#project-filters button').count(), 0, 'filter choices remain in the dropdown');
       assert.equal(await page.locator('#project-filters select').count(), 1, 'the year and the categories share one dropdown');
       for (const year of ['2025', '2024', '2023', '2026', '']) {
         await filter.selectOption(year);
@@ -1525,8 +1525,7 @@ try {
 
   await check('home image wall stays light and footer has no divider', desktop, async page => {
     await visit(page);
-    assert.equal(await page.locator('.strip-upcoming, .strip-status, .strip-meta, #collection button').count(), 0);
-    assert.equal(await page.locator('#strips').getAttribute('data-view'), 'images', 'photographs remain the default view');
+    assert.equal(await page.locator('.strip-upcoming, .strip-status, .strip-meta, .strip-title, #project-view, #collection button').count(), 0);
     const published = await page.evaluate(() => window.__PROJECTS_DATA__.map(project => project.slug));
     assert.deepEqual(await page.locator('#strips .strip').evaluateAll(strips => strips.map(strip => strip.dataset.project)), published);
     await page.locator('#collection').scrollIntoViewIfNeeded();
