@@ -14,7 +14,7 @@
   font-display: swap;
 }
 
-/* Inter Regular 4.1, https://rsms.me/inter/, for labels and controls. */
+/* Inter Regular 4.1, https://rsms.me/inter/, only for the sliver titles. */
 @font-face {
   font-family: "Inter";
   src: url("../fonts/Inter-Regular.woff2") format("woff2");

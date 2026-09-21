@@ -26,7 +26,6 @@
   min-width: 0;
   padding: var(--chrome-pad) 0 0 var(--chrome-pad);
   background: var(--bg-primary);
-  font-family: var(--font-family-ui);
   font-size: var(--font-size-ui);
   line-height: var(--line-height-ui);
 }

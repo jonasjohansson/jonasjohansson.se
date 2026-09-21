@@ -55,7 +55,7 @@
 
   /* Typography */
   --font-family: "SeasonMix", system-ui, -apple-system, Segoe UI, Roboto, Helvetica, Arial, sans-serif;
-  --font-family-ui: "Inter", system-ui, -apple-system, "Segoe UI", sans-serif;
+  --font-family-strip-title: "Inter", system-ui, -apple-system, "Segoe UI", sans-serif;
   /* Type scale — strictly monotonic (small < medium < large at every width) */
   --font-size-small: clamp(1.03rem, 0.86rem + 0.76vw, 1.46rem);
   --font-size-medium: clamp(1.4rem, 1.08rem + 1.3vw, 2.05rem);

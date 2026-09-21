@@ -71,7 +71,7 @@
   max-height: calc(100% - 2 * var(--spacing-sm));
   writing-mode: vertical-rl;
   transform: translateX(-50%) rotate(180deg);
-  font-family: var(--font-family-ui);
+  font-family: var(--font-family-strip-title);
   font-size: var(--index-font-size);
   line-height: var(--line-height-ui);
   text-transform: uppercase;

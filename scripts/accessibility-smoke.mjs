@@ -139,6 +139,7 @@ try {
           }));
           assert.ok(labels.every(label => label.title === label.name && label.display !== 'none' &&
             label.font.includes('Inter') && label.casing === 'uppercase' && label.shadow === 'none' && label.background === 'none'));
+          await page.evaluate(() => document.fonts.ready);
           assert.equal(await page.evaluate(() => document.fonts.check('14px Inter')), true);
           assert.equal(await page.evaluate(() => document.documentElement.scrollWidth <= innerWidth + 1), true);
           if (!options.hasTouch) {
