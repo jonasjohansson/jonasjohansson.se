@@ -534,3 +534,11 @@ html[data-project="plx"] #header-toggle { font-family: "Germania One", "Trebuche
 @media (max-width: 768px) {
   .project-grid > .hero.hero-contain { aspect-ratio: var(--mobile-ar, var(--ar)); }
 }
+
+/* Where the title stands above the picture rather than floating over it, the
+   page's own top padding lands under the title's and the two stack into a gap
+   wide enough to read as a mistake. The picture starts directly under the
+   words instead. Matches the width at which the title becomes a heading. */
+@media (hover: none), (max-width: 1024px) {
+  body[data-route="project"] #content { padding-top: 0; }
+}

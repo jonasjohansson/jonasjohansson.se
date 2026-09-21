@@ -72,13 +72,14 @@
   .enhanced .strip.is-active { flex-grow: 12; }
   .enhanced .intro-links { display: flex; height: auto; padding-top: var(--chrome-pad); }
   .enhanced .strip-caption { display: block; max-width: 100%; }
-  /* The filter belongs to the landing: the caption names what a thumb has
-     opened, the dropdown narrows what there is to open, and a project page's
-     wall is a way out rather than a collection to sort. The search field stays
-     off everywhere, because a phone should not have to type to look at
-     pictures. */
+  /* Both walls carry the filter, and a project page carries the links with it,
+     the way a pointer device does: under the work, caption at the left, links,
+     then the filter in the corner. The landing keeps the links off, where the
+     writing above the wall already gives them. The search field stays off
+     everywhere, because a phone should not have to type to look at pictures. */
   /* The band already pads above its contents, so the filter does not pad again:
      the twelve pixels it brought were enough to push the landing three past a
      single screen, and the landing is meant to be exactly one. */
-  .enhanced body[data-route="home"] .project-filters { display: flex; margin-left: auto; padding-top: 0; }
+  .enhanced .project-filters { display: flex; margin-left: auto; padding-top: 0; }
+  .enhanced body:not([data-route="home"]) .header-contacts { display: flex; padding-top: 0; }
 }
