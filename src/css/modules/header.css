@@ -68,6 +68,11 @@
 .project-filters select { max-width: 100%; padding-right: 1em; background: var(--chevron) no-repeat right center / 0.75em; }
 .project-filters :is(option, optgroup) { color: var(--color-black); background: var(--color-white); }
 .project-filters input[type="search"] { width: 5.5em; }
+.project-filters input[type="search"]:focus-visible {
+  outline: none;
+  /* An inset underline stays visible inside the scrolling filter row. */
+  box-shadow: inset 0 -1px 0 var(--text-muted);
+}
 .project-filters input[type="search"]::placeholder { color: var(--text-muted); opacity: 1; }
 .project-filters input[type="search"].is-empty { color: var(--text-muted); text-decoration: line-through; }
 /* Keep the native clear control in the same colour as the search text. */

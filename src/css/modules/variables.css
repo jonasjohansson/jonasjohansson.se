@@ -45,7 +45,7 @@
   /* Strips */
   --strip-band-height: clamp(12rem, 24vw, 19rem); /* uniform rows on narrow and touch displays */
   --footer-height: 3rem;
-  --strip-grow: 12;
+  --strip-grow: 24;
   --strip-min-width: 1.125rem;
   --wall-min-height: 22rem;
 

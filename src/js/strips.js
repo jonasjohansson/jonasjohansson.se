@@ -114,7 +114,7 @@ function updateImages() {
   // Size the image for the widest this strip can open, then reveal it through
   // the changing strip width. Hover must never resize the photograph itself.
   const hover = matchMedia('(hover: hover)').matches;
-  const grow = hover && style ? parseFloat(style.getPropertyValue('--strip-grow')) : 1;
+  const grow = style ? parseFloat(style.getPropertyValue('--strip-grow')) : 1;
   const openWidth = Math.max(minWidth, Math.min(wallWidth * grow / (visible.length + grow - 1), wallWidth - (visible.length - 1) * minWidth));
   const narrow = width <= height * 0.16;
   for (const entry of visible) {
@@ -150,6 +150,7 @@ function bindTouchScrub(wall, signal) {
     active?.classList.remove('is-active');
     active = strip;
     active?.classList.add('is-active');
+    if (active) setWideImage(active);
     hoveredEntry = strip;
     updatePreview();
   };
