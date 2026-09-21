@@ -138,7 +138,9 @@ async function checkFooter(page) {
     assert.equal(await page.locator('#collection-header').count(), 0, 'nothing floats over the top of a project wall');
     const title = await page.locator('#header-toggle').boundingBox();
     const body = await page.locator('.text-block').first().boundingBox();
-    assert.ok(Math.abs(title.x - body.x) < 1, 'the project title aligns with its text column');
+    const floating = await page.locator('#header').evaluate(header => getComputedStyle(header).position === 'absolute');
+    if (floating) assert.ok(Math.abs(title.x + title.width / 2 - (body.x + body.width / 2)) < 1, 'the floating project title is centred');
+    else assert.ok(Math.abs(title.x - body.x) < 1, 'the project title aligns with its text column');
     assert.equal(await page.locator('#header-toggle').getAttribute('href'), `${prefix}/`, 'the project title leads home');
     assert.equal(await page.locator('#header .header-contacts').count(), 0, 'project hero header contains only the title');
   }
@@ -308,8 +310,13 @@ try {
         const header = await page.locator('#header').boundingBox();
         const title = await page.locator('#header-toggle').boundingBox();
         const body = await page.locator('.text-block').first().boundingBox();
-        assert.ok(Math.abs(hero.y - header.y - header.height) < 1, `${slug} title sits above the hero`);
-        assert.ok(Math.abs(title.x - body.x) < 1 && Math.abs(title.width - body.width) < 1, `${slug} title and body share their column`);
+        if (name === 'wide desktop') {
+          assert.ok(title.y > hero.y && title.y + title.height < hero.y + hero.height, `${slug} title floats over the hero`);
+          assert.ok(Math.abs(title.x + title.width / 2 - options.viewport.width / 2) < 1, `${slug} title floats in the middle`);
+        } else {
+          assert.ok(Math.abs(hero.y - header.y - header.height) < 1, `${slug} title sits above the hero`);
+          assert.ok(Math.abs(title.x - body.x) < 1 && Math.abs(title.width - body.width) < 1, `${slug} title and body share their column`);
+        }
         // Project media reaches the same screen edges on every device.
         const inset = 0;
         assert.equal(hero.x, inset, `${slug} hero starts at ${inset ? 'the page gutter' : 'the screen edge'}`);

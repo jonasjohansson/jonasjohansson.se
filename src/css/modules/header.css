@@ -84,6 +84,29 @@
   mask: var(--search-clear-icon) center / contain no-repeat;
 }
 
+/* On a desktop with a pointer the title floats over the middle of the hero. */
+@media (hover: hover) and (min-width: 1025px) {
+  #header {
+    position: absolute;
+    top: var(--spacing-xl);
+    left: 50%;
+    transform: translateX(-50%);
+    z-index: var(--z-header);
+    display: flex;
+    justify-content: center;
+  }
+  .header-subtitle {
+    width: auto;
+    max-width: var(--project-measure);
+    padding: var(--spacing-sm) var(--spacing-md);
+    border-radius: var(--radius-title);
+    background: var(--bg-primary);
+    letter-spacing: var(--letter-spacing-caps);
+    text-align: center;
+    text-transform: uppercase;
+  }
+}
+
 @media (max-width: 768px) {
   #header { display: block; }
 }
