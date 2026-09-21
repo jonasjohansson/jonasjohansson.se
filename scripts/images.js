@@ -100,7 +100,7 @@ export async function stripImage(src) {
   };
 }
 
-export async function responsiveImage(src, alt = '', className = 'media-img', sizes = 'calc(100vw - 48px)', mobileSrc = null) {
+export async function responsiveImage(src, alt = '', className = 'media-img', sizes = '100vw', mobileSrc = null) {
   const metadata = await imageMetadata(src);
   const lcp = className.split(' ').includes('lcp');
   const fallback = metadata.webp.at(-1);

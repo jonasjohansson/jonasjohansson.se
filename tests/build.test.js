@@ -3,7 +3,7 @@ import assert from 'node:assert/strict';
 import { mkdtempSync, writeFileSync, rmSync } from 'node:fs';
 import { tmpdir } from 'node:os';
 import path from 'node:path';
-import { groupMedia, pairDesktopMedia, readProjects, validateProject } from '../scripts/project-data.js';
+import { groupMedia, readProjects, validateProject } from '../scripts/project-data.js';
 import sharp from 'sharp';
 import { ogFingerprint, ogImage, imageCache } from '../scripts/images.js';
 
@@ -45,31 +45,17 @@ test('media grouping preserves heroes, authored placements and balanced rows', (
   assert.equal(pair[1].arSum, 2.167);
 });
 
-test('desktop media pairs stop at text and rows and leave odd images full width', () => {
-  const image = { type: 'image', ar: 1.5 };
-  const video = { type: 'video', ar: 1 };
-  const text = { type: 'text' };
-  const row = { type: 'row', items: [image, image] };
-  const content = [image, video, text, image, video, image, text, image, row, video, image, image, video];
-  const paired = pairDesktopMedia(content);
-  assert.deepEqual(paired.map(block => !!block.desktopPair), [false, false, false, true, true, false, false, false, false, true, true, true, true]);
-  assert.deepEqual(paired.map(({ desktopPair, ...block }) => block), content, 'pairing preserves the authored order and media');
-  assert.ok(content.every(block => !block.desktopPair), 'pairing leaves source blocks unchanged');
-  const alone = { ...image, pair: false };
-  assert.deepEqual(pairDesktopMedia([image, alone, image, image, alone, image]).map(block => !!block.desktopPair), [false, false, true, true, false, false], 'pair: false keeps media alone without shifting later pairs');
-});
-
-test('portrait triptychs retain their images and video before desktop pairing', () => {
+test('portrait triptychs retain their images and video without absorbing adjacent landscapes', () => {
   const hero = { type: 'image', ar: 1.5 };
   const image = { type: 'image', ar: 0.5625 };
   const video = { type: 'video', ar: 0.5625, src: '07.webm', poster: '07-poster.jpg' };
   const triptych = [image, image, video].map((block, i) => ({ ...block, colStart: 1 + i * 4, colSpan: 4 }));
   const content = [hero, { type: 'text' }, ...triptych, hero, { type: 'text' }];
-  const grouped = pairDesktopMedia(groupMedia(content));
+  const grouped = groupMedia(content);
   assert.deepEqual(grouped[2].items, triptych, 'the third panel stays with the first two');
   assert.equal(grouped[2].arSum, 1.6875);
   assert.equal(grouped[2].gutters, 2);
-  assert.ok(grouped.every(block => !block.desktopPair), 'the following landscape stays outside the triptych');
+  assert.equal(grouped[3], hero, 'the following landscape stays outside the triptych');
   assert.deepEqual(grouped.flatMap(block => block.items || [block]), content, 'all media and text keep their order');
 
   const automatic = groupMedia([video, { type: 'text' }, image, image, video, hero]);

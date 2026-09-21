@@ -1,45 +1,66 @@
 .project {
   width: 100%;
-  display: block;
-  background-color: var(--bg-primary);
-  flex-shrink: 0;
   position: relative;
+  background: var(--bg-primary);
 }
 
-.project.visible {
-  display: block;
+body[data-route="project"] #content { padding-top: 0; }
+
+#projects {
+  margin-bottom: var(--project-end-gap);
 }
 
-/* .project-title is visually hidden by the shared .sr-only rule in base.css. */
+#projects:not(:has(.project)) { display: none; }
 
-/* Font size classes for project content */
-.text-small {
-  font-size: var(--font-size-small);
-  line-height: var(--line-height-relaxed);
-  letter-spacing: var(--letter-spacing-base);
+figure { margin: 0; }
+
+.project-grid {
+  display: grid;
+  grid-template-columns: repeat(12, minmax(0, 1fr));
+  column-gap: var(--spacing-xl);
+  row-gap: var(--media-gap);
 }
 
-.text-medium {
-  font-size: var(--font-size-medium);
-  line-height: var(--line-height-snug);
-  text-align: center;
-  text-wrap: balance;
+.project-grid > * { grid-column: 1 / -1; }
+.project-grid > :last-child { margin-bottom: 0; }
+
+/* Every gallery frame reaches the viewport edges. Text retains the page
+   gutter and its reading measure, regardless of input device or screen size. */
+.project-grid > :is(.media-item, .media-row) {
+  width: calc(100% + 2 * var(--page-gutter));
+  margin-inline: calc(-1 * var(--page-gutter));
 }
 
-.text-large {
-  font-size: var(--font-size-large);
-  text-wrap: balance;
+.media-item { min-width: 0; }
+.media-item picture { display: contents; }
+.media-item :is(img, video) { display: block; width: 100%; height: auto; }
+.media-video { aspect-ratio: var(--ar); background: var(--surface-tint); }
+
+.hero {
+  --hero-ar: var(--ar);
+  --hero-focal: var(--focal, center);
+  position: relative;
+  height: var(--hero-height);
+  overflow: hidden;
 }
 
-/* Video */
-.media-video {
-  max-width: 100%;
-  height: auto;
+.hero :is(img, video) {
+  position: absolute;
+  inset: 0;
+  height: 100%;
+  object-fit: cover;
+  object-position: var(--hero-focal);
 }
 
-/* A video's poster frame, carried for print only: on a shared printed sheet a
-   video panel prints as this image, since the video itself cannot. The class
-   alone loses to `.media-item img` below, which sets every image to block. */
+.hero.hero-contain { height: auto; aspect-ratio: var(--hero-ar); }
+.hero.hero-contain :is(img, video) { object-fit: contain; }
+
+/* Authored groups share their available width in proportion to each panel's
+   aspect ratio, keeping equal heights without cropping. */
+.media-row { display: flex; gap: var(--media-gap); align-items: flex-start; }
+.media-row > .media-item { flex: var(--ar) 1 0; }
+
+/* Print-only video poster; the image rule above must not display it. */
 .media-item img.print-poster { display: none; }
 
 .media-item:has(> .media-controls-reveal) { position: relative; }
@@ -50,495 +71,79 @@
   height: 100%;
   padding: 0;
   border: 0;
-  border-radius: var(--radius-media);
   background: transparent;
-  cursor: pointer;
 }
 .media-controls-reveal:hover { background: transparent; }
 
-#projects {
-  display: block;
-  width: 100%;
-  position: relative;
-  background-color: var(--bg-primary);
-  /* One gap between the final content block and the navigation strips. */
-  margin-bottom: var(--spacing-2xl);
-}
+/* Trace the illustration's inset perimeter, hiding its baked-in surround. */
+.mask-botanical-circle img { clip-path: ellipse(46.2% 46.5% at 50.1% 50.2%); }
+.media-zoom { overflow: hidden; }
+.media-zoom img { transform: scale(var(--image-zoom)); transform-origin: var(--focal, center); }
 
-#projects:not(:has(.project)) {
-  display: none;
-  min-height: 0;
-}
-
-#projects.visible {
-  display: block;
-  width: 100%;
-}
-
-figure {
-  margin: 0;
-  padding: 0;
-}
-
-.project-grid {
-  display: grid;
-  grid-template-columns: repeat(12, 1fr);
-  column-gap: var(--spacing-xl);
-  row-gap: var(--gutter-row);
-  grid-auto-flow: dense;
-  width: 100%;
-  max-width: 100%;
-  padding: var(--spacing-xl) 0 0;
-}
-
-/* The project wrapper supplies the ending gap, without stacking text margins. */
-.project-grid > :last-child {
-  margin-bottom: 0;
-}
-
-/* Heroes span the full width inside the page gutter. */
-.project-grid > .media-item:first-child,
-.project-grid > .media-item.hero {
-  grid-column: 1 / -1;
-  overflow: hidden;
-  border-radius: var(--radius-md);
-  height: var(--hero-height);
-  min-height: var(--hero-height);
-  max-height: var(--hero-height);
-  margin-top: calc(-1 * var(--spacing-xl));
-  margin-left: 0;
-  margin-right: 0;
-  width: 100%;
-  max-width: none;
-  position: relative;
-  scroll-snap-align: start;
-}
-
-.project-grid > .media-item:first-child img,
-.project-grid > .media-item.hero img,
-.project-grid > .media-item:first-child video,
-.project-grid > .media-item.hero video {
-  position: absolute;
-  top: 0;
-  left: 0;
-  width: 100%;
-  height: 100%;
-  object-fit: cover;
-  object-position: var(--focal, center);
-  display: block;
-  /* Prevent image dimensions from affecting container */
-  min-height: 100%;
-  border-radius: 0;
-}
-
-.media-item {
-  width: 100%;
-  margin: 0;
-  /* Full width unless the author placed it. Specificity (0,1,0) so the inline
-     [style*="--col-start"] rule below and the .size-* classes both still win. */
-  grid-column: 1 / -1;
-  /* Scroll snap alignment for media items */
-  scroll-snap-align: start;
-  scroll-snap-stop: normal;
-}
-
-/* The height ceiling belongs on the box, not the picture. With max-height on the
-   image the height clamped but the box stayed full-track width, so the picture
-   floated in dead air: a dome-dreaming plate painted 497px wide inside a 1501px
-   box. Giving the box the picture's own shape removes the gap entirely, and the
-   corner radius finally clips the photograph instead of transparent padding.
-   --ar is measured at build time; 999 makes an unmeasured image a no-op. */
-.media-item:not(.hero):not(:first-child) {
-  max-width: calc(var(--media-max-h) * var(--ar, 999));
-  justify-self: center;
-}
-
-/* Anything wider than tall spans the whole track, so the left edge is flush
-   down the page instead of every picture landing at its own height-derived
-   width. Portrait and square keep the ceiling above and stay centred.
-   The class is stamped at build time (project.njk) because CSS cannot compare
-   --ar's value against 1 — only multiply by it. */
-.media-item.wide:not(.hero):not(:first-child) {
-  max-width: none;
-}
-
-.media-item picture {
-  display: contents;
-}
-
-/* Trace the illustration's inset perimeter, hiding its baked-in black surround. */
-.mask-botanical-circle img {
-  clip-path: ellipse(46.2% 46.5% at 50.1% 50.2%);
-}
-
-.media-item img,
-.media-item video {
-  width: 100%;
-  height: auto;
-  display: block;
-  border-radius: var(--radius-media);
-}
-
-/* A fixed crop in the gallery frame, independent of strip interactions. */
-.media-item.media-zoom { overflow: hidden; border-radius: var(--radius-media); }
-.media-item.media-zoom img { transform: scale(var(--image-zoom)); transform-origin: var(--focal, center); border-radius: 0; }
-
-.text-block {
+.text-block,
+.credits-block {
   width: 100%;
   max-width: var(--measure);
   margin-inline: auto;
-  /* Images keep the tight grid gutter (row-gap); text blocks get a larger
-     break on both sides so they read as a separate beat. */
-  margin-block: var(--spacing-2xl);
-  line-height: var(--line-height-loose);
-  text-align: left;
+}
+
+.text-block {
+  margin-block: var(--project-text-gap);
+  font-size: var(--font-size-large);
+  line-height: var(--line-height-tight);
   text-wrap: pretty;
 }
+.text-block.text-small { font-size: var(--font-size-small); line-height: var(--line-height-loose); }
+.text-block.text-medium { font-size: var(--font-size-medium); line-height: var(--line-height-snug); }
+.text-block + .text-block { margin-top: 0; }
+.text-block.text-large + .text-block { margin-top: var(--project-lead-gap); }
+.text-block:has(+ :is(.text-block, .credits-block, .presskit-block)) { margin-bottom: 0; }
+.text-block a { color: color-mix(in srgb, var(--project-color, var(--text-primary)) var(--link-accent-share), var(--link-shade)); }
+.audio-block audio { display: block; width: 100%; color-scheme: light; }
+.text-block p { margin: 0 0 1em; }
+.text-block p:last-child { margin-bottom: 0; }
 
-/* Body paragraphs share the normal row gap. */
-.text-block + .text-block {
-  margin-top: 0;
-}
-
-/* Give the large preamble its own break before the smaller body copy. */
-.text-block.text-large + .text-block {
-  margin-top: var(--spacing-xl);
-}
-
-/* Drop the trailing margin when a text block is the last thing before the
-   credits, so the gap above credits matches the gap below it. */
-.text-block:has(+ .text-block),
-.text-block:has(+ .credits-block),
-.text-block:has(+ .presskit-block) {
-  margin-bottom: 0;
-}
-
-.text-block a {
-  /* Darken the accent so links keep their hue but pass AA (~4.7:1 worst case)
-     on the light background. Dark mode lightens instead (rule below). */
-  color: color-mix(in srgb, var(--project-color, var(--text-primary)) 70%, black);
-  text-decoration: underline;
-}
-
-/* In dark mode, lighten the accent so links keep their hue but stay legible
-   on the dark background (worst-case contrast ~5:1). */
-html[data-theme="dark"] .text-block a {
-  color: color-mix(in srgb, var(--project-color, var(--text-primary)) 45%, white);
-}
-@media (prefers-color-scheme: dark) {
-  html:not([data-theme="light"]) .text-block a { color: color-mix(in srgb, var(--project-color, var(--text-primary)) 45%, white); }
-}
-
-.text-block.text-medium {
-  line-height: var(--line-height-snug);
-}
-
-.audio-block audio {
-  display: block;
-  width: 100%;
-  color-scheme: light;
-}
-
-/* Statement text: wider column, tighter leading */
-.text-block.text-large {
-  max-width: var(--measure);
-  text-align: left;
-  line-height: var(--line-height-tight);
-}
-
-.project-grid p {
-  margin: 0 0 1em;
-}
-
-.project-grid p:last-child {
-  margin-bottom: 0;
-}
-
-.credits-block {
-  font-size: var(--font-size-small);
-  opacity: var(--opacity-muted);
-  /* Separate a standalone credit block from the preceding content. */
-  margin-top: var(--spacing-4xl);
-}
-
-.credits-list {
-  list-style: none;
-  padding: 0;
-  margin: 0;
-  text-align: left;
-}
-
-.credits-list li {
-  margin-bottom: var(--spacing-sm);
-}
-
-.credit-support {
-  display: block;
-  margin-top: var(--spacing-md);
-}
-
-.credits-list a {
-  color: inherit;
-  text-decoration: underline;
-  text-underline-offset: var(--underline-offset);
-}
-
+.credits-block,
 .presskit-block {
   font-size: var(--font-size-small);
   opacity: var(--opacity-muted);
-  text-align: center;
-  margin: var(--spacing-4xl) 0 0;
-  grid-column: 1 / -1;
+  margin-top: var(--project-credit-gap);
 }
+.credits-list { list-style: none; padding: 0; margin: 0; }
+.credits-list li { margin-bottom: var(--spacing-sm); }
+.credit-support { display: block; margin-top: var(--spacing-md); }
+.presskit-block { text-align: center; }
+.credits-block + .presskit-block { margin-top: 0; }
 
-.credits-block + .presskit-block {
-  margin-top: 0;
-}
-
-.presskit-block a {
-  color: inherit;
-  text-decoration: underline;
-  text-underline-offset: var(--underline-offset);
-}
-
-/* Neighbouring media folded into one flex row at build time — an authored
-   half-left/half-right pair, or a run of uprights the author left alone. Widths
-   split by aspect ratio, so every height in the row is equal by construction and
-   nothing is cropped. Previously a pair sat in fixed 6-column tracks and any
-   ratio mismatch left one short — up to 167px of ragged bottom.
-   The row shares the hero's outer edges, with the normal gutter between images. */
-.media-row {
-  width: 100%;
-  grid-column: 1 / -1;
-  display: flex;
-  gap: var(--gutter-pair);
-  align-items: flex-start;
-  max-width: none;
-  margin-inline: auto;
-}
-
-/* Two selectors, one rule. The row's first picture is :first-child, so the cap
-   above never matched it and the plain (0,2,0) selector is enough; pictures two
-   onward do match it at (0,3,0), so they need the longer form to win. That cap
-   never bound while a row held two landscapes — with three uprights it does. */
-.media-row > .media-item,
-.media-row > .media-item:not(.hero):not(:first-child) {
-  /* min-width:0 is load-bearing: flex items default to min-width:auto, which for
-     a box round a replaced element resolves to its intrinsic width and silently
-     defeats the ratio split. */
-  flex: var(--ar) 1 0;
-  min-width: 0;
-  max-width: none;
-  width: auto;
-  grid-column: auto;
-}
-
-/* Grid column utilities via CSS custom properties */
-[style*="--col-start"] {
-  grid-column-start: var(--col-start);
-}
-
-[style*="--col-span"] {
-  grid-column-end: span var(--col-span);
-}
-
-/* Size utility classes for editorial layout */
-.media-item.size-full        { grid-column: 1 / -1; }
-.media-item.size-large       { grid-column: 2 / span 10; }
-.media-item.size-left        { grid-column: 1 / span 7; }
-.media-item.size-right       { grid-column: 6 / span 7; }
-.media-item.size-half-left   { grid-column: 1 / span 6; }
-.media-item.size-half-right  { grid-column: 7 / span 6; }
-.media-item.size-small-left  { grid-column: 1 / span 5; }
-.media-item.size-small-right { grid-column: 8 / span 5; }
-
-/* On large desktop screens, consecutive gallery images share a row. Preserve
-   document order so later photographs never fill holes above intervening text. */
-@media (min-width: 1440px) {
-  .project-grid {
-    column-gap: var(--gutter-pair);
-    grid-auto-flow: row;
-  }
-
-  .project-grid > .media-item:not(.hero):not(:first-child) {
-    grid-column: 1 / -1;
-    align-self: start;
-  }
-
-  .project-grid > .media-item.desktop-pair:not(.hero):not(:first-child) {
-    grid-column: auto / span 6;
-  }
-
-  /* A lone image or video fills the row, with a bounded frame rather than
-     an empty second column or a full-width portrait extending off screen. */
-  .project-grid > .media-item:not(.hero):not(:first-child):not(.desktop-pair) {
-    max-width: none;
-    height: min(calc((100vw - 2 * var(--page-gutter)) / var(--ar, 1)), 80svh, var(--measure));
-    overflow: hidden;
-    border-radius: var(--radius-media);
-  }
-
-  .project-grid > .media-item:not(.hero):not(:first-child):not(.desktop-pair) :is(img, video) {
-    height: 100%;
-    object-fit: var(--media-fit, cover);
-    object-position: var(--focal, center);
-  }
-}
-
-/* Mobile override: force full-width */
-@media (max-width: 768px) {
-  .project-grid {
-    /* Stacked images use one gutter, including breaks between desktop rows. */
-    --gutter-row: var(--gutter-pair);
-    column-gap: 0;
-  }
-
-  .media-row {
-    align-items: stretch;
-    flex-direction: column;
-    gap: var(--gutter-row);
-    max-width: none;
-  }
-
-  .media-row > .media-item,
-  .media-row > .media-item:not(.hero):not(:first-child) {
-    flex: none;
-    width: 100%;
-  }
-
-  /* A row of three stays a row on a phone. Stacked, three uprights of one
-     subject run four screens deep and read as the same picture three times;
-     side by side they are one picture in three parts, which is what the author
-     composed. Pairs still stack, where half a phone is too little to see. */
-  .media-row-keeps { flex-direction: row; align-items: flex-start; gap: var(--gutter-pair); }
-  .media-row-keeps > .media-item,
-  .media-row-keeps > .media-item:not(.hero):not(:first-child) { flex: var(--ar) 1 0; width: auto; }
-
-  [style*="--col-start"] {
-    grid-column-start: 1;
-  }
-
-  [style*="--col-span"] {
-    grid-column-end: span 12;
-  }
-
-  .media-item.size-full,
-  .media-item.size-large,
-  .media-item.size-left,
-  .media-item.size-right,
-  .media-item.size-half-left,
-  .media-item.size-half-right,
-  .media-item.size-small-left,
-  .media-item.size-small-right {
-    grid-column: 1 / -1;
-  }
-
-  /* In-project images sit at the same 24px gutter as the hero and text */
-  .project-grid > .media-item:not(:first-child):not(.hero) {
-    margin-left: 0;
-    margin-right: 0;
-    width: 100%;
-    max-width: none;
-  }
-
-  /* Keep text breaks compact on mobile while preserving the image gutter. */
-  .text-block {
-    margin-block: var(--spacing-md);
-  }
-
-  .text-block.text-large + .text-block {
-    margin-top: var(--spacing-md);
-  }
-
-  /* Keep separate credits and the ending gap compact on mobile. */
-  .credits-block,
-  .presskit-block {
-    margin-top: var(--spacing-xl);
-  }
-
-  .credits-block + .presskit-block {
-    margin-top: 0;
-  }
-
-  #projects {
-    margin-bottom: var(--spacing-xl);
-  }
-
-}
-
-/* Preserve the photograph's composition at the full page width. */
-@media (min-width: 769px) {
-  #klattermusen .project-grid > .hero {
-    height: auto;
-    min-height: 0;
-    max-height: none;
-    aspect-ratio: var(--ar);
-  }
-}
-.media-video { aspect-ratio: var(--ar); background: var(--surface-tint); }
-.credits-block { width: 100%; max-width: var(--measure); margin-inline: auto; }
-@media (max-width: 768px) {
-  .project-grid > .media-item.hero { height: min(85svh, calc((100vw - 2 * var(--page-gutter)) / var(--mobile-ar, var(--ar)))); min-height: 0; max-height: none; }
-  .project-grid > .media-item.hero :is(img, video) { object-position: var(--mobile-focal, var(--focal, center)); }
-}
-
-/* PLX is the one project that reads in its own face, the two the festival's
-   presentation is set in. The serif carries the writing a little larger than
-   SeasonMix would, since Rosarivo runs small; the display face takes the
-   project's title and the figures worth stopping on. */
-#plx .text-block { font-family: "Rosarivo", Georgia, "Times New Roman", serif; }
-/* Rosarivo runs small, so the body copy gains a little — set on the paragraphs
-   rather than the block, which would flatten the large opening into the rest. */
+/* PLX retains the festival's own typography. */
+#plx .text-block { font-family: var(--font-family-plx-body); }
 #plx .text-block p { font-size: 1.08em; }
-#plx .text-block strong { font-family: "Germania One", "Trebuchet MS", sans-serif; font-weight: normal; letter-spacing: 0.01em; }
-html[data-project="plx"] #header-toggle { font-family: "Germania One", "Trebuchet MS", sans-serif; letter-spacing: 0.06em; }
+#plx .text-block strong { font-family: var(--font-family-plx-display); font-weight: normal; letter-spacing: 0.01em; }
+html[data-project="plx"] #header-toggle { font-family: var(--font-family-plx-display); letter-spacing: var(--letter-spacing-caps); }
 
-/* Bring the pavilion forward within the already levelled woodland image. */
+/* Bring the pavilion forward within the levelled woodland photograph. */
 #kagora .hero img { transform: scale(1.5); transform-origin: 52% 60%; }
 
-/* Keep the complete pavilion visible on tall tablet and desktop windows. */
-@media (min-width: 769px) and (max-aspect-ratio: 4/3) {
-  #kagora .project-grid > .hero {
-    height: calc(100vw * 2 / 3);
-    min-height: 0;
-    max-height: none;
-  }
-}
-
-/* Phones: the pictures run edge to edge, the hero from the top of the screen.
-   The writing keeps the page gutter, so the images are the only thing touching
-   the edges rather than one of them doing it alone. */
-@media (hover: none) {
-  body[data-route="project"] #content { padding-top: 0; }
-  /* Each selector mirrors the one that set this item's gutter above, so the
-     later source order decides rather than a specificity a shorter selector
-     would lose: a plain `.project-grid > .media-item` is outweighed by the
-     `:not(:first-child):not(.hero)` rule and leaves the gutter in place. */
-  .project-grid > .media-item:first-child,
-  .project-grid > .media-item.hero,
-  .project-grid > .media-item:not(:first-child):not(.hero),
-  .project-grid > .media-item:not(:first-child):not(.hero):not(.desktop-pair),
-  .project-grid > .media-row {
-    width: calc(100% + 2 * var(--page-gutter));
-    margin-inline: calc(-1 * var(--page-gutter));
-    border-radius: 0;
-  }
-}
-@media (hover: none) and (max-width: 768px) {
-  .project-grid > .media-item.hero { height: min(85svh, calc(100vw / var(--mobile-ar, var(--ar)))); }
-}
-
-/* Uncropped heroes fill the width by sizing their frame to the image itself. */
-.project-grid > .hero.hero-contain { height: auto; min-height: 0; max-height: none; aspect-ratio: var(--ar); }
-.project-grid > .hero.hero-contain :is(img, video) { object-fit: contain; }
 @media (max-width: 768px) {
-  .project-grid > .hero.hero-contain { aspect-ratio: var(--mobile-ar, var(--ar)); }
+  .project-grid { column-gap: 0; }
+  .hero {
+    --hero-ar: var(--mobile-ar, var(--ar));
+    --hero-focal: var(--mobile-focal, var(--focal, center));
+    --hero-height: min(85svh, calc(100vw / var(--hero-ar)));
+  }
+  /* Pairs stack; composed triptychs and larger groups keep their shared row. */
+  .media-row:not(.media-row-keeps) { flex-direction: column; }
+  .media-row:not(.media-row-keeps) > .media-item { flex: none; width: 100%; }
 }
 
-/* Where the title stands above the picture rather than floating over it, the
-   page's own top padding lands under the title's and the two stack into a gap
-   wide enough to read as a mistake. The picture starts directly under the
-   words instead. Matches the width at which the title becomes a heading. */
-@media (hover: none), (max-width: 1024px) {
-  body[data-route="project"] #content { padding-top: 0; }
+@media (min-width: 769px) {
+  /* Authored text placements use the inset grid. Media always fills the page. */
+  .project-grid > :is(.text-block, .credits-block) {
+    grid-column: var(--col-start, 1) / span var(--col-span, 12);
+  }
+  #klattermusen .hero { height: auto; aspect-ratio: var(--ar); }
+}
+
+@media (min-width: 769px) and (max-aspect-ratio: 4/3) {
+  #kagora .hero { --hero-height: calc(100vw * 2 / 3); }
 }

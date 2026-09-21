@@ -319,8 +319,8 @@ try {
         await visit(page, `/${slug}/`);
         const hero = await page.locator('.hero').boundingBox();
         const media = await page.locator('.hero img, .hero video').boundingBox();
-        // Phones run the hero edge to edge; elsewhere it sits inside the page gutter.
-        const inset = options.hasTouch ? 0 : 24;
+        // Project media reaches the same screen edges on every device.
+        const inset = 0;
         assert.equal(hero.x, inset, `${slug} hero starts at ${inset ? 'the page gutter' : 'the screen edge'}`);
         assert.ok(Math.abs(hero.width - (options.viewport.width - 2 * inset)) < 1, `${slug} hero uses the full ${inset ? 'content' : 'screen'} width`);
         assert.equal(media.width, hero.width, `${slug} image or video fills the hero frame`);
@@ -455,7 +455,7 @@ try {
         await page.screenshot({ path: `${output}/${name.replaceAll(' ', '-')}-project-wall.png` });
         return;
       }
-      assert.equal(wall.x, (await page.locator('.hero').boundingBox()).x, 'strips share the project media gutter');
+      assert.equal((await page.locator('.hero').boundingBox()).x, 0, 'the hero reaches the screen edge while the wall keeps its gutter');
       // A project wall is one screen: a gutter above it, then the caption and
       // category band below, with the work between them and nothing on it.
       const band = (await page.locator('#intro-links').boundingBox()).height;
@@ -519,13 +519,13 @@ try {
     await checkFooter(page);
   });
 
-  for (const [name, options] of [['narrow desktop', { viewport: { width: 1280, height: 900 } }], ['below desktop breakpoint', { viewport: { width: 1439, height: 900 } }], ['mobile', mobile]]) {
+  for (const [name, options] of [['narrow desktop', { viewport: { width: 1280, height: 900 } }], ['wide laptop', { viewport: { width: 1439, height: 900 } }], ['mobile', mobile]]) {
     await check(`${name} gallery images share the hero margins`, options, async page => {
       for (const slug of ['borderlan', 'wysiwyg', 'kagora', 'dome-dreaming']) {
         await visit(page, `/${slug}/`);
         const geometry = await page.evaluate(() => {
           const hero = document.querySelector('.hero').getBoundingClientRect();
-          const images = [...document.querySelectorAll('.project-grid > .media-item.wide:not([class*="size-"]):not([style*="--col-start"]), .project-grid > .media-row')];
+          const images = [...document.querySelectorAll('.project-grid > .media-item:not(.hero), .project-grid > .media-row')];
           return { hero: { x: hero.x, width: hero.width }, images: images.map(image => { const r = image.getBoundingClientRect(); return { x: r.x, width: r.width }; }) };
         });
         assert.ok(geometry.images.length > 0, `${slug} has gallery media to check`);
@@ -548,67 +548,42 @@ try {
     });
   }
 
-  for (const width of [1440, 1850, 2560]) {
-    await check(`${width}px galleries pair adjacent media and give single items the full width`, { viewport: { width, height: 1000 } }, async page => {
-      await visit(page);
-      const slugs = await page.evaluate(() => window.__PROJECTS_DATA__.map(project => project.slug));
-      for (const slug of slugs) {
+  // Check both sides of the layout breakpoints, including pointer devices at
+  // phone widths. Full-width media must not depend on a hover capability.
+  for (const width of [320, 600, 601, 768, 769, 1024, 1025, 1440, 1850, 2560]) {
+    await check(`${width}px galleries fill the screen and preserve content order`, { viewport: { width, height: 1000 } }, async page => {
+      // Geometry uses the dimensions reserved in HTML, even before media loads.
+      await page.route(/\.(?:avif|webp|mp4|webm)(?:\?.*)?$/, route => route.abort());
+      for (const { slug } of readProjects().filter(project => project.type === 'work')) {
         await visit(page, `/${slug}/`);
         const geometry = await page.locator('.project-grid').evaluate(grid => {
           const box = node => {
             const r = node.getBoundingClientRect();
-            const media = node.matches('.media-item:not(.hero)');
-            const element = media && node.querySelector('img, video');
-            const image = element && element.getBoundingClientRect();
-            return { x: r.x, y: r.y, width: r.width, right: r.right, height: r.height, media,
-              ar: Number(node.style.getPropertyValue('--ar')),
-              fit: element && getComputedStyle(element).objectFit,
-              alt: element && (element.alt || element.getAttribute('aria-label')),
-              imageWidth: image && image.width, imageHeight: image && image.height,
-              sizes: node.querySelector('picture source')?.getAttribute('sizes') };
+            return { x: r.x, y: r.y, width: r.width, bottom: r.bottom };
           };
           return {
-            width: grid.clientWidth,
-            hero: box(grid.querySelector('.hero')),
-            children: [...grid.children].map(box),
+            children: [...grid.children].map(node => ({ ...box(node),
+              media: node.matches('.media-item, .media-row'),
+              text: node.matches('.text-block, .credits-block'),
+              sizes: node.matches('.media-item') ? node.querySelector('picture source')?.getAttribute('sizes') : null,
+            })),
             overflow: document.documentElement.scrollWidth > innerWidth,
           };
         });
         assert.equal(geometry.overflow, false, `${slug} stays within the viewport`);
-        assert.ok(Math.abs(geometry.hero.width - geometry.width) < 1, `${slug} hero keeps the full width`);
-        for (let i = 1; i < geometry.children.length; i++) {
-          const media = geometry.children[i], next = geometry.children[i + 1];
-          if (!media.media) continue;
-          if (next?.media) {
-            assert.ok(Math.abs(media.y - next.y) < 1, `${slug} adjacent media share a row`);
-            for (const item of [media, next]) {
-              assert.ok(item.width <= (geometry.width - 16) / 2 + 1, `${slug} paired media fit their half of the row`);
-              assert.ok(item.x >= 24 && item.right <= width - 24 + 1, `${slug} keeps the outer gutter`);
-            }
-            i++;
-          } else {
-            assert.ok(Math.abs(media.width - geometry.width) < 1, `${slug} lone media fill the row`);
-            assert.ok(Math.abs(media.height - Math.min(geometry.width / media.ar, 800, 896)) < 1, `${slug} lone media use a bounded height`);
-            const authored = readProjects().find(project => project.slug === slug).blocks.find(block => block.alt === media.alt);
-            assert.equal(media.fit, authored?.fit || 'cover', `${slug} respects the authored crop within the frame`);
-            assert.ok(media.imageWidth >= media.width - 1 && media.imageHeight >= media.height - 1, `${slug} media fill their frame, including authored zoom crops`);
-            if (media.sizes) assert.ok(media.sizes.startsWith('(min-width: 1440px) calc(100vw - 48px)'), `${slug} downloads a full-width image for an unpaired frame`);
+        for (const [i, child] of geometry.children.entries()) {
+          if (child.media) {
+            assert.ok(Math.abs(child.x) < 1 && Math.abs(child.width - width) < 1, `${slug} media fill the screen`);
+            assert.ok(child.bottom > child.y, `${slug} reserves its media height`);
+            if (child.sizes) assert.equal(child.sizes, '100vw', `${slug} requests full-width standalone images`);
           }
-        }
-        for (let i = 1; i < geometry.children.length; i++) {
-          assert.ok(geometry.children[i].y >= geometry.children[i - 1].y - 1, `${slug} keeps its authored sequence`);
+          if (child.text) {
+            assert.ok(child.x >= 24 - 1 && child.x + child.width <= width - 24 + 1, `${slug} keeps text inside the page gutter`);
+            assert.ok(child.width <= 896 + 1, `${slug} respects the reading measure`);
+          }
+          if (i) assert.ok(child.y >= geometry.children[i - 1].bottom - 1, `${slug} preserves its sequence without overlap`);
         }
       }
-      await visit(page, '/borderlan/');
-      const entrance = page.locator('img[alt^="An illuminated BorderLAN sign"]');
-      const players = page.locator('img[alt^="Four players sit around BorderLAN"]');
-      const first = await entrance.boundingBox(), second = await players.boundingBox();
-      assert.ok(Math.abs(first.y - second.y) < 1, 'the entrance and Counter-Strike room photograph share a row');
-      assert.ok(Math.abs(second.x - first.x - first.width - 16) < 1, 'the two photographs have the normal gutter');
-      await entrance.scrollIntoViewIfNeeded();
-      await entrance.evaluate(image => image.decode());
-      await players.evaluate(image => image.decode());
-      await page.screenshot({ path: `${output}/borderlan-two-images-${width}.png` });
     });
   }
 
@@ -636,8 +611,8 @@ try {
         };
       });
       assert.equal(geometry.overflow, false);
-      // A phone runs its pictures edge to edge; everything else keeps the gutter.
-      const inset = width === 390 ? 0 : 24;
+      // The composed row reaches both screen edges on every device.
+      const inset = 0;
       assert.equal(geometry.row.x, inset);
       assert.ok(Math.abs(geometry.row.width - width + 2 * inset) < 1, 'the group uses the page width');
       for (const [i, item] of geometry.items.entries()) {
@@ -651,7 +626,7 @@ try {
         if (i) assert.ok(Math.abs(item.x - geometry.items[i - 1].right - 16) < 1, 'no oversized gap between panels');
       }
       assert.ok(geometry.after.y >= geometry.row.bottom, 'the following landscape starts after all three panels');
-      if (width >= 1440) assert.ok(Math.abs(geometry.after.width - geometry.row.width) < 1, 'the following lone image keeps its full-width frame');
+      assert.ok(Math.abs(geometry.after.width - geometry.row.width) < 1, 'the following lone image keeps its full-width frame');
       const video = row.locator('video');
       await video.scrollIntoViewIfNeeded();
       await page.waitForFunction(() => document.querySelector('video[src$="/07.webm"]').currentTime > 0);

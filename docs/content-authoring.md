@@ -34,18 +34,15 @@ blocks:
     heroFit: cover
 ```
 
-`focal` and `mobileFocal` set the crop position as horizontal and vertical percentages. `heroFit: contain` keeps the entire artwork visible. Heroes have a 24 px page inset and 12 px rounded corners. Mobile heroes use their natural proportions, capped at 85% of the viewport height. To supply a different mobile composition, add `mobileSrc: hero-mobile.jpg`; its dimensions are read automatically. These options use existing artwork and do not generate or alter source files.
+`focal` and `mobileFocal` set the crop position as horizontal and vertical percentages. `heroFit: contain` keeps the entire artwork visible. Heroes and gallery media reach both screen edges on desktop and mobile; text keeps the 24 px page gutter. Mobile heroes use their natural proportions, capped at 85% of the viewport height. To supply a different mobile composition, add `mobileSrc: hero-mobile.jpg`; its dimensions are read automatically. These options use existing artwork and do not generate or alter source files.
 
-Image dimensions and responsive sources are generated during the build. Leave `ar` unset unless you deliberately need a layout ratio override. Optional `size` values are `full`, `large`, `left`, `right`, `half-left`, `half-right`, `small-left` and `small-right`. You can also set `colStart` and `colSpan` within the 12-column grid. Unplaced portrait images are grouped into balanced rows; an authored `half-left` followed by `half-right` forms a pair. Media stacks on mobile. On screens 1440 px and wider, neighbouring standalone images and videos share a row; add `pair: false` to keep one alone at full width. Set `fit: contain` to show a lone portrait whole rather than cropped.
+Image dimensions and responsive sources are generated during the build. Leave `ar` unset unless you deliberately need a layout ratio override. Standalone gallery images and videos fill the screen width at their natural proportions. Unplaced portrait images are grouped into balanced rows; an authored `half-left` followed by `half-right` forms a pair. Complete rows can also use `colStart` and `colSpan` within a 12-column grid. Panels share the row in proportion to their aspect ratios, keeping equal heights. Pairs stack at 768 px and below; groups of three or more stay together at every width. Standalone media no longer pairs automatically on wide desktops. Older `pair: false` and `fit: contain` values are unnecessary with this layout.
+
+Text placements can use `size` (`full`, `large`, `left`, `right`, `half-left`, `half-right`, `small-left`, `small-right`) or `colStart` / `colSpan`. They apply above 768 px, within the reading measure. On smaller screens, writing uses the full inset width.
 
 Add `unlisted: true` to a project to keep its page at its URL while leaving it out of the strips, filters, print portfolio and sitemap. The page carries `noindex, nofollow`.
 
 For a closer view inside a gallery image's existing frame, set `zoom: 1.8` and a `focal` point. Zoom accepts values from 1 to 3 and remains fixed on hover. The source photograph and navigation strips keep their original framing.
-
-At 1440 CSS pixels and wider, individual gallery images and videos use half the content
-width and consecutive items share a row. Heroes remain full width. Existing
-image groups keep their shared row and aspect-ratio proportions. Content order
-is preserved across intervening text; smaller screens keep their existing layout.
 
 ## Collaborators and attribution
 
@@ -101,3 +98,17 @@ need that paper size selected in their print dialog.
 - `npm run test:print` checks image loading, copy fit, theme independence and route selection, and exports review PDFs under `screenshots/print`.
 
 Browser scripts use installed Playwright Chromium or local Google Chrome. Run `npx playwright install chromium` if neither is installed. `AUDIT_BASE_URL` can point the scripts at another preview. For a subdirectory deployment, use the same `PATH_PREFIX` for the build and verification commands. CI runs the build and regression checks before publishing.
+
+## Styles and responsive layout
+
+Shared colour, spacing, type and layout values live in `src/css/modules/variables.css`.
+Use `--page-gutter` for inset content, `--media-gap` between gallery panels, and
+`--project-*-gap` for project spacing. Mobile adjusts these tokens rather than
+redeclaring margins on every component. Gallery `sizes` hints in
+`eleventy.config.js` mirror the 1rem media gap and the 768 px stacking breakpoint;
+update them together if either value changes.
+
+The width breakpoints are 600 px (compact type), 768 px (text placement and stacked
+pairs) and 1024 px (the project title becomes an inline heading). Hover queries
+control strip interaction and footer controls; image width is independent of the
+input device. Print dimensions and spacing use separate variables in `print.css`.

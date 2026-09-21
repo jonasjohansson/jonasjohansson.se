@@ -5,7 +5,7 @@ import markdownIt from 'markdown-it';
 import sharp from 'sharp';
 import nunjucks from 'nunjucks';
 import htmlMinifier from 'html-minifier-terser';
-import { readProjects, SIZE_MAP, groupMedia, pairDesktopMedia } from './scripts/project-data.js';
+import { readProjects, SIZE_MAP, groupMedia } from './scripts/project-data.js';
 import { responsiveImage, stripImage, ogImage, imageMetadata, publishImages, printImage, imageColour } from './scripts/images.js';
 
 const projectRoot = path.dirname(fileURLToPath(import.meta.url));
@@ -44,7 +44,7 @@ async function buildProject(project) {
       return { ...block, src, mobileSrc, alt: block.alt || '', ar, mobileAr: aspectRatio(mobile),
         focal: block.focal || '50% 50%', mobileFocal: block.mobileFocal || block.focal || '50% 50%',
         heroFit: block.heroFit || 'cover', colStart, colSpan,
-        sizes: index === 0 ? 'calc(100vw - 48px)' : mediaSizes(colSpan, ar) };
+        sizes: '100vw' };
     }
     if (block.type === 'video') {
       let poster = null;
@@ -65,16 +65,17 @@ async function buildProject(project) {
     }
     return { type: 'credits', credits: creditsMarkup(block.credits), colStart: colStart || 1, colSpan: colSpan || 12 };
   }));
-  const grouped = pairDesktopMedia(groupMedia(content));
-  for (const [index, block] of grouped.entries()) {
-    if (index > 0 && block.type === 'image') block.sizes = mediaSizes(block.colSpan, block.ar, block.desktopPair);
+  const grouped = groupMedia(content);
+  for (const block of grouped) {
     if (block.type !== 'row') continue;
     for (const item of block.items) {
       // Each image takes its aspect-ratio share of the full-width row.
       const fraction = item.ar / block.arSum;
       const vw = +(fraction * 100).toFixed(3);
-      const inset = +((48 + 16 * block.gutters) * fraction).toFixed(3);
-      item.sizes = `(max-width: 768px) calc(100vw - 48px), calc(${vw}vw - ${inset}px)`;
+      // --media-gap is 1rem. Triptychs stay grouped on mobile; pairs stack.
+      const inset = +(block.gutters * fraction).toFixed(4);
+      const rowSize = `calc(${vw}vw - ${inset}rem)`;
+      item.sizes = block.items.length > 2 ? rowSize : `(max-width: 768px) 100vw, ${rowSize}`;
     }
   }
   const firstImage = content[0].type === 'video' ? `${project.directory}/${project.blocks[0].poster}` : content[0].src;
@@ -118,13 +119,6 @@ async function buildProject(project) {
   return { slug, title, date, tags, color, stripColor, year: new Date(date).getFullYear(), years: project.years || [], type: 'work', unlisted: !!project.unlisted,
     content: grouped, thumbnail, colour, ogImage: og, printMedia, printCopy, printCopyFull, printCopyScale, presskit: project.presskit || null,
     description: stripHtml(content.find(block => block.type === 'text')?.content).slice(0, 160) };
-}
-
-function mediaSizes(span, ar, paired = false) {
-  const track = span && span < 12 ? `calc(${+(span / 12 * 100).toFixed(3)}vw - ${+(48 * span / 12 + 32 * (1 - span / 12)).toFixed(3)}px)` : 'calc(100vw - 48px)';
-  const desktop = ar < 1 ? `min(${track}, calc((100vh - 192px) * ${+ar.toFixed(4)}))` : track;
-  const large = !paired ? 'calc(100vw - 48px)' : ar < 1 ? `min(calc(50vw - 32px), calc((100vh - 192px) * ${+ar.toFixed(4)}))` : 'calc(50vw - 32px)';
-  return `(min-width: 1440px) ${large}, (max-width: 768px) calc(100vw - 48px), ${desktop}`;
 }
 
 export default function (eleventyConfig) {

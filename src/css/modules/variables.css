@@ -1,9 +1,8 @@
-/* CSS Variables */
+/* Shared design tokens and responsive values. */
 :root {
   /* Colors */
   --color-white: #ffffff;
   --color-black: #1a1816;
-  --color-gray: #565049;
   --bg-primary: var(--color-white);
   --text-primary: var(--color-black);
 
@@ -14,86 +13,71 @@
   --spacing-lg: 1.5rem;
   --spacing-xl: 2rem;
   --spacing-2xl: 4rem;
-  --spacing-3xl: 6rem;
-  --spacing-4xl: 7.5rem;
-
-  /* Border Radius */
-  --radius-sm: 0;
-  --radius-md: 0;
 
   /* Layout */
-  --page-gutter: var(--spacing-lg); /* the one inset every edge shares */
+  --page-gutter: var(--spacing-lg); /* inset for writing and navigation */
   --measure: 56rem; /* text column width */
-  --hero-height: calc(100vh - 2 * var(--page-gutter));
-  --header-gap: clamp(0.5rem, 2vw, 1.5rem);
-  --icon-gap: clamp(var(--spacing-xs), 2vw, var(--spacing-md)); /* between the header icons, and after the question mark */
-  --icon-size: 1.5rem;
+  --hero-height: 100svh;
+  --icon-gap: clamp(var(--spacing-xs), 2vw, var(--spacing-md)); /* between contact links */
 
   /* Surfaces and emphasis, all derived from the two theme colours */
   --surface-tint: color-mix(in srgb, var(--text-primary) 6%, var(--bg-primary));
   --border-muted: color-mix(in srgb, var(--text-primary) 30%, transparent);
   --text-muted: color-mix(in srgb, var(--text-primary) 60%, var(--bg-primary));
   --opacity-muted: 0.7;
-  --opacity-dim: 0.3;
   --focus-ring: 2px solid currentColor;
-  --underline-offset: 2px;
+  --underline-offset: 0.16em;
+  --link-accent-share: 70%;
+  --link-shade: #000;
   --transition-fast: 0.25s ease;
 
   /* Breakpoints (for reference; custom properties cannot be used inside @media):
-     600px phones, 768px tablets, 1440px wide desktop */
+     600px compact type, 768px stacked pairs/text, 1024px inline project title.
+     Hover queries control interaction and footer chrome, never media widths */
 
   /* Project media */
-  --media-max-h: calc(100dvh - 2 * var(--spacing-3xl)); /* ceiling on an in-body image */
-  --gutter-pair: var(--spacing-md);
-  --gutter-row: var(--gutter-pair); /* consistent spacing within and between image rows */
-  --radius-media: 0;
+  --media-gap: var(--spacing-md);
+  --project-text-gap: var(--spacing-2xl);
+  --project-lead-gap: var(--spacing-xl);
+  --project-credit-gap: 7.5rem;
+  --project-end-gap: var(--spacing-2xl);
 
   /* Strips */
   --strip-band-height: clamp(12rem, 24vw, 19rem); /* uniform rows on narrow and touch displays */
-  --home-header-height: var(--corner-block);
-  --footer-height: var(--corner-block);
+  --footer-height: 3rem;
+  --strip-grow: 12;
+  --strip-min-width: 1.125rem;
+  --wall-min-height: 22rem;
 
   /* Typography */
   --font-family: "SeasonMix", system-ui, -apple-system, Segoe UI, Roboto, Helvetica, Arial, sans-serif;
-  --font-size-base: 16px;
-  /* Type scale — strictly monotonic (xs < small < medium < large at every width) */
-  --font-size-xs: 0.86rem;
+  /* Type scale — strictly monotonic (small < medium < large at every width) */
   --font-size-small: clamp(1.03rem, 0.86rem + 0.76vw, 1.46rem);
   --font-size-medium: clamp(1.4rem, 1.08rem + 1.3vw, 2.05rem);
   --font-size-large: clamp(1.73rem, 1.3rem + 1.94vw, 2.81rem);
   /* The About text reads as body copy, not a statement: about 20px on a
      laptop rather than 27px, and it stops growing sooner on a large display. */
   --font-size-intro: clamp(1.05rem, 0.62rem + 0.62vw + 0.18vh, 1.4rem);
+  --font-family-plx-body: "Rosarivo", Georgia, "Times New Roman", serif;
+  --font-family-plx-display: "Germania One", "Trebuchet MS", sans-serif;
   --font-size-ui: 0.875rem; /* header, footer and filter labels */
-  --letter-spacing-base: 0;
   --letter-spacing-wide: 0.04em; /* uppercase header/subtitle tracking */
   --letter-spacing-caps: 0.06em; /* uppercase name and section labels */
-  --letter-spacing-wider: 0;
+  --line-height-ui: 1.2;
   --line-height-tight: 1.15;
   --line-height-snug: 1.35;
   --line-height-base: 1.375;
-  --line-height-relaxed: 1.425;
   --line-height-loose: 1.5;
 
-  /* Z-Index Scale */
-  --chrome-pad: 0.75rem; /* inside the solid blocks that sit in the wall's corners */
-  --strip-touch-width: 2.75rem; /* per strip on touch screens: 44px, a comfortable tap target */
-  --strip-touch-open: 9rem; /* the strip under a held finger opens to this */
-  --corner-block: 3rem; /* height of every corner block: name, contacts, hovered title, categories */
-  --chevron: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 24 24' fill='%231a1816' shape-rendering='crispEdges'%3E%3Cpath d='M4 8h2v2H4zm2 2h2v2H6zm2 2h2v2H8zm2 2h2v2h-2zm4 0h-2v2h2zm2-2h-2v2h2zm2-2h-2v2h2zm2-2h-2v2h2z'/%3E%3C/svg%3E"); /* pixel chevron for the filter select, Pixelarticons style. Dark since
-     the page is white always: it was white, and so invisible, from the theme
-     switch until now. */
-  --z-strips: 1;
+  /* Interface */
+  --chrome-pad: 0.75rem; /* inside footer controls */
+  --chevron: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 24 24' fill='%231a1816' shape-rendering='crispEdges'%3E%3Cpath d='M4 8h2v2H4zm2 2h2v2H6zm2 2h2v2H8zm2 2h2v2h-2zm4 0h-2v2h2zm2-2h-2v2h2zm2-2h-2v2h2zm2-2h-2v2h2z'/%3E%3C/svg%3E");
+  --search-clear-icon: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 10 10'%3E%3Cpath d='M1%201L9%209M9%201L1%209' stroke='black' stroke-width='1.4'/%3E%3C/svg%3E");
   --z-filter: 10;
-  --z-content: 100;
   --z-header: 300;
-  --z-loading: 400;
   --z-skip-link: 1000; /* top of the stack */
 
-  /* Name animation palette (dark theme) */
-  /* The name cycles through these on the intro. They were picked against a
-     charcoal background; on white the pale ones fell to about 1.7:1, so each
-     keeps its hue at a depth that reads as text on paper-white. */
+  /* Animated name palette, legible against the light background. */
   --name-1: #c1121f;
   --name-2: #b35c00;
   --name-3: #8a6410;
@@ -101,10 +85,6 @@
   --name-5: #2c7e9e;
   --name-6: #7209b7;
   --name-7: #1c5fd0;
-}
-
-@supports (height: 100dvh) {
-  :root { --hero-height: calc(100dvh - 2 * var(--page-gutter)); }
 }
 
 @media (max-width: 600px) {
@@ -117,21 +97,37 @@
   }
 }
 
+@media (max-width: 768px) {
+  :root {
+    --project-text-gap: var(--spacing-md);
+    --project-lead-gap: var(--spacing-md);
+    --project-credit-gap: var(--spacing-xl);
+    --project-end-gap: var(--spacing-xl);
+  }
+}
+
+@media (hover: none) {
+  :root { --footer-height: 1.8125rem; --strip-min-width: 0; }
+}
+
 /* Explicit theme; system preference is the CSS fallback. */
 html[data-theme="dark"] {
+  color-scheme: dark;
+  --link-accent-share: 45%;
+  --link-shade: var(--color-white);
   --bg-primary: var(--color-black);
   --text-primary: var(--color-white);
   --chevron: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 24 24' fill='%23ffffff' shape-rendering='crispEdges'%3E%3Cpath d='M4 8h2v2H4zm2 2h2v2H6zm2 2h2v2H8zm2 2h2v2h-2zm4 0h-2v2h2zm2-2h-2v2h2zm2-2h-2v2h2zm2-2h-2v2h2z'/%3E%3C/svg%3E");
 }
 
-:root {
-  /* Chevron/arrow shapes - pointed left and right ends */
-  --cut-corner-sm: polygon(
-    8px 0,
-    calc(100% - 8px) 0,
-    100% 50%,
-    calc(100% - 8px) 100%,
-    8px 100%,
-    0 50%
-  );
+html[data-theme="light"] { color-scheme: light; }
+@media (prefers-color-scheme: dark) {
+  html:not([data-theme="light"]) {
+    color-scheme: dark;
+    --bg-primary: var(--color-black);
+    --text-primary: var(--color-white);
+    --link-accent-share: 45%;
+    --link-shade: var(--color-white);
+    --chevron: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 24 24' fill='%23ffffff' shape-rendering='crispEdges'%3E%3Cpath d='M4 8h2v2H4zm2 2h2v2H6zm2 2h2v2H8zm2 2h2v2h-2zm4 0h-2v2h2zm2-2h-2v2h2zm2-2h-2v2h2zm2-2h-2v2h2z'/%3E%3C/svg%3E");
+  }
 }

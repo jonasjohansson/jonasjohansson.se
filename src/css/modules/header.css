@@ -6,14 +6,12 @@
   z-index: var(--z-header);
   width: max-content;
   max-width: calc(100% - 2 * var(--page-gutter));
-  border-radius: 0 0 var(--radius-md) var(--radius-md);
   background: var(--bg-primary);
-  color: var(--text-primary);
   text-align: center;
 }
 .header-subtitle {
   display: block;
-  padding: calc(var(--spacing-sm) + var(--spacing-md)) var(--spacing-md) var(--spacing-sm);
+  padding: var(--spacing-lg) var(--spacing-md) var(--spacing-sm);
   font-size: calc(var(--font-size-large) * 0.8);
   letter-spacing: var(--letter-spacing-wide);
   text-transform: uppercase;
@@ -21,95 +19,77 @@
   text-decoration: none;
   text-wrap: balance;
   overflow-wrap: anywhere;
-  border-radius: inherit;
 }
 
-
-.home-header { background: var(--bg-primary); color: var(--text-primary); font-size: var(--font-size-ui); line-height: 1; letter-spacing: var(--letter-spacing-caps); text-transform: uppercase; }
-/* The top band: About on the left, the links on the right. It grows with the
-   writing rather than sitting at the corner-block height, and the wall below
-   takes what is left of the screen. */
-.home-header-row { display: flex; justify-content: space-between; align-items: flex-start; column-gap: var(--spacing-xl); min-height: var(--home-header-height); }
-/* About is body copy, not chrome: the band's caps and tracking are for the
-   links beside it, and the writing keeps its own reading width. */
-/* The band already carries the page gutter, so About drops its own or the
-   writing sits a gutter in from the wall's left edge instead of level with it. */
-.home-header-row #intro { flex: 1 1 auto; min-width: 0; max-width: var(--measure); padding: 0; text-transform: none; letter-spacing: normal; line-height: inherit; }
-.home-header-row .header-contacts { flex: none; }
-.header-contacts, .project-filters, .strip-caption { display: flex; align-items: center; box-sizing: border-box; padding: var(--chrome-pad); background: var(--bg-primary); font-size: var(--font-size-ui); line-height: 1.2; }
-/* The four solid blocks in the wall's corners share one size, padding and line height.
-   Each pads only on the two sides that face the wall, so the text sits flush with
-   the wall's outer edges. */
-.header-contacts { padding-bottom: 0; padding-right: 0; }
-.project-filters { padding-bottom: 0; padding-right: 0; }
-.strip-caption { display: block; flex: 0 1 auto; min-width: 0; max-width: 45%; margin: 0 auto 0 0; padding-bottom: 0; padding-left: 0; padding-right: var(--spacing-md); text-transform: uppercase; letter-spacing: var(--letter-spacing-caps); white-space: nowrap; overflow: hidden; text-overflow: ellipsis; }
-.home-header a { display: inline-block; padding: 0; text-decoration: none; }
-.header-contacts { flex: 0 1 auto; min-width: 0; gap: var(--icon-gap); overflow-x: auto; scrollbar-width: none; text-transform: none; letter-spacing: 0; }
-.header-contacts::-webkit-scrollbar { display: none; }
-.header-contacts a { display: inline-flex; padding: 0; color: inherit; font: inherit; letter-spacing: inherit; text-transform: inherit; text-decoration: none; white-space: nowrap; cursor: pointer; }
-/* The filter holds the corner; the links sit just inside it, pushed right by
-   the caption's own auto margin on the other end of the band. */
-.project-filters { flex: none; min-width: 0; max-width: 100%; gap: var(--spacing-md); margin-left: var(--spacing-sm); overflow-x: auto; scrollbar-width: none; }
-.intro-links .header-contacts { flex: 0 1 auto; margin-left: auto; }
+.header-contacts,
+.project-filters,
+.strip-caption {
+  min-width: 0;
+  padding: var(--chrome-pad) 0 0 var(--chrome-pad);
+  background: var(--bg-primary);
+  font-size: var(--font-size-ui);
+  line-height: var(--line-height-ui);
+}
+.header-contacts,
+.project-filters {
+  display: flex;
+  align-items: center;
+  max-width: 100%;
+  overflow-x: auto;
+  scrollbar-width: none;
+}
+.header-contacts::-webkit-scrollbar,
 .project-filters::-webkit-scrollbar { display: none; }
-.project-filters select { flex: none; align-self: center; max-width: 100%; padding: 0 1em 0 0; border: 0; border-radius: 0; background: var(--chevron) no-repeat right center / 0.75em; color: inherit; font: inherit; appearance: none; }
-.project-filters select option, .project-filters select optgroup { color: var(--color-black); background: var(--color-white); }
-.project-filters select:focus-visible { outline: none; }
-/* The search reads as one more word in the row until it is typed in: no box,
-   no rule, the placeholder in the same muted grey the dropdown's chevron is. */
-.project-filters input[type="search"] { flex: none; align-self: center; width: 5.5em; padding: 0; border: 0; border-radius: 0; background: none; color: inherit; font: inherit; letter-spacing: inherit; text-transform: inherit; appearance: none; }
+.header-contacts { flex: 0 1 auto; gap: var(--icon-gap); margin-left: auto; }
+.header-contacts a { display: inline-flex; text-decoration: none; white-space: nowrap; }
+.project-filters { flex: none; gap: var(--spacing-md); margin-left: var(--spacing-sm); }
+.strip-caption {
+  flex: 0 1 auto;
+  max-width: 45%;
+  margin: 0 auto 0 0;
+  padding-inline: 0 var(--spacing-md);
+  text-transform: uppercase;
+  letter-spacing: var(--letter-spacing-caps);
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+}
+.project-filters :is(select, input[type="search"]) {
+  flex: none;
+  align-self: center;
+  padding: 0;
+  border: 0;
+  border-radius: 0;
+  background: none;
+  color: inherit;
+  font: inherit;
+  appearance: none;
+}
+.project-filters select { max-width: 100%; padding-right: 1em; background: var(--chevron) no-repeat right center / 0.75em; }
+.project-filters :is(option, optgroup) { color: var(--color-black); background: var(--color-white); }
+.project-filters input[type="search"] { width: 5.5em; }
 .project-filters input[type="search"]::placeholder { color: var(--text-muted); opacity: 1; }
-.project-filters input[type="search"]:focus-visible { outline: none; }
-/* A name that matches nothing: the wall keeps what it has, and the typing
-   says so by going quiet. */
 .project-filters input[type="search"].is-empty { color: var(--text-muted); text-decoration: line-through; }
-/* The native clear button is a blue cross in Chrome, the one saturated thing
-   in a monochrome row. Same mark, drawn in the row's own colour. */
+/* Keep the native clear control in the same colour as the search text. */
 .project-filters input[type="search"]::-webkit-search-cancel-button {
-  -webkit-appearance: none; width: 0.7em; height: 0.7em; margin-left: 0.4em; background: currentColor; opacity: 0.6; cursor: pointer;
-  -webkit-mask: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 10 10'%3E%3Cpath d='M1%201L9%209M9%201L1%209' stroke='black' stroke-width='1.4'/%3E%3C/svg%3E") center / contain no-repeat;
-  mask: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 10 10'%3E%3Cpath d='M1%201L9%209M9%201L1%209' stroke='black' stroke-width='1.4'/%3E%3C/svg%3E") center / contain no-repeat;
-}
-@media (hover: none) { .project-filters input[type="search"] { display: none; } }
-@media (max-width: 600px) {
-  /* Narrow screens: the contacts take a second row, still in the right corner. */
-  :root { --home-header-height: 6rem; }
-  .home-header-row { flex-wrap: wrap; align-content: flex-start; row-gap: 0; }
-  .header-contacts { margin-left: auto; max-width: 100%; }
-}
-@media (hover: none) {
-  /* Phones: the name, contacts and category rows are one line of text plus the
-     block padding, so the wall has the same gap above and below. Narrow phones
-     reserve two rows for the wrapped contacts. */
-  :root { --phone-row: 1.8125rem; --footer-height: var(--phone-row); --home-header-height: calc(2 * var(--phone-row)); }
-}
-@media (hover: none) and (min-width: 400px) {
-  /* Phones this wide fit the name and contacts (no Print) on one row. */
-  :root { --home-header-height: var(--phone-row); }
-}
-@media (hover: none) {
-  /* If the row wraps anyway, it grows rather than overlapping the wall. */
-  .home-header-row { height: auto; min-height: var(--home-header-height); }
+  -webkit-appearance: none;
+  width: 0.7em;
+  height: 0.7em;
+  margin-left: 0.4em;
+  background: currentColor;
+  opacity: var(--opacity-muted);
+  cursor: pointer;
+  -webkit-mask: var(--search-clear-icon) center / contain no-repeat;
+  mask: var(--search-clear-icon) center / contain no-repeat;
 }
 
+/* The title becomes a heading above the hero on narrow or touch screens. */
 @media (hover: none), (max-width: 1024px) {
-  /* On a narrow screen the project's title is the page's heading rather than a
-     label in the chrome: it stands above the picture in the flow of the page,
-     at the left edge, at reading size, in the case it was written in, and needs
-     no plate behind it because it is no longer sitting on the work. It is still
-     the way back to the collection. The plate takes about the same number of
-     pixels whatever the window, so the narrower the window the more of the
-     photograph it covers; past this width it reads as a tab rather than a
-     block. */
   #header { position: static; transform: none; max-width: 100%; background: none; text-align: left; }
   .header-subtitle {
     padding: var(--page-gutter) var(--page-gutter) var(--spacing-md);
-    /* A heading sets its own size rather than taking a step of the body scale:
-       phones pull --font-size-large down to 21.6px, which is a caption when
-       this is the first thing on the page. 27px on a phone, reaching today's
-       41px by the width where the plate takes over. */
     font-size: clamp(1.6rem, 1.15rem + 2.2vw, 2.6rem);
-    letter-spacing: var(--letter-spacing-base);
+    letter-spacing: normal;
     text-transform: none;
   }
 }

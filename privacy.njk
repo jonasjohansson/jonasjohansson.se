@@ -15,11 +15,10 @@ eleventyExcludeFromCollections: true
   <title>Privacy policy — {{ site.title }}</title>
   <link rel="stylesheet" href="{{ 'styles.css' | viteAsset | url }}">
   <style>
-    .privacy { max-width: 40rem; margin: 0 auto; padding: 3rem 1.25rem 4rem; line-height: 1.5; }
-    .privacy h1 { font-size: 1.25rem; margin: 0 0 1.5rem; }
-    .privacy h2 { font-size: 1rem; margin: 2rem 0 0.5rem; }
-    .privacy p { margin: 0 0 1rem; }
-    .privacy a { color: inherit; }
+    .privacy { max-width: 40rem; margin: 0 auto; padding: var(--spacing-xl) var(--page-gutter) var(--spacing-2xl); line-height: var(--line-height-loose); }
+    .privacy h1 { font-size: 1.25rem; margin: 0 0 var(--spacing-lg); }
+    .privacy h2 { font-size: 1rem; margin: var(--spacing-xl) 0 var(--spacing-sm); }
+    .privacy p { margin: 0 0 var(--spacing-md); }
   </style>
 </head>
 <body>

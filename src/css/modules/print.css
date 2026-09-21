@@ -3,28 +3,36 @@
 .print-portfolio { display: none; }
 
 @media print {
+  /* Keep the physical @page size in sync with these sheet dimensions. */
   @page { size: 338.667mm 190.5mm; margin: 0; }
+  :root {
+    --print-width: 338.667mm;
+    --print-height: 190.5mm;
+    --print-gutter: 16mm;
+    --print-font-size: 9pt;
+    --print-rule: 0.4pt;
+  }
 
   html, body { margin: 0; padding: 0; background: white !important; color: black !important; color-scheme: light; }
   body > :not(.print-portfolio) { display: none !important; }
-  .print-portfolio { display: block; font-size: 9pt; line-height: 1.5; print-color-adjust: exact; -webkit-print-color-adjust: exact; }
+  .print-portfolio { display: block; font-size: var(--print-font-size); line-height: 1.5; print-color-adjust: exact; -webkit-print-color-adjust: exact; }
   .print-portfolio * { animation: none !important; transition: none !important; text-shadow: none !important; }
   .print-portfolio a { color: inherit !important; text-decoration: none; }
-  .print-page { position: relative; height: 190.5mm; overflow: hidden; break-after: page; break-inside: avoid; }
+  .print-page { position: relative; height: var(--print-height); overflow: hidden; break-after: page; break-inside: avoid; }
   .print-project:last-child .print-page { break-after: auto; }
   .print-project-page { color: white; }
   /* One hero per sheet the cover occupies, each placed by an inline top offset. */
-  .print-hero { position: absolute; top: 0; left: 0; display: block; width: 100%; height: 190.5mm; max-width: none; object-fit: cover; }
+  .print-hero { position: absolute; top: 0; left: 0; display: block; width: 100%; height: var(--print-height); max-width: none; object-fit: cover; }
   /* Anchor to the copy, not the page: full strength through the link, then
      a proportional vertical fade. The horizontal fade still clears the right. */
   .print-shade {
-    position: absolute; top: -16mm; left: -16mm;
-    width: 210mm; height: calc((100% + 16mm) * 1.25); max-width: none;
+    position: absolute; top: calc(-1 * var(--print-gutter)); left: calc(-1 * var(--print-gutter));
+    width: 210mm; height: calc((100% + var(--print-gutter)) * 1.25); max-width: none;
     pointer-events: none; display: block;
   }
   .print-shade img { display: block; width: 100%; height: 100%; min-height: 0; object-fit: fill; }
   .print-project-text > :not(.print-shade) { position: relative; }
-  .print-project-text { display: flow-root; position: relative; width: 112mm; margin: 16mm 0 0 16mm; }
+  .print-project-text { display: flow-root; position: relative; width: 112mm; margin: var(--print-gutter) 0 0 var(--print-gutter); }
   .print-project-text h2 { font-size: 24pt; font-weight: normal; line-height: 1.08; letter-spacing: -0.015em; margin: 0 0 7mm; text-wrap: balance; }
   .print-copy { max-width: 102mm; }
   /* The portfolio shows the short copy; a project's own cover shows all of it. */
@@ -33,14 +41,13 @@
   /* One narrow column on the left: two columns ran the text across the whole
      photograph, and the shade had to darken all of it to keep them readable. */
   body[data-route="project"] .print-copy-full { display: block; max-width: 96mm; }
-  body[data-route="project"] .print-project-text { width: 106mm; }
   body[data-route="project"] .print-shade { width: 144mm; }
   /* Every cover is one sheet. Growing onto a second one only ever repeated the
      same photograph, so a project whose writing would overrun is set smaller
      instead: the build works out the scale. flow-root keeps the text block's
-     16mm top margin from collapsing out and pushing every picture off the grid. */
+     top margin from collapsing out and pushing every picture off the grid. */
   body[data-route="project"] .print-project .print-page {
-    height: 190.5mm; display: flow-root; overflow: hidden;
+    display: flow-root;
     /* The cover is exactly one sheet, so whatever follows already starts on a
        boundary. Forcing a break after it printed a blank sheet on the projects
        whose cover is the last thing printed. */
@@ -48,25 +55,25 @@
   }
   /* Sizes below the title are relative, so they all follow the scale. */
   body[data-route="project"] .print-project-text {
-    position: relative; padding-bottom: 6mm;
-    font-size: calc(9pt * var(--copy-scale, 1));
+    width: 106mm; padding-bottom: 6mm;
+    font-size: calc(var(--print-font-size) * var(--copy-scale, 1));
   }
 
   .print-copy p { margin: 0 0 1.1em; }
   .print-lead { font-size: 1.222em; line-height: 1.32; }
   .print-lead p { margin-bottom: 1.29em; }
   .print-project-link { margin: 1.85em 0 0; font-size: 0.944em; line-height: 1.4; }
-  .print-project-link a { text-decoration: underline; text-decoration-thickness: 0.4pt; text-underline-offset: 1mm; }
-  .print-cover { padding: 22mm 16mm 16mm; color: black; }
+  .print-project-link a { text-decoration: underline; text-decoration-thickness: var(--print-rule); text-underline-offset: 1mm; }
+  .print-cover { padding: 22mm var(--print-gutter) var(--print-gutter); color: black; }
   .print-cover h1 { font-size: 32pt; font-weight: normal; line-height: 1.1; margin: 0 0 15mm; }
   .print-bio { max-width: 102mm; font-size: 10pt; }
   .print-bio p { margin: 0 0 4mm; }
-  .print-contact { position: absolute; bottom: 16mm; font-size: 9pt; line-height: 1.6; }
+  .print-contact { position: absolute; bottom: var(--print-gutter); font-size: var(--print-font-size); line-height: 1.6; }
 
   .print-contact p { margin: 0 0 3mm; }
   .print-profile-links { margin-top: 5mm; }
   .print-profile-links p { margin: 0; }
-  .print-profile-links a { text-decoration: underline; text-decoration-thickness: 0.4pt; text-underline-offset: 0.8mm; }
+  .print-profile-links a { text-decoration: underline; text-decoration-thickness: var(--print-rule); text-underline-offset: 0.8mm; }
 
   /* Route selection also works on direct visits without JavaScript. */
   body[data-route="project"] .print-cover,
@@ -74,12 +81,11 @@
 
   /* A project prints as a picture book: the composed cover carries the writing,
      then every image takes a whole sheet, cropped to fill it. */
-  body[data-route="project"] > #content { display: block !important; }
   body[data-route="project"] #content > :not(#main),
   body[data-route="project"] #main > :not(#projects),
   body[data-route="project"] #projects .project-title,
   body[data-route="project"] .media-controls-reveal { display: none !important; }
-  /* The page gutter would inset every sheet and push each 190.5mm image past
+  /* The page gutter would inset every sheet and push each full-height image past
      its page, splitting it across two: printed pages bleed to the paper edge. */
   body[data-route="project"] #content { display: flow-root !important; padding: 0 !important; }
   body[data-route="project"] #projects { display: block; margin: 0; background: none; break-before: page; }
@@ -97,19 +103,10 @@
   body[data-route="project"] .project-grid > .presskit-block,
   body[data-route="project"] .project-grid .media-item:has(video),
   body[data-route="project"] audio { display: none !important; }
-  /* One image per sheet, bleeding to every edge. The size-* classes place media
-     on the twelve-column grid on screen; on paper every image takes the sheet,
-     so they have to lose here. A page break belongs only to a page that prints:
-     hidden media kept their break and produced blank sheets. */
-  body[data-route="project"] .project-grid > .media-item,
-  body[data-route="project"] .media-row > .media-item,
-  body[data-route="project"] .project-grid > .media-item[class*="size-"],
-  body[data-route="project"] .media-row > .media-item[class*="size-"],
-  /* Authored placements arrive as inline --col-start/--col-span custom
-     properties, which outrank a class selector: they have to lose here too. */
-  body[data-route="project"] .media-item[style*="--col-start"],
-  body[data-route="project"] .media-item[style*="--col-span"] {
-    display: block; grid-column: 1 / -1; width: 338.667mm !important; max-width: none; height: 190.5mm !important; margin: 0;
+  /* One image per sheet, bleeding to every edge. Hidden media never introduce
+     page breaks; row panels can share a sheet through print-together below. */
+  body[data-route="project"] .media-item {
+    display: block; width: var(--print-width) !important; max-width: none; height: var(--print-height) !important; margin: 0;
     break-inside: avoid; break-before: auto; overflow: hidden; border-radius: 0;
     /* Row children keep their screen flex share (flex: var(--ar) 1 0) and the
        aspect-ratio box that sizes them; both would win over a plain width. */
@@ -125,11 +122,11 @@
      The row becomes the sheet, and each image takes its aspect-ratio share of
      the width, so the group prints as it is composed on screen. */
   body[data-route="project"] .media-row.print-together {
-    display: flex; gap: 0; width: 338.667mm; height: 190.5mm; margin: 0;
+    display: flex; gap: 0; width: var(--print-width); height: var(--print-height); margin: 0;
     break-before: page; break-inside: avoid; overflow: hidden;
   }
   body[data-route="project"] .media-row.print-together > .media-item {
-    width: auto !important; max-width: none; height: 190.5mm !important; margin: 0;
+    width: auto !important; max-width: none; height: var(--print-height) !important; margin: 0;
     flex: var(--ar) 1 0 !important; break-before: auto !important; break-inside: avoid;
     aspect-ratio: auto !important; overflow: hidden; border-radius: 0;
   }

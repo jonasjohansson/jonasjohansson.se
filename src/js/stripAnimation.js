@@ -8,15 +8,15 @@ export function initAnimation(container, signal) {
   const reset = () => {
     cancelAnimationFrame(frame);
     frame = null;
-    strips.forEach(strip => { strip.style.removeProperty('--bg-x'); strip.style.removeProperty('--bg-y'); });
+    container.style.removeProperty('--bg-x');
+    container.style.removeProperty('--bg-y');
   };
   const tick = () => {
     x += (targetX - x) * 0.18;
     y += (targetY - y) * 0.18;
-    strips.forEach(strip => {
-      strip.style.setProperty('--bg-x', `${x * 100}%`);
-      strip.style.setProperty('--bg-y', `${40 + y * 20}%`);
-    });
+    // Every strip shares the same focal point through inherited properties.
+    container.style.setProperty('--bg-x', `${x * 100}%`);
+    container.style.setProperty('--bg-y', `${40 + y * 20}%`);
     frame = Math.abs(targetX - x) + Math.abs(targetY - y) > 0.001 ? requestAnimationFrame(tick) : null;
   };
   container.addEventListener('pointermove', event => {

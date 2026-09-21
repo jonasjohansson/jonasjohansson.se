@@ -6,25 +6,20 @@ body { margin: 0; background: var(--bg-primary); color: var(--text-primary); fon
 [hidden] { display: none !important; }
 #content { padding: var(--page-gutter); }
 .enhanced #content { padding-bottom: 0; }
-#main:focus, .project-title:focus, #home-title:focus, #collection-title:focus, #intro:focus { outline: none; }
-a { color: inherit; text-underline-offset: 0.16em; }
+#main:focus, .project-title:focus, #intro:focus { outline: none; }
+a { color: inherit; text-underline-offset: var(--underline-offset); }
 button, select { font: inherit; color: inherit; }
 button, summary, select { cursor: pointer; }
-button, select { background: transparent; border: 1px solid var(--border-muted); border-radius: 0; padding: var(--spacing-sm) 0.75rem; }
+button, select { background: transparent; border: 1px solid var(--border-muted); border-radius: 0; padding: var(--spacing-sm) var(--chrome-pad); }
 button:hover, select:hover { background: var(--surface-tint); }
 button[aria-pressed="true"] { color: var(--bg-primary); background: var(--text-primary); border-color: var(--text-primary); }
 :focus-visible { outline: var(--focus-ring); outline-offset: 4px; }
 summary { width: fit-content; }
 summary:focus-visible { outline-offset: 6px; }
 .sr-only, .project-title { position: absolute; width: 1px; height: 1px; padding: 0; margin: -1px; overflow: hidden; clip: rect(0,0,0,0); white-space: nowrap; border: 0; }
-.skip-link { position: fixed; left: var(--spacing-md); top: -8rem; padding: 0.75rem var(--spacing-md); background: var(--bg-primary); color: var(--text-primary); z-index: var(--z-skip-link); }
+.skip-link { position: fixed; left: var(--spacing-md); top: -8rem; padding: var(--chrome-pad) var(--spacing-md); background: var(--bg-primary); color: var(--text-primary); z-index: var(--z-skip-link); }
 .skip-link:focus { top: var(--spacing-md); }
 img, video { max-width: 100%; }
-@media (prefers-color-scheme: dark) {
-  html:not([data-theme="light"]) { --bg-primary: var(--color-black); --text-primary: var(--color-white); color-scheme: dark; }
-}
-html[data-theme="dark"] { color-scheme: dark; }
-html[data-theme="light"] { color-scheme: light; }
 @media (prefers-reduced-motion: reduce) {
   *, *::before, *::after { animation-duration: 0.01ms !important; animation-iteration-count: 1 !important; transition-duration: 0.01ms !important; scroll-behavior: auto !important; }
 }

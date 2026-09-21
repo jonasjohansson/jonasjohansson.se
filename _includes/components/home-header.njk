@@ -1,7 +1,3 @@
 <header id="home-header" class="home-header"{% if project %} hidden{% endif %}>
-  {# The top band is the writing alone: the CV and email live in its first
-     sentence, beside the name, so the corner carries nothing. #}
-  <div class="home-header-row">
-    {% include "./intro.njk" %}
-  </div>
+  {% include "./intro.njk" %}
 </header>

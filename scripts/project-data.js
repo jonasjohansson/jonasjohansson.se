@@ -102,7 +102,7 @@ export function groupMedia(content) {
   const grouped = [];
   for (let i = 0; i < content.length; i++) {
     const a = content[i];
-    // Keep complete authored rows together before desktop pairing, including
+    // Keep complete authored rows together, including
     // mixed image/video triptychs. Resetting to column 1 starts a new row.
     if (i > 0 && media(a) && start(a) === 1) {
       let end = i, column = 1;
@@ -133,20 +133,4 @@ export function groupMedia(content) {
     grouped.push(a);
   }
   return grouped;
-}
-
-// Pair only adjacent standalone media. Text and authored rows end each run,
-// and an odd final item keeps the full width on large screens.
-export function pairDesktopMedia(content) {
-  const result = content.map(block => ({ ...block }));
-  const media = block => block?.type === 'image' || block?.type === 'video';
-  // pair: false keeps an image or video alone at full width on large screens.
-  const pairable = block => media(block) && block.pair !== false;
-  for (let i = 1; i < result.length - 1; i++) {
-    if (pairable(result[i]) && pairable(result[i + 1])) {
-      result[i].desktopPair = result[i + 1].desktopPair = true;
-      i++;
-    }
-  }
-  return result;
 }

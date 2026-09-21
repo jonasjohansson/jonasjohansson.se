@@ -106,13 +106,16 @@ function setWideImage(entry) {
 function updateImages() {
   const strips = document.getElementById('strips');
   const height = strips.clientHeight;
+  const wallWidth = strips.clientWidth;
   const visible = entries.filter(entry => !entry.hidden);
-  const minWidth = visible.length ? parseFloat(getComputedStyle(visible[0]).minWidth) : 0;
-  const width = Math.max(minWidth, strips.clientWidth / Math.max(1, visible.length));
+  const style = visible.length ? getComputedStyle(visible[0]) : null;
+  const minWidth = style ? parseFloat(style.minWidth) : 0;
+  const width = Math.max(minWidth, wallWidth / Math.max(1, visible.length));
   // Size the image for the widest this strip can open, then reveal it through
   // the changing strip width. Hover must never resize the photograph itself.
-  const grow = matchMedia('(hover: hover)').matches ? 12 : 1;
-  const openWidth = Math.max(minWidth, Math.min(strips.clientWidth * grow / (visible.length + grow - 1), strips.clientWidth - (visible.length - 1) * minWidth));
+  const hover = matchMedia('(hover: hover)').matches;
+  const grow = hover && style ? parseFloat(style.getPropertyValue('--strip-grow')) : 1;
+  const openWidth = Math.max(minWidth, Math.min(wallWidth * grow / (visible.length + grow - 1), wallWidth - (visible.length - 1) * minWidth));
   const narrow = width <= height * 0.16;
   for (const entry of visible) {
     const image = entry.querySelector('img');
@@ -123,7 +126,7 @@ function updateImages() {
     // Keep the same composition at every resolution so opening a strip cannot
     // stretch a narrow preview while the larger image is still downloading.
     setImageSize(entry, narrow ? 640 : Math.ceil(imageWidth));
-    if (matchMedia('(hover: hover)').matches && entry.matches(':hover, :focus-visible')) setWideImage(entry);
+    if (hover && entry.matches(':hover, :focus-visible')) setWideImage(entry);
   }
 }
 
