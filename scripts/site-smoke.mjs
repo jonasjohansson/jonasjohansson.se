@@ -137,13 +137,8 @@ async function checkFooter(page) {
     assert.equal(await page.locator('.collection-home-link').count(), 0, 'no wall carries a name');
     assert.equal(await page.locator('#collection-header').count(), 0, 'nothing floats over the top of a project wall');
     const title = await page.locator('#header-toggle').boundingBox();
-    // Wide enough and the title is a plate centred over the work; narrower and
-    // it is the page's heading, standing above the picture at the left edge.
-    if (await page.locator('#header').evaluate(header => getComputedStyle(header).position === 'absolute')) {
-      assert.ok(Math.abs(title.x + title.width / 2 - page.viewportSize().width / 2) < 1, 'a floating project title stays centred');
-    } else {
-      assert.ok(title.x < page.viewportSize().width / 4, 'a heading project title reads from the left edge');
-    }
+    const body = await page.locator('.text-block').first().boundingBox();
+    assert.ok(Math.abs(title.x - body.x) < 1, 'the project title aligns with its text column');
     assert.equal(await page.locator('#header-toggle').getAttribute('href'), `${prefix}/`, 'the project title leads home');
     assert.equal(await page.locator('#header .header-contacts').count(), 0, 'project hero header contains only the title');
   }
@@ -274,11 +269,8 @@ try {
         zero: [...document.querySelectorAll('#projects img:not(.print-poster), #projects video')].some(el => el.getBoundingClientRect().width < 1 || el.getBoundingClientRect().height < 1),
         title: document.title,
         hero: document.querySelector('.hero').getBoundingClientRect().top,
-        gutter: parseFloat(getComputedStyle(document.getElementById('content')).paddingTop),
         titleBottom: document.getElementById('header').getBoundingClientRect().bottom,
-        titleFloats: getComputedStyle(document.getElementById('header')).position === 'absolute',
-        floatingTitle: document.getElementById('header-toggle').textContent.trim(),
-        touch: matchMedia('(hover: none)').matches,
+        heading: document.getElementById('header-toggle').textContent.trim(),
         alt: document.querySelector('.hero img')?.alt || document.querySelector('.hero video')?.getAttribute('aria-label'),
         videoControls: [...document.querySelectorAll('#projects video')].every(video => !video.controls && video.getAttribute('aria-hidden') !== 'true' && video.nextElementSibling?.matches('button.media-controls-reveal:not([hidden])')),
         creditsAligned: [...document.querySelectorAll('.credits-list')].every(list => getComputedStyle(list).textAlign === 'left'),
@@ -293,13 +285,9 @@ try {
       assert.equal(state.zero, false, `${slug} has collapsed media`);
       assert.ok(state.alt.length > 15, `${slug} hero description`);
       assert.ok(state.title.endsWith(' | Jonas Johansson'), `${slug} document title`);
-      // Where the title floats over the work the hero starts one gutter down;
-      // where it stands above as the page's heading the hero starts where the
-      // title ends. Which of the two is in force is read from the title itself
-      // rather than assumed from the width.
-      assert.ok(Math.abs(state.hero - (state.titleFloats ? state.gutter : state.titleBottom)) < 1,
-        `${slug} hero starts at ${state.hero}, ${state.titleFloats ? `gutter is ${state.gutter}` : `title ends at ${state.titleBottom}`}`);
-      assert.equal(state.title, `${state.floatingTitle} | Jonas Johansson`, `${slug} floating title`);
+      assert.ok(Math.abs(state.hero - state.titleBottom) < 1,
+        `${slug} hero starts below its title`);
+      assert.equal(state.title, `${state.heading} | Jonas Johansson`, `${slug} project title`);
       assert.equal(state.videoControls, true, `${slug} video controls`);
       assert.equal(state.creditsAligned, true, `${slug} credits alignment`);
       assert.equal(state.ending, true, `${slug} ends with text after its media`);
@@ -313,10 +301,15 @@ try {
 
   for (const [name, options] of [['wide desktop', { viewport: { width: 1920, height: 1080 } }], ['mobile', mobile]]) {
     await check(`${name} heroes fill the page width`, options, async page => {
-      for (const slug of ['klattermusen', 'lights-for-ukraine', 'people-in-orbit', 'dome-dreaming', 'vi-kommer-i-fred']) {
+      for (const slug of ['klattermusen', 'lights-for-ukraine', 'people-in-orbit', 'dome-dreaming', 'vi-kommer-i-fred', 'plx', 'eastern-city-portal']) {
         await visit(page, `/${slug}/`);
         const hero = await page.locator('.hero').boundingBox();
         const media = await page.locator('.hero img, .hero video').boundingBox();
+        const header = await page.locator('#header').boundingBox();
+        const title = await page.locator('#header-toggle').boundingBox();
+        const body = await page.locator('.text-block').first().boundingBox();
+        assert.ok(Math.abs(hero.y - header.y - header.height) < 1, `${slug} title sits above the hero`);
+        assert.ok(Math.abs(title.x - body.x) < 1 && Math.abs(title.width - body.width) < 1, `${slug} title and body share their column`);
         // Project media reaches the same screen edges on every device.
         const inset = 0;
         assert.equal(hero.x, inset, `${slug} hero starts at ${inset ? 'the page gutter' : 'the screen edge'}`);

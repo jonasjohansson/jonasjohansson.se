@@ -105,13 +105,16 @@ Shared colour, spacing, type and layout values live in `src/css/modules/variable
 Use `--page-gutter` for inset content, `--media-gap` between gallery panels, and
 `--project-*-gap` for project spacing. Project titles and writing share a 64rem
 maximum (`--project-measure`) and the same inset grid, with their text aligned.
+Titles sit above the full-width hero at every screen size. The preamble-to-body
+gap (`--project-lead-gap`) grows with the viewport from 16 to 96 px, plus the
+shared 16 px grid gap; consecutive body paragraphs retain their tighter spacing.
 Mobile adjusts these tokens rather than
 redeclaring margins on every component. Gallery `sizes` hints in
 `eleventy.config.js` mirror the 1rem media gap and the 768 px stacking breakpoint;
 update them together if either value changes.
 
 The width breakpoints are 600 px (compact type), 768 px (text placement and stacked
-pairs), 1024 px (the project title becomes an inline heading), 1025 px (larger
+pairs), 1025 px (larger
 project body text), and 1440 px (more space around text sections). Laptop and
 desktop body text scales from 27 to 32 px. Wide screens use 96–144 px text margins,
 with 120 px at a 1920 px viewport. Adjacent

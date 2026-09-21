@@ -1,27 +1,19 @@
 #header {
-  position: absolute;
-  top: 0;
-  left: 50%;
-  transform: translateX(-50%);
-  z-index: var(--z-header);
   display: grid;
   grid-template-columns: var(--project-columns);
   column-gap: var(--spacing-xl);
   width: calc(100% - 2 * var(--page-gutter));
+  margin-inline: auto;
   text-align: left;
 }
 .header-subtitle {
   display: block;
   grid-column: 2 / span 10;
   justify-self: center;
-  /* The white plate extends past the column; the title's text aligns with it. */
-  width: calc(100% + 2 * var(--spacing-md));
-  max-width: calc(var(--project-measure) + 2 * var(--spacing-md));
-  padding: var(--spacing-lg) var(--spacing-md) var(--project-title-gap);
-  background: var(--bg-primary);
+  width: 100%;
+  max-width: var(--project-measure);
+  padding-block: var(--page-gutter) var(--project-title-gap);
   font-size: var(--font-size-title);
-  letter-spacing: var(--letter-spacing-wide);
-  text-transform: uppercase;
   line-height: var(--line-height-tight);
   text-decoration: none;
   text-wrap: balance;
@@ -92,17 +84,6 @@
   mask: var(--search-clear-icon) center / contain no-repeat;
 }
 
-/* The title becomes a heading above the hero on narrow or touch screens. */
-@media (hover: none), (max-width: 1024px) {
-  #header { position: static; transform: none; margin-inline: auto; }
-  .header-subtitle {
-    padding-top: var(--page-gutter);
-    letter-spacing: normal;
-    text-transform: none;
-  }
-}
-
 @media (max-width: 768px) {
-  #header { display: block; width: 100%; }
-  .header-subtitle { width: 100%; max-width: none; padding-inline: var(--page-gutter); }
+  #header { display: block; }
 }
