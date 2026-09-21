@@ -80,6 +80,11 @@
   /* The band already pads above its contents, so the filter does not pad again:
      the twelve pixels it brought were enough to push the landing three past a
      single screen, and the landing is meant to be exactly one. */
-  .enhanced .project-filters { display: flex; margin-left: auto; padding-top: 0; }
+  .enhanced .project-filters { display: flex; padding-top: 0; }
+  /* Only one thing in the band may claim the free space, or it is split and
+     whatever claims it second lands in the middle. Under a project wall the
+     links claim it and carry the filter across with them; under the landing
+     there are no links, so the filter claims it itself. */
+  .enhanced body[data-route="home"] .project-filters { margin-left: auto; }
   .enhanced body:not([data-route="home"]) .header-contacts { display: flex; padding-top: 0; }
 }
