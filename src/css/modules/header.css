@@ -11,7 +11,7 @@
 }
 .header-subtitle {
   display: block;
-  padding: var(--spacing-lg) var(--spacing-md) var(--spacing-sm);
+  padding: var(--spacing-lg) var(--spacing-md) var(--spacing-md);
   font-size: calc(var(--font-size-large) * 0.8);
   letter-spacing: var(--letter-spacing-wide);
   text-transform: uppercase;
@@ -87,7 +87,7 @@
 @media (hover: none), (max-width: 1024px) {
   #header { position: static; transform: none; max-width: 100%; background: none; text-align: left; }
   .header-subtitle {
-    padding: var(--page-gutter) var(--page-gutter) var(--spacing-md);
+    padding: var(--page-gutter);
     font-size: clamp(1.6rem, 1.15rem + 2.2vw, 2.6rem);
     letter-spacing: normal;
     text-transform: none;
