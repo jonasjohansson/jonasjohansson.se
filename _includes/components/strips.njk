@@ -4,7 +4,7 @@
     {% for item in collectionItems %}
     <a class="strip" id="strip-{{ item.slug }}" data-project-link
       href="{{ ('/' ~ item.slug ~ '/') | url }}"
-      aria-label="{{ item.title | escape }}"
+      aria-label="{% if indexPreview %}{{ item.year }} · {% endif %}{{ item.title | escape }}"
       data-project="{{ item.slug }}"{% if item.stripColor %} style="--project-color: {{ item.stripColor }}"{% endif %}
       {% if project and project.slug == item.slug %} hidden{% endif %}>
       <picture class="strip-picture">
@@ -13,7 +13,7 @@
         {%- set eager = (not project) and loop.index0 < 3 %}
         <img class="strip-image" src="{{ item.thumbnail.src }}" alt="" width="{{ item.thumbnail.width }}" height="{{ item.thumbnail.height }}" loading="{{ 'eager' if eager else 'lazy' }}"{% if eager and loop.first %} fetchpriority="high"{% endif %} decoding="async">
       </picture>
-      <span class="strip-title" aria-hidden="true">{{ item.title }}</span>
+      <span class="strip-title" aria-hidden="true">{% if indexPreview %}{{ item.year }} · {% endif %}{{ item.title }}</span>
     </a>
     {% endfor %}
   </nav>

@@ -3,12 +3,13 @@
 <style>
   body[data-index-view="index"] #strips {
     --strip-min-width: var(--spacing-xl);
-    --strip-grow: 3;
+    --strip-grow: 1;
     --index-font-size: clamp(1rem, 1.4vw, 1.375rem);
+    border-block: 1px solid var(--border-muted);
+    border-inline-start: 1px solid var(--border-muted);
     touch-action: pan-x pan-y;
   }
   body[data-index-view="index"] .strip {
-    flex-grow: 1;
     background: var(--bg-primary);
     box-shadow: inset -1px 0 var(--border-muted);
   }
@@ -27,15 +28,6 @@
     overflow: hidden;
     text-overflow: ellipsis;
     pointer-events: none;
-  }
-  body[data-index-view="index"] .strip:focus-visible {
-    background: var(--surface-tint);
-  }
-  @media (hover: hover) {
-    body[data-index-view="index"] .strip:is(:hover, :focus-visible) {
-      flex-grow: var(--strip-grow);
-      background: var(--surface-tint);
-    }
   }
   .project-filters .index-toggle {
     flex: none;
