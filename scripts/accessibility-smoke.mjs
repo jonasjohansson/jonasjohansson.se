@@ -119,6 +119,74 @@ try {
           await page.waitForFunction(() => document.body.dataset.route === 'home');
         });
 
+        await check(browser, `${prefix} image index toggle and navigation`, options, async page => {
+          await visit(page);
+          const wall = page.locator('#strips');
+          const toggle = page.locator('#project-view');
+          const visible = page.locator('.strip:not([hidden])');
+          const order = await visible.evaluateAll(links => links.map(link => link.dataset.project));
+          assert.equal(await wall.getAttribute('data-view'), 'images');
+          await toggle.focus();
+          await page.keyboard.press('Enter');
+          assert.equal(await wall.getAttribute('data-view'), 'index');
+          assert.equal(await toggle.getAttribute('aria-label'), 'Show images only');
+          const labels = await visible.evaluateAll(links => links.map(link => {
+            const label = link.querySelector('.strip-title');
+            const style = getComputedStyle(label);
+            return { title: label.textContent.trim(), name: link.getAttribute('aria-label'),
+              display: style.display, font: style.fontFamily, casing: style.textTransform,
+              shadow: style.textShadow, background: getComputedStyle(link, '::after').backgroundImage };
+          }));
+          assert.ok(labels.every(label => label.title === label.name && label.display !== 'none' &&
+            label.font.includes('Inter') && label.casing === 'uppercase' && label.shadow === 'none' && label.background === 'none'));
+          assert.equal(await page.evaluate(() => document.fonts.check('14px Inter')), true);
+          assert.equal(await page.evaluate(() => document.documentElement.scrollWidth <= innerWidth + 1), true);
+          if (!options.hasTouch) {
+            const first = visible.first();
+            const width = (await first.boundingBox()).width;
+            await first.hover();
+            await page.waitForTimeout(300);
+            assert.equal((await first.boundingBox()).width, width, 'index names do not expand on hover');
+            assert.equal(await page.locator('#strip-caption').isVisible(), false);
+          } else if (name === 'chromium') {
+            const session = await page.context().newCDPSession(page);
+            const bounds = await wall.boundingBox();
+            const y = bounds.y + bounds.height / 2;
+            await session.send('Input.dispatchTouchEvent', { type: 'touchStart', touchPoints: [{ x: 300, y }] });
+            for (let x = 280; x >= 80; x -= 20) {
+              await session.send('Input.dispatchTouchEvent', { type: 'touchMove', touchPoints: [{ x, y }] });
+              await page.waitForTimeout(20);
+            }
+            await session.send('Input.dispatchTouchEvent', { type: 'touchEnd', touchPoints: [] });
+            await page.waitForFunction(() => document.getElementById('strips').scrollLeft > 100);
+            assert.equal(await page.locator('.strip.is-active').count(), 0, 'the index swipes without the image preview gesture');
+            await session.detach();
+          }
+          const filter = page.getByRole('combobox', { name: 'Filter projects' });
+          await filter.selectOption('light');
+          const filtered = await visible.evaluateAll(links => links.map(link => link.dataset.project));
+          assert.ok(filtered.length > 0 && filtered.length < order.length);
+          await toggle.click();
+          assert.equal(await wall.getAttribute('data-view'), 'images');
+          assert.deepEqual(await visible.evaluateAll(links => links.map(link => link.dataset.project)), filtered);
+          assert.equal(await visible.first().locator('.strip-title').isVisible(), false);
+          await toggle.click();
+          await filter.selectOption('');
+          assert.deepEqual(await visible.evaluateAll(links => links.map(link => link.dataset.project)), order);
+          const link = page.getByRole('link', { name: 'Vista', exact: true });
+          if (options.hasTouch) await link.tap();
+          else { await link.focus(); await page.keyboard.press('Enter'); }
+          await page.waitForSelector('#projects #vista');
+          assert.equal(page.context().pages().length, 1, 'projects open normally in the same tab');
+          assert.equal(await wall.getAttribute('data-view'), 'index', 'the view survives project navigation');
+          await page.goBack();
+          await page.waitForFunction(() => document.body.dataset.route === 'home' && document.getElementById('main').getAttribute('aria-busy') === 'false');
+          assert.equal(await wall.getAttribute('data-view'), 'index');
+          const scan = await new AxeBuilder({ page }).analyze();
+          scans.push({ browser: name, mode: label, route: '/ (index)', violations: scan.violations, incomplete: scan.incomplete });
+          assert.deepEqual(scan.violations.map(violation => violation.id), []);
+        });
+
         await check(browser, `${prefix} hero playback with reduced motion`, options, async page => {
           await visit(page, '/society-expo/');
           const video = page.locator('.hero video');

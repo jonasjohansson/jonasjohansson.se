@@ -26,6 +26,7 @@
   min-width: 0;
   padding: var(--chrome-pad) 0 0 var(--chrome-pad);
   background: var(--bg-primary);
+  font-family: var(--font-family-ui);
   font-size: var(--font-size-ui);
   line-height: var(--line-height-ui);
 }
@@ -50,7 +51,7 @@
   overflow: hidden;
   text-overflow: ellipsis;
 }
-.project-filters :is(select, input[type="search"]) {
+.project-filters :is(select, input[type="search"], button) {
   flex: none;
   align-self: center;
   padding: 0;
@@ -62,6 +63,8 @@
   appearance: none;
 }
 .project-filters select { max-width: 100%; padding-right: 1em; background: var(--chevron) no-repeat right center / 0.75em; }
+.project-filters button:hover { text-decoration: underline; }
+.project-filters button:focus-visible { outline-offset: -2px; }
 .project-filters :is(option, optgroup) { color: var(--color-black); background: var(--color-white); }
 .project-filters input[type="search"] { width: 5.5em; }
 .project-filters input[type="search"]:focus-visible {

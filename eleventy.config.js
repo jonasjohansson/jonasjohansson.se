@@ -129,6 +129,7 @@ export default function (eleventyConfig) {
   eleventyConfig.addWatchTarget('scripts/**/*');
   eleventyConfig.setWatchJavaScriptDependencies(false);
   eleventyConfig.addPassthroughCopy({ 'src/favicon': 'favicon', 'src/img': 'assets/img' });
+  eleventyConfig.addPassthroughCopy({ 'src/fonts/Inter-LICENSE.txt': 'assets/fonts/Inter-LICENSE.txt' });
   eleventyConfig.addPassthroughCopy('CNAME');
   eleventyConfig.addPassthroughCopy('projects/**/*.{mp4,webm,mov,mp3,m4a,ogg,wav}');
   eleventyConfig.setLibrary('njk', nunjucks.configure({ autoescape: true, trimBlocks: true, lstripBlocks: true }));

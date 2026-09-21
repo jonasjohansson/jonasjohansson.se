@@ -14,9 +14,17 @@
   font-display: swap;
 }
 
-/* PLX carries the typography of the festival's own presentation: Rosarivo for
-   the writing, Germania One for the figures it wants you to stop on. Scoped to
-   that one project — every other page on the site is SeasonMix. */
+/* Inter Regular 4.1, https://rsms.me/inter/, for labels and controls. */
+@font-face {
+  font-family: "Inter";
+  src: url("../fonts/Inter-Regular.woff2") format("woff2");
+  font-weight: normal;
+  font-style: normal;
+  font-display: swap;
+}
+
+/* PLX carries Rosarivo for its writing and Germania One for emphasis;
+   the other projects use SeasonMix for their titles and body text. */
 @font-face {
   font-family: "Rosarivo";
   src: url("../fonts/Rosarivo-Regular.woff2") format("woff2");

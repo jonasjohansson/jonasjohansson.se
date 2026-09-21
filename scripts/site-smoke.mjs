@@ -781,7 +781,7 @@ try {
       const visible = () => page.locator('#strips .strip:not([hidden])').evaluateAll(strips => strips.map(strip => strip.dataset.project));
       assert.equal(await filter.getAttribute('multiple'), null, 'the filter cannot hold two selections at once');
       assert.deepEqual(await filter.locator('optgroup[label="Year"] option').allTextContents(), ['2026', '2025', '2024', '2023']);
-      assert.equal(await page.locator('#project-filters button').count(), 0, 'the filter is a dropdown, not a row of toggles');
+      assert.equal(await page.locator('#project-filters button:not(#project-view)').count(), 0, 'filter choices remain in the dropdown');
       assert.equal(await page.locator('#project-filters select').count(), 1, 'the year and the categories share one dropdown');
       for (const year of ['2025', '2024', '2023', '2026', '']) {
         await filter.selectOption(year);
@@ -1524,7 +1524,8 @@ try {
 
   await check('home image wall stays light and footer has no divider', desktop, async page => {
     await visit(page);
-    assert.equal(await page.locator('.strip-upcoming, .strip-status, .strip-meta, #collection [data-view]').count(), 0);
+    assert.equal(await page.locator('.strip-upcoming, .strip-status, .strip-meta, #collection button').count(), 0);
+    assert.equal(await page.locator('#strips').getAttribute('data-view'), 'images', 'photographs remain the default view');
     const published = await page.evaluate(() => window.__PROJECTS_DATA__.map(project => project.slug));
     assert.deepEqual(await page.locator('#strips .strip').evaluateAll(strips => strips.map(strip => strip.dataset.project)), published);
     await page.locator('#collection').scrollIntoViewIfNeeded();

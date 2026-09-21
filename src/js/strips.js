@@ -21,10 +21,11 @@ const normalize = text => text.toLowerCase().normalize('NFD').replace(/[\u0300-\
 let currentSlug = '';
 const pendingImages = new WeakMap();
 let hoveredEntry;
+let stripView = document.getElementById('strips').dataset.view || 'images';
 
 function updatePreview() {
   const focused = document.activeElement?.closest('#strips .strip:not([hidden])');
-  const entry = hoveredEntry || focused;
+  const entry = stripView === 'images' ? hoveredEntry || focused : null;
   // The bottom-left caption names the project while a strip is hovered, focused or scrubbed.
   const caption = document.getElementById('strip-caption');
   caption.textContent = entry?.getAttribute('aria-label') || '';
@@ -235,7 +236,7 @@ export function updateStrips(slug) {
     const matches = matchesFilters(projects.get(entry.dataset.project));
     entry.hidden = entry.dataset.project === currentSlug || !matches;
     if (!entry.hidden) count++;
-    if (entry.hidden || !entry.querySelector('img')) continue;
+    if (entry.hidden || stripView === 'index' || !entry.querySelector('img')) continue;
     const upgradeImage = () => {
       if (!matchMedia('(hover: hover)').matches) return;
       setWideImage(entry);
@@ -254,11 +255,14 @@ export function updateStrips(slug) {
   document.getElementById('project-count').textContent = `${count} ${count === 1 ? 'project' : 'projects'}`;
   updatePreview();
   updateImages();
-  initAnimation(document.getElementById('strips'), controller.signal);
-  // The scrub belongs to a wall of slivers: a finger held still opens the strip
-  // under it. A project page's phone layout is a grid of cards, which is tapped.
-  bindTouchScrub(document.getElementById('strips'), controller.signal);
-  bindStripAudio(document.getElementById('strips'), controller.signal);
+  // Visible names can be read without a preview gesture. In Index mode the
+  // wall scrolls naturally and its links enter a project with a single tap.
+  if (stripView === 'images') {
+    const wall = document.getElementById('strips');
+    initAnimation(wall, controller.signal);
+    bindTouchScrub(wall, controller.signal);
+    bindStripAudio(wall, controller.signal);
+  }
 }
 
 export function initializeStrips() {
@@ -290,6 +294,24 @@ export function initializeStrips() {
   group('Category', categories, tag => tag === 'av' ? 'Audiovisual' : tag[0].toUpperCase() + tag.slice(1));
   group('Year', years, year => year);
   filters.append(filter);
+  const viewToggle = document.createElement('button');
+  viewToggle.id = 'project-view';
+  viewToggle.type = 'button';
+  viewToggle.setAttribute('aria-controls', 'strips');
+  const updateView = () => {
+    document.getElementById('strips').dataset.view = stripView;
+    viewToggle.textContent = stripView === 'index' ? 'Images' : 'Index';
+    viewToggle.setAttribute('aria-label', stripView === 'index' ? 'Show images only' : 'Show project names');
+  };
+  updateView();
+  filters.append(viewToggle);
+  viewToggle.addEventListener('click', () => {
+    stripView = stripView === 'images' ? 'index' : 'images';
+    updateView();
+    updateStrips(currentSlug);
+    document.getElementById('strips').scrollLeft = 0;
+    document.getElementById('route-announcer').textContent = stripView === 'index' ? 'Project images with names shown' : 'Project images shown';
+  });
   filters.hidden = false;
   updateFilterStates();
   const applyFilters = () => {
