@@ -32,7 +32,8 @@
   --transition-fast: 0.25s ease;
 
   /* Breakpoints (for reference; custom properties cannot be used inside @media):
-     600px compact type, 768px stacked pairs/text, 1024px inline project title.
+     600px compact type, 768px stacked pairs/text, 1024px inline project title,
+     1440px larger project text and more space between sections.
      Hover queries control interaction and footer chrome, never media widths */
 
   /* Project media */
@@ -103,6 +104,14 @@
     --project-lead-gap: var(--spacing-md);
     --project-credit-gap: var(--spacing-xl);
     --project-end-gap: var(--spacing-xl);
+  }
+}
+
+@media screen and (min-width: 1440px) {
+  :root {
+    --font-size-small: 1.6875rem;
+    --project-text-gap: clamp(6rem, 6.25vw, 9rem);
+    --project-end-gap: var(--project-text-gap);
   }
 }
 

@@ -109,6 +109,9 @@ redeclaring margins on every component. Gallery `sizes` hints in
 update them together if either value changes.
 
 The width breakpoints are 600 px (compact type), 768 px (text placement and stacked
-pairs) and 1024 px (the project title becomes an inline heading). Hover queries
-control strip interaction and footer controls; image width is independent of the
-input device. Print dimensions and spacing use separate variables in `print.css`.
+pairs), 1024 px (the project title becomes an inline heading), and 1440 px (larger
+project body text and more space around text sections). Wide screens use 27 px
+body text and 96–144 px text margins, with 120 px at a 1920 px viewport. Adjacent
+paragraph blocks retain their normal spacing. Hover queries control strip
+interaction and footer controls; image width is independent of the input device.
+Print dimensions and spacing use separate variables in `print.css`.
