@@ -13,17 +13,16 @@
     content: '';
     position: absolute;
     inset: 0;
-    background: linear-gradient(to top, color-mix(in srgb, var(--color-black) 80%, transparent), transparent 85%);
     box-shadow: inset -1px 0 var(--border-muted);
     pointer-events: none;
   }
   body[data-index-view="index"] .strip-title {
     display: block;
     position: absolute;
-    bottom: var(--spacing-md);
+    bottom: var(--spacing-sm);
     left: 50%;
     z-index: 1;
-    max-height: calc(100% - 2 * var(--spacing-md));
+    max-height: calc(100% - 2 * var(--spacing-sm));
     writing-mode: vertical-rl;
     transform: translateX(-50%) rotate(180deg);
     font-size: var(--index-font-size);
