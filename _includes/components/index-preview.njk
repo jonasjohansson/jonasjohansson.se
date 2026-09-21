@@ -1,0 +1,124 @@
+{# A self-contained proposal at /preview/index/, using the real collection.
+   The public homepage never includes these styles, links or behaviour. #}
+<style>
+  #project-index {
+    width: 100%;
+    columns: 2;
+    column-gap: clamp(var(--spacing-xl), 7vw, 8rem);
+    padding-block: var(--spacing-sm) var(--spacing-xl);
+    font-size: clamp(1.125rem, 1rem + 0.65vw, 1.625rem);
+    line-height: var(--line-height-snug);
+  }
+  .index-link {
+    display: flex;
+    align-items: baseline;
+    justify-content: space-between;
+    gap: var(--spacing-md);
+    min-height: 44px;
+    padding-block: var(--spacing-sm);
+    break-inside: avoid;
+    text-decoration: none;
+  }
+  .index-link:hover .index-name { text-decoration: underline; }
+  .index-link:focus-visible { outline-offset: 2px; }
+  .index-year {
+    flex: none;
+    color: var(--text-muted);
+    font-size: var(--font-size-ui);
+    font-variant-numeric: tabular-nums;
+  }
+  .project-filters .index-toggle {
+    flex: none;
+    padding: 0;
+    border: 0;
+    background: transparent;
+    color: inherit;
+    font: inherit;
+  }
+  .project-filters .index-toggle:hover { text-decoration: underline; }
+  .project-filters .index-toggle:focus-visible { outline-offset: -2px; }
+  body[data-route="home"][data-index-view="index"] #collection {
+    display: block;
+    flex: none;
+    height: auto;
+    min-height: 0;
+  }
+  body[data-index-view="index"] .strip-caption { display: none; }
+  body[data-index-view="index"] .intro-links {
+    position: sticky;
+    top: 0;
+    height: auto;
+    padding-block: var(--chrome-pad);
+    background: var(--bg-primary);
+  }
+  @media (max-width: 768px) {
+    #project-index { columns: 1; }
+  }
+</style>
+
+<nav id="project-index" aria-label="Project index" hidden>
+  {% for item in collectionItems %}
+  <a class="index-link" data-project="{{ item.slug }}" href="{{ ('/' ~ item.slug ~ '/') | url }}" target="_blank" rel="noopener">
+    <span class="index-name">{{ item.title }}</span>
+    <span class="index-year">{{ item.year }}</span>
+  </a>
+  {% endfor %}
+</nav>
+
+<script type="module">
+  // Importing the same module as the layout waits for the existing filters
+  // without running the site twice. This demo adds no code to its main bundle.
+  import "{{ 'main.js' | viteAsset | url }}";
+
+  const collection = document.getElementById('collection');
+  const strips = document.getElementById('strips');
+  const index = document.getElementById('project-index');
+  const filters = document.getElementById('project-filters');
+  const footer = document.getElementById('intro-links');
+  const rows = new Map([...index.querySelectorAll('.index-link')].map(link => [link.dataset.project, link]));
+  index.append(...[...rows.values()].sort((a, b) => a.textContent.trim().localeCompare(b.textContent.trim(), 'en')));
+  const toggle = document.createElement('button');
+  toggle.type = 'button';
+  toggle.className = 'index-toggle';
+  toggle.setAttribute('aria-controls', 'strips project-index');
+  filters.append(toggle);
+  collection.append(index);
+
+  // Work opens in a separate tab so the preview and its selected view stay put.
+  for (const link of strips.querySelectorAll('a')) {
+    link.target = '_blank';
+    link.rel = 'noopener';
+  }
+
+  const syncFilters = () => {
+    for (const strip of strips.querySelectorAll('.strip')) {
+      rows.get(strip.dataset.project).hidden = strip.hidden;
+    }
+  };
+  new MutationObserver(syncFilters).observe(strips, {
+    subtree: true, attributes: true, attributeFilter: ['hidden'],
+  });
+  syncFilters();
+
+  function setView(showIndex, announce = false) {
+    const top = scrollY;
+    document.body.dataset.indexView = showIndex ? 'index' : 'images';
+    strips.hidden = showIndex;
+    index.hidden = !showIndex;
+    // In the longer index the same controls sit above the names. Switching
+    // back returns them to their original position beneath the image strips.
+    if (showIndex) collection.before(footer);
+    else collection.after(footer);
+    toggle.textContent = showIndex ? 'Images' : 'Index';
+    toggle.setAttribute('aria-label', showIndex ? 'Show images' : 'Show project index');
+    if (announce) {
+      document.getElementById('route-announcer').textContent = showIndex ? 'Project index' : 'Project images';
+    }
+    // Restore the image sizing after revealing the wall; the list uses normal
+    // page scrolling, with its controls kept within reach at the top.
+    dispatchEvent(new Event('resize'));
+    requestAnimationFrame(() => scrollTo({ top, behavior: 'instant' }));
+  }
+  toggle.addEventListener('click', () => setView(index.hidden, true));
+  setView(new URLSearchParams(location.search).get('view') === 'index');
+</script>

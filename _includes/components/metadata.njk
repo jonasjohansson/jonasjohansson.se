@@ -46,7 +46,7 @@
 <!-- SEO and Performance -->
 <meta
   name="robots"
-  content="{{ 'noindex, nofollow' if project and project.unlisted else 'index, follow' }}" />
+  content="{{ 'noindex, nofollow' if noindex or (project and project.unlisted) else 'index, follow' }}" />
 <meta
   name="author"
   content="Jonas Johansson" />
