@@ -16,7 +16,9 @@
 
   /* Layout */
   --page-gutter: var(--spacing-lg); /* inset for writing and navigation */
-  --measure: 56rem; /* text column width */
+  --measure: 56rem; /* About column width */
+  --project-measure: 64rem; /* shared maximum for project titles and writing */
+  --project-columns: repeat(12, minmax(0, 1fr));
   --hero-height: 100svh;
   --icon-gap: clamp(var(--spacing-xs), 2vw, var(--spacing-md)); /* between contact links */
 

@@ -579,7 +579,7 @@ try {
           }
           if (child.text) {
             assert.ok(child.x >= 24 - 1 && child.x + child.width <= width - 24 + 1, `${slug} keeps text inside the page gutter`);
-            assert.ok(child.width <= 896 + 1, `${slug} respects the reading measure`);
+            assert.ok(child.width <= 1024 + 1, `${slug} respects the reading measure`);
           }
           if (i) assert.ok(child.y >= geometry.children[i - 1].bottom - 1, `${slug} preserves its sequence without overlap`);
         }

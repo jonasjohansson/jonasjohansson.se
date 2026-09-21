@@ -16,7 +16,7 @@ figure { margin: 0; }
 
 .project-grid {
   display: grid;
-  grid-template-columns: repeat(12, minmax(0, 1fr));
+  grid-template-columns: var(--project-columns);
   column-gap: var(--spacing-xl);
   row-gap: var(--media-gap);
 }
@@ -83,7 +83,7 @@ figure { margin: 0; }
 .text-block,
 .credits-block {
   width: 100%;
-  max-width: var(--measure);
+  max-width: var(--project-measure);
   margin-inline: auto;
 }
 

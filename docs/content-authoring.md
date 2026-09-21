@@ -103,7 +103,9 @@ Browser scripts use installed Playwright Chromium or local Google Chrome. Run `n
 
 Shared colour, spacing, type and layout values live in `src/css/modules/variables.css`.
 Use `--page-gutter` for inset content, `--media-gap` between gallery panels, and
-`--project-*-gap` for project spacing. Mobile adjusts these tokens rather than
+`--project-*-gap` for project spacing. Project titles and writing share a 64rem
+maximum (`--project-measure`) and the same inset grid, with their text aligned.
+Mobile adjusts these tokens rather than
 redeclaring margins on every component. Gallery `sizes` hints in
 `eleventy.config.js` mirror the 1rem media gap and the 768 px stacking breakpoint;
 update them together if either value changes.
