@@ -40,6 +40,7 @@
 
   /* Project media */
   --media-gap: var(--spacing-md);
+  --project-title-gap: var(--spacing-xl);
   --project-text-gap: var(--spacing-2xl);
   --project-lead-gap: var(--spacing-xl);
   --project-credit-gap: 7.5rem;
@@ -58,6 +59,7 @@
   --font-size-small: clamp(1.03rem, 0.86rem + 0.76vw, 1.46rem);
   --font-size-medium: clamp(1.4rem, 1.08rem + 1.3vw, 2.05rem);
   --font-size-large: clamp(1.73rem, 1.3rem + 1.94vw, 2.81rem);
+  --font-size-title: clamp(1.9rem, 1.25rem + 2.25vw, 3.25rem);
   /* The About text reads as body copy, not a statement: about 20px on a
      laptop rather than 27px, and it stops growing sooner on a large display. */
   --font-size-intro: clamp(1.05rem, 0.62rem + 0.62vw + 0.18vh, 1.4rem);

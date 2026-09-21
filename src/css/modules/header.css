@@ -17,9 +17,9 @@
   /* The white plate extends past the column; the title's text aligns with it. */
   width: calc(100% + 2 * var(--spacing-md));
   max-width: calc(var(--project-measure) + 2 * var(--spacing-md));
-  padding: var(--spacing-lg) var(--spacing-md) var(--spacing-md);
+  padding: var(--spacing-lg) var(--spacing-md) var(--project-title-gap);
   background: var(--bg-primary);
-  font-size: calc(var(--font-size-large) * 0.8);
+  font-size: var(--font-size-title);
   letter-spacing: var(--letter-spacing-wide);
   text-transform: uppercase;
   line-height: var(--line-height-tight);
@@ -99,8 +99,7 @@
 @media (hover: none), (max-width: 1024px) {
   #header { position: static; transform: none; margin-inline: auto; }
   .header-subtitle {
-    padding-block: var(--page-gutter);
-    font-size: clamp(1.6rem, 1.15rem + 2.2vw, 2.6rem);
+    padding-top: var(--page-gutter);
     letter-spacing: normal;
     text-transform: none;
   }
