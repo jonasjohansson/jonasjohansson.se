@@ -41,7 +41,5 @@
   .enhanced .strip-caption { max-width: 100%; }
   .enhanced .project-filters,
   .enhanced .header-contacts { padding-top: 0; }
-  .project-filters input[type="search"],
-  .enhanced body[data-route="home"] .header-contacts { display: none; }
-  .enhanced body[data-route="home"] .project-filters { margin-left: auto; }
+  .project-filters input[type="search"] { display: none; }
 }

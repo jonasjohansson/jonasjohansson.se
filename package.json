@@ -10,12 +10,14 @@
     "build": "npm run clean:dist && ELEVENTY_RUN_MODE=build npx vite build && ELEVENTY_RUN_MODE=build npx eleventy && echo '\u2713 Build complete - HTML files generated in dist/'",
     "test": "node --test tests/*.test.js",
     "test:browser": "node scripts/site-smoke.mjs",
+    "test:accessibility": "node scripts/accessibility-smoke.mjs",
     "test:print": "node scripts/print-smoke.mjs",
     "audit:visual": "node scripts/visual-audit.mjs"
   },
   "devDependencies": {
     "@11ty/eleventy": "^3.1.2",
     "@11ty/eleventy-img": "^6.0.4",
+    "@axe-core/playwright": "^4.13.0",
     "concurrently": "^9.2.1",
     "html-minifier-terser": "^7.2.0",
     "markdown-it": "^14.1.0",

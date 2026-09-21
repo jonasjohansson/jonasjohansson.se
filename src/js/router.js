@@ -43,6 +43,15 @@ class Router {
       if (event.defaultPrevented || event.button !== 0 || event.metaKey || event.ctrlKey || event.shiftKey || event.altKey) return;
       const anchor = event.target.closest('a[href]');
       if (!anchor || anchor.target || anchor.hasAttribute('download')) return;
+      if (anchor.classList.contains('skip-link')) {
+        // WebKit dispatches popstate for fragment navigation, which would
+        // remount this page and move focus away from the skip-link target.
+        event.preventDefault();
+        const main = document.getElementById('main');
+        main.focus({ preventScroll: true });
+        main.scrollIntoView({ block: 'start' });
+        return;
+      }
       const url = new URL(anchor.href, location.href);
       if (url.origin !== location.origin || url.search) return;
       const path = normalized(url.pathname);

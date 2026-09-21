@@ -62,8 +62,8 @@ async function settleOpenStrip(page) {
 async function openStrip(page, strip, via = 'tap') {
   // Either wall on a phone is slivers: the first press opens one and names it,
   // the second enters. This holds however the press is delivered, by tap, click
-  // or a dispatched click, because the wall reads the device, not the event.
-  const twoStep = await page.evaluate(() => matchMedia('(hover: none)').matches);
+  // on touch screens. Keyboard and programmatic activation enter directly.
+  const twoStep = via !== 'dispatch' && await page.evaluate(() => matchMedia('(hover: none)').matches);
   const press = () => (via === 'dispatch' ? strip.evaluate(link => link.click()) : via === 'click' ? strip.click() : strip.tap());
   await press();
   if (!twoStep) return;
@@ -100,9 +100,7 @@ async function checkFooter(page) {
     assert.equal(await page.locator('#intro-links').isVisible(), true, 'both walls keep a band under them');
     assert.equal(await page.locator('#project-filters').isVisible(), true, 'and both carry the filter');
     assert.equal(await page.locator('#project-search').isVisible(), false, 'phones do not ask for typing');
-    // A project wall carries the links the way a pointer device's does. The
-    // landing does not: the writing above it already gives them.
-    assert.equal(await contacts.isVisible(), !home, 'the links sit under a project wall and not under the landing');
+    assert.equal(await contacts.isVisible(), true, 'contact links remain reachable on both mobile routes');
     return;
   }
   const footer = await page.locator('#intro-links').boundingBox();
@@ -282,7 +280,7 @@ try {
         floatingTitle: document.getElementById('header-toggle').textContent.trim(),
         touch: matchMedia('(hover: none)').matches,
         alt: document.querySelector('.hero img')?.alt || document.querySelector('.hero video')?.getAttribute('aria-label'),
-        videoControls: [...document.querySelectorAll('#projects video')].every(video => !video.controls && video.getAttribute('aria-hidden') !== 'true' && (video.closest('.hero') || video.nextElementSibling?.matches('button.media-controls-reveal:not([hidden])'))),
+        videoControls: [...document.querySelectorAll('#projects video')].every(video => !video.controls && video.getAttribute('aria-hidden') !== 'true' && video.nextElementSibling?.matches('button.media-controls-reveal:not([hidden])')),
         creditsAligned: [...document.querySelectorAll('.credits-list')].every(list => getComputedStyle(list).textAlign === 'left'),
         ending: document.querySelector('.project-grid > :last-child')?.matches('.text-block, .presskit-block'),
         captions: document.querySelectorAll('#projects figcaption, #projects .video-description').length,
@@ -489,8 +487,7 @@ try {
       await page.waitForFunction(() => document.documentElement.classList.contains('enhanced') && document.body.dataset.homeView === 'projects' && scrollY < 1);
       assert.equal(await page.locator('#home-title').count(), 0, 'the landing page carries no name of its own');
       assert.equal(await page.locator('#home-header .header-contacts').count(), 0, 'the top band carries no links');
-      // The links sit under the wall on a pointer device; a phone carries none.
-      assert.equal(await page.locator('#intro-links .header-contacts').isVisible(), !options.hasTouch, 'the links sit under the wall, and only where there are links');
+      assert.equal(await page.locator('#intro-links .header-contacts').isVisible(), true, 'contact links remain available beneath the wall on every device');
       const wall = await page.locator('#strips').boundingBox();
       const intro = await page.locator('#intro').boundingBox();
       assert.ok(intro.y + intro.height <= wall.y + 1, 'About reads above the wall');

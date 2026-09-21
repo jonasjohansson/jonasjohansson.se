@@ -97,7 +97,7 @@ need that paper size selected in their print dialog.
 - `npm run audit:visual` captures representative pages and detail views at five viewport sizes under `screenshots/visual-audit`, preserving earlier review evidence.
 - `npm run test:print` checks image loading, copy fit, theme independence and route selection, and exports review PDFs under `screenshots/print`.
 
-Browser scripts use installed Playwright Chromium or local Google Chrome. Run `npx playwright install chromium` if neither is installed. `AUDIT_BASE_URL` can point the scripts at another preview. For a subdirectory deployment, use the same `PATH_PREFIX` for the build and verification commands. CI runs the build and regression checks before publishing.
+The existing browser scripts use Playwright Chromium or local Google Chrome. The additional `npm run test:accessibility` suite uses Chromium, Firefox and WebKit; run `npx playwright install chromium firefox webkit` to install them. See [browser and accessibility checks](browser-accessibility.md) for coverage and hands-on checks. `AUDIT_BASE_URL` can point the scripts at another preview. For a subdirectory deployment, use the same `PATH_PREFIX` for the build and verification commands. CI runs the build and regression checks before publishing.
 
 ## Styles and responsive layout
 
@@ -111,9 +111,10 @@ redeclaring margins on every component. Gallery `sizes` hints in
 update them together if either value changes.
 
 The width breakpoints are 600 px (compact type), 768 px (text placement and stacked
-pairs), 1024 px (the project title becomes an inline heading), and 1440 px (larger
-project body text and more space around text sections). Wide screens use 27 px
-body text and 96–144 px text margins, with 120 px at a 1920 px viewport. Adjacent
+pairs), 1024 px (the project title becomes an inline heading), 1025 px (larger
+project body text), and 1440 px (more space around text sections). Laptop and
+desktop body text scales from 27 to 32 px. Wide screens use 96–144 px text margins,
+with 120 px at a 1920 px viewport. Adjacent
 paragraph blocks retain their normal spacing. Hover queries control strip
 interaction and footer controls; image width is independent of the input device.
 Print dimensions and spacing use separate variables in `print.css`.

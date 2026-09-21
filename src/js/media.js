@@ -44,25 +44,24 @@ export function mountMedia(root) {
   for (const record of records) {
     record.video.removeAttribute('autoplay');
     record.video.pause();
-    if (!record.video.closest('.hero')) {
-      // A transparent button reveals the native controls without letting the
-      // same tap toggle playback. Native controls remain the no-JS fallback.
-      const reveal = document.createElement('button');
-      reveal.type = 'button';
-      reveal.className = 'media-controls-reveal';
-      reveal.setAttribute('aria-label', `Show video controls: ${record.video.getAttribute('aria-label')}`);
-      record.video.after(reveal);
-      record.reveal = reveal;
-      resetControls(record);
-      reveal.addEventListener('click', () => {
-        record.video.controls = true;
-        reveal.hidden = true;
-        record.video.focus({ preventScroll: true });
-      }, { signal: controller.signal });
-      // Once someone touches the native controls, their playback choice wins.
-      for (const event of ['pointerdown', 'keydown']) {
-        record.video.addEventListener(event, () => { record.manual = true; }, { signal: controller.signal });
-      }
+    // Every video, including a hero, needs a way to pause or start playback.
+    // A transparent button reveals the native controls without letting the
+    // same tap toggle playback. Native controls remain the no-JS fallback.
+    const reveal = document.createElement('button');
+    reveal.type = 'button';
+    reveal.className = 'media-controls-reveal';
+    reveal.setAttribute('aria-label', `Show video controls: ${record.video.getAttribute('aria-label')}`);
+    record.video.after(reveal);
+    record.reveal = reveal;
+    resetControls(record);
+    reveal.addEventListener('click', () => {
+      record.video.controls = true;
+      reveal.hidden = true;
+      record.video.focus({ preventScroll: true });
+    }, { signal: controller.signal });
+    // Once someone touches the native controls, their playback choice wins.
+    for (const event of ['pointerdown', 'keydown']) {
+      record.video.addEventListener(event, () => { record.manual = true; }, { signal: controller.signal });
     }
     observer.observe(record.video);
   }

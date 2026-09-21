@@ -206,7 +206,9 @@ function bindTouchScrub(wall, signal) {
   // the project. A drag along the wall opens them in turn without entering
   // anything, because the browser only fires click where the finger landed.
   wall.addEventListener('click', event => {
-    if (matchMedia('(hover: hover)').matches) return;
+    // Keyboard and assistive-technology activation already identify the link;
+    // only a physical tap needs the extra preview step.
+    if (matchMedia('(hover: hover)').matches || event.detail === 0) return;
     const strip = event.target.closest('.strip:not([hidden])');
     if (!strip || !wall.contains(strip) || strip === active) return;
     event.preventDefault();

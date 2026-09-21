@@ -80,11 +80,23 @@ jobs:
       - name: Check project data
         run: npm test
 
-      - name: Install test browser
-        run: npx playwright install --with-deps chromium
+      - name: Install test browsers
+        run: npx playwright install --with-deps chromium firefox webkit
 
       - name: Check navigation and layouts
         run: npm run test:browser
+
+      - name: Check browser compatibility and accessibility
+        run: npm run test:accessibility
+
+      - name: Save browser and accessibility report
+        if: always()
+        uses: actions/upload-artifact@v4
+        with:
+          name: browser-accessibility
+          path: screenshots/accessibility
+          if-no-files-found: ignore
+          retention-days: 7
 
       - name: Upload artifact
         uses: actions/upload-pages-artifact@v3

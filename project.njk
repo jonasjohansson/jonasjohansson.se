@@ -71,7 +71,7 @@ eleventyComputed:
           playsinline
           muted
           loop
-          {% if not loop.first %}controls{% endif %}
+          controls
           preload="none"
           {% if block.poster %}poster="{{ block.poster }}"{% endif %}
           aria-label="{{ block.alt }}"

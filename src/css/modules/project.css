@@ -74,6 +74,7 @@ figure { margin: 0; }
   background: transparent;
 }
 .media-controls-reveal:hover { background: transparent; }
+.media-controls-reveal:focus-visible { outline-offset: -4px; }
 
 /* Trace the illustration's inset perimeter, hiding its baked-in surround. */
 .mask-botanical-circle img { clip-path: ellipse(46.2% 46.5% at 50.1% 50.2%); }
