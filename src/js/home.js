@@ -15,9 +15,10 @@ export function updateHome(slug) {
   else document.body.dataset.homeView = 'projects';
 }
 
-// On pointer desktops About starts folded to its first sentence. The folded
-// text is inert so its links are neither tabbed to nor read out, and the fold
-// lifts on its own where the stylesheet shows the whole text anyway.
+// On pointer desktops About starts folded to its first sentence, and that
+// sentence is the button that unfolds the rest. The folded text is inert so
+// its links are neither tabbed to nor read out. Where the stylesheet shows the
+// whole text anyway the button stays disabled and reads as plain text.
 function initIntroFold() {
   const intro = document.getElementById('intro');
   const toggle = intro?.querySelector('.intro-toggle');
@@ -26,9 +27,10 @@ function initIntroFold() {
   const folds = matchMedia('(min-width: 769px) and (hover: hover)');
   const apply = () => {
     const open = intro.hasAttribute('data-open');
+    toggle.disabled = !folds.matches;
     more.inert = folds.matches && !open;
-    toggle.setAttribute('aria-expanded', String(open));
-    toggle.textContent = open ? 'Less' : 'More';
+    if (folds.matches) toggle.setAttribute('aria-expanded', String(open));
+    else toggle.removeAttribute('aria-expanded');
   };
   toggle.addEventListener('click', () => {
     intro.toggleAttribute('data-open');

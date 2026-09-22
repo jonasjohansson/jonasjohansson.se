@@ -1,9 +1,11 @@
 <div id="intro" class="intro" tabindex="-1" role="region" aria-label="About Jonas Johansson"{% if project %} hidden{% endif %}>
-  {# On pointer desktops only the first sentence shows until More is pressed;
-     everywhere else, and without JavaScript, the whole text is on the page. #}
+  {# On pointer desktops only the first sentence shows, and pressing it unfolds
+     the rest. The sentence is a button that JavaScript enables where the fold
+     applies; everywhere else, and without JavaScript, it reads as plain text
+     above the whole bio. #}
   {% set intro = site.intro | splitLead %}
   <div id="about" class="intro-text">
-    <p class="intro-lead">{{ intro.lead | inlineMarkdown | letterName(site.author) | safe }} <button type="button" class="intro-toggle" aria-expanded="false" aria-controls="intro-more">More</button></p>
+    <p class="intro-lead"><button type="button" class="intro-toggle" aria-controls="intro-more" disabled>{{ intro.lead | inlineMarkdown | letterName(site.author) | safe }}</button></p>
     <div id="intro-more" class="intro-more"><div class="intro-more-inner">{{ intro.rest | markdown | safe }}</div></div>
   </div>
 </div>
