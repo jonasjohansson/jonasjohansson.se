@@ -62,6 +62,8 @@
   appearance: none;
 }
 .project-filters select { max-width: 100%; padding-right: 1em; background: var(--chevron) no-repeat right center / 0.75em; }
+/* The scrolling filter row clips a focus ring to two sides, so the dropdown shows none. */
+.project-filters select:focus-visible { outline: none; }
 .project-filters :is(option, optgroup) { color: var(--color-black); background: var(--color-white); }
 .project-filters input[type="search"] { width: 5.5em; }
 .project-filters input[type="search"]:focus-visible {
