@@ -2,6 +2,12 @@
 .intro-text { font-size: var(--font-size-intro); line-height: var(--line-height-base); text-wrap: pretty; }
 .intro-text p { margin: 0; }
 .intro-text p + p, .intro-more-inner > p:first-child { margin-top: 1em; }
+
+/* The writing uses up to three quarters of the wall above tablet width. */
+@media (min-width: 769px) {
+  .intro-text { max-width: min(var(--measure), calc(0.75 * (100vw - 2 * var(--page-gutter)))); }
+}
+
 /* The lead sentence is a button that only looks like one where it works. */
 .intro-toggle { all: unset; display: block; max-width: 100%; font: inherit; color: inherit; text-align: inherit; text-wrap: pretty; }
 .intro-toggle:enabled { cursor: pointer; }
