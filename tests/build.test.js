@@ -146,3 +146,10 @@ test('audio samples require an accessible label and an existing project asset', 
     assert.deepEqual(groupMedia([hero, audio, hero]), [hero, audio, hero], 'audio keeps its authored place between images');
   } finally { rmSync(directory, { recursive: true, force: true }); }
 });
+
+test('the About text splits into its first sentence and the rest', async () => {
+  const { splitLead } = await import('../scripts/intro.js');
+  assert.deepEqual(splitLead('One is here. Two [links](https://a.b/c.d) here.\n\nThree.'), { lead: 'One is here.', rest: 'Two [links](https://a.b/c.d) here.\n\nThree.' });
+  assert.deepEqual(splitLead('Only one.'), { lead: 'Only one.', rest: '' });
+  assert.deepEqual(splitLead(''), { lead: '', rest: '' });
+});

@@ -6,6 +6,7 @@ import sharp from 'sharp';
 import nunjucks from 'nunjucks';
 import htmlMinifier from 'html-minifier-terser';
 import { readProjects, SIZE_MAP, groupMedia } from './scripts/project-data.js';
+import { splitLead } from './scripts/intro.js';
 import { responsiveImage, stripImage, ogImage, imageMetadata, publishImages, printImage, imageColour } from './scripts/images.js';
 
 const projectRoot = path.dirname(fileURLToPath(import.meta.url));
@@ -135,6 +136,8 @@ export default function (eleventyConfig) {
   eleventyConfig.addGlobalData('buildYear', new Date().getFullYear());
   eleventyConfig.addFilter('isoDate', value => value && !Number.isNaN(new Date(value).getTime()) ? new Date(value).toISOString().slice(0, 10) : '');
   eleventyConfig.addFilter('markdown', renderMarkdown);
+  eleventyConfig.addFilter('inlineMarkdown', text => renderMarkdown(text).replace(/^<p>|<\/p>\n?$/g, ''));
+  eleventyConfig.addFilter('splitLead', splitLead);
   // The name carries a colour per character, which needs one element per
   // character. Writing those spans by hand in site.json meant any rewording of
   // the About text left the name flat, so the build letters it instead.

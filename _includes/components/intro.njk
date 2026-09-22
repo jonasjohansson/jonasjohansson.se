@@ -1,3 +1,9 @@
 <div id="intro" class="intro" tabindex="-1" role="region" aria-label="About Jonas Johansson"{% if project %} hidden{% endif %}>
-  <div id="about" class="intro-text">{{ site.intro | markdown | letterName(site.author) | safe }}</div>
+  {# On pointer desktops only the first sentence shows until More is pressed;
+     everywhere else, and without JavaScript, the whole text is on the page. #}
+  {% set intro = site.intro | splitLead %}
+  <div id="about" class="intro-text">
+    <p class="intro-lead">{{ intro.lead | inlineMarkdown | letterName(site.author) | safe }} <button type="button" class="intro-toggle" aria-expanded="false" aria-controls="intro-more">More</button></p>
+    <div id="intro-more" class="intro-more"><div class="intro-more-inner">{{ intro.rest | markdown | safe }}</div></div>
+  </div>
 </div>

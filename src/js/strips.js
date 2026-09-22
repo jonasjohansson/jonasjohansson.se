@@ -340,8 +340,10 @@ export function initializeStrips() {
     event.stopPropagation();
   });
   updateStrips(document.documentElement.dataset.project);
-  addEventListener('resize', () => {
+  // The wall changes size with the window and with the About text above it
+  // folding, so its own size is what the images follow.
+  new ResizeObserver(() => {
     if (resizeFrame) return;
     resizeFrame = requestAnimationFrame(() => { resizeFrame = null; updateImages(); });
-  });
+  }).observe(document.getElementById('strips'));
 }
