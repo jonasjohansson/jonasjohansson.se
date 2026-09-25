@@ -2,7 +2,6 @@
 title: Det Mörka Ljuset
 date: '2026-09-26'
 color: '#a8bfc8'
-unlisted: true
 tags:
   - mapping
 blocks:
