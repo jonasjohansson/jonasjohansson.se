@@ -139,8 +139,8 @@ async function checkFooter(page) {
     const title = await page.locator('#header-toggle').boundingBox();
     const body = await page.locator('.text-block').first().boundingBox();
     const floating = await page.locator('#header').evaluate(header => getComputedStyle(header).position === 'absolute');
-    if (floating) assert.ok(Math.abs(title.x + title.width / 2 - (body.x + body.width / 2)) < 1, 'the floating project title is centred');
-    else assert.ok(Math.abs(title.x - body.x) < 1, 'the project title aligns with its text column');
+    assert.ok(floating, 'the project title floats over the hero');
+    assert.ok(Math.abs(title.x + title.width / 2 - (body.x + body.width / 2)) < 1, 'the floating project title is centred');
     assert.equal(await page.locator('#header-toggle').getAttribute('href'), `${prefix}/`, 'the project title leads home');
     assert.equal(await page.locator('#header .header-contacts').count(), 0, 'project hero header contains only the title');
   }
@@ -270,8 +270,8 @@ try {
         // it has no box; every panel that does render still has to have one.
         zero: [...document.querySelectorAll('#projects img:not(.print-poster), #projects video')].some(el => el.getBoundingClientRect().width < 1 || el.getBoundingClientRect().height < 1),
         title: document.title,
-        hero: document.querySelector('.hero').getBoundingClientRect().top,
-        titleBottom: document.getElementById('header').getBoundingClientRect().bottom,
+        hero: (({ top, bottom }) => ({ top, bottom }))(document.querySelector('.hero').getBoundingClientRect()),
+        titleBox: (({ top, bottom }) => ({ top, bottom }))(document.getElementById('header-toggle').getBoundingClientRect()),
         heading: document.getElementById('header-toggle').textContent.trim(),
         alt: document.querySelector('.hero img')?.alt || document.querySelector('.hero video')?.getAttribute('aria-label'),
         videoControls: [...document.querySelectorAll('#projects video')].every(video => !video.controls && video.getAttribute('aria-hidden') !== 'true' && video.nextElementSibling?.matches('button.media-controls-reveal:not([hidden])')),
@@ -287,8 +287,8 @@ try {
       assert.equal(state.zero, false, `${slug} has collapsed media`);
       assert.ok(state.alt.length > 15, `${slug} hero description`);
       assert.ok(state.title.endsWith(' | Jonas Johansson'), `${slug} document title`);
-      assert.ok(Math.abs(state.hero - state.titleBottom) < 1,
-        `${slug} hero starts below its title`);
+      assert.ok(state.hero.top === 0 && state.titleBox.top > state.hero.top && state.titleBox.bottom < state.hero.bottom,
+        `${slug} title floats over a hero at the top of the page`);
       assert.equal(state.title, `${state.heading} | Jonas Johansson`, `${slug} project title`);
       assert.equal(state.videoControls, true, `${slug} video controls`);
       assert.equal(state.creditsAligned, true, `${slug} credits alignment`);
@@ -307,16 +307,9 @@ try {
         await visit(page, `/${slug}/`);
         const hero = await page.locator('.hero').boundingBox();
         const media = await page.locator('.hero img, .hero video').boundingBox();
-        const header = await page.locator('#header').boundingBox();
         const title = await page.locator('#header-toggle').boundingBox();
-        const body = await page.locator('.text-block').first().boundingBox();
-        if (name === 'wide desktop') {
-          assert.ok(title.y > hero.y && title.y + title.height < hero.y + hero.height, `${slug} title floats over the hero`);
-          assert.ok(Math.abs(title.x + title.width / 2 - options.viewport.width / 2) < 1, `${slug} title floats in the middle`);
-        } else {
-          assert.ok(Math.abs(hero.y - header.y - header.height) < 1, `${slug} title sits above the hero`);
-          assert.ok(Math.abs(title.x - body.x) < 1 && Math.abs(title.width - body.width) < 1, `${slug} title and body share their column`);
-        }
+        assert.ok(title.y > hero.y && title.y + title.height < hero.y + hero.height, `${slug} title floats over the hero`);
+        assert.ok(Math.abs(title.x + title.width / 2 - options.viewport.width / 2) < 1, `${slug} title floats in the middle`);
         // Project media reaches the same screen edges on every device.
         const inset = 0;
         assert.equal(hero.x, inset, `${slug} hero starts at ${inset ? 'the page gutter' : 'the screen edge'}`);
