@@ -15,28 +15,25 @@ export function updateHome(slug) {
   else document.body.dataset.homeView = 'projects';
 }
 
-// On pointer desktops About starts folded to its first sentence, and that
-// sentence is the button that unfolds the rest. The folded text is inert so
-// its links are neither tabbed to nor read out. Where the stylesheet shows the
-// whole text anyway the button stays disabled and reads as plain text.
+// About starts folded to its first sentence, and that sentence is the button
+// that unfolds the rest. The folded text is inert so its links are neither
+// tabbed to nor read out. Without JavaScript the button stays disabled and
+// reads as plain text above the whole bio.
 function initIntroFold() {
   const intro = document.getElementById('intro');
   const toggle = intro?.querySelector('.intro-toggle');
   const more = document.getElementById('intro-more');
   if (!toggle || !more) return;
-  const folds = matchMedia('(min-width: 769px) and (hover: hover)');
   const apply = () => {
     const open = intro.hasAttribute('data-open');
-    toggle.disabled = !folds.matches;
-    more.inert = folds.matches && !open;
-    if (folds.matches) toggle.setAttribute('aria-expanded', String(open));
-    else toggle.removeAttribute('aria-expanded');
+    more.inert = !open;
+    toggle.setAttribute('aria-expanded', String(open));
   };
+  toggle.disabled = false;
   toggle.addEventListener('click', () => {
     intro.toggleAttribute('data-open');
     apply();
   });
-  folds.addEventListener('change', apply);
   apply();
 }
 
