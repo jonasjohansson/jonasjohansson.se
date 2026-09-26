@@ -23,10 +23,14 @@ eleventyComputed:
          responsiveImage is an async shortcode and Nunjucks macros are
          synchronous, so calling it inside one silently renders nothing. #}
       {% for block in projectContent[project.slug].content %}
-      {# A spread opens before its image and closes after its last text block,
-         so each block below still renders once, whichever wrapper it is in. #}
+      {# Ultra-wide wrappers open before their first block and close after
+         their last, so each block below still renders once, whichever
+         wrapper it is in. #}
       {% if block.spreadStart %}
       <div class="media-spread{% if block.spreadFlip %} media-spread-flip{% endif %}">
+      {% endif %}
+      {% if block.pairStart %}
+      <div class="media-pair">
       {% endif %}
 
       {% if block.type == 'row' %}
@@ -111,6 +115,9 @@ eleventyComputed:
       {% endif %}
       {% if block.spreadEnd %}
       </div>
+      </div>
+      {% endif %}
+      {% if block.pairEnd %}
       </div>
       {% endif %}
       {% endfor %}

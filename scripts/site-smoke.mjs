@@ -516,7 +516,7 @@ try {
         await visit(page, `/${slug}/`);
         const geometry = await page.evaluate(() => {
           const hero = document.querySelector('.hero').getBoundingClientRect();
-          const images = [...document.querySelectorAll('.project-grid > .media-item:not(.hero), .project-grid > .media-row, .media-spread > .media-item')];
+          const images = [...document.querySelectorAll('.project-grid > .media-item:not(.hero), .project-grid > .media-row, :is(.media-spread, .media-pair) > .media-item')];
           return { hero: { x: hero.x, width: hero.width }, images: images.map(image => { const r = image.getBoundingClientRect(); return { x: r.x, width: r.width }; }) };
         });
         assert.ok(geometry.images.length > 0, `${slug} has gallery media to check`);
@@ -552,13 +552,13 @@ try {
             const r = node.getBoundingClientRect();
             return { x: r.x, y: r.y, width: r.width, bottom: r.bottom };
           };
-          // Spread wrappers step aside below ultra-wide, leaving their blocks
-          // as grid items; on ultra-wide the spread is one full-width item.
-          const items = [...grid.children].flatMap(node => node.matches('.media-spread') && getComputedStyle(node).display === 'contents'
+          // Spread and pair wrappers step aside below ultra-wide, leaving their
+          // blocks as grid items; on ultra-wide each is one full-width item.
+          const items = [...grid.children].flatMap(node => node.matches('.media-spread, .media-pair') && getComputedStyle(node).display === 'contents'
             ? [...node.querySelectorAll(':scope > .media-item, .spread-text > *')] : [node]);
           return {
             children: items.map(node => ({ ...box(node),
-              media: node.matches('.media-item, .media-row, .media-spread'),
+              media: node.matches('.media-item, .media-row, .media-spread, .media-pair'),
               text: node.matches('.text-block, .credits-block'),
               sizes: node.matches('.media-item') ? node.querySelector('picture source')?.getAttribute('sizes') : null,
             })),
@@ -582,7 +582,7 @@ try {
     });
   }
 
-  await check('ultra-wide spreads set writing beside its image', { viewport: { width: 3440, height: 1440 } }, async page => {
+  await check('ultra-wide spreads set writing beside its image, and other images pair', { viewport: { width: 3440, height: 1440 } }, async page => {
     await page.route(/\.(?:avif|webp|mp4|webm)(?:\?.*)?$/, route => route.abort());
     await visit(page, '/harpa/');
     const spreads = await page.locator('.media-spread').evaluateAll(spreads => spreads.map(spread => {
@@ -596,6 +596,15 @@ try {
       // Sides alternate: image left first, then right.
       if (i % 2) assert.ok(text.right <= media.x + 1, 'the writing sits left of the flipped image');
       else assert.ok(text.x >= media.right - 1, 'the writing sits right of the image');
+    }
+    await visit(page, '/kagora/');
+    const pairs = await page.locator('.media-pair').evaluateAll(pairs => pairs.map(pair => [...pair.children].map(item => {
+      const r = item.getBoundingClientRect(); return { x: r.x, y: r.y, right: r.right, height: r.height };
+    })));
+    assert.ok(pairs.length > 0, 'kagora has standalone images to pair');
+    for (const [a, b] of pairs) {
+      assert.ok(Math.abs(a.x) < 1 && Math.abs(b.right - 3440) < 1 && b.x > a.right, 'a pair shares the screen width side by side');
+      assert.ok(Math.abs(a.y - b.y) < 1 && Math.abs(a.height - b.height) < 1, 'a pair keeps one height');
     }
   });
 
@@ -1375,7 +1384,7 @@ try {
     assert.equal(await reveal.isVisible(), false, 'native controls receive subsequent taps');
     await video.press('Space');
     await page.waitForFunction(() => document.querySelector('#projects video').paused);
-    await page.locator('.project-grid > .media-item, .media-spread > .media-item').last().scrollIntoViewIfNeeded();
+    await page.locator('.project-grid > .media-item, :is(.media-spread, .media-pair) > .media-item').last().scrollIntoViewIfNeeded();
     await page.waitForFunction(() => !document.querySelector('#projects video').controls);
     await video.scrollIntoViewIfNeeded();
     assert.equal(await video.evaluate(video => video.paused), true, 'manual pause survives scrolling away and back');

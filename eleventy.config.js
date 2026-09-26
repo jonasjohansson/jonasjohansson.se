@@ -5,7 +5,7 @@ import markdownIt from 'markdown-it';
 import sharp from 'sharp';
 import nunjucks from 'nunjucks';
 import htmlMinifier from 'html-minifier-terser';
-import { readProjects, SIZE_MAP, groupMedia, spreadText } from './scripts/project-data.js';
+import { readProjects, SIZE_MAP, groupMedia, composeUltraWide } from './scripts/project-data.js';
 import { splitLead } from './scripts/intro.js';
 import { responsiveImage, stripImage, ogImage, imageMetadata, publishImages, printImage, imageColour } from './scripts/images.js';
 
@@ -118,7 +118,7 @@ async function buildProject(project) {
   // order the wall — stands in, rather than a grey gap in a band of colour.
   const stripColor = color || `hsl(${colour.hue.toFixed(0)} ${(colour.saturation * 100).toFixed(0)}% ${(colour.lightness * 100).toFixed(0)}%)`;
   return { slug, title, date, tags, color, stripColor, year: new Date(date).getFullYear(), years: project.years || [], type: 'work', unlisted: !!project.unlisted,
-    content: spreadText(grouped), thumbnail, colour, ogImage: og, printMedia, printCopy, printCopyFull, printCopyScale, presskit: project.presskit || null,
+    content: composeUltraWide(grouped), thumbnail, colour, ogImage: og, printMedia, printCopy, printCopyFull, printCopyScale, presskit: project.presskit || null,
     description: stripHtml(content.find(block => block.type === 'text')?.content).slice(0, 160) };
 }
 

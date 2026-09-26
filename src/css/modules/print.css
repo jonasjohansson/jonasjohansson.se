@@ -115,6 +115,7 @@
   }
   body[data-route="project"] .project-grid > .media-item:not(:first-of-type),
   body[data-route="project"] .media-spread > .media-item,
+  body[data-route="project"] .media-pair > .media-item,
   body[data-route="project"] .media-row > .media-item { break-before: page; }
   body[data-route="project"] .project-grid > .media-item.hero,
   body[data-route="project"] .media-item:has(video) { break-before: auto !important; }

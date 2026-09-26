@@ -21,14 +21,16 @@ figure { margin: 0; }
   row-gap: var(--media-gap);
 }
 
-/* A spread (an image and the writing after it) only takes shape on ultra-wide
-   screens. Everywhere else its wrappers step aside and each block is a grid
-   item like any other. */
+/* A spread (an image and the writing after it) and a pair of standalone
+   images only take shape on ultra-wide screens. Everywhere else their
+   wrappers step aside and each block is a grid item like any other. */
 .media-spread,
-.spread-text { display: contents; }
+.spread-text,
+.media-pair { display: contents; }
 
 .project-grid > *,
 .media-spread > .media-item,
+.media-pair > .media-item,
 .spread-text > * { grid-column: 1 / -1; }
 .project-grid > :last-child,
 .media-spread:last-child .spread-text > :last-child { margin-bottom: 0; }
@@ -36,7 +38,7 @@ figure { margin: 0; }
 /* Every gallery frame reaches the viewport edges. Text retains the page
    gutter and its reading measure, regardless of input device or screen size. */
 .project-grid > :is(.media-item, .media-row),
-.media-spread > .media-item {
+:is(.media-spread, .media-pair) > .media-item {
   width: calc(100% + 2 * var(--page-gutter));
   margin-inline: calc(-1 * var(--page-gutter));
 }
@@ -159,8 +161,21 @@ html[data-project="plx"] #header-toggle { font-family: var(--font-family-plx-dis
 
 /* Ultra-wide: a full-width photograph would run far past the fold, so a
    standalone image and the writing after it share the width, sides
-   alternating. The image stops short of the screen height. */
+   alternating, and the image stops short of the screen height. Other
+   standalone images pair up, sharing the row like an authored one. */
 @media screen and (min-width: 1600px) and (min-aspect-ratio: 21/10) {
+  .media-pair {
+    display: flex;
+    gap: var(--media-gap);
+    align-items: flex-start;
+    grid-column: 1 / -1;
+    margin-inline: calc(-1 * var(--page-gutter));
+  }
+  .media-pair > .media-item {
+    flex: var(--ar) 1 0;
+    width: auto;
+    margin: 0;
+  }
   .media-spread {
     display: flex;
     align-items: center;

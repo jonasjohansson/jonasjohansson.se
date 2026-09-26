@@ -3,7 +3,7 @@ import assert from 'node:assert/strict';
 import { mkdtempSync, writeFileSync, rmSync } from 'node:fs';
 import { tmpdir } from 'node:os';
 import path from 'node:path';
-import { groupMedia, readProjects, validateProject } from '../scripts/project-data.js';
+import { composeUltraWide, groupMedia, readProjects, validateProject } from '../scripts/project-data.js';
 import sharp from 'sharp';
 import { ogFingerprint, ogImage, imageCache } from '../scripts/images.js';
 
@@ -145,6 +145,18 @@ test('audio samples require an accessible label and an existing project asset', 
     }
     assert.deepEqual(groupMedia([hero, audio, hero]), [hero, audio, hero], 'audio keeps its authored place between images');
   } finally { rmSync(directory, { recursive: true, force: true }); }
+});
+
+test('ultra-wide spreads take the writing after an image, and other standalone images pair', () => {
+  const image = { type: 'image', ar: 1.5 };
+  const text = { type: 'text' };
+  const flags = blocks => composeUltraWide(blocks).map(({ spreadStart, spreadFlip, spreadEnd, pairStart, pairEnd }) =>
+    [spreadStart && (spreadFlip ? 'spread-flip' : 'spread'), spreadEnd && 'end', pairStart && 'pair', pairEnd && 'pair-end'].filter(Boolean).join(' '));
+  assert.deepEqual(flags([image, text, image, image, image, text, text, image, text]),
+    ['', '', 'pair', 'pair-end', 'spread', '', 'end', 'spread-flip', 'end'], 'the hero stays alone; spreads alternate sides');
+  assert.deepEqual(flags([image, image, image, image]), ['', 'pair', 'pair-end', ''], 'an odd image out stays full width');
+  assert.deepEqual(flags([image, { ...image, pair: false }, image, image]), ['', '', 'pair', 'pair-end'], 'pair: false keeps an image alone');
+  assert.deepEqual(flags([image, { type: 'row', items: [] }, image]), ['', '', ''], 'authored rows never pair');
 });
 
 test('the About text splits into its first sentence and the rest', async () => {

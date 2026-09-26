@@ -135,11 +135,12 @@ export function groupMedia(content) {
   return grouped;
 }
 
-export function spreadText(grouped) {
-  // On an ultra-wide screen a full-width photograph runs far below the fold
-  // while the writing about it waits underneath. A standalone gallery image
-  // and the writing straight after it can share the width instead, sides
-  // alternating down the page. Elsewhere the spread is transparent to layout.
+export function composeUltraWide(grouped) {
+  // On an ultra-wide screen a full-width photograph runs far below the fold.
+  // A standalone gallery image and the writing straight after it share the
+  // width instead, sides alternating down the page; the other standalone
+  // images pair up two by two, unless authored with `pair: false`. Elsewhere
+  // these wrappers are transparent to layout.
   const media = block => block?.type === 'image' || block?.type === 'video';
   const result = [...grouped];
   let flip = false;
@@ -151,6 +152,13 @@ export function spreadText(grouped) {
     result[end] = { ...result[end], spreadEnd: true };
     flip = !flip;
     i = end;
+  }
+  const pairable = block => media(block) && !block.spreadStart && block.pair !== false;
+  for (let i = 1; i < result.length - 1; i++) {
+    if (!pairable(result[i]) || !pairable(result[i + 1])) continue;
+    result[i] = { ...result[i], pairStart: true };
+    result[i + 1] = { ...result[i + 1], pairEnd: true };
+    i++;
   }
   return result;
 }
