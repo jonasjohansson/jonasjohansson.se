@@ -157,6 +157,8 @@ test('ultra-wide spreads take the writing after an image, and other standalone i
   assert.deepEqual(flags([image, image, image, image]), ['', 'pair', 'pair-end', ''], 'an odd image out stays full width');
   assert.deepEqual(flags([image, { ...image, pair: false }, image, image]), ['', '', 'pair', 'pair-end'], 'pair: false keeps an image alone');
   assert.deepEqual(flags([image, { type: 'row', items: [] }, image]), ['', '', ''], 'authored rows never pair');
+  const banner = { type: 'image', ar: 9.33 };
+  assert.deepEqual(flags([image, banner, text, banner, image]), ['', '', '', '', ''], 'banners stay full width, away from writing and pairs');
 });
 
 test('the About text splits into its first sentence and the rest', async () => {

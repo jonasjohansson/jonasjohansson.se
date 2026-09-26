@@ -194,7 +194,8 @@ html[data-project="plx"] #header-toggle { font-family: var(--font-family-plx-dis
     flex-direction: column;
     gap: var(--media-gap);
     min-width: 0;
-    padding-inline: var(--spacing-2xl);
+    /* Writing taller than its image still clears the pictures around it. */
+    padding: var(--spacing-2xl);
   }
   .spread-text > .text-block { margin: 0; }
   .spread-text > .text-block.text-large + .text-block { margin-top: var(--project-lead-gap); }

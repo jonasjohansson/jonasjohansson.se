@@ -140,8 +140,10 @@ export function composeUltraWide(grouped) {
   // A standalone gallery image and the writing straight after it share the
   // width instead, sides alternating down the page; the other standalone
   // images pair up two by two, unless authored with `pair: false`. Elsewhere
-  // these wrappers are transparent to layout.
-  const media = block => block?.type === 'image' || block?.type === 'video';
+  // these wrappers are transparent to layout. A banner (PLX's run 9:1 to
+  // 23:1; no photograph passes 2.3:1) is already short at full width, and
+  // beside writing it left the text taller than the picture, so it stays alone.
+  const media = block => (block?.type === 'image' || block?.type === 'video') && block.ar <= 2.5;
   const result = [...grouped];
   let flip = false;
   for (let i = 1; i < result.length; i++) {
