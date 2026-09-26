@@ -174,7 +174,8 @@ export async function checkStripAudio({ check, visit, desktop, mobile }) {
   await check('a swipe through a project wall scrolls it and opens nothing', mobile, async page => {
     await observeAudio(page);
     await visit(page, '/klattermusen/');
-    await page.locator('#collection').evaluate(collection => collection.scrollIntoView({ block: 'start' }));
+    // The wall and its footer end the page, so leave room below to scroll into.
+    await page.locator('#collection').evaluate(collection => scrollTo(0, collection.getBoundingClientRect().top + scrollY - 100));
     const cards = page.locator('#strips .strip:not([hidden])');
     assert.ok(await cards.count() > 1, 'the grid holds every other project');
     assert.equal(await page.locator('#strips').evaluate(grid => grid.scrollWidth <= grid.clientWidth + 1), true, 'the grid does not scroll sideways');

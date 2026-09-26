@@ -34,7 +34,6 @@
   .enhanced .strip:is(:hover, :focus-visible) { flex-grow: var(--strip-grow); }
 }
 @media (hover: none) {
-  .enhanced #content { padding-bottom: var(--page-gutter); }
   .enhanced .strip.is-active { flex-grow: var(--strip-grow); }
   .enhanced .intro-links { height: auto; padding-top: var(--chrome-pad); }
   .enhanced .strip-caption { max-width: 100%; }
