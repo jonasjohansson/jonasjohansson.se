@@ -276,7 +276,7 @@ try {
         alt: document.querySelector('.hero img')?.alt || document.querySelector('.hero video')?.getAttribute('aria-label'),
         videoControls: [...document.querySelectorAll('#projects video')].every(video => !video.controls && video.getAttribute('aria-hidden') !== 'true' && video.nextElementSibling?.matches('button.media-controls-reveal:not([hidden])')),
         creditsAligned: [...document.querySelectorAll('.credits-list')].every(list => getComputedStyle(list).textAlign === 'left'),
-        ending: document.querySelector('.project-grid > :last-child')?.matches('.text-block, .presskit-block'),
+        ending: document.querySelector('.project-grid > :last-child:is(.media-spread) .spread-text > :last-child, .project-grid > :last-child:not(.media-spread)')?.matches('.text-block, .presskit-block'),
         captions: document.querySelectorAll('#projects figcaption, #projects .video-description').length,
         videoDescriptions: [...document.querySelectorAll('#projects video')].every(video => video.getAttribute('aria-label')?.length > 15),
         stripSlugs: [...document.querySelectorAll('#strips .strip:not([hidden])')].map(strip => strip.dataset.project),
@@ -516,7 +516,7 @@ try {
         await visit(page, `/${slug}/`);
         const geometry = await page.evaluate(() => {
           const hero = document.querySelector('.hero').getBoundingClientRect();
-          const images = [...document.querySelectorAll('.project-grid > .media-item:not(.hero), .project-grid > .media-row')];
+          const images = [...document.querySelectorAll('.project-grid > .media-item:not(.hero), .project-grid > .media-row, .media-spread > .media-item')];
           return { hero: { x: hero.x, width: hero.width }, images: images.map(image => { const r = image.getBoundingClientRect(); return { x: r.x, width: r.width }; }) };
         });
         assert.ok(geometry.images.length > 0, `${slug} has gallery media to check`);
@@ -552,9 +552,13 @@ try {
             const r = node.getBoundingClientRect();
             return { x: r.x, y: r.y, width: r.width, bottom: r.bottom };
           };
+          // Spread wrappers step aside below ultra-wide, leaving their blocks
+          // as grid items; on ultra-wide the spread is one full-width item.
+          const items = [...grid.children].flatMap(node => node.matches('.media-spread') && getComputedStyle(node).display === 'contents'
+            ? [...node.querySelectorAll(':scope > .media-item, .spread-text > *')] : [node]);
           return {
-            children: [...grid.children].map(node => ({ ...box(node),
-              media: node.matches('.media-item, .media-row'),
+            children: items.map(node => ({ ...box(node),
+              media: node.matches('.media-item, .media-row, .media-spread'),
               text: node.matches('.text-block, .credits-block'),
               sizes: node.matches('.media-item') ? node.querySelector('picture source')?.getAttribute('sizes') : null,
             })),
@@ -578,6 +582,23 @@ try {
     });
   }
 
+  await check('ultra-wide spreads set writing beside its image', { viewport: { width: 3440, height: 1440 } }, async page => {
+    await page.route(/\.(?:avif|webp|mp4|webm)(?:\?.*)?$/, route => route.abort());
+    await visit(page, '/harpa/');
+    const spreads = await page.locator('.media-spread').evaluateAll(spreads => spreads.map(spread => {
+      const box = node => { const r = node.getBoundingClientRect(); return { x: r.x, right: r.right, height: r.height }; };
+      return { spread: box(spread), media: box(spread.querySelector(':scope > .media-item')), text: box(spread.querySelector('.spread-text')) };
+    }));
+    assert.ok(spreads.length > 1, 'harpa has spreads to check');
+    for (const [i, { spread, media, text }] of spreads.entries()) {
+      assert.ok(Math.abs(spread.x) < 1 && Math.abs(spread.right - 3440) < 1, 'the spread fills the screen');
+      assert.ok(media.height <= 1440 + 1, 'the image fits the screen height');
+      // Sides alternate: image left first, then right.
+      if (i % 2) assert.ok(text.right <= media.x + 1, 'the writing sits left of the flipped image');
+      else assert.ok(text.x >= media.right - 1, 'the writing sits right of the image');
+    }
+  });
+
   for (const width of [390, 1280, 1850, 2560]) {
     await check(`${width}px portrait triptych keeps images and video together`, width === 390 ? mobile : { viewport: { width, height: 1000 } }, async page => {
       await visit(page, '/vi-kommer-i-fred/');
@@ -597,7 +618,8 @@ try {
         return {
           row: box(row),
           items: [...row.children].map(item => ({ ...box(item), ar: Number(item.style.getPropertyValue('--ar')), media: box(item.querySelector('img, video')) })),
-          after: box(row.nextElementSibling),
+          // A spread without a box of its own is measured by its image.
+          after: box(getComputedStyle(row.nextElementSibling).display === 'contents' ? row.nextElementSibling.firstElementChild : row.nextElementSibling),
           overflow: document.documentElement.scrollWidth > innerWidth,
         };
       });
@@ -1353,7 +1375,7 @@ try {
     assert.equal(await reveal.isVisible(), false, 'native controls receive subsequent taps');
     await video.press('Space');
     await page.waitForFunction(() => document.querySelector('#projects video').paused);
-    await page.locator('.project-grid > .media-item').last().scrollIntoViewIfNeeded();
+    await page.locator('.project-grid > .media-item, .media-spread > .media-item').last().scrollIntoViewIfNeeded();
     await page.waitForFunction(() => !document.querySelector('#projects video').controls);
     await video.scrollIntoViewIfNeeded();
     assert.equal(await video.evaluate(video => video.paused), true, 'manual pause survives scrolling away and back');

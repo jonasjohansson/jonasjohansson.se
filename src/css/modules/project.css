@@ -21,12 +21,22 @@ figure { margin: 0; }
   row-gap: var(--media-gap);
 }
 
-.project-grid > * { grid-column: 1 / -1; }
-.project-grid > :last-child { margin-bottom: 0; }
+/* A spread (an image and the writing after it) only takes shape on ultra-wide
+   screens. Everywhere else its wrappers step aside and each block is a grid
+   item like any other. */
+.media-spread,
+.spread-text { display: contents; }
+
+.project-grid > *,
+.media-spread > .media-item,
+.spread-text > * { grid-column: 1 / -1; }
+.project-grid > :last-child,
+.media-spread:last-child .spread-text > :last-child { margin-bottom: 0; }
 
 /* Every gallery frame reaches the viewport edges. Text retains the page
    gutter and its reading measure, regardless of input device or screen size. */
-.project-grid > :is(.media-item, .media-row) {
+.project-grid > :is(.media-item, .media-row),
+.media-spread > .media-item {
   width: calc(100% + 2 * var(--page-gutter));
   margin-inline: calc(-1 * var(--page-gutter));
 }
@@ -98,7 +108,8 @@ figure { margin: 0; }
 .text-block.text-medium { font-size: var(--font-size-medium); line-height: var(--line-height-snug); }
 .text-block + .text-block { margin-top: 0; }
 .text-block.text-large + .text-block { margin-top: var(--project-lead-gap); }
-.text-block:has(+ :is(.text-block, .credits-block, .presskit-block)) { margin-bottom: 0; }
+.text-block:has(+ :is(.text-block, .credits-block, .presskit-block)),
+.media-spread:has(+ :is(.credits-block, .presskit-block)) .spread-text > :last-child { margin-bottom: 0; }
 .text-block a { color: color-mix(in srgb, var(--project-color, var(--text-primary)) var(--link-accent-share), var(--link-shade)); }
 .audio-block audio { display: block; width: 100%; color-scheme: light; }
 .text-block p { margin: 0 0 1em; }
@@ -139,10 +150,40 @@ html[data-project="plx"] #header-toggle { font-family: var(--font-family-plx-dis
 
 @media (min-width: 769px) {
   /* Authored text placements use the inset grid. Media always fills the page. */
-  .project-grid > :is(.text-block, .credits-block) {
+  .project-grid > :is(.text-block, .credits-block),
+  .spread-text > .text-block {
     grid-column: var(--col-start, 1) / span var(--col-span, 12);
   }
   #klattermusen .hero { height: auto; aspect-ratio: var(--ar); }
+}
+
+/* Ultra-wide: a full-width photograph would run far past the fold, so a
+   standalone image and the writing after it share the width, sides
+   alternating. The image stops short of the screen height. */
+@media screen and (min-width: 1600px) and (min-aspect-ratio: 21/10) {
+  .media-spread {
+    display: flex;
+    align-items: center;
+    grid-column: 1 / -1;
+    margin-inline: calc(-1 * var(--page-gutter));
+  }
+  .media-spread-flip { flex-direction: row-reverse; }
+  .media-spread > .media-item {
+    flex: 0 1 min(62%, 100svh * var(--ar));
+    width: auto;
+    margin: 0;
+  }
+  .spread-text {
+    display: flex;
+    flex: 1 1 0;
+    flex-direction: column;
+    gap: var(--media-gap);
+    min-width: 0;
+    padding-inline: var(--spacing-2xl);
+  }
+  .spread-text > .text-block { margin: 0; }
+  .spread-text > .text-block.text-large + .text-block { margin-top: var(--project-lead-gap); }
+  .media-spread-flip .spread-text > .text-block { margin-inline-start: auto; }
 }
 
 @media (min-width: 769px) and (max-aspect-ratio: 4/3) {

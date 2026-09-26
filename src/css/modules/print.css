@@ -101,6 +101,7 @@
   body[data-route="project"] .project-grid > .text-block,
   body[data-route="project"] .project-grid > .credits-block,
   body[data-route="project"] .project-grid > .presskit-block,
+  body[data-route="project"] .spread-text > .text-block,
   body[data-route="project"] .project-grid .media-item:has(video),
   body[data-route="project"] audio { display: none !important; }
   /* One image per sheet, bleeding to every edge. Hidden media never introduce
@@ -113,6 +114,7 @@
     flex: none !important; aspect-ratio: auto !important;
   }
   body[data-route="project"] .project-grid > .media-item:not(:first-of-type),
+  body[data-route="project"] .media-spread > .media-item,
   body[data-route="project"] .media-row > .media-item { break-before: page; }
   body[data-route="project"] .project-grid > .media-item.hero,
   body[data-route="project"] .media-item:has(video) { break-before: auto !important; }

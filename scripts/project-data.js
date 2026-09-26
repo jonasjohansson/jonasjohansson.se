@@ -134,3 +134,23 @@ export function groupMedia(content) {
   }
   return grouped;
 }
+
+export function spreadText(grouped) {
+  // On an ultra-wide screen a full-width photograph runs far below the fold
+  // while the writing about it waits underneath. A standalone gallery image
+  // and the writing straight after it can share the width instead, sides
+  // alternating down the page. Elsewhere the spread is transparent to layout.
+  const media = block => block?.type === 'image' || block?.type === 'video';
+  const result = [...grouped];
+  let flip = false;
+  for (let i = 1; i < result.length; i++) {
+    if (!media(result[i]) || result[i + 1]?.type !== 'text') continue;
+    let end = i + 1;
+    while (result[end + 1]?.type === 'text') end++;
+    result[i] = { ...result[i], spreadStart: true, spreadFlip: flip };
+    result[end] = { ...result[end], spreadEnd: true };
+    flip = !flip;
+    i = end;
+  }
+  return result;
+}
