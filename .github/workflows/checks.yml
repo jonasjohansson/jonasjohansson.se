@@ -1,0 +1,63 @@
+name: Site checks (navigation, layout, accessibility)
+
+# Slow Playwright runs across Chromium, Firefox and WebKit. Kept out of the
+# deploy so everyday updates publish fast; run by hand after layout changes.
+on:
+  workflow_dispatch:
+
+permissions:
+  contents: read
+
+jobs:
+  checks:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v4
+
+      - name: Setup Node (22)
+        uses: actions/setup-node@v4
+        with:
+          node-version: 22
+          cache: npm
+
+      # Read-only: share the deploy's encoded images without writing new entries.
+      - name: Restore build caches
+        uses: actions/cache/restore@v4
+        with:
+          path: |
+            .cache
+            .11ty-vite
+            node_modules/.vite
+          key: ${{ runner.os }}-eleventy-images-v2-
+          restore-keys: |
+            ${{ runner.os }}-eleventy-images-v2-
+
+      - name: Install
+        run: npm ci
+
+      - name: Build (Eleventy)
+        env:
+          PATH_PREFIX: /
+        run: npm run build
+
+      - name: Check project data
+        run: npm test
+
+      - name: Install test browsers
+        run: npx playwright install --with-deps chromium firefox webkit
+
+      - name: Check navigation and layouts
+        run: npm run test:browser
+
+      - name: Check browser compatibility and accessibility
+        run: npm run test:accessibility
+
+      - name: Save browser and accessibility report
+        if: always()
+        uses: actions/upload-artifact@v4
+        with:
+          name: browser-accessibility
+          path: screenshots/accessibility
+          if-no-files-found: ignore
+          retention-days: 7

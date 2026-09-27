@@ -33,8 +33,13 @@ concurrency:
   group: "pages"
   cancel-in-progress: true
 
+# One job: build and publish on the same runner, so a push goes live without a
+# second job spinning up. Browser checks run separately in checks.yml.
 jobs:
-  build:
+  deploy:
+    environment:
+      name: github-pages
+      url: ${{ steps.deployment.outputs.page_url }}
     runs-on: ubuntu-latest
     steps:
       - name: Checkout
@@ -80,35 +85,11 @@ jobs:
       - name: Check project data
         run: npm test
 
-      - name: Install test browsers
-        run: npx playwright install --with-deps chromium firefox webkit
-
-      - name: Check navigation and layouts
-        run: npm run test:browser
-
-      - name: Check browser compatibility and accessibility
-        run: npm run test:accessibility
-
-      - name: Save browser and accessibility report
-        if: always()
-        uses: actions/upload-artifact@v4
-        with:
-          name: browser-accessibility
-          path: screenshots/accessibility
-          if-no-files-found: ignore
-          retention-days: 7
-
       - name: Upload artifact
         uses: actions/upload-pages-artifact@v3
         with:
           path: dist
 
-  deploy:
-    needs: build
-    environment:
-      name: github-pages
-      url: ${{ steps.deployment.outputs.page_url }}
-    runs-on: ubuntu-latest
-    steps:
-      - id: deployment
+      - name: Deploy
+        id: deployment
         uses: actions/deploy-pages@v4
