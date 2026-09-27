@@ -71,19 +71,6 @@ blocks:
   - type: text
     fontSize: small
     content: >-
-      I draw the wristbands. For Tjärö 2025 that was orange roses on a thorned
-      vine the length of a purple band, alongside the island's two maps.
-  - type: image
-    src: tjaro-wristband.png
-    size: full
-    alt: "The Tjärö 2025 wristband: orange roses on a green thorned vine across a purple band, with PLXX TJÄRÖ and a large 25 in magenta blackletter."
-  - type: image
-    src: tjaro-band-detail.png
-    size: full
-    alt: "A close view of the Tjärö wristband: the thorned stem, an opened rose, and a medieval figure lifted from an illumination."
-  - type: text
-    fontSize: small
-    content: >-
       PLX **turned twenty** in 2026 and marked it with ODE JOY, two nights in
       the old casino at Malmö Konstmuseum in Kungsparken. A large scaffolding
       installation stood in the main room. I built the site as its double: a
@@ -127,23 +114,6 @@ blocks:
     src: ode-singer.jpg
     size: half-right
     alt: "A singer leans into the microphone, lit from the side in cyan and magenta that bleeds across the frame."
-  - type: text
-    fontSize: small
-    content: >-
-      The wristbands took that scaffold with them: lime and violet on navy for
-      both nights, orange and lime on oxblood for the Friday alone.
-  - type: image
-    src: ode-band-both.png
-    size: full
-    alt: "The ODE JOY two-night wristband: violet flowers climbing a pale lattice on navy, with PLX ODE JOY set in lime across the middle."
-  - type: image
-    src: ode-band-fri.png
-    size: full
-    alt: "The ODE JOY Friday wristband: the same lattice and flowers in lime and orange on oxblood, with PLX ODE JOY in orange."
-  - type: image
-    src: ode-band-detail.png
-    size: full
-    alt: "A close view of the wristband lattice: violet leaves and pale six-petalled flowers threaded through crossing struts."
   - type: text
     fontSize: small
     content: >-
