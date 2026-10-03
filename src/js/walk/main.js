@@ -2,7 +2,8 @@ import '../../css/walk.css';
 import * as THREE from 'three';
 import { createTimeline } from './timeline.js';
 import { standinAlley, ALLEY } from './standin.js';
-import { createPoints, setPointScale } from './points.js';
+import { createPoints, setPointScale, setScreenLights } from './points.js';
+import { devicePoints, screenLights } from './devices.js';
 import { createScreens } from './screens.js';
 
 const EYE = 1.62;
@@ -46,7 +47,14 @@ function start() {
   const camera = new THREE.PerspectiveCamera(phone ? 62 : 52, 1, 0.05, 60);
   const world = new THREE.Scene();
   const points = createPoints(scene);
-  world.add(points);
+  const kinds = stops.map(stop => stop.pose);
+  const devices = createPoints(devicePoints(scene.anchors, kinds, { density: phone ? 0.6 : 1 }));
+  // Devices are held close: they neither fade at the lens nor part around it.
+  devices.material.uniforms.uNearFade.value.set(0.02, 0.08);
+  world.add(points, devices);
+  const lights = screenLights(scene.anchors, kinds);
+  setScreenLights(points, lights);
+  setScreenLights(devices, lights);
   const screens = createScreens(stops, scene.anchors);
   document.body.append(screens.renderer.domElement);
 
@@ -71,6 +79,8 @@ function start() {
     camera.aspect = innerWidth / innerHeight;
     camera.updateProjectionMatrix();
     setPointScale(points, camera, innerHeight, pixelRatio);
+    setPointScale(devices, camera, innerHeight, pixelRatio);
+    devices.material.uniforms.uSize.value = 0.012;
     frameScreens();
   };
   addEventListener('resize', resize);
@@ -130,8 +140,10 @@ function start() {
     camera.position.copy(eye);
     camera.lookAt(look);
 
-    points.material.uniforms.uTime.value = time;
-    points.material.uniforms.uGather.value = Math.min(1, time / 3);
+    for (const cloud of [points, devices]) {
+      cloud.material.uniforms.uTime.value = time;
+      cloud.material.uniforms.uGather.value = Math.min(1, time / 3);
+    }
     end.classList.toggle('is-near', progress > 0.97);
     renderer.render(world, camera);
     screens.render(camera, focus);

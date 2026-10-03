@@ -134,12 +134,6 @@ export function standinAlley({ seed = 1, density = 1, figures = [] } = {}) {
       capsule([s * 0.2, shoulder - 0.03, 0.03], elbow, 0.05, n * 0.05);
       capsule(elbow, hand, 0.045, n * 0.05);
     }
-    // The object itself, dark behind its screen.
-    const [w, h] = hold.size;
-    for (let i = 0; i < n * 0.06; i++) {
-      const u = rand() - 0.5, v = rand() - 0.5;
-      lit(...world(hold.at[0] + u * w, hold.at[1] + v * h * Math.cos(hold.tilt), hold.at[2] - 0.01 + v * h * Math.sin(hold.tilt)), 25, 25, 30);
-    }
     // The way to the camera's place over the right shoulder, or the left
     // one when the right faces the wall: up and back from the hands, past
     // the head. How far along it depends on the screen the walk is seen on.

@@ -27,7 +27,9 @@ export function createScreens(stops, anchors) {
     renderer,
     render(camera, focus) {
       stops.forEach((stop, index) => {
-        stop.element.style.opacity = String(0.22 + 0.78 * focus[index]);
+        // Lit screens glow from down the carriage; paper only shows up close.
+        const glow = stop.element.dataset.pose === 'paper' ? 0.2 : 0.75;
+        stop.element.style.opacity = String(glow + (1 - glow) * focus[index]);
         stop.element.classList.toggle('is-near', focus[index] > 0.5);
       });
       renderer.render(scene, camera);
