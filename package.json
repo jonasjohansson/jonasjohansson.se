@@ -28,7 +28,6 @@
     "vite": "^7.1.9"
   },
   "dependencies": {
-    "gray-matter": "^4.0.3",
-    "three": "^0.186.1"
+    "gray-matter": "^4.0.3"
   }
 }

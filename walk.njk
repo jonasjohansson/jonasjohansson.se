@@ -3,62 +3,17 @@ permalink: "/walk/"
 eleventyExcludeFromCollections: true
 noindex: true
 ---
-{# An experiment: a scroll-driven walk through a scanned metro carriage,
-   stopping at passengers whose screens show parts of the site. Unlisted and
-   not indexed. Each <article> is a stop, matched by data-stop to a passenger
-   in walk/scene.json (built by scripts/walk_scene.py), which says where they
-   sit and what they hold. Without JavaScript, WebGL or with reduced motion,
-   the articles read as a plain page. #}
+{# The walk moved to its own repo, github.com/jonasjohansson/walk. #}
 <!DOCTYPE html>
 <html lang="en">
 <head>
   <meta charset="utf-8">
-  <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
   <meta name="robots" content="noindex">
-  <meta name="theme-color" content="#050506">
-  <title>Walk | {{ site.title }}</title>
-  <link rel="icon" href="{{ '/favicon/favicon.svg' | url }}" type="image/svg+xml">
-  <link rel="stylesheet" href="{{ 'walk.css' | viteAsset | url }}">
+  <meta http-equiv="refresh" content="0; url=https://walk.jonasjohansson.se/">
+  <link rel="canonical" href="https://walk.jonasjohansson.se/">
+  <title>Redirecting...</title>
 </head>
 <body>
-  <main class="walk" id="walk">
-    <h1 class="sr-only">{{ site.author }}</h1>
-
-    <article class="stop" data-stop="about" aria-label="About">
-      <div class="paper">
-        <p class="paper-masthead">The Glommen Gazette</p>
-        <h2 class="paper-headline">{{ site.author }}</h2>
-        <div class="paper-body">{{ site.intro | markdown | safe }}</div>
-      </div>
-    </article>
-
-    <article class="stop" data-stop="cv" aria-label="CV">
-      <a class="laptop" href="{{ site.contacts[0].href }}" target="_blank" rel="noopener">
-        <span class="laptop-bar">cv.pdf</span>
-        <span class="laptop-page">
-          <span class="laptop-name">{{ site.author }}</span>
-          <span class="laptop-role">{{ site.jobTitle }}</span>
-          <span class="laptop-line">{{ site.summary }}</span>
-          <span class="laptop-open">Open the CV</span>
-        </span>
-      </a>
-    </article>
-
-    <article class="stop" data-stop="contact" aria-label="Contact">
-      <a class="phone" href="mailto:{{ site.email }}">
-        <span class="phone-title">New message</span>
-        <span class="phone-field"><span>To</span> {{ site.email }}</span>
-        <span class="phone-field"><span>Subject</span> Hello</span>
-        <span class="phone-body">Hi Jonas,<span class="phone-caret"></span></span>
-        <span class="phone-send">Send</span>
-      </a>
-    </article>
-
-    <footer class="walk-end">
-      <a href="{{ '/' | url }}">jonasjohansson.se</a>
-      <p class="walk-credits">Scans via Sketchfab, CC BY 4.0: <a href="https://sketchfab.com/3d-models/d046cf34f9fe4600911566c1a4f89ee4">Moscow metro 81-714 car interior</a> by trolleway; <a href="https://sketchfab.com/3d-models/993eaa99578640e98dce99e40c8b5b5c">Kana</a> and <a href="https://sketchfab.com/3d-models/1628ca49728a4d998f7bfed3b2f6d540">Aya</a> by endonoriko; <a href="https://sketchfab.com/3d-models/41b3107ced274de8a1c523d75272535e">A man sitting</a> by 1056878.</p>
-    </footer>
-  </main>
-  <script type="module" src="{{ 'walk.js' | viteAsset | url }}"></script>
+  <p>Redirecting to <a href="https://walk.jonasjohansson.se/">walk.jonasjohansson.se</a></p>
 </body>
 </html>
