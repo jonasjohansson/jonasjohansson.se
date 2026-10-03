@@ -12,7 +12,8 @@ a { color: inherit; }
 
 /* Without the walk the stops read as a page, one after another. */
 .walk { display: grid; gap: var(--spacing-2xl); padding: var(--spacing-2xl) var(--page-gutter); }
-.walk-end { justify-self: center; font-size: var(--font-size-ui); }
+.walk-end { justify-self: center; max-width: 34rem; font-size: var(--font-size-ui); text-align: center; }
+.walk-credits { margin: var(--spacing-sm) 0 0; color: color-mix(in srgb, var(--walk-text) 55%, transparent); font-size: 0.75rem; line-height: 1.5; }
 
 /* The screens. In the walk each is drawn at a fixed pixel size and scaled
    into the scene, so the type stays sharp however close the camera comes.

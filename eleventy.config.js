@@ -131,6 +131,7 @@ export default function (eleventyConfig) {
   eleventyConfig.setWatchJavaScriptDependencies(false);
   eleventyConfig.addPassthroughCopy({ 'src/favicon': 'favicon', 'src/img': 'assets/img' });
   eleventyConfig.addPassthroughCopy('CNAME');
+  eleventyConfig.addPassthroughCopy('walk/*.{bin,json}');
   eleventyConfig.addPassthroughCopy('projects/**/*.{mp4,webm,mov,mp3,m4a,ogg,wav}');
   eleventyConfig.setLibrary('njk', nunjucks.configure({ autoescape: true, trimBlocks: true, lstripBlocks: true }));
   eleventyConfig.addGlobalData('buildYear', new Date().getFullYear());

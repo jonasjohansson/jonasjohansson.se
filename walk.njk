@@ -3,11 +3,11 @@ permalink: "/walk/"
 eleventyExcludeFromCollections: true
 noindex: true
 ---
-{# An experiment: a scroll-driven walk through a point-cloud alley, stopping
-   at people whose screens show parts of the site. Unlisted and not indexed.
-   Each <article> is a stop: data-at is how far along the path it stands,
-   data-side the wall it is by, data-pose what the person holds. Adding a stop
-   is adding an article. Without JavaScript, WebGL or with reduced motion,
+{# An experiment: a scroll-driven walk through a scanned metro carriage,
+   stopping at passengers whose screens show parts of the site. Unlisted and
+   not indexed. Each <article> is a stop, matched by data-stop to a passenger
+   in walk/scene.json (built by scripts/walk_scene.py), which says where they
+   sit and what they hold. Without JavaScript, WebGL or with reduced motion,
    the articles read as a plain page. #}
 <!DOCTYPE html>
 <html lang="en">
@@ -24,7 +24,7 @@ noindex: true
   <main class="walk" id="walk">
     <h1 class="sr-only">{{ site.author }}</h1>
 
-    <article class="stop" data-pose="paper" data-at="0.24" data-side="-1" aria-label="About">
+    <article class="stop" data-stop="about" aria-label="About">
       <div class="paper">
         <p class="paper-masthead">The Glommen Gazette</p>
         <h2 class="paper-headline">{{ site.author }}</h2>
@@ -32,7 +32,7 @@ noindex: true
       </div>
     </article>
 
-    <article class="stop" data-pose="laptop" data-at="0.52" data-side="1" aria-label="CV">
+    <article class="stop" data-stop="cv" aria-label="CV">
       <a class="laptop" href="{{ site.contacts[0].href }}" target="_blank" rel="noopener">
         <span class="laptop-bar">cv.pdf</span>
         <span class="laptop-page">
@@ -44,7 +44,7 @@ noindex: true
       </a>
     </article>
 
-    <article class="stop" data-pose="phone" data-at="0.8" data-side="-1" aria-label="Contact">
+    <article class="stop" data-stop="contact" aria-label="Contact">
       <a class="phone" href="mailto:{{ site.email }}">
         <span class="phone-title">New message</span>
         <span class="phone-field"><span>To</span> {{ site.email }}</span>
@@ -54,7 +54,10 @@ noindex: true
       </a>
     </article>
 
-    <a class="walk-end" href="{{ '/' | url }}">jonasjohansson.se</a>
+    <footer class="walk-end">
+      <a href="{{ '/' | url }}">jonasjohansson.se</a>
+      <p class="walk-credits">Scans via Sketchfab, CC BY 4.0: <a href="https://sketchfab.com/3d-models/d046cf34f9fe4600911566c1a4f89ee4">Moscow metro 81-714 car interior</a> by trolleway; <a href="https://sketchfab.com/3d-models/993eaa99578640e98dce99e40c8b5b5c">Kana</a> and <a href="https://sketchfab.com/3d-models/1628ca49728a4d998f7bfed3b2f6d540">Aya</a> by endonoriko; <a href="https://sketchfab.com/3d-models/41b3107ced274de8a1c523d75272535e">A man sitting</a> by 1056878.</p>
+    </footer>
   </main>
   <script type="module" src="{{ 'walk.js' | viteAsset | url }}"></script>
 </body>

@@ -18,6 +18,8 @@ const vertexShader = /* glsl */ `
   uniform float uFogNear;
   uniform float uFogFar;
   uniform vec2 uNearFade;
+  uniform float uKeep;
+  uniform float uDim;
   uniform vec3 uTone;
   uniform vec3 uLightOrigin[LIGHTS];
   uniform vec3 uLightNormal[LIGHTS];
@@ -45,21 +47,23 @@ const vertexShader = /* glsl */ `
     gl_Position = projectionMatrix * mv;
 
     float depth = max(0.05, -mv.z);
-    gl_PointSize = min(uSize * uScale * (0.55 + h * 0.9) / depth, uMaxSize);
+    // A scan's points stay small at any distance: density draws the image,
+    // not the size of each dot.
+    gl_PointSize = clamp(uSize * uScale * (0.55 + h * 0.9) / depth, 1.0, uMaxSize);
 
     vec3 c = tint;
     float l = dot(c, vec3(0.299, 0.587, 0.114));
-    vColor = mix(vec3(l) * uTone, c, 0.5);
+    vColor = mix(vec3(l) * uTone, c, uKeep);
     // Screens light what is in front of them: the hands, the face, the seat.
     vec3 world = (modelMatrix * vec4(position, 1.0)).xyz;
     for (int i = 0; i < LIGHTS; i++) {
       vec3 d = world - uLightOrigin[i];
       float facing = max(0.0, dot(normalize(d), uLightNormal[i]));
-      vColor += vec3(0.62, 0.74, 0.95) * uLightStrength[i] * facing / (1.0 + dot(d, d) * 14.0);
+      vColor += vec3(0.62, 0.74, 0.95) * uLightStrength[i] * (0.25 + 0.75 * facing) / (1.0 + dot(d, d) * 9.0);
     }
     // Fog far away, and nothing right at the lens: what the camera passes
     // through thins to nothing instead of blooming across the view.
-    vAlpha = (1.0 - smoothstep(uFogNear, uFogFar, depth)) * smoothstep(uNearFade.x, uNearFade.y, length(mv.xyz)) * arrive;
+    vAlpha = (1.0 - smoothstep(uFogNear, uFogFar, depth)) * smoothstep(uNearFade.x, uNearFade.y, length(mv.xyz)) * arrive * uDim;
   }
 `;
 
@@ -91,6 +95,8 @@ export function createPoints({ positions, colors, count }) {
       uFogNear: { value: 2 },
       uFogFar: { value: 22 },
       uNearFade: { value: new THREE.Vector2(0.2, 0.8) },
+      uKeep: { value: 0.5 },
+      uDim: { value: 1 },
       uTone: { value: new THREE.Color(0.82, 0.88, 1.05) },
       uLightOrigin: { value: Array.from({ length: LIGHTS }, () => new THREE.Vector3()) },
       uLightNormal: { value: Array.from({ length: LIGHTS }, () => new THREE.Vector3(0, 0, 1)) },
@@ -117,5 +123,5 @@ export function setScreenLights(points, lights) {
 // Point size is in metres; this turns it into pixels for the current view.
 export function setPointScale(points, camera, height, pixelRatio) {
   points.material.uniforms.uScale.value = height * pixelRatio / (2 * Math.tan(THREE.MathUtils.degToRad(camera.fov) / 2));
-  points.material.uniforms.uMaxSize.value = 16 * pixelRatio;
+  points.material.uniforms.uMaxSize.value = 4.5 * pixelRatio;
 }

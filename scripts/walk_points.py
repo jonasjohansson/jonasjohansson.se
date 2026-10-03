@@ -45,9 +45,22 @@ def colours_for(mesh, faces, points):
     return np.tile(grey, (len(points), 1))
 
 
-def sample(path, count, seed=1):
+def sample(path, count, seed=1, max_edge=None):
     loaded = trimesh.load(path, force='scene')
     meshes = [m for m in loaded.dump() if isinstance(m, trimesh.Trimesh) and len(m.faces)]
+    if max_edge:
+        # Reconstruction often closes a scan inside a few huge triangles.
+        # Real surfaces are made of small ones, so the large go.
+        trimmed = []
+        for mesh in meshes:
+            longest = mesh.edges_unique_length[mesh.faces_unique_edges].max(axis=1)
+            keep = longest <= max_edge
+            if keep.any():
+                part = mesh.copy()
+                part.update_faces(keep)
+                part.remove_unreferenced_vertices()
+                trimmed.append(part)
+        meshes = trimmed
     areas = np.array([m.area for m in meshes])
     shares = np.maximum(1, np.round(areas / areas.sum() * count)).astype(int)
     positions, colours = [], []
@@ -133,8 +146,9 @@ if __name__ == '__main__':
     parser.add_argument('target')
     parser.add_argument('--count', type=int, default=400000)
     parser.add_argument('--seed', type=int, default=1)
+    parser.add_argument('--max-edge', type=float, default=None)
     args = parser.parse_args()
-    positions, colours = sample(args.source, args.count, args.seed)
+    positions, colours = sample(args.source, args.count, args.seed, args.max_edge)
     write(args.target, positions, colours)
     low, high = positions.min(axis=0), positions.max(axis=0)
     print(f'{len(positions)} points, bounds {np.round(low, 2)} to {np.round(high, 2)}')

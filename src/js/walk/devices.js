@@ -54,14 +54,14 @@ export function devicePoints(anchors, kinds, { seed = 3, density = 1 } = {}) {
     };
     const n = 6000 * density;
     if (kind === 'phone') {
-      ring(w, h, w + 0.008, h + 0.016, -0.001, n * 0.5, 34);
-      slab(w + 0.008, h + 0.016, -0.009, n * 0.5, 26);
+      ring(w, h, w + 0.008, h + 0.016, -0.001, n * 0.5, 70);
+      slab(w + 0.008, h + 0.016, -0.009, n * 0.5, 48);
       return;
     }
     // Laptop: lid around the glass, its back, then the base folding toward
     // the holder from the hinge, with the keys a shade lighter.
-    ring(w, h, w + 0.03, h + 0.035, -0.002, n * 0.35, 30);
-    slab(w + 0.03, h + 0.035, -0.008, n * 0.25, 22);
+    ring(w, h, w + 0.03, h + 0.035, -0.002, n * 0.35, 66);
+    slab(w + 0.03, h + 0.035, -0.008, n * 0.25, 44);
     // The base lies flat, from the lid's bottom edge toward the holder.
     const hinge = new THREE.Vector3(0, -(h + 0.035) / 2, -0.004).applyMatrix4(matrix);
     const across = new THREE.Vector3(1, 0, 0).transformDirection(matrix);
@@ -73,7 +73,7 @@ export function devicePoints(anchors, kinds, { seed = 3, density = 1 } = {}) {
         && (Math.floor((x + w) / 0.019) + Math.floor(along / 0.019)) % 2 === 0;
       v.copy(hinge).addScaledVector(across, x).addScaledVector(toward, along);
       positions.push(v.x, v.y, v.z);
-      const shade = (key ? 52 : 28) + rand() * 10;
+      const shade = (key ? 96 : 58) + rand() * 14;
       colors.push(shade, shade, shade + 4);
     }
   });
@@ -86,7 +86,9 @@ export function screenLights(anchors, kinds) {
     const matrix = screenFrame(anchor);
     const origin = new THREE.Vector3().applyMatrix4(matrix);
     const normal = new THREE.Vector3(0, 0, 1).transformDirection(matrix);
-    const strength = { laptop: 1, phone: 0.55, paper: 0 }[kinds[index]] ?? 0;
+    // Paper gives no light of its own; a little stands in for the carriage
+    // lamps falling on it, so whoever holds it is not lost in the dark.
+    const strength = { laptop: 2.2, phone: 1.6, paper: 0.7 }[kinds[index]] ?? 0;
     return { origin, normal, strength };
   });
 }
