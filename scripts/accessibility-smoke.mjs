@@ -148,7 +148,7 @@ try {
           for (const route of ['/', '/eastern-city-portal/']) {
             await visit(page, route);
             assert.equal(await page.evaluate(() => document.documentElement.scrollWidth <= innerWidth + 1), true, `${route} has no horizontal page overflow`);
-            const email = page.getByRole('link', { name: 'Email', exact: true });
+            const email = page.getByRole('link', { name: 'Email', exact: true }).first();
             await email.scrollIntoViewIfNeeded();
             const bounds = await email.boundingBox();
             assert.ok(bounds && bounds.x >= 0 && bounds.x + bounds.width <= 320, 'email fits within the viewport');

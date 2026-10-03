@@ -1,4 +1,11 @@
 <header id="header"{% if not project %} hidden{% endif %}>
+  {# A project page opens with the landing's thin band: the name, which leads
+     home, and the links. The title floats over the hero below it. #}
+  <div class="site-bar">
+    <a class="site-name" href="{{ '/' | url }}" data-home-link>{{ site.author }}</a>
+    {%- set contactsLabel = "Contact links" %}
+    {% include "./contact-links.njk" %}
+  </div>
   <a class="header-subtitle" id="header-toggle" href="{{ '/' | url }}" data-home-link
     {% if project %}aria-label="{{ project.title }}, Return to projects"{% endif %}>{% if project %}{{ project.title }}{% endif %}</a>
 </header>

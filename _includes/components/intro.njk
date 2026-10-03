@@ -1,10 +1,7 @@
 <div id="intro" class="intro" tabindex="-1" role="region" aria-label="About Jonas Johansson"{% if project %} hidden{% endif %}>
-  {# Only the first sentence shows, and pressing it unfolds the rest. The
-     sentence is a button that JavaScript enables; without JavaScript it reads
-     as plain text above the whole bio. #}
+  {# The landing carries the bio's first sentence; the rest is in the CV. #}
   {% set intro = site.intro | splitLead %}
   <div id="about" class="intro-text">
-    <p class="intro-lead"><button type="button" class="intro-toggle" aria-controls="intro-more" disabled>{{ intro.lead | inlineMarkdown | safe }}</button></p>
-    <div id="intro-more" class="intro-more"><div class="intro-more-inner">{{ intro.rest | markdown | safe }}</div></div>
+    <p class="intro-lead">{{ intro.lead | inlineMarkdown | safe }}</p>
   </div>
 </div>

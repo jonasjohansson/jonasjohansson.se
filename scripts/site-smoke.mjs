@@ -131,17 +131,22 @@ async function checkFooter(page) {
     assert.ok(intro.y + intro.height <= wall.y + 1, 'the writing sits above the strips');
     assert.equal(await page.locator('#home-header .header-contacts').count(), 0, 'the landing band is the writing alone');
   } else {
-    // The project title at the top of the page is the way home, so the wall
-    // carries no name and nothing sits over the work.
+    // The name band and the project title at the top of the page are the way
+    // home, so the wall carries no name and nothing sits over the work.
     assert.equal(await page.locator('.collection-home-link').count(), 0, 'no wall carries a name');
     assert.equal(await page.locator('#collection-header').count(), 0, 'nothing floats over the top of a project wall');
     const title = await page.locator('#header-toggle').boundingBox();
     const body = await page.locator('.text-block').first().boundingBox();
-    const floating = await page.locator('#header').evaluate(header => getComputedStyle(header).position === 'absolute');
+    const floating = await page.locator('#header-toggle').evaluate(title => getComputedStyle(title).position === 'absolute');
     assert.ok(floating, 'the project title floats over the hero');
     assert.ok(Math.abs(title.x + title.width / 2 - (body.x + body.width / 2)) < 1, 'the floating project title is centred');
     assert.equal(await page.locator('#header-toggle').getAttribute('href'), `${prefix}/`, 'the project title leads home');
-    assert.equal(await page.locator('#header .header-contacts').count(), 0, 'project hero header contains only the title');
+    // A project page opens with the landing's band: the name, leading home,
+    // and the links.
+    const name = page.locator('#header .site-name');
+    assert.equal((await name.textContent()).trim(), 'Jonas Johansson', 'the name tops every project page');
+    assert.equal(await name.getAttribute('href'), `${prefix}/`, 'and leads home');
+    assert.equal(await page.locator('#header .header-contacts').isVisible(), true, 'the links sit beside the name');
   }
   assert.equal(await page.locator('#project-filters').isVisible(), true, 'the filter is available on both strip walls');
   return checkFilterBounds(page);
@@ -270,6 +275,7 @@ try {
         zero: [...document.querySelectorAll('#projects img:not(.print-poster), #projects video')].some(el => el.getBoundingClientRect().width < 1 || el.getBoundingClientRect().height < 1),
         title: document.title,
         hero: (({ top, bottom }) => ({ top, bottom }))(document.querySelector('.hero').getBoundingClientRect()),
+        band: document.querySelector('.site-bar').getBoundingClientRect().bottom,
         titleBox: (({ top, bottom }) => ({ top, bottom }))(document.getElementById('header-toggle').getBoundingClientRect()),
         heading: document.getElementById('header-toggle').textContent.trim(),
         alt: document.querySelector('.hero img')?.alt || document.querySelector('.hero video')?.getAttribute('aria-label'),
@@ -286,8 +292,8 @@ try {
       assert.equal(state.zero, false, `${slug} has collapsed media`);
       assert.ok(state.alt.length > 15, `${slug} hero description`);
       assert.ok(state.title.endsWith(' | Jonas Johansson'), `${slug} document title`);
-      assert.ok(state.hero.top === 0 && state.titleBox.top > state.hero.top && state.titleBox.bottom < state.hero.bottom,
-        `${slug} title floats over a hero at the top of the page`);
+      assert.ok(Math.abs(state.hero.top - state.band) < 1 && state.titleBox.top > state.hero.top && state.titleBox.bottom < state.hero.bottom,
+        `${slug} title floats over a hero just under the name band`);
       assert.equal(state.title, `${state.heading} | Jonas Johansson`, `${slug} project title`);
       assert.equal(state.videoControls, true, `${slug} video controls`);
       assert.equal(state.creditsAligned, true, `${slug} credits alignment`);

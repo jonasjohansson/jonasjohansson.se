@@ -1,4 +1,4 @@
-<nav class="header-contacts" aria-label="Contact and social links">
+<nav class="header-contacts" aria-label="{{ contactsLabel or 'Contact and social links' }}">
   {%- for contact in site.contacts %}
   <a href="{{ contact.href }}"{% if contact.href.startsWith("http") %} target="_blank" rel="noopener"{% endif %}>{{ contact.label }}</a>
   {%- endfor %}

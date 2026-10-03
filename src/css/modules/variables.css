@@ -40,7 +40,6 @@
 
   /* Project media */
   --media-gap: var(--spacing-md);
-  --project-title-gap: var(--spacing-xl);
   --project-text-gap: var(--spacing-2xl);
   --project-lead-gap: clamp(var(--spacing-md), 5vw, 6rem);
   --project-credit-gap: 7.5rem;

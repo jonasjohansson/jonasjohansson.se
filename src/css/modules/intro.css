@@ -1,23 +1,9 @@
 .intro { min-width: 0; max-width: var(--measure); }
 .intro-text { font-size: var(--font-size-intro); line-height: var(--line-height-base); text-wrap: pretty; }
 .intro-text p { margin: 0; }
-.intro-text p + p, .intro-more-inner > p:first-child { margin-top: 1em; }
 
 /* The writing uses up to three quarters of the wall above tablet width. */
 @media (min-width: 769px) {
   .intro-text { max-width: min(var(--measure), calc(0.75 * (100vw - 2 * var(--page-gutter))), calc(100vw - 2 * var(--page-gutter) - var(--wall-bar-reserve))); }
 }
-
-/* The lead sentence is a button that only looks like one where it works. */
-.intro-toggle { all: unset; display: block; max-width: 100%; font: inherit; color: inherit; text-align: inherit; text-wrap: pretty; }
-.intro-toggle:enabled { cursor: pointer; }
-.intro-toggle:hover { background: none; }
-/* Keyboard focus underlines the sentence rather than boxing it. */
-.intro-toggle:focus-visible { outline: none; text-decoration: underline; text-underline-offset: 0.2em; }
-
-/* The text folds to its first sentence, and the rest unfolds from a
-   zero-height grid row so the wall below eases along. */
-.enhanced .intro-more { display: grid; grid-template-rows: 0fr; transition: grid-template-rows var(--transition-fast); }
-.enhanced .intro-more-inner { min-height: 0; overflow: hidden; }
-.enhanced .intro[data-open] .intro-more { grid-template-rows: 1fr; }
 

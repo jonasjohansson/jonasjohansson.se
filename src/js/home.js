@@ -15,30 +15,7 @@ export function updateHome(slug) {
   else document.body.dataset.homeView = 'projects';
 }
 
-// About starts folded to its first sentence, and that sentence is the button
-// that unfolds the rest. The folded text is inert so its links are neither
-// tabbed to nor read out. Without JavaScript the button stays disabled and
-// reads as plain text above the whole bio.
-function initIntroFold() {
-  const intro = document.getElementById('intro');
-  const toggle = intro?.querySelector('.intro-toggle');
-  const more = document.getElementById('intro-more');
-  if (!toggle || !more) return;
-  const apply = () => {
-    const open = intro.hasAttribute('data-open');
-    more.inert = !open;
-    toggle.setAttribute('aria-expanded', String(open));
-  };
-  toggle.disabled = false;
-  toggle.addEventListener('click', () => {
-    intro.toggleAttribute('data-open');
-    apply();
-  });
-  apply();
-}
-
 export function initializeHome() {
   updateHome(document.documentElement.dataset.project);
-  initIntroFold();
   if (isHome()) scrollTo({ top: 0, behavior: 'instant' });
 }

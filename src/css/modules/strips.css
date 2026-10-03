@@ -44,17 +44,10 @@
 @media (hover: none) {
   .enhanced .strip.is-active { flex-grow: var(--strip-grow); }
 }
-/* On touch screens the landing is exactly one screen. The wall keeps at
-   least half of it, and open About text scrolls in the space above. */
+/* On touch screens the landing is exactly one screen. */
 @media (hover: none) {
   .enhanced body[data-route="home"] #main { height: 100dvh; min-height: 0; }
   .enhanced body[data-route="home"] #collection { min-height: 50dvh; }
-  .enhanced .home-header,
-  .enhanced .home-header .intro,
-  .enhanced .home-header .intro-text { display: flex; flex-direction: column; min-height: 0; }
-  .enhanced .home-header .intro-more { min-height: 0; }
-  .enhanced .intro[data-open] .intro-more-inner { overflow-y: auto; scrollbar-width: none; }
-  .enhanced .intro[data-open] .intro-more-inner::-webkit-scrollbar { display: none; }
 }
 @media (hover: none), (max-width: 600px) {
   .project-filters input[type="search"] { display: none; }
