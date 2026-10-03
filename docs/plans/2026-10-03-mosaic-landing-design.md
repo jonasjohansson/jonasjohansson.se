@@ -13,12 +13,15 @@ screen. Behind `?mosaic` until it has been seen next to the strips.
 - **Mixed sizes, packed.** The wall keeps its colour order. Size follows date:
   the newest project is 3x3, the next two 2x2, the next five 2x1 or 1x2 by the
   shape of their photograph, the rest 1x1.
-- **Modern CSS places, JS counts.** CSS grid with `grid-auto-flow: dense`
-  and `span var(--w)` does the placing. CSS cannot count the visible tiles, so
-  a small pure function (`src/js/mosaic.js`) picks the column and row count
-  closest to square cells, and stretches a few 1x1 tiles to absorb the
-  leftover cells. It simulates the dense placement to make sure the grid
-  fills exactly before handing the numbers to CSS.
+- **CSS draws, JS counts.** A CSS grid with `grid-area: var(--y) / var(--x) /
+  span var(--h) / span var(--w)`. CSS cannot count the visible tiles, and
+  `grid-auto-flow: dense` leaves holes once a big tile falls late in the
+  colour order, so a small pure function (`src/js/mosaic.js`) picks the
+  column count closest to square cells and each tile's cell: big tiles where
+  their place in the colour order falls, the rest filling free cells in
+  reading order, a few two cells wide to use up the leftovers.
+  `tests/mosaic.test.js` checks every count on five screen shapes fills
+  exactly.
 - **Hover** names the tile in the caption, keeps the cursor pan, and dims the
   rest through `:has()`. Touch works as it does now: first tap names, second
   opens.
