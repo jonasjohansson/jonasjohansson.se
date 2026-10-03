@@ -5,7 +5,7 @@
     <a class="strip" id="strip-{{ item.slug }}" data-project-link
       href="{{ ('/' ~ item.slug ~ '/') | url }}"
       aria-label="{{ item.title | escape }}"
-      data-project="{{ item.slug }}"{% if item.mosaicSize %} data-size="{{ item.mosaicSize }}"{% endif %}{% if item.stripColor %} style="--project-color: {{ item.stripColor }}"{% endif %}
+      data-project="{{ item.slug }}"{% if item.stripColor %} style="--project-color: {{ item.stripColor }}"{% endif %}
       {% if project and project.slug == item.slug %} hidden{% endif %}>
       <picture class="strip-picture">
         <source type="image/avif" srcset="{{ item.thumbnail.avif }}" sizes="(hover: none) calc(100vw - 48px), 640px">

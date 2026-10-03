@@ -4,6 +4,4 @@
   window.__SITE_TITLE__ = {{ site.title | jsonScript | safe }};
   // Lay the strips out as a row before first paint so the module cannot cause a shift.
   if ('noModule' in HTMLScriptElement.prototype) document.documentElement.classList.add('enhanced');
-  // The mosaic landing is on trial behind ?mosaic.
-  if (new URLSearchParams(location.search).has('mosaic')) document.documentElement.dataset.mosaic = '';
 </script>

@@ -30,3 +30,11 @@ screen. Behind `?mosaic` until it has been seen next to the strips.
 
 The build ranks listed work by date and sets `mosaicSize` (`xl`, `l`, `m`)
 on the newest eight. The strip carries it as `data-size`.
+
+## Outcome: dropped (2026-10-03)
+
+Seen live at `?mosaic` and removed. Every project shown at once, unnamed, at
+sizes set by date, made the work read as a feed of stuff: each project felt
+insignificant. The strips give one project at a time the room, which the
+mosaic lost. Any future landing should name the work, show fewer things at
+once, or give one project the screen at a time.
