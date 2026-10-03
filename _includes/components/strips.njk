@@ -1,7 +1,9 @@
 <section id="collection" class="collection" aria-labelledby="collection-title">
   <h2 id="collection-title" class="sr-only" tabindex="-1">{% if project %}More projects{% else %}Projects{% endif %}</h2>
-  {# The links and the filter take the top-right corner above the wall. #}
+  {# The links and the filter take the top-right corner above the wall; under
+     a project the name, which leads home, holds the left. #}
   <div id="wall-bar" class="wall-bar">
+    <a class="site-name" href="{{ '/' | url }}" data-home-link>{{ site.author }}</a>
     {% include "./contact-links.njk" %}
     <div id="project-filters" class="project-filters" role="group" aria-label="Filter projects" hidden></div>
   </div>

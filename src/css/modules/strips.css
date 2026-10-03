@@ -9,6 +9,8 @@
 /* The links and filter sit in the top-right corner, above the wall. */
 .wall-bar { display: flex; flex: none; align-items: center; justify-content: flex-end; padding-block: var(--band-pad); font-size: var(--font-size-ui); line-height: var(--line-height-base); }
 .enhanced .wall-bar { height: var(--band-height); padding-inline: var(--page-gutter); }
+.site-name { margin-right: auto; text-decoration: none; white-space: nowrap; }
+body[data-route="home"] .wall-bar .site-name { display: none; }
 
 /* A project wall and its links occupy one viewport. On the landing, About
    takes its natural height and the wall fills the rest. */
