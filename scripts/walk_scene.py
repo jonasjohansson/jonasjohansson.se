@@ -15,6 +15,8 @@ Sources, all CC BY on Sketchfab, credited on the page:
   Free 091 Aya, endonoriko
   A man sitting, 1056878
 """
+import glob
+import hashlib
 import json
 import os
 import sys
@@ -124,10 +126,21 @@ def person(scans, spec):
 
 def write_split(name, p, c, seed, share=0.4):
     """Two files: a random share of the points, which phones stop at, and
-    the rest, which larger screens add."""
+    the rest, which larger screens add. Each name carries a fingerprint of
+    its contents, so a browser holding an older bake cannot mix it in."""
+    for old in glob.glob(os.path.join(OUT, f'{name}-*.pts')):
+        os.remove(old)
     first = np.random.default_rng(seed).random(len(p)) < share
-    write(os.path.join(OUT, f'{name}-1.pts'), p[first], c[first])
-    write(os.path.join(OUT, f'{name}-2.pts'), p[~first], c[~first])
+    names = []
+    for part, keep in enumerate([first, ~first], start=1):
+        path = os.path.join(OUT, f'{name}-{part}.pts')
+        write(path, p[keep], c[keep])
+        with open(path, 'rb') as baked:
+            fingerprint = hashlib.sha1(baked.read()).hexdigest()[:10]
+        named = f'{name}-{part}.{fingerprint}.pts'
+        os.replace(path, os.path.join(OUT, named))
+        names.append(named)
+    return names
 
 
 def main(scans):
@@ -138,7 +151,7 @@ def main(scans):
     # The scan is torn already; a light touch adds to it without hiding the
     # carriage itself.
     p, c = break_up(p, c, scanners, seed=3, amount=0.45)
-    write_split('carriage', p, c, 1)
+    files = {'carriage': write_split('carriage', p, c, 1)}
     print('carriage', len(p))
 
     people, colours, anchors = [], [], []
@@ -147,11 +160,12 @@ def main(scans):
         # People are broken up less than the carriage, so they stay people.
         q, d = break_up(q, d, [[0, 1.3, spec['z'] + 1.5]], seed=7, amount=0.35)
         people.append(q); colours.append(d); anchors.append(anchor)
-    write_split('people', np.concatenate(people), np.concatenate(colours), 2)
+    files['people'] = write_split('people', np.concatenate(people), np.concatenate(colours), 2)
     print('people', sum(len(q) for q in people))
 
     length = SEGMENT * COPIES
     scene = {
+        'files': files,
         'segment': SEGMENT,
         'copies': [{'z': -SEGMENT * i, 'mirror': i % 2 == 1} for i in range(COPIES)],
         'path': {'start': 0.4, 'end': -length + 0.8, 'eye': 1.6},

@@ -1,4 +1,14 @@
 {
+  "files": {
+    "carriage": [
+      "carriage-1.9bc2288e93.pts",
+      "carriage-2.f999aedeb6.pts"
+    ],
+    "people": [
+      "people-1.6148e54267.pts",
+      "people-2.de7814644f.pts"
+    ]
+  },
   "segment": 6.6,
   "copies": [
     {

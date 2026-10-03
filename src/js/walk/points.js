@@ -77,7 +77,9 @@ const fragmentShader = /* glsl */ `
   void main() {
     float r = length(gl_PointCoord - 0.5);
     if (r > 0.5) discard;
-    float a = smoothstep(0.5, 0.05, r) * vAlpha;
+    // A small solid dot with only its rim softened: a scan's point, not a
+    // glow.
+    float a = smoothstep(0.5, 0.38, r) * vAlpha;
     gl_FragColor = vec4(vColor, a);
   }
 `;
@@ -101,7 +103,7 @@ export function createPoints({ positions, colors, count }) {
       uNearFade: { value: new THREE.Vector2(0.2, 0.8) },
       uKeep: { value: 0.5 },
       uDim: { value: 1 },
-      uDrift: { value: 0.018 },
+      uDrift: { value: 0.004 },
       uExposure: { value: 1 },
       uMinSize: { value: 1 },
       uTone: { value: new THREE.Color(0.82, 0.88, 1.05) },

@@ -17,9 +17,10 @@ function supported() {
 }
 
 // Each cloud comes in two files: a random share that phones stop at, and
-// the rest, which larger screens add.
-async function loadShares(name, shares) {
-  const parts = await Promise.all(shares.map(share => loadPoints(new URL(`${name}-${share}.pts`, base))));
+// the rest, which larger screens add. Their names change with their
+// contents, so only the scene itself is fetched fresh.
+async function loadShares(files, shares) {
+  const parts = await Promise.all(shares.map(share => loadPoints(new URL(files[share - 1], base))));
   const count = parts.reduce((sum, part) => sum + part.count, 0);
   const positions = new Float32Array(count * 3), colors = new Uint8Array(count * 3);
   let offset = 0;
@@ -34,10 +35,10 @@ async function loadShares(name, shares) {
 async function start() {
   const phone = matchMedia('(max-width: 768px), (hover: none)').matches;
   const shares = phone ? [1] : [1, 2];
-  const [scene, carriage, people] = await Promise.all([
-    fetch(new URL('scene.json', base)).then(response => response.json()),
-    loadShares('carriage', shares),
-    loadShares('people', shares),
+  const scene = await fetch(new URL('scene.json', base), { cache: 'no-store' }).then(response => response.json());
+  const [carriage, people] = await Promise.all([
+    loadShares(scene.files.carriage, shares),
+    loadShares(scene.files.people, shares),
   ]);
   // Each article meets its passenger by name; a stop with no passenger stays
   // on the plain page.
@@ -92,10 +93,10 @@ async function start() {
     cloud.material.uniforms.uFogFar.value = 24;
   }
   // The carriage keeps the scan's own colours, the white panels, blue
-  // doors and seats and the strip light, as fine dust drifting wider and
-  // slower than the people in it.
+  // doors and seats and the strip light. Its points barely stir, so the
+  // scan stays sharp; the dream is in the dark and the drift of the camera.
   segment.material.uniforms.uSize.value = 0.014;
-  segment.material.uniforms.uDrift.value = 0.035;
+  segment.material.uniforms.uDrift.value = 0.006;
   segment.material.uniforms.uKeep.value = 0.92;
   segment.material.uniforms.uTone.value.setRGB(0.96, 0.98, 1.02);
   segment.material.uniforms.uExposure.value = 1.25;
