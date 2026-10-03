@@ -6,6 +6,11 @@ import * as THREE from 'three';
 // at stays sharp, nearer and farther points swell and pale. The far end sinks
 // into a cold haze rather than plain black, the screens light what is in
 // front of them, and one stretch of the strip light stutters.
+//
+// The carriage is only fully there around whoever walks it. Close by, the
+// points settle, close up and take their full colour; further off they thin
+// out, pale, stir and shiver like a scan still being taken, and now and then
+// a slow sweep passes out from the eye and lights them as it goes.
 
 export const LIGHTS = 4;
 
@@ -33,6 +38,10 @@ const vertexShader = /* glsl */ `
   uniform vec3 uTone;
   uniform vec3 uFlicker;
   uniform vec3 uStrip;
+  uniform vec2 uReal;
+  uniform float uSweep;
+  uniform vec3 uShadow;
+  uniform vec3 uHighlight;
   uniform vec3 uLightOrigin[LIGHTS];
   uniform vec3 uLightNormal[LIGHTS];
   uniform float uLightStrength[LIGHTS];
@@ -46,8 +55,21 @@ const vertexShader = /* glsl */ `
     float id = float(gl_VertexID);
     float h = hash(id * 0.618);
     vec3 drift = vec3(hash(id + 1.0), hash(id + 2.0), hash(id + 3.0)) - 0.5;
+    // How real the point is: one where we stand, nothing far down the car.
+    float dist = length((modelViewMatrix * vec4(position, 1.0)).xyz);
+    float real = uReal.y > 0.0 ? 1.0 - smoothstep(uReal.x, uReal.y, dist) : 1.0;
+    // Far off, some points are not there at all.
+    if (uReal.y > 0.0 && hash(id * 1.37) > 0.55 + 0.45 * real) {
+      gl_Position = vec4(2.0, 2.0, 2.0, 1.0);
+      gl_PointSize = 0.0;
+      return;
+    }
     vec3 p = position;
-    p += uDrift * vec3(sin(uTime * 0.21 + h * 40.0), sin(uTime * 0.17 + h * 70.0), cos(uTime * 0.19 + h * 20.0));
+    // Unsettled points jump a little, a few times a second, as a scanner's do.
+    float tick = floor(uTime * (3.0 + h * 5.0));
+    vec3 jump = vec3(hash(id + tick), hash(id + tick + 7.0), hash(id + tick + 13.0)) - 0.5;
+    p += jump * 0.035 * (1.0 - real) * step(0.82, hash(id * 3.1 + tick * 0.01));
+    p += uDrift * (1.0 + 3.0 * (1.0 - real)) * vec3(sin(uTime * 0.21 + h * 40.0), sin(uTime * 0.17 + h * 70.0), cos(uTime * 0.19 + h * 20.0));
     // Arrival: points come in from scattered places, the far ones last.
     float arrive = smoothstep(h * 0.6, h * 0.6 + 0.4, uGather);
     p += drift * 6.0 * (1.0 - arrive);
@@ -61,7 +83,7 @@ const vertexShader = /* glsl */ `
     float depth = max(0.05, -mv.z);
     // Its own size, or as wide as the gap to its neighbours, whichever is
     // larger; then the lens: the further from focus, the wider and fainter.
-    float sharp = max(uSize * (0.55 + h * 0.9), gap * uGapFill) * uScale / depth;
+    float sharp = max(uSize * (0.55 + h * 0.9), gap * uGapFill * (0.35 + 0.65 * real)) * uScale / depth;
     float blur = uBlur * abs(1.0 / depth - 1.0 / uFocus) * uScale;
     float size = clamp(sharp + blur, uMinSize, uMaxSize);
     gl_PointSize = size;
@@ -70,7 +92,7 @@ const vertexShader = /* glsl */ `
 
     vec3 c = tint;
     float l = dot(c, vec3(0.299, 0.587, 0.114));
-    vColor = mix(vec3(l) * uTone, c, uKeep) * uExposure;
+    vColor = mix(vec3(l) * uTone, c, mix(uKeep * 0.6, 1.2, real)) * uExposure * (0.9 + 0.15 * real);
     vec3 world = (modelMatrix * vec4(position, 1.0)).xyz;
     // The strip light: bright points along the middle of the ceiling. In one
     // stretch of it the tube stutters.
@@ -91,9 +113,16 @@ const vertexShader = /* glsl */ `
       float facing = max(0.0, dot(normalize(d), uLightNormal[i]));
       vColor += vec3(0.62, 0.74, 0.95) * uLightStrength[i] * (0.25 + 0.75 * facing) / (1.0 + dot(d, d) * 9.0);
     }
+    // The sweep: a thin shell going out from the eye, lighting what it meets.
+    float ring = exp(-pow((dist - uSweep) / 0.3, 2.0)) * (1.0 - smoothstep(6.0, 12.0, uSweep));
+    vColor += vec3(0.5, 0.75, 0.8) * ring * 0.22;
+    // The grade: shadows sink toward a deep teal, lights warm a little, and
+    // the warmth stays near; far off the colours go cold.
+    float lit = dot(vColor, vec3(0.299, 0.587, 0.114));
+    vColor *= mix(uShadow, uHighlight, smoothstep(0.05, 0.6, lit) * (0.4 + 0.6 * real));
     // Haze: the further, the more the colour gives way to the cold dark.
     float fog = 1.0 - exp(-max(0.0, depth - uFogNear) * uFogDensity);
-    vColor = mix(vColor, uFogColor, fog);
+    vColor = mix(max(vColor, 0.0), uFogColor, fog);
     vAlpha = (1.0 - fog * 0.55) * spread * smoothstep(uNearFade.x, uNearFade.y, length(mv.xyz)) * arrive * uDim;
   }
 `;
@@ -143,6 +172,10 @@ export function createPoints({ positions, colors, count, gaps }) {
       uTone: { value: new THREE.Color(0.82, 0.88, 1.05) },
       uFlicker: { value: new THREE.Vector3(0, 0, 1) },
       uStrip: { value: new THREE.Vector3(0, 2.1, 0) },
+      uReal: { value: new THREE.Vector2(0, 0) },
+      uSweep: { value: 100 },
+      uShadow: { value: new THREE.Color(1, 1, 1) },
+      uHighlight: { value: new THREE.Color(1, 1, 1) },
       uLightOrigin: { value: Array.from({ length: LIGHTS }, () => new THREE.Vector3()) },
       uLightNormal: { value: Array.from({ length: LIGHTS }, () => new THREE.Vector3(0, 0, 1)) },
       uLightStrength: { value: new Array(LIGHTS).fill(0) },

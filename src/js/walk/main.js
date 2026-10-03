@@ -131,7 +131,12 @@ async function start() {
     cloud.material.uniforms.uFogDensity.value = 0.17;
     cloud.material.uniforms.uFogColor.value.copy(HAZE);
     cloud.material.uniforms.uFlicker.value.set(flickerAt, flickerHalf, 1);
+    // A slight grade: blue-teal in the shadows, a warmer light.
+    cloud.material.uniforms.uShadow.value.setRGB(0.74, 0.92, 1.14);
+    cloud.material.uniforms.uHighlight.value.setRGB(1.07, 1, 0.9);
   }
+  // The carriage and its passengers are only fully there around the eye.
+  for (const cloud of [segment, passengers]) cloud.material.uniforms.uReal.value.set(1.4, 5);
   // Gaps close where the scan is thin; the lens softens what is off focus.
   segment.material.uniforms.uGapFill.value = 0.85;
   passengers.material.uniforms.uGapFill.value = 0.8;
@@ -273,6 +278,8 @@ async function start() {
       cloud.material.uniforms.uFlicker.value.z = level;
       cloud.material.uniforms.uTime.value = time;
       cloud.material.uniforms.uGather.value = Math.min(1, time / 3);
+      // Every eleven seconds a sweep goes out from the eye.
+      cloud.material.uniforms.uSweep.value = (time % 11) * 2.4;
     }
     end.classList.toggle('is-near', progress > 0.97);
     renderer.render(world, camera);
