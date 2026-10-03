@@ -48,7 +48,9 @@
 
   /* Strips */
   --strip-band-height: clamp(12rem, 24vw, 19rem); /* uniform rows on narrow and touch displays */
-  --footer-height: 3rem;
+  --band-pad: var(--spacing-md); /* white above and below the writing, links and caption around the wall */
+  --band-height: calc(var(--font-size-ui) * var(--line-height-base) + 2 * var(--band-pad));
+  --wall-bar-reserve: 20rem; /* room About leaves for the links beside it */
   --strip-grow: 24;
   --strip-min-width: 1.125rem;
   --wall-min-height: 22rem;
@@ -73,7 +75,7 @@
   --line-height-loose: 1.5;
 
   /* Interface */
-  --chrome-pad: 0.75rem; /* inside footer controls */
+  --chrome-pad: 0.75rem; /* inside buttons and the skip link */
   --chevron: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 24 24' fill='%231a1816' shape-rendering='crispEdges'%3E%3Cpath d='M4 8h2v2H4zm2 2h2v2H6zm2 2h2v2H8zm2 2h2v2h-2zm4 0h-2v2h2zm2-2h-2v2h2zm2-2h-2v2h2zm2-2h-2v2h2z'/%3E%3C/svg%3E");
   --search-clear-icon: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 10 10'%3E%3Cpath d='M1%201L9%209M9%201L1%209' stroke='black' stroke-width='1.4'/%3E%3C/svg%3E");
   --z-filter: 10;
@@ -119,7 +121,7 @@
 }
 
 @media (hover: none) {
-  :root { --footer-height: 1.8125rem; --strip-min-width: 0; }
+  :root { --strip-min-width: 0; }
 }
 
 /* Explicit theme; system preference is the CSS fallback. */

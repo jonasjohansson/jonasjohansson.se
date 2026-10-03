@@ -24,8 +24,6 @@
 .project-filters,
 .strip-caption {
   min-width: 0;
-  padding: var(--chrome-pad) 0 0 var(--chrome-pad);
-  background: var(--bg-primary);
   font-size: var(--font-size-ui);
   line-height: var(--line-height-ui);
 }
@@ -38,10 +36,10 @@
 .project-filters::-webkit-scrollbar { display: none; }
 .header-contacts { flex: none; gap: var(--icon-gap); margin-left: auto; }
 .header-contacts a { display: inline-flex; text-decoration: none; white-space: nowrap; }
-.project-filters { flex: none; gap: var(--spacing-md); margin-left: var(--spacing-sm); overflow-x: auto; scrollbar-width: none; }
+.project-filters { flex: none; gap: var(--spacing-md); margin-left: var(--icon-gap); overflow-x: auto; scrollbar-width: none; }
 .strip-caption {
   flex: 0 1 auto;
-  max-width: 45%;
+  max-width: 100%;
   margin: 0 auto 0 0;
   padding-inline: 0 var(--spacing-md);
   text-transform: uppercase;
@@ -61,7 +59,7 @@
   font: inherit;
   appearance: none;
 }
-.project-filters select { max-width: 100%; padding-right: 1em; background: var(--chevron) no-repeat right center / 0.75em; }
+.project-filters select { field-sizing: content; max-width: 100%; padding-right: 1em; background: var(--chevron) no-repeat right center / 0.75em; }
 /* The scrolling filter row clips a focus ring to two sides, so the dropdown shows none. */
 .project-filters select:focus-visible { outline: none; }
 .project-filters :is(option, optgroup) { color: var(--color-black); background: var(--color-white); }

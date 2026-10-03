@@ -91,11 +91,10 @@ const caption = page => page.locator('#strip-caption').evaluate(caption => capti
 async function checkFooter(page) {
   const touch = await page.evaluate(() => matchMedia('(hover: none)').matches);
   const home = await page.locator('body').getAttribute('data-route') === 'home';
-  const contacts = page.locator('#intro-links .header-contacts');
+  const contacts = page.locator('#wall-bar .header-contacts');
   const contactBox = await contacts.boundingBox();
-  // A phone carries no chrome at all beyond the band under the wall: the
-  // caption that names whatever a thumb has opened, on either route, and the
-  // filter on the landing alone.
+  // A phone keeps the links and filter above the wall and the caption that
+  // names whatever a thumb has opened below it, on either route.
   if (touch) {
     assert.equal(await page.locator('#intro-links').isVisible(), true, 'both walls keep a band under them');
     assert.equal(await page.locator('#project-filters').isVisible(), true, 'and both carry the filter');
@@ -105,21 +104,26 @@ async function checkFooter(page) {
   }
   const footer = await page.locator('#intro-links').boundingBox();
   const wall = await page.locator('#strips').boundingBox();
-  // Both walls give the caption, the filter and the links a band of their own
-  // under the work, with the same gap above them.
-  assert.ok(footer.y >= wall.y + wall.height - 1, 'the chrome sits below the strips');
+  // Both walls keep the links and filter in a band above the work and the
+  // caption in a band below it.
+  assert.ok(footer.y >= wall.y + wall.height - 1, 'the caption sits below the strips');
   assert.ok(Math.abs(footer.y + footer.height - page.viewportSize().height) < 1, 'footer fits within the strip viewport');
   assert.deepEqual((await contacts.locator('a').allTextContents()).map(text => text.trim()), ['CV', 'Email'], 'contact links stay concise');
   assert.equal(await contacts.locator('svg').count(), 0, 'contact links are plain text');
   assert.equal(await contacts.locator('button').count(), 0, 'the links are links, with no button among them');
-  // The filter holds the wall's bottom-right corner with the links just inside
-  // it; nothing is left in the corner above the work.
+  // The filter holds the top-right corner, one gutter in, with the links just
+  // inside it.
   const filterBox = await page.locator('#project-filters').boundingBox();
   assert.ok(Math.abs(filterBox.x + filterBox.width - wall.x - wall.width + 24) < 1, 'the filter sits one gutter in from the wall’s right corner');
   assert.ok(contactBox.x + contactBox.width <= filterBox.x + 1, 'the links sit just inside the filter');
   assert.ok(filterBox.x - contactBox.x - contactBox.width < 40, 'the links and the filter read as one group');
-  assert.ok(contactBox.y >= footer.y - 1 && contactBox.y + contactBox.height <= footer.y + footer.height + 1,
-    `contacts fit in the band under the strips (contacts ${JSON.stringify(contactBox)} vs band ${JSON.stringify(footer)})`);
+  assert.ok(contactBox.y >= wall.y - 60 && contactBox.y + contactBox.height <= wall.y + 1,
+    `contacts sit in the band above the strips (contacts ${JSON.stringify(contactBox)} vs wall ${JSON.stringify(wall)})`);
+  if (home && page.viewportSize().width > 768) {
+    // Above tablet width the links share About's line rather than adding one.
+    const lead = await page.locator('.intro-lead').boundingBox();
+    assert.ok(Math.abs(contactBox.y + contactBox.height / 2 - lead.y - lead.height / 2) < 2, 'the links share About’s line');
+  }
   // Typing a name searches the collection, so the field is on the landing,
   // where the collection is the page. A project wall keeps only the filter.
   const search = page.locator('#project-search');
@@ -150,10 +154,10 @@ async function checkFooter(page) {
 
 async function checkFilterBounds(page) {
   const filterBounds = await page.locator('#project-filters').evaluate(filters => {
-    const rect = filters.getBoundingClientRect(), footer = filters.closest('footer').getBoundingClientRect();
-    return { top: rect.top - footer.top, bottom: footer.bottom - rect.bottom };
+    const rect = filters.getBoundingClientRect(), bar = document.getElementById('wall-bar').getBoundingClientRect();
+    return { top: rect.top - bar.top, bottom: bar.bottom - rect.bottom };
   });
-  assert.ok(filterBounds.top >= -1 && filterBounds.bottom >= -1, 'filters fit inside the footer');
+  assert.ok(filterBounds.top >= -1 && filterBounds.bottom >= -1, 'filters fit inside the band above the wall');
 }
 
 try {
@@ -344,9 +348,12 @@ try {
       assert.equal(wall.x, 0, 'the slivers run edge to edge');
       assert.equal(wall.width, options.viewport.width);
       assert.equal(await page.locator('#home-title').count(), 0, 'the landing page carries no name of its own');
-      // The top band is the writing, and the wall starts one gutter below it on
-      // every device: About and the work are separate things.
-      assert.ok(Math.abs(wall.y - header.y - header.height - 24) < 1, `the wall starts one gutter below the writing (${Math.round(wall.y - header.y - header.height)}px)`);
+      // The top band is the writing, with the links beside it above tablet
+      // width and in a row of their own below it on smaller screens.
+      const writing = await page.locator('.intro-text').boundingBox();
+      const bar = await page.locator('#wall-bar').boundingBox();
+      const space = options.viewport.width > 768 ? 16 : bar.height;
+      assert.ok(Math.abs(wall.y - writing.y - writing.height - space) < 1, `the wall starts ${space}px below the writing (${Math.round(wall.y - writing.y - writing.height)}px)`);
       await checkFooter(page);
       assert.equal(await page.evaluate(() => document.documentElement.scrollWidth > innerWidth), false);
       const intro = await page.locator('#intro').boundingBox();
@@ -448,13 +455,14 @@ try {
         return;
       }
       assert.equal((await page.locator('.hero').boundingBox()).x, 0, 'the hero reaches the screen edge, like the wall');
-      // A project wall is one screen: a gutter above it, then the caption and
-      // category band below, with the work between them and nothing on it.
+      // A project wall is one screen: the links and filter above it, the
+      // caption below, with the work between them and nothing on it.
       const band = (await page.locator('#intro-links').boundingBox()).height;
+      const bar = (await page.locator('#wall-bar').boundingBox()).height;
       // Measured against the section, since the wall sits far down the page.
-      const gutter = wall.y - (await page.locator('#collection').boundingBox()).y;
-      assert.ok(Math.abs(gutter - 24) < 1, `the wall keeps the page gutter above it (${gutter})`);
-      assert.equal(wall.height, options.viewport.height - 24 - band, 'the wall gives the band below it its full height');
+      const above = wall.y - (await page.locator('#collection').boundingBox()).y;
+      assert.ok(Math.abs(above - bar) < 1, `the links take the band above the wall (${above})`);
+      assert.ok(Math.abs(wall.height - (options.viewport.height - bar - band)) < 1, 'the wall gives the bands around it their full height');
       const rects = await page.locator('.strip:not([hidden])').evaluateAll(strips => strips.map(strip => {
         const rect = strip.getBoundingClientRect();
         return { x: rect.x, y: rect.y, width: rect.width, height: rect.height,
@@ -481,7 +489,7 @@ try {
       await page.waitForFunction(() => document.documentElement.classList.contains('enhanced') && document.body.dataset.homeView === 'projects' && scrollY < 1);
       assert.equal(await page.locator('#home-title').count(), 0, 'the landing page carries no name of its own');
       assert.equal(await page.locator('#home-header .header-contacts').count(), 0, 'the top band carries no links');
-      assert.equal(await page.locator('#intro-links .header-contacts').isVisible(), true, 'contact links remain available beneath the wall on every device');
+      assert.equal(await page.locator('#wall-bar .header-contacts').isVisible(), true, 'contact links sit above the wall on every device');
       const wall = await page.locator('#strips').boundingBox();
       const intro = await page.locator('#intro').boundingBox();
       assert.ok(intro.y + intro.height <= wall.y + 1, 'About reads above the wall');
@@ -732,10 +740,9 @@ try {
         // Every category has projects of its own on the landing page, so none
         // of them is closed off.
         assert.equal(await categories.locator('option:disabled').count(), 0, 'every category stays available on the landing page');
-        // The wall fills what the writing and the categories leave, less the
-        // gutter it keeps above and below, on both kinds of screen.
+        // The wall fills what the writing and the caption band leave.
         const bands = (await page.locator('#home-header').boundingBox()).height + (await page.locator('#intro-links').boundingBox()).height;
-        assert.equal((await page.locator('#strips').boundingBox()).height, options.hasTouch ? options.viewport.height - bands : options.viewport.height - bands - 24);
+        assert.ok(Math.abs((await page.locator('#strips').boundingBox()).height - (options.viewport.height - bands)) < 1, 'the wall fills the screen between the bands');
       };
       const choose = async tag => {
         await categories.selectOption(tag);
@@ -1034,7 +1041,7 @@ try {
   }
 
   // The categories are a dropdown now, so a hovered strip has no tag to light
-  // up: the caption names it, and nothing under the wall moves.
+  // up: the caption names it, and nothing around the wall moves.
   await check('previewing a strip leaves the filters and the footer alone', desktop, async page => {
     const footerLayout = () => page.locator('#project-filters').evaluate(filters => {
       const rect = filters.getBoundingClientRect();

@@ -5,14 +5,15 @@
 
 /* The writing uses up to three quarters of the wall above tablet width. */
 @media (min-width: 769px) {
-  .intro-text { max-width: min(var(--measure), calc(0.75 * (100vw - 2 * var(--page-gutter)))); }
+  .intro-text { max-width: min(var(--measure), calc(0.75 * (100vw - 2 * var(--page-gutter))), calc(100vw - 2 * var(--page-gutter) - var(--wall-bar-reserve))); }
 }
 
 /* The lead sentence is a button that only looks like one where it works. */
 .intro-toggle { all: unset; display: block; max-width: 100%; font: inherit; color: inherit; text-align: inherit; text-wrap: pretty; }
 .intro-toggle:enabled { cursor: pointer; }
 .intro-toggle:hover { background: none; }
-.intro-toggle:focus-visible { outline: var(--focus-ring); outline-offset: 4px; }
+/* Keyboard focus underlines the sentence rather than boxing it. */
+.intro-toggle:focus-visible { outline: none; text-decoration: underline; text-underline-offset: 0.2em; }
 
 /* The text folds to its first sentence, and the rest unfolds from a
    zero-height grid row so the wall below eases along. */
@@ -59,9 +60,7 @@
 
 .intro-links {
   display: flex;
-  align-items: flex-end;
-  justify-content: flex-end;
-  height: var(--footer-height);
+  align-items: center;
   margin: 0;
   font-size: var(--font-size-ui);
 }

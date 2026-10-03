@@ -26,7 +26,7 @@ try {
   // above, and Print is an action that means nothing on paper.
   const cover = await page.locator('.print-profile-links a').allTextContents();
   assert.deepEqual(cover.map(text => text.trim()), ['CV'], 'the cover lists what the site lists');
-  const corner = await page.locator('#intro-links .header-contacts a').allTextContents();
+  const corner = await page.locator('#wall-bar .header-contacts a').allTextContents();
   assert.deepEqual(corner.map(text => text.trim()), ['CV', 'Email'], 'and the site lists CV and Email');
   assert.equal(await page.locator('.print-contact a[href^="mailto:"]').count(), 1, 'the email is on the cover once');
   assert.equal(await page.locator('.print-profile-links a').filter({ hasText: /^CV$/ }).getAttribute('href'), 'https://docs.google.com/document/d/1riN-cIeqjiBx2DtVJnRfUAMP0qtcFEWkCvK95kKrOOY/export?format=pdf');

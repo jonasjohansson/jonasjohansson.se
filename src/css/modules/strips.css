@@ -6,25 +6,33 @@
 .strip-image { position: absolute; width: 100%; height: 100%; object-fit: cover; object-position: var(--bg-x, 50%) var(--bg-y, 50%); }
 .strip:focus-visible { outline: var(--focus-ring); outline-offset: -3px; }
 
-/* A project wall and its footer occupy one viewport. On the landing, About
-   takes its natural height and the wall fills the remaining space. */
+/* The links and filter sit in the top-right corner, above the wall. */
+.wall-bar { display: flex; flex: none; align-items: center; justify-content: flex-end; padding-block: var(--band-pad); font-size: var(--font-size-ui); line-height: var(--line-height-base); }
+.enhanced .wall-bar { height: var(--band-height); padding-inline: var(--page-gutter); }
+
+/* A project wall, its links and its caption occupy one viewport. On the
+   landing, About takes its natural height and the wall fills the rest. */
 .enhanced #collection {
   display: flex;
   flex-direction: column;
   position: relative;
-  height: calc(100dvh - var(--footer-height) - var(--page-gutter));
-  padding-top: var(--page-gutter);
+  height: calc(100dvh - var(--band-height));
   scroll-margin: 0;
 }
 /* The slivers run edge to edge; the writing and links around them keep the gutter. */
 .enhanced body:not([data-route="home"]) #collection { margin-inline: calc(-1 * var(--page-gutter)); }
 .enhanced body[data-route="home"] #content { padding: 0; }
-.enhanced body[data-route="home"] #main { display: flex; flex-direction: column; min-height: 100dvh; }
-.enhanced .home-header { padding: var(--page-gutter) var(--page-gutter) 0; }
-.enhanced body[data-route="home"] #collection { flex: 1; height: auto; min-height: var(--wall-min-height); }
+.enhanced body[data-route="home"] #main { display: flex; flex-direction: column; position: relative; min-height: 100dvh; }
+.enhanced .home-header { padding: var(--band-pad) var(--page-gutter) 0; }
+.enhanced body[data-route="home"] #collection { flex: 1; height: auto; min-height: var(--wall-min-height); position: static; }
+/* Above tablet width the links share About's line instead of taking their own. */
+@media (min-width: 769px) {
+  .enhanced .home-header { padding-bottom: var(--band-pad); }
+  .enhanced body[data-route="home"] .wall-bar { position: absolute; top: 0; right: 0; z-index: var(--z-filter); }
+}
 .enhanced body[data-route="home"] #strips,
 .enhanced body[data-route="home"] .strip { height: auto; }
-.enhanced .intro-links { position: relative; z-index: var(--z-filter); height: calc(var(--footer-height) + var(--page-gutter)); padding-bottom: var(--page-gutter); }
+.enhanced .intro-links { position: relative; z-index: var(--z-filter); height: var(--band-height); }
 .enhanced body[data-route="home"] .intro-links { padding-inline: var(--page-gutter); }
 .enhanced body:not([data-route="home"]) #project-search { display: none; }
 .enhanced #strips { flex: 1; flex-direction: row; height: 100%; min-height: 0; overflow-x: auto; scrollbar-width: none; }
@@ -37,10 +45,6 @@
 }
 @media (hover: none) {
   .enhanced .strip.is-active { flex-grow: var(--strip-grow); }
-  .enhanced .intro-links { height: auto; padding-top: var(--chrome-pad); }
-  .enhanced .strip-caption { max-width: 100%; }
-  .enhanced .project-filters,
-  .enhanced .header-contacts { padding-top: 0; }
 }
 /* On touch screens the landing is exactly one screen. The wall keeps at
    least half of it, and open About text scrolls in the space above. */
