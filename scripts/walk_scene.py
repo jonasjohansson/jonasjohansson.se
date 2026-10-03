@@ -4,9 +4,10 @@
 
 SCANS_DIR holds the Sketchfab downloads (metro.glb, man.glb, aya.glb) and
 kana_posed.glb, Kana posed on her animation by scripts/walk_pose.py. Writes
-walk/carriage.bin (one segment of carriage, repeated by the page),
-walk/people.bin (the passengers, in place) and walk/scene.json (where the
-segment repeats, where each stop's screen is held, and which way it faces).
+walk/carriage-1.pts and -2.pts (one segment of carriage, repeated by the
+page), walk/people-1.pts and -2.pts (the passengers, in place), and
+walk/scene.json (where the segment repeats, where each stop's screen is
+held, and which way it faces). Phones load only the -1 files.
 
 Sources, all CC BY on Sketchfab, credited on the page:
   Moscow metro 81-714 car interior, trolleway
@@ -34,7 +35,7 @@ def carriage(scans):
     metres (one unit is 8.6 cm, from the 2.18 m floor to ceiling), the aisle
     on x = 0, the floor at y = 0, cut to the stretch the scan covers well
     and running from z = 0 toward -z."""
-    p, c = sample(os.path.join(scans, 'metro.glb'), 560000, seed=5, max_edge=2.5)
+    p, c = sample(os.path.join(scans, 'metro.glb'), 2400000, seed=5, max_edge=2.5)
     theta = np.arctan(0.124)
     p[:, 0] -= -14.9
     y, z = p[:, 1].copy(), p[:, 2].copy()
@@ -72,7 +73,7 @@ TILT = {'paper': 0.35, 'laptop': 0.25, 'phone': 0.5}
 
 
 def person(scans, spec):
-    p, c = sample(os.path.join(scans, spec['file']), 85000, seed=9)
+    p, c = sample(os.path.join(scans, spec['file']), 160000, seed=9)
     p *= spec['scale']
     c = np.clip(c.astype(np.float32) * spec['exposure'], 0, 255).astype(np.uint8)
     # Turn to face across the aisle, then a little down the carriage, so
@@ -121,9 +122,12 @@ def person(scans, spec):
     return p, c, anchor
 
 
-def shuffled(p, c, seed):
-    order = np.random.default_rng(seed).permutation(len(p))
-    return p[order], c[order]
+def write_split(name, p, c, seed, share=0.4):
+    """Two files: a random share of the points, which phones stop at, and
+    the rest, which larger screens add."""
+    first = np.random.default_rng(seed).random(len(p)) < share
+    write(os.path.join(OUT, f'{name}-1.pts'), p[first], c[first])
+    write(os.path.join(OUT, f'{name}-2.pts'), p[~first], c[~first])
 
 
 def main(scans):
@@ -132,7 +136,7 @@ def main(scans):
     scanners = [[0, 1.3, z] for z in np.arange(0, -SEGMENT - 0.1, -1.6)]
     p, c = carriage(scans)
     p, c = break_up(p, c, scanners, seed=3, amount=1.0)
-    write(os.path.join(OUT, 'carriage.bin'), *shuffled(p, c, 1))
+    write_split('carriage', p, c, 1)
     print('carriage', len(p))
 
     people, colours, anchors = [], [], []
@@ -141,7 +145,7 @@ def main(scans):
         # People are broken up less than the carriage, so they stay people.
         q, d = break_up(q, d, [[0, 1.3, spec['z'] + 1.5]], seed=7, amount=0.35)
         people.append(q); colours.append(d); anchors.append(anchor)
-    write(os.path.join(OUT, 'people.bin'), *shuffled(np.concatenate(people), np.concatenate(colours), 2))
+    write_split('people', np.concatenate(people), np.concatenate(colours), 2)
     print('people', sum(len(q) for q in people))
 
     length = SEGMENT * COPIES

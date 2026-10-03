@@ -1,26 +1,39 @@
 import test from 'node:test';
 import assert from 'node:assert/strict';
+import { execFileSync } from 'node:child_process';
+import { mkdtempSync, readFileSync, rmSync } from 'node:fs';
+import { tmpdir } from 'node:os';
+import path from 'node:path';
+import { gunzipSync } from 'node:zlib';
 import { parsePoints } from '../src/js/walk/loader.js';
 
-// The same layout scripts/walk_points.py writes.
-function pack(points, colours, low, high) {
-  const buffer = new ArrayBuffer(4 + 4 + 24 + points.length * 2 + colours.length);
-  const view = new DataView(buffer);
-  'PTS1'.split('').forEach((c, i) => view.setUint8(i, c.charCodeAt(0)));
-  view.setUint32(4, points.length / 3, true);
-  [...low, ...high].forEach((v, i) => view.setFloat32(8 + i * 4, v, true));
-  points.forEach((v, i) => view.setUint16(32 + i * 2, v, true));
-  new Uint8Array(buffer, 32 + points.length * 2).set(colours);
-  return buffer;
+// What scripts/walk_points.py writes, read back by what the page runs.
+function bake(points, colours) {
+  const directory = mkdtempSync(path.join(tmpdir(), 'walk-points-'));
+  const file = path.join(directory, 'test.pts');
+  try {
+    execFileSync('python3', ['-c', `
+import sys, numpy as np
+sys.path.insert(0, 'scripts')
+from walk_points import write
+write(sys.argv[1], np.array(${JSON.stringify(points)}, dtype=np.float32), np.array(${JSON.stringify(colours)}, dtype=np.uint8))
+`, file]);
+    const raw = gunzipSync(readFileSync(file));
+    return parsePoints(raw.buffer.slice(raw.byteOffset, raw.byteOffset + raw.length));
+  } finally { rmSync(directory, { recursive: true, force: true }); }
 }
 
-test('a baked file unpacks to metres and colours', () => {
-  const buffer = pack([0, 0, 0, 65535, 65535, 65535, 32768, 0, 65535], [10, 20, 30, 40, 50, 60, 70, 80, 90], [-1, 0, -10], [1, 2, 0]);
-  const { positions, colors, count } = parsePoints(buffer);
-  assert.equal(count, 3);
-  assert.deepEqual([...positions.slice(0, 6)], [-1, 0, -10, 1, 2, 0]);
-  assert.ok(Math.abs(positions[6] - 0) < 1e-4);
-  assert.deepEqual([...colors], [10, 20, 30, 40, 50, 60, 70, 80, 90]);
+test('a baked file comes back as the same points, to within a couple of millimetres', () => {
+  const points = [[-1, 0, -10], [1, 2, 0], [0.5, 1, -3], [0.52, 1.03, -3.04]];
+  const colours = [[255, 0, 0], [0, 255, 0], [0, 0, 255], [128, 128, 128]];
+  const { positions, colors, count } = bake(points, colours);
+  assert.equal(count, 4);
+  // The file is reordered along a space-filling curve; match each point.
+  for (const [i, point] of points.entries()) {
+    const index = [...Array(count).keys()].find(j => Math.hypot(...point.map((v, a) => v - positions[j * 3 + a])) < 0.003);
+    assert.ok(index !== undefined, `point ${point} lost`);
+    for (let a = 0; a < 3; a++) assert.ok(Math.abs(colors[index * 3 + a] - colours[i][a]) <= 5, `colour ${colours[i]}`);
+  }
 });
 
 test('anything else is refused rather than drawn as noise', () => {

@@ -7,17 +7,37 @@ import { devicePoints, screenLights } from './devices.js';
 import { createScreens } from './screens.js';
 
 const base = new URL('./', location.href);
+// Each carriage point's share of light; there are well over a million and
+// they add up.
+const GLOW = 0.2;
 
 function supported() {
   if (matchMedia('(prefers-reduced-motion: reduce)').matches) return false;
   try { return !!document.createElement('canvas').getContext('webgl2'); } catch { return false; }
 }
 
+// Each cloud comes in two files: a random share that phones stop at, and
+// the rest, which larger screens add.
+async function loadShares(name, shares) {
+  const parts = await Promise.all(shares.map(share => loadPoints(new URL(`${name}-${share}.pts`, base))));
+  const count = parts.reduce((sum, part) => sum + part.count, 0);
+  const positions = new Float32Array(count * 3), colors = new Uint8Array(count * 3);
+  let offset = 0;
+  for (const part of parts) {
+    positions.set(part.positions, offset * 3);
+    colors.set(part.colors, offset * 3);
+    offset += part.count;
+  }
+  return { positions, colors, count };
+}
+
 async function start() {
+  const phone = matchMedia('(max-width: 768px), (hover: none)').matches;
+  const shares = phone ? [1] : [1, 2];
   const [scene, carriage, people] = await Promise.all([
     fetch(new URL('scene.json', base)).then(response => response.json()),
-    loadPoints(new URL('carriage.bin', base)),
-    loadPoints(new URL('people.bin', base)),
+    loadShares('carriage', shares),
+    loadShares('people', shares),
   ]);
   // Each article meets its passenger by name; a stop with no passenger stays
   // on the plain page.
@@ -29,7 +49,6 @@ async function start() {
     .map(stop => ({ ...stop, pose: stop.anchor.pose }));
   const held = stops.map(stop => stop.anchor);
   const timeline = createTimeline(held, { dwell: 0.22 });
-  const phone = matchMedia('(max-width: 768px), (hover: none)').matches;
 
   document.documentElement.classList.add('walk-live');
   const renderer = new THREE.WebGLRenderer({ antialias: false, powerPreference: 'high-performance' });
@@ -66,9 +85,6 @@ async function start() {
   passengers.material.uniforms.uKeep.value = 0.85;
   world.add(passengers, devices);
   const clouds = [segment, passengers, devices];
-  // Phones draw a share of the points; the files are shuffled, so any share
-  // is an even thinning.
-  if (phone) for (const cloud of [segment, passengers]) cloud.geometry.setDrawRange(0, Math.floor(cloud.geometry.attributes.position.count * 0.5));
   const lights = screenLights(held, kinds);
   for (const cloud of clouds) {
     setScreenLights(cloud, lights);
@@ -181,7 +197,7 @@ async function start() {
     camera.position.copy(eye);
     camera.lookAt(look);
 
-    segment.material.uniforms.uDim.value = 1 - 0.8 * lean;
+    segment.material.uniforms.uDim.value = GLOW * (1 - 0.8 * lean);
     for (const cloud of clouds) {
       cloud.material.uniforms.uTime.value = time;
       cloud.material.uniforms.uGather.value = Math.min(1, time / 3);

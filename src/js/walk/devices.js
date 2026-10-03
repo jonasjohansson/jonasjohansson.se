@@ -88,7 +88,7 @@ export function screenLights(anchors, kinds) {
     const normal = new THREE.Vector3(0, 0, 1).transformDirection(matrix);
     // Paper gives no light of its own; a little stands in for the carriage
     // lamps falling on it, so whoever holds it is not lost in the dark.
-    const strength = { laptop: 2.2, phone: 1.6, paper: 0.7 }[kinds[index]] ?? 0;
+    const strength = { laptop: 2.2, phone: 1.6, paper: 0.3 }[kinds[index]] ?? 0;
     return { origin, normal, strength };
   });
 }

@@ -1,16 +1,22 @@
 """Bake a textured scan (glTF/GLB/OBJ) into the walk's point file.
 
 Samples the surface by area, takes each point's colour from the texture, and
-packs the result small: positions as 16-bit fractions of the bounding box,
-colours as bytes.
+packs the result small. Points are sorted so neighbours in space are
+neighbours in the file (a Morton curve), positions kept as 12-bit fractions
+of the bounding box (1-2 mm here) and stored as the step from the point
+before, colours as 5 bits a channel, each kind of value in its own plane so
+gzip finds the repetition. About 4 bytes a point.
 
-    python3 scripts/walk_points.py in.glb out.bin --count 400000
+    python3 scripts/walk_points.py in.glb out.pts --count 400000
 
-File layout, little-endian:
-    b"PTS1", uint32 count, float32 min[3], float32 max[3],
-    uint16 positions[count * 3], uint8 colours[count * 3]
+File layout, gzipped, little-endian:
+    b"PTS2", uint32 count, float32 min[3], float32 max[3],
+    uint8 position bits, uint8 colour bits, uint16 0,
+    position steps as int16: low bytes x, y, z then high bytes x, y, z,
+    each a plane of count bytes; colours: r, g, b planes of count bytes.
 """
 import argparse
+import gzip
 import struct
 
 import numpy as np
@@ -129,15 +135,29 @@ def break_up(positions, colours, scanners, seed=1, amount=1.0):
     return positions.astype(np.float32), np.clip(colours, 0, 255).astype(np.uint8)
 
 
-def write(path, positions, colours):
+def morton(q, bits):
+    code = np.zeros(len(q), np.int64)
+    for i in range(bits):
+        for axis in range(3):
+            code |= ((q[:, axis] >> i) & 1) << (3 * i + axis)
+    return code
+
+
+def write(path, positions, colours, position_bits=12, colour_bits=5):
     low, high = positions.min(axis=0), positions.max(axis=0)
     span = np.where(high - low > 0, high - low, 1)
-    quantised = np.round((positions - low) / span * 65535).astype('<u2')
+    top = (1 << position_bits) - 1
+    q = np.round((positions - low) / span * top).astype(np.int64)
+    order = np.argsort(morton(q, position_bits), kind='stable')
+    q = q[order]
+    c = (colours[order].astype(np.int64) * ((1 << colour_bits) - 1) + 127) // 255
+    steps = np.diff(q, axis=0, prepend=0).astype('<i2').view('<u2')
+    planes = [(steps[:, a] & 255).astype(np.uint8) for a in range(3)]
+    planes += [(steps[:, a] >> 8).astype(np.uint8) for a in range(3)]
+    planes += [c[:, a].astype(np.uint8) for a in range(3)]
+    header = b'PTS2' + struct.pack('<I6fBBH', len(q), *low, *high, position_bits, colour_bits, 0)
     with open(path, 'wb') as out:
-        out.write(b'PTS1')
-        out.write(struct.pack('<I6f', len(positions), *low, *high))
-        out.write(quantised.tobytes())
-        out.write(colours.astype(np.uint8).tobytes())
+        out.write(gzip.compress(header + b''.join(plane.tobytes() for plane in planes), 9))
 
 
 if __name__ == '__main__':
