@@ -20,16 +20,6 @@ const filterSelections = new Map([['', { tags: activeTags, year: activeYear, que
 const normalize = text => text.toLowerCase().normalize('NFD').replace(/[\u0300-\u036f]/g, '');
 let currentSlug = '';
 const pendingImages = new WeakMap();
-let hoveredEntry;
-
-function updatePreview() {
-  const focused = document.activeElement?.closest('#strips .strip:not([hidden])');
-  const entry = hoveredEntry || focused;
-  // The bottom-left caption names the project while a strip is hovered, focused or scrubbed.
-  const caption = document.getElementById('strip-caption');
-  caption.textContent = entry?.getAttribute('aria-label') || '';
-  caption.hidden = !entry;
-}
 
 function matchesFilters(project, selectedTags = activeTags, selectedYear = activeYear, selectedQuery = activeQuery) {
   // Typing a name is its own filter: it searches the whole collection rather
@@ -151,8 +141,6 @@ function bindTouchScrub(wall, signal) {
     active = strip;
     active?.classList.add('is-active');
     if (active) setWideImage(active);
-    hoveredEntry = strip;
-    updatePreview();
   };
   const stripAt = (x, y) => {
     const strip = document.elementFromPoint(x, y)?.closest('.strip:not([hidden])');
@@ -201,8 +189,8 @@ function bindTouchScrub(wall, signal) {
     const strip = stripAt(touch.clientX, touch.clientY);
     if (strip) setActive(strip);
   }, { signal, passive: false });
-  // Phones cannot hover, so a sliver gives no clue what it is. The first tap
-  // opens that strip and names it in the caption; tapping the open strip enters
+  // Phones cannot hover, so a sliver is small to judge by. The first tap
+  // opens that strip; tapping the open strip enters
   // the project. A drag along the wall opens them in turn without entering
   // anything, because the browser only fires click where the finger landed.
   wall.addEventListener('click', event => {
@@ -228,7 +216,6 @@ export function updateStrips(slug) {
   updateFilterStates();
   controller?.abort();
   controller = new AbortController();
-  hoveredEntry = null;
   entries = [...document.querySelectorAll('#strips .strip')];
   let count = 0;
   for (const entry of entries) {
@@ -240,19 +227,10 @@ export function updateStrips(slug) {
       if (!matchMedia('(hover: hover)').matches) return;
       setWideImage(entry);
     };
-    entry.addEventListener('pointerenter', event => {
-      if (event.pointerType === 'mouse') { hoveredEntry = entry; updatePreview(); }
-      upgradeImage();
-    }, { signal: controller.signal });
-    entry.addEventListener('pointerleave', () => {
-      if (hoveredEntry === entry) hoveredEntry = null;
-      updatePreview();
-    }, { signal: controller.signal });
-    entry.addEventListener('focus', () => { upgradeImage(); updatePreview(); }, { signal: controller.signal });
-    entry.addEventListener('blur', updatePreview, { signal: controller.signal });
+    entry.addEventListener('pointerenter', upgradeImage, { signal: controller.signal });
+    entry.addEventListener('focus', upgradeImage, { signal: controller.signal });
   }
   document.getElementById('project-count').textContent = `${count} ${count === 1 ? 'project' : 'projects'}`;
-  updatePreview();
   updateImages();
   const wall = document.getElementById('strips');
   initAnimation(wall, controller.signal);

@@ -48,7 +48,7 @@
 
   /* Strips */
   --strip-band-height: clamp(12rem, 24vw, 19rem); /* uniform rows on narrow and touch displays */
-  --band-pad: var(--spacing-md); /* white above and below the writing, links and caption around the wall */
+  --band-pad: var(--spacing-md); /* white above and below the writing and links over the wall */
   --band-height: calc(var(--font-size-ui) * var(--line-height-base) + 2 * var(--band-pad));
   --wall-bar-reserve: 20rem; /* room About leaves for the links beside it */
   --strip-grow: 24;

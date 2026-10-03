@@ -152,7 +152,6 @@ export async function checkStripAudio({ check, visit, desktop, mobile }) {
     }));
     assert.equal(await page.locator('#strip-klattermusen.is-active').count(), 1, 'the first tap opens that strip');
     assert.equal(await page.evaluate(() => document.documentElement.dataset.project), undefined, 'and does not enter the project');
-    assert.equal(await page.locator('#strip-caption').isVisible(), true, 'the caption names what is open');
     await page.waitForFunction(() => window.__stripSound.notes.length >= 1);
     assert.equal(await page.evaluate(() => window.__stripSound.notes[0]), 659.25, 'the tap plays the first note');
     await strip.tap();
@@ -183,14 +182,13 @@ export async function checkStripAudio({ check, visit, desktop, mobile }) {
     const cdp = await page.context().newCDPSession(page);
     const x = box.x + box.width / 2, y = box.y + box.height / 2;
     const from = await page.evaluate(() => scrollY);
-    // A swipe scrolls the page; nothing opens in place and nothing is captioned.
+    // A swipe scrolls the page; nothing opens in place.
     await cdp.send('Input.dispatchTouchEvent', { type: 'touchStart', touchPoints: [{ x, y }] });
     for (let step = 1; step <= 8; step++) await cdp.send('Input.dispatchTouchEvent', { type: 'touchMove', touchPoints: [{ x, y: y - 40 * step }] });
     await cdp.send('Input.dispatchTouchEvent', { type: 'touchEnd', touchPoints: [] });
     await page.waitForFunction(top => scrollY > top, from);
     assert.equal(await page.evaluate(() => document.documentElement.dataset.project), 'klattermusen', 'a swipe opens no project');
     assert.equal(await page.locator('#strips .strip.is-active').count(), 0, 'cards never open in place');
-    assert.equal(await page.locator('#strip-caption').isVisible(), false, 'a project page shows no caption');
     assert.equal(await page.evaluate(() => window.__stripSound.notes.length), 0, 'a swipe plays nothing');
   });
 

@@ -10,13 +10,13 @@
 .wall-bar { display: flex; flex: none; align-items: center; justify-content: flex-end; padding-block: var(--band-pad); font-size: var(--font-size-ui); line-height: var(--line-height-base); }
 .enhanced .wall-bar { height: var(--band-height); padding-inline: var(--page-gutter); }
 
-/* A project wall, its links and its caption occupy one viewport. On the
-   landing, About takes its natural height and the wall fills the rest. */
+/* A project wall and its links occupy one viewport. On the landing, About
+   takes its natural height and the wall fills the rest. */
 .enhanced #collection {
   display: flex;
   flex-direction: column;
   position: relative;
-  height: calc(100dvh - var(--band-height));
+  height: 100dvh;
   scroll-margin: 0;
 }
 /* The slivers run edge to edge; the writing and links around them keep the gutter. */
@@ -32,8 +32,6 @@
 }
 .enhanced body[data-route="home"] #strips,
 .enhanced body[data-route="home"] .strip { height: auto; }
-.enhanced .intro-links { position: relative; z-index: var(--z-filter); height: var(--band-height); }
-.enhanced body[data-route="home"] .intro-links { padding-inline: var(--page-gutter); }
 .enhanced body:not([data-route="home"]) #project-search { display: none; }
 .enhanced #strips { flex: 1; flex-direction: row; height: 100%; min-height: 0; overflow-x: auto; scrollbar-width: none; }
 .enhanced #strips::-webkit-scrollbar { display: none; }

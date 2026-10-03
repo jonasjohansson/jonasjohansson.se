@@ -74,40 +74,35 @@ async function openStrip(page, strip, via = 'tap') {
 async function waitForHomeWall(page) {
   await page.waitForFunction(() => {
     if (document.body.dataset.route !== 'home' || document.body.dataset.homeView !== 'projects') return false;
-    const footer = document.getElementById('intro-links');
-    if (getComputedStyle(footer).display === 'none') return true;
-    // About shares the screen with the wall now, so on a short viewport the
-    // landing runs past one screenful and the categories sit at the foot of the
+    const wall = document.getElementById('strips');
+    // About shares the screen with the wall, so on a short viewport the
+    // landing runs past one screenful and the wall ends at the foot of the
     // page instead of the foot of the window.
     const fits = document.documentElement.scrollHeight <= innerHeight + 1;
-    if (!fits) return footer.getBoundingClientRect().height > 0;
-    return Math.abs(footer.getBoundingClientRect().bottom - innerHeight) < 1;
+    if (!fits) return wall.getBoundingClientRect().height > 0;
+    return Math.abs(wall.getBoundingClientRect().bottom - innerHeight) < 1;
   });
 }
 
-// The bottom-left caption names the hovered project.
-const caption = page => page.locator('#strip-caption').evaluate(caption => caption.hidden ? '' : caption.textContent);
 
 async function checkFooter(page) {
   const touch = await page.evaluate(() => matchMedia('(hover: none)').matches);
   const home = await page.locator('body').getAttribute('data-route') === 'home';
   const contacts = page.locator('#wall-bar .header-contacts');
   const contactBox = await contacts.boundingBox();
-  // A phone keeps the links and filter above the wall and the caption that
-  // names whatever a thumb has opened below it, on either route.
+  // Nothing names a strip: the wall is the photographs and nothing else.
+  assert.equal(await page.locator('#strip-caption, #intro-links').count(), 0, 'no caption and no band under the wall');
+  // A phone keeps the links and filter above the wall on either route.
   if (touch) {
-    assert.equal(await page.locator('#intro-links').isVisible(), true, 'both walls keep a band under them');
     assert.equal(await page.locator('#project-filters').isVisible(), true, 'and both carry the filter');
     assert.equal(await page.locator('#project-search').isVisible(), false, 'phones do not ask for typing');
     assert.equal(await contacts.isVisible(), true, 'contact links remain reachable on both mobile routes');
     return;
   }
-  const footer = await page.locator('#intro-links').boundingBox();
   const wall = await page.locator('#strips').boundingBox();
-  // Both walls keep the links and filter in a band above the work and the
-  // caption in a band below it.
-  assert.ok(footer.y >= wall.y + wall.height - 1, 'the caption sits below the strips');
-  assert.ok(Math.abs(footer.y + footer.height - page.viewportSize().height) < 1, 'footer fits within the strip viewport');
+  // Both walls keep the links and filter in a band above the work, and the
+  // work runs to the bottom of the screen.
+  assert.ok(Math.abs(wall.y + wall.height - page.viewportSize().height) < 1, 'the wall reaches the bottom of the screen');
   assert.deepEqual((await contacts.locator('a').allTextContents()).map(text => text.trim()), ['CV', 'Email'], 'contact links stay concise');
   assert.equal(await contacts.locator('svg').count(), 0, 'contact links are plain text');
   assert.equal(await contacts.locator('button').count(), 0, 'the links are links, with no button among them');
@@ -393,17 +388,14 @@ try {
         assert.equal(slivers.heights, 1, 'the slivers share one height');
         assert.ok(Math.abs(slivers.widths.reduce((a, b) => a + b, 0) - wall.width) < 2, 'they divide the wall between them');
         assert.equal(slivers.titles, true, 'a sliver is a photograph, named only once it is opened');
-        // A tap opens one and names it; tapping the open one enters.
+        // A tap opens one; tapping the open one enters.
         const strip = page.locator('#strips .strip:not([hidden])').first();
         await strip.tap();
         await settleOpenStrip(page);
         const opened = await page.evaluate(() => ({
           width: document.querySelector('.strip.is-active').getBoundingClientRect().width,
-          caption: document.getElementById('strip-caption').textContent.trim(),
-          label: document.querySelector('.strip.is-active').getAttribute('aria-label'),
         }));
         assert.ok(opened.width > wall.width / slivers.count * 3, `the tapped strip opens (${Math.round(opened.width)}px of ${Math.round(wall.width)})`);
-        assert.equal(opened.caption, opened.label, 'and names itself under the wall');
         await page.screenshot({ path: `${output}/${name.replaceAll(' ', '-')}-home-wall.png` });
         return;
       }
@@ -455,14 +447,13 @@ try {
         return;
       }
       assert.equal((await page.locator('.hero').boundingBox()).x, 0, 'the hero reaches the screen edge, like the wall');
-      // A project wall is one screen: the links and filter above it, the
-      // caption below, with the work between them and nothing on it.
-      const band = (await page.locator('#intro-links').boundingBox()).height;
+      // A project wall is one screen: the links and filter above it, and the
+      // work below them to the bottom edge with nothing on it.
       const bar = (await page.locator('#wall-bar').boundingBox()).height;
       // Measured against the section, since the wall sits far down the page.
       const above = wall.y - (await page.locator('#collection').boundingBox()).y;
       assert.ok(Math.abs(above - bar) < 1, `the links take the band above the wall (${above})`);
-      assert.ok(Math.abs(wall.height - (options.viewport.height - bar - band)) < 1, 'the wall gives the bands around it their full height');
+      assert.ok(Math.abs(wall.height - (options.viewport.height - bar)) < 1, 'the wall takes the rest of the screen');
       const rects = await page.locator('.strip:not([hidden])').evaluateAll(strips => strips.map(strip => {
         const rect = strip.getBoundingClientRect();
         return { x: rect.x, y: rect.y, width: rect.width, height: rect.height,
@@ -496,7 +487,6 @@ try {
       // Both are on screen at once: the landing is one view, not two.
       assert.ok(intro.y >= 0 && wall.y < options.viewport.height, 'the writing and the work are visible together');
       if (options.hasTouch) return;
-      assert.equal(await caption(page), '', 'no caption until a strip is hovered');
       assert.equal(await page.locator('.intro-text').evaluate(text => getComputedStyle(text).textTransform), 'none', 'About is body copy, not the band’s uppercase chrome');
       assert.ok((await page.locator('#strips .strip:not([hidden]) img').first().boundingBox()).height > 100, 'the strips keep a usable height beside the writing');
     });
@@ -740,9 +730,9 @@ try {
         // Every category has projects of its own on the landing page, so none
         // of them is closed off.
         assert.equal(await categories.locator('option:disabled').count(), 0, 'every category stays available on the landing page');
-        // The wall fills what the writing and the caption band leave.
-        const bands = (await page.locator('#home-header').boundingBox()).height + (await page.locator('#intro-links').boundingBox()).height;
-        assert.ok(Math.abs((await page.locator('#strips').boundingBox()).height - (options.viewport.height - bands)) < 1, 'the wall fills the screen between the bands');
+        // The wall fills what the writing leaves, down to the bottom edge.
+        const band = (await page.locator('#home-header').boundingBox()).height;
+        assert.ok(Math.abs((await page.locator('#strips').boundingBox()).height - (options.viewport.height - band)) < 1, 'the wall fills the screen below the writing');
       };
       const choose = async tag => {
         await categories.selectOption(tag);
@@ -849,7 +839,7 @@ try {
       await filter.selectOption('2023');
       await filter.scrollIntoViewIfNeeded();
       const filterBox = await filter.boundingBox(), filterBounds = await page.locator('#project-filters').boundingBox();
-      assert.ok(filterBox.x >= filterBounds.x - 1 && filterBox.x + filterBox.width <= filterBounds.x + filterBounds.width + 1, 'the dropdown is reachable in the scrolling footer');
+      assert.ok(filterBox.x >= filterBounds.x - 1 && filterBox.x + filterBox.width <= filterBounds.x + filterBounds.width + 1, 'the dropdown is reachable in the scrolling bar');
       await checkFooter(page);
       await page.screenshot({ path: `${output}/year-filter-${name}.png` });
       const chosen = expected('2023')[0];
@@ -1022,8 +1012,6 @@ try {
         const wall = await page.locator('#strips').boundingBox();
         const image = page.locator('.strip:not([hidden]) .strip-image').first();
         await page.mouse.move(wall.x + 10, wall.y + wall.height / 2);
-        assert.equal(await caption(page), await image.locator('..').locator('..').getAttribute('aria-label'), 'hover names the project bottom left on both home and project pages');
-        assert.equal((await page.locator('#strip-caption').boundingBox()).x, wall.x + 24, 'the caption sits in the bottom-left corner, one gutter in');
         await page.waitForFunction(() => parseFloat(getComputedStyle(document.querySelector('.strip:not([hidden]) .strip-image')).objectPosition) < 10);
         await page.mouse.move(wall.x + wall.width - 10, wall.y + wall.height / 2);
         await page.waitForFunction(() => parseFloat(getComputedStyle(document.querySelector('.strip:not([hidden]) .strip-image')).objectPosition) > 90);
@@ -1041,9 +1029,9 @@ try {
   }
 
   // The categories are a dropdown now, so a hovered strip has no tag to light
-  // up: the caption names it, and nothing around the wall moves.
-  await check('previewing a strip leaves the filters and the footer alone', desktop, async page => {
-    const footerLayout = () => page.locator('#project-filters').evaluate(filters => {
+  // up, and nothing around the wall moves.
+  await check('previewing a strip leaves the filters alone', desktop, async page => {
+    const barLayout = () => page.locator('#project-filters').evaluate(filters => {
       const rect = filters.getBoundingClientRect();
       const collection = document.getElementById('collection').getBoundingClientRect();
       return { x: rect.x - collection.x, y: rect.y - collection.y, width: rect.width, height: rect.height };
@@ -1053,15 +1041,13 @@ try {
       await visit(page, route);
       await page.locator('#collection').evaluate(collection => collection.scrollIntoView({ block: 'start' }));
       const before = await filter.inputValue();
-      const footer = await footerLayout();
+      const bar = await barLayout();
       const label = await page.locator('#strip-kagora').getAttribute('aria-label');
       await page.locator('#strip-kagora').hover();
-      assert.equal(await caption(page), label, 'hovering names the project');
       assert.equal(await filter.inputValue(), before, 'previewing a project does not change the filters');
-      assert.deepEqual(await footerLayout(), footer, 'the preview does not shift the footer within the collection');
+      assert.deepEqual(await barLayout(), bar, 'the preview does not shift the filters within the collection');
       await page.screenshot({ path: `${output}/tag-preview${route === '/' ? '-home' : '-project'}.png` });
       await page.mouse.move(0, 0);
-      assert.equal(await caption(page), '', 'the caption clears on pointer leave');
       await filter.selectOption('light');
       await page.locator('#strip-kagora').hover();
       assert.equal(await filter.inputValue(), 'light', 'the preview leaves a chosen category in place');
@@ -1078,7 +1064,7 @@ try {
     const y = wall.y + wall.height / 2;
     const cdp = await page.context().newCDPSession(page);
     const state = () => page.evaluate(() => ({ active: document.querySelector('.strip.is-active')?.dataset.project ?? null,
-      caption: document.getElementById('strip-caption').textContent.trim(), project: document.documentElement.dataset.project ?? null }));
+      project: document.documentElement.dataset.project ?? null }));
     await cdp.send('Input.dispatchTouchEvent', { type: 'touchStart', touchPoints: [{ x: wall.x + 20, y }] });
     const opened = [];
     for (let step = 1; step <= 12; step++) {
@@ -1092,7 +1078,6 @@ try {
     const lifted = await state();
     assert.equal(lifted.project, null, 'lifting the finger enters nothing');
     assert.equal(lifted.active, opened.at(-1), 'the last strip the finger crossed stays open');
-    assert.equal(lifted.caption, await page.locator('.strip.is-active').getAttribute('aria-label'), 'and stays named');
     const open = await page.locator('.strip.is-active').boundingBox();
     await page.touchscreen.tap(open.x + open.width / 2, open.y + 200);
     await page.waitForFunction(slug => document.documentElement.dataset.project === slug, lifted.active);
@@ -1248,15 +1233,11 @@ try {
       assert.ok((await strip.boundingBox()).width > width * 4, 'hover expands before download completes');
       assert.ok(Math.abs(await renderedHeight() - initialHeight) < 1, 'preview stays at the same scale while the strip opens');
       assert.equal(await strip.getAttribute('aria-label'), 'Society Expo');
-      assert.equal(await caption(page), 'Society Expo');
       await page.mouse.move(0, 0);
-      assert.equal(await caption(page), '', 'the caption clears when leaving the strips');
       await strip.focus();
-      assert.equal(await caption(page), 'Society Expo', 'keyboard focus also names the project');
       await page.keyboard.press('Tab');
       await page.waitForTimeout(350);
       assert.ok((await page.locator('.strip:focus-visible').boundingBox()).width > width * 4, 'keyboard focus expands before download completes');
-      assert.equal(await caption(page), await page.locator('.strip:focus-visible').getAttribute('aria-label'));
       await checkFooter(page);
     } finally {
       release();
@@ -1561,7 +1542,7 @@ try {
     assert.ok(await page.locator('#strips img').count() > 0);
   });
 
-  await check('home image wall stays light and footer has no divider', desktop, async page => {
+  await check('home image wall stays light and has no divider', desktop, async page => {
     await visit(page);
     assert.equal(await page.locator('.strip-upcoming, .strip-status, .strip-meta, .strip-title, #project-view, #collection button').count(), 0);
     const published = await page.evaluate(() => window.__PROJECTS_DATA__.map(project => project.slug));
@@ -1575,7 +1556,6 @@ try {
     assert.ok(bytes < 2_000_000, `homepage images transferred ${bytes} bytes`);
     assert.ok(await page.locator('#strips img').count() > 0);
     assert.equal(await page.locator('#strips video').count(), 0);
-    assert.equal(await page.locator('#intro-links').evaluate(footer => getComputedStyle(footer).borderTopWidth), '0px');
     assert.equal(await page.locator('.strip').last().evaluate(entry => getComputedStyle(entry).borderBottomWidth), '0px');
     results.push({ metric: 'desktop home image transfer bytes', value: bytes });
     await waitForHomeWall(page);

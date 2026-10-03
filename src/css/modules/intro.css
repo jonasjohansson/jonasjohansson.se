@@ -58,9 +58,3 @@
   50%      { transform: translateY(-0.15em); }
 }
 
-.intro-links {
-  display: flex;
-  align-items: center;
-  margin: 0;
-  font-size: var(--font-size-ui);
-}

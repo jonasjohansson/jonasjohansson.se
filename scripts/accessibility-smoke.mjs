@@ -103,7 +103,7 @@ try {
           if (options.hasTouch) {
             await link.tap();
             assert.equal(await page.locator('body').getAttribute('data-route'), 'home');
-            assert.equal(await page.locator('#strip-caption').textContent(), 'Vista');
+            assert.equal(await page.locator('#strip-vista.is-active').count(), 1);
             await link.tap();
           } else {
             const search = page.getByRole('searchbox', { name: 'Find a project by name' });

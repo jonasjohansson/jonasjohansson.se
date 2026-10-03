@@ -12,12 +12,11 @@
     {% include "../components/print-portfolio.njk" %}
     <div id="content">
       <main id="main" tabindex="-1">
-        {# One screen: About and the links share the top band, the wall takes
-           whatever height they leave, and the categories sit at its foot. #}
+        {# One screen: About and the links share the top band, and the wall
+           takes whatever height they leave, down to the bottom edge. #}
         {% include "../components/home-header.njk" %}
         <div id="projects" class="projects-container">{{ content | safe }}</div>
         {% include "../components/strips.njk" %}
-        {% include "../components/intro-links.njk" %}
       </main>
     </div>
     <script type="module" src="{{ 'main.js' | viteAsset | url }}"></script>
