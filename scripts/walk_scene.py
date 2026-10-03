@@ -135,7 +135,9 @@ def main(scans):
     # The scanner stood in the aisle every couple of metres.
     scanners = [[0, 1.3, z] for z in np.arange(0, -SEGMENT - 0.1, -1.6)]
     p, c = carriage(scans)
-    p, c = break_up(p, c, scanners, seed=3, amount=1.0)
+    # The scan is torn already; a light touch adds to it without hiding the
+    # carriage itself.
+    p, c = break_up(p, c, scanners, seed=3, amount=0.45)
     write_split('carriage', p, c, 1)
     print('carriage', len(p))
 

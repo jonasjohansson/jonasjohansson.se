@@ -7,9 +7,9 @@ import { devicePoints, screenLights } from './devices.js';
 import { createScreens } from './screens.js';
 
 const base = new URL('./', location.href);
-// Each carriage point's share of light; there are well over a million and
-// they add up.
-const GLOW = 0.2;
+// How solid the carriage's points are: nearly opaque, so the scan's own
+// whites and blues hold, but soft enough to stay a cloud.
+const GLOW = 0.85;
 
 function supported() {
   if (matchMedia('(prefers-reduced-motion: reduce)').matches) return false;
@@ -88,13 +88,17 @@ async function start() {
   const lights = screenLights(held, kinds);
   for (const cloud of clouds) {
     setScreenLights(cloud, lights);
-    cloud.material.uniforms.uFogFar.value = 13;
+    cloud.material.uniforms.uFogNear.value = 3;
+    cloud.material.uniforms.uFogFar.value = 24;
   }
-  // The carriage is fine dust that adds up as light, drifting wider and
+  // The carriage keeps the scan's own colours, the white panels, blue
+  // doors and seats and the strip light, as fine dust drifting wider and
   // slower than the people in it.
   segment.material.uniforms.uSize.value = 0.014;
-  segment.material.blending = THREE.AdditiveBlending;
   segment.material.uniforms.uDrift.value = 0.035;
+  segment.material.uniforms.uKeep.value = 0.92;
+  segment.material.uniforms.uTone.value.setRGB(0.96, 0.98, 1.02);
+  segment.material.uniforms.uExposure.value = 1.25;
   passengers.material.uniforms.uSize.value = 0.016;
   devices.material.uniforms.uSize.value = 0.01;
 
@@ -125,8 +129,8 @@ async function start() {
     camera.updateProjectionMatrix();
     for (const cloud of clouds) setPointScale(cloud, camera, innerHeight, pixelRatio);
     // Finer than a pixel and a half, the carriage reads as haze.
-    segment.material.uniforms.uMaxSize.value = 2.2 * pixelRatio;
-    segment.material.uniforms.uMinSize.value = 0.8;
+    segment.material.uniforms.uMaxSize.value = 2.8 * pixelRatio;
+    segment.material.uniforms.uMinSize.value = 1;
     passengers.material.uniforms.uMaxSize.value = 3 * pixelRatio;
     frameScreens();
   };

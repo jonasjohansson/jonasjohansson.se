@@ -21,6 +21,7 @@ const vertexShader = /* glsl */ `
   uniform float uKeep;
   uniform float uDim;
   uniform float uDrift;
+  uniform float uExposure;
   uniform float uMinSize;
   uniform vec3 uTone;
   uniform vec3 uLightOrigin[LIGHTS];
@@ -56,7 +57,7 @@ const vertexShader = /* glsl */ `
 
     vec3 c = tint;
     float l = dot(c, vec3(0.299, 0.587, 0.114));
-    vColor = mix(vec3(l) * uTone, c, uKeep);
+    vColor = mix(vec3(l) * uTone, c, uKeep) * uExposure;
     // Screens light what is in front of them: the hands, the face, the seat.
     vec3 world = (modelMatrix * vec4(position, 1.0)).xyz;
     for (int i = 0; i < LIGHTS; i++) {
@@ -101,6 +102,7 @@ export function createPoints({ positions, colors, count }) {
       uKeep: { value: 0.5 },
       uDim: { value: 1 },
       uDrift: { value: 0.018 },
+      uExposure: { value: 1 },
       uMinSize: { value: 1 },
       uTone: { value: new THREE.Color(0.82, 0.88, 1.05) },
       uLightOrigin: { value: Array.from({ length: LIGHTS }, () => new THREE.Vector3()) },
