@@ -353,12 +353,8 @@ try {
       assert.equal(await page.evaluate(() => document.documentElement.scrollWidth > innerWidth), false);
       const intro = await page.locator('#intro').boundingBox();
       assert.ok(intro.y + intro.height <= wall.y + 1, 'About reads above the strips');
-      // The name is the one lettered thing in About, and it cycles the palette.
-      const lettered = await page.locator('.intro-text .name > span').count();
-      assert.equal(lettered, 14, 'the name is lettered, and nothing else is');
-      const colours = await page.locator('.intro-text .name > span').evaluateAll(spans =>
-        spans.map(span => getComputedStyle(span).color));
-      assert.ok(new Set(colours).size > 3, `the name cycles the palette rather than sitting on one colour (${new Set(colours).size} colours)`);
+      // The name is plain text, the same colour as the rest of About.
+      assert.equal(await page.locator('.intro-text .name, .intro-text span[style]').count(), 0, 'the name is not lettered or coloured');
       // Every strip stands in its own colour, so the wall is whole from the
       // first paint instead of filling in column by column.
       const blank = await page.locator('#strips .strip').evaluateAll(strips => strips.filter(strip =>

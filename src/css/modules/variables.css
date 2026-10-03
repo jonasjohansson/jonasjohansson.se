@@ -81,15 +81,6 @@
   --z-filter: 10;
   --z-header: 300;
   --z-skip-link: 1000; /* top of the stack */
-
-  /* Animated name palette, legible against the light background. */
-  --name-1: #c1121f;
-  --name-2: #b35c00;
-  --name-3: #8a6410;
-  --name-4: #1b6b61;
-  --name-5: #2c7e9e;
-  --name-6: #7209b7;
-  --name-7: #1c5fd0;
 }
 
 @media (max-width: 600px) {

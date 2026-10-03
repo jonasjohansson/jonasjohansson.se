@@ -4,7 +4,7 @@
      as plain text above the whole bio. #}
   {% set intro = site.intro | splitLead %}
   <div id="about" class="intro-text">
-    <p class="intro-lead"><button type="button" class="intro-toggle" aria-controls="intro-more" disabled>{{ intro.lead | inlineMarkdown | letterName(site.author) | safe }}</button></p>
+    <p class="intro-lead"><button type="button" class="intro-toggle" aria-controls="intro-more" disabled>{{ intro.lead | inlineMarkdown | safe }}</button></p>
     <div id="intro-more" class="intro-more"><div class="intro-more-inner">{{ intro.rest | markdown | safe }}</div></div>
   </div>
 </div>
