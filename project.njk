@@ -66,14 +66,14 @@ eleventyComputed:
       </div>
 
       {% elif block.type == 'image' %}
-      <figure class="media-item{% if loop.first %} hero hero-{{ block.heroFit }}{% endif %}{% if block.mask == 'botanical-circle' %} mask-botanical-circle{% endif %}{% if block.zoom %} media-zoom{% endif %}"
-        style="{% if block.ar %} --ar: {{ block.ar }};{% endif %} --focal: {{ block.focal }};{% if block.zoom %} --image-zoom: {{ block.zoom }};{% endif %}{% if loop.first %} --mobile-focal: {{ block.mobileFocal }}; --mobile-ar: {{ block.mobileAr }};{% endif %}">
+      <figure class="media-item{% if loop.first %} hero{% endif %}{% if block.mask == 'botanical-circle' %} mask-botanical-circle{% endif %}{% if block.zoom %} media-zoom{% endif %}"
+        style="{% if block.ar %} --ar: {{ block.ar }};{% endif %} --focal: {{ block.focal }};{% if block.zoom %} --image-zoom: {{ block.zoom }};{% endif %}{% if loop.first %} --mobile-focal: {{ block.mobileFocal }};{% endif %}">
         {% responsiveImage block.src, block.alt, ("media-img lcp" if loop.first else "media-img"), block.sizes, block.mobileSrc %}
       </figure>
 
       {% elif block.type == 'video' %}
-      <figure class="media-item{% if loop.first %} hero hero-{{ block.heroFit }}{% endif %}"
-        style="{% if block.ar %} --ar: {{ block.ar }};{% endif %} --focal: {{ block.focal }};{% if loop.first %} --mobile-focal: {{ block.mobileFocal }}; --mobile-ar: {{ block.mobileAr }};{% endif %}">
+      <figure class="media-item{% if loop.first %} hero{% endif %}"
+        style="{% if block.ar %} --ar: {{ block.ar }};{% endif %} --focal: {{ block.focal }};{% if loop.first %} --mobile-focal: {{ block.mobileFocal }};{% endif %}">
         <video
           class="media-video"
           src="{{ block.src | url }}"

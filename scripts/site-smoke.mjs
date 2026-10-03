@@ -92,7 +92,7 @@ async function checkFooter(page) {
   const contactBox = await contacts.boundingBox();
   // Nothing names a strip: the wall is the photographs and nothing else.
   assert.equal(await page.locator('#strip-caption, #intro-links').count(), 0, 'no caption and no band under the wall');
-  // A phone keeps the links and filter above the wall on either route.
+  // A phone keeps the links and filter on either route.
   if (touch) {
     assert.equal(await page.locator('#project-filters').isVisible(), true, 'and both carry the filter');
     assert.equal(await page.locator('#project-search').isVisible(), false, 'phones do not ask for typing');
@@ -100,20 +100,23 @@ async function checkFooter(page) {
     return;
   }
   const wall = await page.locator('#strips').boundingBox();
-  // Both walls keep the links and filter in a band above the work, and the
-  // work runs to the bottom of the screen.
-  assert.ok(Math.abs(wall.y + wall.height - page.viewportSize().height) < 1, 'the wall reaches the bottom of the screen');
+  const bar = await page.locator('#wall-bar').boundingBox();
+  // The landing keeps the links and filter in a band above the work, which
+  // runs to the bottom of the screen; a project wall has the band below it.
+  const bottom = home ? wall.y + wall.height : bar.y + bar.height;
+  assert.ok(Math.abs(bottom - page.viewportSize().height) < 1, `the ${home ? 'wall' : 'band'} reaches the bottom of the screen`);
   assert.deepEqual((await contacts.locator('a').allTextContents()).map(text => text.trim()), ['CV', 'Email'], 'contact links stay concise');
   assert.equal(await contacts.locator('svg').count(), 0, 'contact links are plain text');
   assert.equal(await contacts.locator('button').count(), 0, 'the links are links, with no button among them');
-  // The filter holds the top-right corner, one gutter in, with the links just
+  // The filter holds the right corner, one gutter in, with the links just
   // inside it.
   const filterBox = await page.locator('#project-filters').boundingBox();
   assert.ok(Math.abs(filterBox.x + filterBox.width - wall.x - wall.width + 24) < 1, 'the filter sits one gutter in from the wall’s right corner');
   assert.ok(contactBox.x + contactBox.width <= filterBox.x + 1, 'the links sit just inside the filter');
   assert.ok(filterBox.x - contactBox.x - contactBox.width < 40, 'the links and the filter read as one group');
-  assert.ok(contactBox.y >= wall.y - 60 && contactBox.y + contactBox.height <= wall.y + 1,
+  if (home) assert.ok(contactBox.y >= wall.y - 60 && contactBox.y + contactBox.height <= wall.y + 1,
     `contacts sit in the band above the strips (contacts ${JSON.stringify(contactBox)} vs wall ${JSON.stringify(wall)})`);
+  else assert.ok(contactBox.y >= wall.y + wall.height - 1, `contacts sit in the band below the strips (contacts ${JSON.stringify(contactBox)} vs wall ${JSON.stringify(wall)})`);
   if (home && page.viewportSize().width > 768) {
     // Above tablet width the links share About's line rather than adding one.
     const lead = await page.locator('.intro-lead').boundingBox();
@@ -143,13 +146,13 @@ async function checkFooter(page) {
     assert.ok(Math.abs(title.x + title.width / 2 - (body.x + body.width / 2)) < 1, 'the floating project title is centred');
     assert.equal(await page.locator('#header-toggle').getAttribute('href'), `${prefix}/`, 'the project title leads home');
     assert.equal(await page.locator('#header .header-contacts').count(), 0, 'project hero header contains only the title');
-    // Above the other projects, the name holds the left of the links' band
+    // Below the other projects, the name holds the left of the links' band
     // and leads home.
     const name = page.locator('#wall-bar .site-name');
     assert.equal((await name.textContent()).trim(), 'Jonas Johansson', 'the name sits above the project slivers');
     assert.equal(await name.getAttribute('href'), `${prefix}/`, 'and leads home');
     const nameBox = await name.boundingBox();
-    assert.ok(Math.abs(nameBox.x - 24) < 1 && nameBox.y + nameBox.height <= wall.y + 1, 'in the left corner above the wall');
+    assert.ok(Math.abs(nameBox.x - 24) < 1 && nameBox.y >= wall.y + wall.height - 1, 'in the left corner below the wall');
   }
   assert.equal(await page.locator('#project-filters').isVisible(), true, 'the filter is available on both strip walls');
   return checkFilterBounds(page);
@@ -322,13 +325,8 @@ try {
         assert.equal(hero.x, inset, `${slug} hero starts at ${inset ? 'the page gutter' : 'the screen edge'}`);
         assert.ok(Math.abs(hero.width - (options.viewport.width - 2 * inset)) < 1, `${slug} hero uses the full ${inset ? 'content' : 'screen'} width`);
         assert.equal(media.width, hero.width, `${slug} image or video fills the hero frame`);
-        const fittedWidth = await page.locator('.hero').evaluate(hero => {
-          if (!hero.classList.contains('hero-contain')) return hero.clientWidth;
-          const style = getComputedStyle(hero);
-          const ratio = Number(style.getPropertyValue(innerWidth <= 768 ? '--mobile-ar' : '--ar'));
-          return Math.min(hero.clientWidth, hero.clientHeight * ratio);
-        });
-        assert.ok(Math.abs(fittedWidth - hero.width) < 1, `${slug} uncropped image has no unused space at its sides`);
+        assert.ok(Math.abs(hero.height - options.viewport.height) < 1, `${slug} hero fills the screen height (${hero.height})`);
+        assert.equal(media.height, hero.height, `${slug} image or video fills the hero frame top to bottom`);
         if (slug === 'klattermusen') {
           await page.locator('.hero img').evaluate(image => image.decode());
           await page.screenshot({ path: `${output}/${name.replaceAll(' ', '-')}-full-width-hero.png` });
@@ -451,12 +449,12 @@ try {
         return;
       }
       assert.equal((await page.locator('.hero').boundingBox()).x, 0, 'the hero reaches the screen edge, like the wall');
-      // A project wall is one screen: the links and filter above it, and the
-      // work below them to the bottom edge with nothing on it.
+      // A project wall is one screen: the work from the top edge with nothing
+      // on it, and the name, links and filter in a band below.
       const bar = (await page.locator('#wall-bar').boundingBox()).height;
       // Measured against the section, since the wall sits far down the page.
       const above = wall.y - (await page.locator('#collection').boundingBox()).y;
-      assert.ok(Math.abs(above - bar) < 1, `the links take the band above the wall (${above})`);
+      assert.ok(Math.abs(above) < 1, `the wall starts at the top of its screen (${above})`);
       assert.ok(Math.abs(wall.height - (options.viewport.height - bar)) < 1, 'the wall takes the rest of the screen');
       const rects = await page.locator('.strip:not([hidden])').evaluateAll(strips => strips.map(strip => {
         const rect = strip.getBoundingClientRect();

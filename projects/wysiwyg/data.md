@@ -7,7 +7,6 @@ tags:
 blocks:
   - type: image
     src: hero.jpg
-    heroFit: contain
     alt: "A brass telescope with a circular wooden housing stands on a tripod against a warm desert sunset."
   - type: text
     content: >-

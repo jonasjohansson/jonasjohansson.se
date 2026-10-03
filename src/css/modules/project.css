@@ -49,7 +49,6 @@ figure { margin: 0; }
 .media-video { aspect-ratio: var(--ar); background: var(--surface-tint); }
 
 .hero {
-  --hero-ar: var(--ar);
   --hero-focal: var(--focal, center);
   position: relative;
   height: var(--hero-height);
@@ -63,9 +62,6 @@ figure { margin: 0; }
   object-fit: cover;
   object-position: var(--hero-focal);
 }
-
-.hero.hero-contain { height: auto; aspect-ratio: var(--hero-ar); }
-.hero.hero-contain :is(img, video) { object-fit: contain; }
 
 /* Authored groups share their available width in proportion to each panel's
    aspect ratio, keeping equal heights without cropping. */
@@ -140,11 +136,7 @@ html[data-project="plx"] #header-toggle { font-family: var(--font-family-plx-dis
 
 @media (max-width: 768px) {
   .project-grid { column-gap: 0; }
-  .hero {
-    --hero-ar: var(--mobile-ar, var(--ar));
-    --hero-focal: var(--mobile-focal, var(--focal, center));
-    --hero-height: min(85svh, calc(100vw / var(--hero-ar)));
-  }
+  .hero { --hero-focal: var(--mobile-focal, var(--focal, center)); }
   /* Pairs stack; composed triptychs and larger groups keep their shared row. */
   .media-row:not(.media-row-keeps) { flex-direction: column; }
   .media-row:not(.media-row-keeps) > .media-item { flex: none; width: 100%; }
@@ -156,7 +148,6 @@ html[data-project="plx"] #header-toggle { font-family: var(--font-family-plx-dis
   .spread-text > .text-block {
     grid-column: var(--col-start, 1) / span var(--col-span, 12);
   }
-  #klattermusen .hero { height: auto; aspect-ratio: var(--ar); }
 }
 
 /* Ultra-wide: a full-width photograph would run far past the fold, so a
@@ -202,6 +193,3 @@ html[data-project="plx"] #header-toggle { font-family: var(--font-family-plx-dis
   .media-spread-flip .spread-text > .text-block { margin-inline-start: auto; }
 }
 
-@media (min-width: 769px) and (max-aspect-ratio: 4/3) {
-  #kagora .hero { --hero-height: calc(100vw * 2 / 3); }
-}

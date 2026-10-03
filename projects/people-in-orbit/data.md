@@ -8,7 +8,6 @@ tags:
 blocks:
   - type: image
     src: close-away.jpg
-    heroFit: contain
     alt: "The Close/Away album cover: a dense botanical world in purple, pink and green, with figures seated before a glowing stage and the band name above."
   - type: text
     content: >-

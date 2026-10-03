@@ -10,7 +10,6 @@ blocks:
     src: 01.jpg
     alt: "Colourful illuminated drawings of hands, flowers and faces fill a window as LED signs."
     focal: "50% 40%"
-    heroFit: contain
   - type: text
     content: >-
       An open call for illustrations, turned into LED signs and auctioned for

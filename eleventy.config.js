@@ -41,10 +41,9 @@ async function buildProject(project) {
       const aspectRatio = meta => meta.orientation >= 5 ? meta.height / meta.width : meta.width / meta.height;
       const ar = block.ar ?? aspectRatio(metadata);
       const mobileSrc = block.mobileSrc ? `${project.directory}/${block.mobileSrc}` : null;
-      const mobile = mobileSrc ? await sharp(mobileSrc).metadata() : metadata;
-      return { ...block, src, mobileSrc, alt: block.alt || '', ar, mobileAr: aspectRatio(mobile),
+      return { ...block, src, mobileSrc, alt: block.alt || '', ar,
         focal: block.focal || '50% 50%', mobileFocal: block.mobileFocal || block.focal || '50% 50%',
-        heroFit: block.heroFit || 'cover', colStart, colSpan,
+        colStart, colSpan,
         sizes: '100vw' };
     }
     if (block.type === 'video') {
@@ -54,8 +53,8 @@ async function buildProject(project) {
         poster = images.webp.at(-1).url;
       }
       return { ...block, src: `/${project.directory}/${block.src}`, poster, colStart, colSpan,
-        mobileAr: block.ar, focal: block.focal || '50% 50%',
-        mobileFocal: block.mobileFocal || block.focal || '50% 50%', heroFit: block.heroFit || 'cover' };
+        focal: block.focal || '50% 50%',
+        mobileFocal: block.mobileFocal || block.focal || '50% 50%' };
     }
     if (block.type === 'audio') {
       return { ...block, src: `/${project.directory}/${block.src}`, colStart: colStart || 2, colSpan: colSpan || 10 };

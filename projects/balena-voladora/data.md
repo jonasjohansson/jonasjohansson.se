@@ -7,7 +7,6 @@ tags:
 blocks:
   - type: image
     src: hero.jpg
-    heroFit: contain
     alt: "Balena Voladora at dusk, with cyan light tracing its ribs, fins and tail and a warm yellow light beside its open mouth."
   - type: text
     content: >-

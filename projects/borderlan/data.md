@@ -7,7 +7,6 @@ tags:
 blocks:
   - type: image
     src: players-diablo.png
-    heroFit: contain
     alt: "Players gather around BorderLAN's candlelit red table, with their heads replaced by pixel-art Diablo II character portraits."
   - type: text
     content: >-

@@ -11,6 +11,7 @@
 .enhanced .wall-bar { height: var(--band-height); padding-inline: var(--page-gutter); }
 .site-name { margin-right: auto; text-decoration: none; white-space: nowrap; }
 body[data-route="home"] .wall-bar .site-name { display: none; }
+.enhanced body[data-route="project"] .wall-bar { order: 1; }
 
 /* A project wall and its links occupy one viewport. On the landing, About
    takes its natural height and the wall fills the rest. */

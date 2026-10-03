@@ -57,7 +57,6 @@ export function validateProject(data, slug, directory) {
       for (const field of ['focal', 'mobileFocal']) {
         if (block[field] && !/^(?:100|\d{1,2})(?:\.\d+)?% (?:100|\d{1,2})(?:\.\d+)?%$/.test(block[field])) fail(`${label}.${field} must contain two percentages`);
       }
-      if (block.heroFit && !['cover', 'contain'].includes(block.heroFit)) fail(`${label}.heroFit must be cover or contain`);
     }
     if (block.type === 'text' && typeof block.content !== 'string') fail(`${label}.content must be text`);
     if (block.type === 'audio') {

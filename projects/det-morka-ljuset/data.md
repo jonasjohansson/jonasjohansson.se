@@ -7,7 +7,6 @@ tags:
 blocks:
   - type: image
     src: hero.jpg
-    heroFit: contain
     alt: "An installation view of Det Mörka Ljuset, with visitors surrounded by Lars Lerin's watercolours of birds, mountains and a house by the sea."
   - type: text
     content: >-
