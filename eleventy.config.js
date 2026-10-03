@@ -164,6 +164,9 @@ export default function (eleventyConfig) {
       const wallKey = ({ colour }) => colour.saturation < 0.15 ? 360 + (1 - colour.lightness) * 30 : colour.hue;
       // Unlisted projects keep their page but stay off the wall, filters and print portfolio.
       const wall = work.filter(project => !project.unlisted).sort((a, b) => wallKey(a) - wallKey(b));
+      // On the mosaic landing the newest work takes the big tiles.
+      const sizes = ['xl', 'l', 'l', 'm', 'm', 'm', 'm', 'm'];
+      [...wall].sort((a, b) => new Date(b.date) - new Date(a.date)).forEach((project, rank) => { project.mosaicSize = sizes[rank] || ''; });
       return { work, wall };
     })();
     return siteData;

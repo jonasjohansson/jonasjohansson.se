@@ -1,6 +1,7 @@
 import { initAnimation } from './stripAnimation.js';
 import { homeScrollTop } from './home.js';
 import { initializeStripAudio, bindStripAudio } from './xylophone.js';
+import { layoutMosaic } from './mosaic.js';
 
 let entries = [];
 let controller;
@@ -103,8 +104,34 @@ function setWideImage(entry) {
   setImageSize(entry, Math.ceil(width));
 }
 
+const isMosaic = () => document.documentElement.hasAttribute('data-mosaic') && document.body.dataset.route === 'home';
+
+// The mosaic's grid depends on how many tiles are left and the screen's shape.
+function layoutTiles(wall, visible) {
+  const ratio = entry => {
+    const image = entry.querySelector('img');
+    return image ? Number(image.getAttribute('width')) / Number(image.getAttribute('height')) : 1;
+  };
+  const width = wall.clientWidth, height = wall.clientHeight;
+  const { cols, rows, cells } = layoutMosaic(visible.map(entry => ({ size: entry.dataset.size || '', ratio: ratio(entry) })), width, height);
+  wall.style.setProperty('--cols', cols);
+  wall.style.setProperty('--rows', rows);
+  visible.forEach((entry, index) => {
+    const { x, y, w, h } = cells[index];
+    entry.style.setProperty('--x', x + 1);
+    entry.style.setProperty('--y', y + 1);
+    entry.style.setProperty('--w', w);
+    entry.style.setProperty('--h', h);
+    // The photograph covers the tile, so it needs the wider of the two.
+    const imageWidth = Math.ceil(Math.max(width / cols * w, height / rows * h * ratio(entry)));
+    entry.style.setProperty('--strip-image-width', `${imageWidth}px`);
+    setImageSize(entry, imageWidth);
+  });
+}
+
 function updateImages() {
   const strips = document.getElementById('strips');
+  if (isMosaic()) return layoutTiles(strips, entries.filter(entry => !entry.hidden));
   const height = strips.clientHeight;
   const wallWidth = strips.clientWidth;
   const visible = entries.filter(entry => !entry.hidden);
@@ -291,8 +318,14 @@ export function initializeStrips() {
   filters.append(filter);
   filters.hidden = false;
   updateFilterStates();
+  // In the mosaic a filter moves the tiles to their new cells rather than
+  // cutting to them.
+  const relayout = update => {
+    if (!isMosaic() || !document.startViewTransition || matchMedia('(prefers-reduced-motion: reduce)').matches) update();
+    else document.startViewTransition(update);
+  };
   const applyFilters = () => {
-    updateStrips(currentSlug);
+    relayout(() => updateStrips(currentSlug));
     document.getElementById('strips').scrollLeft = 0;
     const top = currentSlug ? document.getElementById('collection').getBoundingClientRect().top + scrollY : homeScrollTop();
     scrollTo({ top, behavior: matchMedia('(prefers-reduced-motion: reduce)').matches ? 'instant' : 'smooth' });
@@ -330,7 +363,7 @@ export function initializeStrips() {
     categories.forEach(tag => activeTags.add(tag));
     // No page scroll here: the wall re-sorts under a keystroke, and moving
     // the page on every letter would fight the typing.
-    updateStrips(currentSlug);
+    relayout(() => updateStrips(currentSlug));
     document.getElementById('strips').scrollLeft = 0;
   });
   search.addEventListener('keydown', event => {
