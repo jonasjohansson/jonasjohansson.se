@@ -10,6 +10,8 @@ const base = new URL('./', location.href);
 // How solid the carriage's points are: nearly opaque, so the scan's own
 // whites and blues hold, but soft enough to stay a cloud.
 const GLOW = 0.85;
+// The dark the carriage sinks into: cold, faintly green, like a tunnel.
+const HAZE = new THREE.Color(0.008, 0.013, 0.016);
 
 function supported() {
   if (matchMedia('(prefers-reduced-motion: reduce)').matches) return false;
@@ -22,14 +24,19 @@ function supported() {
 async function loadShares(files, shares) {
   const parts = await Promise.all(shares.map(share => loadPoints(new URL(files[share - 1], base))));
   const count = parts.reduce((sum, part) => sum + part.count, 0);
-  const positions = new Float32Array(count * 3), colors = new Uint8Array(count * 3);
+  const positions = new Float32Array(count * 3), colors = new Uint8Array(count * 3), gaps = new Float32Array(count);
   let offset = 0;
   for (const part of parts) {
     positions.set(part.positions, offset * 3);
     colors.set(part.colors, offset * 3);
+    if (part.gaps) gaps.set(part.gaps, offset);
     offset += part.count;
   }
-  return { positions, colors, count };
+  // The spacing was measured with every point present; with only a share,
+  // the gaps are wider by the square root of what is missing.
+  const thinned = Math.sqrt(shares.length === 1 ? 1 / 0.4 : 1);
+  for (let i = 0; i < count; i++) gaps[i] *= thinned;
+  return { positions, colors, count, gaps };
 }
 
 async function start() {
@@ -53,7 +60,7 @@ async function start() {
 
   document.documentElement.classList.add('walk-live');
   const renderer = new THREE.WebGLRenderer({ antialias: false, powerPreference: 'high-performance' });
-  renderer.setClearColor(0x050506);
+  renderer.setClearColor(HAZE);
   const pixelRatio = Math.min(devicePixelRatio, 1.5);
   renderer.setPixelRatio(pixelRatio);
   renderer.domElement.setAttribute('aria-hidden', 'true');
@@ -66,6 +73,8 @@ async function start() {
   // other copy turned end to end, and the torn ends and the dark hide the
   // joins: a carriage that never quite ends.
   const segment = createPoints(carriage);
+  // Where a point of the segment lands in each copy, along the carriage.
+  const placed = (copy, z) => copy.mirror ? copy.z - scene.segment - z : copy.z + z;
   for (const copy of scene.copies) {
     const piece = new THREE.Points(segment.geometry, segment.material);
     piece.frustumCulled = false;
@@ -75,6 +84,35 @@ async function start() {
     } else piece.position.z = copy.z;
     world.add(piece);
   }
+
+  // The strip light glows in the haze: soft halos along each run of tube,
+  // in every copy of the carriage.
+  const glow = document.createElement('canvas');
+  glow.width = glow.height = 64;
+  const g = glow.getContext('2d');
+  const gradient = g.createRadialGradient(32, 32, 0, 32, 32, 32);
+  gradient.addColorStop(0, 'rgba(255,255,255,1)');
+  gradient.addColorStop(0.35, 'rgba(255,255,255,0.35)');
+  gradient.addColorStop(1, 'rgba(255,255,255,0)');
+  g.fillStyle = gradient;
+  g.fillRect(0, 0, 64, 64);
+  const halo = new THREE.SpriteMaterial({ map: new THREE.CanvasTexture(glow), color: new THREE.Color(0.85, 0.95, 1), blending: THREE.AdditiveBlending, depthWrite: false, transparent: true });
+  const halos = [];
+  for (const copy of scene.copies) {
+    for (const lamp of scene.lamps) {
+      for (let z = lamp.from + 0.35; z < lamp.to; z += 0.7) {
+        const sprite = new THREE.Sprite(halo.clone());
+        sprite.position.set(lamp.x, lamp.y - 0.04, placed(copy, z));
+        sprite.scale.set(1.1, 0.7, 1);
+        world.add(sprite);
+        halos.push(sprite);
+      }
+    }
+  }
+  // One stretch of tube stutters, near the man with the laptop.
+  const failing = scene.lamps.at(-1);
+  const flickerAt = placed(scene.copies[1], (failing.from + failing.to) / 2);
+  const flickerHalf = (failing.to - failing.from) / 2;
   const passengers = createPoints(people);
   const kinds = held.map(anchor => anchor.pose);
   const devices = createPoints(devicePoints(held, kinds, { density: phone ? 0.6 : 1 }));
@@ -89,17 +127,26 @@ async function start() {
   const lights = screenLights(held, kinds);
   for (const cloud of clouds) {
     setScreenLights(cloud, lights);
-    cloud.material.uniforms.uFogNear.value = 3;
-    cloud.material.uniforms.uFogFar.value = 24;
+    cloud.material.uniforms.uFogNear.value = 1.2;
+    cloud.material.uniforms.uFogDensity.value = 0.17;
+    cloud.material.uniforms.uFogColor.value.copy(HAZE);
+    cloud.material.uniforms.uFlicker.value.set(flickerAt, flickerHalf, 1);
+  }
+  // Gaps close where the scan is thin; the lens softens what is off focus.
+  segment.material.uniforms.uGapFill.value = 0.85;
+  passengers.material.uniforms.uGapFill.value = 0.8;
+  for (const cloud of [segment, passengers]) {
+    cloud.material.uniforms.uBlur.value = 0.0025;
+    cloud.material.uniforms.uStrip.value.set(scene.lamps[0].x, scene.lamps[0].y, 1);
   }
   // The carriage keeps the scan's own colours, the white panels, blue
   // doors and seats and the strip light. Its points barely stir, so the
   // scan stays sharp; the dream is in the dark and the drift of the camera.
   segment.material.uniforms.uSize.value = 0.014;
   segment.material.uniforms.uDrift.value = 0.006;
-  segment.material.uniforms.uKeep.value = 0.92;
+  segment.material.uniforms.uKeep.value = 0.8;
   segment.material.uniforms.uTone.value.setRGB(0.96, 0.98, 1.02);
-  segment.material.uniforms.uExposure.value = 1.25;
+  segment.material.uniforms.uExposure.value = 1.15;
   passengers.material.uniforms.uSize.value = 0.016;
   devices.material.uniforms.uSize.value = 0.01;
 
@@ -129,10 +176,11 @@ async function start() {
     camera.aspect = innerWidth / innerHeight;
     camera.updateProjectionMatrix();
     for (const cloud of clouds) setPointScale(cloud, camera, innerHeight, pixelRatio);
-    // Finer than a pixel and a half, the carriage reads as haze.
-    segment.material.uniforms.uMaxSize.value = 2.8 * pixelRatio;
-    segment.material.uniforms.uMinSize.value = 1;
-    passengers.material.uniforms.uMaxSize.value = 3 * pixelRatio;
+    // Dense points stay hard dots of a pixel or two; only gaps and the lens
+    // grow them, up to a soft disc.
+    segment.material.uniforms.uMaxSize.value = 7 * pixelRatio;
+    passengers.material.uniforms.uMaxSize.value = 6 * pixelRatio;
+    devices.material.uniforms.uMaxSize.value = 4 * pixelRatio;
     frameScreens();
   };
   addEventListener('resize', resize);
@@ -165,6 +213,7 @@ async function start() {
   // the turn is slow however fast the scroll arrives. Leaving one screen and
   // turning to the next overlap, as a head would.
   const leans = stops.map(() => 0);
+  let focusDistance = 3, stutterUntil = 0, nextStutter = 5;
 
   renderer.setAnimationLoop(() => {
     const dt = Math.min(clock.getDelta(), 0.1);
@@ -202,8 +251,26 @@ async function start() {
     camera.position.copy(eye);
     camera.lookAt(look);
 
+    // Focus: down the carriage while walking, on the screen when leaning in.
+    const target = THREE.MathUtils.lerp(3.2, eye.distanceTo(look), Math.min(1, lean * 1.2));
+    focusDistance += (target - focusDistance) * (1 - Math.exp(-dt * 2));
+    // Now and then the failing tube stutters for a second or so.
+    if (time > nextStutter) {
+      stutterUntil = time + 0.4 + Math.random() * 1.4;
+      nextStutter = stutterUntil + 6 + Math.random() * 12;
+    }
+    const beat = Math.sin(Math.floor(time * 14) * 12.9898) * 43758.5453;
+    const level = time < stutterUntil && beat - Math.floor(beat) < 0.55 ? 0.12 : 1;
+    for (const sprite of halos) {
+      const near = Math.abs(sprite.position.z - flickerAt) < flickerHalf ? level : 1;
+      const far = Math.exp(-Math.max(0, camera.position.distanceTo(sprite.position) - 1.5) * 0.12);
+      sprite.material.opacity = 0.11 * near * far * (1 - 0.6 * lean);
+    }
+
     segment.material.uniforms.uDim.value = GLOW * (1 - 0.8 * lean);
     for (const cloud of clouds) {
+      cloud.material.uniforms.uFocus.value = focusDistance;
+      cloud.material.uniforms.uFlicker.value.z = level;
       cloud.material.uniforms.uTime.value = time;
       cloud.material.uniforms.uGather.value = Math.min(1, time / 3);
     }

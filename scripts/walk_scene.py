@@ -24,7 +24,7 @@ import sys
 import numpy as np
 
 sys.path.insert(0, os.path.dirname(__file__))
-from walk_points import break_up, sample, write  # noqa: E402
+from walk_points import break_up, sample, spacing, write  # noqa: E402
 
 OUT = os.path.join(os.path.dirname(__file__), '..', 'walk')
 FLOOR = 0.0
@@ -72,6 +72,28 @@ def own_facing(p):
 BENCH = {-1: -0.92, 1: 1.06}  # where a sitter's hips are, across the aisle
 SIZES = {'paper': [0.56, 0.4], 'laptop': [0.34, 0.22], 'phone': [0.075, 0.155]}
 TILT = {'paper': 0.35, 'laptop': 0.25, 'phone': 0.5}
+
+
+def lamps(p, c):
+    """The ceiling's strip light, as runs along the carriage: near-white
+    points high in the middle of the roof, gathered into stretches with
+    the breaks between them left out."""
+    lum = c.astype(np.float32).mean(axis=1)
+    sat = c.max(axis=1).astype(np.float32) - c.min(axis=1)
+    tube = p[(lum > 225) & (sat < 30) & (p[:, 1] > 1.8) & (np.abs(p[:, 0] - 0.07) < 0.4)]
+    edges = np.arange(p[:, 2].min(), p[:, 2].max() + 0.3, 0.3)
+    counts, _ = np.histogram(tube[:, 2], bins=edges)
+    lit = counts > counts.max() * 0.25
+    runs, start = [], None
+    for i, on in enumerate(list(lit) + [False]):
+        if on and start is None:
+            start = i
+        if not on and start is not None:
+            if i - start >= 2:
+                runs.append({'x': round(float(np.median(tube[:, 0])), 3), 'y': round(float(np.median(tube[:, 1])), 3),
+                             'from': round(float(edges[start]), 2), 'to': round(float(edges[i]), 2)})
+            start = None
+    return runs
 
 
 def person(scans, spec):
@@ -130,11 +152,12 @@ def write_split(name, p, c, seed, share=0.4):
     its contents, so a browser holding an older bake cannot mix it in."""
     for old in glob.glob(os.path.join(OUT, f'{name}-*.pts')):
         os.remove(old)
+    gaps = spacing(p)
     first = np.random.default_rng(seed).random(len(p)) < share
     names = []
     for part, keep in enumerate([first, ~first], start=1):
         path = os.path.join(OUT, f'{name}-{part}.pts')
-        write(path, p[keep], c[keep])
+        write(path, p[keep], c[keep], gaps=gaps[keep])
         with open(path, 'rb') as baked:
             fingerprint = hashlib.sha1(baked.read()).hexdigest()[:10]
         named = f'{name}-{part}.{fingerprint}.pts'
@@ -148,6 +171,7 @@ def main(scans):
     # The scanner stood in the aisle every couple of metres.
     scanners = [[0, 1.3, z] for z in np.arange(0, -SEGMENT - 0.1, -1.6)]
     p, c = carriage(scans)
+    strips = lamps(p, c)
     # The scan is torn already; a light touch adds to it without hiding the
     # carriage itself.
     p, c = break_up(p, c, scanners, seed=3, amount=0.45)
@@ -166,6 +190,7 @@ def main(scans):
     length = SEGMENT * COPIES
     scene = {
         'files': files,
+        'lamps': strips,
         'segment': SEGMENT,
         'copies': [{'z': -SEGMENT * i, 'mirror': i % 2 == 1} for i in range(COPIES)],
         'path': {'start': 0.4, 'end': -length + 0.8, 'eye': 1.6},

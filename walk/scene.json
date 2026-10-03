@@ -1,14 +1,28 @@
 {
   "files": {
     "carriage": [
-      "carriage-1.9bc2288e93.pts",
-      "carriage-2.f999aedeb6.pts"
+      "carriage-1.9ce82e44f9.pts",
+      "carriage-2.72669b546f.pts"
     ],
     "people": [
-      "people-1.6148e54267.pts",
-      "people-2.de7814644f.pts"
+      "people-1.936fd1f5f5.pts",
+      "people-2.7ac6aad173.pts"
     ]
   },
+  "lamps": [
+    {
+      "x": 0.02,
+      "y": 2.113,
+      "from": -6.6,
+      "to": -3.3
+    },
+    {
+      "x": 0.02,
+      "y": 2.113,
+      "from": -3.0,
+      "to": 0.0
+    }
+  ],
   "segment": 6.6,
   "copies": [
     {

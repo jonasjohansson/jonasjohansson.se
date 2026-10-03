@@ -11,9 +11,12 @@ gzip finds the repetition. About 4 bytes a point.
 
 File layout, gzipped, little-endian:
     b"PTS2", uint32 count, float32 min[3], float32 max[3],
-    uint8 position bits, uint8 colour bits, uint16 0,
+    uint8 position bits, uint8 colour bits, uint16 flags,
     position steps as int16: low bytes x, y, z then high bytes x, y, z,
-    each a plane of count bytes; colours: r, g, b planes of count bytes.
+    each a plane of count bytes; colours: r, g, b planes of count bytes;
+    with flag 1, a plane of spacing: how far apart points lie around each
+    one, in quarter millimetres, so the page can grow sparse points until
+    they meet.
 """
 import argparse
 import gzip
@@ -143,7 +146,16 @@ def morton(q, bits):
     return code
 
 
-def write(path, positions, colours, position_bits=12, colour_bits=5):
+def spacing(positions, cell=0.06):
+    """Roughly how far apart points lie around each one: a surface crossing a
+    cell of side `cell` holding n points has them about cell / sqrt(n)
+    apart."""
+    keys = np.floor(positions / cell).astype(np.int64)
+    _, inverse, counts = np.unique(keys, axis=0, return_inverse=True, return_counts=True)
+    return np.clip(cell / np.sqrt(counts[inverse.ravel()]), 0.001, 0.06)
+
+
+def write(path, positions, colours, position_bits=12, colour_bits=5, gaps=None):
     low, high = positions.min(axis=0), positions.max(axis=0)
     span = np.where(high - low > 0, high - low, 1)
     top = (1 << position_bits) - 1
@@ -155,7 +167,11 @@ def write(path, positions, colours, position_bits=12, colour_bits=5):
     planes = [(steps[:, a] & 255).astype(np.uint8) for a in range(3)]
     planes += [(steps[:, a] >> 8).astype(np.uint8) for a in range(3)]
     planes += [c[:, a].astype(np.uint8) for a in range(3)]
-    header = b'PTS2' + struct.pack('<I6fBBH', len(q), *low, *high, position_bits, colour_bits, 0)
+    flags = 0
+    if gaps is not None:
+        planes.append(np.clip(np.round(gaps[order] * 4000), 1, 255).astype(np.uint8))
+        flags |= 1
+    header = b'PTS2' + struct.pack('<I6fBBH', len(q), *low, *high, position_bits, colour_bits, flags)
     with open(path, 'wb') as out:
         out.write(gzip.compress(header + b''.join(plane.tobytes() for plane in planes), 9))
 

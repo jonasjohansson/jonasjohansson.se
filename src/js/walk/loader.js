@@ -12,6 +12,7 @@ export function parsePoints(buffer) {
   const high = [0, 1, 2].map(i => view.getFloat32(20 + i * 4, true));
   const positionTop = (1 << view.getUint8(32)) - 1;
   const colourTop = (1 << view.getUint8(33)) - 1;
+  const flags = view.getUint16(34, true);
   const bytes = new Uint8Array(buffer, 36);
   const plane = index => bytes.subarray(index * count, (index + 1) * count);
   const positions = new Float32Array(count * 3);
@@ -30,7 +31,14 @@ export function parsePoints(buffer) {
     const values = plane(6 + channel);
     for (let i = 0; i < count; i++) colors[i * 3 + channel] = Math.round(values[i] * 255 / colourTop);
   }
-  return { positions, colors, count };
+  // Spacing, in metres: how far apart points lie around each one.
+  let gaps = null;
+  if (flags & 1) {
+    const values = plane(9);
+    gaps = new Float32Array(count);
+    for (let i = 0; i < count; i++) gaps[i] = values[i] / 4000;
+  }
+  return { positions, colors, count, gaps };
 }
 
 export async function loadPoints(url) {
