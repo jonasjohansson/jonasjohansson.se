@@ -22,11 +22,9 @@ screen. Behind `?mosaic` until it has been seen next to the strips.
   reading order, a few two cells wide to use up the leftovers.
   `tests/mosaic.test.js` checks every count on five screen shapes fills
   exactly.
-- **Hover** names the tile in the caption, keeps the cursor pan, and dims the
-  rest through `:has()`. Touch works as it does now: first tap names, second
-  opens.
-- **Filters** re-lay the grid for what is left, animated with a view
-  transition where supported.
+- **Hover** names the tile in the caption and keeps the cursor pan; nothing
+  fades. Touch works as it does now: first tap names, second opens.
+- **Filters** re-lay the grid for what is left, instantly.
 
 ## Size data
 

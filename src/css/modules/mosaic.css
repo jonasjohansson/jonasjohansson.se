@@ -16,13 +16,8 @@
     width: auto;
     height: auto;
     min-width: 0;
-    transition: filter var(--transition-fast);
-    view-transition-name: match-element;
   }
   & .strip-image { inset: 0; width: 100%; height: 100%; transform: none; }
-
-  /* The tile under the cursor, or the finger, stays lit and the rest dim. */
-  & #strips:has(.strip:is(:hover, :focus-visible, .is-active)) .strip:not(:hover, :focus-visible, .is-active) { filter: brightness(0.5); }
 
   /* Plates: the floating project title's shape. */
   & :is(.intro, .strip-caption, .header-contacts, .project-filters) {
@@ -60,5 +55,3 @@
   & .strip-caption { margin-right: auto; }
   & .project-filters { margin-left: 0; }
 }
-
-::view-transition-group(*) { animation-duration: 0.4s; }

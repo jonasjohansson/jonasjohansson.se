@@ -318,14 +318,8 @@ export function initializeStrips() {
   filters.append(filter);
   filters.hidden = false;
   updateFilterStates();
-  // In the mosaic a filter moves the tiles to their new cells rather than
-  // cutting to them.
-  const relayout = update => {
-    if (!isMosaic() || !document.startViewTransition || matchMedia('(prefers-reduced-motion: reduce)').matches) update();
-    else document.startViewTransition(update);
-  };
   const applyFilters = () => {
-    relayout(() => updateStrips(currentSlug));
+    updateStrips(currentSlug);
     document.getElementById('strips').scrollLeft = 0;
     const top = currentSlug ? document.getElementById('collection').getBoundingClientRect().top + scrollY : homeScrollTop();
     scrollTo({ top, behavior: matchMedia('(prefers-reduced-motion: reduce)').matches ? 'instant' : 'smooth' });
@@ -363,7 +357,7 @@ export function initializeStrips() {
     categories.forEach(tag => activeTags.add(tag));
     // No page scroll here: the wall re-sorts under a keystroke, and moving
     // the page on every letter would fight the typing.
-    relayout(() => updateStrips(currentSlug));
+    updateStrips(currentSlug);
     document.getElementById('strips').scrollLeft = 0;
   });
   search.addEventListener('keydown', event => {
