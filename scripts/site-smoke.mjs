@@ -115,7 +115,7 @@ async function checkFooter(page) {
   // The filter holds the wall's bottom-right corner with the links just inside
   // it; nothing is left in the corner above the work.
   const filterBox = await page.locator('#project-filters').boundingBox();
-  assert.ok(Math.abs(filterBox.x + filterBox.width - wall.x - wall.width) < 1, 'the filter sits flush with the wall’s right corner');
+  assert.ok(Math.abs(filterBox.x + filterBox.width - wall.x - wall.width + 24) < 1, 'the filter sits one gutter in from the wall’s right corner');
   assert.ok(contactBox.x + contactBox.width <= filterBox.x + 1, 'the links sit just inside the filter');
   assert.ok(filterBox.x - contactBox.x - contactBox.width < 40, 'the links and the filter read as one group');
   assert.ok(contactBox.y >= footer.y - 1 && contactBox.y + contactBox.height <= footer.y + footer.height + 1,
@@ -341,8 +341,8 @@ try {
       await visit(page);
       const wall = await page.locator('#strips').boundingBox();
       const header = await page.locator('#home-header').boundingBox();
-      assert.equal(wall.x, 24);
-      assert.equal(wall.width, options.viewport.width - 48);
+      assert.equal(wall.x, 0, 'the slivers run edge to edge');
+      assert.equal(wall.width, options.viewport.width);
       assert.equal(await page.locator('#home-title').count(), 0, 'the landing page carries no name of its own');
       // The top band is the writing, and the wall starts one gutter below it on
       // every device: About and the work are separate things.
@@ -368,7 +368,7 @@ try {
       // anything above a tablet, and the full width below that, where three
       // quarters would be a gutter with a few words in it.
       const column = await page.locator('.intro-text').boundingBox();
-      const share = column.width / wall.width;
+      const share = column.width / (wall.width - 48); // the wall runs edge to edge, the writing keeps its gutter
       if (options.viewport.width > 768) assert.ok(share <= 0.76, `About takes at most three quarters of the wall (${(share * 100).toFixed(0)}%)`);
       else assert.ok(share > 0.99, `About takes the full width on a small screen (${(share * 100).toFixed(0)}%)`);
       if (options.hasTouch) {
@@ -412,7 +412,7 @@ try {
       await page.screenshot({ path: `${output}/${name.replaceAll(' ', '-')}-home-wall.png` });
       // About is in the band above the wall, on screen from the start.
       const text = await page.locator('.intro-text').boundingBox();
-      assert.equal(text.x, wall.x, 'About shares the strips’ left edge');
+      assert.equal(text.x, wall.x + 24, 'About keeps the gutter while the strips run to the edge');
       assert.ok(text.y < wall.y, 'About reads above the wall without scrolling');
       assert.equal(await page.locator('#intro').evaluate(intro => intro.inert), false);
       assert.equal(await page.locator('#intro').evaluate(intro => getComputedStyle(intro).opacity), '1');
@@ -423,8 +423,8 @@ try {
     await check(`${name} has the same vertical strip wall below project pages`, options, async page => {
       await visit(page, '/jagad/');
       const wall = await page.locator('#strips').boundingBox();
-      assert.equal(wall.x, 24);
-      assert.equal(wall.width, options.viewport.width - 48);
+      assert.equal(wall.x, 0, 'the slivers run edge to edge');
+      assert.equal(wall.width, options.viewport.width);
       assert.ok((await page.locator('#projects').boundingBox()).y < wall.y);
       assert.equal(await page.evaluate(() => document.documentElement.scrollWidth > innerWidth), false);
       if (options.hasTouch) {
@@ -447,7 +447,7 @@ try {
         await page.screenshot({ path: `${output}/${name.replaceAll(' ', '-')}-project-wall.png` });
         return;
       }
-      assert.equal((await page.locator('.hero').boundingBox()).x, 0, 'the hero reaches the screen edge while the wall keeps its gutter');
+      assert.equal((await page.locator('.hero').boundingBox()).x, 0, 'the hero reaches the screen edge, like the wall');
       // A project wall is one screen: a gutter above it, then the caption and
       // category band below, with the work between them and nothing on it.
       const band = (await page.locator('#intro-links').boundingBox()).height;
@@ -1016,7 +1016,7 @@ try {
         const image = page.locator('.strip:not([hidden]) .strip-image').first();
         await page.mouse.move(wall.x + 10, wall.y + wall.height / 2);
         assert.equal(await caption(page), await image.locator('..').locator('..').getAttribute('aria-label'), 'hover names the project bottom left on both home and project pages');
-        assert.equal((await page.locator('#strip-caption').boundingBox()).x, wall.x, 'the caption sits in the bottom-left corner');
+        assert.equal((await page.locator('#strip-caption').boundingBox()).x, wall.x + 24, 'the caption sits in the bottom-left corner, one gutter in');
         await page.waitForFunction(() => parseFloat(getComputedStyle(document.querySelector('.strip:not([hidden]) .strip-image')).objectPosition) < 10);
         await page.mouse.move(wall.x + wall.width - 10, wall.y + wall.height / 2);
         await page.waitForFunction(() => parseFloat(getComputedStyle(document.querySelector('.strip:not([hidden]) .strip-image')).objectPosition) > 90);

@@ -16,10 +16,12 @@
   padding-top: var(--page-gutter);
   scroll-margin: 0;
 }
+/* The slivers run edge to edge; the writing and links around them keep the gutter. */
+.enhanced body:not([data-route="home"]) #collection { margin-inline: calc(-1 * var(--page-gutter)); }
 .enhanced body[data-route="home"] #content { padding: 0; }
 .enhanced body[data-route="home"] #main { display: flex; flex-direction: column; min-height: 100dvh; }
 .enhanced .home-header { padding: var(--page-gutter) var(--page-gutter) 0; }
-.enhanced body[data-route="home"] #collection { flex: 1; height: auto; min-height: var(--wall-min-height); padding-inline: var(--page-gutter); }
+.enhanced body[data-route="home"] #collection { flex: 1; height: auto; min-height: var(--wall-min-height); }
 .enhanced body[data-route="home"] #strips,
 .enhanced body[data-route="home"] .strip { height: auto; }
 .enhanced .intro-links { position: relative; z-index: var(--z-filter); height: calc(var(--footer-height) + var(--page-gutter)); padding-bottom: var(--page-gutter); }
