@@ -60,12 +60,10 @@
   --font-size-medium: clamp(1.4rem, 1.08rem + 1.3vw, 2.05rem);
   --font-size-large: clamp(1.73rem, 1.3rem + 1.94vw, 2.81rem);
   --font-size-title: clamp(1.9rem, 1.25rem + 2.25vw, 3.25rem);
-  /* The About text reads as body copy, not a statement: about 20px on a
-     laptop rather than 27px, and it stops growing sooner on a large display. */
-  --font-size-intro: clamp(1.05rem, 0.62rem + 0.62vw + 0.18vh, 1.4rem);
   --font-family-plx-body: "Rosarivo", Georgia, "Times New Roman", serif;
   --font-family-plx-display: "Germania One", "Trebuchet MS", sans-serif;
   --font-size-ui: 0.875rem; /* header, footer and filter labels */
+  --font-size-intro: var(--font-size-ui); /* About matches the links under the wall */
   --radius-title: 0.5rem; /* the floating desktop project title */
   --letter-spacing-caps: 0.06em; /* uppercase name and section labels */
   --line-height-ui: 1.2;
@@ -98,7 +96,6 @@
     --font-size-small: 0.9375rem;
     --font-size-medium: 1.15rem;
     --font-size-large: 1.35rem;
-    --font-size-intro: 1rem;
   }
 }
 
