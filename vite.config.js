@@ -81,6 +81,7 @@ export default defineConfig({
     rollupOptions: {
       input: {
         main: "src/js/main.js",
+        walk: "src/js/walk/main.js",
         styles: "src/css/main.css",
       },
       output: {

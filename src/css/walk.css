@@ -1,0 +1,102 @@
+@import "./fonts.css";
+@import "./modules/variables.css";
+
+/* The walk is always night: black ground, light type. */
+:root { color-scheme: dark; --walk-bg: #050506; --walk-text: #e8e6e1; }
+* , *::before, *::after { box-sizing: border-box; }
+html { overflow-x: clip; background: var(--walk-bg); scrollbar-width: none; }
+html::-webkit-scrollbar { display: none; }
+body { margin: 0; background: var(--walk-bg); color: var(--walk-text); font-family: var(--font-family); }
+a { color: inherit; }
+.sr-only { position: absolute; width: 1px; height: 1px; margin: -1px; overflow: hidden; clip: rect(0 0 0 0); white-space: nowrap; }
+
+/* Without the walk the stops read as a page, one after another. */
+.walk { display: grid; gap: var(--spacing-2xl); padding: var(--spacing-2xl) var(--page-gutter); }
+.walk-end { justify-self: center; font-size: var(--font-size-ui); }
+
+/* The screens. In the walk each is drawn at a fixed pixel size and scaled
+   into the scene, so the type stays sharp however close the camera comes.
+   On the plain page they shrink to fit, so a phone is never pushed wider. */
+.paper, .laptop, .phone { width: min(var(--screen-width), 100%); margin-inline: auto; }
+.walk-live :is(.paper, .laptop, .phone) { width: var(--screen-width); height: var(--screen-height); }
+.paper {
+  --screen-width: 560px;
+  --screen-height: 400px;
+  padding: 18px 22px;
+  overflow: hidden;
+  background: #e6e1d4;
+  color: #1d1b18;
+  font-family: var(--font-family-plx-body);
+  font-size: 11px;
+  line-height: 1.35;
+}
+.paper-masthead { margin: 0; padding-bottom: 6px; border-bottom: 2px solid currentColor; font-size: 22px; text-align: center; letter-spacing: 0.04em; }
+.paper-headline { margin: 10px 0 8px; font-family: var(--font-family); font-size: 30px; font-weight: normal; line-height: 1; }
+.paper-body { column-width: 13em; column-gap: 14px; text-align: justify; hyphens: auto; }
+.walk-live .paper-body { column-count: 3; }
+.paper-body p { margin: 0 0 0.6em; }
+
+.laptop, .phone { display: flex; flex-direction: column; text-decoration: none; }
+.laptop {
+  --screen-width: 680px;
+  --screen-height: 440px;
+  min-height: 300px;
+  background: #1b1c20;
+  color: #d8d8dc;
+  font-size: 13px;
+}
+.laptop-bar { padding: 8px 14px; background: #2a2b30; color: #9a9aa2; }
+.laptop-page {
+  display: flex;
+  flex-direction: column;
+  gap: 10px;
+  width: min(300px, 80%);
+  margin: 22px auto 0;
+  padding: 34px 30px;
+  flex: 1;
+  background: #f4f3ef;
+  color: #1d1b18;
+}
+.laptop-name { font-size: 22px; }
+.laptop-role { color: #6b6964; }
+.laptop-line { font-size: 12px; line-height: 1.45; }
+.laptop-open { margin-top: auto; text-decoration: underline; text-underline-offset: var(--underline-offset); }
+
+.phone {
+  gap: 14px;
+  --screen-width: 300px;
+  --screen-height: 620px;
+  min-height: 420px;
+  padding: 26px 20px;
+  border-radius: 34px;
+  background: #121216;
+  color: #e8e8ec;
+  font-size: 16px;
+}
+.phone-title { font-size: 22px; }
+.phone-field { padding-bottom: 10px; border-bottom: 1px solid #2c2c33; }
+.phone-field span { color: #8c8c95; margin-right: 0.4em; }
+.phone-body { flex: 1; }
+.phone-caret { display: inline-block; width: 2px; height: 1.1em; margin-left: 2px; vertical-align: -0.15em; background: currentColor; animation: caret 1s steps(1) infinite; }
+.phone-send { align-self: flex-end; padding: 8px 18px; border-radius: 20px; background: #e8e8ec; color: #121216; }
+@keyframes caret { 50% { opacity: 0; } }
+
+/* The walk itself: the page is a tall scroll, the scene stays put. */
+.walk-live body { height: 1000vh; }
+.walk-live .walk { display: contents; }
+.walk-live canvas,
+.walk-live .walk-layer { position: fixed; inset: 0; }
+.walk-live .walk-layer { pointer-events: none; }
+.walk-live .stop { pointer-events: none; transition: opacity 0.4s ease; }
+.walk-live .stop.is-near { pointer-events: auto; }
+.walk-live .walk-end {
+  position: fixed;
+  left: 50%;
+  bottom: var(--spacing-2xl);
+  translate: -50% 0;
+  opacity: 0;
+  pointer-events: none;
+  transition: opacity 0.6s ease;
+}
+.walk-live .walk-end.is-near { opacity: 1; pointer-events: auto; }
+.stop :focus-visible, .walk-end:focus-visible { outline: 2px solid currentColor; outline-offset: 4px; }
