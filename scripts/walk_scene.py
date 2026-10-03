@@ -34,7 +34,7 @@ def carriage(scans):
     metres (one unit is 8.6 cm, from the 2.18 m floor to ceiling), the aisle
     on x = 0, the floor at y = 0, cut to the stretch the scan covers well
     and running from z = 0 toward -z."""
-    p, c = sample(os.path.join(scans, 'metro.glb'), 300000, seed=5, max_edge=2.5)
+    p, c = sample(os.path.join(scans, 'metro.glb'), 560000, seed=5, max_edge=2.5)
     theta = np.arctan(0.124)
     p[:, 0] -= -14.9
     y, z = p[:, 1].copy(), p[:, 2].copy()
@@ -72,7 +72,7 @@ TILT = {'paper': 0.35, 'laptop': 0.25, 'phone': 0.5}
 
 
 def person(scans, spec):
-    p, c = sample(os.path.join(scans, spec['file']), 60000, seed=9)
+    p, c = sample(os.path.join(scans, spec['file']), 85000, seed=9)
     p *= spec['scale']
     c = np.clip(c.astype(np.float32) * spec['exposure'], 0, 255).astype(np.uint8)
     # Turn to face across the aisle, then a little down the carriage, so

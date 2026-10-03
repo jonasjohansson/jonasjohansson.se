@@ -20,6 +20,8 @@ const vertexShader = /* glsl */ `
   uniform vec2 uNearFade;
   uniform float uKeep;
   uniform float uDim;
+  uniform float uDrift;
+  uniform float uMinSize;
   uniform vec3 uTone;
   uniform vec3 uLightOrigin[LIGHTS];
   uniform vec3 uLightNormal[LIGHTS];
@@ -34,8 +36,9 @@ const vertexShader = /* glsl */ `
     float h = hash(id * 0.618);
     vec3 drift = vec3(hash(id + 1.0), hash(id + 2.0), hash(id + 3.0)) - 0.5;
     vec3 p = position;
-    // Breathing: each point circles slowly on its own phase.
-    p += 0.018 * vec3(sin(uTime * 0.5 + h * 40.0), sin(uTime * 0.37 + h * 70.0), cos(uTime * 0.43 + h * 20.0));
+    // Breathing: each point drifts slowly round its place on its own phase,
+    // like dust hanging in the light.
+    p += uDrift * vec3(sin(uTime * 0.21 + h * 40.0), sin(uTime * 0.17 + h * 70.0), cos(uTime * 0.19 + h * 20.0));
     // Arrival: points come in from scattered places, the far ones last.
     float arrive = smoothstep(h * 0.6, h * 0.6 + 0.4, uGather);
     p += drift * 6.0 * (1.0 - arrive);
@@ -49,7 +52,7 @@ const vertexShader = /* glsl */ `
     float depth = max(0.05, -mv.z);
     // A scan's points stay small at any distance: density draws the image,
     // not the size of each dot.
-    gl_PointSize = clamp(uSize * uScale * (0.55 + h * 0.9) / depth, 1.0, uMaxSize);
+    gl_PointSize = clamp(uSize * uScale * (0.55 + h * 0.9) / depth, uMinSize, uMaxSize);
 
     vec3 c = tint;
     float l = dot(c, vec3(0.299, 0.587, 0.114));
@@ -97,6 +100,8 @@ export function createPoints({ positions, colors, count }) {
       uNearFade: { value: new THREE.Vector2(0.2, 0.8) },
       uKeep: { value: 0.5 },
       uDim: { value: 1 },
+      uDrift: { value: 0.018 },
+      uMinSize: { value: 1 },
       uTone: { value: new THREE.Color(0.82, 0.88, 1.05) },
       uLightOrigin: { value: Array.from({ length: LIGHTS }, () => new THREE.Vector3()) },
       uLightNormal: { value: Array.from({ length: LIGHTS }, () => new THREE.Vector3(0, 0, 1)) },
