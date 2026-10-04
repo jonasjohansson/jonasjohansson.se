@@ -1,13 +1,15 @@
 <section id="collection" class="collection" aria-labelledby="collection-title">
   <h2 id="collection-title" class="sr-only" tabindex="-1">{% if project %}More projects{% else %}Projects{% endif %}</h2>
-  {# About and, under it, the links and the filter float centred over the top
-     of the landing's wall. Under a project the links float along its foot
-     instead, with the name, which leads home, on the left. #}
+  {# The name, set like a project's title, and the links and filter under it
+     float centred over the top of the landing's wall. Under a project they
+     float along its foot instead, with the name, which leads home, on the left. #}
   <div id="wall-bar" class="wall-bar">
     {% include "./intro.njk" %}
     <a class="site-name" href="{{ '/' | url }}" data-home-link>{{ site.author }}</a>
-    {% include "./contact-links.njk" %}
-    <div id="project-filters" class="project-filters" role="group" aria-label="Filter projects" hidden></div>
+    <div class="wall-tags">
+      {% include "./contact-links.njk" %}
+      <div id="project-filters" class="project-filters" role="group" aria-label="Filter projects" hidden></div>
+    </div>
   </div>
   <nav id="strips" aria-label="Projects">
     {% for item in collectionItems %}

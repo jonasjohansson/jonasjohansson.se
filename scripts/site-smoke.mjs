@@ -85,10 +85,10 @@ async function waitForHomeWall(page) {
 }
 
 
-// A point that is not a strip. Both walls fill their screen, so it is one of
-// the tags floating over them: About on the landing, the name under a project.
+// A point that is not a strip. Both walls fill their screen, so it is the
+// name floating over them: at the top of the landing, the foot of a project's.
 async function offWall(page) {
-  for (const selector of ['.intro-lead', '#wall-bar .site-name']) {
+  for (const selector of ['#wall-bar .site-name']) {
     const tag = page.locator(selector);
     if (await tag.isVisible()) {
       const box = await tag.boundingBox();
@@ -119,7 +119,7 @@ async function checkFooter(page) {
   assert.deepEqual((await contacts.locator('a').allTextContents()).map(text => text.trim()), ['CV', 'Email'], 'contact links stay concise');
   assert.equal(await contacts.locator('svg').count(), 0, 'contact links are plain text');
   assert.equal(await contacts.locator('button').count(), 0, 'the links are links, with no button among them');
-  // On the landing the links and filter are a row centred under About; under
+  // On the landing the links and filter are a row centred under the name; under
   // a project the filter holds the right corner, a tag's inset in. The links
   // sit just inside the filter either way.
   const filterBox = await page.locator('#project-filters').boundingBox();
@@ -129,10 +129,10 @@ async function checkFooter(page) {
   } else assert.ok(Math.abs(filterBox.x + filterBox.width - wall.x - wall.width + 12) < 1, 'the filter floats just in from the wall’s right corner');
   assert.ok(contactBox.x + contactBox.width <= filterBox.x + 1, 'the links sit just inside the filter');
   assert.ok(filterBox.x - contactBox.x - contactBox.width < 40, 'the links and the filter read as one group');
-  // Under About at the top of the landing's wall, along the foot of a project's.
-  const lead = home ? await page.locator('.intro-lead').boundingBox() : null;
+  // Under the name at the top of the landing's wall, along the foot of a project's.
+  const lead = home ? await page.locator('#wall-bar .site-name').boundingBox() : null;
   const edge = home ? contactBox.y - lead.y - lead.height : wall.y + wall.height - contactBox.y - contactBox.height;
-  assert.ok(edge > -1 && edge < 20, `contacts float just ${home ? 'under About' : "inside the wall's foot"} (${edge}px)`);
+  assert.ok(edge > -1 && edge < 20, `contacts float just ${home ? 'under the name' : "inside the wall's foot"} (${edge}px)`);
   const tag = await contacts.locator('a').first().evaluate(link => getComputedStyle(link).backgroundColor);
   assert.equal(tag, 'rgb(255, 255, 255)', 'each link is a white tag');
   // Typing a name searches the collection, so the field is on the landing,
@@ -142,11 +142,17 @@ async function checkFooter(page) {
   if (home) assert.equal(await search.getAttribute('placeholder'), 'Search', 'the field says what it is');
   assert.equal(await page.locator('#intro a[href^="mailto:"]').count(), 0, 'the email is a link in the corner, not in About');
   if (home) {
-    const intro = await page.locator('#intro').boundingBox();
-    assert.ok(intro.x >= wall.x - 1 && intro.x + intro.width <= wall.x + wall.width + 1, 'the writing stays within the strips');
-    assert.ok(intro.y >= wall.y && intro.y < wall.y + 40, 'the writing floats over the top of the strips');
-    assert.equal(await page.locator('#home-header .header-contacts').count(), 0, 'the landing band is the writing alone');
-    assert.equal(await page.locator('#wall-bar .site-name').isVisible(), false, 'About already names him on the landing');
+    // The landing is named like a project: the name in the title's plate,
+    // centred over the top of the wall, where a project's title floats.
+    const name = page.locator('#wall-bar .site-name');
+    assert.equal(await name.isVisible(), true, 'the name heads the landing');
+    const plate = await name.evaluate(link => ({ transform: getComputedStyle(link).textTransform, background: getComputedStyle(link).backgroundColor }));
+    assert.deepEqual(plate, { transform: 'uppercase', background: 'rgb(255, 255, 255)' }, 'in the uppercase white plate of a project title');
+    assert.ok(Math.abs(lead.x + lead.width / 2 - wall.x - wall.width / 2) < 2, 'centred over the wall');
+    assert.ok(lead.y >= wall.y && lead.y < wall.y + 40, 'at the top of the strips');
+    // About's first sentence stays in the page for screen readers and search.
+    assert.ok((await page.locator('.intro-lead').textContent()).trim().length > 20, 'About is still in the page');
+    assert.equal(await page.locator('#home-header .header-contacts').count(), 0, 'the landing band is the name and tags alone');
   } else {
     // The project title at the top of the page is the way home, so nothing
     // sits over the work.
@@ -363,11 +369,11 @@ try {
       assert.equal(await page.locator('#home-title').count(), 0, 'the landing page carries no name of its own');
       // There is no band above the wall: About floats over it as a tag.
       assert.ok(Math.abs(wall.y) < 1 && Math.abs(wall.height - options.viewport.height) < 1, 'the wall fills the screen');
-      assert.equal(await page.locator('.intro-lead').evaluate(lead => getComputedStyle(lead).backgroundColor), 'rgb(255, 255, 255)', 'About is a white tag');
+      assert.equal(await page.locator('#wall-bar .site-name').evaluate(name => getComputedStyle(name).backgroundColor), 'rgb(255, 255, 255)', 'the name is a white plate');
       await checkFooter(page);
       assert.equal(await page.evaluate(() => document.documentElement.scrollWidth > innerWidth), false);
-      const intro = await page.locator('#intro').boundingBox();
-      assert.ok(intro.y >= wall.y && intro.y < wall.y + 40, 'About floats over the top of the strips');
+      const intro = await page.locator('#wall-bar .site-name').boundingBox();
+      assert.ok(intro.y >= wall.y && intro.y < wall.y + 40, 'the name floats over the top of the strips');
       // The name is plain text, the same colour as the rest of About.
       assert.equal(await page.locator('.intro-text .name, .intro-text span[style]').count(), 0, 'the name is not lettered or coloured');
       // Every strip stands in its own colour, so the wall is whole from the
@@ -375,10 +381,10 @@ try {
       const blank = await page.locator('#strips .strip').evaluateAll(strips => strips.filter(strip =>
         !strip.style.getPropertyValue('--project-color')).map(strip => strip.dataset.project));
       assert.deepEqual(blank, [], 'every strip carries a colour to stand in for its photograph');
-      assert.ok(intro.x + intro.width <= wall.x + wall.width + 1, 'the writing stays within the wall');
-      // About is centred over the wall, a tag's inset from either side at most.
-      const lead = await page.locator('.intro-lead').boundingBox();
-      assert.ok(Math.abs(lead.x + lead.width / 2 - wall.width / 2) < 2, `About is centred (${lead.x + lead.width / 2})`);
+      assert.ok(intro.x + intro.width <= wall.x + wall.width + 1, 'the name stays within the wall');
+      // The name is centred over the wall, a tag's inset from either side at most.
+      const lead = intro;
+      assert.ok(Math.abs(lead.x + lead.width / 2 - wall.width / 2) < 2, `the name is centred (${lead.x + lead.width / 2})`);
       assert.ok(lead.x >= 11 && lead.x + lead.width <= wall.width - 11, 'and stays inside the wall');
       if (options.hasTouch) {
         // The landing keeps its wall on a phone: every project is a sliver and
@@ -416,9 +422,9 @@ try {
       assert.ok(entries.every(entry => entry.width >= 8 && entry.height === wall.height && entry.named && entry.visibleText === ''));
       await page.locator('.strip:not([hidden]) .strip-image').evaluateAll(images => Promise.all(images.slice(0, 4).map(image => image.decode())));
       await page.screenshot({ path: `${output}/${name.replaceAll(' ', '-')}-home-wall.png` });
-      // About floats over the top of the wall, on screen from the start.
-      const text = await page.locator('.intro-text').boundingBox();
-      assert.ok(text.y >= wall.y && text.y < wall.y + 40, 'About reads over the top of the wall without scrolling');
+      // The name floats over the top of the wall, on screen from the start.
+      const text = await page.locator('#wall-bar .site-name').boundingBox();
+      assert.ok(text.y >= wall.y && text.y < wall.y + 40, 'the name reads over the top of the wall without scrolling');
       assert.equal(await page.locator('#intro').evaluate(intro => intro.inert), false);
       assert.equal(await page.locator('#intro').evaluate(intro => getComputedStyle(intro).opacity), '1');
       assert.ok(text.width <= wall.width, 'the writing stays inside the wall');
@@ -487,12 +493,11 @@ try {
       assert.equal(await page.locator('#home-header .header-contacts').count(), 0, 'the header carries no links');
       assert.equal(await page.locator('#wall-bar .header-contacts').isVisible(), true, 'contact links float over the wall on every device');
       const wall = await page.locator('#strips').boundingBox();
-      const intro = await page.locator('#intro').boundingBox();
-      assert.ok(intro.y >= wall.y && intro.y < wall.y + 40, 'About floats over the top of the wall');
+      const intro = await page.locator('#wall-bar .site-name').boundingBox();
+      assert.ok(intro.y >= wall.y && intro.y < wall.y + 40, 'the name floats over the top of the wall');
       // Both are on screen at once: the landing is one view, not two.
-      assert.ok(intro.y >= 0 && wall.y < options.viewport.height, 'the writing and the work are visible together');
+      assert.ok(intro.y >= 0 && wall.y < options.viewport.height, 'the name and the work are visible together');
       if (options.hasTouch) return;
-      assert.equal(await page.locator('.intro-text').evaluate(text => getComputedStyle(text).textTransform), 'none', 'About is body copy, not the band’s uppercase chrome');
       assert.ok((await page.locator('#strips .strip:not([hidden]) img').first().boundingBox()).height > 100, 'the strips keep a usable height beside the writing');
     });
   }
@@ -694,8 +699,8 @@ try {
     await waitForHomeWall(page);
     // About and the wall are both on screen, so there is no view to leave: the
     // keyboard reaches the writing, the links and the strips in one pass.
-    const lead = await page.locator('.intro-lead').boundingBox();
-    assert.ok(Math.abs(lead.x + lead.width / 2 - 720) < 2, 'About stays centred on wide screens');
+    const lead = await page.locator('#wall-bar .site-name').boundingBox();
+    assert.ok(Math.abs(lead.x + lead.width / 2 - 720) < 2, 'the name stays centred on wide screens');
     assert.equal(await page.evaluate(() => Math.round(scrollY)), 0, 'the landing opens without scrolling');
     await page.keyboard.press('Tab');
     const reached = await page.evaluate(() => document.activeElement?.closest('#intro, #home-header, #strips')?.id || document.activeElement?.tagName);

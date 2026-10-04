@@ -67,6 +67,9 @@
   --font-size-ui: 0.875rem; /* header, footer and filter labels */
   --font-size-intro: var(--font-size-ui); /* About matches the links under the wall */
   --radius-title: 0.5rem; /* the floating desktop project title */
+  --title-size: var(--font-size-medium); /* a project's title, and the name on the landing */
+  --title-pad: var(--spacing-sm) var(--spacing-md);
+  --title-top: var(--spacing-xl); /* from the top of the screen */
   --letter-spacing-caps: 0.06em; /* uppercase name and section labels */
   --line-height-ui: 1.2;
   --line-height-tight: 1.15;
@@ -113,6 +116,11 @@
 
 @media (hover: none) {
   :root { --strip-min-width: 0; }
+}
+
+/* On phones and touch screens the title plate sits closer in. */
+@media (hover: none), (max-width: 768px) {
+  :root { --title-pad: var(--spacing-xs) var(--chrome-pad); --title-top: var(--page-gutter); }
 }
 
 /* Explicit theme; system preference is the CSS fallback. */

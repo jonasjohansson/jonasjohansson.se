@@ -6,11 +6,11 @@
 .strip-image { position: absolute; width: 100%; height: 100%; object-fit: cover; object-position: var(--bg-x, 50%) var(--bg-y, 50%); }
 .strip:focus-visible { outline: var(--focus-ring); outline-offset: -3px; }
 
-/* The links and filter float over the wall as small white tags: over its
-   top-right corner on the landing, along its foot under a project. */
+/* The links and filter float over the wall as small white tags: under the
+   name at the top of the landing, along the wall's foot under a project. */
 .wall-bar { display: flex; flex: none; align-items: center; justify-content: flex-end; gap: var(--tag-gap); padding-block: var(--band-pad); font-size: var(--font-size-ui); line-height: var(--line-height-base); }
 .site-name { margin-right: auto; text-decoration: none; white-space: nowrap; }
-body[data-route="home"] .wall-bar .site-name { display: none; }
+.wall-tags { display: contents; }
 .enhanced .wall-bar { position: absolute; top: var(--tag-inset); right: 0; left: 0; z-index: var(--z-filter); padding: 0 var(--tag-inset); pointer-events: none; }
 .enhanced body[data-route="project"] .wall-bar { top: auto; bottom: var(--tag-inset); }
 .enhanced .wall-bar :is(.site-name, .header-contacts a, .project-filters select, .project-filters input[type="search"]) {
@@ -36,22 +36,21 @@ body[data-route="home"] .wall-bar .site-name { display: none; }
 .enhanced body:not([data-route="home"]) #collection { margin-inline: calc(-1 * var(--page-gutter)); }
 .enhanced body[data-route="home"] #content { padding: 0; }
 .enhanced body[data-route="home"] #main { display: flex; flex-direction: column; position: relative; min-height: 100dvh; }
-/* About is a tag too, one per line where it wraps, centred over the
-   landing's wall with the links in a row beneath it. */
-.enhanced body[data-route="home"] .wall-bar { flex-wrap: wrap; justify-content: center; }
+/* On the landing the name is set like a project's title, centred where
+   that title floats, with the links and filter in a row of tags beneath.
+   The first sentence of About stays for screen readers and search. */
+.enhanced body[data-route="home"] .wall-bar { top: var(--title-top); flex-direction: column; gap: var(--spacing-sm); }
+.enhanced body[data-route="home"] .wall-tags { display: flex; flex-wrap: wrap; justify-content: center; gap: var(--tag-gap); }
 .enhanced body[data-route="home"] .wall-bar .header-contacts { margin-left: 0; }
-.enhanced .wall-bar .intro { flex: 0 0 100%; max-width: none; text-align: center; }
-.enhanced .wall-bar .intro-text { max-width: none; }
-.enhanced .wall-bar .intro-lead {
-  display: inline;
-  padding: var(--tag-pad);
-  border-radius: var(--radius-title);
-  background: var(--bg-primary);
-  line-height: 1.9;
-  -webkit-box-decoration-break: clone;
-  box-decoration-break: clone;
-  pointer-events: auto;
+.enhanced body[data-route="home"] .wall-bar .site-name {
+  margin: 0;
+  padding: var(--title-pad);
+  font-size: var(--title-size);
+  line-height: var(--line-height-tight);
+  letter-spacing: var(--letter-spacing-caps);
+  text-transform: uppercase;
 }
+.enhanced .wall-bar .intro { position: absolute; width: 1px; height: 1px; overflow: hidden; clip: rect(0, 0, 0, 0); white-space: nowrap; }
 .enhanced body[data-route="home"] #collection { flex: 1; height: auto; min-height: var(--wall-min-height); }
 .enhanced body[data-route="home"] #strips,
 .enhanced body[data-route="home"] .strip { height: auto; }

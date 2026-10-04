@@ -53,7 +53,7 @@
 /* The title floats over the middle of the hero. */
 #header {
   position: absolute;
-  top: var(--spacing-xl);
+  top: var(--title-top);
   left: 50%;
   transform: translateX(-50%);
   z-index: var(--z-header);
@@ -64,10 +64,10 @@
   display: block;
   width: auto;
   max-width: var(--project-measure);
-  padding: var(--spacing-sm) var(--spacing-md);
+  padding: var(--title-pad);
   border-radius: var(--radius-title);
   background: var(--bg-primary);
-  font-size: var(--font-size-large);
+  font-size: var(--title-size);
   line-height: var(--line-height-tight);
   letter-spacing: var(--letter-spacing-caps);
   text-align: center;
@@ -75,10 +75,4 @@
   text-transform: uppercase;
   text-wrap: balance;
   overflow-wrap: anywhere;
-}
-
-/* On phones and touch screens the plate is a step smaller. */
-@media (hover: none), (max-width: 768px) {
-  #header { top: var(--page-gutter); }
-  .header-subtitle { padding: var(--spacing-xs) var(--chrome-pad); font-size: var(--font-size-medium); }
 }

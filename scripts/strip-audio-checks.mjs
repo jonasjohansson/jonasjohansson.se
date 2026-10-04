@@ -44,10 +44,10 @@ async function observeAudio(page) {
 }
 
 // A point on the page that is not a strip. The landing's wall fills the
-// screen, so it is the About tag floating over it; a project page's top is
+// screen, so it is the name floating over it; a project page's top is
 // its hero.
 async function blank(page) {
-  const lead = page.locator('.intro-lead');
+  const lead = page.locator('body[data-route="home"] #wall-bar .site-name');
   if (!(await lead.isVisible())) return [8, 8];
   const box = await lead.boundingBox();
   return [box.x + 6, box.y + box.height / 2];
