@@ -5,14 +5,19 @@
      float along its foot instead, with the name, which leads home, on the left. #}
   {# Melts the landing's name and tags into one white blob: their shapes are
      blurred and cut at a threshold, filled with the page colour, and the
-     crisp tags are drawn back on top. #}
+     crisp tags are drawn back on top. The name is set in a dark red, the
+     only ink where red outweighs green, so its letters are found that way
+     and cut out of the blob, letting the work show through. #}
   <svg class="goo-defs" width="0" height="0" aria-hidden="true" focusable="false">
     <filter id="goo" x="-10%" y="-60%" width="120%" height="220%" color-interpolation-filters="sRGB">
-      <feGaussianBlur in="SourceAlpha" stdDeviation="5" result="blur"/>
+      <feGaussianBlur in="SourceAlpha" stdDeviation="6" result="blur"/>
       <feColorMatrix in="blur" type="matrix" values="0 0 0 0 0  0 0 0 0 0  0 0 0 0 0  0 0 0 24 -9" result="shape"/>
       <feFlood class="goo-fill"/>
       <feComposite in2="shape" operator="in" result="blob"/>
-      <feMerge><feMergeNode in="blob"/><feMergeNode in="SourceGraphic"/></feMerge>
+      <feColorMatrix in="SourceGraphic" type="matrix" values="0 0 0 0 0  0 0 0 0 0  0 0 0 0 0  1.5 -1.5 0 0 -0.03" result="letters"/>
+      <feColorMatrix in="SourceGraphic" type="matrix" values="1.45 -0.45 0 0 0  1.45 -0.45 0 0 0  1.45 -1.45 1 0 0  0 0 0 1 0" result="ink"/>
+      <feMerge result="tags"><feMergeNode in="blob"/><feMergeNode in="ink"/></feMerge>
+      <feComposite in="tags" in2="letters" operator="out"/>
     </filter>
   </svg>
   <div id="wall-bar" class="wall-bar">

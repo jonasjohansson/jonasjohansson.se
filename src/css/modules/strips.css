@@ -43,7 +43,7 @@
 .goo-defs { position: absolute; }
 .goo-fill { flood-color: var(--bg-primary); }
 .enhanced body[data-route="home"] .wall-tags { display: flex; flex-wrap: wrap; justify-content: center; gap: var(--tag-gap) var(--blob-gap); }
-.enhanced body[data-route="home"] .wall-bar :is(.header-contacts, .project-filters) { gap: var(--blob-gap); }
+.enhanced body[data-route="home"] .wall-bar :is(.wall-tags, .header-contacts, .project-filters) { align-items: flex-start; gap: var(--blob-gap); }
 .enhanced body[data-route="home"] .wall-bar .header-contacts { margin-left: 0; }
 .enhanced body[data-route="home"] .wall-bar .site-name {
   margin: 0;
@@ -53,6 +53,14 @@
   letter-spacing: var(--letter-spacing-caps);
   text-transform: uppercase;
 }
+/* The name's ink is what the blob filter cuts out; see strips.njk. */
+.enhanced body[data-route="home"] .wall-bar .site-name { color: var(--knockout-ink); }
+/* Each tag is a slightly different size and CV and All work lean out, so
+   the blob reads as poured rather than set. */
+.enhanced body[data-route="home"] .wall-bar .header-contacts a:first-child { margin-right: 0.5rem; padding: 0.3em 0.75em; }
+.enhanced body[data-route="home"] .wall-bar .header-contacts a:nth-child(2) { padding: 0.12em 0.5em; }
+.enhanced body[data-route="home"] .wall-bar #project-search { padding: 0.22em 0.65em; }
+.enhanced body[data-route="home"] .wall-bar .project-filters select { margin-left: 0.5rem; padding: 0.35em 2em 0.35em 0.85em; }
 .enhanced .wall-bar .intro { position: absolute; width: 1px; height: 1px; overflow: hidden; clip: rect(0, 0, 0, 0); white-space: nowrap; }
 .enhanced body[data-route="home"] #collection { flex: 1; height: auto; min-height: var(--wall-min-height); }
 .enhanced body[data-route="home"] #strips,
