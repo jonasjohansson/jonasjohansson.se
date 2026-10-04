@@ -43,6 +43,16 @@ async function observeAudio(page) {
   });
 }
 
+// A point on the page that is not a strip. The landing's wall fills the
+// screen, so it is the About tag floating over it; a project page's top is
+// its hero.
+async function blank(page) {
+  const lead = page.locator('.intro-lead');
+  if (!(await lead.isVisible())) return [8, 8];
+  const box = await lead.boundingBox();
+  return [box.x + 6, box.y + box.height / 2];
+}
+
 export async function checkStripAudio({ check, visit, desktop, mobile }) {
   await check('Mario strip melody sounds on movement and survives filtering and navigation', desktop, async page => {
     await observeAudio(page);
@@ -50,7 +60,7 @@ export async function checkStripAudio({ check, visit, desktop, mobile }) {
     const notes = () => page.evaluate(() => window.__stripSound.notes.filter((_, index) => index % 2 === 0));
     assert.equal(await page.evaluate(() => window.__stripSound.contexts.length), 0, 'page load does not start an audio context');
     // Unlock real Web Audio with an ordinary click, without opening a project.
-    await page.mouse.click(8, 8);
+    await page.mouse.click(...await blank(page));
     await page.waitForFunction(() => window.__stripSound.contexts[0]?.state === 'running');
     assert.deepEqual(await notes(), [], 'unlocking audio does not play a note');
     const melody = [659.25, 659.25, 659.25, 523.25, 659.25, 783.99, 392, 523.25];
@@ -97,7 +107,7 @@ export async function checkStripAudio({ check, visit, desktop, mobile }) {
     await page.waitForTimeout(400);
     assert.equal((await notes()).length, settled, 'moving inside a strip and resting do not repeat the note');
     assert.equal(await page.evaluate(() => window.__stripSound.active), 0, 'short notes finish and release their oscillators');
-    await page.mouse.move(8, 8);
+    await page.mouse.move(...await blank(page));
     await page.locator('#project-filter').selectOption('2025');
     assert.equal((await notes()).length, settled, 'filter changes are silent');
     await strips.first().hover();
@@ -106,14 +116,14 @@ export async function checkStripAudio({ check, visit, desktop, mobile }) {
     const chosen = await strips.first().getAttribute('data-project');
     await strips.first().click();
     await page.waitForSelector(`#projects [data-project="${chosen}"]`);
-    await page.mouse.move(8, 8);
+    await page.mouse.move(...await blank(page));
     const before = (await notes()).length;
     await page.locator('#collection').evaluate(collection => collection.scrollIntoView({ block: 'start' }));
     await strips.first().hover();
     assert.equal((await notes()).length, before + 1, 'the project page wall also plays one note per crossing');
     await page.goBack();
     await page.waitForFunction(() => document.body.dataset.route === 'home');
-    await page.mouse.move(8, 8);
+    await page.mouse.move(...await blank(page));
     const restored = (await notes()).length;
     await strips.first().hover();
     assert.equal((await notes()).length, restored + 1, 'Back restores one listener, without doubling notes');
@@ -123,14 +133,14 @@ export async function checkStripAudio({ check, visit, desktop, mobile }) {
   await check('blocked hover keeps the first Mario note until audio is available', desktop, async page => {
     await observeAudio(page);
     await visit(page);
-    await page.mouse.click(8, 8);
+    await page.mouse.click(...await blank(page));
     await page.waitForFunction(() => window.__stripSound.contexts[0]?.state === 'running');
     await page.evaluate(() => window.__stripSound.contexts[0].suspend());
     const strips = page.locator('#strips .strip:not([hidden])');
     await strips.nth(0).hover();
     await strips.nth(1).hover();
     assert.equal(await page.evaluate(() => window.__stripSound.notes.length), 0, 'suspended hover does not consume or queue notes');
-    await page.mouse.click(8, 8);
+    await page.mouse.click(...await blank(page));
     await page.waitForFunction(() => window.__stripSound.contexts[0]?.state === 'running');
     assert.equal(await page.evaluate(() => window.__stripSound.notes.length), 0, 'unlocking does not flush queued hover notes');
     await strips.nth(2).hover();
@@ -207,7 +217,7 @@ export async function checkStripAudio({ check, visit, desktop, mobile }) {
     await visit(page);
     // Unlock first, so silence here is the absence of the instrument and not a
     // missing audio context.
-    await page.mouse.click(8, 8);
+    await page.mouse.click(...await blank(page));
     await page.waitForFunction(() => window.__stripSound.contexts[0]?.state === 'running');
     const strip = await page.evaluate(() => innerWidth / document.querySelectorAll('#strips .strip:not([hidden])').length);
     for (let step = 1; step <= 4; step++) {

@@ -85,6 +85,19 @@ async function waitForHomeWall(page) {
 }
 
 
+// A point that is not a strip. Both walls fill their screen, so it is one of
+// the tags floating over them: About on the landing, the name under a project.
+async function offWall(page) {
+  for (const selector of ['.intro-lead', '#wall-bar .site-name']) {
+    const tag = page.locator(selector);
+    if (await tag.isVisible()) {
+      const box = await tag.boundingBox();
+      return [box.x + 6, box.y + box.height / 2];
+    }
+  }
+  return [0, 0];
+}
+
 async function checkFooter(page) {
   const touch = await page.evaluate(() => matchMedia('(hover: none)').matches);
   const home = await page.locator('body').getAttribute('data-route') === 'home';
@@ -106,15 +119,20 @@ async function checkFooter(page) {
   assert.deepEqual((await contacts.locator('a').allTextContents()).map(text => text.trim()), ['CV', 'Email'], 'contact links stay concise');
   assert.equal(await contacts.locator('svg').count(), 0, 'contact links are plain text');
   assert.equal(await contacts.locator('button').count(), 0, 'the links are links, with no button among them');
-  // The filter holds the right corner, a tag's inset in, with the links just
-  // inside it.
+  // On the landing the links and filter are a row centred under About; under
+  // a project the filter holds the right corner, a tag's inset in. The links
+  // sit just inside the filter either way.
   const filterBox = await page.locator('#project-filters').boundingBox();
-  assert.ok(Math.abs(filterBox.x + filterBox.width - wall.x - wall.width + 12) < 1, 'the filter floats just in from the wall’s right corner');
+  if (home) {
+    const row = (contactBox.x + filterBox.x + filterBox.width) / 2;
+    assert.ok(Math.abs(row - wall.x - wall.width / 2) < 2, `the links and filter are centred over the wall (${row})`);
+  } else assert.ok(Math.abs(filterBox.x + filterBox.width - wall.x - wall.width + 12) < 1, 'the filter floats just in from the wall’s right corner');
   assert.ok(contactBox.x + contactBox.width <= filterBox.x + 1, 'the links sit just inside the filter');
   assert.ok(filterBox.x - contactBox.x - contactBox.width < 40, 'the links and the filter read as one group');
-  // Over the top of the landing's wall, along the foot of a project's.
-  const edge = home ? contactBox.y - wall.y : wall.y + wall.height - contactBox.y - contactBox.height;
-  assert.ok(edge > 0 && edge < 20, `contacts float just inside the wall's ${home ? 'top' : 'foot'} (${edge}px)`);
+  // Under About at the top of the landing's wall, along the foot of a project's.
+  const lead = home ? await page.locator('.intro-lead').boundingBox() : null;
+  const edge = home ? contactBox.y - lead.y - lead.height : wall.y + wall.height - contactBox.y - contactBox.height;
+  assert.ok(edge > -1 && edge < 20, `contacts float just ${home ? 'under About' : "inside the wall's foot"} (${edge}px)`);
   const tag = await contacts.locator('a').first().evaluate(link => getComputedStyle(link).backgroundColor);
   assert.equal(tag, 'rgb(255, 255, 255)', 'each link is a white tag');
   // Typing a name searches the collection, so the field is on the landing,
@@ -126,7 +144,7 @@ async function checkFooter(page) {
   if (home) {
     const intro = await page.locator('#intro').boundingBox();
     assert.ok(intro.x >= wall.x - 1 && intro.x + intro.width <= wall.x + wall.width + 1, 'the writing stays within the strips');
-    assert.ok(intro.y + intro.height <= wall.y + 1, 'the writing sits above the strips');
+    assert.ok(intro.y >= wall.y && intro.y < wall.y + 40, 'the writing floats over the top of the strips');
     assert.equal(await page.locator('#home-header .header-contacts').count(), 0, 'the landing band is the writing alone');
     assert.equal(await page.locator('#wall-bar .site-name').isVisible(), false, 'About already names him on the landing');
   } else {
@@ -340,17 +358,16 @@ try {
     await check(`${name} About sits above the projects`, options, async page => {
       await visit(page);
       const wall = await page.locator('#strips').boundingBox();
-      const header = await page.locator('#home-header').boundingBox();
       assert.equal(wall.x, 0, 'the slivers run edge to edge');
       assert.equal(wall.width, options.viewport.width);
       assert.equal(await page.locator('#home-title').count(), 0, 'the landing page carries no name of its own');
-      // The top band is the writing alone; the links float over the wall.
-      const writing = await page.locator('.intro-text').boundingBox();
-      assert.ok(Math.abs(wall.y - writing.y - writing.height - 16) < 1, `the wall starts 16px below the writing (${Math.round(wall.y - writing.y - writing.height)}px)`);
+      // There is no band above the wall: About floats over it as a tag.
+      assert.ok(Math.abs(wall.y) < 1 && Math.abs(wall.height - options.viewport.height) < 1, 'the wall fills the screen');
+      assert.equal(await page.locator('.intro-lead').evaluate(lead => getComputedStyle(lead).backgroundColor), 'rgb(255, 255, 255)', 'About is a white tag');
       await checkFooter(page);
       assert.equal(await page.evaluate(() => document.documentElement.scrollWidth > innerWidth), false);
       const intro = await page.locator('#intro').boundingBox();
-      assert.ok(intro.y + intro.height <= wall.y + 1, 'About reads above the strips');
+      assert.ok(intro.y >= wall.y && intro.y < wall.y + 40, 'About floats over the top of the strips');
       // The name is plain text, the same colour as the rest of About.
       assert.equal(await page.locator('.intro-text .name, .intro-text span[style]').count(), 0, 'the name is not lettered or coloured');
       // Every strip stands in its own colour, so the wall is whole from the
@@ -358,15 +375,11 @@ try {
       const blank = await page.locator('#strips .strip').evaluateAll(strips => strips.filter(strip =>
         !strip.style.getPropertyValue('--project-color')).map(strip => strip.dataset.project));
       assert.deepEqual(blank, [], 'every strip carries a colour to stand in for its photograph');
-      // The band is the writing alone: the links live under the wall now.
       assert.ok(intro.x + intro.width <= wall.x + wall.width + 1, 'the writing stays within the wall');
-      // About is a column, not a banner: at most three quarters of the wall on
-      // anything above a tablet, and the full width below that, where three
-      // quarters would be a gutter with a few words in it.
-      const column = await page.locator('.intro-text').boundingBox();
-      const share = column.width / (wall.width - 48); // the wall runs edge to edge, the writing keeps its gutter
-      if (options.viewport.width > 768) assert.ok(share <= 0.76, `About takes at most three quarters of the wall (${(share * 100).toFixed(0)}%)`);
-      else assert.ok(share > 0.99, `About takes the full width on a small screen (${(share * 100).toFixed(0)}%)`);
+      // About is centred over the wall, a tag's inset from either side at most.
+      const lead = await page.locator('.intro-lead').boundingBox();
+      assert.ok(Math.abs(lead.x + lead.width / 2 - wall.width / 2) < 2, `About is centred (${lead.x + lead.width / 2})`);
+      assert.ok(lead.x >= 11 && lead.x + lead.width <= wall.width - 11, 'and stays inside the wall');
       if (options.hasTouch) {
         // The landing keeps its wall on a phone: every project is a sliver and
         // they all fit one screen rather than scrolling sideways.
@@ -403,13 +416,12 @@ try {
       assert.ok(entries.every(entry => entry.width >= 8 && entry.height === wall.height && entry.named && entry.visibleText === ''));
       await page.locator('.strip:not([hidden]) .strip-image').evaluateAll(images => Promise.all(images.slice(0, 4).map(image => image.decode())));
       await page.screenshot({ path: `${output}/${name.replaceAll(' ', '-')}-home-wall.png` });
-      // About is in the band above the wall, on screen from the start.
+      // About floats over the top of the wall, on screen from the start.
       const text = await page.locator('.intro-text').boundingBox();
-      assert.equal(text.x, wall.x + 24, 'About keeps the gutter while the strips run to the edge');
-      assert.ok(text.y < wall.y, 'About reads above the wall without scrolling');
+      assert.ok(text.y >= wall.y && text.y < wall.y + 40, 'About reads over the top of the wall without scrolling');
       assert.equal(await page.locator('#intro').evaluate(intro => intro.inert), false);
       assert.equal(await page.locator('#intro').evaluate(intro => getComputedStyle(intro).opacity), '1');
-      assert.ok(text.width <= wall.width, 'the writing keeps a reading width inside the band');
+      assert.ok(text.width <= wall.width, 'the writing stays inside the wall');
       await page.screenshot({ path: `${output}/${name.replaceAll(' ', '-')}-about-above.png` });
     });
 
@@ -472,11 +484,11 @@ try {
       await page.goto(base + '/');
       await page.waitForFunction(() => document.documentElement.classList.contains('enhanced') && document.body.dataset.homeView === 'projects' && scrollY < 1);
       assert.equal(await page.locator('#home-title').count(), 0, 'the landing page carries no name of its own');
-      assert.equal(await page.locator('#home-header .header-contacts').count(), 0, 'the top band carries no links');
-      assert.equal(await page.locator('#wall-bar .header-contacts').isVisible(), true, 'contact links sit above the wall on every device');
+      assert.equal(await page.locator('#home-header .header-contacts').count(), 0, 'the header carries no links');
+      assert.equal(await page.locator('#wall-bar .header-contacts').isVisible(), true, 'contact links float over the wall on every device');
       const wall = await page.locator('#strips').boundingBox();
       const intro = await page.locator('#intro').boundingBox();
-      assert.ok(intro.y + intro.height <= wall.y + 1, 'About reads above the wall');
+      assert.ok(intro.y >= wall.y && intro.y < wall.y + 40, 'About floats over the top of the wall');
       // Both are on screen at once: the landing is one view, not two.
       assert.ok(intro.y >= 0 && wall.y < options.viewport.height, 'the writing and the work are visible together');
       if (options.hasTouch) return;
@@ -682,7 +694,8 @@ try {
     await waitForHomeWall(page);
     // About and the wall are both on screen, so there is no view to leave: the
     // keyboard reaches the writing, the links and the strips in one pass.
-    assert.equal((await page.locator('.intro-text').boundingBox()).x, 24, 'About stays left aligned on wide screens');
+    const lead = await page.locator('.intro-lead').boundingBox();
+    assert.ok(Math.abs(lead.x + lead.width / 2 - 720) < 2, 'About stays centred on wide screens');
     assert.equal(await page.evaluate(() => Math.round(scrollY)), 0, 'the landing opens without scrolling');
     await page.keyboard.press('Tab');
     const reached = await page.evaluate(() => document.activeElement?.closest('#intro, #home-header, #strips')?.id || document.activeElement?.tagName);
@@ -1040,11 +1053,11 @@ try {
       assert.equal(await filter.inputValue(), before, 'previewing a project does not change the filters');
       assert.deepEqual(await barLayout(), bar, 'the preview does not shift the filters within the collection');
       await page.screenshot({ path: `${output}/tag-preview${route === '/' ? '-home' : '-project'}.png` });
-      await page.mouse.move(0, 0);
+      await page.mouse.move(...await offWall(page));
       await filter.selectOption('light');
       await page.locator('#strip-kagora').hover();
       assert.equal(await filter.inputValue(), 'light', 'the preview leaves a chosen category in place');
-      await page.mouse.move(0, 0);
+      await page.mouse.move(...await offWall(page));
     }
   });
 
@@ -1167,7 +1180,7 @@ try {
         await page.locator('#project-filter').selectOption('mixed reality');
       }
       await page.locator('#collection').scrollIntoViewIfNeeded();
-      await page.mouse.move(0, 0);
+      await page.mouse.move(...await offWall(page));
       const strip = page.locator('.strip:not([hidden])').first();
       const image = strip.locator('img');
       await image.evaluate(image => image.decode());
@@ -1186,7 +1199,7 @@ try {
       await strip.hover();
       assert.ok((await samples).every(value => Math.abs(value - imageWidth) < 0.1), 'photograph width stays fixed for every expansion frame');
       assert.ok((await strip.boundingBox()).width > width * 1.8, 'the strip still opens');
-      await page.mouse.move(0, 0);
+      await page.mouse.move(...await offWall(page));
       await page.waitForTimeout(300);
       await strip.focus();
       await page.waitForTimeout(300);
@@ -1226,7 +1239,7 @@ try {
       assert.ok((await strip.boundingBox()).width > width * 4, 'hover expands before download completes');
       assert.ok(Math.abs(await renderedHeight() - initialHeight) < 1, 'preview stays at the same scale while the strip opens');
       assert.equal(await strip.getAttribute('aria-label'), 'Society Expo');
-      await page.mouse.move(0, 0);
+      await page.mouse.move(...await offWall(page));
       await strip.focus();
       await page.keyboard.press('Tab');
       await page.waitForTimeout(350);
@@ -1244,7 +1257,7 @@ try {
     assert.ok(Math.abs(await renderedHeight() - initialHeight) < 1, 'larger image keeps the preview scale');
     const fullSrc = await image.evaluate(image => image.currentSrc);
     await strip.hover();
-    await page.mouse.move(0, 0);
+    await page.mouse.move(...await offWall(page));
     await page.waitForTimeout(350);
     assert.equal(await image.evaluate(image => image.currentSrc), fullSrc, 'loaded image is retained after hover');
   });

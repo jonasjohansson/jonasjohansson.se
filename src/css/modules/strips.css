@@ -36,7 +36,22 @@ body[data-route="home"] .wall-bar .site-name { display: none; }
 .enhanced body:not([data-route="home"]) #collection { margin-inline: calc(-1 * var(--page-gutter)); }
 .enhanced body[data-route="home"] #content { padding: 0; }
 .enhanced body[data-route="home"] #main { display: flex; flex-direction: column; position: relative; min-height: 100dvh; }
-.enhanced .home-header { padding: var(--band-pad) var(--page-gutter); }
+/* About is a tag too, one per line where it wraps, centred over the
+   landing's wall with the links in a row beneath it. */
+.enhanced body[data-route="home"] .wall-bar { flex-wrap: wrap; justify-content: center; }
+.enhanced body[data-route="home"] .wall-bar .header-contacts { margin-left: 0; }
+.enhanced .wall-bar .intro { flex: 0 0 100%; max-width: none; text-align: center; }
+.enhanced .wall-bar .intro-text { max-width: none; }
+.enhanced .wall-bar .intro-lead {
+  display: inline;
+  padding: var(--tag-pad);
+  border-radius: var(--radius-title);
+  background: var(--bg-primary);
+  line-height: 1.9;
+  -webkit-box-decoration-break: clone;
+  box-decoration-break: clone;
+  pointer-events: auto;
+}
 .enhanced body[data-route="home"] #collection { flex: 1; height: auto; min-height: var(--wall-min-height); }
 .enhanced body[data-route="home"] #strips,
 .enhanced body[data-route="home"] .strip { height: auto; }
