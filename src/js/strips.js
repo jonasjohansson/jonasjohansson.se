@@ -264,7 +264,7 @@ export function initializeStrips() {
     for (const value of values) optgroup.append(new Option(text(value), value));
     filter.append(optgroup);
   };
-  group('Category', categories, tag => tag === 'av' ? 'Audiovisual' : tag[0].toUpperCase() + tag.slice(1));
+  group('Category', categories, tag => tag[0].toUpperCase() + tag.slice(1));
   group('Year', years, year => year);
   filters.append(filter);
   filters.hidden = false;

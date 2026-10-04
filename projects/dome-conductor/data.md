@@ -2,7 +2,7 @@
 title: Dome Conductor
 date: '2025-09-07'
 tags:
-  - av
+  - mixed
 blocks:
   - type: image
     src: dome-orchestra.webp

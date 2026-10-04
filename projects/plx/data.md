@@ -7,9 +7,7 @@ years:
   - 2024
   - 2023
 tags:
-  - light
   - community
-  - design
 blocks:
   - type: image
     src: chair-arch.jpg
