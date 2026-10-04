@@ -118,20 +118,17 @@ async function checkFooter(page) {
   assert.deepEqual((await contacts.locator('a').allTextContents()).map(text => text.trim()), ['CV', 'Email'], 'contact links stay concise');
   assert.equal(await contacts.locator('svg').count(), 0, 'contact links are plain text');
   assert.equal(await contacts.locator('button').count(), 0, 'the links are links, with no button among them');
-  // On the landing the links and filter are a row centred under the name; under
-  // a project the filter holds the right corner, a tag's inset in. The links
-  // sit just inside the filter either way.
+  // On either wall the links and filter are a row centred under the name,
+  // the links just inside the filter.
   const filterBox = await page.locator('#project-filters').boundingBox();
-  if (home) {
-    const row = (contactBox.x + filterBox.x + filterBox.width) / 2;
-    assert.ok(Math.abs(row - wall.x - wall.width / 2) < 2, `the links and filter are centred over the wall (${row})`);
-  } else assert.ok(Math.abs(filterBox.x + filterBox.width - wall.x - wall.width + 12) < 1, 'the filter floats just in from the wall’s right corner');
+  const row = (contactBox.x + filterBox.x + filterBox.width) / 2;
+  assert.ok(Math.abs(row - wall.x - wall.width / 2) < 2, `the links and filter are centred over the wall (${row})`);
   assert.ok(contactBox.x + contactBox.width <= filterBox.x + 1, 'the links sit just inside the filter');
   assert.ok(filterBox.x - contactBox.x - contactBox.width < 40, 'the links and the filter read as one group');
-  // Under the name at the top of the landing's wall, along the foot of a project's.
-  const lead = home ? await page.locator('#wall-bar .site-name').boundingBox() : null;
-  const edge = home ? contactBox.y - lead.y - lead.height : wall.y + wall.height - contactBox.y - contactBox.height;
-  assert.ok(edge > -1 && edge < 20, `contacts float just ${home ? 'under the name' : "inside the wall's foot"} (${edge}px)`);
+  // Under the name at the top of either wall.
+  const lead = await page.locator('#wall-bar .site-name').boundingBox();
+  const edge = contactBox.y - lead.y - lead.height;
+  assert.ok(edge > -1 && edge < 20, `contacts float just under the name (${edge}px)`);
   const tag = await contacts.locator('a').first().evaluate(link => getComputedStyle(link).backgroundColor);
   assert.equal(tag, 'rgb(255, 255, 255)', 'each link is a white tag');
   assert.equal(await page.locator('#project-search, input[type="search"]').count(), 0, 'there is no search field; the filter finds the work');
@@ -160,13 +157,12 @@ async function checkFooter(page) {
     assert.ok(Math.abs(title.x + title.width / 2 - (body.x + body.width / 2)) < 1, 'the floating project title is centred');
     assert.equal(await page.locator('#header-toggle').getAttribute('href'), `${prefix}/`, 'the project title leads home');
     assert.equal(await page.locator('#header .header-contacts').count(), 0, 'project hero header contains only the title');
-    // Below the other projects, the name holds the left of the links' band
-    // and leads home.
+    // Over the other projects, the name and tags sit as on the landing, and
+    // the name leads home.
     const name = page.locator('#wall-bar .site-name');
-    assert.equal((await name.textContent()).trim(), 'Jonas Johansson', 'the name sits above the project slivers');
+    assert.equal((await name.textContent()).trim(), 'Jonas Johansson', 'the name sits over the project slivers');
     assert.equal(await name.getAttribute('href'), `${prefix}/`, 'and leads home');
-    const nameBox = await name.boundingBox();
-    assert.ok(Math.abs(nameBox.x - 12) < 1 && nameBox.y + nameBox.height <= wall.y + wall.height, 'floating in the wall’s bottom-left corner');
+    assert.ok(Math.abs(lead.x + lead.width / 2 - wall.x - wall.width / 2) < 2 && lead.y >= wall.y && lead.y < wall.y + 40, 'centred over the top of the wall, as on the landing');
   }
   assert.equal(await page.locator('#project-filters').isVisible(), true, 'the filter is available on both strip walls');
   return checkFilterBounds(page);
@@ -688,6 +684,16 @@ try {
       await image.locator('xpath=../..').screenshot({ path: `${output}/balena-oriented-scan-${name}.png` });
     });
   }
+
+  await check('choosing a filter grows its tag to the right and leaves CV and Email where they are', desktop, async page => {
+    await visit(page);
+    const links = () => page.locator('#wall-bar .header-contacts a').evaluateAll(links => links.map(link => Math.round(link.getBoundingClientRect().x)));
+    const before = await links();
+    for (const value of await page.locator('#project-filter option:not([disabled])').evaluateAll(options => options.map(option => option.value))) {
+      await page.selectOption('#project-filter', value);
+      assert.deepEqual(await links(), before, `the links hold still for "${value || 'All work'}"`);
+    }
+  });
 
   await check('the landing needs no keyboard escape, with reduced motion', { ...desktop, reducedMotion: 'reduce' }, async page => {
     await visit(page);
