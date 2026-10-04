@@ -13,7 +13,7 @@
 .wall-tags { display: contents; }
 .enhanced .wall-bar { position: absolute; top: var(--tag-inset); right: 0; left: 0; z-index: var(--z-filter); padding: 0 var(--tag-inset); pointer-events: none; }
 .enhanced body[data-route="project"] .wall-bar { top: auto; bottom: var(--tag-inset); }
-.enhanced .wall-bar :is(.site-name, .header-contacts a, .project-filters select, .project-filters input[type="search"]) {
+.enhanced .wall-bar :is(.site-name, .header-contacts a, .project-filters select) {
   padding: var(--tag-pad);
   border-radius: var(--radius-title);
   background-color: var(--bg-primary);
@@ -59,13 +59,11 @@
    the blob reads as poured rather than set. */
 .enhanced body[data-route="home"] .wall-bar .header-contacts a:first-child { margin-right: 0.5rem; padding: 0.3em 0.75em; }
 .enhanced body[data-route="home"] .wall-bar .header-contacts a:nth-child(2) { padding: 0.12em 0.5em; }
-.enhanced body[data-route="home"] .wall-bar #project-search { padding: 0.22em 0.65em; }
 .enhanced body[data-route="home"] .wall-bar .project-filters select { margin-left: 0.5rem; padding: 0.35em 2em 0.35em 0.85em; }
 .enhanced .wall-bar .intro { position: absolute; width: 1px; height: 1px; overflow: hidden; clip: rect(0, 0, 0, 0); white-space: nowrap; }
 .enhanced body[data-route="home"] #collection { flex: 1; height: auto; min-height: var(--wall-min-height); }
 .enhanced body[data-route="home"] #strips,
 .enhanced body[data-route="home"] .strip { height: auto; }
-.enhanced body:not([data-route="home"]) #project-search { display: none; }
 .enhanced #strips { flex: 1; flex-direction: row; height: 100%; min-height: 0; overflow-x: auto; scrollbar-width: none; }
 .enhanced #strips::-webkit-scrollbar { display: none; }
 .enhanced .strip { flex: 1 1 0; width: auto; height: 100%; min-width: var(--strip-min-width); min-height: 0; transition: flex-grow var(--transition-fast); }
@@ -82,6 +80,4 @@
   .enhanced body[data-route="home"] #main { height: 100dvh; min-height: 0; }
   .enhanced body[data-route="home"] #collection { min-height: 50dvh; }
 }
-@media (hover: none), (max-width: 600px) {
-  .project-filters input[type="search"] { display: none; }
-}
+

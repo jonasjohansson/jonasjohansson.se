@@ -13,18 +13,12 @@ const categories = [...counts.keys()].filter(tag => !isYear(tag)).sort((a, b) =>
 const years = [...counts.keys()].filter(isYear).sort((a, b) => Number(b) - Number(a));
 let activeTags = new Set(categories);
 let activeYear = '';
-let activeQuery = '';
-const blankSelection = () => ({ tags: new Set(categories), year: '', query: '' });
-const filterSelections = new Map([['', { tags: activeTags, year: activeYear, query: activeQuery }]]);
-// Names are matched loosely: case and accents are not what anyone is typing at.
-const normalize = text => text.toLowerCase().normalize('NFD').replace(/[\u0300-\u036f]/g, '');
+const blankSelection = () => ({ tags: new Set(categories), year: '' });
+const filterSelections = new Map([['', { tags: activeTags, year: activeYear }]]);
 let currentSlug = '';
 const pendingImages = new WeakMap();
 
-function matchesFilters(project, selectedTags = activeTags, selectedYear = activeYear, selectedQuery = activeQuery) {
-  // Typing a name is its own filter: it searches the whole collection rather
-  // than narrowing whatever the dropdown last chose.
-  if (selectedQuery) return normalize(`${project.title} ${project.slug}`).includes(selectedQuery);
+function matchesFilters(project, selectedTags = activeTags, selectedYear = activeYear) {
   // A project belongs to one category or none; the year narrows that
   // selection. All work is every category at once, which shows untagged
   // projects too.
@@ -32,14 +26,14 @@ function matchesFilters(project, selectedTags = activeTags, selectedYear = activ
     (selectedTags.size === categories.length || project.tags.some(tag => selectedTags.has(tag)));
 }
 
-function hasMatches(selectedTags = activeTags, selectedYear = activeYear, selectedQuery = activeQuery) {
-  return [...projects.values()].some(project => project.slug !== currentSlug && matchesFilters(project, selectedTags, selectedYear, selectedQuery));
+function hasMatches(selectedTags = activeTags, selectedYear = activeYear) {
+  return [...projects.values()].some(project => project.slug !== currentSlug && matchesFilters(project, selectedTags, selectedYear));
 }
 
 // Year and category are alternatives: choosing one resets the other, so each
 // is validated against the other's reset state.
 function canSelectOnlyTag(tag) {
-  return hasMatches(new Set([tag]), '', '');
+  return hasMatches(new Set([tag]), '');
 }
 
 // One dropdown carries both lists, because they were always alternatives: a
@@ -54,15 +48,13 @@ function currentFilter() {
 // would empty it.
 function canSelect(value) {
   if (!value) return true;
-  return isYear(value) ? hasMatches(new Set(categories), value, '') : canSelectOnlyTag(value);
+  return isYear(value) ? hasMatches(new Set(categories), value) : canSelectOnlyTag(value);
 }
 
 function updateFilterStates() {
   const filter = document.getElementById('project-filter');
   filter.value = currentFilter();
   for (const option of filter.options) option.disabled = !canSelect(option.value);
-  const search = document.getElementById('project-search');
-  if (search && search.value !== activeQuery && document.activeElement !== search) search.value = activeQuery;
 }
 
 function setImageSize(entry, width) {
@@ -212,7 +204,7 @@ function bindTouchScrub(wall, signal) {
 export function updateStrips(slug) {
   currentSlug = slug || '';
   if (!filterSelections.has(currentSlug)) filterSelections.set(currentSlug, blankSelection());
-  ({ tags: activeTags, year: activeYear, query: activeQuery } = filterSelections.get(currentSlug));
+  ({ tags: activeTags, year: activeYear } = filterSelections.get(currentSlug));
   updateFilterStates();
   controller?.abort();
   controller = new AbortController();
@@ -242,17 +234,6 @@ export function initializeStrips() {
   initializeStripAudio();
   document.documentElement.classList.add('enhanced');
   const filters = document.getElementById('project-filters');
-  // Typing a name is the other way to find a project. Pointer devices only:
-  // a phone lists every card already, and a keyboard is a lot to ask for it.
-  const search = document.createElement('input');
-  search.id = 'project-search';
-  search.type = 'search';
-  search.placeholder = 'Search';
-  search.autocomplete = 'off';
-  search.spellcheck = false;
-  search.setAttribute('aria-label', 'Find a project by name');
-  search.setAttribute('aria-controls', 'strips');
-  filters.append(search);
   const filter = document.createElement('select');
   filter.id = 'project-filter';
   filter.setAttribute('aria-label', 'Filter projects');
@@ -285,37 +266,10 @@ export function initializeStrips() {
     // says on its face: a year shows every category, a category every year.
     const selection = filterSelections.get(currentSlug);
     selection.year = isYear(value) ? value : '';
-    selection.query = '';
-    search.value = '';
-    search.classList.remove('is-empty');
     activeTags.clear();
     if (value && !isYear(value)) activeTags.add(value);
     else categories.forEach(tag => activeTags.add(tag));
     applyFilters();
-  });
-  search.addEventListener('input', () => {
-    const query = normalize(search.value.trim());
-    // A name that matches nothing leaves the wall as it is rather than
-    // emptying it, the same rule the dropdown follows by closing off a
-    // category that has nothing left to show.
-    const empty = !!query && !hasMatches(activeTags, activeYear, query);
-    search.classList.toggle('is-empty', empty);
-    if (empty || query === activeQuery) return;
-    const selection = filterSelections.get(currentSlug);
-    selection.query = query;
-    selection.year = '';
-    activeTags.clear();
-    categories.forEach(tag => activeTags.add(tag));
-    // No page scroll here: the wall re-sorts under a keystroke, and moving
-    // the page on every letter would fight the typing.
-    updateStrips(currentSlug);
-    document.getElementById('strips').scrollLeft = 0;
-  });
-  search.addEventListener('keydown', event => {
-    if (event.key !== 'Escape' || !search.value) return;
-    search.value = '';
-    search.dispatchEvent(new Event('input'));
-    event.stopPropagation();
   });
   updateStrips(document.documentElement.dataset.project);
   // The wall changes size with the window and with the About text above it

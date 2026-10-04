@@ -108,7 +108,6 @@ async function checkFooter(page) {
   // A phone keeps the links and filter on either route.
   if (touch) {
     assert.equal(await page.locator('#project-filters').isVisible(), true, 'and both carry the filter');
-    assert.equal(await page.locator('#project-search').isVisible(), false, 'phones do not ask for typing');
     assert.equal(await contacts.isVisible(), true, 'contact links remain reachable on both mobile routes');
     return;
   }
@@ -135,11 +134,7 @@ async function checkFooter(page) {
   assert.ok(edge > -1 && edge < 20, `contacts float just ${home ? 'under the name' : "inside the wall's foot"} (${edge}px)`);
   const tag = await contacts.locator('a').first().evaluate(link => getComputedStyle(link).backgroundColor);
   assert.equal(tag, 'rgb(255, 255, 255)', 'each link is a white tag');
-  // Typing a name searches the collection, so the field is on the landing,
-  // where the collection is the page. A project wall keeps only the filter.
-  const search = page.locator('#project-search');
-  assert.equal(await search.isVisible(), home, `the search field belongs to the landing (visible: ${await search.isVisible()}, home: ${home})`);
-  if (home) assert.equal(await search.getAttribute('placeholder'), 'Search', 'the field says what it is');
+  assert.equal(await page.locator('#project-search, input[type="search"]').count(), 0, 'there is no search field; the filter finds the work');
   assert.equal(await page.locator('#intro a[href^="mailto:"]').count(), 0, 'the email is a link in the corner, not in About');
   if (home) {
     // The landing is named like a project: the name in the title's plate,
@@ -1110,59 +1105,6 @@ try {
     assert.equal(await page.locator('.strip.is-active').count(), 0, 'a vertical drag opens no strip');
     assert.equal(await page.evaluate(() => document.documentElement.dataset.project), undefined, 'and enters none');
   });
-
-  for (const [name, options] of [['desktop', desktop], ['mobile', mobile]]) {
-    await check(`${name} typing a name finds the project`, options, async page => {
-      await visit(page);
-      const search = page.locator('#project-search');
-      if (options.hasTouch) {
-        assert.equal(await search.isVisible(), false, 'phones list every card, so there is nothing to search');
-        return;
-      }
-      const filter = page.locator('#project-filter');
-      const shown = () => page.locator('#strips .strip:not([hidden])').evaluateAll(strips => strips.map(strip => strip.dataset.project));
-      const all = (await shown()).length;
-      await search.fill('jagad');
-      assert.deepEqual(await shown(), ['jagad'], 'a name shows that project alone');
-      // Case and accents are not what anyone is typing at, and a name that is
-      // only in the slug still finds it.
-      await search.fill('JAGAD');
-      assert.deepEqual(await shown(), ['jagad'], 'case does not matter');
-      await search.fill('vi-kommer');
-      assert.deepEqual(await shown(), ['vi-kommer-i-fred'], 'the address finds it too');
-      await search.fill('dome');
-      assert.deepEqual((await shown()).sort(), ['dome-conductor', 'dome-dreaming'], 'a fragment finds both matching projects');
-      // A name that matches nothing leaves the wall as it was, the same rule
-      // the dropdown follows by closing off a category with nothing to show.
-      const before = await shown();
-      await search.fill('qqqzzz');
-      assert.deepEqual(await shown(), before, 'a name that matches nothing leaves the wall alone');
-      assert.equal(await search.evaluate(input => input.classList.contains('is-empty')), true, 'and says so');
-      await search.fill('');
-      assert.equal((await shown()).length, all, 'clearing the field brings every project back');
-      assert.equal(await search.evaluate(input => input.classList.contains('is-empty')), false);
-      // Typing and the dropdown are alternatives, each clearing the other.
-      await filter.selectOption('light');
-      const lit = (await shown()).length;
-      assert.ok(lit > 1 && lit < all, 'the dropdown still narrows the wall');
-      await search.fill('jagad');
-      assert.deepEqual(await shown(), ['jagad'], 'typing searches the whole collection, not the chosen category');
-      assert.equal(await filter.inputValue(), '', 'and returns the dropdown to All work');
-      await filter.selectOption('design');
-      assert.equal(await search.inputValue(), '', 'choosing from the dropdown clears the field');
-      assert.ok((await shown()).length > 1, 'and the category is on the wall');
-      await search.fill('jagad');
-      await search.press('Escape');
-      assert.equal(await search.inputValue(), '', 'Escape clears the field');
-      assert.equal((await shown()).length, all, 'and the wall is whole again');
-      await checkFooter(page);
-      // The wall under a project is a way out, not a collection to search.
-      await visit(page, `/${await page.evaluate(() => window.__PROJECTS_DATA__[0].slug)}/`);
-      await page.locator('#collection').evaluate(collection => collection.scrollIntoView({ block: 'start' }));
-      assert.equal(await search.isVisible(), false, 'a project wall offers no search field');
-      assert.equal(await page.locator('#project-filter').isVisible(), true, 'but keeps the filter');
-    });
-  }
 
   await check('touch devices download a card-sized image at any pixel density', { ...mobile, deviceScaleFactor: 3 }, async page => {
     await visit(page);

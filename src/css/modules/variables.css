@@ -82,7 +82,6 @@
   /* Interface */
   --chrome-pad: 0.75rem; /* inside buttons and the skip link */
   --chevron: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 24 24' fill='%231a1816' shape-rendering='crispEdges'%3E%3Cpath d='M4 8h2v2H4zm2 2h2v2H6zm2 2h2v2H8zm2 2h2v2h-2zm4 0h-2v2h2zm2-2h-2v2h2zm2-2h-2v2h2zm2-2h-2v2h2z'/%3E%3C/svg%3E");
-  --search-clear-icon: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 10 10'%3E%3Cpath d='M1%201L9%209M9%201L1%209' stroke='black' stroke-width='1.4'/%3E%3C/svg%3E");
   --z-filter: 10;
   --z-header: 300;
   --z-skip-link: 1000; /* top of the stack */

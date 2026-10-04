@@ -99,6 +99,10 @@ try {
           assert.ok(count > 0 && count < projects.length);
           assert.equal(await page.locator('#project-count').textContent(), `${count} projects`);
           await filter.selectOption('');
+          assert.ok(await page.locator('#strips .strip:not([hidden])').count() > count, 'All work brings every project back');
+          // Vista is lit work; with the wall narrowed to it, its strip is wide
+          // enough to activate without chasing a sliver.
+          await filter.selectOption('light');
           const link = page.getByRole('link', { name: 'Vista', exact: true });
           if (options.hasTouch) {
             await link.tap();
@@ -106,11 +110,9 @@ try {
             assert.equal(await page.locator('#strip-vista.is-active').count(), 1);
             await link.tap();
           } else {
-            const search = page.getByRole('searchbox', { name: 'Find a project by name' });
-            await search.fill('vista');
-            assert.equal(await page.locator('#strips .strip:not([hidden])').count(), 1);
-            await search.press('Escape');
-            assert.ok(await page.locator('#strips .strip:not([hidden])').count() > 1);
+            // Hovering widens the strip; let it settle before the click.
+            await link.hover();
+            await page.waitForTimeout(400);
             await link.click();
           }
           await page.waitForSelector('#projects #vista');
