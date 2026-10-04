@@ -39,8 +39,11 @@
 /* On the landing the name is set like a project's title, centred where
    that title floats, with the links and filter in a row of tags beneath.
    The first sentence of About stays for screen readers and search. */
-.enhanced body[data-route="home"] .wall-bar { top: var(--title-top); flex-direction: column; gap: var(--spacing-sm); }
-.enhanced body[data-route="home"] .wall-tags { display: flex; flex-wrap: wrap; justify-content: center; gap: var(--tag-gap); }
+.enhanced body[data-route="home"] .wall-bar { top: var(--title-top); flex-direction: column; gap: var(--tag-gap); filter: url(#goo); }
+.goo-defs { position: absolute; }
+.goo-fill { flood-color: var(--bg-primary); }
+.enhanced body[data-route="home"] .wall-tags { display: flex; flex-wrap: wrap; justify-content: center; gap: var(--tag-gap) var(--blob-gap); }
+.enhanced body[data-route="home"] .wall-bar :is(.header-contacts, .project-filters) { gap: var(--blob-gap); }
 .enhanced body[data-route="home"] .wall-bar .header-contacts { margin-left: 0; }
 .enhanced body[data-route="home"] .wall-bar .site-name {
   margin: 0;
