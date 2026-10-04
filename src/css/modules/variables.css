@@ -48,8 +48,9 @@
   /* Strips */
   --strip-band-height: clamp(12rem, 24vw, 19rem); /* uniform rows on narrow and touch displays */
   --band-pad: var(--spacing-md); /* white above and below the writing and links over the wall */
-  --band-height: calc(var(--font-size-ui) * var(--line-height-base) + 2 * var(--band-pad));
-  --wall-bar-reserve: 20rem; /* room About leaves for the links beside it */
+  --tag-inset: 0.75rem; /* white tags floating over the wall, from its edge */
+  --tag-gap: 0.375rem; /* between floating tags */
+  --tag-pad: 0.2em 0.6em; /* inside a floating tag */
   --strip-grow: 24;
   --strip-min-width: 1.125rem;
   --wall-min-height: 22rem;
