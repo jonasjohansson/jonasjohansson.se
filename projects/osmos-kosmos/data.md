@@ -1,14 +1,15 @@
 ---
 title: Osmos Kosmos
-color: "#b16d4b"
+color: "#b4aaa4"
 date: "2019-09-19"
 type: work
 tags:
   - mixed reality
 blocks:
   - type: image
-    src: 01.jpg
-    alt: "Linda Nurk shows visitors her grown textiles with pressed flowers, hanging above clear vitrines against a rust-red container wall at Open Cell."
+    src: hero.jpg
+    focal: "50% 45%"
+    alt: "Linda Nurk's Flora bustier lit from inside against black, pressed flowers in pink, purple and yellow set into the grown textile, with sheer sleeves."
   - type: text
     content: >-
       Augmented reality for Linda Nurk's grown textiles. Point a phone at a
@@ -35,6 +36,12 @@ blocks:
       textiles themselves as tracking targets.
       [Erik Norrhede](https://eriknorrhede.com) modelled the 3D flowers and
       [Alexander Wallin](https://alexanderwallin.com) made the music.
+  - type: image
+    src: 01.jpg
+    alt: "Linda Nurk shows visitors her grown textiles with pressed flowers, hanging above clear vitrines against a rust-red container wall at Open Cell."
+  - type: image
+    src: detail.jpg
+    alt: "Close-up of a model's face under a grown textile mask set with pressed petals, lit pink. Photograph by Erica Bergsmeds."
   - type: image
     src: 02.jpg
     size: half-left
