@@ -39,10 +39,7 @@ blocks:
       No app was needed. The QR code in the marker opened a web page, and with
       the camera pointed at the pillar a door opened in the concrete onto
       another place: a sunset, a rainforest, fire, drifting clouds, chosen at
-      random from eleven films. It ran in the phone's browser, built with
-      [A-Frame](https://aframe.io/) and Jerome Etienne's
-      [AR.js](https://github.com/jeromeetienne/AR.js). Less steady than an
-      app, but open to anyone with a phone.
+      random from eleven films.
   - type: video
     src: portal.mp4
     poster: portal-poster.jpg
