@@ -9,7 +9,7 @@ tags:
 blocks:
   - type: image
     src: 01.jpg
-    alt: "Visitors gather by a rust-red container wall at Open Cell, where three grown textile pieces with pressed flowers hang above clear vitrines."
+    alt: "Linda Nurk shows visitors her grown textiles with pressed flowers, hanging above clear vitrines against a rust-red container wall at Open Cell."
   - type: text
     content: >-
       Augmented reality for Linda Nurk's grown textiles. Point a phone at a
