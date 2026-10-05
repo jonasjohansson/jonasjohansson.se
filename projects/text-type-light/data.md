@@ -21,13 +21,14 @@ blocks:
     fontSize: small
     content: >-
       Text Type Light was a [Svartljus](/svartljus/) project that began in
-      2020 as an open call for text and type in light, while the pandemic kept
-      people apart. Each line that came in was set in type as an image 144
-      pixels high and loaded onto a handheld stick of 144 LEDs, which plays
-      the image back one column at a time. Walking the stick through a street,
-      a square or a station entrance on camera, then building up its trail in
-      TouchDesigner, left the words standing in the place. The finished pieces
-      went out as short films on Instagram.
+      spring 2020 as the COVID-19 Open Call for Text and Type in Light, while
+      the pandemic kept people apart. People sent in lines of text, typefaces
+      and music. Each line was set in type as an image 144 pixels high, one
+      pixel for each LED on a handheld stick, which plays the image back one
+      column at a time. We walked the stick through streets, squares and
+      station entrances on camera, then built up its trail in TouchDesigner,
+      so the words were left standing in the place. The finished pieces went
+      out as short films on Instagram.
   - type: image
     src: 03.jpg
     size: half-left
@@ -42,13 +43,53 @@ blocks:
   - type: text
     fontSize: small
     content: >-
+      The writing happened out in public space, at night, while gatherings
+      were restricted. On one walkway a sign read Håll
+      avstånd till varandra, keep your distance from each other, and the words
+      went up right beside it.
+  - type: image
+    src: 15.jpg
+    size: half-left
+    alt: "Här börjar jag, written in rough white light letters on a quay at night, the lit waterfront behind."
+  - type: image
+    src: 16.jpg
+    size: half-right
+    alt: "Här slutar du, written in light on a walkway at night beside an orange sign asking people to keep their distance."
+  - type: image
+    src: 11.jpg
+    alt: "Plats för nya tankar, written in white script light across a dark courtyard below a lit arched gateway."
+  - type: text
+    fontSize: small
+    content: >-
+      I built the stick around a Teensy 3.6 and a strip of 144 addressable RGB
+      LEDs. A small Python script, adapted from one by Lucas Berbesson of La
+      Fabrique DIY, turns each image into a text file of colour values, rotated
+      so that every column of the image becomes one frame for the strip. The
+      files go on the Teensy's SD card. Four buttons pick a file, light every
+      LED as a test, and start or stop playback. After start, the first LED
+      glows red for three seconds and goes dark for two, time to get into
+      position, then the stick shows a new column every 80 milliseconds while
+      it is carried along. The firmware is on
+      [GitHub](https://github.com/jonasjohansson/pixelstick).
+  - type: image
+    src: 12.jpg
+    alt: "Comment te dire adieu, auf Wiedersehen, written in light along the entrance of Stockholm Centralstation as travellers pass."
+  - type: image
+    src: 13.jpg
+    alt: "Words in broad light letters, starting with Exist, run along a waiting metro train on a striped platform."
+  - type: image
+    src: 14.jpg
+    alt: "Synvilla in jagged light letters beneath a tall metal frame at dusk."
+  - type: text
+    fontSize: small
+    content: >-
       That autumn [Nobel Week Lights](https://nobelweeklights.se/) asked us
       for something similar for their social media, since the Nobel
       festivities that year were digital. We made three new pieces with the
       words Ljus i mörkret, light in the darkness, at Stadshuset, Stadsmuseet
-      and Sergels torg, in handwritten lettering by Fredrika Frykstrand, who
-      had taken part in the open call. We filmed them on 31 October 2020, and
-      Francesco Torelli wrote the music.
+      and Sergels torg, in handwritten lettering by Fredrika Frykstrand, whose
+      Synvilla had come in through the open call. We filmed them on 31 October
+      2020, and Francesco Torelli wrote the music.
   - type: video
     src: sergels.mp4
     poster: sergels-poster.jpg
@@ -76,6 +117,7 @@ blocks:
   - type: text
     fontSize: small
     content: >-
-      I managed the project, built the LED stick and documented the shoots,
-      and Victoria Albrecht handled the technical production.
+      The project grew out of Victoria Albrecht's internship with Svartljus in
+      spring 2020. I managed the project, built the LED stick and documented
+      the shoots, and Victoria handled the technical production.
 ---
