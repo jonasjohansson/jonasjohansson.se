@@ -91,7 +91,7 @@ blocks:
       3D worlds behind the fabric, from the stone walls of Hide kulturbrott to
       the pier at Skrea and a forest at Unna. Louise Silfversparre and Lina
       Reidarsdotter built the 3D worlds and Francesco Torelli made the music.
-      They hung in [Markuskyrkan](/markuskyrkan/) that autumn. Spark AR has
+      They hung in Markuskyrkan in Stockholm that autumn. Spark AR has
       since closed, so I rebuilt them for the browser:
       [try them](https://jonasjohansson.github.io/vista-ar/) by pointing a phone at
       [Hide](https://jonasjohansson.github.io/vista-ar/target.html?e=hide), [Skrea](https://jonasjohansson.github.io/vista-ar/target.html?e=skrea) or
