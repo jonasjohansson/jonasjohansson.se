@@ -33,9 +33,6 @@ blocks:
     src: 03.jpg
     alt: "The empty stage before the premiere: drums, double bass and vibraphone between three tall screens showing flame-like shapes, white spirals and the Lumia tape graphic."
   - type: image
-    src: 04.jpg
-    alt: "A trumpeter in silhouette against a tall screen of purple, red and green line drawing."
-  - type: image
     src: 05.jpg
     alt: "A rehearsal in a dark room with three tall glowing screens of purple and green liquid shapes around the band."
   - type: video
@@ -55,9 +52,6 @@ blocks:
     poster: 01-poster.jpg
     ar: 0.5625
     alt: "The band on stage above the AI animation for Oket: an ox, a cart wheel and birds in a dark forest."
-  - type: image
-    src: 07.jpg
-    alt: "Double bass, trumpet and bass clarinet rehearse beside a projection of a glowing, fractured face-like form while someone follows on a laptop."
   - type: image
     src: 08.jpg
     alt: "The musicians take a bow under misty projections of a pine forest in green and blue."

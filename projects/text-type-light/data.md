@@ -20,10 +20,11 @@ blocks:
   - type: text
     fontSize: small
     content: >-
-      Text Type Light was a [Svartljus](/svartljus/) project that began in
-      spring 2020 as the COVID-19 Open Call for Text and Type in Light, while
-      the pandemic kept people apart. People sent in lines of text, typefaces
-      and music. Each line was set in type as an image 144 pixels high, one
+      Text Type Light began in spring 2020 as Victoria Albrecht's project
+      during her internship with [Svartljus](/svartljus/), and grew into one
+      we made together. It started as the COVID-19 Open Call for Text and
+      Type in Light, while the pandemic kept people apart. About two dozen
+      people sent in lines of text, typefaces and music. Each line was set in type as an image 144 pixels high, one
       pixel for each LED on a handheld stick, which plays the image back one
       column at a time. We walked the stick through streets, squares and
       station entrances on camera, then built up its trail in TouchDesigner,
@@ -117,7 +118,6 @@ blocks:
   - type: text
     fontSize: small
     content: >-
-      The project grew out of Victoria Albrecht's internship with Svartljus in
-      spring 2020. I managed the project, built the LED stick and documented
-      the shoots, and Victoria handled the technical production.
+      I managed the project, built the LED stick and documented the shoots,
+      and Victoria handled the technical production.
 ---
