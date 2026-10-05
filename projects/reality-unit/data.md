@@ -23,14 +23,13 @@ blocks:
   - type: text
     fontSize: small
     content: >-
-      For the Gather festival in September 2019, Maria Kling, Onur Yuksel
-      and I arrived at Trädgården, the club garden under the bridge, as the
+      For the Gather festival in September 2019, Maria Kling, Onur Yuksel,
+      [Rose Hallgren](https://rosehallgren.se/) and I arrived at Trädgården, the club garden under the bridge, as the
       unit: matching boiler suits and everything a work crew needs, wheat
       paste, brushes, ladders, fika and a thermos. Over two days we pasted a
       black and white AR marker, a few metres across and printed on dozens of
       sheets, onto the pillar above the stairs, finishing on the festival's
-      first day while explaining to visitors what it was for. Pontus Berg
-      Ekman filmed the work.
+      first day while explaining to visitors what it was for.
   - type: image
     src: floor.jpg
     alt: "The marker laid out on the floor of an empty classroom, its black frame, stripes and QR code assembled from many printed sheets."
