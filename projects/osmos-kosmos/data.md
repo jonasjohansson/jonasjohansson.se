@@ -57,7 +57,7 @@ blocks:
       cast of her body, grows an algorithmically generated bloom. The effect
       also worked on the bustier's photo in the exhibition catalogue. Meta
       closed Spark AR in January 2025, so the AR now lives only in screen
-      captures like these.
+      captures like these. Linda and I took the photographs and recordings.
   - type: image
     src: 04.jpg
     alt: "Three of Linda Nurk's lit textile sculptures hang above a bed of dried grasses at Sven-Harrys konstmuseum."
