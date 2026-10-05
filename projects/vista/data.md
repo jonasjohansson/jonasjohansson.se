@@ -93,7 +93,7 @@ blocks:
       Reidarsdotter built the 3D worlds and Francesco Torelli made the music.
       They hung in [Markuskyrkan](/markuskyrkan/) that autumn. Spark AR has
       since closed, so I rebuilt them for the browser:
-      [try them](https://jonasjohansson.github.io/spark-revival/effects/vista/) by pointing a phone at
-      [Hide](https://jonasjohansson.github.io/spark-revival/target.html?e=hide), [Skrea](https://jonasjohansson.github.io/spark-revival/target.html?e=skrea) or
-      [Unna](https://jonasjohansson.github.io/spark-revival/target.html?e=unna) on another screen.
+      [try them](https://jonasjohansson.github.io/vista-ar/) by pointing a phone at
+      [Hide](https://jonasjohansson.github.io/vista-ar/target.html?e=hide), [Skrea](https://jonasjohansson.github.io/vista-ar/target.html?e=skrea) or
+      [Unna](https://jonasjohansson.github.io/vista-ar/target.html?e=unna) on another screen.
 ---
