@@ -12,9 +12,9 @@ blocks:
     alt: "A man in a white suit walks into a bare white room marked 2.18, past a pale sofa under two frosted windows."
   - type: text
     content: >-
-      Room 2.18 in Satans död, a 3,500 square metre labyrinth of art, theatre
-      and music in an empty office building in Sickla, Stockholm. TODO: one
-      line on what the room was and what I made.
+      A small room split in two by a door covered in mirror film. As the
+      light changed sides, the mirror turned into a window, and the person
+      looking back was not you.
   - type: image
     src: 02.jpg
     alt: "The room number 2.18 stencilled in black on a white wall beside an open door."
@@ -44,8 +44,12 @@ blocks:
   - type: text
     fontSize: small
     content: >-
-      TODO: my role in 2.18 (concept, light, video, the mirror?) and anyone I
-      made it with.
+      Room 2.18 was my room. Two lamps, one on each side of the door, sensed
+      the visitor and took turns switching on. With your side lit, the film
+      was a mirror; when the light moved to the other side, it went
+      transparent. The lamps alternated faster and faster, flickering between
+      reflection and window. The far side was a mirrored copy of the room, and
+      I was hiding in it, moving with the visitor like a reflection.
   - type: image
     src: 06.jpg
     alt: ""
@@ -58,10 +62,9 @@ blocks:
     fontSize: small
     content: >-
       In June 2018, after the run, a short film was shot in the building. A
-      man in a white suit walks the corridors into 2.18, where a light
+      man in a white suit walks the corridors into 2.18, where the light
       flickers and the mirror becomes a window with a masked double on the
-      other side. TODO: who filmed, edited and performed, and who made the
-      other rooms the film passes through.
+      other side.
   - type: image
     src: 07.jpg
     alt: "Seen from above, a figure in a white mask and suit reaches up into a tangle of pale, dry branches."
