@@ -38,9 +38,11 @@ blocks:
   - type: image
     src: 05.jpg
     alt: "A rehearsal in a dark room with three tall glowing screens of purple and green liquid shapes around the band."
-  - type: image
-    src: 06.jpg
-    alt: "An AI-generated painterly ox with curved horns stands in a dark forest."
+  - type: video
+    src: oket.mp4
+    poster: oket-poster.jpg
+    ar: 1.777778
+    alt: "AI animation for Oket: a farmer walks into a dark forest, an ox with curved horns emerges and dissolves into the wooden cart."
   - type: text
     fontSize: small
     content: >-
