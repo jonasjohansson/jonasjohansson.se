@@ -3,7 +3,6 @@ title: Osmos Kosmos
 color: "#b16d4b"
 date: "2019-09-19"
 type: work
-unlisted: true
 tags:
   - mixed reality
 blocks:
@@ -46,6 +45,9 @@ blocks:
     poster: 02-poster.jpg
     ar: 0.5625
     alt: "Through a phone camera, digital flowers bloom out of the pressed flowers on a glowing bustier hanging in a dark room."
+  - type: image
+    src: 04.jpg
+    alt: "Three of Linda Nurk's lit textile sculptures hang above a bed of dried grasses at Sven-Harrys konstmuseum."
   - type: text
     fontSize: small
     content: >-
@@ -58,7 +60,4 @@ blocks:
       also worked on the bustier's photo in the exhibition catalogue. Meta
       closed Spark AR in January 2025, so the AR now lives only in screen
       captures like these. Linda and I took the photographs and recordings.
-  - type: image
-    src: 04.jpg
-    alt: "Three of Linda Nurk's lit textile sculptures hang above a bed of dried grasses at Sven-Harrys konstmuseum."
 ---

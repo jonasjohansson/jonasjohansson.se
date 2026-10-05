@@ -3,7 +3,6 @@ title: Text Type Light
 color: "#8167bf"
 date: '2020-12-01'
 type: work
-unlisted: true
 tags:
   - light
   - community
@@ -63,11 +62,6 @@ blocks:
     src: 07.jpg
     size: half-right
     alt: "Ljus i mörkret in light letters across the rain-wet courtyard of Stadsmuseet, its windows lit."
-  - type: text
-    fontSize: small
-    content: >-
-      I managed the project, built the LED stick and documented the shoots,
-      and Victoria Albrecht handled the technical production.
   - type: image
     src: 08.jpg
     size: half-left
@@ -79,4 +73,9 @@ blocks:
   - type: image
     src: 10.jpg
     alt: "Outside Kulturhuset Stadsteatern, one person holds the LED stick while another checks a laptop."
+  - type: text
+    fontSize: small
+    content: >-
+      I managed the project, built the LED stick and documented the shoots,
+      and Victoria Albrecht handled the technical production.
 ---

@@ -3,7 +3,6 @@ title: Fenomen
 color: "#36575A"
 date: '2024-03-15'
 type: work
-unlisted: true
 tags:
   - stage
   - light

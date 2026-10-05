@@ -3,7 +3,6 @@ title: Lumia
 color: "#454d9e"
 date: '2022-09-23'
 type: work
-unlisted: true
 tags:
   - stage
 blocks:

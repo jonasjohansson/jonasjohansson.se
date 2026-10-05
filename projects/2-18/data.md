@@ -3,7 +3,6 @@ title: "2.18"
 color: "#6c6b68"
 date: '2017-11-04'
 type: work
-unlisted: true
 tags:
   - stage
 blocks:
@@ -55,14 +54,6 @@ blocks:
     poster: 01-poster.jpg
     ar: 1.777778
     alt: "A masked figure in white moves through a white room, a forest of pale branches and dark corridors before reaching the mirror in room 2.18."
-  - type: text
-    fontSize: small
-    content: >-
-      In June 2018, after the run, I made a short film in the building with
-      [Rose Hallgren](https://rosehallgren.se/), the two of us in front of the
-      camera. A man in a white suit walks the corridors into 2.18, where the
-      light flickers and the mirror becomes a window with a masked double on
-      the other side.
   - type: image
     src: 07.jpg
     alt: "Seen from above, a figure in a white mask and suit reaches up into a tangle of pale, dry branches."
@@ -72,4 +63,12 @@ blocks:
   - type: image
     src: 09.jpg
     alt: "A long, dim corridor with red numbers painted on the walls and a bright light at the far end."
+  - type: text
+    fontSize: small
+    content: >-
+      In June 2018, after the run, I made a short film in the building with
+      [Rose Hallgren](https://rosehallgren.se/), the two of us in front of the
+      camera. A man in a white suit walks the corridors into 2.18, where the
+      light flickers and the mirror becomes a window with a masked double on
+      the other side.
 ---
