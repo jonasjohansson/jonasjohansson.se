@@ -61,6 +61,9 @@ blocks:
       phone, her Flora bustier, grown from a culture of bacteria and yeast on a
       cast of her body, grows an algorithmically generated bloom. The effect
       also worked on the bustier's photo in the exhibition catalogue. Meta
-      closed Spark AR in January 2025, so the AR now lives only in screen
-      captures like these. Linda and I took the photographs and recordings.
+      closed Spark AR in January 2025, so in 2026 I rebuilt the effect for the
+      browser with encantar.js and three.js, from the original project files.
+      [Try it](https://jonasjohansson.github.io/spark-revival/effects/embodiment/) by pointing a phone at
+      [the bustier](https://jonasjohansson.github.io/spark-revival/target.html?e=embodiment) on another screen. Linda and
+      I took the photographs and recordings.
 ---

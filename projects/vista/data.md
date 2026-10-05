@@ -83,4 +83,17 @@ blocks:
       at Stockholm Showww in 2014 and at
       [Myriad](https://rethread.art/projects/myriad/) in R1 Reactor Hall in 2024,
       a re|thread project on origin and authorship.
+  - type: text
+    fontSize: small
+    content: >-
+      In 2020 three Vista landscapes, Hide, Skrea and Unna, became Vista AR:
+      maps printed as textiles that opened, through an Instagram filter, into
+      3D worlds behind the fabric, from the stone walls of Hide kulturbrott to
+      the pier at Skrea and a forest at Unna. Louise Silfversparre and Lina
+      Reidarsdotter built the 3D worlds and Francesco Torelli made the music.
+      They hung in [Markuskyrkan](/markuskyrkan/) that autumn. Spark AR has
+      since closed, so I rebuilt them for the browser:
+      [try them](https://jonasjohansson.github.io/spark-revival/effects/vista/) by pointing a phone at
+      [Hide](https://jonasjohansson.github.io/spark-revival/target.html?e=hide), [Skrea](https://jonasjohansson.github.io/spark-revival/target.html?e=skrea) or
+      [Unna](https://jonasjohansson.github.io/spark-revival/target.html?e=unna) on another screen.
 ---
