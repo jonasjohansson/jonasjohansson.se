@@ -15,10 +15,10 @@ blocks:
       Augmented reality for Linda Nurk's grown textiles. Point a phone at a
       piece and a digital garden grows out of its pressed flowers.
   - type: video
-    src: 01.mp4
-    poster: 01-poster.jpg
-    ar: 0.5175
-    alt: "On a phone screen, 3D flowers and grasses grow out of a backlit textile panel of pressed petals and spread across the wall around it."
+    src: 02.mp4
+    poster: 02-poster.jpg
+    ar: 0.5625
+    alt: "Through a phone camera, digital flowers bloom out of the pressed flowers on a glowing bustier hanging in a dark room."
   - type: text
     fontSize: small
     content: >-
@@ -37,9 +37,6 @@ blocks:
       [Erik Norrhede](https://eriknorrhede.com) modelled the 3D flowers and
       [Alexander Wallin](https://alexanderwallin.com) made the music.
   - type: image
-    src: 01.jpg
-    alt: "Linda Nurk shows visitors her grown textiles with pressed flowers, hanging above clear vitrines against a rust-red container wall at Open Cell."
-  - type: image
     src: detail.jpg
     alt: "Close-up of a model's face under a grown textile mask set with pressed petals, lit pink. Photograph by Erica Bergsmeds."
   - type: image
@@ -50,11 +47,6 @@ blocks:
     src: 03.jpg
     size: half-right
     alt: "Grown textile pieces in a clear vitrine, with a tablet beside them showing the Osmos Kosmos film."
-  - type: video
-    src: 02.mp4
-    poster: 02-poster.jpg
-    ar: 0.5625
-    alt: "Through a phone camera, digital flowers bloom out of the pressed flowers on a glowing bustier hanging in a dark room."
   - type: image
     src: 04.jpg
     alt: "Three of Linda Nurk's lit textile sculptures hang above a bed of dried grasses at Sven-Harrys konstmuseum."
@@ -76,6 +68,5 @@ blocks:
       closed Spark AR in January 2025, so in 2026 I rebuilt the effect for the
       browser with encantar.js and three.js, from the original project files.
       [Try it](https://jonasjohansson.github.io/osmoskosmos/) by pointing a phone at
-      [the bustier](https://jonasjohansson.github.io/osmoskosmos/target.html) on another screen. Linda and
-      I took the photographs and recordings.
+      [the bustier](https://jonasjohansson.github.io/osmoskosmos/target.html) on another screen.
 ---
