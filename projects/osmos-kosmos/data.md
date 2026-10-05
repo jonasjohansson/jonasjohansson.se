@@ -23,10 +23,13 @@ blocks:
     content: >-
       Osmos Kosmos was a collaboration with couture artist
       [Linda Nurk](https://www.lindanurk.com/), shown at
-      [Biodesign Here Now](https://www.opencell.bio/ldf/osmos-kosmos) at Open
+      [Biodesign Here Now](https://www.opencell.bio/biodesignherenow/2019) at Open
       Cell in London during the London Design Festival, 19 to 22 September
-      2019. Linda grows her own biodegradable textiles and lays pressed petals
-      and leaves into them. Through pattern recognition we treated each piece
+      2019. Linda grows her own textiles with what she calls the
+      [Couture Vivante method](https://www.lindanurk.com/couturevivantemethod),
+      joining raw elements of nature with couture: home-grown bio-textiles,
+      and silkworms raised on a torso mould that weave petals and leaves into
+      the fabric itself. Through pattern recognition we treated each piece
       as a digital garden, so the life that made the fabric could carry on
       virtually. I built the AR as an iPhone app in Unity and Vuforia, with the
       textiles themselves as tracking targets.
