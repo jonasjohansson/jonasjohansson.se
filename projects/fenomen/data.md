@@ -38,9 +38,10 @@ blocks:
     content: >-
       Tomas and I designed the stage: a black gauze in front of the band and
       screens behind it, so the projection lands on both, with the musicians
-      standing in between. I made the moving image and the lighting. Part of
-      the material came from a desk in the stalls, where colour and liquids on
-      a light table were filmed from above, next to a microscope.
+      standing in between. I made the visuals and the lighting. Much of the
+      imagery was made live from a desk in the stalls: colour and liquids on
+      a light table and under a microscope, filmed and fed straight into the
+      projection as the band played.
   - type: image
     src: 05.jpg
   - type: image

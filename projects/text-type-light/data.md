@@ -1,7 +1,7 @@
 ---
 title: Text Type Light
 color: "#8167bf"
-date: '2020-06-01'
+date: '2020-12-01'
 type: work
 unlisted: true
 tags:
@@ -66,9 +66,8 @@ blocks:
   - type: text
     fontSize: small
     content: >-
-      I managed the project, Victoria Albrecht handled the technical
-      production, and [Rose Hallgren](https://rosehallgren.se/) documented
-      the shoot.
+      I managed the project, built the LED stick and documented the shoots,
+      and Victoria Albrecht handled the technical production.
   - type: image
     src: 08.jpg
     size: half-left

@@ -1,5 +1,5 @@
 ---
-title: Satans Demokrati
+title: "2.18"
 color: "#6c6b68"
 date: '2017-11-04'
 type: work
@@ -21,7 +21,7 @@ blocks:
   - type: text
     fontSize: small
     content: >-
-      Satans död was the third and final part of Satans trilogi, which began
+      2.18 was one of the rooms in Satans död, the third and final part of Satans trilogi, which began
       with Satans demokrati in 2015. It ran from 4 November to 31 December
       2017 in a decommissioned Atlas Copco office building on Sickla
       industriväg. Visitors wore masks and found their own way through around

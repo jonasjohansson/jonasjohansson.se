@@ -69,5 +69,7 @@ blocks:
       Wernebäck ran sound, Charlotte Ek Wirack produced, Klara Viridén made
       the graphics and Servando Barreiro did programming. Lumia was a project
       by Tomas Larsson with support from Region Halland, Kulturrådet and Hylte
-      Kommun, in collaboration with Dramalogen.
+      Kommun, in collaboration with Dramalogen. In 2023 I made the visuals for
+      Lumia II as well, at Festaurang in Halmstad. Concert photos by [Rose
+      Hallgren](https://rosehallgren.se/).
 ---
