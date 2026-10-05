@@ -48,6 +48,9 @@ blocks:
     size: half-right
     alt: "Grown textile pieces in a clear vitrine, with a tablet beside them showing the Osmos Kosmos film."
   - type: image
+    src: title.jpg
+    alt: "Title card of the Osmos Kosmos exhibition film: a face mask of grown textile and pressed petals on crumpled white fabric, with the names Linda Nurk and Jonas Johansson."
+  - type: image
     src: 04.jpg
     alt: "Three of Linda Nurk's lit textile sculptures hang above a bed of dried grasses at Sven-Harrys konstmuseum."
   - type: video

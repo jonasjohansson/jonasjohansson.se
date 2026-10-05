@@ -47,11 +47,6 @@ blocks:
       about the old steam railway from Halmstad to Bolmen, I generated AI
       animations styled after Josef Frank and John Bauer. In Oket the guitar
       set how fast the animation played.
-  - type: video
-    src: 01.mp4
-    poster: 01-poster.jpg
-    ar: 0.5625
-    alt: "The band on stage above the AI animation for Oket: an ox, a cart wheel and birds in a dark forest."
   - type: image
     src: 08.jpg
     alt: "The musicians take a bow under misty projections of a pine forest in green and blue."
