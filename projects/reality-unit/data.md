@@ -34,9 +34,6 @@ blocks:
   - type: image
     src: floor.jpg
     alt: "The marker laid out on the floor of an empty classroom, its black frame, stripes and QR code assembled from many printed sheets."
-  - type: image
-    src: pasting.jpg
-    alt: "A crew member in red brushes paste over the black stripes of the marker while another in black checks a sheet at the foot of the pillar."
   - type: text
     fontSize: small
     content: >-
@@ -57,6 +54,9 @@ blocks:
     src: phone.jpg
     size: half-right
     alt: "Seen over a shoulder, a phone held up to the marker on the pillar shows the marker on its screen."
+  - type: image
+    src: daylight.jpg
+    alt: "The finished marker on the bridge pillar in daylight, above the wide wooden stairs of Trädgården."
   - type: text
     fontSize: small
     content: >-
@@ -64,7 +64,4 @@ blocks:
       [reality-unit.jonasjohansson.se](https://reality-unit.jonasjohansson.se)
       on a phone and point it at the
       [marker](https://reality-unit.jonasjohansson.se/marker2.png).
-  - type: image
-    src: daylight.jpg
-    alt: "The finished marker on the bridge pillar in daylight, above the wide wooden stairs of Trädgården."
 ---
