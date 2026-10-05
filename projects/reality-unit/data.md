@@ -19,7 +19,7 @@ blocks:
     src: paste-up.mp4
     poster: paste-up-poster.jpg
     ar: 1.897233
-    alt: "The crew in red and black boiler suits gather with buckets, smooth printed sheets flat by hand, brush on wheat paste from a ladder and stand back from the finished marker, which a phone then frames."
+    alt: "The crew in red and black boiler suits gather with buckets, press printed sheets flat by hand, paste up the black stripes of the marker and stand back from the pillar, until a phone frames the finished marker."
   - type: text
     fontSize: small
     content: >-
@@ -57,19 +57,6 @@ blocks:
     src: phone.jpg
     size: half-right
     alt: "Seen over a shoulder, a phone held up to the marker on the pillar shows the marker on its screen."
-  - type: text
-    fontSize: small
-    content: >-
-      On 30 September we came back, scraped the marker off the pillar and
-      threw it in the bin.
-  - type: image
-    src: removal.jpg
-    size: half-left
-    alt: "A crew member on the stairs tears the last strips of the marker from the pillar, paper piled on the stairs below."
-  - type: image
-    src: bin.jpg
-    size: half-right
-    alt: "A crew member with blue hair stuffs the torn marker into a rubbish bin beside a road."
   - type: text
     fontSize: small
     content: >-
