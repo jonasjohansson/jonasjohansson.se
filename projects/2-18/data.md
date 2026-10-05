@@ -50,9 +50,6 @@ blocks:
       transparent. The lamps alternated faster and faster, flickering between
       reflection and window. The far side was a mirrored copy of the room, and
       I was hiding in it, moving with the visitor like a reflection.
-  - type: image
-    src: 06.jpg
-    alt: ""
   - type: video
     src: 01.mp4
     poster: 01-poster.jpg
@@ -61,10 +58,11 @@ blocks:
   - type: text
     fontSize: small
     content: >-
-      In June 2018, after the run, a short film was shot in the building. A
-      man in a white suit walks the corridors into 2.18, where the light
-      flickers and the mirror becomes a window with a masked double on the
-      other side.
+      In June 2018, after the run, I made a short film in the building with
+      [Rose Hallgren](https://rosehallgren.se/), the two of us in front of the
+      camera. A man in a white suit walks the corridors into 2.18, where the
+      light flickers and the mirror becomes a window with a masked double on
+      the other side.
   - type: image
     src: 07.jpg
     alt: "Seen from above, a figure in a white mask and suit reaches up into a tangle of pale, dry branches."
