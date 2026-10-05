@@ -34,11 +34,12 @@ blocks:
   - type: text
     fontSize: small
     content: >-
-      In December Victoria Albrecht and I turned the church's outer wall into
-      an interactive light installation. The words Varde ljus, let there be
-      light, wrote themselves across the brick, followed by waves, patterns
-      and branches that landed on the wall and the birch grove in front of it
-      at the same time. People in the park could play it from a phone.
+      For Digital@idag, a day on digitalisation that the church took part in,
+      Victoria Albrecht and I put demo visuals on the church's outer wall with
+      an interactive setup that let passers-by play them from a phone. The
+      words Varde ljus, let there be light, wrote themselves across the brick,
+      followed by waves, patterns and branches that landed on the wall and the
+      birch grove in front of it at the same time.
   - type: image
     src: 05.jpg
     alt: "Coloured blocks of light projected onto the two tall tapestries behind the altar, around the gilded sun figure, in the dark brick church."
@@ -56,8 +57,9 @@ blocks:
       Inside, I projected onto the two large tapestries at the altar, picking
       out the figures and colours woven into them. The first version ran on 25
       September with a projector lent by Film Capital Stockholm through Smart
-      Kreativ Stad. The same night the church held an algorave: music
-      live-coded in TidalCycles, the code projected over the altar wall.
+      Kreativ Stad. The same night the church held an algorave: Joakim
+      Hellgren live-coded music in TidalCycles, with the code projected over
+      the altar wall.
   - type: image
     src: 08.jpg
     alt: "A live coder in a cap works on a laptop in the pews, the code projected large over the altar wall ahead of him."
@@ -69,8 +71,7 @@ blocks:
     content: >-
       For Advent I scanned the altar wall with a camera and projector and
       mapped the projection onto the tapestries, around the hanging lamps and
-      the Christmas trees. The programme on 28 November paired it with music by
-      Francesco Torelli, Joakim Hellgren and Brenda El Rayes.
+      the Christmas trees.
   - type: image
     src: 10.jpg
     alt: "Three tall printed banners hang on the brick wall of the nave: a pink and violet coastline, a dark brown land mass on white, and a green landscape with lakes."
@@ -115,7 +116,6 @@ blocks:
     content: >-
       The works were commissioned by Svenska kyrkan for Digital@idag, a
       national day on digitalisation held on 2 October 2020, together with
-      Skarpnäck parish. Gatherings were restricted that autumn, so the works
-      were also filmed on 28 November for a digital vernissage. The banners
-      were still hanging in March 2021.
+      Skarpnäck parish. The banners were still hanging in March 2021.
+      Photographs by [Rose Hallgren](https://rosehallgren.se/).
 ---

@@ -112,4 +112,5 @@ blocks:
       Torbjörn Fernström on 8 January. On 8 and 9 January Elias Aabjerg and
       I ran Electrobling, a beginners' workshop in soldering LEDs into small
       glowing accessories, with the fees donated to Stadsmissionen.
+      Photographs of Mannaminne by [Rose Hallgren](https://rosehallgren.se/).
 ---
