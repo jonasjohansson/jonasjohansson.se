@@ -7,8 +7,9 @@ tags:
   - stage
 blocks:
   - type: image
-    src: 01.jpg
-    alt: "A man in a white suit walks into a bare white room marked 2.18, past a pale sofa under two frosted windows."
+    src: 07.jpg
+    mobileFocal: "42% 60%"
+    alt: "Seen from above, a figure in a white mask and suit reaches up into a tangle of pale, dry branches."
   - type: text
     content: >-
       A small room split in two by a door covered in mirror film. As the
@@ -55,8 +56,8 @@ blocks:
     ar: 1.777778
     alt: "A masked figure in white moves through a white room, a forest of pale branches and dark corridors before reaching the mirror in room 2.18."
   - type: image
-    src: 07.jpg
-    alt: "Seen from above, a figure in a white mask and suit reaches up into a tangle of pale, dry branches."
+    src: 01.jpg
+    alt: "A man in a white suit walks into a bare white room marked 2.18, past a pale sofa under two frosted windows."
   - type: image
     src: 08.jpg
     alt: "The masked figure plays a grand piano in a room lined with gold foil, lit by lamps on the floor."
