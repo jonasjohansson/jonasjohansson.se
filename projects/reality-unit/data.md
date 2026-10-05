@@ -40,15 +40,8 @@ blocks:
       the camera pointed at the pillar a door opened in the concrete onto
       another place: a sunset, a rainforest, fire, drifting clouds, chosen at
       random from eleven films.
-  - type: video
-    src: portal.mp4
-    poster: portal-poster.jpg
-    ar: 0.56338
-    size: half-left
-    alt: "A phone screen recording: a small printed marker on a pink wall turns into a glowing window of violet and white light."
   - type: image
     src: phone.jpg
-    size: half-right
     alt: "Seen over a shoulder, a phone held up to the marker on the pillar shows the marker on its screen."
   - type: image
     src: daylight.jpg
