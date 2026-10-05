@@ -81,4 +81,11 @@ blocks:
     src: bin.jpg
     size: half-right
     alt: "A crew member with blue hair stuffs the torn marker into a rubbish bin beside a road."
+  - type: text
+    fontSize: small
+    content: >-
+      The piece runs again, restored from my Glitch archive: open
+      [reality-unit.jonasjohansson.se](https://reality-unit.jonasjohansson.se)
+      on a phone and point it at the
+      [marker](https://reality-unit.jonasjohansson.se/marker2.png).
 ---
