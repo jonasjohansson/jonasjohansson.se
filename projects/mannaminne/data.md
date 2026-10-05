@@ -3,6 +3,7 @@ title: Mannaminne
 color: "#23254d"
 date: '2021-11-05'
 type: work
+unlisted: true
 tags:
   - light
 blocks:

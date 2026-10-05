@@ -3,6 +3,7 @@ title: Text Type Light
 color: "#8167bf"
 date: '2020-12-01'
 type: work
+unlisted: true
 tags:
   - light
   - community
