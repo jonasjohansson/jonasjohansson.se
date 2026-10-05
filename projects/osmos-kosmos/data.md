@@ -51,6 +51,11 @@ blocks:
   - type: image
     src: 04.jpg
     alt: "Three of Linda Nurk's lit textile sculptures hang above a bed of dried grasses at Sven-Harrys konstmuseum."
+  - type: video
+    src: catalogue.mp4
+    poster: catalogue-poster.jpg
+    ar: 1.777778
+    alt: "A phone held over the Art in Fashion catalogue: digital flowers bloom out of the photograph of the Flora bustier while a hand turns the pages."
   - type: text
     fontSize: small
     content: >-
