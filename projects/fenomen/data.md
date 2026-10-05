@@ -1,12 +1,15 @@
 ---
 title: Fenomen
-color: "#36575A"
+color: "#4c4437"
 date: '2024-03-15'
 type: work
 tags:
   - stage
   - light
 blocks:
+  - type: image
+    src: stage.jpg
+    alt: "Gold rings of projected light fill a black gauze across the stage, with white spirals on the two screens behind and the vibraphone, keys and drums waiting between the layers."
   - type: image
     src: 01.jpg
     alt: "Waves of white particles fill a gauze and the screen behind it, with a vibraphonist, guitarist and drummer playing between the two layers."
@@ -47,10 +50,10 @@ blocks:
     src: 06.jpg
     alt: "The vibraphonist and guitarist play inside a projected field of white rings and a grid of dots."
   - type: video
-    src: 01.mp4
-    poster: 01-poster.jpg
+    src: showreel.mp4
+    poster: showreel-poster.jpg
     ar: 1.777778
-    alt: "The guitarist plays as marbled projections in red, green and blue flow across him and the stage."
+    alt: "Highlights from the concert: the band plays inside white particle waves, rings and grids, colour is dripped onto a glass dish on a light table, and marbled projections cover the musicians and the stage."
   - type: image
     src: 07.jpg
   - type: image
@@ -97,5 +100,6 @@ blocks:
       produced by [Musik Hallandia](https://musikhallandia.se/), and toured
       Kungsbacka Teater, Festsalen in Halmstad and Varbergs Teater in November
       2024. I also designed the posters and campaign material. Photos and film
-      by [Rose Hallgren](https://rosehallgren.se/).
+      by [Rose Hallgren](https://rosehallgren.se/). Tomas made a
+      [showreel](https://www.youtube.com/watch?v=PpYYR0NUITE) of the concert.
 ---
