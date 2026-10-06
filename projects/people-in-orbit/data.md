@@ -38,11 +38,11 @@ blocks:
   - type: image
     src: namesign.png
     size: half-left
-    alt: "The People in Orbit name sign: the band name in heavy black capitals over two lines, the O of Orbit drawn as the logo."
+    alt: "The People in Orbit name sign: the band name in heavy cream capitals over two lines on violet, the O of Orbit drawn as the logo."
   - type: image
     src: logo.png
     size: half-right
-    alt: "The People in Orbit logo: the O from the name sign on its own, a heavy black ring with a swept tail."
+    alt: "The People in Orbit logo: the O from the name sign on its own, a heavy cream ring with a swept tail on violet."
   - type: image
     src: close-away-left.jpg
     size: half-left
