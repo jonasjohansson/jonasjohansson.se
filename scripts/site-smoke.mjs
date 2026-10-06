@@ -335,12 +335,7 @@ try {
         assert.equal(hero.x, inset, `${slug} hero starts at ${inset ? 'the page gutter' : 'the screen edge'}`);
         assert.ok(Math.abs(hero.width - (options.viewport.width - 2 * inset)) < 1, `${slug} hero uses the full ${inset ? 'content' : 'screen'} width`);
         assert.equal(media.width, hero.width, `${slug} image or video fills the hero frame`);
-        // At least the screen; a picture taller than that at full width keeps its height.
-        const natural = await page.locator('.hero img, .hero video').evaluate(media => {
-          const ratio = media.videoWidth ? media.videoWidth / media.videoHeight : media.naturalWidth / media.naturalHeight;
-          return media.getBoundingClientRect().width / (ratio || Infinity);
-        });
-        assert.ok(Math.abs(hero.height - Math.max(options.viewport.height, natural)) < 2, `${slug} hero is the screen height or the picture's own, whichever is taller (${hero.height})`);
+        assert.ok(Math.abs(hero.height - options.viewport.height) < 1, `${slug} hero fills the screen height (${hero.height})`);
         assert.equal(media.height, hero.height, `${slug} image or video fills the hero frame top to bottom`);
         if (slug === 'klattermusen') {
           await page.locator('.hero img').evaluate(image => image.decode());
