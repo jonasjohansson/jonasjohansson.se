@@ -125,10 +125,11 @@ async function checkFooter(page) {
   assert.ok(Math.abs(row - wall.x - wall.width / 2) < 2, `the links and filter are centred over the wall (${row})`);
   assert.ok(contactBox.x + contactBox.width <= filterBox.x + 1, 'the links sit just inside the filter');
   assert.ok(filterBox.x - contactBox.x - contactBox.width < 40, 'the links and the filter read as one group');
-  // Under the name at the top of either wall.
+  // The name heads the wall; the links and filter float along its foot.
   const lead = await page.locator('#wall-bar .site-name').boundingBox();
-  const edge = contactBox.y - lead.y - lead.height;
-  assert.ok(edge > -1 && edge < 20, `contacts float just under the name (${edge}px)`);
+  const foot = wall.y + wall.height - contactBox.y - contactBox.height;
+  assert.ok(foot > 0 && foot < 80, `contacts float along the foot of the wall (${foot}px above it)`);
+  assert.ok(contactBox.y > lead.y + lead.height + wall.height / 2, 'well clear of the name');
   const tag = await contacts.locator('a').first().evaluate(link => getComputedStyle(link).backgroundColor);
   assert.equal(tag, 'rgb(255, 255, 255)', 'each link is a white tag');
   assert.equal(await page.locator('#project-search, input[type="search"]').count(), 0, 'there is no search field; the filter finds the work');

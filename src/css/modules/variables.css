@@ -52,7 +52,7 @@
   --tag-gap: 0.375rem; /* between floating tags */
   --tag-pad: 0.2em 0.6em; /* inside a floating tag */
   --knockout-ink: #b00000; /* the landing's name, cut out of its blob by the filter in strips.njk */
-  --blob-gap: 0.875rem; /* between the landing's tags, wide enough that each melts into the name on its own */
+  --blob-gap: 0.125rem; /* between the tags at the foot of the wall, close enough that they melt into one blob */
   --strip-grow: 24;
   --strip-min-width: 4rem; /* wide enough to read each photograph; the wall scrolls sideways when they do not all fit */
   --wall-min-height: 22rem;

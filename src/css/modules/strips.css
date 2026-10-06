@@ -11,16 +11,19 @@
 .site-name { margin-right: auto; text-decoration: none; white-space: nowrap; }
 .wall-tags { display: contents; }
 /* Over either wall the name is set like a project's title, centred where
-   that title floats, with the links and filter in a row of tags beneath,
-   all melted into one blob by the filter in strips.njk. The first sentence
-   of About stays for screen readers and search. */
+   that title floats, and the links and filter are a row of tags along the
+   foot of the wall, where a thumb reaches them. Each is melted into its own
+   blob by the filter in strips.njk. The first sentence of About stays for
+   screen readers and search. */
 .enhanced .wall-bar {
   position: absolute;
   top: var(--title-top);
   right: 0;
+  bottom: calc(var(--title-top) + env(safe-area-inset-bottom, 0px));
   left: 0;
   z-index: var(--z-filter);
   flex-direction: column;
+  justify-content: space-between;
   gap: var(--tag-gap);
   padding: 0 var(--tag-inset);
   pointer-events: none;
@@ -48,12 +51,12 @@
 /* Each tag is a slightly different size and CV and All work lean out, so
    the blob reads as poured rather than set. */
 .enhanced .wall-bar .header-contacts a { padding: var(--tag-pad); }
-.enhanced .wall-bar .header-contacts a:first-child { margin-right: 0.5rem; padding: 0.3em 0.75em; }
+.enhanced .wall-bar .header-contacts a:first-child { padding: 0.3em 0.75em; }
 .enhanced .wall-bar .header-contacts a:nth-child(2) { padding: 0.12em 0.5em; }
 /* The filter's slot is as wide as All work, so a longer choice grows its
    blob to the right and never moves CV or Email. */
 .enhanced .wall-bar .project-filters { width: 6.9em; overflow: visible; }
-.enhanced .wall-bar .project-filters select { max-width: none; margin-left: 0.5rem; padding: 0.35em 2em 0.35em 0.85em; background-position: right 0.6em center; }
+.enhanced .wall-bar .project-filters select { max-width: none; padding: 0.35em 2em 0.35em 0.85em; background-position: right 0.6em center; }
 .enhanced .wall-bar .intro { position: absolute; width: 1px; height: 1px; overflow: hidden; clip: rect(0, 0, 0, 0); white-space: nowrap; }
 
 /* A project wall and its links occupy one viewport. On the landing, About
