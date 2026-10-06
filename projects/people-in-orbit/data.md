@@ -36,21 +36,13 @@ blocks:
       itself, as if it were a physical world with several entries from the
       different sides of the print. I also made the band's name sign and logo.
   - type: image
-    src: namesign.png
-    size: half-left
-    alt: "The People in Orbit name sign: the band name in heavy cream capitals over two lines on violet, the O of Orbit drawn as the logo."
-  - type: image
-    src: logo.png
-    size: half-right
-    alt: "The People in Orbit logo: the O from the name sign on its own, a heavy cream ring with a swept tail on violet."
-  - type: image
     src: logo-orbit.png
     size: half-left
-    alt: "The logo as it sits in the name sign: a cream O on violet, held by two black hands orbiting around it."
+    alt: "The People in Orbit logo: a cream O on grey, held by two black hands orbiting around it."
   - type: image
     src: namesign-orbit.png
     size: half-right
-    alt: "The name sign as it sits on the cover: cream capitals on violet, with black orbiting hands wrapped around the O of Orbit."
+    alt: "The People in Orbit name sign: cream capitals on grey, with the logo's black hands orbiting the O of Orbit."
   - type: image
     src: close-away-left.jpg
     size: half-left
