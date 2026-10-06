@@ -44,6 +44,14 @@ blocks:
     size: half-right
     alt: "The People in Orbit logo: the O from the name sign on its own, a heavy cream ring with a swept tail on violet."
   - type: image
+    src: logo-orbit.png
+    size: half-left
+    alt: "A variant of the logo on violet: the O in black with a thin cream outline, held by two pairs of black hands orbiting around it."
+  - type: image
+    src: namesign-orbit.png
+    size: half-right
+    alt: "The name sign as it sits on the cover: cream capitals on violet, with black orbiting hands wrapped around the O of Orbit."
+  - type: image
     src: close-away-left.jpg
     size: half-left
     alt: "Detail of the left side of the front cover: dense foliage in blue, green and orange with a seated figure in red."
