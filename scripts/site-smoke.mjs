@@ -380,27 +380,32 @@ try {
       assert.ok(lead.x >= 11 && lead.x + lead.width <= wall.width - 11, 'and stays inside the wall');
       if (options.hasTouch) {
         // The landing keeps its wall on a phone: every project is a sliver and
-        // they all fit one screen rather than scrolling sideways.
+        // they all fit one screen rather than scrolling. Held upright, the
+        // slivers are bands stacked down the long side of the screen.
+        const upright = options.viewport.height > options.viewport.width;
         const slivers = await page.locator('#strips').evaluate(wall => {
           const strips = [...wall.querySelectorAll('.strip:not([hidden])')];
-          return { count: strips.length, scrolls: wall.scrollWidth > wall.clientWidth + 1,
+          return { count: strips.length, scrolls: wall.scrollWidth > wall.clientWidth + 1 || wall.scrollHeight > wall.clientHeight + 1,
             widths: strips.map(strip => strip.getBoundingClientRect().width),
-            heights: new Set(strips.map(strip => Math.round(strip.getBoundingClientRect().height))).size,
+            heights: strips.map(strip => strip.getBoundingClientRect().height),
             titles: strips.every(strip => strip.innerText.trim() === '') };
         });
+        const [across, along, span] = upright ? [slivers.widths, slivers.heights, wall.height] : [slivers.heights, slivers.widths, wall.width];
         assert.ok(slivers.count > 1, 'every project is on the wall');
         assert.equal(slivers.scrolls, false, 'the whole wall fits one screen');
-        assert.equal(slivers.heights, 1, 'the slivers share one height');
-        assert.ok(Math.abs(slivers.widths.reduce((a, b) => a + b, 0) - wall.width) < 2, 'they divide the wall between them');
+        assert.equal(new Set(across.map(Math.round)).size, 1, `the ${upright ? 'bands share one width' : 'slivers share one height'}`);
+        if (upright) assert.ok(Math.abs(across[0] - wall.width) < 1, 'each band runs the width of the screen');
+        assert.ok(Math.abs(along.reduce((a, b) => a + b, 0) - span) < 2, 'they divide the wall between them');
         assert.equal(slivers.titles, true, 'a sliver is a photograph, named only once it is opened');
         // A tap opens one; tapping the open one enters.
         const strip = page.locator('#strips .strip:not([hidden])').first();
         await strip.tap();
         await settleOpenStrip(page);
-        const opened = await page.evaluate(() => ({
-          width: document.querySelector('.strip.is-active').getBoundingClientRect().width,
-        }));
-        assert.ok(opened.width > wall.width / slivers.count * 3, `the tapped strip opens (${Math.round(opened.width)}px of ${Math.round(wall.width)})`);
+        const opened = await page.evaluate(upright => {
+          const rect = document.querySelector('.strip.is-active').getBoundingClientRect();
+          return upright ? rect.height : rect.width;
+        }, upright);
+        assert.ok(opened > span / slivers.count * 3, `the tapped strip opens (${Math.round(opened)}px of ${Math.round(span)})`);
         await page.screenshot({ path: `${output}/${name.replaceAll(' ', '-')}-home-wall.png` });
         return;
       }
@@ -432,7 +437,7 @@ try {
       assert.equal(await page.evaluate(() => document.documentElement.scrollWidth > innerWidth), false);
       if (options.hasTouch) {
         // A phone gets the same sliver wall here as on the landing: a screen of
-        // them rather than a grid of cards, opened by dragging a thumb along.
+        // them rather than a grid of cards. Held upright, they are bands.
         const slivers = await page.locator('#strips .strip:not([hidden])').evaluateAll(strips => strips.map(strip => {
           const rect = strip.getBoundingClientRect();
           const project = window.__PROJECTS_DATA__.find(entry => entry.slug === strip.dataset.project);
@@ -441,11 +446,13 @@ try {
         }));
         assert.ok(slivers.length > 1, 'every other project is a sliver');
         assert.ok(!slivers.some(sliver => sliver.slug === 'jagad'), 'the open project has none');
-        const sliverWidth = wall.width / slivers.length;
-        assert.ok(slivers.every(sliver => Math.abs(sliver.width - sliverWidth) < 1 && sliver.height === wall.height && sliver.named && sliver.visibleText === ''),
-          `every sliver is thin, full height and named (${Math.round(slivers[0].width)} of ${Math.round(wall.width)})`);
-        assert.equal(await page.locator('#strips').evaluate(strips => strips.scrollWidth <= strips.clientWidth + 1), true,
-          'and they all fit without scrolling sideways');
+        const upright = options.viewport.height > options.viewport.width;
+        const [thin, full, span] = upright ? ['height', 'width', wall.height] : ['width', 'height', wall.width];
+        const share = span / slivers.length;
+        assert.ok(slivers.every(sliver => Math.abs(sliver[thin] - share) < 1 && Math.abs(sliver[full] - wall[full]) < 1 && sliver.named && sliver.visibleText === ''),
+          `every ${upright ? 'band' : 'sliver'} is thin, runs the wall and is named (${Math.round(slivers[0][thin])} of ${Math.round(span)})`);
+        assert.equal(await page.locator('#strips').evaluate(strips => strips.scrollWidth <= strips.clientWidth + 1 && strips.scrollHeight <= strips.clientHeight + 1), true,
+          'and they all fit without scrolling');
         await checkFooter(page);
         await page.screenshot({ path: `${output}/${name.replaceAll(' ', '-')}-project-wall.png` });
         return;
@@ -1070,8 +1077,34 @@ try {
 
   // A sliver is too small to aim at, so the wall is meant to be read with a
   // thumb: drag along it and each strip opens as the finger passes, then tap
-  // the open one to enter it.
-  await check('dragging along the phone wall opens strips in turn, and a tap enters', mobile, async page => {
+  // the open one to enter it. Upright, the bands run down the screen, so the
+  // drag does too; on its side the phone keeps slivers and the drag runs across.
+  await check('dragging down the upright phone wall opens bands in turn, and a tap enters', mobile, async page => {
+    await visit(page);
+    const wall = await page.locator('#strips').boundingBox();
+    const x = wall.x + wall.width / 4;
+    const cdp = await page.context().newCDPSession(page);
+    const state = () => page.evaluate(() => ({ active: document.querySelector('.strip.is-active')?.dataset.project ?? null,
+      project: document.documentElement.dataset.project ?? null }));
+    await cdp.send('Input.dispatchTouchEvent', { type: 'touchStart', touchPoints: [{ x, y: wall.y + 120 }] });
+    const opened = [];
+    for (let step = 1; step <= 12; step++) {
+      await cdp.send('Input.dispatchTouchEvent', { type: 'touchMove', touchPoints: [{ x, y: wall.y + 120 + step * 30 }] });
+      await page.waitForTimeout(60);
+      const now = await state();
+      if (now.active && opened.at(-1) !== now.active) opened.push(now.active);
+    }
+    await cdp.send('Input.dispatchTouchEvent', { type: 'touchEnd', touchPoints: [] });
+    assert.ok(opened.length >= 4, `the drag opens bands as it passes (${opened.length})`);
+    assert.equal(await page.evaluate(() => scrollY), 0, 'and the landing stays put');
+    const lifted = await state();
+    assert.equal(lifted.project, null, 'lifting the finger enters nothing');
+    assert.equal(lifted.active, opened.at(-1), 'the last band the finger crossed stays open');
+    const open = await page.locator('.strip.is-active').boundingBox();
+    await page.touchscreen.tap(open.x + open.width / 2, open.y + open.height / 2);
+    await page.waitForFunction(slug => document.documentElement.dataset.project === slug, lifted.active);
+  });
+  await check('dragging along the sideways phone wall opens strips in turn, and a tap enters', { ...mobile, viewport: { width: 844, height: 390 } }, async page => {
     await visit(page);
     const wall = await page.locator('#strips').boundingBox();
     const y = wall.y + wall.height / 2;
@@ -1080,8 +1113,8 @@ try {
       project: document.documentElement.dataset.project ?? null }));
     await cdp.send('Input.dispatchTouchEvent', { type: 'touchStart', touchPoints: [{ x: wall.x + 20, y }] });
     const opened = [];
-    for (let step = 1; step <= 12; step++) {
-      await cdp.send('Input.dispatchTouchEvent', { type: 'touchMove', touchPoints: [{ x: wall.x + 20 + step * 22, y }] });
+    for (let step = 1; step <= 26; step++) {
+      await cdp.send('Input.dispatchTouchEvent', { type: 'touchMove', touchPoints: [{ x: wall.x + 20 + step * 30, y }] });
       await page.waitForTimeout(60);
       const now = await state();
       if (now.active && opened.at(-1) !== now.active) opened.push(now.active);
@@ -1096,12 +1129,13 @@ try {
     await page.waitForFunction(slug => document.documentElement.dataset.project === slug, lifted.active);
   });
 
-  // A drag up or down is the page scrolling, not a scrub.
-  await check('a vertical drag on the phone wall opens nothing', mobile, async page => {
+  // On a sideways phone the slivers run across, so a drag up or down is the
+  // page scrolling, not a scrub.
+  await check('a vertical drag on the sideways phone wall opens nothing', { ...mobile, viewport: { width: 844, height: 390 } }, async page => {
     await visit(page);
     const wall = await page.locator('#strips').boundingBox();
     const cdp = await page.context().newCDPSession(page);
-    const x = wall.x + wall.width / 2;
+    const x = wall.x + wall.width / 4; // clear of the tags centred along the foot
     await cdp.send('Input.dispatchTouchEvent', { type: 'touchStart', touchPoints: [{ x, y: wall.y + wall.height - 40 }] });
     for (let step = 1; step <= 8; step++) {
       await cdp.send('Input.dispatchTouchEvent', { type: 'touchMove', touchPoints: [{ x, y: wall.y + wall.height - 40 - step * 30 }] });

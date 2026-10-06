@@ -94,3 +94,15 @@
   .enhanced body[data-route="home"] #collection { min-height: 50dvh; }
 }
 
+/* A phone held upright turns the wall on its side: the strips are bands
+   stacked down the long side of the screen, each image as wide as the band
+   and centred on it, so opening a band reveals more of the same picture. */
+@media (hover: none) and (orientation: portrait) {
+  .enhanced #strips { flex-direction: column; overflow: hidden; }
+  .enhanced .strip,
+  .enhanced body[data-route="home"] .strip { width: 100%; height: auto; min-width: 0; transition: flex-grow var(--transition-fast); }
+  .enhanced .strip-image { width: 100%; height: var(--strip-image-height, 100%); top: 50%; left: 0; transform: translateY(-50%); }
+  /* The landing never scrolls, so a finger dragged up or down it runs
+     along the bands instead of moving the page. */
+  .enhanced body[data-route="home"] #strips { touch-action: none; }
+}

@@ -85,11 +85,34 @@ function setWideImage(entry) {
   setImageSize(entry, Math.ceil(width));
 }
 
+// A phone held upright stacks the strips as bands down the screen.
+const bands = matchMedia('(hover: none) and (orientation: portrait)');
+
+// A band's image is as wide as the wall and tall enough for the band at its
+// most open, centred on it, so opening the band never resizes the picture.
+function updateBandImages(strips, visible) {
+  const wallWidth = strips.clientWidth;
+  const style = visible.length ? getComputedStyle(visible[0]) : null;
+  const grow = style ? parseFloat(style.getPropertyValue('--strip-grow')) : 1;
+  const openHeight = strips.clientHeight * grow / (visible.length + grow - 1);
+  for (const entry of visible) {
+    const image = entry.querySelector('img');
+    if (!image) continue;
+    const ratio = Number(image.getAttribute('width')) / Number(image.getAttribute('height'));
+    const imageHeight = Math.max(wallWidth / ratio, openHeight);
+    entry.style.setProperty('--strip-image-height', `${imageHeight}px`);
+    entry.style.removeProperty('--strip-image-width');
+    setImageSize(entry, Math.ceil(imageHeight * ratio));
+  }
+}
+
 function updateImages() {
   const strips = document.getElementById('strips');
   const height = strips.clientHeight;
   const wallWidth = strips.clientWidth;
   const visible = entries.filter(entry => !entry.hidden);
+  if (bands.matches) return updateBandImages(strips, visible);
+  visible.forEach(entry => entry.style.removeProperty('--strip-image-height'));
   const style = visible.length ? getComputedStyle(visible[0]) : null;
   const minWidth = style ? parseFloat(style.minWidth) : 0;
   const width = Math.max(minWidth, wallWidth / Math.max(1, visible.length));
@@ -174,17 +197,21 @@ function bindTouchScrub(wall, signal) {
       navigator.vibrate?.(8);
     }, HOLD);
   }, { signal, passive: true });
-  // A finger dragged along the wall scrubs from the moment it moves sideways:
-  // the strip under it opens as it passes, so the wall can be read by running
-  // a thumb across it rather than tapping a 10px sliver. A drag up or down is
-  // the page scrolling and stays that way.
+  // A finger dragged along the wall scrubs from the moment it moves along
+  // the strips: the strip under it opens as it passes, so the wall can be
+  // read by running a thumb across it rather than tapping a 10px sliver.
+  // Slivers run sideways, so a drag up or down is the page scrolling. Bands
+  // run down the screen, and only the landing, which never scrolls, lets a
+  // drag up or down run along them; under a project that drag is the page.
   wall.addEventListener('pointermove', event => {
     if (event.pointerType !== 'touch' || scrubbing) return;
     const dx = event.clientX - startX, dy = event.clientY - startY;
     if (Math.hypot(dx, dy) <= SLOP) return;
     clearTimeout(timer);
     timer = null;
-    if (Math.abs(dx) <= Math.abs(dy)) return;
+    if (bands.matches) {
+      if (document.body.dataset.route !== 'home' || Math.abs(dy) <= Math.abs(dx)) return;
+    } else if (Math.abs(dx) <= Math.abs(dy)) return;
     scrubbing = true;
     wall.dataset.scrubbing = '';
     setActive(stripAt(event.clientX, event.clientY));
