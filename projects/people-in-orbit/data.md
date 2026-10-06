@@ -46,7 +46,7 @@ blocks:
   - type: image
     src: logo-orbit.png
     size: half-left
-    alt: "A variant of the logo on violet: the O in black with a thin cream outline, held by two pairs of black hands orbiting around it."
+    alt: "The logo as it sits in the name sign: a cream O on violet, held by two black hands orbiting around it."
   - type: image
     src: namesign-orbit.png
     size: half-right
