@@ -74,11 +74,13 @@
 .enhanced body[data-route="home"] .strip { height: auto; }
 .enhanced #strips { flex: 1; flex-direction: row; height: 100%; min-height: 0; overflow-x: auto; scrollbar-width: none; }
 .enhanced #strips::-webkit-scrollbar { display: none; }
-.enhanced .strip { flex: 1 1 0; width: auto; height: 100%; min-width: var(--strip-min-width); min-height: 0; transition: flex-grow var(--transition-fast); }
+.enhanced .strip { flex: 1 1 0; width: auto; height: 100%; min-width: var(--strip-min-width); min-height: 0; transition: flex-grow var(--transition-fast), min-width var(--transition-fast); }
 .enhanced .strip-image { width: var(--strip-image-width); max-width: none; left: var(--bg-x, 50%); transform: translateX(calc(-1 * var(--bg-x, 50%))); }
 
 @media (hover: hover) {
-  .enhanced .strip:is(:hover, :focus-visible) { flex-grow: var(--strip-grow); }
+  /* When the strips overflow the wall there is no free space for flex-grow to
+     share, so the open strip also takes the width strips.js measures for it. */
+  .enhanced .strip:is(:hover, :focus-visible) { flex-grow: var(--strip-grow); min-width: var(--strip-open-width, var(--strip-min-width)); }
 }
 @media (hover: none) {
   .enhanced .strip.is-active { flex-grow: var(--strip-grow); }

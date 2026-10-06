@@ -97,7 +97,13 @@ function updateImages() {
   // the changing strip width. Hover must never resize the photograph itself.
   const hover = matchMedia('(hover: hover)').matches;
   const grow = style ? parseFloat(style.getPropertyValue('--strip-grow')) : 1;
-  const openWidth = Math.max(minWidth, Math.min(wallWidth * grow / (visible.length + grow - 1), wallWidth - (visible.length - 1) * minWidth));
+  // More strips than fit at their minimum width scroll sideways; an open
+  // strip then takes a fixed share of the wall instead of the leftover space.
+  const overflow = visible.length * minWidth > wallWidth;
+  const openWidth = overflow
+    ? Math.max(minWidth, Math.min(wallWidth * 0.45, height * 1.5))
+    : Math.max(minWidth, Math.min(wallWidth * grow / (visible.length + grow - 1), wallWidth - (visible.length - 1) * minWidth));
+  strips.style.setProperty('--strip-open-width', `${openWidth}px`);
   const narrow = width <= height * 0.16;
   for (const entry of visible) {
     const image = entry.querySelector('img');
@@ -125,6 +131,18 @@ export function resetFilters(slug = '') {
 // only fires click when the finger lifts where it landed.
 const HOLD = 220; // ms of stillness before a touch becomes a scrub
 const SLOP = 8; // px of movement that makes a touch a swipe instead
+// The landing never scrolls up and down, so a mouse wheel over its wall moves
+// along the strips instead. Trackpads already scroll sideways everywhere.
+function bindWheel(wall, signal) {
+  wall.addEventListener('wheel', event => {
+    if (document.body.dataset.route !== 'home' || event.ctrlKey) return;
+    if (Math.abs(event.deltaX) >= Math.abs(event.deltaY)) return;
+    if (wall.scrollWidth <= wall.clientWidth) return;
+    event.preventDefault();
+    wall.scrollLeft += event.deltaY;
+  }, { passive: false, signal });
+}
+
 function bindTouchScrub(wall, signal) {
   let active = null, timer = null, scrubbing = false, startX = 0, startY = 0;
   const setActive = strip => {
@@ -227,6 +245,7 @@ export function updateStrips(slug) {
   const wall = document.getElementById('strips');
   initAnimation(wall, controller.signal);
   bindTouchScrub(wall, controller.signal);
+  bindWheel(wall, controller.signal);
   bindStripAudio(wall, controller.signal);
 }
 

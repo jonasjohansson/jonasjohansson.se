@@ -54,7 +54,7 @@
   --knockout-ink: #b00000; /* the landing's name, cut out of its blob by the filter in strips.njk */
   --blob-gap: 0.875rem; /* between the landing's tags, wide enough that each melts into the name on its own */
   --strip-grow: 24;
-  --strip-min-width: 1.125rem;
+  --strip-min-width: 4rem; /* wide enough to read each photograph; the wall scrolls sideways when they do not all fit */
   --wall-min-height: 22rem;
 
   /* Typography */
