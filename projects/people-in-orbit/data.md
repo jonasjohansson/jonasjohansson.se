@@ -8,7 +8,7 @@ tags:
 blocks:
   - type: image
     src: close-away.jpg
-    alt: "The Close/Away album cover: a dense botanical world in purple, pink and green, with figures seated before a glowing stage and the band name above."
+    alt: "The Close/Away album artwork without its type: a dense botanical world in purple, pink and green, with figures seated before a glowing stage under a violet sky."
   - type: text
     content: >-
       Album artwork for electroacoustic jazz quintet
@@ -34,7 +34,15 @@ blocks:
       and [Hilma af Klint](https://en.wikipedia.org/wiki/Hilma_af_Klint)'s
       colour work. The artwork is a repeating pattern that stitches onto
       itself, as if it were a physical world with several entries from the
-      different sides of the print.
+      different sides of the print. I also made the band's name sign and logo.
+  - type: image
+    src: namesign.png
+    size: half-left
+    alt: "The People in Orbit name sign: the band name in heavy black capitals over two lines, the O of Orbit drawn as the logo."
+  - type: image
+    src: logo.png
+    size: half-right
+    alt: "The People in Orbit logo: the O from the name sign on its own, a heavy black ring with a swept tail."
   - type: image
     src: close-away-left.jpg
     size: half-left
