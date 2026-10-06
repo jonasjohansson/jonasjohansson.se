@@ -1,6 +1,7 @@
 ---
 title: Chorus
 date: "2022-12-01"
+unlisted: true
 tags:
   - mapping
 blocks:
