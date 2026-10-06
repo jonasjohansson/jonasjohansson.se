@@ -38,11 +38,11 @@ blocks:
   - type: image
     src: logo-orbit.png
     size: half-left
-    alt: "The People in Orbit logo: a cream O on grey, held by two black hands orbiting around it."
+    alt: "The People in Orbit logo: a black O held by two grey hands orbiting around it."
   - type: image
     src: namesign-orbit.png
     size: half-right
-    alt: "The People in Orbit name sign: cream capitals on grey, with the logo's black hands orbiting the O of Orbit."
+    alt: "The People in Orbit name sign: black capitals, with the logo's grey hands orbiting the O of Orbit."
   - type: image
     src: close-away-left.jpg
     size: half-left
