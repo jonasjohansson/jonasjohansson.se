@@ -12,6 +12,17 @@ blocks:
       A sound-reactive work projected onto Uppsala Cathedral for [Allt ljus på
       Uppsala](https://alltljuspauppsala.se/) in 2021 and onto Storkyrkan for
       [Nobel Week Lights](https://nobelweeklights.se/) the year after.
+  - type: image
+    src: 02.jpg
+    alt: "Looking up at the west front of Uppsala Cathedral at night, where white looping lines form a mandala around the rose window above the lit stained glass."
+  - type: image
+    src: 03.jpg
+    size: half-left
+    alt: "Rows of wavy white lines fan out over the brick gable of Uppsala Cathedral, with points of light caught among them."
+  - type: image
+    src: 04.jpg
+    size: half-right
+    alt: "Uppsala Cathedral's gable seen from an angle, with looping lines and bright dots of light projected across the brick above the stained-glass window."
   - type: text
     fontSize: small
     content: >-
