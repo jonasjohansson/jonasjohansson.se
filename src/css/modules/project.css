@@ -48,17 +48,16 @@ figure { margin: 0; }
 .media-item :is(img, video) { display: block; width: 100%; height: auto; }
 .media-video { aspect-ratio: var(--ar); background: var(--surface-tint); }
 
+/* A hero fills at least the screen. A picture taller than that, at the full
+   width, keeps its whole height and the page scrolls down through it. */
 .hero {
   --hero-focal: var(--focal, center);
   position: relative;
-  height: var(--hero-height);
   overflow: hidden;
 }
 
 .hero :is(img, video) {
-  position: absolute;
-  inset: 0;
-  height: 100%;
+  min-height: var(--hero-height);
   object-fit: cover;
   object-position: var(--hero-focal);
 }
