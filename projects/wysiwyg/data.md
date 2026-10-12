@@ -105,7 +105,7 @@ blocks:
     fontSize: small
     content: >-
       In July 2026 it stood in the desert at Elsewhere, in Monegros, and in
-      the woods at Borderland in Denmark.
+      the woods at Borderland in Alversjö.
   - type: image
     src: sunset-viewer.jpg
     alt: "A visitor wearing headphones looks through the telescope as the sun sets over the landscape."

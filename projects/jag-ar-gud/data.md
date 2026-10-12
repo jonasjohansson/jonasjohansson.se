@@ -11,8 +11,8 @@ blocks:
     alt: "A performer faces a towering black-and-white portrait projected onto the dark stage."
   - type: text
     content: >-
-      Scenography, video and lighting design for an autobiographical stage
-      piece about bipolar disorder.
+      Video and lighting for an autobiographical stage piece about bipolar
+      disorder.
   - type: image
     src: 02.jpg
   - type: text
@@ -75,6 +75,7 @@ blocks:
     fontSize: small
     content: >-
       Danne Dahlin performed the piece, with Jakob Bladh directing and Teresia
-      Björk as Danne’s mentor. [Rose Hallgren](https://rosehallgren.se/) and I
-      shared video and scenography; I also designed the lighting.
+      Björk as Danne’s mentor. I did the video and lighting,
+      [Rose Hallgren](https://rosehallgren.se/) the scenography and Amadeus
+      Rudolfsson the sound.
 ---
