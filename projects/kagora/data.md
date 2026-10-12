@@ -11,8 +11,8 @@ blocks:
     alt: "A close view of Kagora's crossing ribs reveals rows of blue and cyan LEDs running along the curved structure."
   - type: text
     content: >-
-      A woven pavilion of moving light, built as a place to gather in the
-      woods.
+      A woven pavilion of moving light, built as a place to gather at
+      Borderland.
   - type: text
     fontSize: small
     content: >-

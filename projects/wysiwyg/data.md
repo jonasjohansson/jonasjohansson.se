@@ -104,7 +104,8 @@ blocks:
   - type: text
     fontSize: small
     content: >-
-      In July 2026 it stood in the desert at Elsewhere, and then in the woods.
+      In July 2026 it stood in the desert at Elsewhere, and then at
+      Borderland.
   - type: image
     src: sunset-viewer.jpg
     alt: "A visitor wearing headphones looks through the telescope as the sun sets over the landscape."
