@@ -42,8 +42,44 @@ jobs:
       url: ${{ steps.deployment.outputs.page_url }}
     runs-on: ubuntu-latest
     steps:
+      # Text files only: the photos and videos (1.3 GB) come from the media
+      # cache below, so git sends just the few that are new.
       - name: Checkout
         uses: actions/checkout@v4
+        with:
+          filter: blob:none
+          sparse-checkout-cone-mode: false
+          sparse-checkout: |
+            /*
+            !*.jpg
+            !*.jpeg
+            !*.png
+            !*.gif
+            !*.webp
+            !*.avif
+            !*.mp4
+            !*.webm
+            !*.mov
+            !*.mp3
+            !*.m4a
+            !*.wav
+            !*.ogg
+
+      - name: List photos and videos
+        id: media
+        run: bash scripts/ci-media.sh list >> "$GITHUB_OUTPUT"
+
+      - name: Restore photos and videos
+        id: media-cache
+        uses: actions/cache/restore@v4
+        with:
+          path: ~/site-media
+          key: site-media-v1-${{ steps.media.outputs.key }}
+          restore-keys: |
+            site-media-v1-
+
+      - name: Place photos and videos
+        run: bash scripts/ci-media.sh place
 
       - name: Setup Node (22)
         uses: actions/setup-node@v4
@@ -85,11 +121,28 @@ jobs:
       - name: Check project data
         run: npm test
 
-      - name: Upload artifact
-        uses: actions/upload-pages-artifact@v3
+      # What actions/upload-pages-artifact does, without zipping: the photos
+      # and videos are compressed already, and zipping them took ~15 s.
+      - name: Package site
+        run: tar --dereference --hard-dereference --directory dist -cf "$RUNNER_TEMP/artifact.tar" --exclude=.git --exclude=.github .
+
+      - name: Upload site
+        uses: actions/upload-artifact@v4
         with:
-          path: dist
+          name: github-pages
+          path: ${{ runner.temp }}/artifact.tar
+          retention-days: 1
+          compression-level: 0
+          if-no-files-found: error
 
       - name: Deploy
         id: deployment
         uses: actions/deploy-pages@v4
+
+      # After the deploy, so new photos never hold up publishing.
+      - name: Save photos and videos
+        if: steps.media-cache.outputs.cache-hit != 'true'
+        uses: actions/cache/save@v4
+        with:
+          path: ~/site-media
+          key: site-media-v1-${{ steps.media.outputs.key }}
