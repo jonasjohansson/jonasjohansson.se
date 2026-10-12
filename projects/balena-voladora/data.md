@@ -20,8 +20,7 @@ blocks:
       you can see the wooden joints and the metal mechanism doing the work.
       [Erik Schmitz](https://www.erikschmitz.art/) and Selim designed it,
       scaling a small DIY kinetic model up into something people could work
-      themselves, and it swam at Elsewhere in the Monegros desert in July
-      2026.
+      themselves, and it swam at Elsewhere in July 2026.
   - type: image
     src: cyan-profile.jpg
     alt: "A low side view of the whale with cyan ribs and a raised tail against the evening sky, its metal mechanism visible underneath."
