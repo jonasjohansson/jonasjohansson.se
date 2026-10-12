@@ -26,13 +26,19 @@ blocks:
   - type: text
     fontSize: small
     content: >-
-      I made animation for the film. Much of the work was about how one
-      painting moves into another: spreading pigment, wet edges, blooms,
-      ripples, light and mist, always starting from the paintings
-      themselves. I also worked on flocks of birds moving through the hall and
-      built a browser model of the room so we could see how a house, a
-      face or a stretch of water would land on the walls and floor while
-      the images were still being made.
+      I made animation for the film, and I was its technical producer. Much
+      of the animation was about how one painting moves into another:
+      spreading pigment, wet edges, blooms, ripples, light and mist, always
+      starting from the paintings themselves. I also worked on the flocks of
+      birds that move through the hall.
+
+
+      As technical producer I built a browser model of the room, so we could
+      see how a house, a face or a stretch of water would land on the walls
+      and floor while the images were still being made. I also set up the
+      templates the animators rendered their chapters with, one file for each
+      wall and one for the floor, and the route the finished files took to
+      the hall.
   # Blue houses
   - type: image
     src: blue-house-visitors.jpg
@@ -68,15 +74,11 @@ blocks:
       including [Annie Tådne](https://tadne.se/),
       [David Giese](https://davidgiese.com/),
       [Johannes Ferm Winkler](https://johannesfermwinkler.se/),
-      [David Nord and Boris Nawratil](https://www.davidboris.se/),
-      among others. [Full credits and visitor information](https://elverket.com/produktioner/lars-lerin).
+      [David Nord and Boris Nawratil](https://www.davidboris.se/).
+      Det Mörka Ljuset opened on 26 September 2026.
+      [Full credits and visitor information](https://elverket.com/produktioner/lars-lerin).
 
 
       Photographs by Martynas Justinevicius
       ([Glidephotos](https://www.instagram.com/glidephotos/)).
-  - type: text
-    fontSize: small
-    content: >-
-      Det Mörka Ljuset opens on 26 September 2026. Tickets are available
-      on [elverket.com](https://elverket.com/produktioner/lars-lerin).
 ---

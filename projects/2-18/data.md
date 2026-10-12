@@ -21,15 +21,14 @@ blocks:
   - type: text
     fontSize: small
     content: >-
-      2.18 was one of the rooms in Satans död, the third and final part of Satans trilogi, which began
-      with Satans demokrati in 2015. It ran from 4 November to 31 December
-      2017 in a decommissioned Atlas Copco office building on Sickla
-      industriväg. Visitors wore masks and found their own way through around
-      150 rooms, many of them dark enough to need a flashlight. Jimmy
-      Meurling, Andreas Blom and Py Huss-Wallin led the project for Woland
-      presenterar, with music by Magnus Larsson and sound design by Niklas
-      Nordström. More than 1,300 artists, architects, performers and
-      craftspeople took part.
+      2.18 was one of the rooms in Satans död, the third and final part of
+      Satans trilogi, which began with Satans demokrati in 2015. It ran from
+      4 November to 31 December 2017 in a decommissioned Atlas Copco office
+      building on Sickla industriväg. Visitors wore masks and found their own
+      way through around 150 rooms, many of them dark enough to need a
+      flashlight. Jimmy Meurling, Andreas Blom and Py Huss-Wallin led the
+      project for Woland presenterar, and more than 1,300 artists, architects,
+      performers and craftspeople took part.
   - type: image
     src: 03.jpg
     alt: "The man in the white suit faces a doorway mirror; the reflection looking back wears a white mask."

@@ -15,10 +15,10 @@ blocks:
   - type: text
     fontSize: small
     content: >-
-      In 2021, three short-throw projectors were installed in a small hotel room
-      at Hobo Hotel in Stockholm, with an elaborate speaker system and a custom
-      control interface on a tablet. Guests could book the room and browse curated
-      films and generative graphics, surrounded by visuals on every wall.
+      In 2021 we put three short-throw projectors, an elaborate speaker system
+      and a tablet with our own interface into a small room at Hobo Hotel in
+      Stockholm. Guests could book the room and browse curated films and
+      generative graphics that wrapped around every wall.
   - type: text
     fontSize: small
     content: >-

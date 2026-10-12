@@ -15,10 +15,12 @@ blocks:
   - type: text
     fontSize: small
     content: >-
-      In May 2026, I co-organised [Dome Dreaming](https://www.domedreaming.com), a
-      non-profit festival across three evenings at Wisdome Stockholm and one at
-      Wisdome Malmö. Both venues were newly built, and as far as we know it was
-      the first fulldome film festival in the Nordics.
+      In May 2026, [Fredrik Edström](https://www.ivar.studio/) of IVAR Studios,
+      [Sebastian Häger](https://www.linkedin.com/in/sebastian-h%C3%A4ger-53054b155/)
+      and I organised [Dome Dreaming](https://www.domedreaming.com), a
+      non-profit festival over three evenings at Wisdome Stockholm and one at
+      Wisdome Malmö. As far as we know, it was the first fulldome film festival
+      in the Nordics.
   - type: image
     src: 04.jpg
     colStart: 4
@@ -36,22 +38,20 @@ blocks:
   - type: text
     fontSize: small
     content: >-
-      The festival owes a lot to Stan VanderBeek. In the 1960s he built the
+      The festival owes a lot to Stan VanDerBeek. In the 1960s he built the
       [Movie-Drome](https://en.wikipedia.org/wiki/Movie-Drome) at Stony Point,
-      NY, a geodesic dome where audiences lay on the floor while films, slides
-      and sound played across the surface above them. He pictured a global
-      network of such domes sharing image libraries across borders, a kind of
-      pre-internet visual commons, and called the wider project Expanded
-      Cinema. The technology of his time couldn't quite catch up. Fulldome
-      projection and ambisonic sound finally let that proposition feel like a
-      medium.
+      New York, a geodesic dome where audiences lay on the floor while films,
+      slides and sound played across the surface above them. He imagined a
+      worldwide network of such domes exchanging images, and called it
+      Culture: Intercom. The technology of his time couldn't quite catch up.
   - type: text
     fontSize: small
     content: >-
-      Fulldome cinema fills the entire field of view, with ambisonic sound
-      coming from every direction. There are no edges to compose against, and
-      audiences sit or lie back and look up. We wanted to treat that as an
-      artistic medium, not a planetarium attachment.
+      Fulldome projection and ambisonic sound finally can. The image fills the
+      whole field of view and the sound comes from every direction, so there
+      are no edges to compose against, and the audience sits or lies back and
+      looks up. We wanted to treat that as an artistic medium, not a
+      planetarium attachment.
   - type: text
     fontSize: small
     content: >-
@@ -69,10 +69,9 @@ blocks:
   - type: text
     fontSize: small
     content: >-
-      Trähallen stayed open between sets so audiences could drift through it,
-      a tactile moss landscape, electromagnetic sculptures of branches and
-      orange extension cables, a VR embodiment piece, and the new mobile dome
-      from SKH.
+      Trähallen stayed open between sets, so audiences could drift through it:
+      a moss landscape to touch, electromagnetic sculptures of branches and
+      orange extension cables, a VR embodiment piece and SKH's new mobile dome.
   - type: image
     src: 13.jpg
     size: half-left
@@ -96,16 +95,14 @@ blocks:
   - type: text
     fontSize: small
     content: >-
-      I designed and built the festival website at
-      [domedreaming.com](https://www.domedreaming.com) and the surrounding
-      visual identity, with Linn Willebrand on graphics, animation and
-      communication. To help
-      artists prepare for the dome geometry, I also built a
+      I designed and built the festival's website and visual identity, with
+      Linn Willebrand on graphics, animation and communication. To help
+      artists prepare for the dome, I also built a
       [browser-based preview tool](https://preview.domedreaming.com) that maps
       any image or video onto a 3D model of Wisdome Stockholm, so they could
       see how their work would land on the surface before arriving for the
-      production residency. The 3D model was made by Ashley Reed at
-      [Smash Studio](https://www.smash.studio/).
+      production residency. Ashley Reed at
+      [Smash Studio](https://www.smash.studio/) made the 3D model.
   - type: image
     src: 15.jpg
     size: half-left
@@ -151,9 +148,6 @@ blocks:
   - type: text
     fontSize: small
     content: >-
-      I organised the festival with [Fredrik Edström](https://www.ivar.studio/) of
-      IVAR Studios and [Sebastian
-      Häger](https://www.linkedin.com/in/sebastian-h%C3%A4ger-53054b155/).
       Festival photography by [Rose Hallgren](https://rosehallgren.se/) and
       Glidephotos, with Rose also handling documentation and communication.
       Produced in collaboration with [Aavistus](https://www.aavistusfestival.fi/),
@@ -162,7 +156,4 @@ blocks:
       Artists](https://www.nava.community). Supported by Tekniska museet, [Malmö
       Stad](https://malmo.se), [Region Stockholm](https://www.regionstockholm.se)
       and [Kulturfonden Sverige-Finland](https://fondensverigefinland.org/).
-
-      Full programme and credits at
-      [domedreaming.com](https://www.domedreaming.com).
 ---

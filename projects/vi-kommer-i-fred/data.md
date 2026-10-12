@@ -19,10 +19,10 @@ blocks:
   - type: text
     fontSize: small
     content: >-
-      For the launch of TV4's sci-fi drama "Vi kommer i fred", a single-camera totem stood
-      in Kungsträdgården, facing the Royal Castle across the water, and dropped
-      whoever walked by straight into the show's opening scene, a huge alien craft
-      breaking through the clouds over the city.
+      It was for the launch of TV4's sci-fi drama "Vi kommer i fred". A
+      single-camera totem filmed the square and dropped whoever walked by
+      straight into the show's opening scene, a huge alien craft breaking
+      through the clouds over the city.
   - type: image
     src: 03.jpg
   - type: image
@@ -30,10 +30,9 @@ blocks:
   - type: text
     fontSize: small
     content: >-
-      Behind it, the whole invasion ran live in Resolume, mapped onto the live
-      camera feed so anyone who stepped up landed inside the shot. Two versions
-      of the scene, one for day and one for night, swapped on a timer to match
-      the light, and it ran around the clock for two weeks.
+      Behind it, the whole invasion ran in real time in Resolume. There were
+      two versions of the scene, one for day and one for night, swapping on a
+      timer to match the light, and it ran around the clock for two weeks.
   - type: image
     src: 05.jpg
     colStart: 1
@@ -56,6 +55,7 @@ blocks:
     fontSize: small
     content: >-
       Made with [Smash Studio](https://www.smash.studio/). I did the real-time
-      integration and the on-site install, getting the live camera feed placed
-      into the scene and mapped onto the totem, then calibrated on location.
+      integration and the install: putting the live camera feed inside the
+      scene so anyone who stepped up landed in the shot, mapping it to the
+      totem and calibrating it on location.
 ---

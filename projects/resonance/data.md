@@ -17,17 +17,14 @@ blocks:
   - type: text
     fontSize: small
     content: >-
-      Resonance was an interactive projection mapping piece on the facade of
-      Uppsala Town Hall. Four weatherproofed touch pads with
-      embedded lighting were placed in the main square, built to handle snow,
-      rain, and countless jumps. I built them with
-      [Arduino](https://www.arduino.cc/), feeding into the [Unreal
-      Engine](https://www.unrealengine.com/) project over USB. Each pad triggered
-      a colour ripple across the facade, animating an ocean scene on the
-      building's surface. When all four pads were activated at once, a final
-      sequence of light and music played out. I laser cut a scale model of the
-      building for testing the projection, and the facade was drone-scanned to
-      build a digital replica.
+      Four weatherproof pads with built-in lights stood in the main square,
+      made to take snow, rain and a lot of jumping. I built them with
+      [Arduino](https://www.arduino.cc/), wired over USB into the [Unreal
+      Engine](https://www.unrealengine.com/) project. Each pad sent a ripple of
+      colour across an ocean scene animated on the facade, and when all four
+      were pressed at once, a final sequence of light and music played out.
+      The facade was drone-scanned for a digital replica, and I laser-cut a
+      scale model of the building to test the projection on.
   - type: image
     src: 03.jpg
   - type: image

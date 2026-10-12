@@ -19,24 +19,24 @@ blocks:
     fontSize: small
     content: >-
       [Klättermusens Verkstad](https://www.instagram.com/klattermusens.verkstad/)
-      is the workshop and store of Swedish outdoor brand
+      is the workshop and store of the Swedish outdoor brand
       [Klättermusen](https://www.klattermusen.com/), a short walk from my studio.
       They wanted their mark tufted at two by two metres for the wall of the space.
 
 
-      The ground it sits on is an illustration I had already made: a circular
-      botanical scene, seed heads and reeds standing against a low sun. It went
-      into the previewer as an example of how a pattern might sit behind the mark,
-      and it was the one they kept. Their lettering and the mouse at its sewing
-      machine ended up drawn over it in Light Pink, with the sun carried through
-      in Ochre Yellow.
-
-
-      Rather than send a flat mockup, I built them that previewer. It recolours
+      Rather than send a flat mockup, I built them a previewer. It recolours
       artwork into real yarn, simulates how cut pile will render it, tallies the
       cones to order, and drops the result into a photograph of the wall it was
-      headed for. The rest of the palette was settled by playing with it: Salmon,
-      Aubergine Purple and Maple Brown.
+      headed for.
+
+
+      For the ground I tried an illustration I had already made, a circular
+      botanical scene of seed heads and reeds against a low sun, to show how a
+      pattern might sit behind the mark. It was the one they kept. Their
+      lettering and the mouse at its sewing machine are drawn over it in Light
+      Pink, with the sun carried through in Ochre Yellow, and the rest of the
+      palette was settled by playing with the previewer: Salmon, Aubergine Purple
+      and Maple Brown.
   - type: image
     src: 02.jpg
     alt: "The original circular botanical illustration, with seed heads, reeds and a low sun."
@@ -49,10 +49,10 @@ blocks:
   - type: text
     fontSize: small
     content: >-
-      We made it on their shop floor over the first week of August with
-      [Rose Hallgren](https://rosehallgren.se/), on the modular tufting frame she
-      designed for [Tufting Ex Machina](/tufting-ex-machina/), which opens to two
-      by four metres and folds down into a sports bag. The tool exports a
+      [Rose Hallgren](https://rosehallgren.se/) and I made it on their shop floor
+      over the first week of August, on the modular tufting frame she designed
+      for [Tufting Ex Machina](/tufting-ex-machina/), which opens to two by four
+      metres and folds down into a sports bag. The previewer also exports a
       projection version of the design, contours only and no pile texture, which
       we threw onto the stretched cloth and traced by hand: in mirror, since a
       tufting gun punches from the back and every letter has to be drawn in
@@ -73,9 +73,7 @@ blocks:
       from. At around twenty kilos, the hanging became a design problem of its
       own. A curtain rod would have held it too far off the wall, so I drew a
       printed saddle for the bar to drop into instead: two screws, no rake, and
-      the rug sitting 5.8 mm off the concrete. They went on the printer twice. The
-      first mount left it very slightly askew, so a second set carries an offset
-      to correct it.
+      the rug sitting 5.8 mm off the concrete.
   - type: image
     src: 09.jpg
     alt: "Hands stitch the linen backing along the rug's edge beside a folding ruler and mounting clip."
@@ -95,8 +93,6 @@ blocks:
   - type: text
     fontSize: small
     content: >-
-      Made with [Rose Hallgren](https://rosehallgren.se/) for [Klättermusens
-      Verkstad](https://www.instagram.com/klattermusens.verkstad/). Rose designed
-      the tufting frame and hand-stitched the backing. I made the artwork, yarn
-      previewer and wall mounts.
+      The saddles went on the printer twice. The first mount left the rug very
+      slightly askew, so the second set carries an offset to correct it.
 ---

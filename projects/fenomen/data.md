@@ -23,9 +23,10 @@ blocks:
   - type: text
     fontSize: small
     content: >-
-      Fenomen is a concert by four musicians from Halland: Tomas Larsson on
-      guitar, Mattias Grönroos on piano and bass, Fia Forslund on vibraphone
-      and Michael Edlund on drums. Each piece starts from a phenomenon, from
+      Fenomen is a concert by Tomas Larsson on guitar, Mattias Grönroos on
+      piano and bass, Fia Forslund on vibraphone and Michael Edlund on drums,
+      four musicians from Halland, where I grew up. Each piece starts from a
+      phenomenon, from
       northern lights and snowflakes to lightning and bioluminescence, and the
       music moves between composed parts and improvisation in step with the
       images.
@@ -57,7 +58,7 @@ blocks:
     fontSize: small
     content: >-
       I also designed the posters and the campaign, including a portrait of
-      each of us in the band.
+      each of the five of us.
   - type: image
     src: poster-1.jpg
     alt: "Fenomen poster: white rippling rings around a dark centre, like a drop in water."

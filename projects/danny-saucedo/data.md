@@ -20,11 +20,9 @@ blocks:
   - type: text
     fontSize: small
     content: >-
-      A long-held dream to bring something new to the
-      [Melodifestivalen](https://en.wikipedia.org/wiki/Melodifestivalen) stage.
-      The stage featured three 8 x 4.5m LED walls at 3200 x 1800 pixels each, a
-      7.9 x 9.1m LED floor at 1664 x 1920 pixels, and a physical Romanesque gate
-      with staircase built for projection mapping.
+      The stage had three LED walls of 8 x 4.5 m at 3200 x 1800 pixels each, a
+      7.9 x 9.1 m LED floor at 1664 x 1920 pixels, and a physical Romanesque
+      gate with a staircase, built for projection mapping.
   - type: text
     fontSize: small
     content: >-

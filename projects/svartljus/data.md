@@ -11,18 +11,19 @@ blocks:
     alt: "Glowing circular light rings surround tree trunks in a forest, lighting the branches yellow."
   - type: text
     content: >-
-      Svartljus builds modular light installations for forests, festivals, and public spaces.
+      The lighting collective I co-founded in 2017, building modular light
+      installations for forests, festivals and public spaces.
   - type: text
     fontSize: small
     content: >-
-      [Svartljus](https://svartljus.se) started in 2017 at Stugan, a
-      co-created makerspace in Sickla, Stockholm. I connected with Olle Bjerkås
-      and Markus Persson and we began experimenting with light. Our first
-      piece was a light tunnel for Spotify: two rows of
-      LED columns controlled in real time, serving as both entrance and exit at
-      their Stockholm HQ. In 2018, Per-Olov Jernberg joined, bringing hardware
-      and software skills that let us create more reactive systems. That year we
-      exhibited at Sónar Reykjavík and ran a workshop on our techniques.
+      [Svartljus](https://svartljus.se) started at Stugan, a co-created
+      makerspace in Sickla, Stockholm, where Olle Bjerkås, Markus Persson and I
+      began experimenting with light. Our first piece was a light tunnel for
+      Spotify: two rows of LED columns controlled in real time, serving as
+      both entrance and exit at their Stockholm HQ. In 2018 Per-Olov Jernberg
+      joined, bringing hardware and software skills that let us build more
+      reactive systems, and that year we exhibited at Sónar Reykjavík and ran
+      a workshop on our techniques.
   - type: image
     src: 02.jpg
   - type: text
@@ -100,9 +101,9 @@ blocks:
   - type: text
     fontSize: small
     content: >-
-      The core group is now seven: myself, Olle Bjerkås, Per-Olov Jernberg,
+      Today the core group is seven: Olle Bjerkås, Per-Olov Jernberg,
       Servando Barreiro, [Rose Hallgren](https://rosehallgren.se/), Elias
-      Aabjerg, and Lior Nønne Malue Hansen, each bringing skills from metal
+      Aabjerg, Lior Nønne Malue Hansen and me, with skills from metal
       fabrication and architecture to sound design and creative coding. We
       have also run an internship programme with students from Beckmans and
       Hyper Island.

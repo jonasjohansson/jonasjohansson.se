@@ -23,20 +23,17 @@ blocks:
   - type: text
     fontSize: small
     content: >-
-      Visitors placed their hands into one of two boxes, each housing a
+      Visitors put a hand into one of two boxes, each with a
       [Leap Motion](https://en.wikipedia.org/wiki/Leap_Motion) sensor that
-      turned their hand into a virtual one. The hand was displayed on a
-      hidden monitor and reflected through the acrylic using the
-      [Pepper's Ghost](https://en.wikipedia.org/wiki/Pepper%27s_ghost)
-      technique, making it appear to hover inside the pyramid. The virtual
-      hands were covered in Aztec and Mayan-inspired patterns. Inspired by
-      Michelangelo's
+      turned it into a virtual hand, covered in Aztec and Mayan-inspired
+      patterns. A hidden monitor, reflected in the acrylic, made the hand
+      appear to hover inside the pyramid. When two visitors' index fingers
+      touched, as in the
       [Creation of Adam](https://en.wikipedia.org/wiki/The_Creation_of_Adam),
-      when two visitors' index fingers
-      touched, light streaks and particle effects appeared alongside an audio
-      cue. People loved just moving their hand around, watching it float in thin
-      air, and then pulling friends over to complete the gesture together. It was
-      my first time working with Pepper's Ghost and hand sensing.
+      light streaks and particles burst out with a sound. People loved just
+      moving their hand around, watching it float in thin air, and then
+      pulling friends over to complete the gesture together. It was my first
+      time working with Pepper's Ghost and hand sensing.
   - type: text
     fontSize: small
     content: >-

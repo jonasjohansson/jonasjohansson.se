@@ -61,17 +61,17 @@ blocks:
       [Viewpoint](https://jazzfuel.com/project/people-in-orbit-viewpoint/),
       released on April Records in 2026, I made the artwork across the album and
       three singles: Synchronized Whalestuff, Spinning Downwards, and Cycle 3,
-      Everlasting Confusion. The album artwork takes a macro perspective,
-      inspired by the artwork for
+      Everlasting Confusion. The album cover takes the wide view, after the
+      artwork for
       [Moominpappa at Sea](https://en.wikipedia.org/wiki/Moominpappa_at_Sea)
       by [Tove Jansson](https://en.wikipedia.org/wiki/Tove_Jansson) and the
       cyclical, almost diabolical world of
       [Uzumaki](https://en.wikipedia.org/wiki/Uzumaki) by
-      [Junji Ito](https://en.wikipedia.org/wiki/Junji_Ito). The contrast of
-      those two realms, with a lighthouse shining its light in the centre, became
-      the foundation. The singles zoom in: a whale's eye, a whirling vortex in
-      the sea, a [fresnel lens](https://en.wikipedia.org/wiki/Fresnel_lens)
-      from the lighthouse.
+      [Junji Ito](https://en.wikipedia.org/wiki/Junji_Ito), with a lighthouse
+      shining at the centre where the two meet. The singles zoom in: a whale's
+      eye, a whirling vortex in the sea, a
+      [fresnel lens](https://en.wikipedia.org/wiki/Fresnel_lens) from the
+      lighthouse.
   - type: image
     src: viewpoint.jpg
     alt: "The full Viewpoint artwork: two mirrored faces in profile frame a swirling sea, with the lighthouse shining from the centre of the vortex."

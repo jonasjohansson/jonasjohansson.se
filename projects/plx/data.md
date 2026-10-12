@@ -27,7 +27,7 @@ blocks:
       August on a protected island in the archipelago: no cars, only boats,
       barefoot paths and cows. In 2025 that meant **six stages**, over **sixty
       music acts** and **thirty exhibiting artists**, a floating sauna and a
-      popup cinema. More than **250 artists** from over **25 countries** have
+      pop-up cinema. More than **250 artists** from over **25 countries** have
       played there.
   - type: image
     src: lit-sail.jpg
@@ -40,8 +40,9 @@ blocks:
   - type: text
     fontSize: small
     content: >-
-      I have **curated the art since 2021**, and I lead **Konst & Teknik**, the
-      team that plans the light and lays the power the island runs on: the
+      I joined in 2020, have **curated the art since 2021**, and lead
+      **Konst & Teknik**, the team that plans the light and lays the power the
+      island runs on: the
       cabling every artist plugs into, and the help they need once they are out
       on the rocks with a piece half-built. Choosing the work and making the
       work possible are the same job here.
@@ -71,8 +72,8 @@ blocks:
     content: >-
       PLX **turned twenty** in 2026 and marked it with ODE JOY, two nights in
       the old casino at Malmö Konstmuseum in Kungsparken. A large scaffolding
-      installation stood in the main room. I built the site as its double: a
-      vine climbing a scaffold while you read the page.
+      installation stood in the main room. I built the website as its double:
+      a vine climbing a scaffold while you read the page.
   - type: image
     src: ode-tower-1.jpg
     colStart: 1
@@ -97,7 +98,7 @@ blocks:
     fontSize: small
     content: >-
       The tower has four floors because the casino has four main areas, and
-      the score climbs with you: strings on the ground, a hihat on the second,
+      the score climbs with you: strings on the ground, a hi-hat on the second,
       a beat and a whistle on the third, shakuhachi and steel pan at the
       summit. Six stems by Anton Ingvarsson, crossfading by camera height, and
       the tower loops, so the climb has no top.

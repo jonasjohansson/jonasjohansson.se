@@ -16,13 +16,12 @@ blocks:
   - type: text
     fontSize: small
     content: >-
-      Firestarter is an interactive installation presented at
-      [Nowhere](https://www.goingnowhere.org/) in Monegros, a regional burn I have
-      attended since 2015. The piece is an enlarged replica of the classic Zippo
-      lighter. I wanted to work with fire as a material, so we learned propane
-      systems, sensors, and ignition triggers from the ground up. You walk up, you
-      light a fire. A small, rebellious act of speaking up. It lit the official
-      closing ceremony.
+      We built it for [Nowhere](https://www.goingnowhere.org/), the regional
+      burn in Monegros I have been going to since 2015. I wanted to work with
+      fire as a material, so we learned propane systems, sensors and ignition
+      triggers from the ground up. You walk up and you light a fire: a small,
+      rebellious act of speaking up. It also lit the official closing
+      ceremony.
   - type: image
     src: 03.jpg
   - type: image

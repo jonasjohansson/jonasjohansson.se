@@ -10,16 +10,16 @@ blocks:
     alt: "A brass telescope with a circular wooden housing stands on a tripod against a warm desert sunset."
   - type: text
     content: >-
-      An augmented-reality telescope that brings imaginary creatures into
-      the landscape.
+      An augmented-reality telescope. Look through it and the landscape gets
+      company.
   - type: text
     fontSize: small
     content: >-
-      WYSIWYG hides a phone inside a familiar viewing instrument. Looking
-      through the eyepiece, visitors encounter animated birds, animals and
-      towering figures within the camera's view of their surroundings.
-      Turning the telescope lets them explore this other layer of the
-      landscape.
+      The name is the old computer promise, What You See Is What You Get, and
+      here you get a little more. A phone hides inside the telescope, and
+      through the eyepiece the camera's view of the landscape fills with
+      birds, animals and towering figures. Turn the telescope and you can go
+      looking for them.
   - type: image
     src: desert-viewer.jpg
     size: half-left
@@ -31,10 +31,10 @@ blocks:
   - type: text
     fontSize: small
     content: >-
-      By day, the flock appears as black birds. At night, it becomes a swarm
-      of lights. Giant figures made of particles walk through the landscape.
-      The concept image below brings the birds and walking figures into
-      one of my photographs.
+      By day the flock is black birds, and at night it becomes a swarm of
+      lights. Giant figures made of particles walk through the landscape. The
+      concept image below puts the birds and walking figures into one of my
+      photographs.
   - type: image
     src: desert-creatures-concept.png
     fit: contain
@@ -67,11 +67,10 @@ blocks:
   - type: text
     fontSize: small
     content: >-
-      The physical construction combines a brass telescope, a wooden
-      tripod and a circular housing for the phone. The enclosure holds
-      the screen in the telescope's line of sight, so looking at a
-      digital image becomes a physical gesture: sit down, lean in and
-      turn towards something.
+      The telescope is brass, on a wooden tripod, with a round wooden housing
+      that holds the phone's screen in its line of sight. Looking at a digital
+      image becomes a physical gesture: sit down, lean in and turn towards
+      something.
   - type: image
     src: desert-detail.jpg
     alt: "A close view of the telescope's stepped wooden housing, brass tube and tripod, with coloured lights out of focus across the desert."
@@ -105,8 +104,8 @@ blocks:
   - type: text
     fontSize: small
     content: >-
-      The instrument travelled between the open desert and a wooded setting during
-      July 2026.
+      In July 2026 it stood in the desert at Elsewhere, in Monegros, and in
+      the woods at Borderland in Denmark.
   - type: image
     src: sunset-viewer.jpg
     alt: "A visitor wearing headphones looks through the telescope as the sun sets over the landscape."

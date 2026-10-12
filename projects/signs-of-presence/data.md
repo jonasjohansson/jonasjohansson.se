@@ -68,7 +68,6 @@ blocks:
       [Signs of Presence Tour](https://signsofpresence.com), a Nordic tour of
       existing graphic scores that Adam Sass and I are planning for Stockholm,
       Helsinki, Reykjavík and Copenhagen in autumn 2027, playing scores from
-      the 1960s to 1980s with a local musician in each city. We applied for
-      project funding in September 2026. I also make the band's
-      [album artwork](/people-in-orbit/).
+      the 1960s to 1980s with a local musician in each city. I also make the
+      band's [album artwork](/people-in-orbit/).
 ---

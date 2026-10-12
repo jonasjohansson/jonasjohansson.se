@@ -18,9 +18,9 @@ blocks:
       I worked on development and parts of the design for Dome Conductor,
       made with [IVAR Studios](https://ivar.studio/sv/projects/dome-conductor/)
       and [SMASH](https://www.smash.studio/) for KTH Royal Institute of
-      Technology. The interactive installation premiered at
-      [Tekniska museet during the 2025 Baltic Sea Festival](https://www.tekniskamuseet.se/pa-gang/tekniska-pa-ostersjofestivalen/),
-      bringing the Swedish Radio Symphony Orchestra into Wisdome Stockholm.
+      Technology. It premiered at
+      [Tekniska museet during the 2025 Baltic Sea Festival](https://www.tekniskamuseet.se/pa-gang/tekniska-pa-ostersjofestivalen/)
+      and brought the Swedish Radio Symphony Orchestra into Wisdome Stockholm.
   - type: image
     src: young-conductor.webp
     alt: "A child raises both arms beneath the projected orchestra, facing a tracking camera mounted inside a ring light."
@@ -38,7 +38,7 @@ blocks:
   - type: text
     fontSize: small
     content: >-
-      The experience uses the opening ninety seconds of Beethoven's Fifth
+      It uses the opening ninety seconds of Beethoven's Fifth
       Symphony, recorded with conductor Daniel Harding. A wide-angle camera
       captured the orchestra for the dome's 180° projection, while playback
       lets the visitor set the pace. The musicians also recorded reactions:

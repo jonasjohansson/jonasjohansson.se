@@ -14,10 +14,12 @@ blocks:
   - type: text
     fontSize: small
     content: >-
-      I co-founded NAVA during a project at [Harpa](/harpa/) in Reykjavík. We were
-      already hacking the Harpa facade together for
-      [Sónar](https://sonarreykjavik.com/), and NAVA came out of wanting to keep
-      that collaboration going beyond a single festival.
+      I co-founded NAVA with [Atlí Bollason](https://atlibollason.com/), [Owen
+      Hindley](https://www.owenhindley.co.uk/) and [Rasmus
+      Stride](https://www.instagram.com/rasmus.stride/) during a project at
+      [Harpa](/harpa/) in Reykjavík. We were already hacking the Harpa facade
+      together for [Sónar](https://sonarreykjavik.com/), and NAVA came out of
+      wanting to keep that collaboration going beyond a single festival.
   - type: image
     src: 07.jpg
   - type: video
@@ -32,13 +34,12 @@ blocks:
     content: >-
       I got into VJing at 21, through a
       [Modul8](https://www.modul8.ch/) workshop run by
-      [Pixelvärk](https://pixelvark.com/) in Stockholm. From there I ran a
-      VJ collective in Montreal called APM300 with
+      [Pixelvärk](https://pixelvark.com/) in Stockholm, and it was part of how
+      I ended up at [Moment Factory](https://momentfactory.com/) in Montreal.
+      There I started the VJ collective APM300 with
       [Thien Vu Dang](https://www.instagram.com/thienvudang/) and
       [Charlotte Risch](https://www.charlotterisch.com), two fantastic video
-      artists, and that projection work was part of how I ended up at
-      [Moment Factory](https://momentfactory.com/). NAVA continued the same
-      thread. When we started in 2016, Aavistus in Helsinki and Nonagon in
+      artists. NAVA continued the same thread. When we started in 2016, Aavistus in Helsinki and Nonagon in
       Sweden did not exist, and neither did most of the audiovisual festivals
       that came after. We were one of several small initiatives across the
       Nordics pushing for the art form, and while we had no direct hand in
@@ -127,16 +128,14 @@ blocks:
       In 2023, [Annie Tådne](https://annietadne.com/), Merle Karp and I spent
       three weeks in Sisimiut, Greenland for Arctic Lights, running workshops
       and performing at [Arctic Sounds](https://arcticsoundsfestival.com/). In
-      2024 we connected with Kokong on Åland and Baltic Analog Lab in Riga.
-      NAVA is currently working on DOME DREAMING and ÖTOPIA, a Creative
-      Europe project.
+      2024 we connected with Kokong on Åland and Baltic Analog Lab in Riga, and
+      in 2026 we made [Dome Dreaming](/dome-dreaming/) together with them and
+      Aavistus. NAVA is also working on ÖTOPIA, a Creative Europe project.
   - type: text
     fontSize: small
     content: >-
-      I co-founded NAVA with [Atlí Bollason](https://atlibollason.com/), [Owen
-      Hindley](https://www.owenhindley.co.uk/) and [Rasmus
-      Stride](https://www.instagram.com/rasmus.stride/). Katrín Hauksdóttir joined
-      us in 2019. NAVA is supported by [Nordic Culture
+      Katrín Hauksdóttir joined the four of us in 2019. NAVA is supported by
+      [Nordic Culture
       Fund](https://nordiskkulturfond.org/), [Nordic Culture
       Point](https://www.nordiskkulturkontakt.org/) and [NAPA](https://napa.gl/).
 ---

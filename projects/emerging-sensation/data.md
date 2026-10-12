@@ -22,10 +22,9 @@ blocks:
       R1](https://en.wikipedia.org/wiki/R1_(nuclear_reactor)), the old reactor
       hall underneath [KTH](https://www.kth.se/) in Stockholm, for several weeks
       in January 2019. The textile sculptures combined optic fibre and custom
-      3D-printed parts, with LED strips woven directly into the fabric. Conductive
-      thread woven into the fabric gave the sculptures capacitive touch, so when
-      visitors touched them, the light animations shifted and a signal was sent to
-      the [HoloLens](https://en.wikipedia.org/wiki/Microsoft_HoloLens) AR layer.
+      3D-printed parts, with LED strips and conductive thread woven into the
+      fabric. Touch a sculpture and its light shifted, and a signal went to the
+      AR layer in the [HoloLens](https://en.wikipedia.org/wiki/Microsoft_HoloLens).
 
       I built the light animations on [Arduino](https://www.arduino.cc/) and a
       node-based [OSC](https://en.wikipedia.org/wiki/Open_Sound_Control) system
@@ -38,8 +37,7 @@ blocks:
     fontSize: small
     content: >-
       [Malin Bobeck Tadaa](https://malintadaa.com/) initiated the project and
-      developed the textile sculptures. I made the light animations and the system
-      connecting them to the HoloLens. Björn Albihn and Jonatan Crafoord at
+      developed the textile sculptures, and Björn Albihn and Jonatan Crafoord at
       [Really Interactive](https://www.really-interactive.se/) built the mixed
       reality side.
 ---

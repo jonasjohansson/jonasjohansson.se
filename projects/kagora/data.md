@@ -12,12 +12,14 @@ blocks:
   - type: text
     content: >-
       A woven pavilion of moving light, built as a place to gather in the
-      woods.
+      woods at Borderland in Denmark.
   - type: text
     fontSize: small
     content: >-
-      Kagora brings Japanese basket weaving to an architectural scale. Its name
-      combines kago, Japanese for basket, with aura.
+      Kagora is Japanese basket weaving at the scale of a building, and its
+      name joins kago, Japanese for basket, with aura.
+      [Annie Locke Scherer](https://www.instagram.com/annielocke/) led the
+      design and build, and I designed the light.
   - type: image
     src: woodland-mist-ai.png
     alt: "Kagora glows warm gold between dark tree trunks, with mist drifting through the woodland and blue light in the foreground."
@@ -33,12 +35,14 @@ blocks:
   - type: text
     fontSize: small
     content: >-
-      Inspired by Hanakago flower baskets and Kagome weaving, the ribs cross
-      overhead to define a room without closing it off. Across 120 woven
-      tubes, more than a kilometre of LED strip carries around 32,000
-      individually controllable points of light. As colour moves through
-      the weave, different curves emerge and recede, changing the space
-      around the people sitting and lying beneath it.
+      The ribs follow hanakago flower baskets and kagome weaving, crossing
+      overhead to make a room without closing it off. More than a kilometre of
+      LED strip runs inside the 120 woven tubes, around 32,000 points of light
+      that can each be controlled on its own. As colour travels through
+      the weave, different curves come forward and fall back above the people
+      sitting and lying beneath it. To plan the strips, controllers and power,
+      I built a browser tool for drawing LED installations that works out the
+      voltage drop and the parts list as you draw.
   - type: image
     src: pavilion-front.jpg
     alt: "A frontal view of Kagora at dusk, with pink, green and white light tracing the woven arches above visitors resting on cushions."
@@ -70,11 +74,8 @@ blocks:
   - type: text
     fontSize: small
     content: >-
-      The build began with models, joints and tests of individual arches.
-      A crew of collaborators prepared the diffusion for the LEDs and
-      assembled the woven ribs among the trees. In daylight, the white
-      structure frames the woodland; after dark, the light gives it a
-      different presence.
+      The build began with models, joints and test arches. A crew prepared
+      the diffusion for the LEDs and assembled the woven ribs among the trees.
   - type: image
     src: lighting-control.jpg
     alt: "Hands at a laptop showing a digital model of Kagora, with the illuminated pavilion glowing blue among the trees behind it."
@@ -94,9 +95,8 @@ blocks:
   - type: text
     fontSize: small
     content: >-
-      [Annie Locke Scherer](https://www.instagram.com/annielocke/) led the design
-      and build. I designed the lighting, with sound by Teodor Sundström and
-      engineering by Christian Pisano. Built with David Tollman, Rich Miller,
+      Teodor Sundström made the sound and Christian Pisano did the
+      engineering. Built with David Tollman, Rich Miller,
       Björn Bergenheim, Matias Peljo, Markku Leppala, Emilia Ferguson, David
       Correa, Max Hassler, Eero Laaksonen, Cecilia Johansson, Mar Benavides and
       Tomas Kronvall.

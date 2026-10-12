@@ -10,15 +10,15 @@ blocks:
     alt: "Players gather around BorderLAN's candlelit red table, with their heads replaced by pixel-art Diablo II character portraits."
   - type: text
     content: >-
-      A LAN party in an earth cellar. Four seats, a shared table and a
-      return to 2002.
+      A LAN party in an earth cellar at Borderland. Four seats, a shared
+      table and a return to 2002.
   - type: text
     fontSize: small
     content: >-
-      BorderLAN brought people together around Counter-Strike 1.6, Quake II,
-      Unreal Tournament, Heroes of Might and Magic III, Diablo and Diablo II, with
-      Action Quake 2 and OpenArena also on the shelf. Players chose what to play
-      together, with music, food and drinks accompanying each sitting.
+      The shelf held Counter-Strike 1.6, Quake II, Unreal Tournament, Heroes of
+      Might and Magic III, Diablo and Diablo II, Action Quake 2 and OpenArena.
+      Players picked what to play together, and every sitting came with music,
+      food and drinks.
   - type: image
     src: entrance.jpg
     alt: "An illuminated BorderLAN sign above the cellar entrance reads 'stay a while and listen', surrounded by foliage and small lights."
@@ -39,10 +39,11 @@ blocks:
   - type: text
     fontSize: small
     content: >-
-      Four Raspberry Pi 5 stations ran the games over a local network.
-      A custom launcher and a central controller connected the computers
-      to the room's sound, lights and projections, allowing the players'
-      activity to reach beyond their screens.
+      Four Raspberry Pi 5 stations ran the games over a local network, each
+      with a launcher I built. Every keypress also went to a computer that ran
+      the room: the music drove the lamps beat by beat, a key hit flashed the
+      lamp at that station and steady play made it glow, and the projection on
+      the cellar wall reacted too.
   - type: image
     src: game-stations.jpg
     alt: "Heroes of Might and Magic III fills two screens above white keyboards, headphones, candles and leafy branches."
@@ -52,10 +53,9 @@ blocks:
   - type: text
     fontSize: small
     content: >-
-      The launcher borrowed the atmosphere of the games themselves, moving
-      between their worlds as players browsed the shelf. This reel brings
-      together its gameplay previews for Counter-Strike 1.6, Action Quake 2
-      and OpenArena.
+      The launcher took on the atmosphere of each game as players browsed the
+      shelf. This reel strings together its previews for Counter-Strike 1.6,
+      Action Quake 2 and OpenArena.
   - type: video
     src: game-previews.mp4
     poster: game-previews.jpg
@@ -72,10 +72,10 @@ blocks:
   - type: text
     fontSize: small
     content: >-
-      Music and familiar game sounds filled the room around the players.
-      These mixes bring together tracks from the playlist with voices,
-      spells, weapons, announcements and interface sounds from all nine
-      of the room's game soundbanks, arranged to follow the beat.
+      Music and familiar game sounds filled the room. These mixes put tracks
+      from the playlist together with voices, spells, weapons, announcements
+      and menu sounds from the room's nine game soundbanks, arranged to the
+      beat.
   - type: audio
     src: room-mix-sandstorm.mp3
     label: "Darude, Sandstorm + game soundboard · 1:30"

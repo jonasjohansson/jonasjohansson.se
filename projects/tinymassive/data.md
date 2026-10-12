@@ -18,26 +18,21 @@ blocks:
     content: >-
       Tiny/Massive grew out of
       [NAVA](https://www.nava.community) (Nordic Audiovisual Artists) and our
-      years of working with the [Harpa](/harpa/) facade. The name says it all: the
-      building's 714 LED panels map to a resolution of just 77 by 13 pixels
-      across an almost 100-metre wide facade, each pixel over a metre wide.
-      We released an open call inviting artists to create video, generative,
-      and interactive content for this tiny-but-massive canvas, and the
-      response was strong, with well-known generative artists contributing.
+      years of working with the Harpa facade. Its 714 LED panels make a screen
+      of just 77 by 13 pixels across an almost 100-metre wide facade, each
+      pixel over a metre wide, hence the name. We put out an open call for
+      video, generative and interactive work, with creator kits for
+      [Processing](https://processing.org/), [Unity](https://unity.com/),
+      [TouchDesigner](https://derivative.ca/) and After Effects and workshops
+      to help artists get started, and well-known generative artists took
+      part.
   - type: text
     fontSize: small
     content: >-
       For the Reykjavík Winter Lights Festival in February 2019, we parked a
-      Strætó, a Reykjavík city bus, outside Harpa in the middle of winter and
-      invited people to come in and experience the work. Inside the bus we had
-      a custom arcade tabletop with joysticks and buttons, so visitors could
-      play interactive games and control visualisations directly on the
-      building. We provided creators kits with templates for
-      [Processing](https://processing.org/),
-      [Unity](https://unity.com/),
-      [TouchDesigner](https://derivative.ca/) and After Effects, and ran
-      workshops to help artists get
-      started.
+      Strætó, a Reykjavík city bus, outside Harpa and invited people in.
+      Inside was a custom arcade tabletop with joysticks and buttons, so
+      visitors could play games and control visuals directly on the building.
   - type: text
     fontSize: small
     content: >-
@@ -51,12 +46,11 @@ blocks:
   - type: text
     fontSize: small
     content: >-
-      I designed the open call, the
-      [website](https://tinymassive.io/), and the visual identity, project
-      managed the whole thing through [NAVA](/nava/), and coded visualisations for the
-      building. We had funding from the
-      [Nordic Culture Fund](https://nordiskkulturfond.org/) through their
-      Opstart grant. The collective behind Tiny/Massive was myself,
-      [Atlí Bollason](https://atlibollason.com/) and
-      [Owen Hindley](https://www.owenhindley.co.uk/).
+      I designed the open call, the [website](https://tinymassive.io/) and the
+      visual identity, project-managed the whole thing through
+      [NAVA](/nava/), and coded visualisations for the building. We had
+      funding from the [Nordic Culture Fund](https://nordiskkulturfond.org/)
+      through their Opstart grant. Tiny/Massive was
+      [Atlí Bollason](https://atlibollason.com/),
+      [Owen Hindley](https://www.owenhindley.co.uk/) and me.
 ---

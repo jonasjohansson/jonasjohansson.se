@@ -15,13 +15,13 @@ blocks:
   - type: text
     fontSize: small
     content: >-
-      Lyra was my first foray into interactive light art. A set of fishing wire
-      strings was strung tightly from floor to ceiling, each fitted with an
-      accelerometer. When a visitor plucked a string, the sensor fed its peak
-      value into an algorithm simulating a vibrating chord. Light and sound grew
-      from the tip of the string and travelled along the walls and ceiling,
-      turning the room into a kind of circuitry. The more people played, the
-      richer it got. Built on [Arduino](https://www.arduino.cc/).
+      Lyra was my first interactive light work. Fishing line was strung tight
+      from floor to ceiling, each string fitted with an accelerometer. When a
+      visitor plucked one, the sensor fed its peak into an algorithm
+      simulating a vibrating string, and light and sound grew from the tip of
+      the string and travelled along the walls and ceiling, turning the room
+      into a kind of circuitry. The more people played, the richer it got.
+      Built on [Arduino](https://www.arduino.cc/).
   - type: text
     fontSize: small
     content: >-

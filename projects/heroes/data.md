@@ -10,22 +10,22 @@ blocks:
     alt: "A monochrome projection of sculpted figures covers the Great Synagogue as visitors watch from the street."
   - type: text
     content: >-
-      Real-life statues, drone-scanned architecture, projected onto Stockholm's Great Synagogue.
+      A projection on Stockholm's Great Synagogue in honour of Raoul
+      Wallenberg and Dag Hammarskjöld.
   - type: image
     src: 02.jpg
   - type: text
     fontSize: small
     content: >-
-      Heroes was a projection mapped piece on the facade of [Stockholms Stora
-      Synagoga](https://en.wikipedia.org/wiki/Great_Synagogue_(Stockholm)) in
-      2022. The work honoured [Raoul
-      Wallenberg](https://en.wikipedia.org/wiki/Raoul_Wallenberg), who saved
+      [Raoul Wallenberg](https://en.wikipedia.org/wiki/Raoul_Wallenberg) saved
       thousands of Jews in Budapest during the Holocaust, and [Dag
-      Hammarskjöld](https://en.wikipedia.org/wiki/Dag_Hammarskj%C3%B6ld), 1961
-      Nobel Peace Prize laureate and UN Secretary-General. Real-life statues of
-      both men were 3D scanned and the synagogue was captured by drone, giving us
-      precise geometry to work with. Black and white, high contrast, with tight
-      animation set to the building's ornate architecture.
+      Hammarskjöld](https://en.wikipedia.org/wiki/Dag_Hammarskj%C3%B6ld),
+      Secretary-General of the UN, was awarded the Nobel Peace Prize in 1961.
+      Statues of both men were 3D-scanned and [the
+      synagogue](https://en.wikipedia.org/wiki/Great_Synagogue_(Stockholm))
+      captured by drone, which gave us exact geometry to work with. We kept it
+      black and white and high in contrast, with the animation fitted tight to
+      the building's ornate architecture.
   - type: image
     src: 03.png
   - type: video

@@ -16,10 +16,12 @@ blocks:
     fontSize: small
     content: >-
       I see a bit of Moby-Dick in it, but also a fossil, or one of the whale
-      skeletons hanging in a natural history museum. The ribs are open and
-      you can see the wooden joints and metal mechanism doing the work.
-      The starting point was a small DIY kinetic model, scaled up into
-      something people could operate themselves.
+      skeletons hanging in a natural history museum. The ribs are open, so
+      you can see the wooden joints and the metal mechanism doing the work.
+      [Erik Schmitz](https://www.erikschmitz.art/) and Selim designed it,
+      scaling a small DIY kinetic model up into something people could work
+      themselves, and it swam at Elsewhere in the Monegros desert in July
+      2026.
   - type: image
     src: cyan-profile.jpg
     alt: "A low side view of the whale with cyan ribs and a raised tail against the evening sky, its metal mechanism visible underneath."
@@ -31,9 +33,9 @@ blocks:
     content: >-
       For the lighting, I followed the skeleton. The LEDs trace the ribs,
       spine, fins and tail, drawing the whale against the sky after dark.
-      I made a [3D lighting study](https://balena-voladora.jonasjohansson.se/)
-      using Erik's model to try the placement and work out the lengths before
-      the LEDs were cut and wired.
+      Before anything was cut or wired, I made a
+      [3D lighting study](https://balena-voladora.jonasjohansson.se/) from
+      Erik's model to try the placement and work out the lengths.
   - type: image
     src: workshop-build.jpg
     size: half-left
@@ -57,10 +59,9 @@ blocks:
   - type: text
     fontSize: small
     content: >-
-      I programmed the lighting against the whale's 3D geometry. The twelve
-      ribs, spine, tail and two fins have separate LED runs, driven by two
-      controllers. Colour can travel along an individual bone or move through
-      the whole body.
+      The twelve ribs, spine, tail and two fins each have their own LED run on
+      two controllers, and I programmed them against the whale's 3D geometry,
+      so colour can travel along a single bone or move through the whole body.
   - type: image
     src: tail-detail.jpg
     size: half-left
@@ -75,9 +76,7 @@ blocks:
   - type: text
     fontSize: small
     content: >-
-      [Erik Schmitz](https://www.erikschmitz.art/) and Selim designed the whale.
-      Erik did the engineering and built the wooden structure and mechanics.
-      I made the 3D study and handled the software and lighting programming.
-      Albert Carrera at [Nouled](https://nouled.com/) handled the hardware,
-      mounting and cabling.
+      Erik did the engineering and built the wooden structure and the
+      mechanics, and Albert Carrera at [Nouled](https://nouled.com/) handled
+      the hardware, mounting and cabling.
 ---

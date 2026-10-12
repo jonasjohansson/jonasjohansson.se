@@ -23,10 +23,9 @@ blocks:
       Vista means a distant view through an opening, an extensive mental
       view over a stretch of time. Each piece is a web-based landscape
       built in [Three.js](https://threejs.org/), with generative sound,
-      light, and terrain.
-      The series began in 2012 while living in Montreal, working at a
-      design studio on large-scale stage experiences, and starting to
-      treat code as sculpture rather than function.
+      light and terrain. I began the series in 2012, living in Montreal and
+      working at a design studio on large-scale stage experiences, when I
+      started to treat code as sculpture rather than function.
   - type: text
     fontSize: small
     content: >-
@@ -79,8 +78,7 @@ blocks:
   - type: text
     fontSize: small
     content: >-
-      I made these pieces in [Three.js](https://threejs.org/). Glommen was shown
-      at Stockholm Showww in 2014 and at
+      Glommen was shown at Stockholm Showww in 2014 and at
       [Myriad](https://rethread.art/projects/myriad/) in R1 Reactor Hall in 2024,
       a re|thread project on origin and authorship.
   - type: text

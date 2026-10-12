@@ -73,11 +73,10 @@ blocks:
     content: >-
       In 2019, as [Tiny/Massive](/tinymassive/), we opened the facade to
       artists worldwide during the Reykjavík Winter Lights Festival.
-      [Loney Dear](https://youtu.be/wAKno0pe4UQ) and
-      [Teenage Engineering](https://teenage.engineering/) performed a live
-      concert controlling the visuals with the
-      [OP-Z](https://teenage.engineering/store/op-z/), ten storeys of
-      light on the harbour, driven from inside a city bus.
+      [Loney Dear](https://youtu.be/wAKno0pe4UQ) played a concert from inside
+      a city bus with [Teenage Engineering](https://teenage.engineering/)'s
+      [OP-Z](https://teenage.engineering/store/op-z/), driving ten storeys of
+      light on the harbour.
   - type: image
     src: 03.jpg
   - type: text
@@ -87,7 +86,7 @@ blocks:
       facade, have morning meetings in the pool, and enjoy playing with lights in
       the evenings. The work with Harpa became the spark for
       [NAVA](https://www.nava.community) (Nordic Audiovisual Artists), a community
-      where Atlí, Owen, myself and artist [Rasmus
-      Stride](https://www.instagram.com/rasmus.stride/) formed the collective that
+      where Atlí, Owen, the artist [Rasmus
+      Stride](https://www.instagram.com/rasmus.stride/) and I formed the collective that
       would go on to do projects like [Tiny/Massive](/tinymassive/) and Skaðablót.
 ---

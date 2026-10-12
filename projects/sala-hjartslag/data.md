@@ -14,12 +14,11 @@ blocks:
   - type: text
     fontSize: small
     content: >-
-      In 2024, the city of Sala celebrated 400 years since receiving its city
-      charter from [Gustav II
-      Adolf](https://en.wikipedia.org/wiki/Gustavus_Adolphus_of_Sweden). For the
-      anniversary, the piece took visitors on an audiovisual journey through 400
-      years of Sala's history, mapped onto a curved building facade. Much of the
-      work was done on-site, aligning the projection to fit the architecture.
+      Sala got its city charter from [Gustav II
+      Adolf](https://en.wikipedia.org/wiki/Gustavus_Adolphus_of_Sweden) in
+      1624, and for the anniversary in 2024 the town's history played out
+      across a curved building facade, in pictures and sound. Much of the work
+      was done on site, fitting the projection to the architecture.
   - type: video
     src: 01.mp4
     alt: "Animated projections transform the curved facade for Sala’s 400-year celebration."
@@ -28,6 +27,6 @@ blocks:
   - type: text
     fontSize: small
     content: >-
-      I was technical lead and projection mapper, working with [Smash
+      I was technical lead and did the projection mapping, working with [Smash
       Studio](https://www.smash.studio/), who did the 3D modelling and animation.
 ---

@@ -56,10 +56,9 @@ blocks:
   - type: text
     fontSize: small
     content: >-
-      Made with [Smash Studio](https://www.smash.studio/) and [Platon
-      Marko](https://platon.design/). I handled the game and real-time visuals,
-      designed and built the physical arcade controllers and their instruction
-      panels, and built the [web version](https://jagad.jonasjohansson.se/) so
-      anyone could play from a phone. Over three nights hundreds queued up, some
+      Made with [Smash Studio](https://www.smash.studio/). I made the game and
+      its real-time visuals, and a [web version](https://jagad.jonasjohansson.se/)
+      so anyone could play from a phone. [Platon Marko](https://platon.design/)
+      built the arcade controllers. Over three nights hundreds queued up, some
       to chase down their own avatar.
 ---

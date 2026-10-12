@@ -11,8 +11,8 @@ blocks:
     alt: "A performer faces a towering black-and-white portrait projected onto the dark stage."
   - type: text
     content: >-
-      Scenography, video, and lighting design for a sold-out autobiographical
-      stage piece about bipolar disorder.
+      Scenography, video and lighting design for an autobiographical stage
+      piece about bipolar disorder.
   - type: image
     src: 02.jpg
   - type: text
@@ -32,15 +32,15 @@ blocks:
     fontSize: small
     content: >-
       When Danne graduated, he had already caught the attention of leading
-      choreographers and was headed for a career in dance.
-      19 years later, he was so affected by electroshock treatments and heavy
-      medication that he could barely move. In 2018, Danne disappeared in Los
-      Angeles. He was found surrounded by American police with drawn weapons.
-      His bipolar disorder had taken hold again. In Jag är Gud, Danne looks
-      back on his life: a youth as a promising dancer, his constant chase for
-      love, parties with Russian oil billionaires and Spanish hitmen, his
-      first manic episode in New York, and the stable years that could no
-      longer keep the illness at bay.
+      choreographers and was headed for a career in dance. Nineteen years
+      later, electroshock treatment and heavy medication had left him barely
+      able to move. In 2018 he disappeared in Los Angeles and was found
+      surrounded by American police with drawn weapons; his bipolar disorder
+      had taken hold again. In Jag är Gud he looks back on his life: a youth
+      as a promising dancer, his constant chase for love, parties with Russian
+      oil billionaires and Spanish hitmen, his first manic episode in New
+      York, and the stable years that in the end could not keep the illness at
+      bay.
   - type: image
     src: 05.jpg
   - type: text
@@ -58,7 +58,7 @@ blocks:
       "Danne Dahlin lets us see his experience through the eye of the storm,
       a calm place in chaos. [...] When Danne Dahlin takes command of his
       self-exposing story, it is brave, human, and beautiful." (Anna
-      Angstrom, [Svenska Dagbladet](https://www.svd.se/a/lwQXqe/recension-danne-dahlins-monolog-jag-ar-gud-ar-modig))
+      Ångström, [Svenska Dagbladet](https://www.svd.se/a/lwQXqe/recension-danne-dahlins-monolog-jag-ar-gud-ar-modig))
   - type: image
     src: 07.jpg
     size: half-left
