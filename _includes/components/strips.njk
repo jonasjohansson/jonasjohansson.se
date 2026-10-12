@@ -18,6 +18,26 @@
       <feMerge result="tags"><feMergeNode in="blob"/><feMergeNode in="ink"/></feMerge>
       <feComposite in="tags" in2="letters" operator="out"/>
     </filter>
+    {# Sets a project's title on a white blob that follows its letters: each
+       letter grows a border, the borders are blurred and cut at a threshold
+       so they melt together, and the letters are drawn back on top. The wide
+       version keeps the same proportions for the larger desktop title. #}
+    <filter id="title-blob" x="-30%" y="-80%" width="160%" height="260%" color-interpolation-filters="sRGB">
+      <feMorphology in="SourceAlpha" operator="dilate" radius="5" result="grown"/>
+      <feGaussianBlur in="grown" stdDeviation="3" result="blur"/>
+      <feColorMatrix in="blur" type="matrix" values="0 0 0 0 0  0 0 0 0 0  0 0 0 0 0  0 0 0 20 -9" result="shape"/>
+      <feFlood class="goo-fill"/>
+      <feComposite in2="shape" operator="in" result="blob"/>
+      <feMerge><feMergeNode in="blob"/><feMergeNode in="SourceGraphic"/></feMerge>
+    </filter>
+    <filter id="title-blob-wide" x="-30%" y="-80%" width="160%" height="260%" color-interpolation-filters="sRGB">
+      <feMorphology in="SourceAlpha" operator="dilate" radius="7" result="grown"/>
+      <feGaussianBlur in="grown" stdDeviation="4" result="blur"/>
+      <feColorMatrix in="blur" type="matrix" values="0 0 0 0 0  0 0 0 0 0  0 0 0 0 0  0 0 0 20 -9" result="shape"/>
+      <feFlood class="goo-fill"/>
+      <feComposite in2="shape" operator="in" result="blob"/>
+      <feMerge><feMergeNode in="blob"/><feMergeNode in="SourceGraphic"/></feMerge>
+    </filter>
   </svg>
   <div id="wall-bar" class="wall-bar">
     {% include "./intro.njk" %}

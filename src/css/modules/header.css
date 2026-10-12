@@ -1,7 +1,8 @@
 .header-contacts,
 .project-filters {
   min-width: 0;
-  font-size: var(--font-size-ui);
+  font-family: var(--font-family-display);
+  font-size: var(--font-size-tags);
   line-height: var(--line-height-ui);
 }
 .header-contacts,
@@ -30,23 +31,26 @@
 .project-filters select:focus-visible { outline: none; }
 .project-filters :is(option, optgroup) { color: var(--color-black); background: var(--color-white); }
 
-/* The title floats over the middle of the hero. */
+/* The title floats over the middle of the hero. Its bar spans the screen, so
+   a title only wraps when it is wider than the screen itself. */
 #header {
   position: absolute;
   top: var(--title-top);
-  left: 50%;
-  transform: translateX(-50%);
+  right: var(--tag-inset);
+  left: var(--tag-inset);
   z-index: var(--z-header);
   display: flex;
   justify-content: center;
+  pointer-events: none;
 }
 .header-subtitle {
   display: block;
+  pointer-events: auto;
   width: auto;
   max-width: var(--project-measure);
   padding: var(--title-pad);
   border-radius: var(--radius-title);
-  background: var(--bg-primary);
+  font-family: var(--font-family-display);
   font-size: var(--title-size);
   line-height: var(--line-height-tight);
   letter-spacing: var(--letter-spacing-caps);
@@ -55,4 +59,10 @@
   text-transform: uppercase;
   text-wrap: balance;
   overflow-wrap: anywhere;
+}
+/* The white behind the title follows its letters, through the title-blob
+   filter in strips.njk. */
+.header-title { display: inline-block; filter: url(#title-blob); }
+@media screen and (min-width: 1025px) {
+  .header-title { filter: url(#title-blob-wide); }
 }

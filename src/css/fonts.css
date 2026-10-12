@@ -14,8 +14,24 @@
   font-display: swap;
 }
 
+/* OffBit sets the name, a project's title and the tags over the wall. Its
+   thin, narrow letters read small, so it is drawn a tenth larger. Its own
+   metrics put capitals a tenth of an em above the middle of the line; these
+   overrides centre them, as SeasonMix's metrics do. */
+@font-face {
+  font-family: "OffBit";
+  src: url("../fonts/OffBit-Regular.woff2") format("woff2");
+  font-weight: normal;
+  font-style: normal;
+  font-display: swap;
+  size-adjust: 110%;
+  ascent-override: 87.5%;
+  descent-override: 12%;
+  line-gap-override: 0%;
+}
+
 /* PLX carries Rosarivo for its writing and Germania One for emphasis;
-   the other projects use SeasonMix for their titles and body text. */
+   the other projects use OffBit for their titles and SeasonMix for their text. */
 @font-face {
   font-family: "Rosarivo";
   src: url("../fonts/Rosarivo-Regular.woff2") format("woff2");

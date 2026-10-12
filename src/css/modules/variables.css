@@ -59,6 +59,7 @@
 
   /* Typography */
   --font-family: "SeasonMix", system-ui, -apple-system, Segoe UI, Roboto, Helvetica, Arial, sans-serif;
+  --font-family-display: "OffBit", var(--font-family); /* the name, a project's title and the tags over the wall */
   /* Type scale — strictly monotonic (small < medium < large at every width) */
   --font-size-small: clamp(1.03rem, 0.86rem + 0.76vw, 1.46rem);
   --font-size-medium: clamp(1.4rem, 1.08rem + 1.3vw, 2.05rem);
@@ -66,9 +67,10 @@
   --font-size-title: clamp(1.9rem, 1.25rem + 2.25vw, 3.25rem);
   --font-family-plx-body: "Rosarivo", Georgia, "Times New Roman", serif;
   --font-family-plx-display: "Germania One", "Trebuchet MS", sans-serif;
-  --font-size-ui: 0.875rem; /* header, footer and filter labels */
-  --font-size-intro: var(--font-size-ui); /* About matches the links under the wall */
-  --radius-title: 0.5rem; /* the floating desktop project title */
+  --font-size-ui: 0.875rem; /* the bar over the wall */
+  --font-size-tags: 1.125rem; /* CV, Email and All work, large enough to read over the photographs */
+  --font-size-intro: var(--font-size-ui); /* About, in the bar over the wall */
+  --radius-title: 0.5rem; /* the name and the tags over the wall */
   --title-size: clamp(1.1rem, 0.85rem + 0.75vw, 1.5rem); /* a project's title, and the name on the landing */
   --title-pad: var(--spacing-sm) var(--spacing-md);
   --title-top: var(--spacing-xl); /* from the top of the screen */
