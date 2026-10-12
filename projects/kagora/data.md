@@ -12,7 +12,7 @@ blocks:
   - type: text
     content: >-
       A woven pavilion of moving light, built as a place to gather in the
-      woods at Borderland in Alversjö.
+      woods.
   - type: text
     fontSize: small
     content: >-

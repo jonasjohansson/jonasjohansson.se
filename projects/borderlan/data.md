@@ -10,8 +10,8 @@ blocks:
     alt: "Players gather around BorderLAN's candlelit red table, with their heads replaced by pixel-art Diablo II character portraits."
   - type: text
     content: >-
-      A LAN party in an earth cellar at Borderland. Four seats, a shared
-      table and a return to 2002.
+      A LAN party in an earth cellar. Four seats, a shared table and a
+      return to 2002.
   - type: text
     fontSize: small
     content: >-

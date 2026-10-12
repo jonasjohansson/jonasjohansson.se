@@ -77,6 +77,6 @@ blocks:
     fontSize: small
     content: >-
       Erik did the engineering and built the wooden structure and the
-      mechanics, and Albert Carrera at [Nouled](https://nouled.com/) handled
-      the hardware, mounting and cabling.
+      mechanics. Albert Carrera at [Nouled](https://nouled.com/) handled the
+      hardware, mounting and cabling, and took the film photographs.
 ---

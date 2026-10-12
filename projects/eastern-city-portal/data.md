@@ -22,8 +22,9 @@ blocks:
       a large wooden crack in the fabric of reality that opened, through a
       phone, onto a lush walnut garden in the middle of the dry Monegros
       desert. For this commission we took the idea further, into a sculpture
-      that doubled as an AR piece, so passers-by could point their phone at it
-      and see the street transformed.
+      that doubled as an AR piece. I made what you see through it: Camomile
+      Street as the public park proposed for it in the Eastern City's plans,
+      with trees, blossom, cyclists and people on foot.
   - type: image
     src: 11.jpg
   - type: image
