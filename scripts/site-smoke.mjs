@@ -85,10 +85,10 @@ async function waitForHomeWall(page) {
 }
 
 
-// A point that is not a strip. Both walls fill their screen, so it is the
-// name floating over them: at the top of the landing, the foot of a project's.
+// A point that is not a strip. Both walls fill their screen, so it is what
+// floats over them: the name on the landing, the CV tag on a project's.
 async function offWall(page) {
-  for (const selector of ['#wall-bar .site-name']) {
+  for (const selector of ['#wall-bar .site-name', '#wall-bar .header-contacts a:first-child']) {
     const tag = page.locator(selector);
     if (await tag.isVisible()) {
       const box = await tag.boundingBox();
@@ -129,7 +129,7 @@ async function checkFooter(page) {
   const lead = await page.locator('#wall-bar .site-name').boundingBox();
   const foot = wall.y + wall.height - contactBox.y - contactBox.height;
   assert.ok(foot > 0 && foot < 80, `contacts float along the foot of the wall (${foot}px above it)`);
-  assert.ok(contactBox.y > lead.y + lead.height + wall.height / 2, 'well clear of the name');
+  if (home) assert.ok(contactBox.y > lead.y + lead.height + wall.height / 2, 'well clear of the name');
   const tag = await contacts.locator('a').first().evaluate(link => getComputedStyle(link).backgroundColor);
   assert.equal(tag, 'rgb(255, 255, 255)', 'each link is a white tag');
   assert.equal(await page.locator('#project-search, input[type="search"]').count(), 0, 'there is no search field; the filter finds the work');
@@ -158,12 +158,8 @@ async function checkFooter(page) {
     assert.ok(Math.abs(title.x + title.width / 2 - (body.x + body.width / 2)) < 1, 'the floating project title is centred');
     assert.equal(await page.locator('#header-toggle').getAttribute('href'), `${prefix}/`, 'the project title leads home');
     assert.equal(await page.locator('#header .header-contacts').count(), 0, 'project hero header contains only the title');
-    // Over the other projects, the name and tags sit as on the landing, and
-    // the name leads home.
-    const name = page.locator('#wall-bar .site-name');
-    assert.equal((await name.textContent()).trim(), 'Jonas Johansson', 'the name sits over the project slivers');
-    assert.equal(await name.getAttribute('href'), `${prefix}/`, 'and leads home');
-    assert.ok(Math.abs(lead.x + lead.width / 2 - wall.x - wall.width / 2) < 2 && lead.y >= wall.y && lead.y < wall.y + 40, 'centred over the top of the wall, as on the landing');
+    // Over the other projects only the tags float: the title leads home.
+    assert.equal(await page.locator('#wall-bar .site-name').isVisible(), false, "a project's wall carries no name");
   }
   assert.equal(await page.locator('#project-filters').isVisible(), true, 'the filter is available on both strip walls');
   return checkFilterBounds(page);
