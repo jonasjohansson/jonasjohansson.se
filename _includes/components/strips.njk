@@ -2,42 +2,43 @@
   <h2 id="collection-title" class="sr-only" tabindex="-1">{% if project %}More projects{% else %}Projects{% endif %}</h2>
   {# The name, set like a project's title, floats centred over the top of
      the wall, and the links and filter float centred along its foot. #}
-  {# Melts the landing's name and tags into one white blob: their shapes are
-     blurred and cut at a threshold, filled with the page colour, and the
-     crisp tags are drawn back on top. The name is set in a dark red, the
-     only ink where red outweighs green, so its letters are found that way
-     and cut out of the blob, letting the work show through. #}
+  {# Melts the name and tags into white blobs. The tags' shapes are blurred
+     and cut at a threshold so they melt into one blob, and the crisp tags
+     are drawn back on top. The name is set in a dark red, the only ink where
+     red outweighs green, so its letters are found that way: each grows a
+     border, the borders melt into a blob that follows the letters, as a
+     project's title does, and the letters are cut out of it, letting the
+     work show through. A project's title gets the same blob behind its dark
+     letters. The wide versions keep the proportions for the larger desktop
+     name and title. #}
   <svg class="goo-defs" width="0" height="0" aria-hidden="true" focusable="false">
-    <filter id="goo" x="-10%" y="-60%" width="120%" height="220%" color-interpolation-filters="sRGB">
-      <feGaussianBlur in="SourceAlpha" stdDeviation="6" result="blur"/>
-      <feColorMatrix in="blur" type="matrix" values="0 0 0 0 0  0 0 0 0 0  0 0 0 0 0  0 0 0 24 -9" result="shape"/>
+    {% set blobSizes = [{ "suffix": "", "grow": 5, "melt": 3 }, { "suffix": "-wide", "grow": 7, "melt": 4 }] %}
+    {% for size in blobSizes %}
+    <filter id="goo{{ size.suffix }}" x="-10%" y="-60%" width="120%" height="220%" color-interpolation-filters="sRGB">
+      <feColorMatrix in="SourceGraphic" type="matrix" values="0 0 0 0 0  0 0 0 0 0  0 0 0 0 0  1.5 -1.5 0 0 -0.03" result="red"/>
+      <feComposite in="red" in2="SourceAlpha" operator="arithmetic" k1="1" result="letters"/>
+      <feComposite in="SourceAlpha" in2="letters" operator="out" result="tagShapes"/>
+      <feGaussianBlur in="tagShapes" stdDeviation="6" result="tagBlur"/>
+      <feColorMatrix in="tagBlur" type="matrix" values="0 0 0 0 0  0 0 0 0 0  0 0 0 0 0  0 0 0 24 -9" result="tagBlob"/>
+      <feMorphology in="letters" operator="dilate" radius="{{ size.grow }}" result="grown"/>
+      <feGaussianBlur in="grown" stdDeviation="{{ size.melt }}" result="nameBlur"/>
+      <feColorMatrix in="nameBlur" type="matrix" values="0 0 0 0 0  0 0 0 0 0  0 0 0 0 0  0 0 0 20 -9" result="nameBlob"/>
+      <feMerge result="shape"><feMergeNode in="tagBlob"/><feMergeNode in="nameBlob"/></feMerge>
       <feFlood class="goo-fill"/>
       <feComposite in2="shape" operator="in" result="blob"/>
-      <feColorMatrix in="SourceGraphic" type="matrix" values="0 0 0 0 0  0 0 0 0 0  0 0 0 0 0  1.5 -1.5 0 0 -0.03" result="letters"/>
       <feColorMatrix in="SourceGraphic" type="matrix" values="1.45 -0.45 0 0 0  1.45 -0.45 0 0 0  1.45 -1.45 1 0 0  0 0 0 1 0" result="ink"/>
       <feMerge result="tags"><feMergeNode in="blob"/><feMergeNode in="ink"/></feMerge>
       <feComposite in="tags" in2="letters" operator="out"/>
     </filter>
-    {# Sets a project's title on a white blob that follows its letters: each
-       letter grows a border, the borders are blurred and cut at a threshold
-       so they melt together, and the letters are drawn back on top. The wide
-       version keeps the same proportions for the larger desktop title. #}
-    <filter id="title-blob" x="-30%" y="-80%" width="160%" height="260%" color-interpolation-filters="sRGB">
-      <feMorphology in="SourceAlpha" operator="dilate" radius="5" result="grown"/>
-      <feGaussianBlur in="grown" stdDeviation="3" result="blur"/>
+    <filter id="title-blob{{ size.suffix }}" x="-30%" y="-80%" width="160%" height="260%" color-interpolation-filters="sRGB">
+      <feMorphology in="SourceAlpha" operator="dilate" radius="{{ size.grow }}" result="grown"/>
+      <feGaussianBlur in="grown" stdDeviation="{{ size.melt }}" result="blur"/>
       <feColorMatrix in="blur" type="matrix" values="0 0 0 0 0  0 0 0 0 0  0 0 0 0 0  0 0 0 20 -9" result="shape"/>
       <feFlood class="goo-fill"/>
       <feComposite in2="shape" operator="in" result="blob"/>
       <feMerge><feMergeNode in="blob"/><feMergeNode in="SourceGraphic"/></feMerge>
     </filter>
-    <filter id="title-blob-wide" x="-30%" y="-80%" width="160%" height="260%" color-interpolation-filters="sRGB">
-      <feMorphology in="SourceAlpha" operator="dilate" radius="7" result="grown"/>
-      <feGaussianBlur in="grown" stdDeviation="4" result="blur"/>
-      <feColorMatrix in="blur" type="matrix" values="0 0 0 0 0  0 0 0 0 0  0 0 0 0 0  0 0 0 20 -9" result="shape"/>
-      <feFlood class="goo-fill"/>
-      <feComposite in2="shape" operator="in" result="blob"/>
-      <feMerge><feMergeNode in="blob"/><feMergeNode in="SourceGraphic"/></feMerge>
-    </filter>
+    {% endfor %}
   </svg>
   <div id="wall-bar" class="wall-bar">
     {% include "./intro.njk" %}

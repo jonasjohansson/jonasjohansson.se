@@ -140,7 +140,7 @@ async function checkFooter(page) {
     const name = page.locator('#wall-bar .site-name');
     assert.equal(await name.isVisible(), true, 'the name heads the landing');
     const plate = await name.evaluate(link => ({ transform: getComputedStyle(link).textTransform, background: getComputedStyle(link).backgroundColor }));
-    assert.deepEqual(plate, { transform: 'uppercase', background: 'rgb(255, 255, 255)' }, 'in the uppercase white plate of a project title');
+    assert.deepEqual(plate, { transform: 'uppercase', background: 'rgba(0, 0, 0, 0)' }, 'uppercase like a project title, with no plate: its white grows from the letters');
     assert.ok(Math.abs(lead.x + lead.width / 2 - wall.x - wall.width / 2) < 2, 'centred over the wall');
     assert.ok(lead.y >= wall.y && lead.y < wall.y + 40, 'at the top of the strips');
     // About's first sentence stays in the page for screen readers and search.
@@ -361,7 +361,8 @@ try {
       assert.equal(await page.locator('#home-title').count(), 0, 'the landing page carries no name of its own');
       // There is no band above the wall: About floats over it as a tag.
       assert.ok(Math.abs(wall.y) < 1 && Math.abs(wall.height - options.viewport.height) < 1, 'the wall fills the screen');
-      assert.equal(await page.locator('#wall-bar .site-name').evaluate(name => getComputedStyle(name).backgroundColor), 'rgb(255, 255, 255)', 'the name is a white plate');
+      assert.equal(await page.locator('#wall-bar .site-name').evaluate(name => getComputedStyle(name).backgroundColor), 'rgba(0, 0, 0, 0)', 'the name has no plate of its own');
+      assert.match(await page.locator('#wall-bar').evaluate(bar => getComputedStyle(bar).filter), /url\("#goo(-wide)?"\)/, 'the blob filter grows the white around the name');
       await checkFooter(page);
       assert.equal(await page.evaluate(() => document.documentElement.scrollWidth > innerWidth), false);
       const intro = await page.locator('#wall-bar .site-name').boundingBox();

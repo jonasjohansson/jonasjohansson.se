@@ -29,13 +29,17 @@
   pointer-events: none;
   filter: url(#goo);
 }
+@media screen and (min-width: 1025px) {
+  .enhanced .wall-bar { filter: url(#goo-wide); }
+}
 .goo-defs { position: absolute; }
 .goo-fill { flood-color: var(--bg-primary); }
 .enhanced .wall-bar :is(.site-name, .header-contacts a, .project-filters select) {
   border-radius: var(--radius-title);
-  background-color: var(--bg-primary);
   pointer-events: auto;
 }
+/* The name has no box: the filter grows its white from the letters. */
+.enhanced .wall-bar :is(.header-contacts a, .project-filters select) { background-color: var(--bg-primary); }
 .enhanced .wall-tags { display: flex; justify-content: center; }
 .enhanced .wall-bar :is(.wall-tags, .header-contacts, .project-filters) { align-items: flex-start; gap: var(--blob-gap); margin: 0; }
 /* The name's ink is what the blob filter cuts out. */
